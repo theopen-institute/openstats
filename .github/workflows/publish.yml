@@ -18,19 +18,19 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      # ---- Python Shinylive (if you use {shinylive-python} blocks) ----
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-          cache: "pip"
+      # # ---- Python Shinylive (if you use {shinylive-python} blocks) ----
+      # - name: Set up Python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: "3.11"
+      #     cache: "pip"
 
-      - name: Install Python dependencies
-        run: |
-          pip install -U pip
-          pip install shinylive
-          # If you have a requirements.txt, also do:
-          # pip install -r requirements.txt
+      # - name: Install Python dependencies
+      #   run: |
+      #     pip install -U pip
+      #     pip install shinylive
+      #     # If you have a requirements.txt, also do:
+      #     # pip install -r requirements.txt
 
       # ---- R Shinylive (if you use R shinylive) ----
       - name: Set up R
