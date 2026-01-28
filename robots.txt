@@ -1,0 +1,1 @@
+Sitemap: https://theopen-institute.github.io/openstats/sitemap.xml
