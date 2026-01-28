@@ -1,0 +1,44 @@
+---
+title: "Week 1"
+author: "Peter Graif"
+format: 
+  revealjs:
+    theme: [simple, styles/deck.scss]
+    margin: 0.05
+    width: 1605
+    height: 1050
+filters: 
+  - shinylive
+---
+# Bayesian updating
+- notes
+<!-- # Most research is wrong
+
+
+# Base rate fallacy
+
+This is a *slide*
+
+-   base rate fallacy
+-   stones in a bag
+
+here
+
+# Understanding p-value
+
+# Overview of Bayes
+"Big Mart is probably open."
+What does that "probably" mean?
+- Frequentist: in a million parallel universes, it's likely that we'd find Big Mart to be open in most of them.
+- Bayesian: I am unsure, but I think it's more likely that Big Mart is open
+
+# Falsification isn't all that interesting
+
+
+# instead, we have updating -->
+
+# Slide 2 {.no-title}
+```{shinylive-r}
+#| standalone: true
+{{< include shinydemos/demoUpdating.R >}}
+```

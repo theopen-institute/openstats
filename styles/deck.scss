@@ -1,0 +1,25 @@
+/*-- scss:rules --*/
+/* custom classes */
+.no-title h1 {
+  display: none;
+}
+
+
+/* theme overrides */
+// .slide {
+//   // padding: 1em;
+// }
+
+/* shinylive slides */
+.sourceCode[data-engine="r"] {
+  border: none !important;
+  // margin: -1em;
+}
+
+.shinylive-wrapper {
+  width: 1605px;
+  height: 1050px;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border: none !important;
+}
