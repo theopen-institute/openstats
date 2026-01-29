@@ -28,7 +28,7 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: |
-            posit-dev/r-shinylive
+            shinylive
             tidyverse
             rmarkdown
             knitr
