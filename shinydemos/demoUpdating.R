@@ -1,17 +1,16 @@
 library(shiny)
 library(shinyjs)
 library(bslib)
-library(jsonlite)
-library(dplyr)
-library(purrr)
 library(DT)
 library(plotly)
-library(htmlwidgets)
 
 TOTAL_STONES <- 9L
-CONJECTURE <- map_chr(0:TOTAL_STONES, \(x) {
-  paste0(strrep("🔵", x), strrep("⚫️", TOTAL_STONES - x))
-})
+
+CONJECTURE <- vapply(
+  0:TOTAL_STONES,
+  function(x) paste0(strrep("🔵", x), strrep("⚫️", TOTAL_STONES - x)),
+  character(1)
+)
 
 SHIFT_HANDLER <- HTML(
   "
@@ -119,7 +118,6 @@ ui <- page_sidebar(
     width = 12,
     uiOutput("dynamicHeader"),
     DTOutput("resultTable"),
-    # CHANGED: plotOutput -> plotlyOutput
     plotlyOutput("likelihoodPlot")
   )
 )
@@ -183,9 +181,10 @@ server <- function(input, output, session) {
   observe({
     req(!is.null(bag_blue()))
     tip <- sprintf("blue stones = %d (out of %d)", bag_blue(), TOTAL_STONES)
+
     shinyjs::runjs(sprintf(
       "$('#bagContents_wrap .selectize-control').attr('title', %s);",
-      jsonlite::toJSON(tip, auto_unbox = TRUE)
+      shQuote(tip)
     ))
   })
 
@@ -198,52 +197,63 @@ server <- function(input, output, session) {
     } else if (n <= 20) {
       paste(d, collapse = "\u00A0")
     } else {
-      tibble(val = d) |>
-        count(val) |>
-        arrange(desc(n)) |>
-        transmute(label = paste(val, "×", n)) |>
-        pull(label) |>
-        paste(collapse = ", ")
+      tbl <- sort(table(d), decreasing = TRUE)
+      labels <- paste(names(tbl), "×", as.integer(tbl))
+      paste(labels, collapse = ", ")
     }
 
     if (n == 0) {
-      df <- tibble(
+      df <- data.frame(
         conjecture = CONJECTURE,
         possibilities = "-",
         total = "-",
-        likelihood = rep(1 / (TOTAL_STONES + 1), TOTAL_STONES + 1)
+        likelihood = rep(1 / (TOTAL_STONES + 1), TOTAL_STONES + 1),
+        stringsAsFactors = FALSE
       )
       return(list(df = df, header = header))
     }
 
-    factors <- map(0:TOTAL_STONES, \(bx) {
-      ifelse(d == "🔵", bx, TOTAL_STONES - bx)
-    })
+    factors <- lapply(
+      0:TOTAL_STONES,
+      function(bx) ifelse(d == "🔵", bx, TOTAL_STONES - bx)
+    )
 
-    formula <- map_chr(factors, \(f) {
-      if (n <= 20) {
-        paste0(f, collapse = " × ")
-      } else {
-        tibble(val = f) |>
-          count(val) |>
-          arrange(desc(n)) |>
-          transmute(label = paste0(val, "<sup>", n, "</sup>")) |>
-          pull(label) |>
-          paste(collapse = " × ")
-      }
-    })
+    formula <- vapply(
+      factors,
+      function(f) {
+        if (n <= 20) {
+          paste0(f, collapse = " × ")
+        } else {
+          tbl <- sort(table(f), decreasing = TRUE)
+          labels <- paste0(names(tbl), "<sup>", as.integer(tbl), "</sup>")
+          paste(labels, collapse = " × ")
+        }
+      },
+      character(1)
+    )
 
-    log_paths <- map_dbl(factors, \(f) sum(log(f)))
+    log_paths <- vapply(
+      factors,
+      function(f) sum(log(f)),
+      numeric(1)
+    )
+
     m <- max(log_paths)
     paths_scaled <- exp(log_paths - m)
     likelihood <- paths_scaled / sum(paths_scaled)
 
-    paths <- map_dbl(factors, prod)
-    df <- tibble(
+    paths <- vapply(
+      factors,
+      prod,
+      numeric(1)
+    )
+
+    df <- data.frame(
       conjecture = CONJECTURE,
       possibilities = formula,
       total = format2(round(paths, 0)),
-      likelihood = likelihood
+      likelihood = likelihood,
+      stringsAsFactors = FALSE
     )
 
     list(df = df, header = header)
@@ -315,7 +325,6 @@ server <- function(input, output, session) {
     ignoreInit = TRUE
   )
 
-  # CHANGED: renderPlot -> renderPlotly (and build a plotly object)
   output$likelihoodPlot <- renderPlotly({
     df <- table_state()$df
     x <- 0:TOTAL_STONES
@@ -323,20 +332,20 @@ server <- function(input, output, session) {
 
     p <- plot_ly()
 
-    # ---- ghost lines (history) ----
     if (length(h) > 1) {
       ghosts <- h[-length(h)]
       n_ghosts <- length(ghosts)
 
-      # light → darker gray
-      gray_vals <- as.integer(round(seq(220, 160, length.out = n_ghosts)))
+      gray_vals_full <- as.integer(round(seq(240, 120, length.out = max_hist)))
+      gray_vals <- tail(gray_vals_full, n_ghosts)
+
       for (i in seq_along(ghosts)) {
         p <- p |>
           add_lines(
             x = x,
             y = ghosts[[i]],
             line = list(
-              width = 2,
+              width = 1,
               color = sprintf(
                 "rgb(%d,%d,%d)",
                 gray_vals[i],
@@ -351,7 +360,6 @@ server <- function(input, output, session) {
       }
     }
 
-    # ---- current likelihood (always black) ----
     p <- p |>
       add_lines(
         x = x,
@@ -376,7 +384,7 @@ server <- function(input, output, session) {
         ),
         yaxis = list(
           title = "Likelihood",
-          range = c(0, 1)
+          range = c(0, 1.05)
         ),
         margin = list(l = 60, r = 20, t = 10, b = 60)
       )
