@@ -4,13 +4,13 @@ library(bslib)
 library(jsonlite)
 library(dplyr)
 library(purrr)
-library(ggplot2)
 library(DT)
-library(munsell)
+library(plotly)
+library(htmlwidgets)
 
 TOTAL_STONES <- 9L
 CONJECTURE <- map_chr(0:TOTAL_STONES, \(x) {
-  paste0(strrep("🔵", x), strrep("⚪️", TOTAL_STONES - x))
+  paste0(strrep("🔵", x), strrep("⚫️", TOTAL_STONES - x))
 })
 
 SHIFT_HANDLER <- HTML(
@@ -30,6 +30,7 @@ SHIFT_HANDLER <- HTML(
     });
   "
 )
+
 APPROX_HANDLER <- JS(
   "
     function(data, type) {
@@ -48,7 +49,7 @@ format2 <- function(x, max_digits = 40L) {
     x,
     scientific = FALSE,
     trim = TRUE,
-    digits = 22 # enough for typical doubles; adjust if needed
+    digits = 22
   )
 
   digit_count <- nchar(gsub("[^0-9]", "", x_chr_fixed))
@@ -79,15 +80,15 @@ ui <- page_sidebar(
         "Contents of the bag:",
         choices = c(
           "Hidden" = "hidden",
-          "⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️" = 0,
-          "🔵⚪️⚪️⚪️⚪️⚪️⚪️⚪️⚪️" = 1,
-          "🔵🔵⚪️⚪️⚪️⚪️⚪️⚪️⚪️" = 2,
-          "🔵🔵🔵⚪️⚪️⚪️⚪️⚪️⚪️" = 3,
-          "🔵🔵🔵🔵⚪️⚪️⚪️⚪️⚪️" = 4,
-          "🔵🔵🔵🔵🔵⚪️⚪️⚪️⚪️" = 5,
-          "🔵🔵🔵🔵🔵🔵⚪️⚪️⚪️" = 6,
-          "🔵🔵🔵🔵🔵🔵🔵⚪️⚪️" = 7,
-          "🔵🔵🔵🔵🔵🔵🔵🔵⚪️" = 8,
+          "⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 0,
+          "🔵⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 1,
+          "🔵🔵⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 2,
+          "🔵🔵🔵⚫️⚫️⚫️⚫️⚫️⚫️" = 3,
+          "🔵🔵🔵🔵⚫️⚫️⚫️⚫️⚫️" = 4,
+          "🔵🔵🔵🔵🔵⚫️⚫️⚫️⚫️" = 5,
+          "🔵🔵🔵🔵🔵🔵⚫️⚫️⚫️" = 6,
+          "🔵🔵🔵🔵🔵🔵🔵⚫️⚫️" = 7,
+          "🔵🔵🔵🔵🔵🔵🔵🔵⚫️" = 8,
           "🔵🔵🔵🔵🔵🔵🔵🔵🔵" = 9
         )
       )
@@ -96,8 +97,8 @@ ui <- page_sidebar(
     p("Draw a stone:"),
     div(
       style = "display: flex; gap: 10px;",
+      actionButton("drawWhite", "⚫️"),
       actionButton("drawBlue", "🔵"),
-      actionButton("drawWhite", "⚪️"),
       actionButton(
         "drawRandom",
         "Random",
@@ -111,27 +112,26 @@ ui <- page_sidebar(
         "
       )
     ),
-    actionButton("reset", "Reset", class = "btn-danger")
+    actionButton("reset", "Reset", class = "btn-danger"),
   ),
 
   mainPanel(
     width = 12,
     uiOutput("dynamicHeader"),
     DTOutput("resultTable"),
-    plotOutput("likelihoodPlot")
+    # CHANGED: plotOutput -> plotlyOutput
+    plotlyOutput("likelihoodPlot", height = "350px")
   )
 )
 
 server <- function(input, output, session) {
-  bag_blue <- reactiveVal(NULL) # integer: number of blue stones in bag (hidden mode only)
-  draws <- reactiveVal(character()) # vector of "🔵"/"⚪️"
+  bag_blue <- reactiveVal(NULL)
+  draws <- reactiveVal(character())
   busy <- reactiveVal(FALSE)
 
-  # likelihood curve history for ghost lines
   lik_hist <- reactiveVal(list())
   max_hist <- 10L
 
-  # UI events
   observeEvent(
     input$bagContents,
     {
@@ -143,29 +143,32 @@ server <- function(input, output, session) {
     },
     ignoreInit = FALSE
   )
+
   observeEvent(input$drawBlue, {
     draws(c(draws(), "🔵"))
   })
+
   observeEvent(input$drawWhite, {
-    draws(c(draws(), "⚪️"))
+    draws(c(draws(), "⚫️"))
   })
+
   observeEvent(
     input$drawRandom_n,
     {
       req(!is.null(bag_blue()))
       n_draws <- as.integer(input$drawRandom_n)
-      pool <- c(rep("🔵", bag_blue()), rep("⚪️", TOTAL_STONES - bag_blue()))
+      pool <- c(rep("🔵", bag_blue()), rep("⚫️", TOTAL_STONES - bag_blue()))
       draws(c(draws(), sample(pool, n_draws, replace = TRUE)))
     },
     ignoreInit = TRUE
   )
+
   observeEvent(input$reset, {
     draws(character())
     bag_blue(sample(0:TOTAL_STONES, 1))
     lik_hist(list())
   })
 
-  # Disable bag contents after first draw; enable reset only when there is history
   observe({
     has_draws <- length(draws()) > 0
     if (has_draws) {
@@ -177,7 +180,6 @@ server <- function(input, output, session) {
     }
   })
 
-  # Update tooltip for select control
   observe({
     req(!is.null(bag_blue()))
     tip <- sprintf("blue stones = %d (out of %d)", bag_blue(), TOTAL_STONES)
@@ -187,7 +189,6 @@ server <- function(input, output, session) {
     ))
   })
 
-  # Core calculation: returns df + header text
   table_state <- reactive({
     d <- draws()
     n <- length(d)
@@ -205,23 +206,20 @@ server <- function(input, output, session) {
         paste(collapse = ", ")
     }
 
-    # Explicit n==0 handling for nicer display
     if (n == 0) {
       df <- tibble(
         conjecture = CONJECTURE,
-        `possible paths` = "",
-        total = "1",
+        possibilities = "-",
+        total = "-",
         likelihood = rep(1 / (TOTAL_STONES + 1), TOTAL_STONES + 1)
       )
       return(list(df = df, header = header))
     }
 
-    # For each conjecture x, each blue draw contributes x ways; each white contributes (TOTAL_STONES - x) ways
     factors <- map(0:TOTAL_STONES, \(bx) {
       ifelse(d == "🔵", bx, TOTAL_STONES - bx)
     })
 
-    # Pretty formulas
     formula <- map_chr(factors, \(f) {
       if (n <= 20) {
         paste0(f, collapse = " × ")
@@ -235,18 +233,15 @@ server <- function(input, output, session) {
       }
     })
 
-    # Safer numeric computation (log space) for likelihood
     log_paths <- map_dbl(factors, \(f) sum(log(f)))
     m <- max(log_paths)
     paths_scaled <- exp(log_paths - m)
     likelihood <- paths_scaled / sum(paths_scaled)
 
-    # If you still want integer-looking totals, use scaled paths (relative) or raw prod.
-    # Here we preserve the original intent (counts) where feasible:
     paths <- map_dbl(factors, prod)
     df <- tibble(
       conjecture = CONJECTURE,
-      `possible paths` = formula,
+      possibilities = formula,
       total = format2(round(paths, 0)),
       likelihood = likelihood
     )
@@ -274,10 +269,22 @@ server <- function(input, output, session) {
           ordering = FALSE,
           autoWidth = FALSE,
           columnDefs = list(
-            list(targets = 0, className = "dt-left", width = "180px"),
-            list(targets = 2, className = "dt-right", width = "120px"),
+            list(
+              targets = 0,
+              title = "Conjecture",
+              className = "dt-left",
+              width = "180px"
+            ),
+            list(targets = 1, title = "Possible ways to get observed result"),
+            list(
+              targets = 2,
+              title = "Total",
+              className = "dt-right",
+              width = "120px"
+            ),
             list(
               targets = 3,
+              title = "Likelihood",
               className = "dt-right",
               width = "80px",
               render = APPROX_HANDLER
@@ -289,7 +296,6 @@ server <- function(input, output, session) {
     server = FALSE
   )
 
-  # Lighter-weight reactive for likelihood only
   likelihood_vector <- reactive(table_state()$df$likelihood)
 
   observeEvent(
@@ -309,49 +315,73 @@ server <- function(input, output, session) {
     ignoreInit = TRUE
   )
 
-  output$likelihoodPlot <- renderPlot({
+  # CHANGED: renderPlot -> renderPlotly (and build a plotly object)
+  output$likelihoodPlot <- renderPlotly({
     df <- table_state()$df
     x <- 0:TOTAL_STONES
     h <- lik_hist()
 
-    ghost_df <- NULL
+    p <- plot_ly()
+
+    # ---- ghost lines (history) ----
     if (length(h) > 1) {
-      ghost_df <- purrr::imap_dfr(
-        h[-length(h)],
-        \(y, i) tibble(x = x, likelihood = y, id = i)
+      ghosts <- h[-length(h)]
+      n_ghosts <- length(ghosts)
+
+      # light → darker gray
+      gray_vals <- as.integer(round(seq(220, 160, length.out = n_ghosts)))
+      for (i in seq_along(ghosts)) {
+        p <- p |>
+          add_lines(
+            x = x,
+            y = ghosts[[i]],
+            line = list(
+              width = 2,
+              color = sprintf(
+                "rgb(%d,%d,%d)",
+                gray_vals[i],
+                gray_vals[i],
+                gray_vals[i]
+              )
+            ),
+            opacity = 0.6,
+            hoverinfo = "skip",
+            showlegend = FALSE
+          )
+      }
+    }
+
+    # ---- current likelihood (always black) ----
+    p <- p |>
+      add_lines(
+        x = x,
+        y = df$likelihood,
+        line = list(width = 3, color = "black"),
+        hovertemplate = "Blue stones: %{x}<br>Likelihood: %{y:.3f}<extra></extra>",
+        showlegend = FALSE
+      ) |>
+      add_markers(
+        x = x,
+        y = df$likelihood,
+        marker = list(size = 7, color = "black"),
+        hovertemplate = "Blue stones: %{x}<br>Likelihood: %{y:.3f}<extra></extra>",
+        showlegend = FALSE
+      ) |>
+      layout(
+        xaxis = list(
+          title = "Number of blue stones",
+          tickmode = "array",
+          tickvals = x,
+          ticktext = x
+        ),
+        yaxis = list(
+          title = "Likelihood",
+          range = c(0, 1)
+        ),
+        margin = list(l = 60, r = 20, t = 10, b = 60)
       )
-    }
 
-    p <- ggplot()
-
-    if (!is.null(ghost_df) && nrow(ghost_df) > 0) {
-      p <- p +
-        geom_line(
-          data = ghost_df,
-          aes(x = x, y = likelihood, group = id),
-          linewidth = 0.8,
-          alpha = 0.15
-        )
-    }
-
-    p +
-      geom_line(
-        data = df,
-        aes(x = x, y = likelihood, group = 1),
-        linewidth = 1.2,
-        color = "black"
-      ) +
-      geom_point(
-        data = df,
-        aes(x = x, y = likelihood),
-        size = 2,
-        color = "black"
-      ) +
-      scale_y_continuous(limits = c(0, 1)) +
-      scale_x_continuous(breaks = 0:TOTAL_STONES, labels = 0:TOTAL_STONES) +
-      labs(x = "Number of blue stones", y = "Likelihood") +
-      theme_minimal(base_size = 12) +
-      theme(panel.grid.minor = element_blank())
+    p
   })
 }
 
