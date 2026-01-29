@@ -39,16 +39,10 @@ jobs:
       - name: Install Quarto shinylive extension
         run: quarto add quarto-ext/shinylive --no-prompt
 
-      # Ensure the newest Shinylive assets bundle is used (this drives the bundled webR version)
-      - name: Use latest Shinylive assets
-        run: |
-          TAG=$(curl -s https://api.github.com/repos/posit-dev/shinylive/releases/latest | python3 -c "import sys, json; print(json.load(sys.stdin)['tag_name'])")
-          echo "SHINYLIVE_ASSETS_VERSION=$TAG" >> $GITHUB_ENV
-
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SHINYLIVE_ASSETS_VERSION: ${{ env.SHINYLIVE_ASSETS_VERSION }}
+          SHINYLIVE_ASSETS_VERSION: latest
