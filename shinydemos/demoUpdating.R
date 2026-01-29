@@ -120,7 +120,7 @@ ui <- page_sidebar(
     uiOutput("dynamicHeader"),
     DTOutput("resultTable"),
     # CHANGED: plotOutput -> plotlyOutput
-    plotlyOutput("likelihoodPlot", height = "350px")
+    plotlyOutput("likelihoodPlot")
   )
 )
 
