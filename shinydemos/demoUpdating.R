@@ -1,10 +1,12 @@
 library(shiny)
 library(shinyjs)
 library(bslib)
-library(munsell)
 library(jsonlite)
-library(tidyverse)
+library(dplyr)
+library(purrr)
+library(ggplot2)
 library(DT)
+library(munsell)
 
 TOTAL_STONES <- 9L
 CONJECTURE <- map_chr(0:TOTAL_STONES, \(x) {

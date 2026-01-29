@@ -1,6 +1,6 @@
 ---
 title: "Week 1"
-author: "Peter Graif"
+author: "the Open Institute"
 format: 
   revealjs:
     theme: [simple, styles/deck.scss]
