@@ -37,7 +37,7 @@ jobs:
             munsell
 
       - name: Install Quarto shinylive extension
-        run: quarto add quarto-ext/shinylive --no-prompt --update
+        run: quarto add quarto-ext/shinylive --no-prompt
 
       # Ensure the newest Shinylive assets bundle is used (this drives the bundled webR version)
       - name: Use latest Shinylive assets
