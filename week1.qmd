@@ -41,4 +41,5 @@ What does that "probably" mean?
 ```{shinylive-r}
 #| standalone: true
 {{< include shinydemos/demoUpdating.R >}}
+
 ```

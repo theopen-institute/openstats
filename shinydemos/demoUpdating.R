@@ -2,7 +2,6 @@ library(shiny)
 library(shinyjs)
 library(bslib)
 library(DT)
-library(plotly)
 
 TOTAL_STONES <- 9L
 
@@ -111,21 +110,20 @@ ui <- page_sidebar(
         "
       )
     ),
-    actionButton("reset", "Reset", class = "btn-danger"),
+    actionButton("reset", "Reset", class = "btn-danger")
   ),
 
   mainPanel(
     width = 12,
     uiOutput("dynamicHeader"),
     DTOutput("resultTable"),
-    plotlyOutput("likelihoodPlot")
+    plotOutput("likelihoodPlot")
   )
 )
 
 server <- function(input, output, session) {
   bag_blue <- reactiveVal(NULL)
   draws <- reactiveVal(character())
-  busy <- reactiveVal(FALSE)
 
   lik_hist <- reactiveVal(list())
   max_hist <- 10L
@@ -285,7 +283,10 @@ server <- function(input, output, session) {
               className = "dt-left",
               width = "180px"
             ),
-            list(targets = 1, title = "Possible ways to get observed result"),
+            list(
+              targets = 1,
+              title = "Possible ways to get this observation"
+            ),
             list(
               targets = 2,
               title = "Total",
@@ -325,12 +326,26 @@ server <- function(input, output, session) {
     ignoreInit = TRUE
   )
 
-  output$likelihoodPlot <- renderPlotly({
+  output$likelihoodPlot <- renderPlot({
     df <- table_state()$df
     x <- 0:TOTAL_STONES
     h <- lik_hist()
 
-    p <- plot_ly()
+    op <- par(no.readonly = TRUE)
+    on.exit(par(op), add = TRUE)
+
+    par(mar = c(4.2, 4.2, 0.8, 0.8))
+
+    plot(
+      x,
+      df$likelihood,
+      type = "n",
+      xlab = "Number of blue stones",
+      ylab = "Likelihood",
+      xaxt = "n",
+      ylim = c(0, 1.05)
+    )
+    axis(1, at = x, labels = x)
 
     if (length(h) > 1) {
       ghosts <- h[-length(h)]
@@ -340,56 +355,22 @@ server <- function(input, output, session) {
       gray_vals <- tail(gray_vals_full, n_ghosts)
 
       for (i in seq_along(ghosts)) {
-        p <- p |>
-          add_lines(
-            x = x,
-            y = ghosts[[i]],
-            line = list(
-              width = 1,
-              color = sprintf(
-                "rgb(%d,%d,%d)",
-                gray_vals[i],
-                gray_vals[i],
-                gray_vals[i]
-              )
-            ),
-            opacity = 0.6,
-            hoverinfo = "skip",
-            showlegend = FALSE
+        lines(
+          x,
+          ghosts[[i]],
+          lwd = 1,
+          col = rgb(
+            gray_vals[i],
+            gray_vals[i],
+            gray_vals[i],
+            maxColorValue = 255
           )
+        )
       }
     }
 
-    p <- p |>
-      add_lines(
-        x = x,
-        y = df$likelihood,
-        line = list(width = 3, color = "black"),
-        hovertemplate = "Blue stones: %{x}<br>Likelihood: %{y:.3f}<extra></extra>",
-        showlegend = FALSE
-      ) |>
-      add_markers(
-        x = x,
-        y = df$likelihood,
-        marker = list(size = 7, color = "black"),
-        hovertemplate = "Blue stones: %{x}<br>Likelihood: %{y:.3f}<extra></extra>",
-        showlegend = FALSE
-      ) |>
-      layout(
-        xaxis = list(
-          title = "Number of blue stones",
-          tickmode = "array",
-          tickvals = x,
-          ticktext = x
-        ),
-        yaxis = list(
-          title = "Likelihood",
-          range = c(0, 1.05)
-        ),
-        margin = list(l = 60, r = 20, t = 10, b = 60)
-      )
-
-    p
+    lines(x, df$likelihood, lwd = 3, col = "black")
+    points(x, df$likelihood, pch = 16, cex = 1, col = "black")
   })
 }
 
