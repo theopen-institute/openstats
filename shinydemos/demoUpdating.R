@@ -39,7 +39,7 @@ STYLE <- HTML(
   #resultTable td:nth-child(1) { width: 220px; }
 
   #resultTable th:nth-child(3),
-  #resultTable td:nth-child(3) { width: 380px; }
+  #resultTable td:nth-child(3) { width: 160px; direction: rtl }
 
   #resultTable th:nth-child(4),
   #resultTable td:nth-child(4) { width: 80px; }
