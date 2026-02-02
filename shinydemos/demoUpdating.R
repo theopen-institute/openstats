@@ -1,6 +1,6 @@
 library(shiny)
-library(shinyjs)
 library(bslib)
+library(shinyjs)
 
 TOTAL_STONES <- 9L
 

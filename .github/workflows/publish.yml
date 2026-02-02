@@ -29,6 +29,7 @@ jobs:
         with:
           packages: |
             shinylive
+            shinyjs
             tidyverse
             rmarkdown
             knitr
