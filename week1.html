@@ -246,383 +246,374 @@ What does that "probably" mean?
 <span id="cb1-3"><a></a>#|   Please set `embed-resources: false` in your metadata.</span>
 <span id="cb1-4"><a></a>#| standalone: true</span>
 <span id="cb1-5"><a></a>library(shiny)</span>
-<span id="cb1-6"><a></a>library(shinyjs)</span>
-<span id="cb1-7"><a></a>library(bslib)</span>
-<span id="cb1-8"><a></a>library(DT)</span>
-<span id="cb1-9"><a></a></span>
-<span id="cb1-10"><a></a>TOTAL_STONES &lt;- 9L</span>
-<span id="cb1-11"><a></a></span>
-<span id="cb1-12"><a></a>CONJECTURE &lt;- vapply(</span>
-<span id="cb1-13"><a></a>  0:TOTAL_STONES,</span>
-<span id="cb1-14"><a></a>  function(x) paste0(strrep("🔵", x), strrep("⚫️", TOTAL_STONES - x)),</span>
-<span id="cb1-15"><a></a>  character(1)</span>
-<span id="cb1-16"><a></a>)</span>
-<span id="cb1-17"><a></a></span>
-<span id="cb1-18"><a></a>SHIFT_HANDLER &lt;- HTML(</span>
-<span id="cb1-19"><a></a>  "</span>
-<span id="cb1-20"><a></a>    document.addEventListener('keydown', function(e) {</span>
-<span id="cb1-21"><a></a>      if (e.key === 'Shift') {</span>
-<span id="cb1-22"><a></a>        const btn = document.getElementById('drawRandom');</span>
-<span id="cb1-23"><a></a>        if (btn) btn.innerText = 'Random × 10';</span>
-<span id="cb1-24"><a></a>      }</span>
-<span id="cb1-25"><a></a>    });</span>
-<span id="cb1-26"><a></a></span>
-<span id="cb1-27"><a></a>    document.addEventListener('keyup', function(e) {</span>
-<span id="cb1-28"><a></a>      if (e.key === 'Shift') {</span>
-<span id="cb1-29"><a></a>        const btn = document.getElementById('drawRandom');</span>
-<span id="cb1-30"><a></a>        if (btn) btn.innerText = 'Random';</span>
-<span id="cb1-31"><a></a>      }</span>
-<span id="cb1-32"><a></a>    });</span>
-<span id="cb1-33"><a></a>  "</span>
-<span id="cb1-34"><a></a>)</span>
-<span id="cb1-35"><a></a></span>
-<span id="cb1-36"><a></a>APPROX_HANDLER &lt;- JS(</span>
-<span id="cb1-37"><a></a>  "</span>
-<span id="cb1-38"><a></a>    function(data, type) {</span>
-<span id="cb1-39"><a></a>      if (type !== 'display') return data;</span>
-<span id="cb1-40"><a></a>      var x = Number(data);</span>
-<span id="cb1-41"><a></a>      if (!isFinite(x)) return '';</span>
-<span id="cb1-42"><a></a>      if (x &gt; 0 &amp;&amp; x &lt; 0.01) return '&amp;lt;0.01';</span>
-<span id="cb1-43"><a></a>      if (x &lt; 1 &amp;&amp; x &gt; 0.995) return '&amp;gt;0.99';</span>
-<span id="cb1-44"><a></a>      return x.toFixed(2);</span>
-<span id="cb1-45"><a></a>    }</span>
-<span id="cb1-46"><a></a>  "</span>
-<span id="cb1-47"><a></a>)</span>
-<span id="cb1-48"><a></a></span>
-<span id="cb1-49"><a></a>format2 &lt;- function(x, max_digits = 40L) {</span>
-<span id="cb1-50"><a></a>  x_chr_fixed &lt;- format(</span>
-<span id="cb1-51"><a></a>    x,</span>
-<span id="cb1-52"><a></a>    scientific = FALSE,</span>
-<span id="cb1-53"><a></a>    trim = TRUE,</span>
-<span id="cb1-54"><a></a>    digits = 22</span>
-<span id="cb1-55"><a></a>  )</span>
-<span id="cb1-56"><a></a></span>
-<span id="cb1-57"><a></a>  digit_count &lt;- nchar(gsub("[^0-9]", "", x_chr_fixed))</span>
-<span id="cb1-58"><a></a></span>
-<span id="cb1-59"><a></a>  ifelse(</span>
-<span id="cb1-60"><a></a>    is.na(x),</span>
-<span id="cb1-61"><a></a>    NA_character_,</span>
-<span id="cb1-62"><a></a>    ifelse(</span>
-<span id="cb1-63"><a></a>      digit_count &gt; max_digits,</span>
-<span id="cb1-64"><a></a>      format(x, scientific = TRUE, trim = TRUE),</span>
-<span id="cb1-65"><a></a>      x_chr_fixed</span>
-<span id="cb1-66"><a></a>    )</span>
-<span id="cb1-67"><a></a>  )</span>
-<span id="cb1-68"><a></a>}</span>
-<span id="cb1-69"><a></a></span>
-<span id="cb1-70"><a></a>ui &lt;- page_sidebar(</span>
-<span id="cb1-71"><a></a>  sidebar = sidebar(</span>
-<span id="cb1-72"><a></a>    shinyjs::useShinyjs(),</span>
-<span id="cb1-73"><a></a>    tags$script(SHIFT_HANDLER),</span>
-<span id="cb1-74"><a></a>    open = "open",</span>
-<span id="cb1-75"><a></a>    width = 400,</span>
-<span id="cb1-76"><a></a></span>
-<span id="cb1-77"><a></a>    h1("Bayesian Updating"),</span>
-<span id="cb1-78"><a></a>    div(</span>
-<span id="cb1-79"><a></a>      id = "bagContents_wrap",</span>
-<span id="cb1-80"><a></a>      selectizeInput(</span>
-<span id="cb1-81"><a></a>        "bagContents",</span>
-<span id="cb1-82"><a></a>        "Contents of the bag:",</span>
-<span id="cb1-83"><a></a>        choices = c(</span>
-<span id="cb1-84"><a></a>          "Hidden" = "hidden",</span>
-<span id="cb1-85"><a></a>          "⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 0,</span>
-<span id="cb1-86"><a></a>          "🔵⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 1,</span>
-<span id="cb1-87"><a></a>          "🔵🔵⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 2,</span>
-<span id="cb1-88"><a></a>          "🔵🔵🔵⚫️⚫️⚫️⚫️⚫️⚫️" = 3,</span>
-<span id="cb1-89"><a></a>          "🔵🔵🔵🔵⚫️⚫️⚫️⚫️⚫️" = 4,</span>
-<span id="cb1-90"><a></a>          "🔵🔵🔵🔵🔵⚫️⚫️⚫️⚫️" = 5,</span>
-<span id="cb1-91"><a></a>          "🔵🔵🔵🔵🔵🔵⚫️⚫️⚫️" = 6,</span>
-<span id="cb1-92"><a></a>          "🔵🔵🔵🔵🔵🔵🔵⚫️⚫️" = 7,</span>
-<span id="cb1-93"><a></a>          "🔵🔵🔵🔵🔵🔵🔵🔵⚫️" = 8,</span>
-<span id="cb1-94"><a></a>          "🔵🔵🔵🔵🔵🔵🔵🔵🔵" = 9</span>
-<span id="cb1-95"><a></a>        )</span>
-<span id="cb1-96"><a></a>      )</span>
-<span id="cb1-97"><a></a>    ),</span>
-<span id="cb1-98"><a></a></span>
-<span id="cb1-99"><a></a>    p("Draw a stone:"),</span>
-<span id="cb1-100"><a></a>    div(</span>
-<span id="cb1-101"><a></a>      style = "display: flex; gap: 10px;",</span>
-<span id="cb1-102"><a></a>      actionButton("drawWhite", "⚫️"),</span>
-<span id="cb1-103"><a></a>      actionButton("drawBlue", "🔵"),</span>
-<span id="cb1-104"><a></a>      actionButton(</span>
-<span id="cb1-105"><a></a>        "drawRandom",</span>
-<span id="cb1-106"><a></a>        "Random",</span>
-<span id="cb1-107"><a></a>        style = "flex: 1;",</span>
-<span id="cb1-108"><a></a>        onclick = "</span>
-<span id="cb1-109"><a></a>          Shiny.setInputValue(</span>
-<span id="cb1-110"><a></a>            'drawRandom_n',</span>
-<span id="cb1-111"><a></a>            event.shiftKey ? 10 : 1,</span>
-<span id="cb1-112"><a></a>            {priority: 'event'}</span>
-<span id="cb1-113"><a></a>          );</span>
-<span id="cb1-114"><a></a>        "</span>
-<span id="cb1-115"><a></a>      )</span>
-<span id="cb1-116"><a></a>    ),</span>
-<span id="cb1-117"><a></a>    actionButton("reset", "Reset", class = "btn-danger")</span>
-<span id="cb1-118"><a></a>  ),</span>
-<span id="cb1-119"><a></a></span>
-<span id="cb1-120"><a></a>  mainPanel(</span>
-<span id="cb1-121"><a></a>    width = 12,</span>
-<span id="cb1-122"><a></a>    uiOutput("dynamicHeader"),</span>
-<span id="cb1-123"><a></a>    DTOutput("resultTable"),</span>
-<span id="cb1-124"><a></a>    plotOutput("likelihoodPlot")</span>
-<span id="cb1-125"><a></a>  )</span>
-<span id="cb1-126"><a></a>)</span>
-<span id="cb1-127"><a></a></span>
-<span id="cb1-128"><a></a>server &lt;- function(input, output, session) {</span>
-<span id="cb1-129"><a></a>  bag_blue &lt;- reactiveVal(NULL)</span>
-<span id="cb1-130"><a></a>  draws &lt;- reactiveVal(character())</span>
-<span id="cb1-131"><a></a></span>
-<span id="cb1-132"><a></a>  lik_hist &lt;- reactiveVal(list())</span>
-<span id="cb1-133"><a></a>  max_hist &lt;- 10L</span>
-<span id="cb1-134"><a></a></span>
-<span id="cb1-135"><a></a>  observeEvent(</span>
-<span id="cb1-136"><a></a>    input$bagContents,</span>
-<span id="cb1-137"><a></a>    {</span>
-<span id="cb1-138"><a></a>      if (input$bagContents == "hidden") {</span>
-<span id="cb1-139"><a></a>        bag_blue(sample(0:TOTAL_STONES, 1))</span>
-<span id="cb1-140"><a></a>      } else {</span>
-<span id="cb1-141"><a></a>        bag_blue(as.integer(input$bagContents))</span>
-<span id="cb1-142"><a></a>      }</span>
-<span id="cb1-143"><a></a>    },</span>
-<span id="cb1-144"><a></a>    ignoreInit = FALSE</span>
-<span id="cb1-145"><a></a>  )</span>
-<span id="cb1-146"><a></a></span>
-<span id="cb1-147"><a></a>  observeEvent(input$drawBlue, {</span>
-<span id="cb1-148"><a></a>    draws(c(draws(), "🔵"))</span>
-<span id="cb1-149"><a></a>  })</span>
-<span id="cb1-150"><a></a></span>
-<span id="cb1-151"><a></a>  observeEvent(input$drawWhite, {</span>
-<span id="cb1-152"><a></a>    draws(c(draws(), "⚫️"))</span>
-<span id="cb1-153"><a></a>  })</span>
-<span id="cb1-154"><a></a></span>
-<span id="cb1-155"><a></a>  observeEvent(</span>
-<span id="cb1-156"><a></a>    input$drawRandom_n,</span>
-<span id="cb1-157"><a></a>    {</span>
-<span id="cb1-158"><a></a>      req(!is.null(bag_blue()))</span>
-<span id="cb1-159"><a></a>      n_draws &lt;- as.integer(input$drawRandom_n)</span>
-<span id="cb1-160"><a></a>      pool &lt;- c(rep("🔵", bag_blue()), rep("⚫️", TOTAL_STONES - bag_blue()))</span>
-<span id="cb1-161"><a></a>      draws(c(draws(), sample(pool, n_draws, replace = TRUE)))</span>
-<span id="cb1-162"><a></a>    },</span>
-<span id="cb1-163"><a></a>    ignoreInit = TRUE</span>
-<span id="cb1-164"><a></a>  )</span>
-<span id="cb1-165"><a></a></span>
-<span id="cb1-166"><a></a>  observeEvent(input$reset, {</span>
-<span id="cb1-167"><a></a>    draws(character())</span>
-<span id="cb1-168"><a></a>    bag_blue(sample(0:TOTAL_STONES, 1))</span>
-<span id="cb1-169"><a></a>    lik_hist(list())</span>
-<span id="cb1-170"><a></a>  })</span>
-<span id="cb1-171"><a></a></span>
-<span id="cb1-172"><a></a>  observe({</span>
-<span id="cb1-173"><a></a>    has_draws &lt;- length(draws()) &gt; 0</span>
-<span id="cb1-174"><a></a>    if (has_draws) {</span>
-<span id="cb1-175"><a></a>      shinyjs::disable("bagContents")</span>
-<span id="cb1-176"><a></a>      shinyjs::enable("reset")</span>
-<span id="cb1-177"><a></a>    } else {</span>
-<span id="cb1-178"><a></a>      shinyjs::enable("bagContents")</span>
-<span id="cb1-179"><a></a>      shinyjs::disable("reset")</span>
-<span id="cb1-180"><a></a>    }</span>
-<span id="cb1-181"><a></a>  })</span>
-<span id="cb1-182"><a></a></span>
-<span id="cb1-183"><a></a>  observe({</span>
-<span id="cb1-184"><a></a>    req(!is.null(bag_blue()))</span>
-<span id="cb1-185"><a></a>    tip &lt;- sprintf("blue stones = %d (out of %d)", bag_blue(), TOTAL_STONES)</span>
-<span id="cb1-186"><a></a></span>
-<span id="cb1-187"><a></a>    shinyjs::runjs(sprintf(</span>
-<span id="cb1-188"><a></a>      "$('#bagContents_wrap .selectize-control').attr('title', %s);",</span>
-<span id="cb1-189"><a></a>      shQuote(tip)</span>
-<span id="cb1-190"><a></a>    ))</span>
-<span id="cb1-191"><a></a>  })</span>
-<span id="cb1-192"><a></a></span>
-<span id="cb1-193"><a></a>  table_state &lt;- reactive({</span>
-<span id="cb1-194"><a></a>    d &lt;- draws()</span>
-<span id="cb1-195"><a></a>    n &lt;- length(d)</span>
-<span id="cb1-196"><a></a></span>
-<span id="cb1-197"><a></a>    header &lt;- if (n == 0) {</span>
-<span id="cb1-198"><a></a>      "Draw Results"</span>
-<span id="cb1-199"><a></a>    } else if (n &lt;= 20) {</span>
-<span id="cb1-200"><a></a>      paste(d, collapse = "\u00A0")</span>
-<span id="cb1-201"><a></a>    } else {</span>
-<span id="cb1-202"><a></a>      tbl &lt;- sort(table(d), decreasing = TRUE)</span>
-<span id="cb1-203"><a></a>      labels &lt;- paste(names(tbl), "×", as.integer(tbl))</span>
-<span id="cb1-204"><a></a>      paste(labels, collapse = ", ")</span>
-<span id="cb1-205"><a></a>    }</span>
-<span id="cb1-206"><a></a></span>
-<span id="cb1-207"><a></a>    if (n == 0) {</span>
-<span id="cb1-208"><a></a>      df &lt;- data.frame(</span>
-<span id="cb1-209"><a></a>        conjecture = CONJECTURE,</span>
-<span id="cb1-210"><a></a>        possibilities = "-",</span>
-<span id="cb1-211"><a></a>        total = "-",</span>
-<span id="cb1-212"><a></a>        likelihood = rep(1 / (TOTAL_STONES + 1), TOTAL_STONES + 1),</span>
-<span id="cb1-213"><a></a>        stringsAsFactors = FALSE</span>
-<span id="cb1-214"><a></a>      )</span>
-<span id="cb1-215"><a></a>      return(list(df = df, header = header))</span>
-<span id="cb1-216"><a></a>    }</span>
-<span id="cb1-217"><a></a></span>
-<span id="cb1-218"><a></a>    factors &lt;- lapply(</span>
-<span id="cb1-219"><a></a>      0:TOTAL_STONES,</span>
-<span id="cb1-220"><a></a>      function(bx) ifelse(d == "🔵", bx, TOTAL_STONES - bx)</span>
-<span id="cb1-221"><a></a>    )</span>
-<span id="cb1-222"><a></a></span>
-<span id="cb1-223"><a></a>    formula &lt;- vapply(</span>
-<span id="cb1-224"><a></a>      factors,</span>
-<span id="cb1-225"><a></a>      function(f) {</span>
-<span id="cb1-226"><a></a>        if (n &lt;= 20) {</span>
-<span id="cb1-227"><a></a>          paste0(f, collapse = " × ")</span>
-<span id="cb1-228"><a></a>        } else {</span>
-<span id="cb1-229"><a></a>          tbl &lt;- sort(table(f), decreasing = TRUE)</span>
-<span id="cb1-230"><a></a>          labels &lt;- paste0(names(tbl), "&lt;sup&gt;", as.integer(tbl), "&lt;/sup&gt;")</span>
-<span id="cb1-231"><a></a>          paste(labels, collapse = " × ")</span>
-<span id="cb1-232"><a></a>        }</span>
-<span id="cb1-233"><a></a>      },</span>
-<span id="cb1-234"><a></a>      character(1)</span>
-<span id="cb1-235"><a></a>    )</span>
-<span id="cb1-236"><a></a></span>
-<span id="cb1-237"><a></a>    log_paths &lt;- vapply(</span>
-<span id="cb1-238"><a></a>      factors,</span>
-<span id="cb1-239"><a></a>      function(f) sum(log(f)),</span>
-<span id="cb1-240"><a></a>      numeric(1)</span>
-<span id="cb1-241"><a></a>    )</span>
-<span id="cb1-242"><a></a></span>
-<span id="cb1-243"><a></a>    m &lt;- max(log_paths)</span>
-<span id="cb1-244"><a></a>    paths_scaled &lt;- exp(log_paths - m)</span>
-<span id="cb1-245"><a></a>    likelihood &lt;- paths_scaled / sum(paths_scaled)</span>
-<span id="cb1-246"><a></a></span>
-<span id="cb1-247"><a></a>    paths &lt;- vapply(</span>
-<span id="cb1-248"><a></a>      factors,</span>
-<span id="cb1-249"><a></a>      prod,</span>
-<span id="cb1-250"><a></a>      numeric(1)</span>
-<span id="cb1-251"><a></a>    )</span>
-<span id="cb1-252"><a></a></span>
-<span id="cb1-253"><a></a>    df &lt;- data.frame(</span>
-<span id="cb1-254"><a></a>      conjecture = CONJECTURE,</span>
-<span id="cb1-255"><a></a>      possibilities = formula,</span>
-<span id="cb1-256"><a></a>      total = format2(round(paths, 0)),</span>
-<span id="cb1-257"><a></a>      likelihood = likelihood,</span>
-<span id="cb1-258"><a></a>      stringsAsFactors = FALSE</span>
+<span id="cb1-6"><a></a>library(bslib)</span>
+<span id="cb1-7"><a></a>library(shinyjs)</span>
+<span id="cb1-8"><a></a></span>
+<span id="cb1-9"><a></a>TOTAL_STONES &lt;- 9L</span>
+<span id="cb1-10"><a></a></span>
+<span id="cb1-11"><a></a>CONJECTURE &lt;- vapply(</span>
+<span id="cb1-12"><a></a>  0:TOTAL_STONES,</span>
+<span id="cb1-13"><a></a>  function(x) paste0(strrep("🔵", x), strrep("⚫️", TOTAL_STONES - x)),</span>
+<span id="cb1-14"><a></a>  character(1)</span>
+<span id="cb1-15"><a></a>)</span>
+<span id="cb1-16"><a></a></span>
+<span id="cb1-17"><a></a>SHIFT_HANDLER &lt;- HTML(</span>
+<span id="cb1-18"><a></a>  "</span>
+<span id="cb1-19"><a></a>    document.addEventListener('keydown', function(e) {</span>
+<span id="cb1-20"><a></a>      if (e.key === 'Shift') {</span>
+<span id="cb1-21"><a></a>        const btn = document.getElementById('drawRandom');</span>
+<span id="cb1-22"><a></a>        if (btn) btn.innerText = 'Random × 10';</span>
+<span id="cb1-23"><a></a>      }</span>
+<span id="cb1-24"><a></a>    });</span>
+<span id="cb1-25"><a></a></span>
+<span id="cb1-26"><a></a>    document.addEventListener('keyup', function(e) {</span>
+<span id="cb1-27"><a></a>      if (e.key === 'Shift') {</span>
+<span id="cb1-28"><a></a>        const btn = document.getElementById('drawRandom');</span>
+<span id="cb1-29"><a></a>        if (btn) btn.innerText = 'Random';</span>
+<span id="cb1-30"><a></a>      }</span>
+<span id="cb1-31"><a></a>    });</span>
+<span id="cb1-32"><a></a>  "</span>
+<span id="cb1-33"><a></a>)</span>
+<span id="cb1-34"><a></a></span>
+<span id="cb1-35"><a></a>STYLE &lt;- HTML(</span>
+<span id="cb1-36"><a></a>  "</span>
+<span id="cb1-37"><a></a>  #resultTable table {</span>
+<span id="cb1-38"><a></a>    width: 100%;</span>
+<span id="cb1-39"><a></a>    table-layout: fixed;</span>
+<span id="cb1-40"><a></a>  }</span>
+<span id="cb1-41"><a></a></span>
+<span id="cb1-42"><a></a>  #resultTable th:nth-child(1),</span>
+<span id="cb1-43"><a></a>  #resultTable td:nth-child(1) { width: 220px; }</span>
+<span id="cb1-44"><a></a></span>
+<span id="cb1-45"><a></a>  #resultTable th:nth-child(3),</span>
+<span id="cb1-46"><a></a>  #resultTable td:nth-child(3) { width: 380px; }</span>
+<span id="cb1-47"><a></a></span>
+<span id="cb1-48"><a></a>  #resultTable th:nth-child(4),</span>
+<span id="cb1-49"><a></a>  #resultTable td:nth-child(4) { width: 80px; }</span>
+<span id="cb1-50"><a></a>"</span>
+<span id="cb1-51"><a></a>)</span>
+<span id="cb1-52"><a></a></span>
+<span id="cb1-53"><a></a>format2 &lt;- function(x, max_digits = 40L) {</span>
+<span id="cb1-54"><a></a>  x_chr_fixed &lt;- format(</span>
+<span id="cb1-55"><a></a>    x,</span>
+<span id="cb1-56"><a></a>    scientific = FALSE,</span>
+<span id="cb1-57"><a></a>    trim = TRUE,</span>
+<span id="cb1-58"><a></a>    digits = 22</span>
+<span id="cb1-59"><a></a>  )</span>
+<span id="cb1-60"><a></a></span>
+<span id="cb1-61"><a></a>  digit_count &lt;- nchar(gsub("[^0-9]", "", x_chr_fixed))</span>
+<span id="cb1-62"><a></a></span>
+<span id="cb1-63"><a></a>  ifelse(</span>
+<span id="cb1-64"><a></a>    is.na(x),</span>
+<span id="cb1-65"><a></a>    NA_character_,</span>
+<span id="cb1-66"><a></a>    ifelse(</span>
+<span id="cb1-67"><a></a>      digit_count &gt; max_digits,</span>
+<span id="cb1-68"><a></a>      format(x, scientific = TRUE, trim = TRUE),</span>
+<span id="cb1-69"><a></a>      x_chr_fixed</span>
+<span id="cb1-70"><a></a>    )</span>
+<span id="cb1-71"><a></a>  )</span>
+<span id="cb1-72"><a></a>}</span>
+<span id="cb1-73"><a></a></span>
+<span id="cb1-74"><a></a>format_likelihood &lt;- function(x) {</span>
+<span id="cb1-75"><a></a>  if (is.na(x) || !is.finite(x)) {</span>
+<span id="cb1-76"><a></a>    return("")</span>
+<span id="cb1-77"><a></a>  }</span>
+<span id="cb1-78"><a></a>  if (x &gt; 0 &amp;&amp; x &lt; 0.01) {</span>
+<span id="cb1-79"><a></a>    return("&lt;0.01")</span>
+<span id="cb1-80"><a></a>  }</span>
+<span id="cb1-81"><a></a>  if (x &lt; 1 &amp;&amp; x &gt; 0.995) {</span>
+<span id="cb1-82"><a></a>    return("&gt;0.99")</span>
+<span id="cb1-83"><a></a>  }</span>
+<span id="cb1-84"><a></a>  sprintf("%.2f", x)</span>
+<span id="cb1-85"><a></a>}</span>
+<span id="cb1-86"><a></a></span>
+<span id="cb1-87"><a></a>ui &lt;- page_sidebar(</span>
+<span id="cb1-88"><a></a>  sidebar = sidebar(</span>
+<span id="cb1-89"><a></a>    shinyjs::useShinyjs(),</span>
+<span id="cb1-90"><a></a>    tags$script(SHIFT_HANDLER),</span>
+<span id="cb1-91"><a></a>    tags$style(STYLE),</span>
+<span id="cb1-92"><a></a>    open = "open",</span>
+<span id="cb1-93"><a></a>    width = 400,</span>
+<span id="cb1-94"><a></a></span>
+<span id="cb1-95"><a></a>    h1("Bayesian Updating"),</span>
+<span id="cb1-96"><a></a>    div(</span>
+<span id="cb1-97"><a></a>      id = "bagContents_wrap",</span>
+<span id="cb1-98"><a></a>      selectizeInput(</span>
+<span id="cb1-99"><a></a>        "bagContents",</span>
+<span id="cb1-100"><a></a>        "Contents of the bag:",</span>
+<span id="cb1-101"><a></a>        choices = c(</span>
+<span id="cb1-102"><a></a>          "Hidden" = "hidden",</span>
+<span id="cb1-103"><a></a>          "⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 0,</span>
+<span id="cb1-104"><a></a>          "🔵⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 1,</span>
+<span id="cb1-105"><a></a>          "🔵🔵⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 2,</span>
+<span id="cb1-106"><a></a>          "🔵🔵🔵⚫️⚫️⚫️⚫️⚫️⚫️" = 3,</span>
+<span id="cb1-107"><a></a>          "🔵🔵🔵🔵⚫️⚫️⚫️⚫️⚫️" = 4,</span>
+<span id="cb1-108"><a></a>          "🔵🔵🔵🔵🔵⚫️⚫️⚫️⚫️" = 5,</span>
+<span id="cb1-109"><a></a>          "🔵🔵🔵🔵🔵🔵⚫️⚫️⚫️" = 6,</span>
+<span id="cb1-110"><a></a>          "🔵🔵🔵🔵🔵🔵🔵⚫️⚫️" = 7,</span>
+<span id="cb1-111"><a></a>          "🔵🔵🔵🔵🔵🔵🔵🔵⚫️" = 8,</span>
+<span id="cb1-112"><a></a>          "🔵🔵🔵🔵🔵🔵🔵🔵🔵" = 9</span>
+<span id="cb1-113"><a></a>        )</span>
+<span id="cb1-114"><a></a>      )</span>
+<span id="cb1-115"><a></a>    ),</span>
+<span id="cb1-116"><a></a></span>
+<span id="cb1-117"><a></a>    p("Draw a stone:"),</span>
+<span id="cb1-118"><a></a>    div(</span>
+<span id="cb1-119"><a></a>      style = "display: flex; gap: 10px;",</span>
+<span id="cb1-120"><a></a>      actionButton("drawWhite", "⚫️"),</span>
+<span id="cb1-121"><a></a>      actionButton("drawBlue", "🔵"),</span>
+<span id="cb1-122"><a></a>      actionButton(</span>
+<span id="cb1-123"><a></a>        "drawRandom",</span>
+<span id="cb1-124"><a></a>        "Random",</span>
+<span id="cb1-125"><a></a>        style = "flex: 1;",</span>
+<span id="cb1-126"><a></a>        onclick = "</span>
+<span id="cb1-127"><a></a>          Shiny.setInputValue(</span>
+<span id="cb1-128"><a></a>            'drawRandom_n',</span>
+<span id="cb1-129"><a></a>            event.shiftKey ? 10 : 1,</span>
+<span id="cb1-130"><a></a>            {priority: 'event'}</span>
+<span id="cb1-131"><a></a>          );</span>
+<span id="cb1-132"><a></a>        "</span>
+<span id="cb1-133"><a></a>      )</span>
+<span id="cb1-134"><a></a>    ),</span>
+<span id="cb1-135"><a></a>    actionButton("reset", "Reset", class = "btn-danger")</span>
+<span id="cb1-136"><a></a>  ),</span>
+<span id="cb1-137"><a></a></span>
+<span id="cb1-138"><a></a>  mainPanel(</span>
+<span id="cb1-139"><a></a>    width = 12,</span>
+<span id="cb1-140"><a></a>    uiOutput("dynamicHeader"),</span>
+<span id="cb1-141"><a></a>    tableOutput("resultTable"),</span>
+<span id="cb1-142"><a></a>    plotOutput("likelihoodPlot")</span>
+<span id="cb1-143"><a></a>  )</span>
+<span id="cb1-144"><a></a>)</span>
+<span id="cb1-145"><a></a></span>
+<span id="cb1-146"><a></a>server &lt;- function(input, output, session) {</span>
+<span id="cb1-147"><a></a>  bag_blue &lt;- reactiveVal(NULL)</span>
+<span id="cb1-148"><a></a>  draws &lt;- reactiveVal(character())</span>
+<span id="cb1-149"><a></a></span>
+<span id="cb1-150"><a></a>  lik_hist &lt;- reactiveVal(list())</span>
+<span id="cb1-151"><a></a>  max_hist &lt;- 10L</span>
+<span id="cb1-152"><a></a></span>
+<span id="cb1-153"><a></a>  observeEvent(</span>
+<span id="cb1-154"><a></a>    input$bagContents,</span>
+<span id="cb1-155"><a></a>    {</span>
+<span id="cb1-156"><a></a>      if (input$bagContents == "hidden") {</span>
+<span id="cb1-157"><a></a>        bag_blue(sample(0:TOTAL_STONES, 1))</span>
+<span id="cb1-158"><a></a>      } else {</span>
+<span id="cb1-159"><a></a>        bag_blue(as.integer(input$bagContents))</span>
+<span id="cb1-160"><a></a>      }</span>
+<span id="cb1-161"><a></a>    },</span>
+<span id="cb1-162"><a></a>    ignoreInit = FALSE</span>
+<span id="cb1-163"><a></a>  )</span>
+<span id="cb1-164"><a></a></span>
+<span id="cb1-165"><a></a>  observeEvent(input$drawBlue, {</span>
+<span id="cb1-166"><a></a>    draws(c(draws(), "🔵"))</span>
+<span id="cb1-167"><a></a>  })</span>
+<span id="cb1-168"><a></a></span>
+<span id="cb1-169"><a></a>  observeEvent(input$drawWhite, {</span>
+<span id="cb1-170"><a></a>    draws(c(draws(), "⚫️"))</span>
+<span id="cb1-171"><a></a>  })</span>
+<span id="cb1-172"><a></a></span>
+<span id="cb1-173"><a></a>  observeEvent(</span>
+<span id="cb1-174"><a></a>    input$drawRandom_n,</span>
+<span id="cb1-175"><a></a>    {</span>
+<span id="cb1-176"><a></a>      req(!is.null(bag_blue()))</span>
+<span id="cb1-177"><a></a>      n_draws &lt;- as.integer(input$drawRandom_n)</span>
+<span id="cb1-178"><a></a>      pool &lt;- c(rep("🔵", bag_blue()), rep("⚫️", TOTAL_STONES - bag_blue()))</span>
+<span id="cb1-179"><a></a>      draws(c(draws(), sample(pool, n_draws, replace = TRUE)))</span>
+<span id="cb1-180"><a></a>    },</span>
+<span id="cb1-181"><a></a>    ignoreInit = TRUE</span>
+<span id="cb1-182"><a></a>  )</span>
+<span id="cb1-183"><a></a></span>
+<span id="cb1-184"><a></a>  observeEvent(input$reset, {</span>
+<span id="cb1-185"><a></a>    draws(character())</span>
+<span id="cb1-186"><a></a>    bag_blue(sample(0:TOTAL_STONES, 1))</span>
+<span id="cb1-187"><a></a>    lik_hist(list())</span>
+<span id="cb1-188"><a></a>  })</span>
+<span id="cb1-189"><a></a></span>
+<span id="cb1-190"><a></a>  observe({</span>
+<span id="cb1-191"><a></a>    has_draws &lt;- length(draws()) &gt; 0</span>
+<span id="cb1-192"><a></a>    if (has_draws) {</span>
+<span id="cb1-193"><a></a>      shinyjs::disable("bagContents")</span>
+<span id="cb1-194"><a></a>      shinyjs::enable("reset")</span>
+<span id="cb1-195"><a></a>    } else {</span>
+<span id="cb1-196"><a></a>      shinyjs::enable("bagContents")</span>
+<span id="cb1-197"><a></a>      shinyjs::disable("reset")</span>
+<span id="cb1-198"><a></a>    }</span>
+<span id="cb1-199"><a></a>  })</span>
+<span id="cb1-200"><a></a></span>
+<span id="cb1-201"><a></a>  observe({</span>
+<span id="cb1-202"><a></a>    req(!is.null(bag_blue()))</span>
+<span id="cb1-203"><a></a>    tip &lt;- sprintf("blue stones = %d (out of %d)", bag_blue(), TOTAL_STONES)</span>
+<span id="cb1-204"><a></a></span>
+<span id="cb1-205"><a></a>    shinyjs::runjs(sprintf(</span>
+<span id="cb1-206"><a></a>      "$('#bagContents_wrap .selectize-control').attr('title', %s);",</span>
+<span id="cb1-207"><a></a>      shQuote(tip)</span>
+<span id="cb1-208"><a></a>    ))</span>
+<span id="cb1-209"><a></a>  })</span>
+<span id="cb1-210"><a></a></span>
+<span id="cb1-211"><a></a>  table_state &lt;- reactive({</span>
+<span id="cb1-212"><a></a>    d &lt;- draws()</span>
+<span id="cb1-213"><a></a>    n &lt;- length(d)</span>
+<span id="cb1-214"><a></a></span>
+<span id="cb1-215"><a></a>    header &lt;- if (n == 0) {</span>
+<span id="cb1-216"><a></a>      "Draw Results"</span>
+<span id="cb1-217"><a></a>    } else if (n &lt;= 20) {</span>
+<span id="cb1-218"><a></a>      paste(d, collapse = "\u00A0")</span>
+<span id="cb1-219"><a></a>    } else {</span>
+<span id="cb1-220"><a></a>      tbl &lt;- sort(table(d), decreasing = TRUE)</span>
+<span id="cb1-221"><a></a>      labels &lt;- paste(names(tbl), "×", as.integer(tbl))</span>
+<span id="cb1-222"><a></a>      paste(labels, collapse = ", ")</span>
+<span id="cb1-223"><a></a>    }</span>
+<span id="cb1-224"><a></a></span>
+<span id="cb1-225"><a></a>    if (n == 0) {</span>
+<span id="cb1-226"><a></a>      df &lt;- data.frame(</span>
+<span id="cb1-227"><a></a>        conjecture = CONJECTURE,</span>
+<span id="cb1-228"><a></a>        possibilities = "-",</span>
+<span id="cb1-229"><a></a>        total = "-",</span>
+<span id="cb1-230"><a></a>        likelihood = rep(1 / (TOTAL_STONES + 1), TOTAL_STONES + 1),</span>
+<span id="cb1-231"><a></a>        stringsAsFactors = FALSE</span>
+<span id="cb1-232"><a></a>      )</span>
+<span id="cb1-233"><a></a>      return(list(df = df, header = header))</span>
+<span id="cb1-234"><a></a>    }</span>
+<span id="cb1-235"><a></a></span>
+<span id="cb1-236"><a></a>    factors &lt;- lapply(</span>
+<span id="cb1-237"><a></a>      0:TOTAL_STONES,</span>
+<span id="cb1-238"><a></a>      function(bx) ifelse(d == "🔵", bx, TOTAL_STONES - bx)</span>
+<span id="cb1-239"><a></a>    )</span>
+<span id="cb1-240"><a></a></span>
+<span id="cb1-241"><a></a>    formula &lt;- vapply(</span>
+<span id="cb1-242"><a></a>      factors,</span>
+<span id="cb1-243"><a></a>      function(f) {</span>
+<span id="cb1-244"><a></a>        if (n &lt;= 20) {</span>
+<span id="cb1-245"><a></a>          paste0(f, collapse = " × ")</span>
+<span id="cb1-246"><a></a>        } else {</span>
+<span id="cb1-247"><a></a>          tbl &lt;- sort(table(f), decreasing = TRUE)</span>
+<span id="cb1-248"><a></a>          labels &lt;- paste0(names(tbl), "&lt;sup&gt;", as.integer(tbl), "&lt;/sup&gt;")</span>
+<span id="cb1-249"><a></a>          paste(labels, collapse = " × ")</span>
+<span id="cb1-250"><a></a>        }</span>
+<span id="cb1-251"><a></a>      },</span>
+<span id="cb1-252"><a></a>      character(1)</span>
+<span id="cb1-253"><a></a>    )</span>
+<span id="cb1-254"><a></a></span>
+<span id="cb1-255"><a></a>    log_paths &lt;- vapply(</span>
+<span id="cb1-256"><a></a>      factors,</span>
+<span id="cb1-257"><a></a>      function(f) sum(log(f)),</span>
+<span id="cb1-258"><a></a>      numeric(1)</span>
 <span id="cb1-259"><a></a>    )</span>
 <span id="cb1-260"><a></a></span>
-<span id="cb1-261"><a></a>    list(df = df, header = header)</span>
-<span id="cb1-262"><a></a>  })</span>
-<span id="cb1-263"><a></a></span>
-<span id="cb1-264"><a></a>  output$dynamicHeader &lt;- renderUI({</span>
-<span id="cb1-265"><a></a>    h4(HTML(sprintf(</span>
-<span id="cb1-266"><a></a>      "&lt;span style='letter-spacing:0.15em;'&gt;%s&lt;/span&gt;",</span>
-<span id="cb1-267"><a></a>      table_state()$header</span>
-<span id="cb1-268"><a></a>    )))</span>
-<span id="cb1-269"><a></a>  })</span>
+<span id="cb1-261"><a></a>    m &lt;- max(log_paths)</span>
+<span id="cb1-262"><a></a>    paths_scaled &lt;- exp(log_paths - m)</span>
+<span id="cb1-263"><a></a>    likelihood &lt;- paths_scaled / sum(paths_scaled)</span>
+<span id="cb1-264"><a></a></span>
+<span id="cb1-265"><a></a>    paths &lt;- vapply(</span>
+<span id="cb1-266"><a></a>      factors,</span>
+<span id="cb1-267"><a></a>      prod,</span>
+<span id="cb1-268"><a></a>      numeric(1)</span>
+<span id="cb1-269"><a></a>    )</span>
 <span id="cb1-270"><a></a></span>
-<span id="cb1-271"><a></a>  output$resultTable &lt;- renderDT(</span>
-<span id="cb1-272"><a></a>    {</span>
-<span id="cb1-273"><a></a>      df &lt;- table_state()$df</span>
-<span id="cb1-274"><a></a>      DT::datatable(</span>
-<span id="cb1-275"><a></a>        df,</span>
-<span id="cb1-276"><a></a>        escape = c(1, 3, 4),</span>
-<span id="cb1-277"><a></a>        rownames = FALSE,</span>
-<span id="cb1-278"><a></a>        width = "100%",</span>
-<span id="cb1-279"><a></a>        options = list(</span>
-<span id="cb1-280"><a></a>          dom = "t",</span>
-<span id="cb1-281"><a></a>          ordering = FALSE,</span>
-<span id="cb1-282"><a></a>          autoWidth = FALSE,</span>
-<span id="cb1-283"><a></a>          columnDefs = list(</span>
-<span id="cb1-284"><a></a>            list(</span>
-<span id="cb1-285"><a></a>              targets = 0,</span>
-<span id="cb1-286"><a></a>              title = "Conjecture",</span>
-<span id="cb1-287"><a></a>              className = "dt-left",</span>
-<span id="cb1-288"><a></a>              width = "180px"</span>
-<span id="cb1-289"><a></a>            ),</span>
-<span id="cb1-290"><a></a>            list(</span>
-<span id="cb1-291"><a></a>              targets = 1,</span>
-<span id="cb1-292"><a></a>              title = "Possible ways to get this observation"</span>
-<span id="cb1-293"><a></a>            ),</span>
-<span id="cb1-294"><a></a>            list(</span>
-<span id="cb1-295"><a></a>              targets = 2,</span>
-<span id="cb1-296"><a></a>              title = "Total",</span>
-<span id="cb1-297"><a></a>              className = "dt-right",</span>
-<span id="cb1-298"><a></a>              width = "120px"</span>
-<span id="cb1-299"><a></a>            ),</span>
-<span id="cb1-300"><a></a>            list(</span>
-<span id="cb1-301"><a></a>              targets = 3,</span>
-<span id="cb1-302"><a></a>              title = "Likelihood",</span>
-<span id="cb1-303"><a></a>              className = "dt-right",</span>
-<span id="cb1-304"><a></a>              width = "80px",</span>
-<span id="cb1-305"><a></a>              render = APPROX_HANDLER</span>
-<span id="cb1-306"><a></a>            )</span>
-<span id="cb1-307"><a></a>          )</span>
-<span id="cb1-308"><a></a>        )</span>
-<span id="cb1-309"><a></a>      )</span>
-<span id="cb1-310"><a></a>    },</span>
-<span id="cb1-311"><a></a>    server = FALSE</span>
-<span id="cb1-312"><a></a>  )</span>
-<span id="cb1-313"><a></a></span>
-<span id="cb1-314"><a></a>  likelihood_vector &lt;- reactive(table_state()$df$likelihood)</span>
-<span id="cb1-315"><a></a></span>
-<span id="cb1-316"><a></a>  observeEvent(</span>
-<span id="cb1-317"><a></a>    likelihood_vector(),</span>
-<span id="cb1-318"><a></a>    {</span>
-<span id="cb1-319"><a></a>      y &lt;- likelihood_vector()</span>
-<span id="cb1-320"><a></a>      h &lt;- lik_hist()</span>
-<span id="cb1-321"><a></a></span>
-<span id="cb1-322"><a></a>      if (length(h) == 0 || !isTRUE(all.equal(h[[length(h)]], y))) {</span>
-<span id="cb1-323"><a></a>        h &lt;- c(h, list(y))</span>
-<span id="cb1-324"><a></a>        if (length(h) &gt; max_hist) {</span>
-<span id="cb1-325"><a></a>          h &lt;- tail(h, max_hist)</span>
-<span id="cb1-326"><a></a>        }</span>
-<span id="cb1-327"><a></a>        lik_hist(h)</span>
-<span id="cb1-328"><a></a>      }</span>
-<span id="cb1-329"><a></a>    },</span>
-<span id="cb1-330"><a></a>    ignoreInit = TRUE</span>
-<span id="cb1-331"><a></a>  )</span>
-<span id="cb1-332"><a></a></span>
-<span id="cb1-333"><a></a>  output$likelihoodPlot &lt;- renderPlot({</span>
-<span id="cb1-334"><a></a>    df &lt;- table_state()$df</span>
-<span id="cb1-335"><a></a>    x &lt;- 0:TOTAL_STONES</span>
-<span id="cb1-336"><a></a>    h &lt;- lik_hist()</span>
-<span id="cb1-337"><a></a></span>
-<span id="cb1-338"><a></a>    op &lt;- par(no.readonly = TRUE)</span>
-<span id="cb1-339"><a></a>    on.exit(par(op), add = TRUE)</span>
-<span id="cb1-340"><a></a></span>
-<span id="cb1-341"><a></a>    par(mar = c(4.2, 4.2, 0.8, 0.8))</span>
-<span id="cb1-342"><a></a></span>
-<span id="cb1-343"><a></a>    plot(</span>
-<span id="cb1-344"><a></a>      x,</span>
-<span id="cb1-345"><a></a>      df$likelihood,</span>
-<span id="cb1-346"><a></a>      type = "n",</span>
-<span id="cb1-347"><a></a>      xlab = "Number of blue stones",</span>
-<span id="cb1-348"><a></a>      ylab = "Likelihood",</span>
-<span id="cb1-349"><a></a>      xaxt = "n",</span>
-<span id="cb1-350"><a></a>      ylim = c(0, 1.05)</span>
-<span id="cb1-351"><a></a>    )</span>
-<span id="cb1-352"><a></a>    axis(1, at = x, labels = x)</span>
-<span id="cb1-353"><a></a></span>
-<span id="cb1-354"><a></a>    if (length(h) &gt; 1) {</span>
-<span id="cb1-355"><a></a>      ghosts &lt;- h[-length(h)]</span>
-<span id="cb1-356"><a></a>      n_ghosts &lt;- length(ghosts)</span>
-<span id="cb1-357"><a></a></span>
-<span id="cb1-358"><a></a>      gray_vals_full &lt;- as.integer(round(seq(240, 120, length.out = max_hist)))</span>
-<span id="cb1-359"><a></a>      gray_vals &lt;- tail(gray_vals_full, n_ghosts)</span>
-<span id="cb1-360"><a></a></span>
-<span id="cb1-361"><a></a>      for (i in seq_along(ghosts)) {</span>
-<span id="cb1-362"><a></a>        lines(</span>
-<span id="cb1-363"><a></a>          x,</span>
-<span id="cb1-364"><a></a>          ghosts[[i]],</span>
-<span id="cb1-365"><a></a>          lwd = 1,</span>
-<span id="cb1-366"><a></a>          col = rgb(</span>
-<span id="cb1-367"><a></a>            gray_vals[i],</span>
-<span id="cb1-368"><a></a>            gray_vals[i],</span>
-<span id="cb1-369"><a></a>            gray_vals[i],</span>
-<span id="cb1-370"><a></a>            maxColorValue = 255</span>
-<span id="cb1-371"><a></a>          )</span>
-<span id="cb1-372"><a></a>        )</span>
-<span id="cb1-373"><a></a>      }</span>
-<span id="cb1-374"><a></a>    }</span>
-<span id="cb1-375"><a></a></span>
-<span id="cb1-376"><a></a>    lines(x, df$likelihood, lwd = 3, col = "black")</span>
-<span id="cb1-377"><a></a>    points(x, df$likelihood, pch = 16, cex = 1, col = "black")</span>
-<span id="cb1-378"><a></a>  })</span>
-<span id="cb1-379"><a></a>}</span>
-<span id="cb1-380"><a></a></span>
-<span id="cb1-381"><a></a>shinyApp(ui, server)</span>
-<span id="cb1-382"><a></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-271"><a></a>    df &lt;- data.frame(</span>
+<span id="cb1-272"><a></a>      conjecture = CONJECTURE,</span>
+<span id="cb1-273"><a></a>      possibilities = formula,</span>
+<span id="cb1-274"><a></a>      total = format2(round(paths, 0)),</span>
+<span id="cb1-275"><a></a>      likelihood = likelihood,</span>
+<span id="cb1-276"><a></a>      stringsAsFactors = FALSE</span>
+<span id="cb1-277"><a></a>    )</span>
+<span id="cb1-278"><a></a></span>
+<span id="cb1-279"><a></a>    list(df = df, header = header)</span>
+<span id="cb1-280"><a></a>  })</span>
+<span id="cb1-281"><a></a></span>
+<span id="cb1-282"><a></a>  output$dynamicHeader &lt;- renderUI({</span>
+<span id="cb1-283"><a></a>    h4(HTML(sprintf(</span>
+<span id="cb1-284"><a></a>      "&lt;span style='letter-spacing:0.15em;'&gt;%s&lt;/span&gt;",</span>
+<span id="cb1-285"><a></a>      table_state()$header</span>
+<span id="cb1-286"><a></a>    )))</span>
+<span id="cb1-287"><a></a>  })</span>
+<span id="cb1-288"><a></a></span>
+<span id="cb1-289"><a></a>  output$resultTable &lt;- renderTable(</span>
+<span id="cb1-290"><a></a>    {</span>
+<span id="cb1-291"><a></a>      df &lt;- table_state()$df</span>
+<span id="cb1-292"><a></a>      df$likelihood &lt;- vapply(df$likelihood, format_likelihood, character(1))</span>
+<span id="cb1-293"><a></a>      df</span>
+<span id="cb1-294"><a></a>    },</span>
+<span id="cb1-295"><a></a>    striped = TRUE,</span>
+<span id="cb1-296"><a></a>    hover = TRUE,</span>
+<span id="cb1-297"><a></a>    bordered = FALSE,</span>
+<span id="cb1-298"><a></a>    spacing = "s",</span>
+<span id="cb1-299"><a></a>    rownames = FALSE,</span>
+<span id="cb1-300"><a></a>    width = '100%',</span>
+<span id="cb1-301"><a></a>    align = 'llrr',</span>
+<span id="cb1-302"><a></a>    sanitize.text.function = function(x) x # allow &lt;sup&gt; in possibilities</span>
+<span id="cb1-303"><a></a>  )</span>
+<span id="cb1-304"><a></a></span>
+<span id="cb1-305"><a></a>  likelihood_vector &lt;- reactive(table_state()$df$likelihood)</span>
+<span id="cb1-306"><a></a></span>
+<span id="cb1-307"><a></a>  observeEvent(</span>
+<span id="cb1-308"><a></a>    likelihood_vector(),</span>
+<span id="cb1-309"><a></a>    {</span>
+<span id="cb1-310"><a></a>      y &lt;- likelihood_vector()</span>
+<span id="cb1-311"><a></a>      h &lt;- lik_hist()</span>
+<span id="cb1-312"><a></a></span>
+<span id="cb1-313"><a></a>      if (length(h) == 0 || !isTRUE(all.equal(h[[length(h)]], y))) {</span>
+<span id="cb1-314"><a></a>        h &lt;- c(h, list(y))</span>
+<span id="cb1-315"><a></a>        if (length(h) &gt; max_hist) {</span>
+<span id="cb1-316"><a></a>          h &lt;- tail(h, max_hist)</span>
+<span id="cb1-317"><a></a>        }</span>
+<span id="cb1-318"><a></a>        lik_hist(h)</span>
+<span id="cb1-319"><a></a>      }</span>
+<span id="cb1-320"><a></a>    },</span>
+<span id="cb1-321"><a></a>    ignoreInit = TRUE</span>
+<span id="cb1-322"><a></a>  )</span>
+<span id="cb1-323"><a></a></span>
+<span id="cb1-324"><a></a>  output$likelihoodPlot &lt;- renderPlot({</span>
+<span id="cb1-325"><a></a>    df &lt;- table_state()$df</span>
+<span id="cb1-326"><a></a>    x &lt;- 0:TOTAL_STONES</span>
+<span id="cb1-327"><a></a>    h &lt;- lik_hist()</span>
+<span id="cb1-328"><a></a></span>
+<span id="cb1-329"><a></a>    op &lt;- par(no.readonly = TRUE)</span>
+<span id="cb1-330"><a></a>    on.exit(par(op), add = TRUE)</span>
+<span id="cb1-331"><a></a></span>
+<span id="cb1-332"><a></a>    par(mar = c(4.2, 4.2, 0.8, 0.8))</span>
+<span id="cb1-333"><a></a></span>
+<span id="cb1-334"><a></a>    plot(</span>
+<span id="cb1-335"><a></a>      x,</span>
+<span id="cb1-336"><a></a>      df$likelihood,</span>
+<span id="cb1-337"><a></a>      type = "n",</span>
+<span id="cb1-338"><a></a>      xlab = "Number of blue stones",</span>
+<span id="cb1-339"><a></a>      ylab = "Likelihood",</span>
+<span id="cb1-340"><a></a>      xaxt = "n",</span>
+<span id="cb1-341"><a></a>      ylim = c(0, 1.05)</span>
+<span id="cb1-342"><a></a>    )</span>
+<span id="cb1-343"><a></a>    axis(1, at = x, labels = x)</span>
+<span id="cb1-344"><a></a></span>
+<span id="cb1-345"><a></a>    if (length(h) &gt; 1) {</span>
+<span id="cb1-346"><a></a>      ghosts &lt;- h[-length(h)]</span>
+<span id="cb1-347"><a></a>      n_ghosts &lt;- length(ghosts)</span>
+<span id="cb1-348"><a></a></span>
+<span id="cb1-349"><a></a>      gray_vals_full &lt;- as.integer(round(seq(240, 120, length.out = max_hist)))</span>
+<span id="cb1-350"><a></a>      gray_vals &lt;- tail(gray_vals_full, n_ghosts)</span>
+<span id="cb1-351"><a></a></span>
+<span id="cb1-352"><a></a>      for (i in seq_along(ghosts)) {</span>
+<span id="cb1-353"><a></a>        lines(</span>
+<span id="cb1-354"><a></a>          x,</span>
+<span id="cb1-355"><a></a>          ghosts[[i]],</span>
+<span id="cb1-356"><a></a>          lwd = 1,</span>
+<span id="cb1-357"><a></a>          col = rgb(</span>
+<span id="cb1-358"><a></a>            gray_vals[i],</span>
+<span id="cb1-359"><a></a>            gray_vals[i],</span>
+<span id="cb1-360"><a></a>            gray_vals[i],</span>
+<span id="cb1-361"><a></a>            maxColorValue = 255</span>
+<span id="cb1-362"><a></a>          )</span>
+<span id="cb1-363"><a></a>        )</span>
+<span id="cb1-364"><a></a>      }</span>
+<span id="cb1-365"><a></a>    }</span>
+<span id="cb1-366"><a></a></span>
+<span id="cb1-367"><a></a>    lines(x, df$likelihood, lwd = 3, col = "black")</span>
+<span id="cb1-368"><a></a>    points(x, df$likelihood, pch = 16, cex = 1, col = "black")</span>
+<span id="cb1-369"><a></a>  })</span>
+<span id="cb1-370"><a></a>}</span>
+<span id="cb1-371"><a></a></span>
+<span id="cb1-372"><a></a>shinyApp(ui, server)</span>
+<span id="cb1-373"><a></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
