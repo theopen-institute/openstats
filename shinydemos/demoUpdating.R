@@ -1,7 +1,6 @@
 library(shiny)
 library(shinyjs)
 library(bslib)
-library(DT)
 
 TOTAL_STONES <- 9L
 
@@ -29,17 +28,22 @@ SHIFT_HANDLER <- HTML(
   "
 )
 
-APPROX_HANDLER <- JS(
+STYLE <- HTML(
   "
-    function(data, type) {
-      if (type !== 'display') return data;
-      var x = Number(data);
-      if (!isFinite(x)) return '';
-      if (x > 0 && x < 0.01) return '&lt;0.01';
-      if (x < 1 && x > 0.995) return '&gt;0.99';
-      return x.toFixed(2);
-    }
-  "
+  #resultTable table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  #resultTable th:nth-child(1),
+  #resultTable td:nth-child(1) { width: 220px; }
+
+  #resultTable th:nth-child(3),
+  #resultTable td:nth-child(3) { width: 380px; }
+
+  #resultTable th:nth-child(4),
+  #resultTable td:nth-child(4) { width: 80px; }
+"
 )
 
 format2 <- function(x, max_digits = 40L) {
@@ -63,10 +67,24 @@ format2 <- function(x, max_digits = 40L) {
   )
 }
 
+format_likelihood <- function(x) {
+  if (is.na(x) || !is.finite(x)) {
+    return("")
+  }
+  if (x > 0 && x < 0.01) {
+    return("<0.01")
+  }
+  if (x < 1 && x > 0.995) {
+    return(">0.99")
+  }
+  sprintf("%.2f", x)
+}
+
 ui <- page_sidebar(
   sidebar = sidebar(
     shinyjs::useShinyjs(),
     tags$script(SHIFT_HANDLER),
+    tags$style(STYLE),
     open = "open",
     width = 400,
 
@@ -116,7 +134,7 @@ ui <- page_sidebar(
   mainPanel(
     width = 12,
     uiOutput("dynamicHeader"),
-    DTOutput("resultTable"),
+    tableOutput("resultTable"),
     plotOutput("likelihoodPlot")
   )
 )
@@ -264,47 +282,20 @@ server <- function(input, output, session) {
     )))
   })
 
-  output$resultTable <- renderDT(
+  output$resultTable <- renderTable(
     {
       df <- table_state()$df
-      DT::datatable(
-        df,
-        escape = c(1, 3, 4),
-        rownames = FALSE,
-        width = "100%",
-        options = list(
-          dom = "t",
-          ordering = FALSE,
-          autoWidth = FALSE,
-          columnDefs = list(
-            list(
-              targets = 0,
-              title = "Conjecture",
-              className = "dt-left",
-              width = "180px"
-            ),
-            list(
-              targets = 1,
-              title = "Possible ways to get this observation"
-            ),
-            list(
-              targets = 2,
-              title = "Total",
-              className = "dt-right",
-              width = "120px"
-            ),
-            list(
-              targets = 3,
-              title = "Likelihood",
-              className = "dt-right",
-              width = "80px",
-              render = APPROX_HANDLER
-            )
-          )
-        )
-      )
+      df$likelihood <- vapply(df$likelihood, format_likelihood, character(1))
+      df
     },
-    server = FALSE
+    striped = TRUE,
+    hover = TRUE,
+    bordered = FALSE,
+    spacing = "s",
+    rownames = FALSE,
+    width = '100%',
+    align = 'llrr',
+    sanitize.text.function = function(x) x # allow <sup> in possibilities
   )
 
   likelihood_vector <- reactive(table_state()$df$likelihood)
