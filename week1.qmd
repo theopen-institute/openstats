@@ -43,3 +43,11 @@ What does that "probably" mean?
 {{< include shinydemos/demoUpdating.R >}}
 
 ```
+
+
+# Slide 3 {.no-title}
+```{shinylive-r}
+#| standalone: true
+{{< include shinydemos/demoBaseRate.R >}}
+
+```
