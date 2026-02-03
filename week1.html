@@ -614,6 +614,160 @@ What does that "probably" mean?
 <span id="cb1-371"><a></a></span>
 <span id="cb1-372"><a></a>shinyApp(ui, server)</span>
 <span id="cb1-373"><a></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+
+<section id="slide-3" class="title-slide slide level1 no-title center">
+<h1>Slide 3</h1>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a>#| '!! shinylive warning !!': |</span>
+<span id="cb2-2"><a></a>#|   shinylive does not work in self-contained HTML documents.</span>
+<span id="cb2-3"><a></a>#|   Please set `embed-resources: false` in your metadata.</span>
+<span id="cb2-4"><a></a>#| standalone: true</span>
+<span id="cb2-5"><a></a># app.R</span>
+<span id="cb2-6"><a></a>library(shiny)</span>
+<span id="cb2-7"><a></a>library(networkD3)</span>
+<span id="cb2-8"><a></a>library(tibble)</span>
+<span id="cb2-9"><a></a></span>
+<span id="cb2-10"><a></a>ui &lt;- fluidPage(</span>
+<span id="cb2-11"><a></a>  titlePanel("HIV Test Outcomes Sankey"),</span>
+<span id="cb2-12"><a></a>  sidebarLayout(</span>
+<span id="cb2-13"><a></a>    sidebarPanel(</span>
+<span id="cb2-14"><a></a>      numericInput(</span>
+<span id="cb2-15"><a></a>        inputId = "population",</span>
+<span id="cb2-16"><a></a>        label = "Population",</span>
+<span id="cb2-17"><a></a>        value = 100000,</span>
+<span id="cb2-18"><a></a>        min = 1,</span>
+<span id="cb2-19"><a></a>        step = 1000</span>
+<span id="cb2-20"><a></a>      ),</span>
+<span id="cb2-21"><a></a></span>
+<span id="cb2-22"><a></a>      sliderInput(</span>
+<span id="cb2-23"><a></a>        inputId = "prevalence_pct",</span>
+<span id="cb2-24"><a></a>        label = "Prevalence (%)",</span>
+<span id="cb2-25"><a></a>        min = 0,</span>
+<span id="cb2-26"><a></a>        max = 5,</span>
+<span id="cb2-27"><a></a>        value = 0.2,</span>
+<span id="cb2-28"><a></a>        step = 0.01</span>
+<span id="cb2-29"><a></a>      ),</span>
+<span id="cb2-30"><a></a></span>
+<span id="cb2-31"><a></a>      sliderInput(</span>
+<span id="cb2-32"><a></a>        inputId = "sensitivity_pct",</span>
+<span id="cb2-33"><a></a>        label = "Sensitivity (%)",</span>
+<span id="cb2-34"><a></a>        min = 0,</span>
+<span id="cb2-35"><a></a>        max = 100,</span>
+<span id="cb2-36"><a></a>        value = 99,</span>
+<span id="cb2-37"><a></a>        step = 1</span>
+<span id="cb2-38"><a></a>      ),</span>
+<span id="cb2-39"><a></a>      sliderInput(</span>
+<span id="cb2-40"><a></a>        inputId = "specificity_pct",</span>
+<span id="cb2-41"><a></a>        label = "Specificity (%)",</span>
+<span id="cb2-42"><a></a>        min = 0,</span>
+<span id="cb2-43"><a></a>        max = 100,</span>
+<span id="cb2-44"><a></a>        value = 92,</span>
+<span id="cb2-45"><a></a>        step = 1</span>
+<span id="cb2-46"><a></a>      ),</span>
+<span id="cb2-47"><a></a></span>
+<span id="cb2-48"><a></a>      tags$hr(),</span>
+<span id="cb2-49"><a></a>      strong("Positive Predictive Value (PPV):"),</span>
+<span id="cb2-50"><a></a>      textOutput("ppv_text")</span>
+<span id="cb2-51"><a></a>    ),</span>
+<span id="cb2-52"><a></a>    mainPanel(</span>
+<span id="cb2-53"><a></a>      sankeyNetworkOutput("sankey", height = "600px")</span>
+<span id="cb2-54"><a></a>    )</span>
+<span id="cb2-55"><a></a>  )</span>
+<span id="cb2-56"><a></a>)</span>
+<span id="cb2-57"><a></a></span>
+<span id="cb2-58"><a></a>server &lt;- function(input, output, session) {</span>
+<span id="cb2-59"><a></a>  colourScale &lt;- JS(</span>
+<span id="cb2-60"><a></a>    'd3.scaleOrdinal()</span>
+<span id="cb2-61"><a></a>       .domain(["population", "negative", "positive", "true", "false"])</span>
+<span id="cb2-62"><a></a>       .range([</span>
+<span id="cb2-63"><a></a>         "#c7dceb",</span>
+<span id="cb2-64"><a></a>         "#6baed6",</span>
+<span id="cb2-65"><a></a>         "#3182bd",</span>
+<span id="cb2-66"><a></a>         "#74c476",</span>
+<span id="cb2-67"><a></a>         "#f28e8c"</span>
+<span id="cb2-68"><a></a>       ])'</span>
+<span id="cb2-69"><a></a>  )</span>
+<span id="cb2-70"><a></a></span>
+<span id="cb2-71"><a></a>  nodes_reactive &lt;- reactive({</span>
+<span id="cb2-72"><a></a>    tibble(</span>
+<span id="cb2-73"><a></a>      id = 0:6,</span>
+<span id="cb2-74"><a></a>      name = c(</span>
+<span id="cb2-75"><a></a>        "Population",</span>
+<span id="cb2-76"><a></a>        "HIV-",</span>
+<span id="cb2-77"><a></a>        "HIV+",</span>
+<span id="cb2-78"><a></a>        "True Negative",</span>
+<span id="cb2-79"><a></a>        "False Negative",</span>
+<span id="cb2-80"><a></a>        "True Positive",</span>
+<span id="cb2-81"><a></a>        "False Positive"</span>
+<span id="cb2-82"><a></a>      ),</span>
+<span id="cb2-83"><a></a>      group = c(</span>
+<span id="cb2-84"><a></a>        "population",</span>
+<span id="cb2-85"><a></a>        "negative",</span>
+<span id="cb2-86"><a></a>        "positive",</span>
+<span id="cb2-87"><a></a>        "true",</span>
+<span id="cb2-88"><a></a>        "false",</span>
+<span id="cb2-89"><a></a>        "true",</span>
+<span id="cb2-90"><a></a>        "false"</span>
+<span id="cb2-91"><a></a>      )</span>
+<span id="cb2-92"><a></a>    )</span>
+<span id="cb2-93"><a></a>  })</span>
+<span id="cb2-94"><a></a></span>
+<span id="cb2-95"><a></a>  ppv_reactive &lt;- reactive({</span>
+<span id="cb2-96"><a></a>    prevalence &lt;- input$prevalence_pct / 100</span>
+<span id="cb2-97"><a></a>    sensitivity &lt;- input$sensitivity_pct / 100</span>
+<span id="cb2-98"><a></a>    specificity &lt;- input$specificity_pct / 100</span>
+<span id="cb2-99"><a></a></span>
+<span id="cb2-100"><a></a>    tp &lt;- prevalence * sensitivity</span>
+<span id="cb2-101"><a></a>    fp &lt;- (1 - prevalence) * (1 - specificity)</span>
+<span id="cb2-102"><a></a></span>
+<span id="cb2-103"><a></a>    if ((tp + fp) == 0) NA_real_ else tp / (tp + fp)</span>
+<span id="cb2-104"><a></a>  })</span>
+<span id="cb2-105"><a></a></span>
+<span id="cb2-106"><a></a>  output$ppv_text &lt;- renderText({</span>
+<span id="cb2-107"><a></a>    ppv &lt;- ppv_reactive()</span>
+<span id="cb2-108"><a></a>    if (is.na(ppv)) {</span>
+<span id="cb2-109"><a></a>      "Undefined"</span>
+<span id="cb2-110"><a></a>    } else {</span>
+<span id="cb2-111"><a></a>      sprintf("%.2f%%", 100 * ppv)</span>
+<span id="cb2-112"><a></a>    }</span>
+<span id="cb2-113"><a></a>  })</span>
+<span id="cb2-114"><a></a></span>
+<span id="cb2-115"><a></a>  links_reactive &lt;- reactive({</span>
+<span id="cb2-116"><a></a>    population &lt;- as.numeric(input$population)</span>
+<span id="cb2-117"><a></a>    prevalence &lt;- as.numeric(input$prevalence_pct) / 100</span>
+<span id="cb2-118"><a></a>    sensitivity &lt;- as.numeric(input$sensitivity_pct) / 100</span>
+<span id="cb2-119"><a></a>    specificity &lt;- as.numeric(input$specificity_pct) / 100</span>
+<span id="cb2-120"><a></a></span>
+<span id="cb2-121"><a></a>    tribble(</span>
+<span id="cb2-122"><a></a>      ~source , ~target , ~value                                            , ~title           ,</span>
+<span id="cb2-123"><a></a>            0 ,       1 , population * (1 - prevalence)                     , "HIV-"           ,</span>
+<span id="cb2-124"><a></a>            0 ,       2 , population * prevalence                           , "HIV+"           ,</span>
+<span id="cb2-125"><a></a>            1 ,       3 , population * (1 - prevalence) * specificity       , "True Negative"  ,</span>
+<span id="cb2-126"><a></a>            2 ,       4 , population * prevalence * (1 - sensitivity)       , "False Negative" ,</span>
+<span id="cb2-127"><a></a>            2 ,       5 , population * prevalence * sensitivity             , "True Positive"  ,</span>
+<span id="cb2-128"><a></a>            1 ,       6 , population * (1 - prevalence) * (1 - specificity) , "False Positive"</span>
+<span id="cb2-129"><a></a>    )</span>
+<span id="cb2-130"><a></a>  })</span>
+<span id="cb2-131"><a></a></span>
+<span id="cb2-132"><a></a>  output$sankey &lt;- renderSankeyNetwork({</span>
+<span id="cb2-133"><a></a>    sankeyNetwork(</span>
+<span id="cb2-134"><a></a>      Links = links_reactive(),</span>
+<span id="cb2-135"><a></a>      Nodes = nodes_reactive(),</span>
+<span id="cb2-136"><a></a>      Source = "source",</span>
+<span id="cb2-137"><a></a>      Target = "target",</span>
+<span id="cb2-138"><a></a>      Value = "value",</span>
+<span id="cb2-139"><a></a>      NodeID = "name",</span>
+<span id="cb2-140"><a></a>      NodeGroup = "group",</span>
+<span id="cb2-141"><a></a>      fontSize = 14,</span>
+<span id="cb2-142"><a></a>      nodeWidth = 30,</span>
+<span id="cb2-143"><a></a>      iterations = 0,</span>
+<span id="cb2-144"><a></a>      colourScale = colourScale</span>
+<span id="cb2-145"><a></a>    )</span>
+<span id="cb2-146"><a></a>  })</span>
+<span id="cb2-147"><a></a>}</span>
+<span id="cb2-148"><a></a></span>
+<span id="cb2-149"><a></a>shinyApp(ui, server)</span>
+<span id="cb2-150"><a></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
