@@ -10,12 +10,13 @@ format:
 filters: 
   - shinylive
 ---
-# Bayesian updating
-- notes
-<!-- 
+
 
 # Most research is wrong (and that's okay)
 
+
+
+<!--
 
 # Base rate fallacy
 

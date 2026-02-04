@@ -251,8 +251,9 @@ server <- function(input, output, session) {
 
   observeEvent(input$reset, {
     draws(character())
-    bag_blue(sample(0:TOTAL_STONES, 1))
     lik_hist(list())
+    # bag_blue(sample(0:TOTAL_STONES, 1))
+    updateSelectizeInput(session, "bagContents", selected = "hidden")
   })
 
   observe({
