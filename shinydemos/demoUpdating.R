@@ -1,6 +1,10 @@
 library(shiny)
 library(bslib)
 library(shinyjs)
+library(uuid)
+library(ggplot2)
+library(ggiraph)
+library(htmlwidgets)
 
 TOTAL_STONES <- 9L
 
@@ -30,6 +34,12 @@ SHIFT_HANDLER <- HTML(
 
 STYLE <- HTML(
   "
+  h1 {
+    margin-bottom: 0;
+  }
+  p {
+    font-size: 90%;
+  }
   #resultTable table {
     width: 100%;
     table-layout: fixed;
@@ -43,6 +53,31 @@ STYLE <- HTML(
 
   #resultTable th:nth-child(4),
   #resultTable td:nth-child(4) { width: 80px; }
+
+  /* ---- full-height main panel + plot fills remaining space ---- */
+  html, body { height: 100%; }
+  .bslib-page-sidebar { height: 100vh; }
+
+  .bslib-page-sidebar .main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  #likelihoodPlot_wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+  }
+
+  /* Ensure the htmlwidget + ggiraph wrappers and SVG fill the wrapper */
+  #likelihoodPlot_wrap .html-widget,
+  #likelihoodPlot_wrap .girafe_container,
+  #likelihoodPlot_wrap svg {
+    width: 100% !important;
+    height: 100% !important;
+  }
 "
 )
 
@@ -89,6 +124,18 @@ ui <- page_sidebar(
     width = 400,
 
     h1("Bayesian Updating"),
+    p(
+      "Imagine you have a bag of 9 stones. Each stone is either blue or black, but you don't know how many of each color you have."
+    ),
+    p(
+      "You can draw stones from the bag one at a time, noting down its color and then placing it back in the bag. The more you repeat this process, the more you can infer about the contents of the bag. This process is called",
+      tags$b("Bayesian updating", .noWS = c('after'))
+    ),
+    p(
+      "This graph represents a",
+      tags$b("probability distribution", .noWS = c('after')),
+      ". From our limited observations, we can never be absolutely certain of the contents of the bag, but we can say that some possibilities are more likely than others."
+    ),
     div(
       id = "bagContents_wrap",
       selectizeInput(
@@ -110,7 +157,7 @@ ui <- page_sidebar(
       )
     ),
 
-    p("Draw a stone:"),
+    div("Draw a stone:"),
     div(
       style = "display: flex; gap: 10px;",
       actionButton("drawWhite", "⚫️"),
@@ -135,7 +182,10 @@ ui <- page_sidebar(
     width = 12,
     uiOutput("dynamicHeader"),
     tableOutput("resultTable"),
-    plotOutput("likelihoodPlot")
+    div(
+      id = "likelihoodPlot_wrap",
+      ggiraph::girafeOutput("likelihoodPlot")
+    )
   )
 )
 
@@ -158,13 +208,8 @@ server <- function(input, output, session) {
     ignoreInit = FALSE
   )
 
-  observeEvent(input$drawBlue, {
-    draws(c(draws(), "🔵"))
-  })
-
-  observeEvent(input$drawWhite, {
-    draws(c(draws(), "⚫️"))
-  })
+  observeEvent(input$drawBlue, draws(c(draws(), "🔵")))
+  observeEvent(input$drawWhite, draws(c(draws(), "⚫️")))
 
   observeEvent(
     input$drawRandom_n,
@@ -197,7 +242,6 @@ server <- function(input, output, session) {
   observe({
     req(!is.null(bag_blue()))
     tip <- sprintf("blue stones = %d (out of %d)", bag_blue(), TOTAL_STONES)
-
     shinyjs::runjs(sprintf(
       "$('#bagContents_wrap .selectize-control').attr('title', %s);",
       shQuote(tip)
@@ -248,21 +292,13 @@ server <- function(input, output, session) {
       character(1)
     )
 
-    log_paths <- vapply(
-      factors,
-      function(f) sum(log(f)),
-      numeric(1)
-    )
+    log_paths <- vapply(factors, function(f) sum(log(f)), numeric(1))
 
     m <- max(log_paths)
     paths_scaled <- exp(log_paths - m)
     likelihood <- paths_scaled / sum(paths_scaled)
 
-    paths <- vapply(
-      factors,
-      prod,
-      numeric(1)
-    )
+    paths <- vapply(factors, prod, numeric(1))
 
     df <- data.frame(
       conjecture = CONJECTURE,
@@ -293,9 +329,9 @@ server <- function(input, output, session) {
     bordered = FALSE,
     spacing = "s",
     rownames = FALSE,
-    width = '100%',
-    align = 'llrr',
-    sanitize.text.function = function(x) x # allow <sup> in possibilities
+    width = "100%",
+    align = "llrr",
+    sanitize.text.function = function(x) x
   )
 
   likelihood_vector <- reactive(table_state()$df$likelihood)
@@ -317,51 +353,312 @@ server <- function(input, output, session) {
     ignoreInit = TRUE
   )
 
-  output$likelihoodPlot <- renderPlot({
-    df <- table_state()$df
+  make_plot_data <- function(df, h) {
     x <- 0:TOTAL_STONES
-    h <- lik_hist()
 
-    op <- par(no.readonly = TRUE)
-    on.exit(par(op), add = TRUE)
-
-    par(mar = c(4.2, 4.2, 0.8, 0.8))
-
-    plot(
-      x,
-      df$likelihood,
-      type = "n",
-      xlab = "Number of blue stones",
-      ylab = "Likelihood",
-      xaxt = "n",
-      ylim = c(0, 1.05)
+    cur <- data.frame(
+      x = x,
+      y = df$likelihood,
+      conjecture = df$conjecture,
+      stringsAsFactors = FALSE
     )
-    axis(1, at = x, labels = x)
 
+    ghost_df <- NULL
     if (length(h) > 1) {
       ghosts <- h[-length(h)]
       n_ghosts <- length(ghosts)
 
       gray_vals_full <- as.integer(round(seq(240, 120, length.out = max_hist)))
       gray_vals <- tail(gray_vals_full, n_ghosts)
+      ghost_cols <- rgb(gray_vals, gray_vals, gray_vals, maxColorValue = 255)
 
-      for (i in seq_along(ghosts)) {
-        lines(
-          x,
-          ghosts[[i]],
-          lwd = 1,
-          col = rgb(
-            gray_vals[i],
-            gray_vals[i],
-            gray_vals[i],
-            maxColorValue = 255
+      ghost_df <- do.call(
+        rbind,
+        lapply(seq_along(ghosts), function(i) {
+          data.frame(
+            step = i,
+            x = x,
+            y = ghosts[[i]],
+            col = ghost_cols[i],
+            stringsAsFactors = FALSE
           )
+        })
+      )
+    }
+
+    list(cur = cur, ghost = ghost_df)
+  }
+
+  output$likelihoodPlot <- ggiraph::renderGirafe({
+    df <- table_state()$df
+    h <- lik_hist()
+
+    pd <- make_plot_data(df, h)
+    cur <- pd$cur
+    ghost <- pd$ghost
+
+    cur$point_id <- paste0("curpt-", cur$x)
+    cur$tooltip <- sprintf(
+      "Blue stones: %d\nLikelihood: %.4f\n%s",
+      cur$x,
+      cur$y,
+      cur$conjecture
+    )
+
+    p <- ggplot()
+
+    # ghosts
+    if (!is.null(ghost) && nrow(ghost) > 0) {
+      p <- p +
+        geom_line(
+          data = ghost,
+          aes(x = x, y = y, group = step, color = col),
+          linewidth = 0.7
+        ) +
+        scale_color_identity()
+    }
+
+    # current: points only (line is drawn + animated in JS)
+    p <- p +
+      ggiraph::geom_point_interactive(
+        data = cur,
+        aes(x = x, y = y, tooltip = tooltip, data_id = point_id),
+        size = 2.6,
+        color = "black"
+      ) +
+      scale_x_continuous(breaks = 0:TOTAL_STONES, limits = c(0, TOTAL_STONES)) +
+      scale_y_continuous(
+        limits = c(-0.05, 1.05),
+        expand = expansion(mult = c(0, 0.02))
+      ) +
+      labs(x = "Number of blue stones", y = "Likelihood") +
+      theme_minimal(base_size = 13) +
+      theme(panel.grid.minor = element_blank(), legend.position = "none")
+
+    g <- ggiraph::girafe(
+      ggobj = p,
+      width_svg = 12,
+      height_svg = 4,
+      options = list(
+        ggiraph::opts_sizing(rescale = FALSE),
+        ggiraph::opts_hover(css = "fill:black; r:5px;"),
+        ggiraph::opts_tooltip(
+          css = "background-color: white; border: 1px solid #999; padding: 6px; border-radius: 4px;"
         )
+      )
+    )
+
+    g$x$step <- length(draws())
+
+    htmlwidgets::onRender(
+      g,
+      "
+function(el, x) {
+  var svg = el.querySelector('svg');
+  if (!svg) return;
+
+  // Let SVG stretch to match the available rectangle
+  svg.setAttribute('preserveAspectRatio', 'none');
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', '100%');
+
+  // Hide immediately to prevent flash of new final coordinates
+  svg.style.visibility = 'hidden';
+
+  var step = x.step;
+
+  function getPoints() {
+    var pts = Array.prototype.slice.call(svg.querySelectorAll('[data-id^=\"curpt-\"]'));
+    var arr = pts.map(function(pt) {
+      var id = pt.getAttribute('data-id');
+      var idx = parseInt(id.replace('curpt-', ''), 10);
+      return {
+        id: id,
+        idx: idx,
+        el: pt,
+        cx: parseFloat(pt.getAttribute('cx')),
+        cy: parseFloat(pt.getAttribute('cy'))
+      };
+    }).filter(function(d) {
+      return isFinite(d.idx) && isFinite(d.cx) && isFinite(d.cy);
+    });
+    arr.sort(function(a,b){ return a.idx - b.idx; });
+    return arr;
+  }
+
+  function ensureLine() {
+    var line = svg.querySelector('#curline-js');
+    if (!line) {
+      line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      line.setAttribute('id', 'curline-js');
+      line.setAttribute('fill', 'none');
+      line.setAttribute('stroke', 'black');
+      line.setAttribute('stroke-width', '2.2');
+      line.setAttribute('stroke-linecap', 'round');
+      line.setAttribute('stroke-linejoin', 'round');
+      svg.appendChild(line);
+    }
+    return line;
+  }
+
+  function pathFromXY(xy) {
+    if (!xy || xy.length === 0) return '';
+    var d = 'M ' + xy[0].cx + ' ' + xy[0].cy;
+    for (var i=1; i<xy.length; i++) d += ' L ' + xy[i].cx + ' ' + xy[i].cy;
+    return d;
+  }
+
+  function ease(u) {
+    return u < 0.5 ? 4*u*u*u : 1 - Math.pow(-2*u + 2, 3)/2;
+  }
+
+  function setToPts(ptsArr, pts, line) {
+    for (var i=0; i<ptsArr.length; i++) {
+      ptsArr[i].el.setAttribute('cx', pts[i].cx);
+      ptsArr[i].el.setAttribute('cy', pts[i].cy);
+      ptsArr[i].el.removeAttribute('transform');
+    }
+    line.setAttribute('d', pathFromXY(pts));
+  }
+
+  function animateFromTo(ptsArr, startPts, endPts, line, durationMs, onDone) {
+    if (el.__animCancel) el.__animCancel();
+
+    var t0 = null;
+    var cancelled = false;
+    el.__animCancel = function(){ cancelled = true; };
+
+    el.__animating = true;
+    el.__animTargetPts = endPts;
+
+    // Put at start before showing
+    setToPts(ptsArr, startPts, line);
+
+    // Show once start state is in place
+    svg.style.visibility = 'visible';
+
+    ptsArr.forEach(function(d){ d.el.style.pointerEvents = 'none'; });
+
+    function frame(ts) {
+      if (cancelled) return;
+      if (t0 === null) t0 = ts;
+
+      var u = Math.min(1, (ts - t0) / durationMs);
+      var e = ease(u);
+
+      var interp = new Array(endPts.length);
+      for (var i=0; i<endPts.length; i++) {
+        var a = startPts[i], b = endPts[i];
+        interp[i] = {
+          cx: a.cx + (b.cx - a.cx) * e,
+          cy: a.cy + (b.cy - a.cy) * e
+        };
+      }
+
+      el.__curLinePts = interp;
+
+      for (var j=0; j<ptsArr.length; j++) {
+        ptsArr[j].el.setAttribute('cx', interp[j].cx);
+        ptsArr[j].el.setAttribute('cy', interp[j].cy);
+      }
+      line.setAttribute('d', pathFromXY(interp));
+
+      if (u < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        setToPts(ptsArr, endPts, line);
+        ptsArr.forEach(function(d){ d.el.style.pointerEvents = ''; });
+
+        el.__animating = false;
+        el.__animCancel = null;
+        el.__curLinePts = endPts;
+
+        if (typeof onDone === 'function') onDone();
       }
     }
 
-    lines(x, df$likelihood, lwd = 3, col = "black")
-    points(x, df$likelihood, pch = 16, cex = 1, col = "black")
+    requestAnimationFrame(frame);
+  }
+
+  function finishAnimationNow(ptsArr, line) {
+    if (el.__animating && el.__animTargetPts && el.__prevLinePts) {
+      if (el.__animCancel) el.__animCancel();
+      setToPts(ptsArr, el.__animTargetPts, line);
+      ptsArr.forEach(function(d){ d.el.style.pointerEvents = ''; });
+
+      el.__animating = false;
+      el.__animCancel = null;
+
+      el.__prevLinePts = el.__animTargetPts;
+      el.__curLinePts = el.__animTargetPts;
+    }
+  }
+
+  // Read new rendered final positions (but hidden)
+  var ptsArr = getPoints();
+  var nextPts = ptsArr.map(function(d){ return { cx: d.cx, cy: d.cy }; });
+  var line = ensureLine();
+
+  // First render: snap and show
+  if (el.__lastStep === undefined || el.__prevLinePts === undefined) {
+    el.__lastStep = step;
+    el.__prevLinePts = nextPts;
+    el.__curLinePts = nextPts;
+    setToPts(ptsArr, nextPts, line);
+    svg.style.visibility = 'visible';
+    return;
+  }
+
+  // No new draw: keep synced and show
+  if (step === el.__lastStep) {
+    el.__prevLinePts = nextPts;
+    el.__curLinePts = nextPts;
+    setToPts(ptsArr, nextPts, line);
+    svg.style.visibility = 'visible';
+    return;
+  }
+
+  // Defensive: mismatch => snap and show
+  if (el.__prevLinePts.length !== nextPts.length || nextPts.length === 0) {
+    el.__lastStep = step;
+    el.__prevLinePts = nextPts;
+    el.__curLinePts = nextPts;
+    setToPts(ptsArr, nextPts, line);
+    svg.style.visibility = 'visible';
+    return;
+  }
+
+  // Coalesce rapid updates
+  finishAnimationNow(ptsArr, line);
+
+  el.__pendingStep = step;
+  el.__pendingNextPts = nextPts;
+
+  if (el.__debounceTimer) clearTimeout(el.__debounceTimer);
+  el.__debounceTimer = setTimeout(function() {
+    if (!el.__pendingNextPts) return;
+
+    var targetPts = el.__pendingNextPts;
+    var targetStep = el.__pendingStep;
+
+    el.__pendingNextPts = null;
+    el.__pendingStep = null;
+
+    var startPts = el.__prevLinePts;
+
+    animateFromTo(ptsArr, startPts, targetPts, line, 450, function() {
+      el.__lastStep = targetStep;
+      el.__prevLinePts = targetPts;
+      el.__curLinePts = targetPts;
+    });
+  }, 100);
+
+  // While we wait for debounce, show the baseline (current) state, not the new final state
+  setToPts(ptsArr, el.__prevLinePts, line);
+  svg.style.visibility = 'visible';
+}
+"
+    )
   })
 }
 

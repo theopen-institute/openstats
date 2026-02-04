@@ -4,7 +4,7 @@ library(networkD3)
 library(tibble)
 
 ui <- fluidPage(
-  titlePanel("HIV Test Outcomes Sankey"),
+  # titlePanel("HIV Test Outcomes Sankey"),
   sidebarLayout(
     sidebarPanel(
       numericInput(

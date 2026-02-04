@@ -12,7 +12,9 @@ filters:
 ---
 # Bayesian updating
 - notes
-<!-- # Most research is wrong
+<!-- 
+
+# Most research is wrong (and that's okay)
 
 
 # Base rate fallacy
@@ -25,6 +27,18 @@ This is a *slide*
 here
 
 # Understanding p-value
+
+
+# Statistics helps us talk about three things:
+- populations
+- variation (or variables)
+- randomness
+
+Lots of social science has populations and variations. If we're not trying to deal with randomness, we're not doing statistics. Randomness is essential to statistics.
+
+Randomness stops being random at scale. If I flip a coin, I can't tell you what will happen. But, if I flip a coin ten times, and then I repeat that process a million times, I can actually tell you a lot. Randomness, at scale, behaves predictably.
+
+There are two major paradigms of statistics, and they do very similar work. But, they have different workflows, and they have different philosophies. They understand probability and randomness differently.
 
 # Overview of Bayes
 "Big Mart is probably open."
