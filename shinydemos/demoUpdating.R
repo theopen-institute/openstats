@@ -35,12 +35,17 @@ SHIFT_HANDLER <- HTML(
 
 STYLE <- HTML(
   "
-  h1 {
-    margin-bottom: 0;
-  }
-  p {
-    font-size: 90%;
-  }
+  h1 { margin-bottom: 0; }
+  p { font-size: 90%; }
+
+  /* Prevent table from graying out during recalculation */
+  #resultTable.recalculating { opacity: 1 !important; }
+  #resultTable.shiny-output-error,
+  #resultTable.shiny-output-error-validation { color: inherit; }
+  /* Shiny adds .shiny-recalculating to the output element while updating */
+  #resultTable.shiny-recalculating { opacity: 1 !important; }
+  #resultTable.shiny-recalculating:before { display: none !important; }
+
   #resultTable table {
     width: 100%;
     table-layout: fixed;
@@ -54,6 +59,28 @@ STYLE <- HTML(
 
   #resultTable th:nth-child(4),
   #resultTable td:nth-child(4) { width: 80px; }
+
+  /* --- Stop Shiny from dimming the table while recalculating --- */
+  /* Shiny uses .recalculating (not always .shiny-recalculating) */
+  #resultTable.recalculating,
+  #resultTable.shiny-recalculating {
+    opacity: 1 !important;
+  }
+
+  /* If opacity is applied in a way that affects children, force children too */
+  #resultTable.recalculating *,
+  #resultTable.shiny-recalculating * {
+    opacity: 1 !important;
+  }s
+
+  /* Shiny adds a spinner/overlay via pseudo-elements */
+  #resultTable.recalculating:before,
+  #resultTable.recalculating:after,
+  #resultTable.shiny-recalculating:before,
+  #resultTable.shiny-recalculating:after {
+    display: none !important;
+    content: none !important;
+  }
 
   /* ---- full-height main panel + plot fills remaining space ---- */
   html, body { height: 100%; }
@@ -89,9 +116,7 @@ format2 <- function(x, max_digits = 40L) {
     trim = TRUE,
     digits = 22
   )
-
   digit_count <- nchar(gsub("[^0-9]", "", x_chr_fixed))
-
   ifelse(
     is.na(x),
     NA_character_,
@@ -133,9 +158,10 @@ ui <- page_sidebar(
     ),
     p(
       "This graph represents a",
-      tags$b("probability distribution", .noWS = c('after')),
+      tags$b("probability distribution", .noWS = c("after")),
       ". From limited observations, we can never be absolutely certain of the contents of the bag, but we can say that some possibilities are more likely than others."
     ),
+
     div(
       id = "bagContents_wrap",
       selectizeInput(
@@ -398,11 +424,15 @@ server <- function(input, output, session) {
     ghost <- pd$ghost
 
     cur$point_id <- paste0("curpt-", cur$x)
+
+    # Tooltip changes:
+    # - emoji line first (conjecture)
+    # - likelihood formatted like the table
     cur$tooltip <- sprintf(
-      "Blue stones: %d\nLikelihood: %.4f\n%s",
+      "%s\nBlue stones: %d\nLikelihood: %s",
+      cur$conjecture,
       cur$x,
-      cur$y,
-      cur$conjecture
+      vapply(cur$y, format_likelihood, character(1))
     )
 
     p <- ggplot()
@@ -520,6 +550,12 @@ function(el, x) {
     }
     line.setAttribute('d', pathFromXY(pts));
   }
+
+  // More responsive feel:
+  // - shorter debounce before starting animation
+  // - slightly shorter duration
+  var DEBOUNCE_MS = 55;  // was 100
+  var DURATION_MS = 360; // was 450
 
   function animateFromTo(ptsArr, startPts, endPts, line, durationMs, onDone) {
     if (el.__animCancel) el.__animCancel();
@@ -646,12 +682,12 @@ function(el, x) {
 
     var startPts = el.__prevLinePts;
 
-    animateFromTo(ptsArr, startPts, targetPts, line, 450, function() {
+    animateFromTo(ptsArr, startPts, targetPts, line, DURATION_MS, function() {
       el.__lastStep = targetStep;
       el.__prevLinePts = targetPts;
       el.__curLinePts = targetPts;
     });
-  }, 100);
+  }, DEBOUNCE_MS);
 
   // While we wait for debounce, show the baseline (current) state, not the new final state
   setToPts(ptsArr, el.__prevLinePts, line);
