@@ -5,6 +5,7 @@ library(uuid)
 library(ggplot2)
 library(ggiraph)
 library(htmlwidgets)
+library(munsell) # https://github.com/r-wasm/webr/issues/537
 
 TOTAL_STONES <- 9L
 
@@ -128,13 +129,12 @@ ui <- page_sidebar(
       "Imagine you have a bag of 9 stones. Each stone is either blue or black, but you don't know how many of each color you have."
     ),
     p(
-      "You can draw stones from the bag one at a time, noting down its color and then placing it back in the bag. The more you repeat this process, the more you can infer about the contents of the bag. This process is called",
-      tags$b("Bayesian updating", .noWS = c('after'))
+      "You can draw stones from the bag one at a time, noting down its color and then placing it back in the bag. The more you repeat this process, the more you can infer about the contents of the bag."
     ),
     p(
       "This graph represents a",
       tags$b("probability distribution", .noWS = c('after')),
-      ". From our limited observations, we can never be absolutely certain of the contents of the bag, but we can say that some possibilities are more likely than others."
+      ". From limited observations, we can never be absolutely certain of the contents of the bag, but we can say that some possibilities are more likely than others."
     ),
     div(
       id = "bagContents_wrap",
