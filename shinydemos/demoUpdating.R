@@ -1,10 +1,10 @@
 library(shiny)
 library(bslib)
 library(shinyjs)
-library(uuid)
 library(ggplot2)
 library(ggiraph)
 library(htmlwidgets)
+library(uuid)
 library(munsell) # https://github.com/r-wasm/webr/issues/537
 
 TOTAL_STONES <- 9L
@@ -150,7 +150,7 @@ ui <- page_sidebar(
     open = "open",
     width = 400,
 
-    h1("Bayesian Updating"),
+    h2("Bayesian Updating"),
     p(
       "Imagine you have a bag of 9 stones. Each stone is either blue or black, but you don't know how many of each color you have."
     ),

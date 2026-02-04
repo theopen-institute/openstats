@@ -51,6 +51,12 @@ What does that "probably" mean?
 
 
 # instead, we have updating -->
+# Base Rate Paradox {.no-title}
+```{shinylive-r}
+#| standalone: true
+{{< include shinydemos/demoBaseRate.R >}}
+
+```
 
 # Bayesian Updating {.no-title}
 ```{shinylive-r}
@@ -59,10 +65,3 @@ What does that "probably" mean?
 
 ```
 
-
-# Base Rate Paradox {.no-title}
-```{shinylive-r}
-#| standalone: true
-{{< include shinydemos/demoBaseRate.R >}}
-
-```

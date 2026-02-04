@@ -1,5 +1,6 @@
 # app.R
 library(shiny)
+library(bslib)
 library(networkD3)
 library(tibble)
 
@@ -7,11 +8,10 @@ sankeyHeight <- 600
 sankeyWidth <- 1000
 
 ui <- page_sidebar(
-  # titlePanel("HIV Test Outcomes Sankey"),
   tags$style(HTML(
     "
       p, ul { font-size: 90%; }
-      #sankeyWrap svg, 
+      #sankeyWrap svg,
       #sankeyWrap svg * {
         filter: none !important;
         box-shadow: none !important;
@@ -43,73 +43,91 @@ ui <- page_sidebar(
   sidebar = sidebar(
     open = "open",
     width = 400,
-    tags$h1("The Base Rate Paradox"),
-    # numericInput(
-    #   inputId = "population",
-    #   label = "Population",
-    #   value = 100000,
-    #   min = 1,
-    #   step = 1000
-    # ),
-
+    tags$h2("The Base Rate Paradox"),
+    p(
+      "One major application of statistics is to evaluate the accuracy of a test or prediction model."
+    ),
     tags$div(
-      tags$p(
-        "When we talk about the 'accuracy' of a statistical model, we need to distinguish at least three different things:"
+      tags$div(
+        "Condition Prevalence: P(condition+)",
+        style = "font-weight: bold;"
       ),
-      tags$ul(
-        tags$li(
-          "Sensitivity:",
-          tags$br(),
-          tags$code("P(test positive | condition present)")
-        ),
-        tags$li(
-          "Specificity:",
-          tags$br(),
-          tags$code("P(test negative | condition absent)"),
-        ),
-        tags$li(
-          "Positive Predictive Value:",
-          tags$br(),
-          tags$code("P(condition present | test positive)"),
-        )
+      tags$p(
+        "The probability that a condition is present in a member of a population.",
+        style = "font-style: italic;"
+      ),
+      sliderInput(
+        inputId = "prevalence_pct",
+        label = NULL,
+        min = 0,
+        max = 5,
+        value = 0.1,
+        step = 0.1
       )
     ),
-
-    sliderInput(
-      inputId = "prevalence_pct",
-      label = "Condition Prevalence (%)",
-      min = 0,
-      max = 5,
-      value = 0.1,
-      step = 0.1
-    ),
-
-    sliderInput(
-      inputId = "sensitivity_pct",
-      label = "Test Sensitivity (%)",
-      min = 0,
-      max = 100,
-      value = 99,
-      step = 1
-    ),
-    sliderInput(
-      inputId = "specificity_pct",
-      label = "Test Specificity (%)",
-      min = 0,
-      max = 100,
-      value = 92,
-      step = 1
+    tags$div(
+      tags$p(
+        "When we talk about the",
+        tags$i("accuracy"),
+        "of a statistical test, we need to account for two parts:"
+      ),
+      tags$div(
+        "Test Sensitivity: P(test+ | condition+)",
+        style = "font-weight: bold;"
+      ),
+      tags$p(
+        "The probability of a positive test, given the presence of a condition (true positive)",
+        style = "font-style: italic;"
+      ),
+      sliderInput(
+        inputId = "sensitivity_pct",
+        label = NULL,
+        min = 0,
+        max = 100,
+        value = 99,
+        step = 1
+      ),
+      tags$div(
+        "Test Specificity: P(test– | condition–)",
+        style = "font-weight: bold;"
+      ),
+      tags$p(
+        "The probability of a negative test, given the absence of a condition (true negative)",
+        style = "font-style: italic;"
+      ),
+      sliderInput(
+        inputId = "specificity_pct",
+        label = NULL,
+        min = 0,
+        max = 100,
+        value = 92,
+        step = 1
+      )
     )
   ),
   mainPanel(
     width = 12,
+    tags$p(
+      "These values are important, but they don't tell the whole story.",
+      tags$br(),
+      "Often, the kind of accuracy we're actually interested in has the opposite conditional dependency."
+    ),
     tags$div(
-      span("Positive Predictive Value:"),
-      span(
+      tags$div(
+        tags$div(
+          "Positive Predictive Value: P(condition+ | test+)",
+          style = "font-weight: bold;"
+        ),
+        tags$p(
+          "The probability that a condition is present, given a positive test",
+          style = "font-style: italic; margin-bottom: 0;"
+        )
+      ),
+      div(
         textOutput("ppv_text"),
         style = "font-size: 200%; font-weight: bold;"
       ),
-      style = "display: flex; align-items: baseline; gap: 5px"
+      style = "display: flex; gap: 40px; align-items: end;"
     ),
     tags$hr(style = "margin: 0"),
     sankeyNetworkOutput(
@@ -119,7 +137,6 @@ ui <- page_sidebar(
     )
   )
 )
-
 
 server <- function(input, output, session) {
   ppv_reactive <- reactive({
@@ -157,13 +174,14 @@ server <- function(input, output, session) {
     ) |>
       as.data.frame()
   })
+
   links_reactive <- reactive({
-    population <- 100000 # as.numeric(input$population)
+    population <- 100000
     prevalence <- as.numeric(input$prevalence_pct) / 100
     sensitivity <- as.numeric(input$sensitivity_pct) / 100
     specificity <- as.numeric(input$specificity_pct) / 100
 
-    tribble(
+    links <- tribble(
       ~source , ~target , ~value                                            , ~title              ,
             0 ,       1 , population * prevalence                           , "Condition Present" ,
             0 ,       2 , population * (1 - prevalence)                     , "Condition Absent"  ,
@@ -173,15 +191,17 @@ server <- function(input, output, session) {
             2 ,       4 , population * (1 - prevalence) * (1 - specificity) , "False Positive"
     ) |>
       as.data.frame()
+
+    # LinkGroup: inherit the source node's group -> links match/blend with node colors
+    node_groups <- nodes_reactive()$group
+    links$group <- node_groups[links$source + 1]
+
+    links
   })
 
   output$ppv_text <- renderText({
     ppv <- ppv_reactive()
-    if (is.na(ppv)) {
-      "Undefined"
-    } else {
-      sprintf("%.2f%%", 100 * ppv)
-    }
+    if (is.na(ppv)) "Undefined" else sprintf("%.2f%%", 100 * ppv)
   })
 
   output$sankey <- renderSankeyNetwork({
@@ -193,15 +213,30 @@ server <- function(input, output, session) {
       Value = "value",
       NodeID = "name",
       NodeGroup = "group",
+
+      # ---- link colors: CRAN networkD3 supports LinkGroup (not linkColourMode) ----
+      LinkGroup = "group",
+
       fontSize = 14,
       nodeWidth = 30,
       iterations = 0,
-      sinksRight = FALSE,
+      margin = list(top = 5, right = 0, bottom = 5, left = 5),
+      sinksRight = TRUE,
+
+      # Use semi-transparent RGBA so links blend nicely with nodes
+      # (Nodes remain effectively opaque because they're solid rect fills)
       colourScale = JS(
         'd3.scaleOrdinal()
-       .domain(["population", "negative", "positive", "true", "false"])
-       .range(["#c7dceb","#6baed6","#3182bd","#74c476","#f28e8c"])'
+          .domain(["population", "negative", "positive", "true", "false"])
+          .range([
+            "rgba(15, 82, 159, 0.75)",  // population
+            "rgba(107,174,214,0.75)",  // negative
+            "rgba(49,130,189,0.80)",   // positive (slightly stronger)
+            "rgba(116,196,118,0.80)",  // true
+            "rgba(242,142,140,0.80)"   // false
+          ])'
       ),
+
       height = sankeyHeight,
       width = sankeyWidth
     ) |>
@@ -253,8 +288,9 @@ function(el) {
 
   // LINKS: Source -> Target + value
   d3.select(el).selectAll('path.link')
+    .style('stroke-opacity', 0.55)  // optional: strengthen link visibility
     .on('mouseover.tooltip', function(d) {
-      showTip(d.source.name + ' \u2192 ' + d.target.name, d.value);
+      showTip(d.source.name + ' \\u2192 ' + d.target.name, d.value);
     })
     .on('mousemove.tooltip', moveTip)
     .on('mouseout.tooltip', hideTip);
