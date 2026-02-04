@@ -142,10 +142,11 @@ format_likelihood <- function(x) {
 }
 
 ui <- page_sidebar(
+  tags$script(SHIFT_HANDLER),
+  tags$style(STYLE),
+  shinyjs::useShinyjs(),
+
   sidebar = sidebar(
-    shinyjs::useShinyjs(),
-    tags$script(SHIFT_HANDLER),
-    tags$style(STYLE),
     open = "open",
     width = 400,
 

@@ -51,7 +51,7 @@ What does that "probably" mean?
 
 # instead, we have updating -->
 
-# Slide 2 {.no-title}
+# Bayesian Updating {.no-title}
 ```{shinylive-r}
 #| standalone: true
 {{< include shinydemos/demoUpdating.R >}}
@@ -59,7 +59,7 @@ What does that "probably" mean?
 ```
 
 
-# Slide 3 {.no-title}
+# Base Rate Paradox {.no-title}
 ```{shinylive-r}
 #| standalone: true
 {{< include shinydemos/demoBaseRate.R >}}
