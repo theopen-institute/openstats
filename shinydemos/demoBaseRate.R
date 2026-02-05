@@ -41,42 +41,42 @@ ui <- page_sidebar(
     "
   )),
   sidebar = sidebar(
-    open = "open",
+    open = "always",
     width = 400,
     tags$h2("The Base Rate Paradox"),
     p(
-      "One major application of statistics is to evaluate the accuracy of a test or prediction model."
+      "Statistical tests help us evaluate the accuracy of prediction models. We often use tests to identify individuals with certain conditions or characteristics prevalent in our population."
     ),
     tags$div(
       tags$div(
-        "Condition Prevalence: P(condition+)",
+        "Rate of Prevalence: P( condition+ )",
         style = "font-weight: bold;"
       ),
       tags$p(
-        "The probability that a condition is present in a member of a population.",
+        "Probability that a randomly selected individual has the condition.",
         style = "font-style: italic;"
       ),
       sliderInput(
         inputId = "prevalence_pct",
         label = NULL,
         min = 0,
-        max = 5,
+        max = 10,
         value = 0.1,
-        step = 0.1
+        step = 0.1,
+        post = "%"
       )
     ),
+    tags$hr(style = "margin: 1px 0"),
     tags$div(
       tags$p(
-        "When we talk about the",
-        tags$i("accuracy"),
-        "of a statistical test, we need to account for two parts:"
+        "Statistical tests are always imperfect. Their accuracy is usually summarized by two conditional rates:"
       ),
       tags$div(
-        "Test Sensitivity: P(test+ | condition+)",
+        "Sensitivity: P( test+ | condition+ )",
         style = "font-weight: bold;"
       ),
       tags$p(
-        "The probability of a positive test, given the presence of a condition (true positive)",
+        "Probability of a positive test among those with the condition (true positive rate)",
         style = "font-style: italic;"
       ),
       sliderInput(
@@ -85,14 +85,15 @@ ui <- page_sidebar(
         min = 0,
         max = 100,
         value = 99,
-        step = 1
+        step = 1,
+        post = "%"
       ),
       tags$div(
-        "Test Specificity: P(test– | condition–)",
+        "Specificity: P( test– | condition– )",
         style = "font-weight: bold;"
       ),
       tags$p(
-        "The probability of a negative test, given the absence of a condition (true negative)",
+        "Probability of a negative test among those without the condition (true negative rate)",
         style = "font-style: italic;"
       ),
       sliderInput(
@@ -101,35 +102,36 @@ ui <- page_sidebar(
         min = 0,
         max = 100,
         value = 92,
-        step = 1
+        step = 1,
+        post = "%"
       )
     )
   ),
   mainPanel(
     width = 12,
     tags$p(
-      "These values are important, but they don't tell the whole story.",
+      "Sensitivity and specificity are important, but they can be misleading. They don't tell the whole story.",
       tags$br(),
-      "Often, the kind of accuracy we're actually interested in has the opposite conditional dependency."
+      "Often, the kind of accuracy we are actually interested in understanding has the opposite conditional dependency."
     ),
     tags$div(
       tags$div(
         tags$div(
-          "Positive Predictive Value: P(condition+ | test+)",
+          "Positive Predictive Value: P( condition+ | test+ )",
           style = "font-weight: bold;"
         ),
         tags$p(
-          "The probability that a condition is present, given a positive test",
+          "Probability of a condition among those with a positive test",
           style = "font-style: italic; margin-bottom: 0;"
         )
       ),
-      div(
+      tags$div(
         textOutput("ppv_text"),
         style = "font-size: 200%; font-weight: bold;"
       ),
       style = "display: flex; gap: 40px; align-items: end;"
     ),
-    tags$hr(style = "margin: 0"),
+    tags$hr(),
     sankeyNetworkOutput(
       "sankey",
       width = paste0(sankeyWidth, "px"),
@@ -164,8 +166,8 @@ server <- function(input, output, session) {
       ),
       group = c(
         "population",
-        "positive",
-        "negative",
+        "present",
+        "absent",
         "true",
         "false",
         "true",
@@ -227,13 +229,13 @@ server <- function(input, output, session) {
       # (Nodes remain effectively opaque because they're solid rect fills)
       colourScale = JS(
         'd3.scaleOrdinal()
-          .domain(["population", "negative", "positive", "true", "false"])
+          .domain(["population", "absent", "present", "true", "false"])
           .range([
-            "rgba(15, 82, 159, 0.75)",  // population
-            "rgba(107,174,214,0.75)",  // negative
-            "rgba(49,130,189,0.80)",   // positive (slightly stronger)
-            "rgba(116,196,118,0.80)",  // true
-            "rgba(242,142,140,0.80)"   // false
+            "#2f6088ff",  // population
+            "#a5c5e2ff",  // absent
+            "#468ec9ff",   // present (slightly stronger)
+            "#3E5915",  // true
+            "#A60F37"   // false
           ])'
       ),
 

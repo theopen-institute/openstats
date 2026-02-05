@@ -147,7 +147,7 @@ ui <- page_sidebar(
   shinyjs::useShinyjs(),
 
   sidebar = sidebar(
-    open = "open",
+    open = "always",
     width = 400,
 
     h2("Bayesian Updating"),
