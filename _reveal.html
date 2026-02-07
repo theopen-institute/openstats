@@ -1,0 +1,35 @@
+<script>
+  (function () {
+    function showAllFragmentsOnCurrentSlide() {
+      // Advance fragment index until there are no more fragments available
+      while (Reveal.availableFragments().next) {
+        Reveal.nextFragment();
+      }
+    }
+
+    function hideAllFragmentsOnCurrentSlide() {
+      // -1 means all fragments are invisible
+      Reveal.navigateFragment(-1);
+    }
+
+    let fragmentsEnabled = true;
+
+    document.addEventListener("keydown", (e) => {
+      // Example: press "F" to toggle fragment stepping
+      if (e.key.toLowerCase() === "i") {
+        fragmentsEnabled = !fragmentsEnabled;
+
+        Reveal.configure({ fragments: fragmentsEnabled, incremental: fragmentsEnabled });
+        Reveal.syncFragments(); // resync current slide fragments
+
+        if (!fragmentsEnabled) {
+          // If disabling, force the "final" state of the slide
+          showAllFragmentsOnCurrentSlide();
+        } else {
+          // Optional: when re-enabling, restart slide fragments
+          hideAllFragmentsOnCurrentSlide();
+        }
+      }
+    });
+  })();
+</script>

@@ -101,7 +101,7 @@ ui <- page_sidebar(
         label = NULL,
         min = 0,
         max = 100,
-        value = 92,
+        value = 97,
         step = 1,
         post = "%"
       )

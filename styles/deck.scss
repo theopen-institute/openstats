@@ -4,11 +4,15 @@
   display: none;
 }
 
-
 /* theme overrides */
-// .slide {
-//   // padding: 1em;
-// }
+.reveal .slide-logo {
+  max-height: 2.8rem !important;
+}
+
+.reveal .slides section {
+  justify-content: flex-start;
+  /* top align content */
+}
 
 /* shinylive slides */
 .sourceCode[data-engine="r"] {
