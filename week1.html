@@ -15,7 +15,7 @@
   <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="the Open Institute">
-  <title>Week 1</title>
+  <title>Week 1: Statistics is Observation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -100,10 +100,12 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-97c9de419c74b6e94375da58460f0a0d.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-deb94af404243eb4c417618ebdf55373.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -197,8 +199,8 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Week 1</h1>
+<section id="title-slide" data-background-image="static/background.png" data-background-size="cover" class="quarto-title-block center">
+  <h1 class="title">Week 1: Statistics is Observation</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -209,43 +211,228 @@ the Open Institute
 </div>
 
 </section>
-<section id="most-research-is-wrong-and-thats-okay" class="title-slide slide level1 center">
-<h1>Most research is wrong (and that’s okay)</h1>
-<!--
+<section id="most-published-research-is-false" class="title-slide slide level1 center">
+<h1>Most published research is false</h1>
+<aside class="notes">
+<p>Article by a Greek-American medical scientist at Stanford named John Ioannidis</p>
+<p>What’s interesting is that this is a purely theoretical argument, based on some very mathy probability theory. Argues that the majority of claims made in published scientific articles are wrong.</p>
+<p>He doesn’t state a specific number, but he does say more than half and probably a lot more than half of all findings are false. Others have attempted to test this claim empirically, and sure enough in many fields findings were reproducible as little as 10-20% of the time.</p>
+<p>This was a shocking and controversial claim when it was published in 2006, but today I think there’s a consensus that Ioannidis is right.</p>
+<p>But how can he make this argument, purely theoretically? And what do we do with that? In medicine, sociology, economics, psychology, engineering, as much as 80-90 percent of our hard, statistical findings are just wrong.</p>
+<p>I’m here to tell you, it’s both true and okay. Most science is wrong, and that’s okay.</p>
+<p>Published research findings may be wrong 80-90% of the time, but science still works. It works really, really well.</p>
+<p>Thats a paradox.</p>
+<p>It’s okay for a very simple reason. Statistics is observation, and observation is always messy. It’s only a problem if we expect it to be tidy.</p>
+<p>To make sense of it, we need to understand what statistics is. We need to stop treating statistics as mathmatical rituals and start treating it like a way to reflect on and update our own thinking. Thats the goal of this course.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><img data-src="static/week1/ioannidis.png" style="width:100.0%"> <a href="https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124">https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124</a></p>
+<div class="fragment">
+<p><img data-src="static/week1/capybara.png" class="absolute" style="left: 0px; bottom: 75px; width: 100%; "></p>
+<div style="position: absolute; bottom: 100px; left: 940px; font-size: 150%; font-weight: bold;" ,="">
+...and that's okay.
+</div>
+</div>
+</section>
 
-# Base rate fallacy
+<section id="this-weeks-goals" class="title-slide slide level1 center">
+<h1>This week’s goals</h1>
+<ul>
+<li class="fragment">Unpack the key concepts underlying Ioannidis’s claim.
+<ul>
+<li class="fragment">Statistical significance</li>
+<li class="fragment">The base rate paradox</li>
+</ul></li>
+<li class="fragment">Start rebuilding statistics from the ground up.</li>
+</ul>
+</section>
 
-This is a *slide*
+<section id="statistical-significance" class="title-slide slide level1 center">
+<h1>Statistical significance</h1>
+<p>So what is statistical significance?</p>
+<blockquote>
+<p>A result is statistically significant if, assuming the null hypothesis is true and the model assumptions hold, the probability of obtaining data at least as extreme as those observed (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α. (ChatGPT, 2026)</p>
+</blockquote>
+<ul>
+<li class="fragment">If this confuses you, you’re not alone. It’s really confusing.</li>
+<li class="fragment">We are going to scrap all of this readymade terminology and rebuild statistics from basic principles.</li>
+</ul>
+<aside class="notes">
+<p>20 years ago, there was a huge war between the Bayesians and the NHST people (more often called Frequentist), but that era is over. I’m not going to try to convince you that Bayesian methods are universally better. 95% of the time, the results are the same. Frequentist statistics are valid, capable, convenient, and useful. They are also a terrible way to learn statistics, largely because they way they think about probability is deeply, deeply unintuitive.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 
--   base rate fallacy
--   stones in a bag
+<section id="probability" class="title-slide slide level1 center">
+<h1>Probability</h1>
+<aside class="notes">
+<p>We all know what probability is because we all know what uncertainty is at a deeply intuitive level. I’m not going to bother defining it, at least not yet. What I do want to do is talk about a few notational conventions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p>Two conventions:</p>
+<ul>
+<li class="fragment">We express probability as a number between 0 and 1 (0% to 100%)</li>
+<li class="fragment">We write probability as P( event ) or P( event | condition )</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>In 2025, Kathmandu saw rain on 179 days:</p>
+<ul>
+<li class="fragment">P( rain ) = 179 / 365 = 0.49 (49%)<br>This is just counting.</li>
+</ul>
+<p>Or with <em>conditional probabilities</em>:</p>
+<ul>
+<li class="fragment">P( rain | April) = 13/30</li>
+<li class="fragment">P( rain | December) = 0/31</li>
+<li class="fragment">P( rain | July ) = 31/31</li>
+<li class="fragment">P( rain | February ) = 2/28</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p>Unlimited possibilities:</p>
+<ul>
+<li class="fragment">P( bachelors degree )</li>
+<li class="fragment">P( bachelors degree | male )</li>
+<li class="fragment">P( bachelors degree | female )</li>
+</ul>
+<hr>
+<ul>
+<li class="fragment">P( win | leading at halftime)</li>
+<li class="fragment">P( disease | family history )</li>
+<li class="fragment">P( rain | rained yesterday )</li>
+<li class="fragment">P( survival | attacked by bear )</li>
+</ul>
+</div></div>
+</section>
 
-here
+<section id="applied-probability" class="title-slide slide level1 center">
+<h1>Applied probability</h1>
+<aside class="notes">
+<p>One common use of statistics is to evaluate the accuracy of predictive tests.</p>
+<blockquote>
+<p>I want to illustrate a very famous example involving HIV testing. This is relevant because, until relatively recently, everybody who traveled to the US from Nepal had to take an HIV test for medical clearance.</p>
+</blockquote>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p>In Nepal, HIV has a prevalence of about 0.1%. We can write that as:</p>
+<ul>
+<li class="fragment">P( HIV+ ) = 0.001 (0.1%)</li>
+</ul>
+<p>There are tests for HIV, and these tests are generally quite accurate. When we talk about accuracy, though, we need to talk about two different things: sensitivity and specificity.</p>
+<ul>
+<li class="fragment"><strong>Sensitivity</strong> is the probability that a test will come back positive when administered to a person living with HIV</li>
+<li class="fragment"><strong>Specificity</strong> is the probability that a test will come back negative when administered to a person who is not living with HIV</li>
+</ul>
+<p>We can write these using our probability language:</p>
+<ul>
+<li class="fragment">Sensitivity: P( test+ | HIV+ ) = 0.99 (99%)</li>
+<li class="fragment">Specificity: P( test– | HIV– ) = 0.97 (96%)</li>
+</ul>
+</section>
 
-# Understanding p-value
-
-
-# Statistics helps us talk about three things:
-- populations
-- variation (or variables)
-- randomness
-
-Lots of social science has populations and variations. If we're not trying to deal with randomness, we're not doing statistics. Randomness is essential to statistics.
-
-Randomness stops being random at scale. If I flip a coin, I can't tell you what will happen. But, if I flip a coin ten times, and then I repeat that process a million times, I can actually tell you a lot. Randomness, at scale, behaves predictably.
-
-There are two major paradigms of statistics, and they do very similar work. But, they have different workflows, and they have different philosophies. They understand probability and randomness differently.
-
-# Overview of Bayes
-"Big Mart is probably open."
-What does that "probably" mean?
-- Frequentist: in a million parallel universes, it's likely that we'd find Big Mart to be open in most of them.
-- Bayesian: I am unsure, but I think it's more likely that Big Mart is open
-
-# Falsification isn't all that interesting
-
-
-# instead, we have updating -->
+<section id="applied-probability-continued" class="title-slide slide level1 center">
+<h1>Applied probability (continued)</h1>
+<aside class="notes">
+<p>From these two options, we can do some simple subtraction to understand the other possibilities:</p>
+<p>This, as we can see, an imperfect but reasonably good test. There’s a problem, though. Can anybody spot it?</p>
+<p>If we already know somebody’s HIV status, why would be bother giving them a test? Far, far more often, when we think about the accuracy of a test, we are actually interested in the reverse question:</p>
+<p>Sensitivity and Specificity describe a situation where we already know somebody’s HIV status. Why test if we already know? What we usually really want:</p>
+<blockquote>
+<p>This conditional probability statement also has a fancy name: Positive Predictive Value. Sensitivity asks, “Given a person living with HIV, what is the probability of a positive test result”. PPV asks, “Given a positive test result, what is the probability that the person has HIV.” Similar but different questions.</p>
+</blockquote>
+<blockquote>
+<p>So, given the measures above, what is P(HIV+ | test+)?</p>
+</blockquote>
+<blockquote>
+<p>Think about that. If you pick a person at random, give them an HIV test and it comes back positive, there is a 1% chance that they actually have HIV. 99% of them are getting a positive test (and, likely, quite a scare) erroneously.</p>
+</blockquote>
+<blockquote>
+<p>This goes against most people’s expectations. Why this happens actually isn’t that hard to understand. Of people with HIV, 99% will get a positive test result. Of people who don’t have HIV, only 3% will get a positive test result.</p>
+</blockquote>
+<blockquote>
+<p>But, the important fact is that HIV is actually quite rare. 3% of a big population is bigger than 99% of a very small population.</p>
+</blockquote>
+<blockquote>
+<p>So, this test is 99% accurate at detecting HIV among people who have it, but for a random person getting a test, a positive test result is only accurate 3.4% percent of the time.</p>
+</blockquote>
+<blockquote>
+<p>My point here is not that these tests are worthless. Rather what I want to point out is that probability is often unpredictable and unintuitive.</p>
+</blockquote>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<table class="caption-top">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 46%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>(100,000)</th>
+<th>Test+</th>
+<th>Test–</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>HIV+</strong><br>(0.1%&nbsp;=&nbsp;100)</td>
+<td>P( Test+ | HIV+ ): <strong>99%</strong><br><em>Sensitivity (True Positive)</em><br>(99)</td>
+<td>P( Test– | HIV+ ): <strong>1%</strong><br><em>Type II Error (False Negative)</em><br>(1)</td>
+</tr>
+<tr class="even">
+<td><strong>HIV–</strong><br>(99.9%&nbsp;=&nbsp;99,900)</td>
+<td>P( Test+ | HIV– ): <strong>3%</strong><br><em>Type I Error (False Positive)</em><br>(2,997)</td>
+<td>P( Test– | HIV– ): <strong>97%</strong><br><em>Specificity (True Negative)</em><br>(96,903)</td>
+</tr>
+</tbody>
+</table>
+<p>What about P( HIV+ | test+): About 3.2%</p>
+<p>P(A|B) is not the same as P(B|A)</p>
+<p>Understanding this is critical to understanding statistical significance.</p>
 </section>
 
 <section id="base-rate-paradox" class="title-slide slide level1 no-title center">
@@ -357,7 +544,7 @@ What does that "probably" mean?
 <span id="cb1-105"><a></a>        label = NULL,</span>
 <span id="cb1-106"><a></a>        min = 0,</span>
 <span id="cb1-107"><a></a>        max = 100,</span>
-<span id="cb1-108"><a></a>        value = 92,</span>
+<span id="cb1-108"><a></a>        value = 97,</span>
 <span id="cb1-109"><a></a>        step = 1,</span>
 <span id="cb1-110"><a></a>        post = "%"</span>
 <span id="cb1-111"><a></a>      )</span>
@@ -570,8 +757,109 @@ What does that "probably" mean?
 <span id="cb1-318"><a></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 
-<section id="bayesian-updating" class="title-slide slide level1 no-title center">
+<section id="statistical-significance-revisited" class="title-slide slide level1 center">
+<h1>Statistical significance (revisited)</h1>
+<aside class="notes">
+<p>There’s a lot of very dense jargon here, but we don’t need to unpack it all. let’s just take a minute to think about what is being measured here.</p>
+<p>I don’t want to get bogged down at this point in the specifics, but the structure is important: In frequentist analysis, We’re treating our hypothesis as a fixed assumption and our data as a probability.</p>
+<p>That’s fine, but it’s not how we actually experience the practice of science most of the time. It’s not how we think about uncertainty. More often, our data is the thing we know, and our hypothesis is the thing we’re unsure of.</p>
+<p>What we’re usually actually trying to figure out is the reverse conditional dependency: P( hypothesis | data ) i.e., given the data we observed, how likely is our hypothesis to be true?</p>
+<p>Both frequentists and Bayesians are interested in building links between observations and theory, but their primary measurements are structured in precisely the opposite ways.</p>
+<p>For Frequentists, it’s about P( data | hypothesis ) For Bayesians, it’s about P( hypothesis | data )</p>
+<p>This is a subtle difference, but it reveals a fundamental philosophical divide in how these two approaches think about the problem of probability.</p>
+<p>Let me give a very concrete example.</p>
+<p>This morning, I asked my wife if she thought the shop near our house was open. She said, “probably”. What does that word probably mean?</p>
+<p>For Bayesians, it’s simple. It means that she doesn’t know for sure. But, not knowing for sure doesn’t mean that she doesn’t know anything. Rather, based on prior knowledge of some sort or another, she considers both possibilities as plausible but the open possibility as more likely. Probability, to Bayesians, is a way of talking about the uncertainty of our knowledge.</p>
+<p>For Frequentists, it’s a bit more complicated. “Probably” here would refer to the long run frequency of different outcomes over repeated observations. If we visited the store in a million parallel universes governed by rules similar to this one, the store would be open in most of them. This is a valid way to think about things, but I want to suggest that it’s a bit unintuitive. If you’ve ever heard somebody say that p-value is the probability that an hypothesis is true, they are making a serious mistake.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p>Let’s look at that quote again:</p>
+<blockquote>
+<p>A result is statistically significant if, assuming the null hypothesis is true and the model assumptions hold, the probability of obtaining data at least as extreme as those observed (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.</p>
+</blockquote>
+<p>Two key phrases:</p>
+<ul>
+<li class="fragment">“assuming the null hypothesis is true”, and</li>
+<li class="fragment">“the probability of obtaining data at least as extreme as those observed”</li>
+</ul>
+<p>In our notation, this is equivalent to:</p>
+<ul>
+<li class="fragment">P( data | hypothesis )</li>
+</ul>
+<p>What we’re usually actually interested in:</p>
+<ul>
+<li class="fragment">P( hypothesis | data )</li>
+</ul>
+</section>
+
+<section id="what-ioannidis-said" class="title-slide slide level1 center">
+<h1>What Ioannidis said</h1>
+<p>This is the problem that Ioannidis is highlighting. There’s nothing wrong with p-value. It is a useful and meaningful measure of something real.</p>
+<p>But it doesn’t mean what people think it means.</p>
+<p>As a consequence, when we approach the scientific literature naively, we risk making a base rate error.</p>
+<ul>
+<li class="fragment">P-value doesn’t tell us how likely a statistical theory is to be true.</li>
+<li class="fragment">Rather, it tells us how unlikely the data we observed would be under certain conditions including if that theory were false. (If that phrase confuses you, good. It’s confusing.)</li>
+</ul>
+<p>The difference between these two statements is entirely dependent on the <em>base rate</em> of true and false hypotheses. If there are more false hypotheses out there than true ones – and Ioannidis says unambiguously that there are – p-value can be a very misleading measure.</p>
+<p>In this course, we’re going to approach probability in Bayesian terms, and to do that we’ll make use of Bayes theorem.</p>
+</section>
+
+<section id="bayes-theorem" class="title-slide slide level1 center">
+<h1>Bayes Theorem</h1>
+<aside class="notes">
+<p>That’s all statistics is.</p>
+<p>We’re going to dig into an example here that is very simple, but it represents the entire philosophical underpinnings of statistical analysis:</p>
+<p>I just want you to notice two things here:</p>
+<ul>
+<li>first the main purpose of this function is to reverse conditional dependency, turning P(B | A) into P(A | B).</li>
+<li>second, the combination of priors, likelihoods, and posteriors drives a process called “updating”. We used to believe something, then we saw something, and now we believe something slightly or significantly different.</li>
+</ul>
+<p>believe something (prior), observe something (likelihood), update beliefs (posterior)</p>
+<p>With this simple process, we’re going to do some very cool things. instead, we have updating –&gt;</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><span class="math display">\[
+P(A|B) = \frac{P(B|A)\,P(A)}{P(B)}
+\]</span></p>
+<p>or</p>
+<p><span class="math display">\[
+P(\text{hypothesis} | \text{data})
+= \frac{P(\text{data} | \text{hypothesis})\,P(\text{hypothesis})}{P(\text{data})}
+\]</span></p>
+<ul>
+<li class="fragment"><strong>P(data | hypothesis)</strong>: likelihood</li>
+<li class="fragment"><strong>P(hypothesis)</strong>: prior probability</li>
+<li class="fragment"><strong>P(hypothesis | data)</strong>: posterior probability</li>
+<li class="fragment"><strong>P(data)</strong>: marginal likelihood (boring)</li>
+</ul>
+</section>
+
+<section id="bayesian-updating" class="title-slide slide level1 center">
 <h1>Bayesian Updating</h1>
+<p>This process all together is called “updating”.</p>
+</section>
+
+<section id="bayesian-updating-example" class="title-slide slide level1 no-title center">
+<h1>Bayesian Updating Example</h1>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a>#| '!! shinylive warning !!': |</span>
 <span id="cb2-2"><a></a>#|   shinylive does not work in self-contained HTML documents.</span>
 <span id="cb2-3"><a></a>#|   Please set `embed-resources: false` in your metadata.</span>
@@ -1280,11 +1568,21 @@ What does that "probably" mean?
 <span id="cb2-706"><a></a></span>
 <span id="cb2-707"><a></a>shinyApp(ui, server)</span>
 <span id="cb2-708"><a></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+
+<section id="statistics-is-observation" class="title-slide slide level1 center">
+<h1>Statistics is observation</h1>
+<p>Updating is the foundation of our statistics: We believed something, we saw something, and we now believe something slightliy or significantly different from what we believed before.</p>
+<p>What does that mean?</p>
+<p>It’s why it’s okay that most published research is false.</p>
+<p>Observation is messy. We love the mess. We live in the mess. Observation doesn’t give us simple answers, but it continuously challenges and reshapes our assumptions.</p>
+<p>Science is not the experiments we do. Rather, it’s the debates we have about the experiments we do. Over time, we can become less, and less, and less, and less, and less, and less wrong.</p>
 
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="static/logo_compact_blue.svg" class="slide-logo"></p>
 <div class="footer footer-default">
 
 </div>
@@ -1297,6 +1595,7 @@ What does that "probably" mean?
   <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -1318,7 +1617,8 @@ What does that "probably" mean?
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1444,7 +1744,7 @@ What does that "probably" mean?
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'slide',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',
@@ -1460,6 +1760,9 @@ What does that "probably" mean?
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+       // Parallax background image
+       parallaxBackgroundImage: 'static/background.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
@@ -1489,7 +1792,7 @@ What does that "probably" mean?
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
           RevealNotes,
