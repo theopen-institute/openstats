@@ -1,35 +1,87 @@
 <script>
   (function () {
-    function showAllFragmentsOnCurrentSlide() {
-      // Advance fragment index until there are no more fragments available
-      while (Reveal.availableFragments().next) {
-        Reveal.nextFragment();
-      }
-    }
+    function addControls() {
+      // Reveal sidebar container (present when menu or toc panel exists)
+      const sidebar = document.querySelector(".slide-menu-panel");
 
-    function hideAllFragmentsOnCurrentSlide() {
-      // -1 means all fragments are invisible
-      Reveal.navigateFragment(-1);
-    }
+      if (!sidebar) return;
 
-    let fragmentsEnabled = true;
+      const box = document.createElement("div");
+      box.style.padding = "0.5rem 0.75rem";
+      box.style.borderTop = "1px solid #ccc";
+      box.innerHTML = `
+      <label style="display:block; font-size:0.85rem;">
+        <input type="checkbox" id="toggleFragments">
+        Incremental Build
+      </label>
+      <label style="display:block; font-size:0.85rem;">
+        <input type="checkbox" id="toggleTransitions" checked>
+        Transitions
+      </label>
+    `;
+      sidebar.appendChild(box);
 
-    document.addEventListener("keydown", (e) => {
-      // Example: press "F" to toggle fragment stepping
-      if (e.key.toLowerCase() === "i") {
-        fragmentsEnabled = !fragmentsEnabled;
+      const frag = box.querySelector("#toggleFragments");
+      const trans = box.querySelector("#toggleTransitions");
 
-        Reveal.configure({ fragments: fragmentsEnabled, incremental: fragmentsEnabled });
-        Reveal.syncFragments(); // resync current slide fragments
+      frag.addEventListener("change", () => {
+        Reveal.configure({ fragments: frag.checked });
+        Reveal.configure({ incremental: frag.checked });
+        Reveal.syncFragments();
 
-        if (!fragmentsEnabled) {
-          // If disabling, force the "final" state of the slide
-          showAllFragmentsOnCurrentSlide();
-        } else {
-          // Optional: when re-enabling, restart slide fragments
-          hideAllFragmentsOnCurrentSlide();
+        // If turning fragments off, reveal all on current slide
+        if (!frag.checked) {
+          const i = Reveal.getIndices();
+          Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
         }
-      }
-    });
+      });
+
+      trans.addEventListener("change", () => {
+        if (trans.checked) {
+          Reveal.configure({ transition: "slide", backgroundTransition: "slide" });
+        } else {
+          Reveal.configure({ transition: "none", backgroundTransition: "none" });
+        }
+      });
+    }
+
+    if (window.Reveal) {
+      Reveal.on("ready", addControls);
+    } else {
+      document.addEventListener("DOMContentLoaded", addControls);
+    }
   })();
+
+  // (function () {
+  //   function showAllFragmentsOnCurrentSlide() {
+  //     // Advance fragment index until there are no more fragments available
+  //     while (Reveal.availableFragments().next) {
+  //       Reveal.nextFragment();
+  //     }
+  //   }
+
+  //   function hideAllFragmentsOnCurrentSlide() {
+  //     // -1 means all fragments are invisible
+  //     Reveal.navigateFragment(-1);
+  //   }
+
+  //   let fragmentsEnabled = true;
+
+  //   document.addEventListener("keydown", (e) => {
+  //     if (e.key.toLowerCase() === "i") {
+  //       fragmentsEnabled = !fragmentsEnabled;
+
+  //       Reveal.configure({ fragments: fragmentsEnabled, incremental: fragmentsEnabled });
+  //       Reveal.syncFragments(); // resync current slide fragments
+
+  //       if (!fragmentsEnabled) {
+  //         // If disabling, force the "final" state of the slide
+  //         showAllFragmentsOnCurrentSlide();
+  //       } else {
+  //         // Optional: when re-enabling, restart slide fragments
+  //         hideAllFragmentsOnCurrentSlide();
+  //       }
+  //     }
+  //   });
+  // })();
 </script>

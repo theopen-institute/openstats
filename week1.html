@@ -15,7 +15,7 @@
   <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="the Open Institute">
-  <title>Week 1: Statistics is just observation</title>
+  <title>Week 1: Fresh Starts</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -200,7 +200,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Week 1: Statistics is just observation</h1>
+  <h1 class="title">Week 1: Fresh Starts</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -304,8 +304,6 @@ the Open Institute
 <li class="fragment">We express probability as a number between 0 and 1 (0% to 100%)</li>
 <li class="fragment">We write probability as P( event ) or P( event | condition )</li>
 </ul>
-<div class="columns">
-<div class="column" style="width:50%;">
 <div class="fragment">
 <p>In 2025, Kathmandu saw rain on 179 days:</p>
 </div>
@@ -323,7 +321,10 @@ the Open Institute
 <li>P( rain | Feb ) = 2/28 = 0.07 (7%)</li>
 </ul>
 </div>
-</div><div class="column" style="width:50%;">
+</section>
+
+<section id="probability-examples" class="title-slide slide level1 center">
+<h1>Probability Examples</h1>
 <div class="fragment">
 <ul>
 <li>P( bachelors degree )</li>
@@ -331,16 +332,12 @@ the Open Institute
 <li>P( bachelors degree | rural )</li>
 </ul>
 </div>
-<div class="fragment">
-<hr>
 <ul>
-<li>P( win | leading at halftime)</li>
-<li>P( disease | family history )</li>
-<li>P( rain | rained yesterday )</li>
-<li>P( survival | attacked by bear )</li>
+<li class="fragment">P( win | leading at halftime)</li>
+<li class="fragment">P( disease | family history )</li>
+<li class="fragment">P( rain | rained yesterday )</li>
+<li class="fragment">P( survival | attacked by bear )</li>
 </ul>
-</div>
-</div></div>
 </section>
 
 <section id="applied-probability" class="title-slide slide level1 center">
@@ -838,13 +835,14 @@ the Open Institute
 </div>
 </section>
 
-<section id="what-ioannidis-said" class="title-slide slide level1 center">
-<h1>What Ioannidis said</h1>
+<section id="why-is-most-published-research-wrong" class="title-slide slide level1 center">
+<h1>Why is most published research wrong?</h1>
 <!-- TODO: Clean this one up a lot -->
 <ul>
 <li class="fragment">We are thinking about statistics backwards.</li>
-<li class="fragment">If statistics has ever made you feel dumb or intimidated, it’s not about you.</li>
-<li class="fragment">p-value is just really, really weird.</li>
+<li class="fragment">If statistics has ever made you feel dumb or intimidated, it’s not you…</li>
+<li class="fragment">…p-value is just really, really weird.</li>
+<li class="fragment">Most people don’t actually understand what statistical significance means.</li>
 </ul>
 </section>
 
@@ -1625,7 +1623,7 @@ P(\text{hypothesis} | \text{data})
 = \frac{P(\text{data} | \text{hypothesis})\,P(\text{hypothesis})}{P(\text{data})}
 \]</span></p>
 <ul>
-<li class="fragment"><strong>P(data | hypothesis)</strong>: likelihood {.red}</li>
+<li class="fragment"><strong>P(data | hypothesis)</strong>: likelihood</li>
 <li class="fragment"><strong>P(hypothesis)</strong>: prior probability</li>
 <li class="fragment"><strong>P(hypothesis | data)</strong>: posterior probability</li>
 <li class="fragment"><strong>P(data)</strong>: marginal likelihood (boring)</li>
@@ -1774,7 +1772,7 @@ Also, there is no minimum samples size. -->
         shuffle: false,
 
         // Turns fragments on and off globally
-        fragments: true,
+        fragments: false,
 
         // Flags whether to include the current fragment in the URL,
         // so that reloading brings you to the same fragment position
@@ -1888,6 +1886,93 @@ Also, there is no minimum samples size. -->
           RevealZoom
         ]
       });
+    </script>
+    <script>
+      (function () {
+        function addControls() {
+          // Reveal sidebar container (present when menu or toc panel exists)
+          const sidebar = document.querySelector(".slide-menu-panel");
+
+          if (!sidebar) return;
+
+          const box = document.createElement("div");
+          box.style.padding = "0.5rem 0.75rem";
+          box.style.borderTop = "1px solid #ccc";
+          box.innerHTML = `
+          <label style="display:block; font-size:0.85rem;">
+            <input type="checkbox" id="toggleFragments">
+            Incremental Build
+          </label>
+          <label style="display:block; font-size:0.85rem;">
+            <input type="checkbox" id="toggleTransitions" checked>
+            Transitions
+          </label>
+        `;
+          sidebar.appendChild(box);
+
+          const frag = box.querySelector("#toggleFragments");
+          const trans = box.querySelector("#toggleTransitions");
+
+          frag.addEventListener("change", () => {
+            Reveal.configure({ fragments: frag.checked });
+            Reveal.configure({ incremental: frag.checked });
+            Reveal.syncFragments();
+
+            // If turning fragments off, reveal all on current slide
+            if (!frag.checked) {
+              const i = Reveal.getIndices();
+              Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
+            }
+          });
+
+          trans.addEventListener("change", () => {
+            if (trans.checked) {
+              Reveal.configure({ transition: "slide", backgroundTransition: "slide" });
+            } else {
+              Reveal.configure({ transition: "none", backgroundTransition: "none" });
+            }
+          });
+        }
+
+        if (window.Reveal) {
+          Reveal.on("ready", addControls);
+        } else {
+          document.addEventListener("DOMContentLoaded", addControls);
+        }
+      })();
+
+      // (function () {
+      //   function showAllFragmentsOnCurrentSlide() {
+      //     // Advance fragment index until there are no more fragments available
+      //     while (Reveal.availableFragments().next) {
+      //       Reveal.nextFragment();
+      //     }
+      //   }
+
+      //   function hideAllFragmentsOnCurrentSlide() {
+      //     // -1 means all fragments are invisible
+      //     Reveal.navigateFragment(-1);
+      //   }
+
+      //   let fragmentsEnabled = true;
+
+      //   document.addEventListener("keydown", (e) => {
+      //     if (e.key.toLowerCase() === "i") {
+      //       fragmentsEnabled = !fragmentsEnabled;
+
+      //       Reveal.configure({ fragments: fragmentsEnabled, incremental: fragmentsEnabled });
+      //       Reveal.syncFragments(); // resync current slide fragments
+
+      //       if (!fragmentsEnabled) {
+      //         // If disabling, force the "final" state of the slide
+      //         showAllFragmentsOnCurrentSlide();
+      //       } else {
+      //         // Optional: when re-enabling, restart slide fragments
+      //         hideAllFragmentsOnCurrentSlide();
+      //       }
+      //     }
+      //   });
+      // })();
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
