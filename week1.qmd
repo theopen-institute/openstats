@@ -1,5 +1,5 @@
 ---
-title: "Week 1: Statistics is Observation"
+title: "Week 1: Statistics is just observation"
 author: "the Open Institute"
 format: 
   revealjs:
@@ -32,11 +32,11 @@ format:
   To make sense of it, we need to understand what statistics is. We need to stop treating statistics as mathmatical rituals and start treating it like a way to reflect on and update our own thinking. Thats the goal of this course.
 :::
 
-![](static/week1/ioannidis.png){width="100%"}
+![](images/week1/ioannidis.png){width="100%"}
 [https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124)
 
 :::{.fragment}
-![](static/week1/capybara.png){.absolute bottom=75 left=0 width="100%"}
+![](images/week1/capybara.png){.absolute bottom=75 left=0 width="100%"}
 
 <div style="position: absolute; bottom: 100px; left: 940px; font-size: 150%; font-weight: bold;",>
 ...and that's okay.
@@ -52,12 +52,12 @@ format:
 
 # Statistical significance
 
-So what is statistical significance?
-
+::: {.fragment}
 > A result is statistically significant if, assuming the null hypothesis is true and the model assumptions hold, the probability of obtaining data at least as extreme as those observed (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α. (ChatGPT, 2026)
+:::
 
 - If this confuses you, you're not alone. It's really confusing.
-- We are going to scrap all of this readymade terminology and rebuild statistics from basic principles.
+- We are going to scrap all of this jargon to rebuild statistics from the ground up.
 
 ::: {.notes}
 20 years ago, there was a huge war between the Bayesians and the NHST people (more often called Frequentist), but that era is over. I'm not going to try to convince you that Bayesian methods are universally better. 95% of the time, the results are the same. Frequentist statistics are valid, capable, convenient, and useful. They are also a terrible way to learn statistics, largely because they way they think about probability is deeply, deeply unintuitive.
@@ -69,7 +69,9 @@ So what is statistical significance?
 We all know what probability is because we all know what uncertainty is at a deeply intuitive level. I'm not going to bother defining it, at least not yet. What I do want to do is talk about a few notational conventions.
 :::
 
+::: {.fragment}
 Two conventions:
+:::
 
 - We express probability as a number between 0 and 1 (0% to 100%)
 - We write probability as P( event ) or P( event | condition )
@@ -77,33 +79,38 @@ Two conventions:
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment}
 In 2025, Kathmandu saw rain on 179 days:
+:::
 
-- P( rain ) = 179 / 365 = 0.49 (49%)<br>This is just counting.
+- P( rain ) = 179 / 365 = 0.49 (49%) [<br>(This is just counting.)]{.fragment} 
 
+::: {.fragment}
 Or with _conditional probabilities_:
+:::
 
-- P( rain | April) = 13/30 
-- P( rain | December) = 0/31
-- P( rain | July ) = 31/31
-- P( rain | February ) = 2/28
+::: {.fragment .nonincremental}
+- P( rain | Apr) = 13/30 = 0.43 (43%)
+- P( rain | Dec) = 0/31 = 0.00 (0%)
+- P( rain | Jul ) = 31/31 = 1.00 (100%)
+- P( rain | Feb ) = 2/28 = 0.07 (7%)
+:::
 
 :::
 ::: {.column width="50%"}
-
-Unlimited possibilities:
-
+::: {.fragment .nonincremental}
 - P( bachelors degree )
-- P( bachelors degree | male )
-- P( bachelors degree | female )
-
+- P( bachelors degree | urban )
+- P( bachelors degree | rural )
+:::
+::: {.fragment .nonincremental}
 ---
 
 - P( win | leading at halftime)
 - P( disease | family history )
 - P( rain | rained yesterday )
 - P( survival | attacked by bear )
-
+:::
 :::
 :::
 
@@ -112,22 +119,28 @@ Unlimited possibilities:
 ::: {.notes}
 One common use of statistics is to evaluate the accuracy of predictive tests.
 
-> I want to illustrate a very famous example involving HIV testing. This is relevant because, until relatively recently, everybody who traveled to the US from Nepal had to take an HIV test for medical clearance.
+I want to illustrate a very famous example involving HIV testing. This is relevant because, until relatively recently, everybody who traveled to the US from Nepal had to take an HIV test for medical clearance.
 :::
 
+::: {.fragment}
 In Nepal, HIV has a prevalence of about 0.1%. We can write that as:
+:::
 
 - P( HIV+ ) = 0.001 (0.1%)
 
-There are tests for HIV, and these tests are generally quite accurate. When we talk about accuracy, though, we need to talk about two different things: sensitivity and specificity.
+::: {.fragment}
+With statistical tests and predictions, we talk about two kinds of "accuracy":
+:::
 
 - **Sensitivity** is the probability that a test will come back positive when administered to a person living with HIV
 - **Specificity** is the probability that a test will come back negative when administered to a person who is not living with HIV 
 
+::: {.fragment .nonincremental}
 We can write these using our probability language:
 
 - Sensitivity: P( test+ | HIV+ ) = 0.99 (99%)
 - Specificity: P( test– | HIV– ) = 0.97 (96%)
+:::
 
 # Applied probability (continued)
 ::: {.notes}
@@ -161,17 +174,26 @@ Sensitivity and Specificity describe a situation where we already know somebody'
 
 :::
 
-|(100,000)           | Test+                                                            | Test–                                                             |
+::: {.nonincremental}
+- Sensitivity P( test+ | HIV+ ): 99%
+- Specificity P( test– | HIV– ): 97%
+:::
+
+::: {.fragment fragment-index=1}
+What about P( HIV+ | test+): [3.2%]{.fragment fragment-index=2 .red}
+:::
+
+::: {.fragment fragment-index=3}
+
+|[(pop: 100,000)]{.fragment fragment-index=4 .blue}           | Test+                                                            | Test–                                                             |
 |----------|------------------------------------------------------------------|-------------------------------------------------------------------|
-| **HIV+**<br>(0.1%&nbsp;=&nbsp;100)| P( Test+ \| HIV+ ): **99%**<br>_Sensitivity (True Positive)_<br>(99)| P( Test– \| HIV+ ): **1%**<br>_Type II Error (False Negative)_<br>(1)|
-| **HIV–**<br>(99.9%&nbsp;=&nbsp;99,900) | P( Test+ \| HIV– ): **3%**<br>_Type I Error (False Positive)_<br>(2,997)| P( Test– \| HIV– ): **97%**<br>_Specificity (True Negative)_<br>(96,903)|
+| **HIV+**<br>[(0.1%&nbsp;=&nbsp;100)]{.fragment fragment-index=5 .blue}| P( Test+ \| HIV+ ): **99%**<br>_Sensitivity (True Positive)_<br>[(99)]{.fragment fragment-index=6 .blue}| P( Test– \| HIV+ ): **1%**<br>_Type II Error (False Negative)_<br>[(1)]{.fragment fragment-index=6 .blue}|
+| **HIV–**<br>[(99.9%&nbsp;=&nbsp;99,900)]{.fragment fragment-index=5 .blue} | P( Test+ \| HIV– ): **3%**<br>_Type I Error (False Positive)_<br>[(2,997)]{.fragment fragment-index=6 .blue}| P( Test– \| HIV– ): **97%**<br>_Specificity (True Negative)_<br>[(96,903)]{.fragment fragment-index=6 .blue}|
+:::
 
-
-What about P( HIV+ | test+): About 3.2%
-
-P(A|B) is not the same as P(B|A)
-
-Understanding this is critical to understanding statistical significance.
+::: {.fragment}
+_Paradox: P(A|B) is not the same as P(B|A)_
+:::
 
 # Base Rate Paradox {.no-title}
 ```{shinylive-r}
@@ -210,43 +232,74 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 
 :::
 
-
 Let's look at that quote again:
 
-> A result is statistically significant if, assuming the null hypothesis is true and the model assumptions hold, the probability of obtaining data at least as extreme as those observed (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
+> A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=2 .highlight-current-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=3 .highlight-current-red} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
 
+::: {.fragment .nonincremental fragment-index=1}
 Two key phrases: 
 
-- "assuming the null hypothesis is true", and
-- "the probability of obtaining data at least as extreme as those observed"
+::: {.fragment fragment-index=2}
+- "assuming the...hypothesis is true"
+:::
 
-In our notation, this is equivalent to:
+::: {.fragment fragment-index=3}
+- "the probability of...data..."
+:::
+
+:::
+
+::: {.fragment .nonincremental}
+This is equivalent to:
 
 - P( data | hypothesis )
+:::
 
-What we're usually actually interested in:
+::: {.fragment .nonincremental}
+What we usually actually want:
 
 - P( hypothesis | data )
+:::
 
 
 # What Ioannidis said
 
-This is the problem that Ioannidis is highlighting. There's nothing wrong with p-value. It is a useful and meaningful measure of something real.
+<!-- TODO: Clean this one up a lot -->
 
-But it doesn't mean what people think it means.
+- We are thinking about statistics backwards.
+- If statistics has ever made you feel dumb or intimidated, it's not about you.
+- p-value is just really, really weird.
 
-As a consequence, when we approach the scientific literature naively, we risk making a base rate error.
+# Bayesian Updating
 
-- P-value doesn't tell us how likely a statistical theory is to be true. 
-- Rather, it tells us how unlikely the data we observed would be under certain conditions including if that theory were false. (If that phrase confuses you, good. It's confusing.)
+## Bayesian Updating: What it is not
+![*Statistical Rethinking*, p.2 (Richard McElreath, 2020)](images/week1/mcelreath-2.png){fig-align="center" width="100%"}
 
-The difference between these two statements is entirely dependent on the _base rate_ of true and false hypotheses. If there are more false hypotheses out there than true ones -- and Ioannidis says unambiguously that there are -- p-value can be a very misleading measure.
 
-In this course, we're going to approach probability in Bayesian terms, and to do that we'll make use of Bayes theorem.
+
+## Bayesian Updating: What it is
+::: {.notes}
+So I said that we were going to derive our entire statistics from first principles, and I meant it. Instead of a million pre-built tests, we have one process: Bayesian updating
+
+A million tests. We have one process, called Bayesian updating. Everything we build will be an application of that same logic.
+
+For those interested in math, I definitely encourage you to where the theorem comes from and how it's derived, but for our purposes, we need just one simple idea:
+:::
+
+Instead of tests, we have Bayesian Updating:
+
+- We have a **prior** belief about the world (specifically, about a parameter or "estimand").<br>[_I think that about 60% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
+- Then, we observe something, and we estimate the **likelihood** of what we saw.<br>[_I just took a survey, and only 30% of people said they will vote for the current mayor._]{.fragment .blue}
+- This new observation changes our prior belief (challenging it or making it stronger), to become our **posterior**.<br>[_I now think that about 45% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
+
+# Bayesian Updating Example {.no-title}
+```{shinylive-r}
+#| standalone: true
+{{< include shinydemos/demoUpdating.R >}}
+
+```
 
 # Bayes Theorem
-
-
 ::: {.notes}
 That's all statistics is.
 
@@ -276,24 +329,29 @@ P(\text{hypothesis} | \text{data})
 $$
 
 - **P(data | hypothesis)**: likelihood
+  {.red} 
 - **P(hypothesis)**: prior probability
 - **P(hypothesis | data)**: posterior probability
 - **P(data)**: marginal likelihood (boring)
 
-# Bayesian Updating
 
-This process all together is called "updating". 
+::: {.fragment .nonincremental}
+In simple terms:
 
+- prior * likelihood => posterior
+:::
 
-# Bayesian Updating Example {.no-title}
-```{shinylive-r}
-#| standalone: true
-{{< include shinydemos/demoUpdating.R >}}
+<!-- # Some points
+One important point: priors/posteriors are not single values. They are **probability distributions**, ranging over all possible values of our estimand.
 
-```
+Also, there is no minimum samples size. -->
 
 # Statistics is observation
 
+- When we do ethnography, we _expect_ our data to be messy.
+- We need to start thinking about statistics in the same way.
+
+::: {.notes}
 Updating is the foundation of our statistics: We believed something, we saw something, and we now believe something slightliy or significantly different from what we believed before.
 
 What does that mean?
@@ -303,3 +361,4 @@ It's why it's okay that most published research is false.
 Observation is messy. We love the mess. We live in the mess. Observation doesn't give us simple answers, but it continuously challenges and reshapes our assumptions.
 
 Science is not the experiments we do. Rather, it's the debates we have about the experiments we do. Over time, we can become less, and less, and less, and less, and less, and less wrong.
+:::

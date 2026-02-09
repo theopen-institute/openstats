@@ -93,16 +93,16 @@ STYLE <- HTML(
     min-height: 0;
   }
 
-  #likelihoodPlot_wrap {
+  #probabilityPlot_wrap {
     flex: 1 1 auto;
     min-height: 0;
     width: 100%;
   }
 
   /* Ensure the htmlwidget + ggiraph wrappers and SVG fill the wrapper */
-  #likelihoodPlot_wrap .html-widget,
-  #likelihoodPlot_wrap .girafe_container,
-  #likelihoodPlot_wrap svg {
+  #probabilityPlot_wrap .html-widget,
+  #probabilityPlot_wrap .girafe_container,
+  #probabilityPlot_wrap svg {
     width: 100% !important;
     height: 100% !important;
   }
@@ -128,7 +128,7 @@ format2 <- function(x, max_digits = 40L) {
   )
 }
 
-format_likelihood <- function(x) {
+format_probability <- function(x) {
   if (is.na(x) || !is.finite(x)) {
     return("")
   }
@@ -210,8 +210,8 @@ ui <- page_sidebar(
     uiOutput("dynamicHeader"),
     tableOutput("resultTable"),
     div(
-      id = "likelihoodPlot_wrap",
-      ggiraph::girafeOutput("likelihoodPlot")
+      id = "probabilityPlot_wrap",
+      ggiraph::girafeOutput("probabilityPlot")
     )
   )
 )
@@ -295,7 +295,7 @@ server <- function(input, output, session) {
         conjecture = CONJECTURE,
         possibilities = "-",
         total = "-",
-        likelihood = rep(1 / (TOTAL_STONES + 1), TOTAL_STONES + 1),
+        probability = rep(1 / (TOTAL_STONES + 1), TOTAL_STONES + 1),
         stringsAsFactors = FALSE
       )
       return(list(df = df, header = header))
@@ -324,7 +324,7 @@ server <- function(input, output, session) {
 
     m <- max(log_paths)
     paths_scaled <- exp(log_paths - m)
-    likelihood <- paths_scaled / sum(paths_scaled)
+    probability <- paths_scaled / sum(paths_scaled)
 
     paths <- vapply(factors, prod, numeric(1))
 
@@ -332,7 +332,7 @@ server <- function(input, output, session) {
       conjecture = CONJECTURE,
       possibilities = formula,
       total = format2(round(paths, 0)),
-      likelihood = likelihood,
+      probability = probability,
       stringsAsFactors = FALSE
     )
 
@@ -349,7 +349,7 @@ server <- function(input, output, session) {
   output$resultTable <- renderTable(
     {
       df <- table_state()$df
-      df$likelihood <- vapply(df$likelihood, format_likelihood, character(1))
+      df$probability <- vapply(df$probability, format_probability, character(1))
       df
     },
     striped = TRUE,
@@ -362,12 +362,12 @@ server <- function(input, output, session) {
     sanitize.text.function = function(x) x
   )
 
-  likelihood_vector <- reactive(table_state()$df$likelihood)
+  probability_vector <- reactive(table_state()$df$probability)
 
   observeEvent(
-    likelihood_vector(),
+    probability_vector(),
     {
-      y <- likelihood_vector()
+      y <- probability_vector()
       h <- lik_hist()
 
       if (length(h) == 0 || !isTRUE(all.equal(h[[length(h)]], y))) {
@@ -386,7 +386,7 @@ server <- function(input, output, session) {
 
     cur <- data.frame(
       x = x,
-      y = df$likelihood,
+      y = df$probability,
       conjecture = df$conjecture,
       stringsAsFactors = FALSE
     )
@@ -417,7 +417,7 @@ server <- function(input, output, session) {
     list(cur = cur, ghost = ghost_df)
   }
 
-  output$likelihoodPlot <- ggiraph::renderGirafe({
+  output$probabilityPlot <- ggiraph::renderGirafe({
     df <- table_state()$df
     h <- lik_hist()
 
@@ -429,12 +429,12 @@ server <- function(input, output, session) {
 
     # Tooltip changes:
     # - emoji line first (conjecture)
-    # - likelihood formatted like the table
+    # - probability formatted like the table
     cur$tooltip <- sprintf(
-      "%s\nBlue stones: %d\nLikelihood: %s",
+      "%s\nBlue stones: %d\nprobability: %s",
       cur$conjecture,
       cur$x,
-      vapply(cur$y, format_likelihood, character(1))
+      vapply(cur$y, format_probability, character(1))
     )
 
     p <- ggplot()
@@ -463,7 +463,7 @@ server <- function(input, output, session) {
         limits = c(-0.05, 1.05),
         expand = expansion(mult = c(0, 0.02))
       ) +
-      labs(x = "Number of blue stones", y = "Likelihood") +
+      labs(x = "Number of blue stones", y = "probability") +
       theme_minimal(base_size = 13) +
       theme(panel.grid.minor = element_blank(), legend.position = "none")
 

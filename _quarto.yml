@@ -1,13 +1,18 @@
 project:
   type: website
   output-dir: .output
+  resources:
+    - images/
+    - css/
+    - js/
+    - www/
 format: 
   revealjs:
-    theme: [simple, styles/deck.scss]
-    logo: 'static/logo_compact_blue.svg'
-    background-image: "static/background.png"
+    theme: [simple, css/deck.scss]
+    logo: 'images/logo_compact_blue.svg'
+    background-image: "images/background.png"
     background-size: "cover"
-    # include-after-body: _reveal.html
+    # include-after-body: js/_reveal.html
     margin: 0.05
     width: 1605
     height: 1050
@@ -15,6 +20,6 @@ format:
     transition: slide
 filters: 
   - shinylive
-title-slide-attributes:
-    data-background-image: static/background.png
-    data-background-size: cover
+# title-slide-attributes:
+#     data-background-image: images/background.png
+#     data-background-size: "cover"
