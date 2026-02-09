@@ -1,13 +1,8 @@
 ---
-title: "Week 1: Statistics is just observation"
+title: "Week 1: Fresh Starts"
 author: "the Open Institute"
-format: 
-  revealjs:
-    fragments: true
-    incremental: true
 
 ---
-
 # Most published research is false
 
 ::: {.notes}
@@ -46,7 +41,7 @@ format:
 # This week's goals
 
 - Unpack the key concepts underlying Ioannidis's claim.
-  - Statistical significance
+  - Statistical significance 
   - The base rate paradox
 - Start rebuilding statistics from the ground up.
 
@@ -76,14 +71,12 @@ Two conventions:
 - We express probability as a number between 0 and 1 (0% to 100%)
 - We write probability as P( event ) or P( event | condition )
 
-:::: {.columns}
-::: {.column width="50%"}
-
 ::: {.fragment}
 In 2025, Kathmandu saw rain on 179 days:
 :::
 
 - P( rain ) = 179 / 365 = 0.49 (49%) [<br>(This is just counting.)]{.fragment} 
+
 
 ::: {.fragment}
 Or with _conditional probabilities_:
@@ -96,23 +89,20 @@ Or with _conditional probabilities_:
 - P( rain | Feb ) = 2/28 = 0.07 (7%)
 :::
 
-:::
-::: {.column width="50%"}
+
+# Probability Examples
+
 ::: {.fragment .nonincremental}
 - P( bachelors degree )
 - P( bachelors degree | urban )
 - P( bachelors degree | rural )
 :::
-::: {.fragment .nonincremental}
----
 
 - P( win | leading at halftime)
 - P( disease | family history )
 - P( rain | rained yesterday )
 - P( survival | attacked by bear )
-:::
-:::
-:::
+
 
 # Applied probability
 
@@ -262,13 +252,14 @@ What we usually actually want:
 :::
 
 
-# What Ioannidis said
+# Why is most published research wrong?
 
 <!-- TODO: Clean this one up a lot -->
 
 - We are thinking about statistics backwards.
-- If statistics has ever made you feel dumb or intimidated, it's not about you.
-- p-value is just really, really weird.
+- If statistics has ever made you feel dumb or intimidated, it's not you...
+- ...p-value is just really, really weird.
+- Most people don't actually understand what statistical significance means.
 
 # Bayesian Updating
 
@@ -329,7 +320,6 @@ P(\text{hypothesis} | \text{data})
 $$
 
 - **P(data | hypothesis)**: likelihood
-  {.red} 
 - **P(hypothesis)**: prior probability
 - **P(hypothesis | data)**: posterior probability
 - **P(data)**: marginal likelihood (boring)
