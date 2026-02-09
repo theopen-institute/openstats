@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "week1.html#bayesian-updating-what-it-is-not",
+    "href": "week1.html#bayesian-updating-what-it-is-not",
+    "title": "Week 1: Statistics is just observation",
+    "section": "Bayesian Updating: What it is not",
+    "text": "Bayesian Updating: What it is not\n\nStatistical Rethinking, p.2 (Richard McElreath, 2020)"
+  },
+  {
+    "objectID": "week1.html#bayesian-updating-what-it-is",
+    "href": "week1.html#bayesian-updating-what-it-is",
+    "title": "Week 1: Statistics is just observation",
+    "section": "Bayesian Updating: What it is",
+    "text": "Bayesian Updating: What it is\n\nSo I said that we were going to derive our entire statistics from first principles, and I meant it. Instead of a million pre-built tests, we have one process: Bayesian updating\nA million tests. We have one process, called Bayesian updating. Everything we build will be an application of that same logic.\nFor those interested in math, I definitely encourage you to where the theorem comes from and how it’s derived, but for our purposes, we need just one simple idea:\n\nInstead of tests, we have Bayesian Updating:\n\nWe have a prior belief about the world (specifically, about a parameter or “estimand”).I think that about 60% of Kathmandu will vote for the current mayor in the next election.\nThen, we observe something, and we estimate the likelihood of what we saw.I just took a survey, and only 30% of people said they will vote for the current mayor.\nThis new observation changes our prior belief (challenging it or making it stronger), to become our posterior.I now think that about 45% of Kathmandu will vote for the current mayor in the next election."
+  }
+]

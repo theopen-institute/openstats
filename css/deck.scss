@@ -1,0 +1,37 @@
+/*-- scss:rules --*/
+/* custom classes */
+.no-title h1 {
+  display: none;
+}
+
+.red {
+  color: red;
+}
+
+.blue {
+  color: blue;
+}
+
+/* theme overrides */
+.reveal .slide-logo {
+  max-height: 2.8rem !important;
+}
+
+.reveal .slides section {
+  justify-content: flex-start;
+  /* top align content */
+}
+
+/* shinylive slides */
+.sourceCode[data-engine="r"] {
+  border: none !important;
+  // margin: -1em;
+}
+
+.shinylive-wrapper {
+  width: 1605px;
+  height: 1050px;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border: none !important;
+}
