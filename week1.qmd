@@ -1,31 +1,18 @@
----
-title: "Week 1: Fresh Starts"
-author: "the Open Institute"
+# Data Lunch: Week 1 {.center}
 
----
-# Most published research is false
+A Fresh Start
+
+::: {.footer}
+The Open Institute For Social Science
+:::
 
 ::: {.notes}
-  Article by a Greek-American medical scientist at Stanford named John Ioannidis
-
-  What's interesting is that this is a purely theoretical argument, based on some very mathy probability theory. Argues that the majority of claims made in published scientific articles are wrong.
-
-  He doesn't state a specific number, but he does say more than half and probably a lot more than half of all findings are false. Others have attempted to test this claim empirically, and sure enough in many fields findings were reproducible as little as 10-20% of the time.
-
-  This was a shocking and controversial claim when it was published in 2006, but today I think there's a consensus that Ioannidis is right.
-
-  But how can he make this argument, purely theoretically? And what do we do with that? In medicine, sociology, economics, psychology, engineering, as much as 80-90 percent of our hard, statistical findings are just wrong.
-
-  I'm here to tell you, it's both true and okay. Most science is wrong, and that's okay. 
-
-  Published research findings may be wrong 80-90% of the time, but science still works. It works really, really well.
-
-  Thats a paradox. 
-
-  It's okay for a very simple reason. Statistics is observation, and observation is always messy. It's only a problem if we expect it to be tidy.
-  
-  To make sense of it, we need to understand what statistics is. We need to stop treating statistics as mathmatical rituals and start treating it like a way to reflect on and update our own thinking. Thats the goal of this course.
+- Statistical backgrounds?
+- Goal: ask questions and observe the world
+- There is technical material, but it's easy to forget that the technical material is not the point.
 :::
+
+# Most published research is false
 
 ![](images/week1/ioannidis.png){width="100%"}
 [https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124)
@@ -38,55 +25,105 @@ author: "the Open Institute"
 </div>
 :::
 
+::: {.notes}
+- Article by a Greek-American medical scientist at Stanford named John Ioannidis
+- purely theoretical argument, based on some very mathy arguments
+- Argues that the majority of claims made in published scientific articles are wrong.
+
+- He doesn't state a specific number, but he does say more than half and probably a lot more than half of all findings are false. 
+- Others have attempted to test this claim empirically, and sure enough in many fields findings were reproducible as little as 10-20% of the time.
+
+- This was a shocking and controversial claim when it was published in 2006, but today I think there's a consensus that Ioannidis is right.
+
+- But how can he make this argument, purely theoretically? And what do we do with that? In medicine, sociology, economics, psychology, engineering, as much as 80-90 percent of our hard, statistical findings are just wrong.
+
+- I'm here to tell you, it's both true and okay. Most science is wrong, and that's okay. 
+
+- Published research findings may be wrong 80-90% of the time, but science still works. It works really, really well.
+
+- Thats a paradox. 
+
+- It's okay for a very simple reason. Statistics is observation, and observation is always messy. It's only a problem if we expect it to be tidy.
+
+- To make sense of it, we need to understand what statistics is. We need to stop treating statistics as mathmatical rituals and start treating it like a way to reflect on and update our own thinking. Thats the goal of this course.
+:::
+
 # This week's goals
 
+:::{.nonincremental}
 - Unpack the key concepts underlying Ioannidis's claim.
   - Statistical significance 
   - The base rate paradox
 - Start rebuilding statistics from the ground up.
+:::
 
 # Statistical significance
 
-::: {.fragment}
+::: {.columns}
+
+::: {.column width="80%"}
+::: {.fragment fragment-index=1}
 > A result is statistically significant if, assuming the null hypothesis is true and the model assumptions hold, the probability of obtaining data at least as extreme as those observed (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α. (ChatGPT, 2026)
 :::
+:::
 
-- If this confuses you, you're not alone. It's really confusing.
-- We are going to scrap all of this jargon to rebuild statistics from the ground up.
+::: {.column width="20%"}
+::: {.fragment fragment-index=2}
+![](images/week1/reaction.jpg){.absolute top=0 right=0 width="15%"}
+:::
+:::
+
+:::
+
+<ul>
+  <li class="fragment" data-fragment-index=2>If this confuses you, you're not alone. It is deeply unintuitive.</li>
+  <li class="fragment">We are going to scrap all of this conceptual baggage and start over.</li>
+</ul>
+
+
 
 ::: {.notes}
-20 years ago, there was a huge war between the Bayesians and the NHST people (more often called Frequentist), but that era is over. I'm not going to try to convince you that Bayesian methods are universally better. 95% of the time, the results are the same. Frequentist statistics are valid, capable, convenient, and useful. They are also a terrible way to learn statistics, largely because they way they think about probability is deeply, deeply unintuitive.
+- This approach goes by a number of different names: frequentist statistics, null hypothesis significance testing, classical statistics, p-value statistics, or just "statistics"
+- There's nothing wrong with frequentist approaches. They are valid, capable, convenient and useful.
+- The math is 100% valid.
+- But it's a terrible way to learn statistics
+- The way it thinks about probability is deeply, deeply unintuitive.
 :::
 
 # Probability
 
-:::{.notes}
-We all know what probability is because we all know what uncertainty is at a deeply intuitive level. I'm not going to bother defining it, at least not yet. What I do want to do is talk about a few notational conventions.
-:::
+So what is probability? [It's just a way of talking about uncertainty.]{.fragment}
 
 ::: {.fragment}
 Two conventions:
 :::
 
-- We express probability as a number between 0 and 1 (0% to 100%)
-- We write probability as P( event ) or P( event | condition )
+- _We express probability as a number between 0 and 1 (0% to 100%)._
+- _We write probability as P( event ) or P( event | condition )._
 
 ::: {.fragment}
 In 2025, Kathmandu saw rain on 179 days:
 :::
 
-- P( rain ) = 179 / 365 = 0.49 (49%) [<br>(This is just counting.)]{.fragment} 
-
+- P( rain ) = 179 / 365 = 0.49 (49%)
 
 ::: {.fragment}
-Or with _conditional probabilities_:
+We can do better with _conditional probabilities_:
 :::
 
 ::: {.fragment .nonincremental}
-- P( rain | Apr) = 13/30 = 0.43 (43%)
-- P( rain | Dec) = 0/31 = 0.00 (0%)
-- P( rain | Jul ) = 31/31 = 1.00 (100%)
-- P( rain | Feb ) = 2/28 = 0.07 (7%)
+- P( rain | Apr) = 13/30 (0.43)
+- P( rain | Dec) = 0/31 (0.00)
+- P( rain | Jul ) = 31/31 (1.00)
+- P( rain | Feb ) = 2/28 (0.07)
+:::
+
+::: {.notes}
+- Imagine asking a friend if it will rain tomorrow. They say, "Probably". What does that word "probably" mean?
+- Intuitively, probability is a way of talking about uncertainty.
+- To frequentists, it's a way of talking about the long run outcome of repeated measurements. Strange.
+- We're going to build statistics using a more intuitive set of concepts.
+
 :::
 
 
@@ -100,17 +137,11 @@ Or with _conditional probabilities_:
 
 - P( win | leading at halftime)
 - P( disease | family history )
-- P( rain | rained yesterday )
+- P( rain today | rained yesterday )
 - P( survival | attacked by bear )
 
 
 # Applied probability
-
-::: {.notes}
-One common use of statistics is to evaluate the accuracy of predictive tests.
-
-I want to illustrate a very famous example involving HIV testing. This is relevant because, until relatively recently, everybody who traveled to the US from Nepal had to take an HIV test for medical clearance.
-:::
 
 ::: {.fragment}
 In Nepal, HIV has a prevalence of about 0.1%. We can write that as:
@@ -122,8 +153,8 @@ In Nepal, HIV has a prevalence of about 0.1%. We can write that as:
 With statistical tests and predictions, we talk about two kinds of "accuracy":
 :::
 
-- **Sensitivity** is the probability that a test will come back positive when administered to a person living with HIV
-- **Specificity** is the probability that a test will come back negative when administered to a person who is not living with HIV 
+- **Sensitivity**: probability of a positive result testing a person who has HIV
+- **Specificity**: probability of a negative test result testing a person who doesn't have HIV
 
 ::: {.fragment .nonincremental}
 We can write these using our probability language:
@@ -132,37 +163,13 @@ We can write these using our probability language:
 - Specificity: P( test– | HIV– ) = 0.97 (96%)
 :::
 
-# Applied probability (continued)
 ::: {.notes}
-From these two options, we can do some simple subtraction to understand the other possibilities:
+One common use of statistics is to evaluate the accuracy of predictive tests.
 
-This, as we can see, an imperfect but reasonably good test. There's a problem, though. Can anybody spot it?
-
-If we already know somebody's HIV status, why would be bother giving them a test? Far, far more often, when we think about the accuracy of a test, we are actually interested in the reverse question:
-
-Sensitivity and Specificity describe a situation where we already know somebody's HIV status. Why test if we already know? What we usually really want:
-
-
-
-> This conditional probability statement also has a fancy name: Positive Predictive Value. Sensitivity asks, "Given a person living with HIV, what is the probability of a positive test result". PPV asks, "Given a positive test result, what is the probability that the person has HIV." Similar but different questions.
-
-> So, given the measures above, what is P(HIV+ | test+)?
-
-
-
-> Think about that. If you pick a person at random, give them an HIV test and it comes back positive, there is a 1% chance that they actually have HIV. 99% of them are getting a positive test (and, likely, quite a scare) erroneously.
-
-> This goes against most people's expectations. Why this happens actually isn't that hard to understand. Of people with HIV, 99% will get a positive test result.
-> Of people who don't have HIV, only 3% will get a positive test result.
-
-> But, the important fact is that HIV is actually quite rare. 3% of a big population is bigger than 99% of a very small population.
-
-> So, this test is 99% accurate at detecting HIV among people who have it, but for a random person getting a test, a positive test result is only accurate 3.4% percent of the time.
-
-> My point here is not that these tests are worthless. Rather what I want to point out is that probability is often unpredictable and unintuitive. 
-
-
+I want to illustrate a very famous example involving HIV testing. This is relevant because, until relatively recently, everybody who traveled to the US from Nepal had to take an HIV test for medical clearance.
 :::
+
+# Applied probability (continued)
 
 ::: {.nonincremental}
 - Sensitivity P( test+ | HIV+ ): 99%
@@ -185,14 +192,63 @@ What about P( HIV+ | test+): [3.2%]{.fragment fragment-index=2 .red}
 _Paradox: P(A|B) is not the same as P(B|A)_
 :::
 
+::: {.notes}
+- This, as we can see, an imperfect but reasonably good test. There's a problem, though. Can anybody spot it?
+
+- If we already know somebody's HIV status, why would be bother giving them a test? Far, far more often, when we think about the accuracy of a test, we are actually interested in the reverse question:
+
+- Sensitivity and Specificity describe a situation where we already know somebody's HIV status. Why test if we already know? What we usually really want a different thing
+
+-Think about that. If you pick a person at random, give them an HIV test and it comes back positive, there is a 3% chance that they actually have HIV. 97% of them are getting a positive test (and, likely, quite a scare) erroneously.
+
+- This goes against most people's expectations. Why this happens actually isn't that hard to understand. Of people with HIV, 99% will get a positive test result.
+- Of people who don't have HIV, only 3% will get a positive test result.
+
+- But, the important fact is that HIV is actually quite rare. 3% of a big population is bigger than 99% of a very small population.
+
+- So, this test is 99% accurate at detecting HIV among people who have it, but for a random person getting a test, a positive test result is only accurate 3.4% percent of the time.
+
+- My point here is not that these tests are worthless. Rather what I want to point out is that probability is often unpredictable and unintuitive. 
+
+:::
+
 # Base Rate Paradox {.no-title}
 ```{shinylive-r}
 #| standalone: true
 {{< include shinydemos/demoBaseRate.R >}}
-
 ```
 
 # Statistical significance (revisited)
+
+Let's look at that quote again:
+
+> A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=2 .highlight-current-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=3 .highlight-current-red} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
+
+::: {.fragment .nonincremental fragment-index=1}
+Two key phrases: 
+
+::: {.fragment fragment-index=2}
+- "assuming the...hypothesis is true"
+:::
+
+::: {.fragment fragment-index=3}
+- "the probability of...data..."
+:::
+
+:::
+
+::: {.fragment .nonincremental}
+This frames _statistical significance_ as:
+
+- P( data | hypothesis )
+:::
+
+::: {.fragment .nonincremental}
+What we usually actually want:
+
+- P( hypothesis | data )
+:::
+
 
 ::: {.notes}
 There's a lot of very dense jargon here, but we don't need to unpack it all. let's just take a minute to think about what is being measured here.
@@ -222,43 +278,12 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 
 :::
 
-Let's look at that quote again:
 
-> A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=2 .highlight-current-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=3 .highlight-current-red} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
-
-::: {.fragment .nonincremental fragment-index=1}
-Two key phrases: 
-
-::: {.fragment fragment-index=2}
-- "assuming the...hypothesis is true"
-:::
-
-::: {.fragment fragment-index=3}
-- "the probability of...data..."
-:::
-
-:::
-
-::: {.fragment .nonincremental}
-This is equivalent to:
-
-- P( data | hypothesis )
-:::
-
-::: {.fragment .nonincremental}
-What we usually actually want:
-
-- P( hypothesis | data )
-:::
-
-
-# Why is most published research wrong?
-
-<!-- TODO: Clean this one up a lot -->
+# So why is most published research wrong?
 
 - We are thinking about statistics backwards.
 - If statistics has ever made you feel dumb or intimidated, it's not you...
-- ...p-value is just really, really weird.
+- p-value is just really, really weird.
 - Most people don't actually understand what statistical significance means.
 
 # Bayesian Updating
