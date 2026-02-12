@@ -1,0 +1,27 @@
+# Data Lunch: Week 2 {.center}
+
+Describing uncertainty
+
+
+# What is statistics
+
+Three components:
+
+- Population
+- Variation
+- Randomness
+
+The problem of randomness is fundamental because it shapes how we think about sampling.
+
+
+# DAGs and Causality
+Estimands and parameters, but also always uncertainty around them.
+
+Show a DAG of height -> weight; unknown variable
+
+# Common Distributions {.no-title}
+```{shinylive-r}
+#| standalone: true
+{{< include shinydemos/demoDistributions.R >}}
+
+```

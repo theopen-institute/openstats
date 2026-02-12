@@ -160,7 +160,7 @@ With statistical tests and predictions, we talk about two kinds of "accuracy":
 We can write these using our probability language:
 
 - Sensitivity: P( test+ | HIV+ ) = 0.99 (99%)
-- Specificity: P( test– | HIV– ) = 0.97 (96%)
+- Specificity: P( test– | HIV– ) = 0.97 (97%)
 :::
 
 ::: {.notes}
@@ -218,29 +218,45 @@ _Paradox: P(A|B) is not the same as P(B|A)_
 {{< include shinydemos/demoBaseRate.R >}}
 ```
 
+# Direction of conditions
+
+_Paradox: P(A|B) is not the same as P(B|A)_
+
+<div style="margin: 120px">
+
+|             | Sociology | Economics |                |
+|-------------|-----------|-----------|----------------|
+| **Urban**   |       240 |       300 | [_540_]{.gray} |
+| **Rural**   |        80 |        20 | [_100_]{.gray} |
+|             | [_320_]{.gray} | [_320_]{.gray} |      |
+</div>
+
+
+[P( Sociology | Rural )]{.red} = 80 / 100 = 0.80
+
+[P( Rural | Sociology )]{.blue} = 80 / 320 = 0.25
+
+
+
 # Statistical significance (revisited)
 
 Let's look at that quote again:
 
-> A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=2 .highlight-current-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=3 .highlight-current-red} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
+> A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=2 .highlight-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=3 .highlight-blue} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
 
 ::: {.fragment .nonincremental fragment-index=1}
 Two key phrases: 
-
-::: {.fragment fragment-index=2}
-- "assuming the...hypothesis is true"
 :::
 
-::: {.fragment fragment-index=3}
-- "the probability of...data..."
-:::
-
-:::
+<ul>
+  <li class="fragment red" data-fragment-index=2>"assuming the...hypothesis is true"</li>
+  <li class="fragment blue" data-fragment-index=3>"the probability of...data..."</li>
+</ul>
 
 ::: {.fragment .nonincremental}
 This frames _statistical significance_ as:
 
-- P( data | hypothesis )
+- P( [data]{.blue} | [hypothesis]{.red} )
 :::
 
 ::: {.fragment .nonincremental}
@@ -340,20 +356,26 @@ $$
 or
 
 $$
-P(\text{hypothesis} | \text{data})
-= \frac{P(\text{data} | \text{hypothesis})\,P(\text{hypothesis})}{P(\text{data})}
+\color{green}{P(\text{hypothesis} \mid \text{data})}
+=
+\frac{
+\color{#1b91ff}{P(\text{data} \mid \text{hypothesis})}
+\;\color{#ff2c2d}{P(\text{hypothesis})}
+}{
+\color{#999}{P(\text{data})}
+}
 $$
 
-- **P(data | hypothesis)**: likelihood
-- **P(hypothesis)**: prior probability
-- **P(hypothesis | data)**: posterior probability
-- **P(data)**: marginal likelihood (boring)
+- [**P(data | hypothesis)**]{.blue}: likelihood
+- [**P(hypothesis)**]{.red}: prior probability
+- [**P(hypothesis | data)**]{.green}: posterior probability
+- [**P(data)**]{.gray}: marginal likelihood (boring)
 
 
 ::: {.fragment .nonincremental}
 In simple terms:
 
-- prior * likelihood => posterior
+- prior × likelihood => posterior
 :::
 
 <!-- # Some points
