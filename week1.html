@@ -99,7 +99,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0ee32626c7e7f5a051a13e928481ba92.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-9270dd9cfccfdb94bd7891c63aee863f.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -399,7 +399,7 @@ We are going to scrap all of this conceptual baggage and start over.
 <p>We can write these using our probability language:</p>
 <ul>
 <li>Sensitivity: P( test+ | HIV+ ) = 0.99 (99%)</li>
-<li>Specificity: P( test– | HIV– ) = 0.97 (96%)</li>
+<li>Specificity: P( test– | HIV– ) = 0.97 (97%)</li>
 </ul>
 </div>
 <aside class="notes">
@@ -806,29 +806,66 @@ We are going to scrap all of this conceptual baggage and start over.
 <span id="cb1-317"><a></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 
+<section id="direction-of-conditions" class="title-slide slide level1 center">
+<h1>Direction of conditions</h1>
+<p><em>Paradox: P(A|B) is not the same as P(B|A)</em></p>
+<div style="margin: 120px">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>Sociology</th>
+<th>Economics</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Urban</strong></td>
+<td>240</td>
+<td>300</td>
+<td><span class="gray"><em>540</em></span></td>
+</tr>
+<tr class="even">
+<td><strong>Rural</strong></td>
+<td>80</td>
+<td>20</td>
+<td><span class="gray"><em>100</em></span></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="gray"><em>320</em></span></td>
+<td><span class="gray"><em>320</em></span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><span class="red">P( Sociology | Rural )</span> = 80 / 100 = 0.80</p>
+<p><span class="blue">P( Rural | Sociology )</span> = 80 / 320 = 0.25</p>
+</section>
+
 <section id="statistical-significance-revisited" class="title-slide slide level1 center">
 <h1>Statistical significance (revisited)</h1>
 <p>Let’s look at that quote again:</p>
 <blockquote>
-<p>A result is statistically significant if, <span class="fragment highlight-current-red" data-fragment-index="2">assuming the null hypothesis is true</span> and the model assumptions hold, <span class="fragment highlight-current-red" data-fragment-index="3">the probability of obtaining data at least as extreme as those observed</span> (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.</p>
+<p>A result is statistically significant if, <span class="fragment highlight-red" data-fragment-index="2">assuming the null hypothesis is true</span> and the model assumptions hold, <span class="fragment highlight-blue" data-fragment-index="3">the probability of obtaining data at least as extreme as those observed</span> (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.</p>
 </blockquote>
 <div class="fragment" data-fragment-index="1">
 <p>Two key phrases:</p>
-<div class="fragment" data-fragment-index="2">
+</div>
 <ul>
-<li>“assuming the…hypothesis is true”</li>
+<li class="fragment red" data-fragment-index="2">
+“assuming the…hypothesis is true”
+</li>
+<li class="fragment blue" data-fragment-index="3">
+“the probability of…data…”
+</li>
 </ul>
-</div>
-<div class="fragment" data-fragment-index="3">
-<ul>
-<li>“the probability of…data…”</li>
-</ul>
-</div>
-</div>
 <div class="fragment">
 <p>This frames <em>statistical significance</em> as:</p>
 <ul>
-<li>P( data | hypothesis )</li>
+<li>P( <span class="blue">data</span> | <span class="red">hypothesis</span> )</li>
 </ul>
 </div>
 <div class="fragment">
@@ -1645,19 +1682,25 @@ P(A|B) = \frac{P(B|A)\,P(A)}{P(B)}
 \]</span></p>
 <p>or</p>
 <p><span class="math display">\[
-P(\text{hypothesis} | \text{data})
-= \frac{P(\text{data} | \text{hypothesis})\,P(\text{hypothesis})}{P(\text{data})}
+\color{green}{P(\text{hypothesis} \mid \text{data})}
+=
+\frac{
+\color{#1b91ff}{P(\text{data} \mid \text{hypothesis})}
+\;\color{#ff2c2d}{P(\text{hypothesis})}
+}{
+\color{#999}{P(\text{data})}
+}
 \]</span></p>
 <ul>
-<li class="fragment"><strong>P(data | hypothesis)</strong>: likelihood</li>
-<li class="fragment"><strong>P(hypothesis)</strong>: prior probability</li>
-<li class="fragment"><strong>P(hypothesis | data)</strong>: posterior probability</li>
-<li class="fragment"><strong>P(data)</strong>: marginal likelihood (boring)</li>
+<li class="fragment"><span class="blue"><strong>P(data | hypothesis)</strong></span>: likelihood</li>
+<li class="fragment"><span class="red"><strong>P(hypothesis)</strong></span>: prior probability</li>
+<li class="fragment"><span class="green"><strong>P(hypothesis | data)</strong></span>: posterior probability</li>
+<li class="fragment"><span class="gray"><strong>P(data)</strong></span>: marginal likelihood (boring)</li>
 </ul>
 <div class="fragment">
 <p>In simple terms:</p>
 <ul>
-<li>prior * likelihood =&gt; posterior</li>
+<li>prior × likelihood =&gt; posterior</li>
 </ul>
 </div>
 <!-- # Some points

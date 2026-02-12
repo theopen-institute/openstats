@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<meta name="shinylive:serviceworker_dir" content=".">
+<script src="site_libs/quarto-contrib/shinylive-0.9.1/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="site_libs/quarto-contrib/shinylive-0.9.1/shinylive/run-python-blocks.js" type="module"></script>
+<link href="site_libs/quarto-contrib/shinylive-0.9.1/shinylive/shinylive.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
+
+  <title>week2</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-9270dd9cfccfdb94bd7891c63aee863f.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+
+<section id="data-lunch-week-2" class="title-slide slide level1 center">
+<h1>Data Lunch: Week 2</h1>
+<p>Describing uncertainty</p>
+</section>
+
+<section id="what-is-statistics" class="title-slide slide level1 center">
+<h1>What is statistics</h1>
+<p>Three components:</p>
+<ul>
+<li class="fragment">Population</li>
+<li class="fragment">Variation</li>
+<li class="fragment">Randomness</li>
+</ul>
+<p>The problem of randomness is fundamental because it shapes how we think about sampling.</p>
+</section>
+
+<section id="dags-and-causality" class="title-slide slide level1 center">
+<h1>DAGs and Causality</h1>
+<p>Estimands and parameters, but also always uncertainty around them.</p>
+<p>Show a DAG of height -&gt; weight; unknown variable</p>
+</section>
+
+<section id="common-distributions" class="title-slide slide level1 no-title center">
+<h1>Common Distributions</h1>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>#| '!! shinylive warning !!': |</span>
+<span id="cb1-2"><a></a>#|   shinylive does not work in self-contained HTML documents.</span>
+<span id="cb1-3"><a></a>#|   Please set `embed-resources: false` in your metadata.</span>
+<span id="cb1-4"><a></a>#| standalone: true</span>
+<span id="cb1-5"><a></a>library(shiny)</span>
+<span id="cb1-6"><a></a>library(bslib)</span>
+<span id="cb1-7"><a></a>library(shinyjs)</span>
+<span id="cb1-8"><a></a>library(ggplot2)</span>
+<span id="cb1-9"><a></a>library(ggiraph)</span>
+<span id="cb1-10"><a></a>library(munsell)</span>
+<span id="cb1-11"><a></a></span>
+<span id="cb1-12"><a></a># Replace STYLE to add sidebar flex classes</span>
+<span id="cb1-13"><a></a>STYLE &lt;- HTML(</span>
+<span id="cb1-14"><a></a>  "</span>
+<span id="cb1-15"><a></a>  .btn{</span>
+<span id="cb1-16"><a></a>    --bs-btn-padding-x: 0 !important;</span>
+<span id="cb1-17"><a></a>  }</span>
+<span id="cb1-18"><a></a>  .btnrow {</span>
+<span id="cb1-19"><a></a>    display: flex;</span>
+<span id="cb1-20"><a></a>    gap: 4px;</span>
+<span id="cb1-21"><a></a>    align-items: stretch;</span>
+<span id="cb1-22"><a></a>  }</span>
+<span id="cb1-23"><a></a></span>
+<span id="cb1-24"><a></a>  /* new: sidebar flex layout */</span>
+<span id="cb1-25"><a></a>  .sidebar-flex {</span>
+<span id="cb1-26"><a></a>    display: flex;</span>
+<span id="cb1-27"><a></a>    flex-direction: column;</span>
+<span id="cb1-28"><a></a>    height: 100%;</span>
+<span id="cb1-29"><a></a>    gap: 8px;</span>
+<span id="cb1-30"><a></a>  }</span>
+<span id="cb1-31"><a></a>  .sidebar-flex .params {</span>
+<span id="cb1-32"><a></a>    flex: 1 1 auto;</span>
+<span id="cb1-33"><a></a>    overflow: auto;</span>
+<span id="cb1-34"><a></a>    padding-bottom: 8px;</span>
+<span id="cb1-35"><a></a>  }</span>
+<span id="cb1-36"><a></a>  .sidebar-flex .simulation {</span>
+<span id="cb1-37"><a></a>    flex: 0 0 auto;</span>
+<span id="cb1-38"><a></a>    margin-top: auto; /* ensure it sits at the bottom */</span>
+<span id="cb1-39"><a></a>  }</span>
+<span id="cb1-40"><a></a></span>
+<span id="cb1-41"><a></a>  /* ensure full-height behavior inside the built-in sidebar container */</span>
+<span id="cb1-42"><a></a>  .sidebar &gt; .sidebar-content {</span>
+<span id="cb1-43"><a></a>    display: flex;</span>
+<span id="cb1-44"><a></a>    flex-direction: column;</span>
+<span id="cb1-45"><a></a>    height: 100%;</span>
+<span id="cb1-46"><a></a>  }</span>
+<span id="cb1-47"><a></a>"</span>
+<span id="cb1-48"><a></a>)</span>
+<span id="cb1-49"><a></a></span>
+<span id="cb1-50"><a></a>ui &lt;- page_sidebar(</span>
+<span id="cb1-51"><a></a>  sidebar = sidebar(</span>
+<span id="cb1-52"><a></a>    open = "always",</span>
+<span id="cb1-53"><a></a>    width = 400,</span>
+<span id="cb1-54"><a></a>    tags$style(STYLE),</span>
+<span id="cb1-55"><a></a></span>
+<span id="cb1-56"><a></a>    # wrap params and simulation into two flex units</span>
+<span id="cb1-57"><a></a>    div(</span>
+<span id="cb1-58"><a></a>      class = "sidebar-flex",</span>
+<span id="cb1-59"><a></a>      # parameters area (scrollable)</span>
+<span id="cb1-60"><a></a>      div(</span>
+<span id="cb1-61"><a></a>        class = "params",</span>
+<span id="cb1-62"><a></a>        h2("Probability Distributions"),</span>
+<span id="cb1-63"><a></a></span>
+<span id="cb1-64"><a></a>        selectizeInput(</span>
+<span id="cb1-65"><a></a>          "distType",</span>
+<span id="cb1-66"><a></a>          "Distribution Type",</span>
+<span id="cb1-67"><a></a>          list(</span>
+<span id="cb1-68"><a></a>            "Binomial",</span>
+<span id="cb1-69"><a></a>            "Normal",</span>
+<span id="cb1-70"><a></a>            "Uniform",</span>
+<span id="cb1-71"><a></a>            "Exponential",</span>
+<span id="cb1-72"><a></a>            "Poisson",</span>
+<span id="cb1-73"><a></a>            "Beta",</span>
+<span id="cb1-74"><a></a>            "Gamma"</span>
+<span id="cb1-75"><a></a>          ),</span>
+<span id="cb1-76"><a></a>          selected = "Binomial",</span>
+<span id="cb1-77"><a></a>          multiple = FALSE</span>
+<span id="cb1-78"><a></a>        ),</span>
+<span id="cb1-79"><a></a></span>
+<span id="cb1-80"><a></a>        # BINOMIAL</span>
+<span id="cb1-81"><a></a>        conditionalPanel(</span>
+<span id="cb1-82"><a></a>          condition = "input.distType == 'Binomial'",</span>
+<span id="cb1-83"><a></a>          sliderInput(</span>
+<span id="cb1-84"><a></a>            "successRate",</span>
+<span id="cb1-85"><a></a>            "Success Rate",</span>
+<span id="cb1-86"><a></a>            min = 0,</span>
+<span id="cb1-87"><a></a>            max = 100,</span>
+<span id="cb1-88"><a></a>            value = 50,</span>
+<span id="cb1-89"><a></a>            step = 1,</span>
+<span id="cb1-90"><a></a>            post = "%"</span>
+<span id="cb1-91"><a></a>          ),</span>
+<span id="cb1-92"><a></a>          numericInput(</span>
+<span id="cb1-93"><a></a>            "trialCount",</span>
+<span id="cb1-94"><a></a>            "Number of Trials",</span>
+<span id="cb1-95"><a></a>            value = 10,</span>
+<span id="cb1-96"><a></a>            min = 1,</span>
+<span id="cb1-97"><a></a>            max = 1000</span>
+<span id="cb1-98"><a></a>          ),</span>
+<span id="cb1-99"><a></a>          p(</span>
+<span id="cb1-100"><a></a>            tags$b("Generating Process:"),</span>
+<span id="cb1-101"><a></a>            "A binomial distribution is generated by repeating a fixed number of independent trials, each with the same probability of success, and counting how many successes occur."</span>
+<span id="cb1-102"><a></a>          ),</span>
+<span id="cb1-103"><a></a>          p(tags$i(</span>
+<span id="cb1-104"><a></a>            "Examples: (1) flipping a coin 20 times and counting how many heads occur; (2) testing 50 light bulbs and counting how many are defective; (3) asking 10 survey respondents a yes/no question and counting how many answer 'yes.'"</span>
+<span id="cb1-105"><a></a>          ))</span>
+<span id="cb1-106"><a></a>        ),</span>
+<span id="cb1-107"><a></a></span>
+<span id="cb1-108"><a></a>        # NORMAL</span>
+<span id="cb1-109"><a></a>        conditionalPanel(</span>
+<span id="cb1-110"><a></a>          condition = "input.distType == 'Normal'",</span>
+<span id="cb1-111"><a></a>          numericInput("mean", "Mean", value = 0),</span>
+<span id="cb1-112"><a></a>          numericInput("sd", "Standard Deviation", value = 1, min = 0.0001),</span>
+<span id="cb1-113"><a></a>          p(</span>
+<span id="cb1-114"><a></a>            tags$b(</span>
+<span id="cb1-115"><a></a>              "Generating Process:"</span>
+<span id="cb1-116"><a></a>            ),</span>
+<span id="cb1-117"><a></a>            "A normal distribution is generated when many small, independent influences combine, producing values that cluster symmetrically around a mean with decreasing frequency farther from the center."</span>
+<span id="cb1-118"><a></a>          ),</span>
+<span id="cb1-119"><a></a>          p(tags$i(</span>
+<span id="cb1-120"><a></a>            "Examples: (1) Measurement errors arising from many small sources of variation in a laboratory instrument. (2) Adult human heights within a large, homogeneous population. (3) Test scores on a well-designed exam taken by many students."</span>
+<span id="cb1-121"><a></a>          ))</span>
+<span id="cb1-122"><a></a>        ),</span>
+<span id="cb1-123"><a></a></span>
+<span id="cb1-124"><a></a>        # UNIFORM</span>
+<span id="cb1-125"><a></a>        conditionalPanel(</span>
+<span id="cb1-126"><a></a>          condition = "input.distType == 'Uniform'",</span>
+<span id="cb1-127"><a></a>          numericInput("umin", "Minimum", value = 0),</span>
+<span id="cb1-128"><a></a>          numericInput("umax", "Maximum", value = 1)</span>
+<span id="cb1-129"><a></a>        ),</span>
+<span id="cb1-130"><a></a></span>
+<span id="cb1-131"><a></a>        # EXPONENTIAL</span>
+<span id="cb1-132"><a></a>        conditionalPanel(</span>
+<span id="cb1-133"><a></a>          condition = "input.distType == 'Exponential'",</span>
+<span id="cb1-134"><a></a>          numericInput("exp_rate", "Rate (λ)", value = 1, min = 1e-8)</span>
+<span id="cb1-135"><a></a>        ),</span>
+<span id="cb1-136"><a></a></span>
+<span id="cb1-137"><a></a>        # POISSON</span>
+<span id="cb1-138"><a></a>        conditionalPanel(</span>
+<span id="cb1-139"><a></a>          condition = "input.distType == 'Poisson'",</span>
+<span id="cb1-140"><a></a>          numericInput("poisson_lambda", "Lambda (mean)", value = 1, min = 0)</span>
+<span id="cb1-141"><a></a>        ),</span>
+<span id="cb1-142"><a></a></span>
+<span id="cb1-143"><a></a>        # BETA</span>
+<span id="cb1-144"><a></a>        conditionalPanel(</span>
+<span id="cb1-145"><a></a>          condition = "input.distType == 'Beta'",</span>
+<span id="cb1-146"><a></a>          numericInput("beta_alpha", "Alpha (α)", value = 2, min = 1e-8),</span>
+<span id="cb1-147"><a></a>          numericInput("beta_beta", "Beta (β)", value = 2, min = 1e-8)</span>
+<span id="cb1-148"><a></a>        ),</span>
+<span id="cb1-149"><a></a></span>
+<span id="cb1-150"><a></a>        # GAMMA</span>
+<span id="cb1-151"><a></a>        conditionalPanel(</span>
+<span id="cb1-152"><a></a>          condition = "input.distType == 'Gamma'",</span>
+<span id="cb1-153"><a></a>          numericInput("gamma_shape", "Shape (k)", value = 2, min = 1e-8),</span>
+<span id="cb1-154"><a></a>          numericInput("gamma_rate", "Rate (θ⁻¹)", value = 1, min = 1e-8)</span>
+<span id="cb1-155"><a></a>        )</span>
+<span id="cb1-156"><a></a>      ), # end params</span>
+<span id="cb1-157"><a></a></span>
+<span id="cb1-158"><a></a>      # simulation area pinned to bottom</span>
+<span id="cb1-159"><a></a>      div(</span>
+<span id="cb1-160"><a></a>        hr(),</span>
+<span id="cb1-161"><a></a>        class = "simulation",</span>
+<span id="cb1-162"><a></a>        h3("Simulation"),</span>
+<span id="cb1-163"><a></a>        div(</span>
+<span id="cb1-164"><a></a>          div(</span>
+<span id="cb1-165"><a></a>            style = "padding-bottom: 6px;",</span>
+<span id="cb1-166"><a></a>            class = "btnrow",</span>
+<span id="cb1-167"><a></a>            actionButton("draw1", "Run 1", style = "flex: 1;"),</span>
+<span id="cb1-168"><a></a>            actionButton("draw10", "×10", style = "flex: 1;"),</span>
+<span id="cb1-169"><a></a>            actionButton("draw100", "×100", style = "flex: 1;"),</span>
+<span id="cb1-170"><a></a>            actionButton("draw1000", "×1000", style = "flex: 1;")</span>
+<span id="cb1-171"><a></a>          ),</span>
+<span id="cb1-172"><a></a>          div(</span>
+<span id="cb1-173"><a></a>            class = "btnrow",</span>
+<span id="cb1-174"><a></a>            actionButton(</span>
+<span id="cb1-175"><a></a>              "reset",</span>
+<span id="cb1-176"><a></a>              "Reset",</span>
+<span id="cb1-177"><a></a>              class = "btn btn-danger",</span>
+<span id="cb1-178"><a></a>              style = "flex: 1;"</span>
+<span id="cb1-179"><a></a>            )</span>
+<span id="cb1-180"><a></a>          )</span>
+<span id="cb1-181"><a></a>        )</span>
+<span id="cb1-182"><a></a>      ) # end simulation</span>
+<span id="cb1-183"><a></a>    ) # end sidebar-flex</span>
+<span id="cb1-184"><a></a>  ),</span>
+<span id="cb1-185"><a></a>  mainPanel(</span>
+<span id="cb1-186"><a></a>    width = 12,</span>
+<span id="cb1-187"><a></a>    girafeOutput("plot", width = "100%"),</span>
+<span id="cb1-188"><a></a>    uiOutput("sim_list") # new: simulation results list (most recent highlighted)</span>
+<span id="cb1-189"><a></a>  )</span>
+<span id="cb1-190"><a></a>)</span>
+<span id="cb1-191"><a></a></span>
+<span id="cb1-192"><a></a>server &lt;- function(input, output, session) {</span>
+<span id="cb1-193"><a></a>  draws &lt;- reactiveVal(numeric(0))</span>
+<span id="cb1-194"><a></a></span>
+<span id="cb1-195"><a></a>  observeEvent(</span>
+<span id="cb1-196"><a></a>    list(</span>
+<span id="cb1-197"><a></a>      input$trialCount,</span>
+<span id="cb1-198"><a></a>      input$successRate,</span>
+<span id="cb1-199"><a></a>      input$distType,</span>
+<span id="cb1-200"><a></a>      input$mean,</span>
+<span id="cb1-201"><a></a>      input$sd,</span>
+<span id="cb1-202"><a></a>      input$umin,</span>
+<span id="cb1-203"><a></a>      input$umax,</span>
+<span id="cb1-204"><a></a>      input$exp_rate,</span>
+<span id="cb1-205"><a></a>      input$poisson_lambda,</span>
+<span id="cb1-206"><a></a>      input$beta_alpha,</span>
+<span id="cb1-207"><a></a>      input$beta_beta,</span>
+<span id="cb1-208"><a></a>      input$gamma_shape,</span>
+<span id="cb1-209"><a></a>      input$gamma_rate</span>
+<span id="cb1-210"><a></a>    ),</span>
+<span id="cb1-211"><a></a>    {</span>
+<span id="cb1-212"><a></a>      draws(numeric(0))</span>
+<span id="cb1-213"><a></a>    },</span>
+<span id="cb1-214"><a></a>    ignoreInit = TRUE</span>
+<span id="cb1-215"><a></a>  )</span>
+<span id="cb1-216"><a></a></span>
+<span id="cb1-217"><a></a>  add_draws &lt;- function(k) {</span>
+<span id="cb1-218"><a></a>    if (input$distType == "Binomial") {</span>
+<span id="cb1-219"><a></a>      new &lt;- rbinom(k, size = input$trialCount, prob = input$successRate / 100)</span>
+<span id="cb1-220"><a></a>    } else if (input$distType == "Normal") {</span>
+<span id="cb1-221"><a></a>      new &lt;- rnorm(k, mean = input$mean, sd = input$sd)</span>
+<span id="cb1-222"><a></a>    } else if (input$distType == "Uniform") {</span>
+<span id="cb1-223"><a></a>      new &lt;- runif(k, min = input$umin, max = input$umax)</span>
+<span id="cb1-224"><a></a>    } else if (input$distType == "Exponential") {</span>
+<span id="cb1-225"><a></a>      rate &lt;- input$exp_rate</span>
+<span id="cb1-226"><a></a>      if (!is.finite(rate) || rate &lt;= 0) {</span>
+<span id="cb1-227"><a></a>        rate &lt;- 1</span>
+<span id="cb1-228"><a></a>      }</span>
+<span id="cb1-229"><a></a>      new &lt;- rexp(k, rate = rate)</span>
+<span id="cb1-230"><a></a>    } else if (input$distType == "Poisson") {</span>
+<span id="cb1-231"><a></a>      lambda &lt;- input$poisson_lambda</span>
+<span id="cb1-232"><a></a>      if (!is.finite(lambda) || lambda &lt; 0) {</span>
+<span id="cb1-233"><a></a>        lambda &lt;- 1</span>
+<span id="cb1-234"><a></a>      }</span>
+<span id="cb1-235"><a></a>      new &lt;- rpois(k, lambda = lambda)</span>
+<span id="cb1-236"><a></a>    } else if (input$distType == "Beta") {</span>
+<span id="cb1-237"><a></a>      a &lt;- input$beta_alpha</span>
+<span id="cb1-238"><a></a>      b &lt;- input$beta_beta</span>
+<span id="cb1-239"><a></a>      if (!is.finite(a) || a &lt;= 0) {</span>
+<span id="cb1-240"><a></a>        a &lt;- 1</span>
+<span id="cb1-241"><a></a>      }</span>
+<span id="cb1-242"><a></a>      if (!is.finite(b) || b &lt;= 0) {</span>
+<span id="cb1-243"><a></a>        b &lt;- 1</span>
+<span id="cb1-244"><a></a>      }</span>
+<span id="cb1-245"><a></a>      new &lt;- rbeta(k, shape1 = a, shape2 = b)</span>
+<span id="cb1-246"><a></a>    } else if (input$distType == "Gamma") {</span>
+<span id="cb1-247"><a></a>      shape &lt;- input$gamma_shape</span>
+<span id="cb1-248"><a></a>      rate &lt;- input$gamma_rate</span>
+<span id="cb1-249"><a></a>      if (!is.finite(shape) || shape &lt;= 0) {</span>
+<span id="cb1-250"><a></a>        shape &lt;- 1</span>
+<span id="cb1-251"><a></a>      }</span>
+<span id="cb1-252"><a></a>      if (!is.finite(rate) || rate &lt;= 0) {</span>
+<span id="cb1-253"><a></a>        rate &lt;- 1</span>
+<span id="cb1-254"><a></a>      }</span>
+<span id="cb1-255"><a></a>      new &lt;- rgamma(k, shape = shape, rate = rate)</span>
+<span id="cb1-256"><a></a>    } else {</span>
+<span id="cb1-257"><a></a>      new &lt;- numeric(0)</span>
+<span id="cb1-258"><a></a>    }</span>
+<span id="cb1-259"><a></a></span>
+<span id="cb1-260"><a></a>    draws(c(draws(), new))</span>
+<span id="cb1-261"><a></a>  }</span>
+<span id="cb1-262"><a></a></span>
+<span id="cb1-263"><a></a>  # helper: choose a sensible binwidth for histograms</span>
+<span id="cb1-264"><a></a>  compute_binwidth &lt;- function(</span>
+<span id="cb1-265"><a></a>    sim,</span>
+<span id="cb1-266"><a></a>    x_min,</span>
+<span id="cb1-267"><a></a>    x_max,</span>
+<span id="cb1-268"><a></a>    default_bins = 40,</span>
+<span id="cb1-269"><a></a>    small_unique_thresh = 30</span>
+<span id="cb1-270"><a></a>  ) {</span>
+<span id="cb1-271"><a></a>    if (length(sim) == 0) {</span>
+<span id="cb1-272"><a></a>      return((x_max - x_min) / default_bins)</span>
+<span id="cb1-273"><a></a>    }</span>
+<span id="cb1-274"><a></a>    ux &lt;- sort(unique(sim))</span>
+<span id="cb1-275"><a></a>    if (length(ux) == 1) {</span>
+<span id="cb1-276"><a></a>      return((x_max - x_min) / default_bins)</span>
+<span id="cb1-277"><a></a>    }</span>
+<span id="cb1-278"><a></a>    # if values are integer-like, prefer a binwidth ~ 0.9 so integer bars don't overlap</span>
+<span id="cb1-279"><a></a>    is_integer_like &lt;- max(abs(ux - round(ux))) &lt; 1e-8</span>
+<span id="cb1-280"><a></a>    if (length(ux) &lt;= small_unique_thresh) {</span>
+<span id="cb1-281"><a></a>      min_sep &lt;- min(diff(ux))</span>
+<span id="cb1-282"><a></a>      if (is_integer_like) {</span>
+<span id="cb1-283"><a></a>        # keep integer-like bars narrower (≈0.9) to avoid filling intermediate integers</span>
+<span id="cb1-284"><a></a>        bw &lt;- 0.9 * min(1, min_sep)</span>
+<span id="cb1-285"><a></a>      } else {</span>
+<span id="cb1-286"><a></a>        bw &lt;- 0.9 * min_sep</span>
+<span id="cb1-287"><a></a>      }</span>
+<span id="cb1-288"><a></a>      if (!is.finite(bw) || bw &lt;= 0) {</span>
+<span id="cb1-289"><a></a>        bw &lt;- (x_max - x_min) / default_bins</span>
+<span id="cb1-290"><a></a>      }</span>
+<span id="cb1-291"><a></a>      return(bw)</span>
+<span id="cb1-292"><a></a>    }</span>
+<span id="cb1-293"><a></a>    (x_max - x_min) / default_bins</span>
+<span id="cb1-294"><a></a>  }</span>
+<span id="cb1-295"><a></a></span>
+<span id="cb1-296"><a></a>  # helper: compute a fixed column width for discrete-like values (or cap for continuous)</span>
+<span id="cb1-297"><a></a>  compute_bar_width &lt;- function(ux, binwidth, x_min, x_max) {</span>
+<span id="cb1-298"><a></a>    if (length(ux) == 0) {</span>
+<span id="cb1-299"><a></a>      return(binwidth * 0.9)</span>
+<span id="cb1-300"><a></a>    }</span>
+<span id="cb1-301"><a></a>    is_integer_like &lt;- max(abs(ux - round(ux))) &lt; 1e-8</span>
+<span id="cb1-302"><a></a>    if (is_integer_like) {</span>
+<span id="cb1-303"><a></a>      # fixed width for integer categories (prevents filling empty integer gaps)</span>
+<span id="cb1-304"><a></a>      return(0.8)</span>
+<span id="cb1-305"><a></a>    }</span>
+<span id="cb1-306"><a></a>    # otherwise cap width to a reasonable fraction of the full range</span>
+<span id="cb1-307"><a></a>    return(min(binwidth * 0.9, (x_max - x_min) / 20))</span>
+<span id="cb1-308"><a></a>  }</span>
+<span id="cb1-309"><a></a></span>
+<span id="cb1-310"><a></a>  observeEvent(input$draw1, add_draws(1))</span>
+<span id="cb1-311"><a></a>  observeEvent(input$draw10, add_draws(10))</span>
+<span id="cb1-312"><a></a>  observeEvent(input$draw100, add_draws(100))</span>
+<span id="cb1-313"><a></a>  observeEvent(input$draw1000, add_draws(1000))</span>
+<span id="cb1-314"><a></a>  observeEvent(input$reset, {</span>
+<span id="cb1-315"><a></a>    # clear simulated draws</span>
+<span id="cb1-316"><a></a>    draws(numeric(0))</span>
+<span id="cb1-317"><a></a></span>
+<span id="cb1-318"><a></a>    # reset UI controls to their defaults (match UI definitions)</span>
+<span id="cb1-319"><a></a>    updateSelectizeInput(session, "distType", selected = "Binomial")</span>
+<span id="cb1-320"><a></a></span>
+<span id="cb1-321"><a></a>    updateSliderInput(session, "successRate", value = 50)</span>
+<span id="cb1-322"><a></a>    updateNumericInput(session, "trialCount", value = 10)</span>
+<span id="cb1-323"><a></a></span>
+<span id="cb1-324"><a></a>    updateNumericInput(session, "mean", value = 0)</span>
+<span id="cb1-325"><a></a>    updateNumericInput(session, "sd", value = 1)</span>
+<span id="cb1-326"><a></a></span>
+<span id="cb1-327"><a></a>    updateNumericInput(session, "umin", value = 0)</span>
+<span id="cb1-328"><a></a>    updateNumericInput(session, "umax", value = 1)</span>
+<span id="cb1-329"><a></a></span>
+<span id="cb1-330"><a></a>    updateNumericInput(session, "exp_rate", value = 1)</span>
+<span id="cb1-331"><a></a>    updateNumericInput(session, "poisson_lambda", value = 1)</span>
+<span id="cb1-332"><a></a></span>
+<span id="cb1-333"><a></a>    updateNumericInput(session, "beta_alpha", value = 2)</span>
+<span id="cb1-334"><a></a>    updateNumericInput(session, "beta_beta", value = 2)</span>
+<span id="cb1-335"><a></a></span>
+<span id="cb1-336"><a></a>    updateNumericInput(session, "gamma_shape", value = 2)</span>
+<span id="cb1-337"><a></a>    updateNumericInput(session, "gamma_rate", value = 1)</span>
+<span id="cb1-338"><a></a>  })</span>
+<span id="cb1-339"><a></a></span>
+<span id="cb1-340"><a></a>  output$plot &lt;- renderGirafe({</span>
+<span id="cb1-341"><a></a>    sim &lt;- draws()</span>
+<span id="cb1-342"><a></a></span>
+<span id="cb1-343"><a></a>    # ---------- helpers ----------</span>
+<span id="cb1-344"><a></a>    empty_plot &lt;- function() girafe(ggplot(), width_svg = 12, height_svg = 8)</span>
+<span id="cb1-345"><a></a></span>
+<span id="cb1-346"><a></a>    # common theme</span>
+<span id="cb1-347"><a></a>    base_theme &lt;- theme_minimal() +</span>
+<span id="cb1-348"><a></a>      theme(plot.margin = margin(10, 30, 30, 10))</span>
+<span id="cb1-349"><a></a></span>
+<span id="cb1-350"><a></a>    # ---------- spec builder ----------</span>
+<span id="cb1-351"><a></a>    get_dist_spec &lt;- function() {</span>
+<span id="cb1-352"><a></a>      dist &lt;- input$distType</span>
+<span id="cb1-353"><a></a></span>
+<span id="cb1-354"><a></a>      # ---- BINOMIAL ----</span>
+<span id="cb1-355"><a></a>      if (dist == "Binomial") {</span>
+<span id="cb1-356"><a></a>        n &lt;- input$trialCount</span>
+<span id="cb1-357"><a></a>        p &lt;- input$successRate / 100</span>
+<span id="cb1-358"><a></a></span>
+<span id="cb1-359"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-360"><a></a>          x = 0:n,</span>
+<span id="cb1-361"><a></a>          prob = dbinom(0:n, n, p)</span>
+<span id="cb1-362"><a></a>        )</span>
+<span id="cb1-363"><a></a></span>
+<span id="cb1-364"><a></a>        list(</span>
+<span id="cb1-365"><a></a>          type = "discrete",</span>
+<span id="cb1-366"><a></a>          theory = theory,</span>
+<span id="cb1-367"><a></a>          xlim = c(0, n),</span>
+<span id="cb1-368"><a></a>          ymax = max(theory$prob),</span>
+<span id="cb1-369"><a></a>          xlabel = "Number of successes",</span>
+<span id="cb1-370"><a></a>          ylabel = "Probability",</span>
+<span id="cb1-371"><a></a>          tooltip_theory = function(df) {</span>
+<span id="cb1-372"><a></a>            paste0(</span>
+<span id="cb1-373"><a></a>              "Success = ",</span>
+<span id="cb1-374"><a></a>              df$x,</span>
+<span id="cb1-375"><a></a>              " out of ",</span>
+<span id="cb1-376"><a></a>              n,</span>
+<span id="cb1-377"><a></a>              "&lt;br&gt;Probability = ",</span>
+<span id="cb1-378"><a></a>              round(df$prob, 4)</span>
+<span id="cb1-379"><a></a>            )</span>
+<span id="cb1-380"><a></a>          }</span>
+<span id="cb1-381"><a></a>        )</span>
+<span id="cb1-382"><a></a>      } else if (dist == "Normal") {</span>
+<span id="cb1-383"><a></a>        # ---- NORMAL ----</span>
+<span id="cb1-384"><a></a>        mu &lt;- input$mean</span>
+<span id="cb1-385"><a></a>        sd &lt;- input$sd</span>
+<span id="cb1-386"><a></a></span>
+<span id="cb1-387"><a></a>        x_min &lt;- mu - 4 * sd</span>
+<span id="cb1-388"><a></a>        x_max &lt;- mu + 4 * sd</span>
+<span id="cb1-389"><a></a></span>
+<span id="cb1-390"><a></a>        xs &lt;- seq(x_min, x_max, length.out = 400)</span>
+<span id="cb1-391"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-392"><a></a>          x = xs,</span>
+<span id="cb1-393"><a></a>          density = dnorm(xs, mu, sd)</span>
+<span id="cb1-394"><a></a>        )</span>
+<span id="cb1-395"><a></a></span>
+<span id="cb1-396"><a></a>        list(</span>
+<span id="cb1-397"><a></a>          type = "continuous",</span>
+<span id="cb1-398"><a></a>          theory = theory,</span>
+<span id="cb1-399"><a></a>          xlim = c(x_min, x_max),</span>
+<span id="cb1-400"><a></a>          ymax = max(theory$density),</span>
+<span id="cb1-401"><a></a>          xlabel = "Value",</span>
+<span id="cb1-402"><a></a>          ylabel = "Density"</span>
+<span id="cb1-403"><a></a>        )</span>
+<span id="cb1-404"><a></a>      } else if (dist == "Uniform") {</span>
+<span id="cb1-405"><a></a>        # ---- UNIFORM ----</span>
+<span id="cb1-406"><a></a>        a &lt;- input$umin</span>
+<span id="cb1-407"><a></a>        b &lt;- input$umax</span>
+<span id="cb1-408"><a></a>        if (b &lt;= a) {</span>
+<span id="cb1-409"><a></a>          return(NULL)</span>
+<span id="cb1-410"><a></a>        }</span>
+<span id="cb1-411"><a></a></span>
+<span id="cb1-412"><a></a>        xs &lt;- seq(a, b, length.out = 400)</span>
+<span id="cb1-413"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-414"><a></a>          x = xs,</span>
+<span id="cb1-415"><a></a>          density = dunif(xs, a, b)</span>
+<span id="cb1-416"><a></a>        )</span>
+<span id="cb1-417"><a></a></span>
+<span id="cb1-418"><a></a>        list(</span>
+<span id="cb1-419"><a></a>          type = "continuous",</span>
+<span id="cb1-420"><a></a>          theory = theory,</span>
+<span id="cb1-421"><a></a>          xlim = c(a, b),</span>
+<span id="cb1-422"><a></a>          ymax = max(theory$density),</span>
+<span id="cb1-423"><a></a>          xlabel = "Value",</span>
+<span id="cb1-424"><a></a>          ylabel = "Density",</span>
+<span id="cb1-425"><a></a>          expand_mult = c(0, .85)</span>
+<span id="cb1-426"><a></a>        )</span>
+<span id="cb1-427"><a></a>      } else if (dist == "Exponential") {</span>
+<span id="cb1-428"><a></a>        # ---- EXPONENTIAL ----</span>
+<span id="cb1-429"><a></a>        rate &lt;- input$exp_rate</span>
+<span id="cb1-430"><a></a>        if (!is.finite(rate) || rate &lt;= 0) {</span>
+<span id="cb1-431"><a></a>          rate &lt;- 1</span>
+<span id="cb1-432"><a></a>        }</span>
+<span id="cb1-433"><a></a></span>
+<span id="cb1-434"><a></a>        x_min &lt;- 0</span>
+<span id="cb1-435"><a></a>        x_max &lt;- qexp(.999, rate)</span>
+<span id="cb1-436"><a></a></span>
+<span id="cb1-437"><a></a>        xs &lt;- seq(x_min, x_max, length.out = 400)</span>
+<span id="cb1-438"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-439"><a></a>          x = xs,</span>
+<span id="cb1-440"><a></a>          density = dexp(xs, rate)</span>
+<span id="cb1-441"><a></a>        )</span>
+<span id="cb1-442"><a></a></span>
+<span id="cb1-443"><a></a>        list(</span>
+<span id="cb1-444"><a></a>          type = "continuous",</span>
+<span id="cb1-445"><a></a>          theory = theory,</span>
+<span id="cb1-446"><a></a>          xlim = c(x_min, x_max),</span>
+<span id="cb1-447"><a></a>          ymax = max(theory$density),</span>
+<span id="cb1-448"><a></a>          xlabel = "Value",</span>
+<span id="cb1-449"><a></a>          ylabel = "Density"</span>
+<span id="cb1-450"><a></a>        )</span>
+<span id="cb1-451"><a></a>      } else if (dist == "Poisson") {</span>
+<span id="cb1-452"><a></a>        # ---- POISSON ----</span>
+<span id="cb1-453"><a></a>        lambda &lt;- input$poisson_lambda</span>
+<span id="cb1-454"><a></a>        if (!is.finite(lambda) || lambda &lt; 0) {</span>
+<span id="cb1-455"><a></a>          lambda &lt;- 1</span>
+<span id="cb1-456"><a></a>        }</span>
+<span id="cb1-457"><a></a></span>
+<span id="cb1-458"><a></a>        x_max_theory &lt;- ceiling(qpois(.999, lambda))</span>
+<span id="cb1-459"><a></a>        x_max_sim &lt;- if (length(sim)) {</span>
+<span id="cb1-460"><a></a>          max(ceiling(sim), x_max_theory)</span>
+<span id="cb1-461"><a></a>        } else {</span>
+<span id="cb1-462"><a></a>          x_max_theory</span>
+<span id="cb1-463"><a></a>        }</span>
+<span id="cb1-464"><a></a>        xs &lt;- 0:x_max_sim</span>
+<span id="cb1-465"><a></a></span>
+<span id="cb1-466"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-467"><a></a>          x = xs,</span>
+<span id="cb1-468"><a></a>          prob = dpois(xs, lambda)</span>
+<span id="cb1-469"><a></a>        )</span>
+<span id="cb1-470"><a></a></span>
+<span id="cb1-471"><a></a>        list(</span>
+<span id="cb1-472"><a></a>          type = "discrete",</span>
+<span id="cb1-473"><a></a>          theory = theory,</span>
+<span id="cb1-474"><a></a>          xlim = c(0, x_max_sim),</span>
+<span id="cb1-475"><a></a>          ymax = max(theory$prob),</span>
+<span id="cb1-476"><a></a>          xlabel = "k",</span>
+<span id="cb1-477"><a></a>          ylabel = "Probability",</span>
+<span id="cb1-478"><a></a>          tooltip_theory = function(df) {</span>
+<span id="cb1-479"><a></a>            paste0("k = ", df$x, "&lt;br&gt;Probability = ", round(df$prob, 4))</span>
+<span id="cb1-480"><a></a>          }</span>
+<span id="cb1-481"><a></a>        )</span>
+<span id="cb1-482"><a></a>      } else if (dist == "Beta") {</span>
+<span id="cb1-483"><a></a>        # ---- BETA ----</span>
+<span id="cb1-484"><a></a>        a &lt;- input$beta_alpha</span>
+<span id="cb1-485"><a></a>        b &lt;- input$beta_beta</span>
+<span id="cb1-486"><a></a>        if (!is.finite(a) || a &lt;= 0) {</span>
+<span id="cb1-487"><a></a>          a &lt;- 1</span>
+<span id="cb1-488"><a></a>        }</span>
+<span id="cb1-489"><a></a>        if (!is.finite(b) || b &lt;= 0) {</span>
+<span id="cb1-490"><a></a>          b &lt;- 1</span>
+<span id="cb1-491"><a></a>        }</span>
+<span id="cb1-492"><a></a></span>
+<span id="cb1-493"><a></a>        xs &lt;- seq(0, 1, length.out = 400)</span>
+<span id="cb1-494"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-495"><a></a>          x = xs,</span>
+<span id="cb1-496"><a></a>          density = dbeta(xs, a, b)</span>
+<span id="cb1-497"><a></a>        )</span>
+<span id="cb1-498"><a></a></span>
+<span id="cb1-499"><a></a>        list(</span>
+<span id="cb1-500"><a></a>          type = "continuous",</span>
+<span id="cb1-501"><a></a>          theory = theory,</span>
+<span id="cb1-502"><a></a>          xlim = c(0, 1),</span>
+<span id="cb1-503"><a></a>          ymax = max(theory$density),</span>
+<span id="cb1-504"><a></a>          xlabel = "Value",</span>
+<span id="cb1-505"><a></a>          ylabel = "Density"</span>
+<span id="cb1-506"><a></a>        )</span>
+<span id="cb1-507"><a></a>      } else if (dist == "Gamma") {</span>
+<span id="cb1-508"><a></a>        # ---- GAMMA ----</span>
+<span id="cb1-509"><a></a>        shape &lt;- input$gamma_shape</span>
+<span id="cb1-510"><a></a>        rate &lt;- input$gamma_rate</span>
+<span id="cb1-511"><a></a>        if (!is.finite(shape) || shape &lt;= 0) {</span>
+<span id="cb1-512"><a></a>          shape &lt;- 1</span>
+<span id="cb1-513"><a></a>        }</span>
+<span id="cb1-514"><a></a>        if (!is.finite(rate) || rate &lt;= 0) {</span>
+<span id="cb1-515"><a></a>          rate &lt;- 1</span>
+<span id="cb1-516"><a></a>        }</span>
+<span id="cb1-517"><a></a></span>
+<span id="cb1-518"><a></a>        x_min &lt;- 0</span>
+<span id="cb1-519"><a></a>        x_max &lt;- qgamma(.999, shape, rate)</span>
+<span id="cb1-520"><a></a></span>
+<span id="cb1-521"><a></a>        xs &lt;- seq(x_min, x_max, length.out = 400)</span>
+<span id="cb1-522"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-523"><a></a>          x = xs,</span>
+<span id="cb1-524"><a></a>          density = dgamma(xs, shape, rate)</span>
+<span id="cb1-525"><a></a>        )</span>
+<span id="cb1-526"><a></a></span>
+<span id="cb1-527"><a></a>        list(</span>
+<span id="cb1-528"><a></a>          type = "continuous",</span>
+<span id="cb1-529"><a></a>          theory = theory,</span>
+<span id="cb1-530"><a></a>          xlim = c(x_min, x_max),</span>
+<span id="cb1-531"><a></a>          ymax = max(theory$density),</span>
+<span id="cb1-532"><a></a>          xlabel = "Value",</span>
+<span id="cb1-533"><a></a>          ylabel = "Density"</span>
+<span id="cb1-534"><a></a>        )</span>
+<span id="cb1-535"><a></a>      } else {</span>
+<span id="cb1-536"><a></a>        NULL</span>
+<span id="cb1-537"><a></a>      }</span>
+<span id="cb1-538"><a></a>    }</span>
+<span id="cb1-539"><a></a></span>
+<span id="cb1-540"><a></a>    # ---------- build plot ----------</span>
+<span id="cb1-541"><a></a>    spec &lt;- get_dist_spec()</span>
+<span id="cb1-542"><a></a>    if (is.null(spec)) {</span>
+<span id="cb1-543"><a></a>      return(empty_plot())</span>
+<span id="cb1-544"><a></a>    }</span>
+<span id="cb1-545"><a></a></span>
+<span id="cb1-546"><a></a>    g &lt;- ggplot()</span>
+<span id="cb1-547"><a></a></span>
+<span id="cb1-548"><a></a>    # ---- simulated layer ----</span>
+<span id="cb1-549"><a></a>    if (spec$type == "continuous") {</span>
+<span id="cb1-550"><a></a>      if (length(sim) &gt; 0) {</span>
+<span id="cb1-551"><a></a>        g &lt;- g +</span>
+<span id="cb1-552"><a></a>          geom_histogram_interactive(</span>
+<span id="cb1-553"><a></a>            data = data.frame(x = sim),</span>
+<span id="cb1-554"><a></a>            aes(</span>
+<span id="cb1-555"><a></a>              x = x,</span>
+<span id="cb1-556"><a></a>              y = after_stat(density),</span>
+<span id="cb1-557"><a></a>              tooltip = paste0("Count: ", after_stat(count)),</span>
+<span id="cb1-558"><a></a>              data_id = after_stat(x)</span>
+<span id="cb1-559"><a></a>            ),</span>
+<span id="cb1-560"><a></a>            bins = 40,</span>
+<span id="cb1-561"><a></a>            boundary = spec$xlim[1],</span>
+<span id="cb1-562"><a></a>            fill = "steelblue",</span>
+<span id="cb1-563"><a></a>            alpha = .6,</span>
+<span id="cb1-564"><a></a>            color = "white",</span>
+<span id="cb1-565"><a></a>            linewidth = .4</span>
+<span id="cb1-566"><a></a>          )</span>
+<span id="cb1-567"><a></a>      }</span>
+<span id="cb1-568"><a></a></span>
+<span id="cb1-569"><a></a>      g &lt;- g +</span>
+<span id="cb1-570"><a></a>        geom_line(</span>
+<span id="cb1-571"><a></a>          data = spec$theory,</span>
+<span id="cb1-572"><a></a>          aes(x = x, y = density),</span>
+<span id="cb1-573"><a></a>          linewidth = 1</span>
+<span id="cb1-574"><a></a>        )</span>
+<span id="cb1-575"><a></a>    } else if (spec$type == "discrete") {</span>
+<span id="cb1-576"><a></a>      # sim df</span>
+<span id="cb1-577"><a></a>      df_sim &lt;- if (length(sim) == 0) {</span>
+<span id="cb1-578"><a></a>        data.frame(x = integer(), prob = numeric(), count = integer())</span>
+<span id="cb1-579"><a></a>      } else {</span>
+<span id="cb1-580"><a></a>        tab &lt;- table(sim)</span>
+<span id="cb1-581"><a></a>        data.frame(</span>
+<span id="cb1-582"><a></a>          x = as.integer(names(tab)),</span>
+<span id="cb1-583"><a></a>          count = as.integer(tab),</span>
+<span id="cb1-584"><a></a>          prob = as.integer(tab) / sum(tab)</span>
+<span id="cb1-585"><a></a>        )</span>
+<span id="cb1-586"><a></a>      }</span>
+<span id="cb1-587"><a></a></span>
+<span id="cb1-588"><a></a>      g &lt;- g +</span>
+<span id="cb1-589"><a></a>        geom_col_interactive(</span>
+<span id="cb1-590"><a></a>          data = df_sim,</span>
+<span id="cb1-591"><a></a>          aes(</span>
+<span id="cb1-592"><a></a>            x = x,</span>
+<span id="cb1-593"><a></a>            y = prob,</span>
+<span id="cb1-594"><a></a>            tooltip = paste0(</span>
+<span id="cb1-595"><a></a>              "Count: ",</span>
+<span id="cb1-596"><a></a>              count,</span>
+<span id="cb1-597"><a></a>              " out of ",</span>
+<span id="cb1-598"><a></a>              length(sim),</span>
+<span id="cb1-599"><a></a>              "&lt;br&gt;Proportion: ",</span>
+<span id="cb1-600"><a></a>              round(prob, 4)</span>
+<span id="cb1-601"><a></a>            ),</span>
+<span id="cb1-602"><a></a>            data_id = x</span>
+<span id="cb1-603"><a></a>          ),</span>
+<span id="cb1-604"><a></a>          fill = "steelblue",</span>
+<span id="cb1-605"><a></a>          width = .8,</span>
+<span id="cb1-606"><a></a>          alpha = .6</span>
+<span id="cb1-607"><a></a>        ) +</span>
+<span id="cb1-608"><a></a>        geom_line(</span>
+<span id="cb1-609"><a></a>          data = spec$theory,</span>
+<span id="cb1-610"><a></a>          aes(x = x, y = prob),</span>
+<span id="cb1-611"><a></a>          linewidth = 1</span>
+<span id="cb1-612"><a></a>        ) +</span>
+<span id="cb1-613"><a></a>        geom_point_interactive(</span>
+<span id="cb1-614"><a></a>          data = spec$theory,</span>
+<span id="cb1-615"><a></a>          aes(</span>
+<span id="cb1-616"><a></a>            x = x,</span>
+<span id="cb1-617"><a></a>            y = prob,</span>
+<span id="cb1-618"><a></a>            tooltip = spec$tooltip_theory(spec$theory),</span>
+<span id="cb1-619"><a></a>            data_id = paste0("theory_", spec$theory$x)</span>
+<span id="cb1-620"><a></a>          ),</span>
+<span id="cb1-621"><a></a>          size = 3</span>
+<span id="cb1-622"><a></a>        ) +</span>
+<span id="cb1-623"><a></a>        scale_x_continuous(</span>
+<span id="cb1-624"><a></a>          breaks = scales::breaks_pretty(n = 10, integer = TRUE)</span>
+<span id="cb1-625"><a></a>        )</span>
+<span id="cb1-626"><a></a>    }</span>
+<span id="cb1-627"><a></a></span>
+<span id="cb1-628"><a></a>    expand_mult &lt;- spec$expand_mult %||% c(0, .25)</span>
+<span id="cb1-629"><a></a></span>
+<span id="cb1-630"><a></a>    g &lt;- g +</span>
+<span id="cb1-631"><a></a>      coord_cartesian(</span>
+<span id="cb1-632"><a></a>        xlim = spec$xlim,</span>
+<span id="cb1-633"><a></a>        ylim = c(0, spec$ymax),</span>
+<span id="cb1-634"><a></a>        clip = "off"</span>
+<span id="cb1-635"><a></a>      ) +</span>
+<span id="cb1-636"><a></a>      scale_y_continuous(expand = expansion(mult = expand_mult)) +</span>
+<span id="cb1-637"><a></a>      labs(x = spec$xlabel, y = spec$ylabel) +</span>
+<span id="cb1-638"><a></a>      base_theme</span>
+<span id="cb1-639"><a></a></span>
+<span id="cb1-640"><a></a>    girafe(ggobj = g, width_svg = 12, height_svg = 9)</span>
+<span id="cb1-641"><a></a>  })</span>
+<span id="cb1-642"><a></a>  # compact single-line simulation values, most recent on the left in bold</span>
+<span id="cb1-643"><a></a>  output$sim_list &lt;- renderUI({</span>
+<span id="cb1-644"><a></a>    sim_vals &lt;- draws()</span>
+<span id="cb1-645"><a></a></span>
+<span id="cb1-646"><a></a>    # small formatter: integers as integers, others rounded to 2 decimals</span>
+<span id="cb1-647"><a></a>    fmt_val &lt;- function(x) {</span>
+<span id="cb1-648"><a></a>      if (is.na(x)) {</span>
+<span id="cb1-649"><a></a>        return("NA")</span>
+<span id="cb1-650"><a></a>      }</span>
+<span id="cb1-651"><a></a>      if (!is.numeric(x)) {</span>
+<span id="cb1-652"><a></a>        return(as.character(x))</span>
+<span id="cb1-653"><a></a>      }</span>
+<span id="cb1-654"><a></a>      if (abs(x - round(x)) &lt; 1e-8) {</span>
+<span id="cb1-655"><a></a>        as.character(as.integer(round(x)))</span>
+<span id="cb1-656"><a></a>      } else {</span>
+<span id="cb1-657"><a></a>        sprintf("%.2f", round(x, 2))</span>
+<span id="cb1-658"><a></a>      }</span>
+<span id="cb1-659"><a></a>    }</span>
+<span id="cb1-660"><a></a></span>
+<span id="cb1-661"><a></a>    if (length(sim_vals) == 0) {</span>
+<span id="cb1-662"><a></a>      return(tags$div(</span>
+<span id="cb1-663"><a></a>        tags$div(</span>
+<span id="cb1-664"><a></a>          "Simulation Results:",</span>
+<span id="cb1-665"><a></a>          style = "font-weight:600; margin-bottom:4px;"</span>
+<span id="cb1-666"><a></a>        ),</span>
+<span id="cb1-667"><a></a>        tags$div("No simulations yet", style = "font-size:0.9em; color:#666;")</span>
+<span id="cb1-668"><a></a>      ))</span>
+<span id="cb1-669"><a></a>    }</span>
+<span id="cb1-670"><a></a></span>
+<span id="cb1-671"><a></a>    max_show &lt;- 100L</span>
+<span id="cb1-672"><a></a>    show_vals &lt;- tail(sim_vals, max_show)</span>
+<span id="cb1-673"><a></a>    show_vals_rev &lt;- rev(show_vals) # most recent first (left)</span>
+<span id="cb1-674"><a></a></span>
+<span id="cb1-675"><a></a>    spans &lt;- lapply(seq_along(show_vals_rev), function(i) {</span>
+<span id="cb1-676"><a></a>      v &lt;- show_vals_rev[i]</span>
+<span id="cb1-677"><a></a>      txt &lt;- fmt_val(v)</span>
+<span id="cb1-678"><a></a>      if (i == 1L) {</span>
+<span id="cb1-679"><a></a>        tags$span(</span>
+<span id="cb1-680"><a></a>          txt,</span>
+<span id="cb1-681"><a></a>          style = "font-weight:700; margin-right:10px; white-space:nowrap;"</span>
+<span id="cb1-682"><a></a>        )</span>
+<span id="cb1-683"><a></a>      } else {</span>
+<span id="cb1-684"><a></a>        tags$span(</span>
+<span id="cb1-685"><a></a>          txt,</span>
+<span id="cb1-686"><a></a>          style = "color:#333; margin-right:10px; white-space:nowrap;"</span>
+<span id="cb1-687"><a></a>        )</span>
+<span id="cb1-688"><a></a>      }</span>
+<span id="cb1-689"><a></a>    })</span>
+<span id="cb1-690"><a></a></span>
+<span id="cb1-691"><a></a>    tags$div(</span>
+<span id="cb1-692"><a></a>      tags$div(</span>
+<span id="cb1-693"><a></a>        "Recent simulations:",</span>
+<span id="cb1-694"><a></a>        style = "font-weight:600; margin-bottom:4px;"</span>
+<span id="cb1-695"><a></a>      ),</span>
+<span id="cb1-696"><a></a>      tags$div(</span>
+<span id="cb1-697"><a></a>        style = "font-size:0.9em; padding-top:2px; padding-bottom:6px; overflow-x:auto; white-space:nowrap;",</span>
+<span id="cb1-698"><a></a>        spans</span>
+<span id="cb1-699"><a></a>      )</span>
+<span id="cb1-700"><a></a>    )</span>
+<span id="cb1-701"><a></a>  })</span>
+<span id="cb1-702"><a></a>}</span>
+<span id="cb1-703"><a></a></span>
+<span id="cb1-704"><a></a>shinyApp(ui, server)</span>
+<span id="cb1-705"><a></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="images/logo_compact_blue.svg" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: false,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+       // Parallax background image
+       parallaxBackgroundImage: 'images/background.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1605,
+
+        height: 1050,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 5.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script>
+      (function () {
+        function addControls() {
+          // Reveal sidebar container (present when menu or toc panel exists)
+          const sidebar = document.querySelector(".slide-menu-panel");
+
+          if (!sidebar) return;
+
+          const box = document.createElement("div");
+          box.style.padding = "0.5rem 0.75rem";
+          box.style.borderTop = "1px solid #ccc";
+          box.innerHTML = `
+          <label style="display:block; font-size:0.85rem;">
+            <input type="checkbox" id="toggleFragments">
+            Incremental Build
+          </label>
+          <label style="display:block; font-size:0.85rem;">
+            <input type="checkbox" id="toggleTransitions" checked>
+            Transitions
+          </label>
+        `;
+          sidebar.appendChild(box);
+
+          const frag = box.querySelector("#toggleFragments");
+          const trans = box.querySelector("#toggleTransitions");
+
+          frag.addEventListener("change", () => {
+            Reveal.configure({ fragments: frag.checked });
+            Reveal.configure({ incremental: frag.checked });
+            Reveal.syncFragments();
+
+            // If turning fragments off, reveal all on current slide
+            if (!frag.checked) {
+              const i = Reveal.getIndices();
+              Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
+            }
+          });
+
+          trans.addEventListener("change", () => {
+            if (trans.checked) {
+              Reveal.configure({ transition: "slide", backgroundTransition: "slide" });
+            } else {
+              Reveal.configure({ transition: "none", backgroundTransition: "none" });
+            }
+          });
+        }
+
+        if (window.Reveal) {
+          Reveal.on("ready", addControls);
+        } else {
+          document.addEventListener("DOMContentLoaded", addControls);
+        }
+      })();
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/theopen-institute\.github\.io\/openstats\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
