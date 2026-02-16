@@ -189,8 +189,8 @@ window.Quarto = {
 <section id="step-1-conceptual-model" class="level1">
 <h1>Step 1: Conceptual Model</h1>
 <p>This first step is to define your conceptual model. A conceptual model includes no numbers, just a visual representation of the different variables you want to include and the relationships between them. You’ll hear people call this kind of visualization a DAG (Directed Acyclic Graph), but</p>
-<div class="dagitty" style="width:30em; height:10em">
-<p>dag { Admitted [outcome,pos="0.284,-0.180"] Department [exposure,pos="-0.447,0.100"] Sex [exposure,pos="-1.065,-0.180"] Department -&gt; Admitted Sex -&gt; Admitted Sex -&gt; Department }</p>
+<div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
+<p>dag { Admitted [outcome,pos="-0.619,0.077"] Department [exposure,pos="-0.858,0.192"] Sex [exposure,pos="-1.059,-0.272"] UNKNOWN [latent,pos="-0.414,0.077"] Department -&gt; Admitted Sex -&gt; Admitted Sex -&gt; Department UNKNOWN -&gt; Admitted }</p>
 </div>
 <p>How should you pick these variables? You need to use your intuitions.</p>
 <p>This is a process of exploration. There’s no right answer, only better and better representations of the story you want to understand. If your model doesn’t work, don’t worry: you’ll know soon enough, and you’ll find another that will.</p>
@@ -330,29 +330,29 @@ admitted_i &amp;\sim \mathrm{Bernoulli}(p_i) \\
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 21 × 7
-   variable     mean median    sd   mad     q5    q95
-   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
- 1 alpha      -0.784 -0.784    NA     0 -0.784 -0.784
- 2 beta[1]     1.81   1.81     NA     0  1.81   1.81 
- 3 beta[2]    -1.81  -1.81     NA     0 -1.81  -1.81 
- 4 gamma[1]    0.293  0.293    NA     0  0.293  0.293
- 5 gamma[2]    0.807  0.807    NA     0  0.807  0.807
- 6 gamma[3]   -1.66  -1.66     NA     0 -1.66  -1.66 
- 7 gamma[4]   -0.356 -0.356    NA     0 -0.356 -0.356
- 8 gamma[5]    1.20   1.20     NA     0  1.20   1.20 
- 9 gamma[6]   -0.287 -0.287    NA     0 -0.287 -0.287
-10 delta[1,1]  0.264  0.264    NA     0  0.264  0.264
-11 delta[2,1] -0.264 -0.264    NA     0 -0.264 -0.264
-12 delta[1,2] -0.422 -0.422    NA     0 -0.422 -0.422
-13 delta[2,2]  0.422  0.422    NA     0  0.422  0.422
-14 delta[1,3] -0.315 -0.315    NA     0 -0.315 -0.315
-15 delta[2,3]  0.315  0.315    NA     0  0.315  0.315
-16 delta[1,4]  0.407  0.407    NA     0  0.407  0.407
-17 delta[2,4] -0.407 -0.407    NA     0 -0.407 -0.407
-18 delta[1,5]  0.397  0.397    NA     0  0.397  0.397
-19 delta[2,5] -0.397 -0.397    NA     0 -0.397 -0.397
-20 delta[1,6] -0.331 -0.331    NA     0 -0.331 -0.331
-21 delta[2,6]  0.331  0.331    NA     0  0.331  0.331</code></pre>
+   variable      mean  median    sd   mad      q5     q95
+   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 alpha       0.790   0.790     NA     0  0.790   0.790 
+ 2 beta[1]     0.644   0.644     NA     0  0.644   0.644 
+ 3 beta[2]    -0.644  -0.644     NA     0 -0.644  -0.644 
+ 4 gamma[1]   -1.19   -1.19      NA     0 -1.19   -1.19  
+ 5 gamma[2]    0.698   0.698     NA     0  0.698   0.698 
+ 6 gamma[3]   -0.753  -0.753     NA     0 -0.753  -0.753 
+ 7 gamma[4]   -0.0963 -0.0963    NA     0 -0.0963 -0.0963
+ 8 gamma[5]    0.583   0.583     NA     0  0.583   0.583 
+ 9 gamma[6]    0.756   0.756     NA     0  0.756   0.756 
+10 delta[1,1] -0.294  -0.294     NA     0 -0.294  -0.294 
+11 delta[2,1]  0.294   0.294     NA     0  0.294   0.294 
+12 delta[1,2]  0.278   0.278     NA     0  0.278   0.278 
+13 delta[2,2] -0.278  -0.278     NA     0 -0.278  -0.278 
+14 delta[1,3] -0.214  -0.214     NA     0 -0.214  -0.214 
+15 delta[2,3]  0.214   0.214     NA     0  0.214   0.214 
+16 delta[1,4]  0.578   0.578     NA     0  0.578   0.578 
+17 delta[2,4] -0.578  -0.578     NA     0 -0.578  -0.578 
+18 delta[1,5] -0.117  -0.117     NA     0 -0.117  -0.117 
+19 delta[2,5]  0.117   0.117     NA     0  0.117   0.117 
+20 delta[1,6] -0.232  -0.232     NA     0 -0.232  -0.232 
+21 delta[2,6]  0.232   0.232     NA     0  0.232   0.232 </code></pre>
 </div>
 </div>
 <p>(More details soon…)</p>
@@ -382,27 +382,27 @@ admitted_i &amp;\sim \mathrm{Bernoulli}(p_i) \\
 <pre><code># A tibble: 21 × 10
    variable       mean   median     sd    mad       q5      q95  rhat ess_bulk
    &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
- 1 alpha      -0.568   -0.567   0.0524 0.0493 -0.653   -0.480   1.00     2435.
- 2 beta[1]    -0.0885  -0.0875  0.0527 0.0532 -0.177   -0.00338 1.00     2253.
- 3 beta[2]     0.0885   0.0875  0.0527 0.0532  0.00338  0.177   1.00     2253.
- 4 gamma[1]    1.53     1.53    0.115  0.114   1.34     1.72    1.00     3385.
- 5 gamma[2]    1.17     1.16    0.170  0.170   0.902    1.46    1.00     1832.
- 6 gamma[3]   -0.0333  -0.0317  0.0780 0.0774 -0.164    0.0927  1.00     3864.
- 7 gamma[4]   -0.0951  -0.0950  0.0820 0.0808 -0.228    0.0383  1.00     3632.
- 8 gamma[5]   -0.490   -0.489   0.0975 0.0976 -0.650   -0.331   1.00     3268.
- 9 gamma[6]   -2.08    -2.08    0.137  0.141  -2.31    -1.86    1.00     3489.
-10 delta[1,1] -0.376   -0.376   0.110  0.109  -0.556   -0.194   1.00     3485.
-11 delta[2,1]  0.376    0.376   0.110  0.109   0.194    0.556   1.00     3485.
-12 delta[1,2]  0.0143   0.0183  0.163  0.163  -0.263    0.281   1.00     1896.
-13 delta[2,2] -0.0143  -0.0183  0.163  0.163  -0.281    0.263   1.00     1896.
-14 delta[1,3]  0.145    0.145   0.0757 0.0763  0.0209   0.272   1.000    2931.
-15 delta[2,3] -0.145   -0.145   0.0757 0.0763 -0.272   -0.0209  1.000    2931.
-16 delta[1,4]  0.0456   0.0447  0.0790 0.0783 -0.0817   0.179   1.00     3160.
-17 delta[2,4] -0.0456  -0.0447  0.0790 0.0783 -0.179    0.0817  1.00     3160.
-18 delta[1,5]  0.177    0.179   0.0938 0.0940  0.0219   0.329   1.000    3293.
-19 delta[2,5] -0.177   -0.179   0.0938 0.0940 -0.329   -0.0219  1.000    3293.
-20 delta[1,6] -0.00620 -0.00761 0.124  0.123  -0.209    0.195   1.00     3461.
-21 delta[2,6]  0.00620  0.00761 0.124  0.123  -0.195    0.209   1.00     3461.
+ 1 alpha      -0.568   -0.568   0.0532 0.0527 -0.654   -0.478   1.00     2203.
+ 2 beta[1]    -0.0894  -0.0903  0.0517 0.0519 -0.175   -0.00462 1.00     2214.
+ 3 beta[2]     0.0894   0.0903  0.0517 0.0519  0.00462  0.175   1.00     2214.
+ 4 gamma[1]    1.53     1.53    0.110  0.108   1.35     1.71    1.00     3467.
+ 5 gamma[2]    1.18     1.17    0.165  0.162   0.904    1.45    1.00     1845.
+ 6 gamma[3]   -0.0337  -0.0323  0.0798 0.0795 -0.164    0.0948  1.00     3608.
+ 7 gamma[4]   -0.0969  -0.0959  0.0823 0.0848 -0.229    0.0337  1.00     3307.
+ 8 gamma[5]   -0.495   -0.494   0.0988 0.102  -0.654   -0.334   1.000    3482.
+ 9 gamma[6]   -2.08    -2.08    0.132  0.130  -2.30    -1.87    1.00     3767.
+10 delta[1,1] -0.376   -0.375   0.108  0.106  -0.551   -0.196   1.00     3569.
+11 delta[2,1]  0.376    0.375   0.108  0.106   0.196    0.551   1.00     3569.
+12 delta[1,2]  0.0121   0.0128  0.160  0.158  -0.254    0.276   1.00     1852.
+13 delta[2,2] -0.0121  -0.0128  0.160  0.158  -0.276    0.254   1.00     1852.
+14 delta[1,3]  0.146    0.147   0.0756 0.0759  0.0215   0.268   1.00     3017.
+15 delta[2,3] -0.146   -0.147   0.0756 0.0759 -0.268   -0.0215  1.00     3017.
+16 delta[1,4]  0.0464   0.0459  0.0793 0.0770 -0.0877   0.175   1.00     3381.
+17 delta[2,4] -0.0464  -0.0459  0.0793 0.0770 -0.175    0.0877  1.00     3381.
+18 delta[1,5]  0.173    0.172   0.0940 0.0953  0.0198   0.332   1.00     3086.
+19 delta[2,5] -0.173   -0.172   0.0940 0.0953 -0.332   -0.0198  1.00     3086.
+20 delta[1,6] -0.00132 -0.00352 0.122  0.123  -0.199    0.208   1.00     3401.
+21 delta[2,6]  0.00132  0.00352 0.122  0.123  -0.208    0.199   1.00     3401.
 # ℹ 1 more variable: ess_tail &lt;dbl&gt;</code></pre>
 </div>
 </div>
