@@ -193,6 +193,7 @@
       margin-right: 0; 
     }
   </style>
+  <script src="js/dagitty.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -219,6 +220,16 @@
 <h1>DAGs and Causality</h1>
 <p>Estimands and parameters, but also always uncertainty around them.</p>
 <p>Show a DAG of height -&gt; weight; unknown variable</p>
+</section>
+
+<section id="dag-editor" class="title-slide slide level1 center">
+<h1>DAG editor</h1>
+<div class="dagitty" style="width:20em; height:20em">
+<p>dag { I [pos="1,0"] X [exposure,pos="0,2"] Y [outcome,pos="2,2"] X -&gt; { I -&gt; Y } }</p>
+</div>
+<script>
+DAGitty.setup()
+</script>
 </section>
 
 <section id="common-distributions" class="title-slide slide level1 no-title center">

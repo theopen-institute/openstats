@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://theopen-institute.github.io/openstats/week2.html</loc>
-    <lastmod>2026-02-12T15:15:42.377Z</lastmod>
+    <loc>https://theopen-institute.github.io/openstats/week1.html</loc>
+    <lastmod>2026-02-16T10:47:54.685Z</lastmod>
   </url>
   <url>
-    <loc>https://theopen-institute.github.io/openstats/week1.html</loc>
-    <lastmod>2026-02-12T15:15:42.377Z</lastmod>
+    <loc>https://theopen-institute.github.io/openstats/workflow.html</loc>
+    <lastmod>2026-02-16T10:47:54.685Z</lastmod>
+  </url>
+  <url>
+    <loc>https://theopen-institute.github.io/openstats/week2.html</loc>
+    <lastmod>2026-02-16T10:47:54.685Z</lastmod>
   </url>
 </urlset>
