@@ -43,8 +43,10 @@ jobs:
         run: |
           Rscript -e "cmdstanr::install_cmdstan()"
 
-      - name: Install Quarto extensions
+      - name: Install Quarto shinylive extension
         run: quarto add quarto-ext/shinylive --no-prompt
+
+      - name: Install Quarto code embed extension
         run: quarto add quarto-ext/include-code-files --no-prompt
 
       - name: Render and Publish
