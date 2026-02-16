@@ -35,7 +35,7 @@ Here, we're choosing sex as a variable because we know that sex-based discrimina
 
 Based on that, we might wonder: if women are admitted to the college at a lower rate, is that a _direct_ effect of discrimination or is it an _indirect_ effect of the departments they're chosing to apply to. Both represent forms of discrimination, but they require different interventions to fix. Statistics can help us understand the dynamic at play.
 
-Visually, we might represent this question as:
+Visually, we might represent this question as the graph above.
 
 <script>
 DAGitty.setup()
