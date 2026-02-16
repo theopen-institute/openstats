@@ -1,3 +1,8 @@
+---
+format: 
+  revealjs: default
+---
+
 # Data Lunch: Week 1 {.center}
 
 A Fresh Start
