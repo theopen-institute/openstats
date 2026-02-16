@@ -36,13 +36,6 @@ jobs:
             shinyjs
             rmarkdown
             knitr
-            ggiraph
-            DT
-            networkD3
-            ggplot2
-            munsell
-            data.tree@1.1.0
-            igraph@2.0.2
             stan-dev/cmdstanr
           cache-version: 1
 
