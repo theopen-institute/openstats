@@ -8,13 +8,13 @@ format:
           <script src="js/dagitty.js"></script>
 ---
 
-This document describes standard workflow for exploratory modeling.
+This document describes a standard workflow for exploratory modeling.
 
 Imagine you're in charge of admissions at a large university. You want to know if your admissions process is fair. You've got data from thousands of individual applicants. What now?
 
 
 # Step 1: Conceptual Model
-This first step is to define your conceptual model. A conceptual model includes no numbers, just a visual representation of the different variables you want to include and the relationships between them.
+This first step is to define your conceptual model. A conceptual model includes no numbers, just a visual representation of the different variables you want to include and the relationships between them. You'll hear people call this kind of visualization a DAG (Directed Acyclic Graph), but 
 
 <div class="dagitty" style="width:30em; height:10em">
 dag {
@@ -27,11 +27,15 @@ Sex -> Department
 }
 </div>
 
-How should you pick these variables? You need to use your intuitions. Here, we're choosing sex because we know that sex-based discrimination is a major social issue. We'll also look at department because we know that some departments are harder to get into others.
+How should you pick these variables? You need to use your intuitions. 
 
-Based on that, we might wonder...
+This is a process of exploration. There's no right answer, only better and better representations of the story you want to understand. If your model doesn't work, don't worry: you'll know soon enough, and you'll find another that will.
 
-There's no right answer here, only the story you want to understand. If your model doesn't work, don't worry: you'll know soon enough.
+Here, we're choosing sex as a variable because we know that sex-based discrimination is a major social issue. We'll also look at department because we know that some departments are harder to get into others.
+
+Based on that, we might wonder: if women are admitted to the college at a lower rate, is that a _direct_ effect of discrimination or is it an _indirect_ effect of the departments they're chosing to apply to. Both represent forms of discrimination, but they require different interventions to fix. Statistics can help us understand the dynamic at play.
+
+Visually, we might represent this question as:
 
 <script>
 DAGitty.setup()

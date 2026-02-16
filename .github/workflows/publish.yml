@@ -59,7 +59,7 @@ jobs:
       - name: Install Quarto code embed extension
         run: quarto add quarto-ext/include-code-files --no-prompt
         
-      - name: Ensure stancache exists
+      - name: Ensure cache directories exists
         run: |
           mkdir -p .stancache
           mkdir -p .output
