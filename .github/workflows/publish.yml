@@ -39,6 +39,8 @@ jobs:
             ggiraph
             DT
             networkD3
+            ggplot2
+            munsell
             stan-dev/cmdstanr
           cache-version: 1
 
