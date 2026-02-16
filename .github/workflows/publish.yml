@@ -29,7 +29,6 @@ jobs:
         with:
           packages: |
             tidyverse
-            cmdstanr
             tidybayes
             posterior
             shinylive
@@ -38,11 +37,14 @@ jobs:
             knitr
             ggiraph
             DT
+            stan-dev/cmdstanr
 
-      - name: Install Quarto shinylive extension
+      - name: Install CmdStan
+        run: |
+          Rscript -e "cmdstanr::install_cmdstan()"
+
+      - name: Install Quarto extensions
         run: quarto add quarto-ext/shinylive --no-prompt
-
-      - name: Install Quarto code embed extension
         run: quarto add quarto-ext/include-code-files --no-prompt
 
       - name: Render and Publish
