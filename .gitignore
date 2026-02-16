@@ -53,4 +53,4 @@ rsconnect/
 /.output/
 
 **/*.quarto_ipynb
-/.stancache/*
+/.stancache/

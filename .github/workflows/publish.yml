@@ -23,7 +23,7 @@ jobs:
         with:
           use-public-rspm: true
 
-      # Install + cache R packages (no renv)
+      # Install + cache R packages
       - name: Install R dependencies (cached)
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -39,15 +39,31 @@ jobs:
             DT
             stan-dev/cmdstanr
 
-      - name: Install CmdStan
-        run: |
-          Rscript -e "cmdstanr::install_cmdstan()"
+      # System toolchain required for CmdStan
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential gfortran
 
+      # Cache CmdStan between runs
+      - name: Cache CmdStan
+        uses: actions/cache@v4
+        with:
+          path: ~/.cmdstan
+          key: ${{ runner.os }}-cmdstan
+
+      - name: Install CmdStan
+        run: Rscript -e "cmdstanr::install_cmdstan()"
+
+      # Install Quarto extensions at runtime (not committed to repo)
       - name: Install Quarto shinylive extension
         run: quarto add quarto-ext/shinylive --no-prompt
 
       - name: Install Quarto code embed extension
         run: quarto add quarto-ext/include-code-files --no-prompt
+        
+      - name: Ensure stancache exists
+        run: |
+          mkdir -p .stancache
+          ls -la .stancache
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
