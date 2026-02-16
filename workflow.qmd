@@ -16,15 +16,18 @@ Imagine you're in charge of admissions at a large university. You want to know i
 # Step 1: Conceptual Model
 This first step is to define your conceptual model. A conceptual model includes no numbers, just a visual representation of the different variables you want to include and the relationships between them. You'll hear people call this kind of visualization a DAG (Directed Acyclic Graph), but 
 
-<div class="dagitty" style="width:30em; height:10em">
+<div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
 dag {
-Admitted [outcome,pos=\"0.284,-0.180\"]
-Department [exposure,pos=\"-0.447,0.100\"]
-Sex [exposure,pos=\"-1.065,-0.180\"]
+Admitted [outcome,pos=\"-0.619,0.077\"]
+Department [exposure,pos=\"-0.858,0.192\"]
+Sex [exposure,pos=\"-1.059,-0.272\"]
+UNKNOWN [latent,pos=\"-0.414,0.077\"]
 Department -> Admitted
 Sex -> Admitted
 Sex -> Department
+UNKNOWN -> Admitted
 }
+
 </div>
 
 How should you pick these variables? You need to use your intuitions. 
