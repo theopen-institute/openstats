@@ -1,0 +1,152 @@
+---
+title: Workflow Illustration
+format:
+  html: 
+    df-print: paged
+    include-in-header:
+      - text: |
+          <script src="js/dagitty.js"></script>
+---
+
+This document describes standard workflow for exploratory modeling.
+
+Imagine you're in charge of admissions at a large university. You want to know if your admissions process is fair. You've got data from thousands of individual applicants. What now?
+
+
+# Step 1: Conceptual Model
+This first step is to define your conceptual model. A conceptual model includes no numbers, just a visual representation of the different variables you want to include and the relationships between them.
+
+<div class="dagitty" style="width:30em; height:10em">
+dag {
+Admitted [outcome,pos=\"0.284,-0.180\"]
+Department [exposure,pos=\"-0.447,0.100\"]
+Sex [exposure,pos=\"-1.065,-0.180\"]
+Department -> Admitted
+Sex -> Admitted
+Sex -> Department
+}
+</div>
+
+How should you pick these variables? You need to use your intuitions. Here, we're choosing sex because we know that sex-based discrimination is a major social issue. We'll also look at department because we know that some departments are harder to get into others.
+
+Based on that, we might wonder...
+
+There's no right answer here, only the story you want to understand. If your model doesn't work, don't worry: you'll know soon enough.
+
+<script>
+DAGitty.setup()
+</script>
+
+# Step 2: Formal Model
+
+The next step is to give our model a formal definition. 
+
+$$
+\begin{align}
+admitted_i &\sim \mathrm{Bernoulli}(p_i) \\
+\mathrm{logit}(p_i)
+&= \alpha
++ \beta_{\mathrm{sex}[i]}
++ \gamma_{\mathrm{dept}[i]}
++ \delta_{\mathrm{sex}[i],\,\mathrm{dept}[i]} \\
+\alpha &\sim \mathrm{Normal}(0, 1.5) \\
+\beta_{\mathrm{sex}} &\sim \mathrm{Normal}(0, 1) \\
+\gamma_{\mathrm{dept}} &\sim \mathrm{Normal}(0, 1) \\
+\delta_{\mathrm{sex},\,\mathrm{dept}} &\sim \mathrm{Normal}(0, 0.5)
+\end{align}
+$$
+
+We need to make a few choices here. First, we need to have a clear sense of what we're trying to understand by now (our estimand), because we'll need to define parameters to get us there. We'll also need to set our prior beliefs.
+
+The result looks complicated, but it's really just a few parts:
+
+1) A likelihood function (1st line), explaining our randomness
+2) A linear predictor (2nd line), explaining how our outcome is predicted
+3) Prior estimates (Lines 3-6), explaining what we currently believe
+
+
+# Step 3: Computational Model
+
+The next step requires us to get a bit technical. We're going to turn our formal model into something that computers can use.
+
+```{.stan include="models/berkeley.stan" filename="models/berkeley.stan" code-line-numbers="true"}
+```
+
+One nice feature of Bayesian modeling is that we can use exactly the same definitions for our generative models and for our statistical models. 
+
+We can also load both our observed data and our stan model into R at this point:
+```{r setup, message=FALSE, results="hide"}
+# libraries
+library(tidyverse)
+library(cmdstanr)
+library(tidybayes)
+library(posterior)
+
+# data import
+df <- read.csv("datasets/berkeley.csv") |>
+  mutate(
+    sex = as_factor(sex),
+    dept = as_factor(dept)
+  )
+
+# compile model
+model <- cmdstan_model("models/berkeley.stan", dir = ".stancache")
+```
+
+
+# Step 4: Simulation
+
+Now, we're going to use our model to generate simulated data. The results don't tell us anything about the world, but this is nevertheless an important step because it allows us to test the assumptions of our model to see if the outputs we get are coherent.
+
+Mechanically, the key difference between this step and the next one is that here we'll tell our model to skip the likelihood calculations. The predictions we make here are based purely on our prior estimates. In the next step, we'll use likelihoods to make predictions on the basis of our posterior estimates.
+
+```{r simulation_draw, message=FALSE, results="hide"}
+# fit the data
+fit <- df |>
+  compose_data() |>
+  list_assign("prior_only" = 1) |>
+  model$sample()
+```
+
+
+```{r simulation_analysis}
+# pick a random single draw to interpret
+one_draw <- fit$draws() |>
+  subset_draws(chain = sample(1:4, 1), iteration = sample(1:1000, 1))
+
+# summarize parameters
+one_draw |>
+  subset_draws(variable = c("alpha", "beta", "gamma", "delta")) |>
+  summarise_draws() |>
+  select(-c(rhat, ess_bulk, ess_tail)) |>
+  print(n = Inf)
+```
+
+(More details soon...)
+
+# Step 5: Fitting
+
+We did it! These are our results, at least in raw form. This time, we'll tell our model to apply our likelihood function to the data we actually observed. Through this, we are able to update our prior beliefs to posterior distributions, which can hopefully be transformed to tell us something about the world.
+
+```{r fitting_draw, message=FALSE, results="hide"}
+fit <- df |>
+  compose_data() |>
+  list_assign("prior_only" = 0) |>
+  model$sample()
+```
+
+```{r fitting_analysis}
+# summarize parameters
+fit$draws() |>
+  subset_draws(variable = c("alpha", "beta", "gamma", "delta")) |>
+  summarise_draws() |>
+  print(n = Inf)
+```
+
+(More details soon...)
+
+# Step 6: Interpretation
+
+This is where we can get really creative again. We've fitted our model, so now what? We've got updated posterior distributions for all of our parameters, and we can do a lot. The parameters by themselves can be useful, but more interesting even is the way we can use these parameters to estimate more complex phenomena, simulate counterfactual data, and test potential interventions.
+
+Once we've got the mechanics in place, this is where I hope we can spend most of our time together.

@@ -40,6 +40,9 @@ jobs:
       - name: Install Quarto shinylive extension
         run: quarto add quarto-ext/shinylive --no-prompt
 
+      - name: Install Quarto code embed extension
+        run: quarto add quarto-ext/include-code-files --no-prompt
+
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:

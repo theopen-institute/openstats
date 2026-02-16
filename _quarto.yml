@@ -20,5 +20,13 @@ format:
     transition: slide
     fragments: false
     incremental: true
+  html:
+    code-fold: true
+    code-summary: "Show code"
+    toc: true
+    toc-location: left
+    toc-title: "Contents"
+    toc-expand: true
 filters: 
   - shinylive
+  - include-code-files

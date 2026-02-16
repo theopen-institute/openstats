@@ -1,3 +1,14 @@
+---
+format:
+  revealjs:
+    self-contained: false
+    include-in-header:
+      - text: |
+          <script src="js/dagitty.js"></script>
+    pandoc_args: ["--smart=false"]
+---
+
+
 # Data Lunch: Week 2 {.center}
 
 Describing uncertainty
@@ -18,6 +29,21 @@ The problem of randomness is fundamental because it shapes how we think about sa
 Estimands and parameters, but also always uncertainty around them.
 
 Show a DAG of height -> weight; unknown variable
+
+# DAG editor
+
+<div class="dagitty" style="width:20em; height:20em">
+  dag {
+    I [pos=\"1,0\"]
+    X [exposure,pos=\"0,2\"]
+    Y [outcome,pos=\"2,2\"]
+    X -> { I -> Y }
+  }
+</div>
+
+<script>
+DAGitty.setup()
+</script>
 
 # Common Distributions {.no-title}
 ```{shinylive-r}
