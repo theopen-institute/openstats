@@ -5,7 +5,6 @@ format:
     include-in-header:
       - text: |
           <script src="js/dagitty.js"></script>
-    pandoc_args: ["--smart=false"]
 ---
 
 

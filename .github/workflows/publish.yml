@@ -28,12 +28,14 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: |
+            tidyverse
+            cmdstanr
+            tidybayes
+            posterior
             shinylive
             shinyjs
-            tidyverse
             rmarkdown
             knitr
-            ggplot2
             ggiraph
             DT
 
