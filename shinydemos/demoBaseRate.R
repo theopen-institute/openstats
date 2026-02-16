@@ -3,6 +3,7 @@ library(shiny)
 library(bslib)
 library(networkD3)
 library(tibble)
+library(munsell) # https://github.com/r-wasm/webr/issues/537
 
 sankeyHeight <- 600
 sankeyWidth <- 1000
