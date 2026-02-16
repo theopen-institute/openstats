@@ -63,7 +63,7 @@ jobs:
       - name: Ensure stancache exists
         run: |
           mkdir -p .stancache
-          ls -la .stancache
+          mkdir -p .output
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
