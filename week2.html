@@ -216,20 +216,26 @@
 <p>The problem of randomness is fundamental because it shapes how we think about sampling.</p>
 </section>
 
-<section id="dags-and-causality" class="title-slide slide level1 center">
-<h1>DAGs and Causality</h1>
-<p>Estimands and parameters, but also always uncertainty around them.</p>
-<p>Show a DAG of height -&gt; weight; unknown variable</p>
-</section>
-
 <section id="dag-editor" class="title-slide slide level1 center">
 <h1>DAG editor</h1>
-<div class="dagitty" style="width:20em; height:20em">
-<p>dag { I [pos="1,0"] X [exposure,pos="0,2"] Y [outcome,pos="2,2"] X -&gt; { I -&gt; Y } }</p>
+<div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
+<p>dag { Admitted [outcome,pos="-0.619,0.077"] Department [exposure,pos="-0.858,0.192"] Sex [exposure,pos="-1.059,-0.272"] UNKNOWN [latent,pos="-0.414,0.077"] Department -&gt; Admitted Sex -&gt; Admitted Sex -&gt; Department UNKNOWN -&gt; Admitted }</p>
 </div>
 <script>
 DAGitty.setup()
 </script>
+</section>
+
+<section id="real-problem" class="title-slide slide level1 center">
+<h1>Real problem</h1>
+<ul>
+<li class="fragment">Who is going to win the election for mayor of our town?</li>
+<li class="fragment">In the last election, the current candidate got 60% of the votes.</li>
+<li class="fragment">We can go out and take a survey asking people if they plan to vote for the current mayor again.</li>
+<li class="fragment">There are many non-statistical problems with this, but we won’t dig into those now.</li>
+<li class="fragment">What do we need to provide a meaningful statistical answer?</li>
+<li class="fragment">According to Bayes theorem, all we need is a prior belief and a likelihood.</li>
+</ul>
 </section>
 
 <section id="common-distributions" class="title-slide slide level1 no-title center">
