@@ -125,7 +125,7 @@ one_draw <- fit$draws() |>
 one_draw |>
   subset_draws(variable = c("alpha", "beta", "gamma", "delta")) |>
   summarise_draws() |>
-  select(-c(rhat, ess_bulk, ess_tail)) |>
+  select(-c(rhat, ess_bulk, ess_tail, median, sd, mad, q5, q95)) |>
   print(n = Inf)
 ```
 
