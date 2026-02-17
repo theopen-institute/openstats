@@ -23,26 +23,33 @@ Three components:
 
 The problem of randomness is fundamental because it shapes how we think about sampling.
 
-
-# DAGs and Causality
-Estimands and parameters, but also always uncertainty around them.
-
-Show a DAG of height -> weight; unknown variable
-
 # DAG editor
 
-<div class="dagitty" style="width:20em; height:20em">
-  dag {
-    I [pos=\"1,0\"]
-    X [exposure,pos=\"0,2\"]
-    Y [outcome,pos=\"2,2\"]
-    X -> { I -> Y }
-  }
+<div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
+dag {
+Admitted [outcome,pos=\"-0.619,0.077\"]
+Department [exposure,pos=\"-0.858,0.192\"]
+Sex [exposure,pos=\"-1.059,-0.272\"]
+UNKNOWN [latent,pos=\"-0.414,0.077\"]
+Department -> Admitted
+Sex -> Admitted
+Sex -> Department
+UNKNOWN -> Admitted
+}
 </div>
 
 <script>
 DAGitty.setup()
 </script>
+
+# Real problem
+
+- Who is going to win the election for mayor of our town?
+- In the last election, the current candidate got 60% of the votes.
+- We can go out and take a survey asking people if they plan to vote for the current mayor again.
+- There are many non-statistical problems with this, but we won't dig into those now.
+- What do we need to provide a meaningful statistical answer?
+- According to Bayes theorem, all we need is a prior belief and a likelihood.
 
 # Common Distributions {.no-title}
 ```{shinylive-r}
