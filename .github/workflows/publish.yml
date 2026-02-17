@@ -33,6 +33,7 @@ jobs:
             rmarkdown
             knitr
             tidyverse
+            rlib
             tidybayes
             posterior
             stan-dev/cmdstanr

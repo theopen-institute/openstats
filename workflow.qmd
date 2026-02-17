@@ -89,6 +89,11 @@ library(cmdstanr)
 library(tidybayes)
 library(posterior)
 
+{{< include r/rlib.R >}}
+
+# print formatting
+options(scipen = 999)
+
 # data import
 df <- read.csv("datasets/berkeley.csv") |>
   mutate(
@@ -125,8 +130,9 @@ one_draw <- fit$draws() |>
 one_draw |>
   subset_draws(variable = c("alpha", "beta", "gamma", "delta")) |>
   summarise_draws() |>
+  replace_indexes(df, beta[sex], gamma[dept], delta[sex, dept]) |>
   select(-c(rhat, ess_bulk, ess_tail, median, sd, mad, q5, q95)) |>
-  print(n = Inf)
+  print(n = Inf, width = Inf)
 ```
 
 (More details soon...)
@@ -147,7 +153,9 @@ fit <- df |>
 fit$draws() |>
   subset_draws(variable = c("alpha", "beta", "gamma", "delta")) |>
   summarise_draws() |>
-  print(n = Inf)
+  replace_indexes(df, beta[sex], gamma[dept], delta[sex, dept]) |>
+  select(-c(ess_bulk, ess_tail)) |>
+  print(n = Inf, width = Inf)
 ```
 
 (More details soon...)

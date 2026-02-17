@@ -220,7 +220,7 @@ _Paradox: P(A|B) is not the same as P(B|A)_
 # Base Rate Paradox {.no-title}
 ```{shinylive-r}
 #| standalone: true
-{{< include shinydemos/demoBaseRate.R >}}
+{{< include shiny/demoBaseRate.R >}}
 ```
 
 # Direction of conditions
@@ -332,7 +332,7 @@ Instead of tests, we have Bayesian Updating:
 # Bayesian Updating Example {.no-title}
 ```{shinylive-r}
 #| standalone: true
-{{< include shinydemos/demoUpdating.R >}}
+{{< include shiny/demoUpdating.R >}}
 
 ```
 

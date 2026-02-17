@@ -51,9 +51,14 @@ DAGitty.setup()
 - What do we need to provide a meaningful statistical answer?
 - According to Bayes theorem, all we need is a prior belief and a likelihood.
 
+# Core elements
+- prior
+- posterior
+- likelihood
+
 # Common Distributions {.no-title}
 ```{shinylive-r}
 #| standalone: true
-{{< include shinydemos/demoDistributions.R >}}
+{{< include shiny/demoDistributions.R >}}
 
 ```
