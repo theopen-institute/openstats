@@ -924,7 +924,13 @@ We are going to scrap all of this conceptual baggage and start over.
 <aside class="notes">
 <p>So I said that we were going to derive our entire statistics from first principles, and I meant it. Instead of a million pre-built tests, we have one process: Bayesian updating</p>
 <p>A million tests. We have one process, called Bayesian updating. Everything we build will be an application of that same logic.</p>
-<p>For those interested in math, I definitely encourage you to where the theorem comes from and how it’s derived, but for our purposes, we need just one simple idea:</p>
+<p>For those interested in math, I definitely encourage you to where the theorem comes from and how it’s derived, but for our purposes, we need just one simple idea: :::</p>
+<p>Instead of tests, we have Bayesian Updating:</p>
+<ul>
+<li>We have a <strong>prior</strong> belief about the world (specifically, about a parameter or “estimand”).<br><span class="fragment blue"><em>I think that about 60% of Kathmandu will vote for the current mayor in the next election.</em></span></li>
+<li>Then, we observe something, and we estimate the <strong>likelihood</strong> of what we saw.<br><span class="fragment blue"><em>I just took a survey, and only 30% of people said they will vote for the current mayor.</em></span></li>
+<li>This new observation changes our prior belief (challenging it or making it stronger), to become our <strong>posterior</strong>.<br><span class="fragment blue"><em>I now think that about 45% of Kathmandu will vote for the current mayor in the next election.</em></span></li>
+</ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -936,12 +942,6 @@ We are going to scrap all of this conceptual baggage and start over.
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>Instead of tests, we have Bayesian Updating:</p>
-<ul>
-<li class="fragment">We have a <strong>prior</strong> belief about the world (specifically, about a parameter or “estimand”).<br><span class="fragment blue"><em>I think that about 60% of Kathmandu will vote for the current mayor in the next election.</em></span></li>
-<li class="fragment">Then, we observe something, and we estimate the <strong>likelihood</strong> of what we saw.<br><span class="fragment blue"><em>I just took a survey, and only 30% of people said they will vote for the current mayor.</em></span></li>
-<li class="fragment">This new observation changes our prior belief (challenging it or making it stronger), to become our <strong>posterior</strong>.<br><span class="fragment blue"><em>I now think that about 45% of Kathmandu will vote for the current mayor in the next election.</em></span></li>
-</ul>
 </section></section>
 <section id="bayesian-updating-example" class="title-slide slide level1 no-title center">
 <h1>Bayesian Updating Example</h1>
@@ -1666,7 +1666,7 @@ We are going to scrap all of this conceptual baggage and start over.
 <li>second, the combination of priors, likelihoods, and posteriors drives a process called “updating”. We used to believe something, then we saw something, and now we believe something slightly or significantly different.</li>
 </ul>
 <p>believe something (prior), observe something (likelihood), update beliefs (posterior)</p>
-<p>With this simple process, we’re going to do some very cool things. instead, we have updating –&gt;</p>
+<p>With this simple process, we’re going to do some very cool things. instead, we have updating</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1683,20 +1683,20 @@ P(A|B) = \frac{P(B|A)\,P(A)}{P(B)}
 \]</span></p>
 <p>or</p>
 <p><span class="math display">\[
-\color{green}{P(\text{hypothesis} \mid \text{data})}
+\color{green}{P(\text{belief} \mid \text{data})}
 =
 \frac{
-\color{#1b91ff}{P(\text{data} \mid \text{hypothesis})}
-\;\color{#ff2c2d}{P(\text{hypothesis})}
+\color{#1b91ff}{P(\text{data} \mid \text{belief})}
+\;\color{#ff2c2d}{P(\text{belief})}
 }{
 \color{#999}{P(\text{data})}
 }
 \]</span></p>
 <ul>
-<li class="fragment"><span class="blue"><strong>P(data | hypothesis)</strong></span>: likelihood</li>
-<li class="fragment"><span class="red"><strong>P(hypothesis)</strong></span>: prior probability</li>
-<li class="fragment"><span class="green"><strong>P(hypothesis | data)</strong></span>: posterior probability</li>
-<li class="fragment"><span class="gray"><strong>P(data)</strong></span>: marginal likelihood (boring)</li>
+<li class="fragment"><span class="blue"><strong>P(data | belief)</strong></span>: likelihood</li>
+<li class="fragment"><span class="red"><strong>P(belief)</strong></span>: prior probability</li>
+<li class="fragment"><span class="green"><strong>P(belief | data)</strong></span>: posterior probability</li>
+<li class="fragment"><span class="gray"><strong>P(data)</strong></span>: marginal likelihood (not interesting)</li>
 </ul>
 <div class="fragment">
 <p>In simple terms:</p>
