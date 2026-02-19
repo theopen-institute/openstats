@@ -59,6 +59,6 @@ DAGitty.setup()
 # Common Distributions {.no-title}
 ```{shinylive-r}
 #| standalone: true
-{{< include shiny/demoDistributions.R >}}
+{{< include shiny/distributions.R >}}
 
 ```

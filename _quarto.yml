@@ -6,13 +6,14 @@ project:
     - css/
     - js/
     - www/
+    - notes/
 format: 
   revealjs:
     theme: [simple, css/deck.scss]
     logo: 'images/logo_compact_blue.svg'
     background-image: "images/background.png"
     background-size: "cover"
-    include-after-body: js/_reveal.html
+    include-after-body: _build/_reveal.html
     margin: 0.05
     width: 1605
     height: 1050
@@ -30,3 +31,4 @@ format:
 filters: 
   - shinylive
   - include-code-files
+  - _build/notes-from.lua
