@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: .output
+  render:
+    - "**/*.qmd"
+    - "!notes/"
   resources:
     - images/
     - css/
