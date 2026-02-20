@@ -99,7 +99,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-9270dd9cfccfdb94bd7891c63aee863f.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-dd4c88b0eee49eb387d4ff51a77e58ea.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -199,12 +199,8 @@
     <div class="slides">
 
 
-<section id="data-lunch-week-1" class="title-slide slide level1 center">
+<section id="data-lunch-week-1" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#title">
 <h1>Data Lunch: Week 1</h1>
-<p>A Fresh Start</p>
-<div class="footer">
-<p>The Open Institute For Social Science</p>
-</div>
 <aside class="notes">
 <ul>
 <li>Statistical backgrounds?</li>
@@ -223,17 +219,14 @@ technical material is not the point.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+<p>A Fresh Start</p>
+<div class="footer">
+<p>The Open Institute For Social Science</p>
+</div>
 </section>
 
-<section id="most-published-research-is-false" class="title-slide slide level1 center">
+<section id="most-published-research-is-false" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#published-research">
 <h1>Most published research is false</h1>
-<p><img data-src="images/week1/ioannidis.png" style="width:100.0%"> <a href="https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124">https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124</a></p>
-<div class="fragment">
-<p><img data-src="images/week1/capybara.png" class="absolute" style="left: 0px; bottom: 75px; width: 100%; "></p>
-<div style="position: absolute; bottom: 100px; left: 940px; font-size: 150%; font-weight: bold;" ,="">
-...and that's okay.
-</div>
-</div>
 <aside class="notes">
 <ul>
 <li><p>Article by a Greek-American medical scientist at Stanford named
@@ -279,6 +272,15 @@ the goal of this course.</p></li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+<div class="r-stack">
+<p><img data-src="images/week1/ioannidis.png" style="width:100.0%"> <a href="https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124">https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124</a></p>
+<div class="fragment">
+<p><img data-src="images/week1/capybara.png" class="absolute" style="top: 390px; left: 900px; "></p>
+<div style="font-size: 150%; font-weight: bold; position: absolute; left: 900px; top: 780px;">
+<p>…and that’s okay.</p>
+</div>
+</div>
+</div>
 </section>
 
 <section id="this-weeks-goals" class="title-slide slide level1 center">
@@ -407,6 +409,7 @@ concepts.</li>
 </ul>
 </section>
 
+<section>
 <section id="applied-probability" class="title-slide slide level1 center">
 <h1>Applied probability</h1>
 <div class="fragment">
@@ -448,9 +451,8 @@ clearance.</p>
           display:block!important;
       }</style></aside>
 </section>
-
-<section id="applied-probability-continued" class="title-slide slide level1 center">
-<h1>Applied probability (continued)</h1>
+<section id="applied-probability-continued" class="slide level2">
+<h2>Applied Probability (continued)</h2>
 <ul>
 <li>Sensitivity P( test+ | HIV+ ): 99%</li>
 <li>Specificity P( test– | HIV– ): 97%</li>
@@ -531,8 +533,7 @@ unintuitive.</p></li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section>
-
+</section></section>
 <section id="base-rate-paradox" class="title-slide slide level1 no-title center">
 <h1>Base Rate Paradox</h1>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>#| '!! shinylive warning !!': |</span>
@@ -978,10 +979,9 @@ making a serious mistake.</p>
 <section id="so-why-is-most-published-research-wrong" class="title-slide slide level1 center">
 <h1>So why is most published research wrong?</h1>
 <ul>
-<li class="fragment">Statistical significance flips backwards our natural intuitions about uncertainty..</li>
+<li class="fragment">Statistical significance goes against our natural intuitions about uncertainty.</li>
 <li class="fragment">If statistics has ever made you feel dumb or intimidated, it’s not you…</li>
-<li class="fragment">Statistical significance (p-value) is just a really, really weird concept.</li>
-<li class="fragment">Most people don’t actually understand what statistical significance means.</li>
+<li class="fragment">p-value is just a really weird concept.</li>
 </ul>
 </section>
 
@@ -996,6 +996,12 @@ making a serious mistake.</p>
 <img data-src="images/week1/mcelreath-2.png" style="width:100.0%" class="r-stretch quarto-figure-center"><p class="caption"><em>Statistical Rethinking</em>, p.2 (Richard McElreath, 2020)</p></section>
 <section id="bayesian-updating-what-it-is" class="slide level2">
 <h2>Bayesian Updating: What it is</h2>
+<p>Instead of tests, we have Bayesian Updating:</p>
+<ul>
+<li class="fragment">We have a <strong>prior</strong> belief about the world (specifically, about a parameter or “estimand”).<br><span class="fragment blue"><em>I think that about 60% of Kathmandu will vote for the current mayor in the next election.</em></span></li>
+<li class="fragment">Then, we observe something, and we estimate the <strong>likelihood</strong> of what we saw.<br><span class="fragment blue"><em>I just took a survey, and only 30% of people said they will vote for the current mayor.</em></span></li>
+<li class="fragment">This new observation changes our prior belief (challenging it or making it stronger), to become our <strong>posterior</strong>.<br><span class="fragment blue"><em>I now think that about 45% of Kathmandu will vote for the current mayor in the next election.</em></span></li>
+</ul>
 <aside class="notes">
 <p>So I said that we were going to derive our entire statistics from
 first principles, and I meant it. Instead of a million pre-built tests,
@@ -1004,19 +1010,7 @@ we have one process: Bayesian updating</p>
 Everything we build will be an application of that same logic.</p>
 <p>For those interested in math, I definitely encourage you to where the
 theorem comes from and how it’s derived, but for our purposes, we need
-just one simple idea: :::</p>
-<p>Instead of tests, we have Bayesian Updating:</p>
-<ul>
-<li>We have a <strong>prior</strong> belief about the world
-(specifically, about a parameter or “estimand”).<br><span class="fragment blue"><em>I think that about 60% of Kathmandu will vote
-for the current mayor in the next election.</em></span></li>
-<li>Then, we observe something, and we estimate the
-<strong>likelihood</strong> of what we saw.<br><span class="fragment blue"><em>I just took a survey, and only 30% of people
-said they will vote for the current mayor.</em></span></li>
-<li>This new observation changes our prior belief (challenging it or
-making it stronger), to become our <strong>posterior</strong>.<br><span class="fragment blue"><em>I now think that about 45% of Kathmandu will
-vote for the current mayor in the next election.</em></span></li>
-</ul>
+just one simple idea:</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1798,10 +1792,6 @@ P(A|B) = \frac{P(B|A)\,P(A)}{P(B)}
 <li>prior × likelihood =&gt; posterior</li>
 </ul>
 </div>
-<!-- # Some points
-One important point: priors/posteriors are not single values. They are **probability distributions**, ranging over all possible values of our estimand.
-
-Also, there is no minimum samples size. -->
 </section>
 
 <section id="statistics-is-observation" class="title-slide slide level1 center">
@@ -1877,7 +1867,7 @@ less, and less, and less, and less, and less wrong.</p>
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true},
-'multiplex': {"secret":null,"id":"23da2cd2ed6de3fbf429bf41eb42fcc278656674793c1f86a3113acfaa382846","url":"https://multiplex.up.railway.app/"},
+'multiplex': {"secret":null,"id":"e75b4b875919b9e05738992301226cb70a1c617312cf9bd8970c62c6f598f407","url":"https://multiplex.up.railway.app/"},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -2062,71 +2052,62 @@ less, and less, and less, and less, and less wrong.</p>
     </script>
     <script>
       (function () {
-        const STORED = "data-fragment-toggle-stored";
-
-        function storeFragmentState(el) {
-          // Store original class + fragment index once so we can restore exactly
-          if (el.hasAttribute(STORED)) return;
-          el.setAttribute(
-            STORED,
-            JSON.stringify({
-              className: el.className,
-              idx: el.getAttribute("data-fragment-index")
-            })
-          );
+        function inScrollView() {
+          // Scroll view sets this class on the viewport element
+          const vp = document.querySelector(".reveal-viewport");
+          return !!vp && vp.classList.contains("reveal-scroll");
         }
 
-        function disableFragmentDOM() {
-          // Remove actual fragment markers so Scroll View stops allocating extra height
-          document.querySelectorAll(".reveal .fragment").forEach((el) => {
-            storeFragmentState(el);
-            el.classList.remove("fragment");
-            el.removeAttribute("data-fragment-index");
-            el.classList.remove("current-fragment", "visible");
-          });
-        }
+        function patchScrollViewFragmentCounting() {
+          // reveal.js exposes the controller as Reveal.scrollView in v5+
+          const sv = window.Reveal && Reveal.scrollView;
+          if (!sv || sv.__patchedFragmentCounting) return;
+          if (typeof sv.createFragmentTriggersForPage !== "function") return;
 
-        function enableFragmentDOM() {
-          // Restore fragment markers exactly as they were
-          document.querySelectorAll(".reveal [" + STORED + "]").forEach((el) => {
-            try {
-              const data = JSON.parse(el.getAttribute(STORED));
-              el.className = data.className;
-              if (data.idx != null) el.setAttribute("data-fragment-index", data.idx);
-            } catch (e) {
-              // ignore
+          sv.__patchedFragmentCounting = true;
+
+          sv.createFragmentTriggersForPage = function (page, slideElement) {
+            slideElement = slideElement || page.slideElement;
+            page.scrollTriggers = page.scrollTriggers || [];
+
+            // IMPORTANT: only count fragments that are not disabled
+            const fragmentGroups = this.Reveal.fragments.sort(
+              slideElement.querySelectorAll(".fragment:not(.disabled)"),
+              true
+            );
+
+            if (fragmentGroups.length) {
+              page.fragments = this.Reveal.fragments.sort(
+                slideElement.querySelectorAll(".fragment:not(.disabled)")
+              );
+
+              // Initial state (no fragments visible)
+              page.scrollTriggers.push({
+                activate: () => {
+                  this.Reveal.fragments.update(-1, page.fragments, slideElement);
+                },
+              });
+
+              // One trigger per fragment group
+              fragmentGroups.forEach((fragments, i) => {
+                page.scrollTriggers.push({
+                  activate: () => {
+                    this.Reveal.fragments.update(i, page.fragments, slideElement);
+                  },
+                });
+              });
             }
-          });
 
-          // Also store any fragments that might have been introduced later
-          document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
-        }
-
-        function applyFragments(enabled) {
-          // 1) Toggle Reveal stepping behavior
-          Reveal.configure({ fragments: enabled });
-          Reveal.configure({ incremental: enabled });
-
-          // 2) Toggle DOM markers to fix Scroll View "dead scroll"
-          if (enabled) enableFragmentDOM();
-          else disableFragmentDOM();
-
-          // 3) Recompute fragments + relayout so Scroll View recalculates height
-          if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
-          if (typeof Reveal.layout === "function") Reveal.layout();
-          if (typeof Reveal.sync === "function") Reveal.sync();
-
-          // If turning fragments off, reveal all on current slide
-          if (!enabled) {
-            const i = Reveal.getIndices();
-            Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
-          }
+            return page.scrollTriggers.length;
+          };
         }
 
         function addControls() {
-          // Reveal sidebar container (present when menu or toc panel exists)
           const sidebar = document.querySelector(".slide-menu-panel");
           if (!sidebar) return;
+
+          // Patch once controls are being added (Reveal is ready)
+          patchScrollViewFragmentCounting();
 
           const box = document.createElement("div");
           box.style.padding = "0.5rem 0.75rem";
@@ -2146,24 +2127,23 @@ less, and less, and less, and less, and less wrong.</p>
           const frag = box.querySelector("#toggleFragments");
           const trans = box.querySelector("#toggleTransitions");
 
-          // Initialize checkbox state from current Reveal config, and fix Scroll View padding on load
-          const cfg = (typeof Reveal.getConfig === "function") ? Reveal.getConfig() : {};
-          frag.checked = !!cfg.fragments;
-
-          // Always capture existing fragment state early so restoring works reliably
-          document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
-
-          // If your YAML sets fragments: false but DOM still contains .fragment (e.g., incremental: true),
-          // remove DOM markers immediately to avoid "dead scroll" in Scroll View.
-          if (cfg.fragments === false) {
-            disableFragmentDOM();
-            if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
-            if (typeof Reveal.layout === "function") Reveal.layout();
-            if (typeof Reveal.sync === "function") Reveal.sync();
-          }
+          // Optional: initialize checkbox to current config
+          try { frag.checked = !!Reveal.getConfig().fragments; } catch (e) { }
 
           frag.addEventListener("change", () => {
-            applyFragments(frag.checked);
+            Reveal.configure({ fragments: frag.checked, incremental: frag.checked });
+            Reveal.syncFragments();
+
+            // If we're in scroll view, rebuild scroll triggers/scrollbar segments
+            if (inScrollView()) {
+              Reveal.layout();
+            }
+
+            // If turning fragments off, reveal all on current slide
+            if (!frag.checked) {
+              const i = Reveal.getIndices();
+              Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
+            }
           });
 
           trans.addEventListener("change", () => {

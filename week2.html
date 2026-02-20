@@ -99,7 +99,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-9270dd9cfccfdb94bd7891c63aee863f.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-dd4c88b0eee49eb387d4ff51a77e58ea.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -213,7 +213,6 @@
 <li class="fragment">Variation</li>
 <li class="fragment">Randomness</li>
 </ul>
-<p>The problem of randomness is fundamental because it shapes how we think about sampling.</p>
 </section>
 
 <section id="dag-editor" class="title-slide slide level1 center">
@@ -229,8 +228,8 @@ DAGitty.setup()
 <section id="real-problem" class="title-slide slide level1 center">
 <h1>Real problem</h1>
 <ul>
-<li class="fragment">Who is going to win the election for mayor of our town?</li>
-<li class="fragment">In the last election, the current candidate got 60% of the votes.</li>
+<li class="fragment">Who is going to win the election for mayor?</li>
+<li class="fragment">In the last election, the current mayor got 60% of the votes. Should we assume that’s what he’ll get this time?</li>
 <li class="fragment">We can go out and take a survey asking people if they plan to vote for the current mayor again.</li>
 <li class="fragment">There are many non-statistical problems with this, but we won’t dig into those now.</li>
 <li class="fragment">What do we need to provide a meaningful statistical answer?</li>
@@ -241,9 +240,74 @@ DAGitty.setup()
 <section id="core-elements" class="title-slide slide level1 center">
 <h1>Core elements</h1>
 <ul>
-<li class="fragment">prior</li>
-<li class="fragment">posterior</li>
-<li class="fragment">likelihood</li>
+<li class="fragment">prior: P( belief )</li>
+<li class="fragment">posterior: P( belief | data )</li>
+<li class="fragment">likelihood: P( data | belief )</li>
+</ul>
+<p>prior x likelihood -&gt; posterior</p>
+</section>
+
+<section id="priors---posteriors" class="title-slide slide level1 center">
+<h1>Priors -&gt; Posteriors</h1>
+<ul>
+<li class="fragment"><p>Demonstrate the sequential nature of priors and posteriors, with examples demonstrating common transformations and ask how we can interpret them.</p></li>
+<li class="fragment"><p>Priors and posteriors are the same thing. Posteriors become priors for our next observation. This is what updating means.</p></li>
+</ul>
+</section>
+
+<section id="putting-priors-into-practice" class="title-slide slide level1 center">
+<h1>Putting priors into practice</h1>
+<ul>
+<li class="fragment">Priors <em>about what?</em> (let’s make our definition more specific)
+<ul>
+<li class="fragment">“parameters”: unknown numerical quantities in the world</li>
+<li class="fragment">“estimand”: what we want to find out (sometimes a parameter, often a combination of parameters and other info)</li>
+</ul></li>
+<li class="fragment">P(belief) -&gt; P(belief about a parameter or parameters)
+<ul>
+<li class="fragment">shorthand: P(parameters) or P(Θ)</li>
+</ul></li>
+</ul>
+</section>
+
+<section id="interactive-definition-of-prior" class="title-slide slide level1 center">
+<h1>Interactive definition of prior</h1>
+<ul>
+<li class="fragment"><p>drag and pull along grid approximation</p></li>
+<li class="fragment"><p>Statistics is about randomness.</p></li>
+<li class="fragment"><p>If I flip a coin, I don’t know what will happen.</p></li>
+<li class="fragment"><p>If I flip a coin 1000 times, I can actually say a lot more.</p></li>
+<li class="fragment"><p>Just because we don’t know if it will rain tomorrow doesn’t mean we don’t know anything.</p></li>
+<li class="fragment"><p>Probability distributions are they key to everything.</p></li>
+<li class="fragment"><p>Dilemma: can’t define every value like we did with the stones in the bag</p></li>
+<li class="fragment"><p>Introducing grid approximation</p></li>
+</ul>
+</section>
+
+<section id="but-what-is-a-likelihood" class="title-slide slide level1 center">
+<h1>But what is a likelihood?</h1>
+<ul>
+<li class="fragment"><p>Hume vs Gauss example?</p></li>
+<li class="fragment"><p>For priors and posteriors, randomness is about our uncertainty, a subjective experience.</p></li>
+<li class="fragment"><p>For likelihood, randomness is a property of the world.</p></li>
+<li class="fragment"><p>What Hume didn’t understand was the idea of a “generating process”. Things have probabilities because randomness “comes from somewhere”.</p></li>
+</ul>
+</section>
+
+<section id="calculating-likelihood" class="title-slide slide level1 center">
+<h1>Calculating likelihood</h1>
+<ul>
+<li class="fragment"><p>This is the mathiest thing we’re going to talk about together, but you don’t ever actually have to do it by hand. We always use software for that.</p></li>
+<li class="fragment"><p>From Bayes theorem, we know that likelihood is: P( data | parameters )</p></li>
+<li class="fragment"><p>But what does this mean?</p></li>
+<li class="fragment"><p>Given a particular parameter value, how likely is the data we saw.</p></li>
+<li class="fragment"><p>This is, not coincidentally, conceptually related to the idea of statistical significance.</p></li>
+<li class="fragment"><p>We’re treating thing parameter value as fixed, and we’re treating the data as probabalistic</p></li>
+<li class="fragment"><p>But we do this for every single possible value of our parameter</p></li>
+<li class="fragment"><p>If our parameter is <em>actually</em> 50%, what is the probability that we would see a result like 4 / 15 saying they will vote for the mayor.</p></li>
+<li class="fragment"><p>If our parameter is <em>actually</em> 30%, what is the probability that we would see a result like 4 / 15 saying they will vote for the mayor.</p></li>
+<li class="fragment"><p>If our parameter is <em>actually</em> 80%, what is the probability that we would see a result like 4 / 15 saying they will vote for the mayor.</p></li>
+<li class="fragment"><p>The mathematics behind many generating processes is very well understood. A question like, “if I flip a coin 20 times, what is the probability of getting heads exactly 8 times?” is something that we can calculate. Any statistical software (including excel) will be able to tell you.</p></li>
 </ul>
 </section>
 
@@ -349,7 +413,7 @@ DAGitty.setup()
 <span id="cb1-98"><a></a>          ),</span>
 <span id="cb1-99"><a></a>          p(</span>
 <span id="cb1-100"><a></a>            tags$b("Generating Process:"),</span>
-<span id="cb1-101"><a></a>            "A binomial distribution is generated by repeating a random event and counting how many successes occur."</span>
+<span id="cb1-101"><a></a>            "A binomial distribution is generated by repeating a random event a certain number of times and counting how many times a particular outcome occurs."</span>
 <span id="cb1-102"><a></a>          ),</span>
 <span id="cb1-103"><a></a>          p(tags$i(</span>
 <span id="cb1-104"><a></a>            "Examples: (1) flipping a coin 20 times and counting how many heads occur; (2) testing 50 light bulbs and counting how many are defective; (3) asking 10 survey respondents a yes/no question and counting how many answer 'yes.'"</span>
@@ -424,505 +488,508 @@ DAGitty.setup()
 <span id="cb1-173"><a></a>          numericInput("beta_alpha", "Alpha (α)", value = 2, min = 1e-8),</span>
 <span id="cb1-174"><a></a>          numericInput("beta_beta", "Beta (β)", value = 2, min = 1e-8),</span>
 <span id="cb1-175"><a></a>          p(</span>
-<span id="cb1-176"><a></a>            tags$b(</span>
-<span id="cb1-177"><a></a>              "Generating Process: A beta distribution is generated by modeling an unknown probability or proportion on the interval [0,1] using accumulated evidence about successes and failures, producing a flexible distribution over plausible values of that probability."</span>
-<span id="cb1-178"><a></a>            ),</span>
-<span id="cb1-179"><a></a>            ""</span>
-<span id="cb1-180"><a></a>          ),</span>
-<span id="cb1-181"><a></a>          p(tags$i(</span>
-<span id="cb1-182"><a></a>            "Examples: (1) Modeling the true success probability of a coin after observing some number of heads and tails. (2) Modeling the fraction of time a machine is operational when past uptime and downtime observations inform the estimate. (3) Describing the proportion of a population with a certain trait when prior information and sample data are combined."</span>
-<span id="cb1-183"><a></a>          ))</span>
-<span id="cb1-184"><a></a>        ),</span>
-<span id="cb1-185"><a></a></span>
-<span id="cb1-186"><a></a>        # GAMMA</span>
-<span id="cb1-187"><a></a>        conditionalPanel(</span>
-<span id="cb1-188"><a></a>          condition = "input.distType == 'Gamma'",</span>
-<span id="cb1-189"><a></a>          numericInput("gamma_shape", "Shape (k)", value = 2, min = 1e-8),</span>
-<span id="cb1-190"><a></a>          numericInput("gamma_rate", "Rate (θ⁻¹)", value = 1, min = 1e-8),</span>
-<span id="cb1-191"><a></a>          p(</span>
-<span id="cb1-192"><a></a>            tags$b(</span>
-<span id="cb1-193"><a></a>              "Generating Process:"</span>
-<span id="cb1-194"><a></a>            ),</span>
-<span id="cb1-195"><a></a>            "A gamma distribution is generated by measuring the total waiting time until a fixed number of independent events occur."</span>
-<span id="cb1-196"><a></a>          ),</span>
-<span id="cb1-197"><a></a>          p(tags$i(</span>
-<span id="cb1-198"><a></a>            "Examples: (1) Total waiting time for a set number of calls to arrive at a call center with steady arrival intensity. (2) Total time until the 5th customer arrives at a service desk. (3) Time until a system experiences its 3rd failure when failures occur randomly at a constant rate."</span>
-<span id="cb1-199"><a></a>          ))</span>
-<span id="cb1-200"><a></a>        )</span>
-<span id="cb1-201"><a></a>      ), # end params</span>
-<span id="cb1-202"><a></a></span>
-<span id="cb1-203"><a></a>      # simulation area pinned to bottom</span>
-<span id="cb1-204"><a></a>      div(</span>
-<span id="cb1-205"><a></a>        hr(),</span>
-<span id="cb1-206"><a></a>        class = "simulation",</span>
-<span id="cb1-207"><a></a>        h3("Simulation"),</span>
-<span id="cb1-208"><a></a>        div(</span>
-<span id="cb1-209"><a></a>          div(</span>
-<span id="cb1-210"><a></a>            style = "padding-bottom: 6px;",</span>
-<span id="cb1-211"><a></a>            class = "btnrow",</span>
-<span id="cb1-212"><a></a>            actionButton("draw1", "Run 1", style = "flex: 1;"),</span>
-<span id="cb1-213"><a></a>            actionButton("draw10", "×10", style = "flex: 1;"),</span>
-<span id="cb1-214"><a></a>            actionButton("draw100", "×100", style = "flex: 1;"),</span>
-<span id="cb1-215"><a></a>            actionButton("draw1000", "×1000", style = "flex: 1;")</span>
-<span id="cb1-216"><a></a>          ),</span>
-<span id="cb1-217"><a></a>          div(</span>
-<span id="cb1-218"><a></a>            class = "btnrow",</span>
-<span id="cb1-219"><a></a>            actionButton(</span>
-<span id="cb1-220"><a></a>              "reset",</span>
-<span id="cb1-221"><a></a>              "Reset",</span>
-<span id="cb1-222"><a></a>              class = "btn btn-danger",</span>
-<span id="cb1-223"><a></a>              style = "flex: 1;"</span>
-<span id="cb1-224"><a></a>            )</span>
-<span id="cb1-225"><a></a>          )</span>
-<span id="cb1-226"><a></a>        )</span>
-<span id="cb1-227"><a></a>      ) # end simulation</span>
-<span id="cb1-228"><a></a>    ) # end sidebar-flex</span>
-<span id="cb1-229"><a></a>  ),</span>
-<span id="cb1-230"><a></a>  mainPanel(</span>
-<span id="cb1-231"><a></a>    width = 12,</span>
-<span id="cb1-232"><a></a>    girafeOutput("plot", width = "100%"),</span>
-<span id="cb1-233"><a></a>    uiOutput("sim_list") # new: simulation results list (most recent highlighted)</span>
-<span id="cb1-234"><a></a>  )</span>
-<span id="cb1-235"><a></a>)</span>
-<span id="cb1-236"><a></a></span>
-<span id="cb1-237"><a></a>server &lt;- function(input, output, session) {</span>
-<span id="cb1-238"><a></a>  draws &lt;- reactiveVal(numeric(0))</span>
-<span id="cb1-239"><a></a></span>
-<span id="cb1-240"><a></a>  observeEvent(</span>
-<span id="cb1-241"><a></a>    list(</span>
-<span id="cb1-242"><a></a>      input$trialCount,</span>
-<span id="cb1-243"><a></a>      input$successRate,</span>
-<span id="cb1-244"><a></a>      input$distType,</span>
-<span id="cb1-245"><a></a>      input$mean,</span>
-<span id="cb1-246"><a></a>      input$sd,</span>
-<span id="cb1-247"><a></a>      input$umin,</span>
-<span id="cb1-248"><a></a>      input$umax,</span>
-<span id="cb1-249"><a></a>      input$exp_rate,</span>
-<span id="cb1-250"><a></a>      input$poisson_lambda,</span>
-<span id="cb1-251"><a></a>      input$beta_alpha,</span>
-<span id="cb1-252"><a></a>      input$beta_beta,</span>
-<span id="cb1-253"><a></a>      input$gamma_shape,</span>
-<span id="cb1-254"><a></a>      input$gamma_rate</span>
-<span id="cb1-255"><a></a>    ),</span>
-<span id="cb1-256"><a></a>    {</span>
-<span id="cb1-257"><a></a>      draws(numeric(0))</span>
-<span id="cb1-258"><a></a>    },</span>
-<span id="cb1-259"><a></a>    ignoreInit = TRUE</span>
-<span id="cb1-260"><a></a>  )</span>
-<span id="cb1-261"><a></a></span>
-<span id="cb1-262"><a></a>  # helper: sanitize a positive numeric input</span>
-<span id="cb1-263"><a></a>  safe_pos &lt;- function(x, fallback = 1) {</span>
-<span id="cb1-264"><a></a>    if (is.null(x) || !is.finite(x) || x &lt;= 0) fallback else x</span>
-<span id="cb1-265"><a></a>  }</span>
-<span id="cb1-266"><a></a>  safe_nonneg &lt;- function(x, fallback = 1) {</span>
-<span id="cb1-267"><a></a>    if (is.null(x) || !is.finite(x) || x &lt; 0) fallback else x</span>
-<span id="cb1-268"><a></a>  }</span>
-<span id="cb1-269"><a></a></span>
-<span id="cb1-270"><a></a>  add_draws &lt;- function(k) {</span>
-<span id="cb1-271"><a></a>    new &lt;- switch(</span>
-<span id="cb1-272"><a></a>      input$distType,</span>
-<span id="cb1-273"><a></a>      "Binomial" = rbinom(</span>
-<span id="cb1-274"><a></a>        k,</span>
-<span id="cb1-275"><a></a>        size = input$trialCount,</span>
-<span id="cb1-276"><a></a>        prob = input$successRate / 100</span>
-<span id="cb1-277"><a></a>      ),</span>
-<span id="cb1-278"><a></a>      "Normal" = rnorm(k, mean = input$mean, sd = safe_pos(input$sd)),</span>
-<span id="cb1-279"><a></a>      "Uniform" = runif(k, min = input$umin, max = input$umax),</span>
-<span id="cb1-280"><a></a>      "Exponential" = rexp(k, rate = safe_pos(input$exp_rate)),</span>
-<span id="cb1-281"><a></a>      "Poisson" = rpois(k, lambda = safe_nonneg(input$poisson_lambda)),</span>
-<span id="cb1-282"><a></a>      "Beta" = rbeta(</span>
-<span id="cb1-283"><a></a>        k,</span>
-<span id="cb1-284"><a></a>        shape1 = safe_pos(input$beta_alpha),</span>
-<span id="cb1-285"><a></a>        shape2 = safe_pos(input$beta_beta)</span>
-<span id="cb1-286"><a></a>      ),</span>
-<span id="cb1-287"><a></a>      "Gamma" = rgamma(</span>
-<span id="cb1-288"><a></a>        k,</span>
-<span id="cb1-289"><a></a>        shape = safe_pos(input$gamma_shape),</span>
-<span id="cb1-290"><a></a>        rate = safe_pos(input$gamma_rate)</span>
-<span id="cb1-291"><a></a>      ),</span>
-<span id="cb1-292"><a></a>      numeric(0)</span>
-<span id="cb1-293"><a></a>    )</span>
-<span id="cb1-294"><a></a>    draws(c(draws(), new))</span>
-<span id="cb1-295"><a></a>  }</span>
-<span id="cb1-296"><a></a></span>
-<span id="cb1-297"><a></a>  observeEvent(input$draw1, add_draws(1))</span>
-<span id="cb1-298"><a></a>  observeEvent(input$draw10, add_draws(10))</span>
-<span id="cb1-299"><a></a>  observeEvent(input$draw100, add_draws(100))</span>
-<span id="cb1-300"><a></a>  observeEvent(input$draw1000, add_draws(1000))</span>
-<span id="cb1-301"><a></a>  observeEvent(input$reset, {</span>
-<span id="cb1-302"><a></a>    # clear simulated draws</span>
-<span id="cb1-303"><a></a>    draws(numeric(0))</span>
-<span id="cb1-304"><a></a></span>
-<span id="cb1-305"><a></a>    # reset UI controls to their defaults (match UI definitions)</span>
-<span id="cb1-306"><a></a>    updateSelectizeInput(session, "distType", selected = "Binomial")</span>
-<span id="cb1-307"><a></a></span>
-<span id="cb1-308"><a></a>    updateSliderInput(session, "successRate", value = 50)</span>
-<span id="cb1-309"><a></a>    updateNumericInput(session, "trialCount", value = 10)</span>
-<span id="cb1-310"><a></a></span>
-<span id="cb1-311"><a></a>    updateNumericInput(session, "mean", value = 0)</span>
-<span id="cb1-312"><a></a>    updateNumericInput(session, "sd", value = 1)</span>
-<span id="cb1-313"><a></a></span>
-<span id="cb1-314"><a></a>    updateNumericInput(session, "umin", value = 0)</span>
-<span id="cb1-315"><a></a>    updateNumericInput(session, "umax", value = 1)</span>
-<span id="cb1-316"><a></a></span>
-<span id="cb1-317"><a></a>    updateNumericInput(session, "exp_rate", value = 1)</span>
-<span id="cb1-318"><a></a>    updateNumericInput(session, "poisson_lambda", value = 1)</span>
-<span id="cb1-319"><a></a></span>
-<span id="cb1-320"><a></a>    updateNumericInput(session, "beta_alpha", value = 2)</span>
-<span id="cb1-321"><a></a>    updateNumericInput(session, "beta_beta", value = 2)</span>
-<span id="cb1-322"><a></a></span>
-<span id="cb1-323"><a></a>    updateNumericInput(session, "gamma_shape", value = 2)</span>
-<span id="cb1-324"><a></a>    updateNumericInput(session, "gamma_rate", value = 1)</span>
-<span id="cb1-325"><a></a>  })</span>
-<span id="cb1-326"><a></a></span>
-<span id="cb1-327"><a></a>  output$plot &lt;- renderGirafe({</span>
-<span id="cb1-328"><a></a>    sim &lt;- draws()</span>
-<span id="cb1-329"><a></a></span>
-<span id="cb1-330"><a></a>    # ---------- helpers ----------</span>
-<span id="cb1-331"><a></a>    empty_plot &lt;- function() girafe(ggplot(), width_svg = 12, height_svg = 8)</span>
-<span id="cb1-332"><a></a></span>
-<span id="cb1-333"><a></a>    # common theme</span>
-<span id="cb1-334"><a></a>    base_theme &lt;- theme_minimal() +</span>
-<span id="cb1-335"><a></a>      theme(plot.margin = margin(10, 30, 30, 10))</span>
-<span id="cb1-336"><a></a></span>
-<span id="cb1-337"><a></a>    # ---------- spec builder ----------</span>
-<span id="cb1-338"><a></a>    get_dist_spec &lt;- function(sim) {</span>
-<span id="cb1-339"><a></a>      dist &lt;- input$distType</span>
-<span id="cb1-340"><a></a></span>
-<span id="cb1-341"><a></a>      # ---- BINOMIAL ----</span>
-<span id="cb1-342"><a></a>      if (dist == "Binomial") {</span>
-<span id="cb1-343"><a></a>        n &lt;- input$trialCount</span>
-<span id="cb1-344"><a></a>        p &lt;- input$successRate / 100</span>
-<span id="cb1-345"><a></a></span>
-<span id="cb1-346"><a></a>        theory &lt;- data.frame(</span>
-<span id="cb1-347"><a></a>          x = 0:n,</span>
-<span id="cb1-348"><a></a>          prob = dbinom(0:n, n, p)</span>
-<span id="cb1-349"><a></a>        )</span>
-<span id="cb1-350"><a></a></span>
-<span id="cb1-351"><a></a>        list(</span>
-<span id="cb1-352"><a></a>          type = "discrete",</span>
-<span id="cb1-353"><a></a>          theory = theory,</span>
-<span id="cb1-354"><a></a>          xlim = c(0, n),</span>
-<span id="cb1-355"><a></a>          ymax = max(theory$prob),</span>
-<span id="cb1-356"><a></a>          xlabel = "Number of successes",</span>
-<span id="cb1-357"><a></a>          ylabel = "Probability",</span>
-<span id="cb1-358"><a></a>          tooltip_theory = function(df) {</span>
-<span id="cb1-359"><a></a>            paste0(</span>
-<span id="cb1-360"><a></a>              "Success = ",</span>
-<span id="cb1-361"><a></a>              df$x,</span>
-<span id="cb1-362"><a></a>              " out of ",</span>
-<span id="cb1-363"><a></a>              n,</span>
-<span id="cb1-364"><a></a>              "&lt;br&gt;Probability = ",</span>
-<span id="cb1-365"><a></a>              round(df$prob, 4)</span>
-<span id="cb1-366"><a></a>            )</span>
-<span id="cb1-367"><a></a>          }</span>
-<span id="cb1-368"><a></a>        )</span>
-<span id="cb1-369"><a></a>      } else if (dist == "Normal") {</span>
-<span id="cb1-370"><a></a>        # ---- NORMAL ----</span>
-<span id="cb1-371"><a></a>        mu &lt;- input$mean</span>
-<span id="cb1-372"><a></a>        sd &lt;- safe_pos(input$sd)</span>
-<span id="cb1-373"><a></a></span>
-<span id="cb1-374"><a></a>        x_min &lt;- mu - 4 * sd</span>
-<span id="cb1-375"><a></a>        x_max &lt;- mu + 4 * sd</span>
-<span id="cb1-376"><a></a></span>
-<span id="cb1-377"><a></a>        xs &lt;- seq(x_min, x_max, length.out = 400)</span>
-<span id="cb1-378"><a></a>        theory &lt;- data.frame(</span>
-<span id="cb1-379"><a></a>          x = xs,</span>
-<span id="cb1-380"><a></a>          density = dnorm(xs, mu, sd)</span>
-<span id="cb1-381"><a></a>        )</span>
-<span id="cb1-382"><a></a></span>
-<span id="cb1-383"><a></a>        list(</span>
-<span id="cb1-384"><a></a>          type = "continuous",</span>
-<span id="cb1-385"><a></a>          theory = theory,</span>
-<span id="cb1-386"><a></a>          xlim = c(x_min, x_max),</span>
-<span id="cb1-387"><a></a>          ymax = max(theory$density),</span>
-<span id="cb1-388"><a></a>          xlabel = "Value",</span>
-<span id="cb1-389"><a></a>          ylabel = "Density"</span>
-<span id="cb1-390"><a></a>        )</span>
-<span id="cb1-391"><a></a>      } else if (dist == "Uniform") {</span>
-<span id="cb1-392"><a></a>        # ---- UNIFORM ----</span>
-<span id="cb1-393"><a></a>        a &lt;- input$umin</span>
-<span id="cb1-394"><a></a>        b &lt;- input$umax</span>
-<span id="cb1-395"><a></a>        if (b &lt;= a) {</span>
-<span id="cb1-396"><a></a>          return(NULL)</span>
-<span id="cb1-397"><a></a>        }</span>
-<span id="cb1-398"><a></a></span>
-<span id="cb1-399"><a></a>        xs &lt;- seq(a, b, length.out = 400)</span>
-<span id="cb1-400"><a></a>        theory &lt;- data.frame(</span>
-<span id="cb1-401"><a></a>          x = xs,</span>
-<span id="cb1-402"><a></a>          density = dunif(xs, a, b)</span>
-<span id="cb1-403"><a></a>        )</span>
-<span id="cb1-404"><a></a></span>
-<span id="cb1-405"><a></a>        list(</span>
-<span id="cb1-406"><a></a>          type = "continuous",</span>
-<span id="cb1-407"><a></a>          theory = theory,</span>
-<span id="cb1-408"><a></a>          xlim = c(a, b),</span>
-<span id="cb1-409"><a></a>          ymax = max(theory$density),</span>
-<span id="cb1-410"><a></a>          xlabel = "Value",</span>
-<span id="cb1-411"><a></a>          ylabel = "Density",</span>
-<span id="cb1-412"><a></a>          expand_mult = c(0, .85)</span>
-<span id="cb1-413"><a></a>        )</span>
-<span id="cb1-414"><a></a>      } else if (dist == "Exponential") {</span>
-<span id="cb1-415"><a></a>        # ---- EXPONENTIAL ----</span>
-<span id="cb1-416"><a></a>        rate &lt;- safe_pos(input$exp_rate)</span>
-<span id="cb1-417"><a></a></span>
-<span id="cb1-418"><a></a>        x_min &lt;- 0</span>
-<span id="cb1-419"><a></a>        x_max &lt;- qexp(.999, rate)</span>
-<span id="cb1-420"><a></a></span>
-<span id="cb1-421"><a></a>        xs &lt;- seq(x_min, x_max, length.out = 400)</span>
-<span id="cb1-422"><a></a>        theory &lt;- data.frame(</span>
-<span id="cb1-423"><a></a>          x = xs,</span>
-<span id="cb1-424"><a></a>          density = dexp(xs, rate)</span>
-<span id="cb1-425"><a></a>        )</span>
-<span id="cb1-426"><a></a></span>
-<span id="cb1-427"><a></a>        list(</span>
-<span id="cb1-428"><a></a>          type = "continuous",</span>
-<span id="cb1-429"><a></a>          theory = theory,</span>
-<span id="cb1-430"><a></a>          xlim = c(x_min, x_max),</span>
-<span id="cb1-431"><a></a>          ymax = max(theory$density),</span>
-<span id="cb1-432"><a></a>          xlabel = "Value",</span>
-<span id="cb1-433"><a></a>          ylabel = "Density"</span>
-<span id="cb1-434"><a></a>        )</span>
-<span id="cb1-435"><a></a>      } else if (dist == "Poisson") {</span>
-<span id="cb1-436"><a></a>        # ---- POISSON ----</span>
-<span id="cb1-437"><a></a>        lambda &lt;- safe_nonneg(input$poisson_lambda)</span>
-<span id="cb1-438"><a></a></span>
-<span id="cb1-439"><a></a>        x_max_theory &lt;- ceiling(qpois(.999, lambda))</span>
-<span id="cb1-440"><a></a>        x_max_sim &lt;- if (length(sim)) {</span>
-<span id="cb1-441"><a></a>          max(ceiling(sim), x_max_theory)</span>
-<span id="cb1-442"><a></a>        } else {</span>
-<span id="cb1-443"><a></a>          x_max_theory</span>
-<span id="cb1-444"><a></a>        }</span>
-<span id="cb1-445"><a></a>        xs &lt;- 0:x_max_sim</span>
-<span id="cb1-446"><a></a></span>
-<span id="cb1-447"><a></a>        theory &lt;- data.frame(</span>
-<span id="cb1-448"><a></a>          x = xs,</span>
-<span id="cb1-449"><a></a>          prob = dpois(xs, lambda)</span>
-<span id="cb1-450"><a></a>        )</span>
-<span id="cb1-451"><a></a></span>
-<span id="cb1-452"><a></a>        list(</span>
-<span id="cb1-453"><a></a>          type = "discrete",</span>
-<span id="cb1-454"><a></a>          theory = theory,</span>
-<span id="cb1-455"><a></a>          xlim = c(0, x_max_sim),</span>
-<span id="cb1-456"><a></a>          ymax = max(theory$prob),</span>
-<span id="cb1-457"><a></a>          xlabel = "k",</span>
-<span id="cb1-458"><a></a>          ylabel = "Probability",</span>
-<span id="cb1-459"><a></a>          tooltip_theory = function(df) {</span>
-<span id="cb1-460"><a></a>            paste0("k = ", df$x, "&lt;br&gt;Probability = ", round(df$prob, 4))</span>
-<span id="cb1-461"><a></a>          }</span>
-<span id="cb1-462"><a></a>        )</span>
-<span id="cb1-463"><a></a>      } else if (dist == "Beta") {</span>
-<span id="cb1-464"><a></a>        # ---- BETA ----</span>
-<span id="cb1-465"><a></a>        a &lt;- safe_pos(input$beta_alpha)</span>
-<span id="cb1-466"><a></a>        b &lt;- safe_pos(input$beta_beta)</span>
-<span id="cb1-467"><a></a></span>
-<span id="cb1-468"><a></a>        xs &lt;- seq(0, 1, length.out = 400)</span>
-<span id="cb1-469"><a></a>        theory &lt;- data.frame(</span>
-<span id="cb1-470"><a></a>          x = xs,</span>
-<span id="cb1-471"><a></a>          density = dbeta(xs, a, b)</span>
-<span id="cb1-472"><a></a>        )</span>
-<span id="cb1-473"><a></a></span>
-<span id="cb1-474"><a></a>        list(</span>
-<span id="cb1-475"><a></a>          type = "continuous",</span>
-<span id="cb1-476"><a></a>          theory = theory,</span>
-<span id="cb1-477"><a></a>          xlim = c(0, 1),</span>
-<span id="cb1-478"><a></a>          ymax = max(theory$density),</span>
-<span id="cb1-479"><a></a>          xlabel = "Value",</span>
-<span id="cb1-480"><a></a>          ylabel = "Density"</span>
-<span id="cb1-481"><a></a>        )</span>
-<span id="cb1-482"><a></a>      } else if (dist == "Gamma") {</span>
-<span id="cb1-483"><a></a>        # ---- GAMMA ----</span>
-<span id="cb1-484"><a></a>        shape &lt;- safe_pos(input$gamma_shape)</span>
-<span id="cb1-485"><a></a>        rate &lt;- safe_pos(input$gamma_rate)</span>
-<span id="cb1-486"><a></a></span>
-<span id="cb1-487"><a></a>        x_min &lt;- 0</span>
-<span id="cb1-488"><a></a>        x_max &lt;- qgamma(.999, shape, rate)</span>
-<span id="cb1-489"><a></a></span>
-<span id="cb1-490"><a></a>        xs &lt;- seq(x_min, x_max, length.out = 400)</span>
-<span id="cb1-491"><a></a>        theory &lt;- data.frame(</span>
-<span id="cb1-492"><a></a>          x = xs,</span>
-<span id="cb1-493"><a></a>          density = dgamma(xs, shape, rate)</span>
-<span id="cb1-494"><a></a>        )</span>
-<span id="cb1-495"><a></a></span>
-<span id="cb1-496"><a></a>        list(</span>
-<span id="cb1-497"><a></a>          type = "continuous",</span>
-<span id="cb1-498"><a></a>          theory = theory,</span>
-<span id="cb1-499"><a></a>          xlim = c(x_min, x_max),</span>
-<span id="cb1-500"><a></a>          ymax = max(theory$density),</span>
-<span id="cb1-501"><a></a>          xlabel = "Value",</span>
-<span id="cb1-502"><a></a>          ylabel = "Density"</span>
-<span id="cb1-503"><a></a>        )</span>
-<span id="cb1-504"><a></a>      } else {</span>
-<span id="cb1-505"><a></a>        NULL</span>
-<span id="cb1-506"><a></a>      }</span>
-<span id="cb1-507"><a></a>    }</span>
-<span id="cb1-508"><a></a></span>
-<span id="cb1-509"><a></a>    # ---------- build plot ----------</span>
-<span id="cb1-510"><a></a>    spec &lt;- get_dist_spec(sim)</span>
-<span id="cb1-511"><a></a>    if (is.null(spec)) {</span>
-<span id="cb1-512"><a></a>      return(empty_plot())</span>
-<span id="cb1-513"><a></a>    }</span>
+<span id="cb1-176"><a></a>            tags$b("Generating Process:"),</span>
+<span id="cb1-177"><a></a>            "A beta distribution is generated by modeling an unknown probability or proportion on the interval [0,1] using accumulated evidence about successes and failures, producing a flexible distribution over plausible values of that probability."</span>
+<span id="cb1-178"><a></a>          ),</span>
+<span id="cb1-179"><a></a>          p(tags$i(</span>
+<span id="cb1-180"><a></a>            "Examples: (1) Modeling the true success probability of a coin after observing some number of heads and tails. (2) Modeling the fraction of time a machine is operational when past uptime and downtime observations inform the estimate. (3) Describing the proportion of a population with a certain trait when prior information and sample data are combined."</span>
+<span id="cb1-181"><a></a>          ))</span>
+<span id="cb1-182"><a></a>        ),</span>
+<span id="cb1-183"><a></a></span>
+<span id="cb1-184"><a></a>        # GAMMA</span>
+<span id="cb1-185"><a></a>        conditionalPanel(</span>
+<span id="cb1-186"><a></a>          condition = "input.distType == 'Gamma'",</span>
+<span id="cb1-187"><a></a>          numericInput("gamma_shape", "Shape (k)", value = 2, min = 1e-8),</span>
+<span id="cb1-188"><a></a>          numericInput("gamma_rate", "Rate (θ⁻¹)", value = 1, min = 1e-8),</span>
+<span id="cb1-189"><a></a>          p(</span>
+<span id="cb1-190"><a></a>            tags$b(</span>
+<span id="cb1-191"><a></a>              "Generating Process:"</span>
+<span id="cb1-192"><a></a>            ),</span>
+<span id="cb1-193"><a></a>            "A gamma distribution is generated by measuring the total waiting time until a fixed number of independent events occur."</span>
+<span id="cb1-194"><a></a>          ),</span>
+<span id="cb1-195"><a></a>          p(tags$i(</span>
+<span id="cb1-196"><a></a>            "Examples: (1) Total waiting time for a set number of calls to arrive at a call center with steady arrival intensity. (2) Total time until the 5th customer arrives at a service desk. (3) Time until a system experiences its 3rd failure when failures occur randomly at a constant rate."</span>
+<span id="cb1-197"><a></a>          ))</span>
+<span id="cb1-198"><a></a>        )</span>
+<span id="cb1-199"><a></a>      ), # end params</span>
+<span id="cb1-200"><a></a></span>
+<span id="cb1-201"><a></a>      # simulation area pinned to bottom</span>
+<span id="cb1-202"><a></a>      div(</span>
+<span id="cb1-203"><a></a>        hr(),</span>
+<span id="cb1-204"><a></a>        class = "simulation",</span>
+<span id="cb1-205"><a></a>        h3("Simulation"),</span>
+<span id="cb1-206"><a></a>        div(</span>
+<span id="cb1-207"><a></a>          div(</span>
+<span id="cb1-208"><a></a>            style = "padding-bottom: 6px;",</span>
+<span id="cb1-209"><a></a>            class = "btnrow",</span>
+<span id="cb1-210"><a></a>            actionButton("draw1", "Run 1", style = "flex: 1;"),</span>
+<span id="cb1-211"><a></a>            actionButton("draw10", "×10", style = "flex: 1;"),</span>
+<span id="cb1-212"><a></a>            actionButton("draw100", "×100", style = "flex: 1;"),</span>
+<span id="cb1-213"><a></a>            actionButton("draw1000", "×1000", style = "flex: 1;")</span>
+<span id="cb1-214"><a></a>          ),</span>
+<span id="cb1-215"><a></a>          div(</span>
+<span id="cb1-216"><a></a>            class = "btnrow",</span>
+<span id="cb1-217"><a></a>            actionButton(</span>
+<span id="cb1-218"><a></a>              "reset",</span>
+<span id="cb1-219"><a></a>              "Reset",</span>
+<span id="cb1-220"><a></a>              class = "btn btn-danger",</span>
+<span id="cb1-221"><a></a>              style = "flex: 1;"</span>
+<span id="cb1-222"><a></a>            )</span>
+<span id="cb1-223"><a></a>          )</span>
+<span id="cb1-224"><a></a>        )</span>
+<span id="cb1-225"><a></a>      ) # end simulation</span>
+<span id="cb1-226"><a></a>    ) # end sidebar-flex</span>
+<span id="cb1-227"><a></a>  ),</span>
+<span id="cb1-228"><a></a>  mainPanel(</span>
+<span id="cb1-229"><a></a>    width = 12,</span>
+<span id="cb1-230"><a></a>    girafeOutput("plot", width = "100%"),</span>
+<span id="cb1-231"><a></a>    uiOutput("sim_list") # new: simulation results list (most recent highlighted)</span>
+<span id="cb1-232"><a></a>  )</span>
+<span id="cb1-233"><a></a>)</span>
+<span id="cb1-234"><a></a></span>
+<span id="cb1-235"><a></a>server &lt;- function(input, output, session) {</span>
+<span id="cb1-236"><a></a>  draws &lt;- reactiveVal(numeric(0))</span>
+<span id="cb1-237"><a></a></span>
+<span id="cb1-238"><a></a>  observeEvent(</span>
+<span id="cb1-239"><a></a>    list(</span>
+<span id="cb1-240"><a></a>      input$trialCount,</span>
+<span id="cb1-241"><a></a>      input$successRate,</span>
+<span id="cb1-242"><a></a>      input$distType,</span>
+<span id="cb1-243"><a></a>      input$mean,</span>
+<span id="cb1-244"><a></a>      input$sd,</span>
+<span id="cb1-245"><a></a>      input$umin,</span>
+<span id="cb1-246"><a></a>      input$umax,</span>
+<span id="cb1-247"><a></a>      input$exp_rate,</span>
+<span id="cb1-248"><a></a>      input$poisson_lambda,</span>
+<span id="cb1-249"><a></a>      input$beta_alpha,</span>
+<span id="cb1-250"><a></a>      input$beta_beta,</span>
+<span id="cb1-251"><a></a>      input$gamma_shape,</span>
+<span id="cb1-252"><a></a>      input$gamma_rate</span>
+<span id="cb1-253"><a></a>    ),</span>
+<span id="cb1-254"><a></a>    {</span>
+<span id="cb1-255"><a></a>      draws(numeric(0))</span>
+<span id="cb1-256"><a></a>    },</span>
+<span id="cb1-257"><a></a>    ignoreInit = TRUE</span>
+<span id="cb1-258"><a></a>  )</span>
+<span id="cb1-259"><a></a></span>
+<span id="cb1-260"><a></a>  # helper: sanitize a positive numeric input</span>
+<span id="cb1-261"><a></a>  safe_pos &lt;- function(x, fallback = 1) {</span>
+<span id="cb1-262"><a></a>    if (is.null(x) || !is.finite(x) || x &lt;= 0) fallback else x</span>
+<span id="cb1-263"><a></a>  }</span>
+<span id="cb1-264"><a></a>  safe_nonneg &lt;- function(x, fallback = 1) {</span>
+<span id="cb1-265"><a></a>    if (is.null(x) || !is.finite(x) || x &lt; 0) fallback else x</span>
+<span id="cb1-266"><a></a>  }</span>
+<span id="cb1-267"><a></a></span>
+<span id="cb1-268"><a></a>  add_draws &lt;- function(k) {</span>
+<span id="cb1-269"><a></a>    new &lt;- switch(</span>
+<span id="cb1-270"><a></a>      input$distType,</span>
+<span id="cb1-271"><a></a>      "Binomial" = rbinom(</span>
+<span id="cb1-272"><a></a>        k,</span>
+<span id="cb1-273"><a></a>        size = input$trialCount,</span>
+<span id="cb1-274"><a></a>        prob = input$successRate / 100</span>
+<span id="cb1-275"><a></a>      ),</span>
+<span id="cb1-276"><a></a>      "Normal" = rnorm(k, mean = input$mean, sd = safe_pos(input$sd)),</span>
+<span id="cb1-277"><a></a>      "Uniform" = runif(k, min = input$umin, max = input$umax),</span>
+<span id="cb1-278"><a></a>      "Exponential" = rexp(k, rate = safe_pos(input$exp_rate)),</span>
+<span id="cb1-279"><a></a>      "Poisson" = rpois(k, lambda = safe_nonneg(input$poisson_lambda)),</span>
+<span id="cb1-280"><a></a>      "Beta" = rbeta(</span>
+<span id="cb1-281"><a></a>        k,</span>
+<span id="cb1-282"><a></a>        shape1 = safe_pos(input$beta_alpha),</span>
+<span id="cb1-283"><a></a>        shape2 = safe_pos(input$beta_beta)</span>
+<span id="cb1-284"><a></a>      ),</span>
+<span id="cb1-285"><a></a>      "Gamma" = rgamma(</span>
+<span id="cb1-286"><a></a>        k,</span>
+<span id="cb1-287"><a></a>        shape = safe_pos(input$gamma_shape),</span>
+<span id="cb1-288"><a></a>        rate = safe_pos(input$gamma_rate)</span>
+<span id="cb1-289"><a></a>      ),</span>
+<span id="cb1-290"><a></a>      numeric(0)</span>
+<span id="cb1-291"><a></a>    )</span>
+<span id="cb1-292"><a></a>    draws(c(draws(), new))</span>
+<span id="cb1-293"><a></a>  }</span>
+<span id="cb1-294"><a></a></span>
+<span id="cb1-295"><a></a>  observeEvent(input$draw1, add_draws(1))</span>
+<span id="cb1-296"><a></a>  observeEvent(input$draw10, add_draws(10))</span>
+<span id="cb1-297"><a></a>  observeEvent(input$draw100, add_draws(100))</span>
+<span id="cb1-298"><a></a>  observeEvent(input$draw1000, add_draws(1000))</span>
+<span id="cb1-299"><a></a>  observeEvent(input$reset, {</span>
+<span id="cb1-300"><a></a>    # clear simulated draws</span>
+<span id="cb1-301"><a></a>    draws(numeric(0))</span>
+<span id="cb1-302"><a></a></span>
+<span id="cb1-303"><a></a>    # reset UI controls to their defaults (match UI definitions)</span>
+<span id="cb1-304"><a></a>    updateSelectizeInput(session, "distType", selected = "Binomial")</span>
+<span id="cb1-305"><a></a></span>
+<span id="cb1-306"><a></a>    updateSliderInput(session, "successRate", value = 50)</span>
+<span id="cb1-307"><a></a>    updateNumericInput(session, "trialCount", value = 10)</span>
+<span id="cb1-308"><a></a></span>
+<span id="cb1-309"><a></a>    updateNumericInput(session, "mean", value = 0)</span>
+<span id="cb1-310"><a></a>    updateNumericInput(session, "sd", value = 1)</span>
+<span id="cb1-311"><a></a></span>
+<span id="cb1-312"><a></a>    updateNumericInput(session, "umin", value = 0)</span>
+<span id="cb1-313"><a></a>    updateNumericInput(session, "umax", value = 1)</span>
+<span id="cb1-314"><a></a></span>
+<span id="cb1-315"><a></a>    updateNumericInput(session, "exp_rate", value = 1)</span>
+<span id="cb1-316"><a></a>    updateNumericInput(session, "poisson_lambda", value = 1)</span>
+<span id="cb1-317"><a></a></span>
+<span id="cb1-318"><a></a>    updateNumericInput(session, "beta_alpha", value = 2)</span>
+<span id="cb1-319"><a></a>    updateNumericInput(session, "beta_beta", value = 2)</span>
+<span id="cb1-320"><a></a></span>
+<span id="cb1-321"><a></a>    updateNumericInput(session, "gamma_shape", value = 2)</span>
+<span id="cb1-322"><a></a>    updateNumericInput(session, "gamma_rate", value = 1)</span>
+<span id="cb1-323"><a></a>  })</span>
+<span id="cb1-324"><a></a></span>
+<span id="cb1-325"><a></a>  output$plot &lt;- renderGirafe({</span>
+<span id="cb1-326"><a></a>    sim &lt;- draws()</span>
+<span id="cb1-327"><a></a></span>
+<span id="cb1-328"><a></a>    # ---------- helpers ----------</span>
+<span id="cb1-329"><a></a>    empty_plot &lt;- function() girafe(ggplot(), width_svg = 12, height_svg = 8)</span>
+<span id="cb1-330"><a></a></span>
+<span id="cb1-331"><a></a>    # common theme</span>
+<span id="cb1-332"><a></a>    base_theme &lt;- theme_minimal() +</span>
+<span id="cb1-333"><a></a>      theme(plot.margin = margin(10, 30, 30, 10))</span>
+<span id="cb1-334"><a></a></span>
+<span id="cb1-335"><a></a>    # ---------- spec builder ----------</span>
+<span id="cb1-336"><a></a>    get_dist_spec &lt;- function(sim) {</span>
+<span id="cb1-337"><a></a>      dist &lt;- input$distType</span>
+<span id="cb1-338"><a></a></span>
+<span id="cb1-339"><a></a>      # ---- BINOMIAL ----</span>
+<span id="cb1-340"><a></a>      if (dist == "Binomial") {</span>
+<span id="cb1-341"><a></a>        n &lt;- input$trialCount</span>
+<span id="cb1-342"><a></a>        p &lt;- input$successRate / 100</span>
+<span id="cb1-343"><a></a></span>
+<span id="cb1-344"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-345"><a></a>          x = 0:n,</span>
+<span id="cb1-346"><a></a>          prob = dbinom(0:n, n, p)</span>
+<span id="cb1-347"><a></a>        )</span>
+<span id="cb1-348"><a></a></span>
+<span id="cb1-349"><a></a>        list(</span>
+<span id="cb1-350"><a></a>          type = "discrete",</span>
+<span id="cb1-351"><a></a>          theory = theory,</span>
+<span id="cb1-352"><a></a>          xlim = c(0, n),</span>
+<span id="cb1-353"><a></a>          ymax = max(theory$prob),</span>
+<span id="cb1-354"><a></a>          xlabel = "Number of successes",</span>
+<span id="cb1-355"><a></a>          ylabel = "Probability",</span>
+<span id="cb1-356"><a></a>          tooltip_theory = function(df) {</span>
+<span id="cb1-357"><a></a>            paste0(</span>
+<span id="cb1-358"><a></a>              "Success = ",</span>
+<span id="cb1-359"><a></a>              df$x,</span>
+<span id="cb1-360"><a></a>              " out of ",</span>
+<span id="cb1-361"><a></a>              n,</span>
+<span id="cb1-362"><a></a>              "&lt;br&gt;Probability = ",</span>
+<span id="cb1-363"><a></a>              round(df$prob, 4)</span>
+<span id="cb1-364"><a></a>            )</span>
+<span id="cb1-365"><a></a>          }</span>
+<span id="cb1-366"><a></a>        )</span>
+<span id="cb1-367"><a></a>      } else if (dist == "Normal") {</span>
+<span id="cb1-368"><a></a>        # ---- NORMAL ----</span>
+<span id="cb1-369"><a></a>        mu &lt;- input$mean</span>
+<span id="cb1-370"><a></a>        sd &lt;- safe_pos(input$sd)</span>
+<span id="cb1-371"><a></a></span>
+<span id="cb1-372"><a></a>        x_min &lt;- mu - 4 * sd</span>
+<span id="cb1-373"><a></a>        x_max &lt;- mu + 4 * sd</span>
+<span id="cb1-374"><a></a></span>
+<span id="cb1-375"><a></a>        xs &lt;- seq(x_min, x_max, length.out = 400)</span>
+<span id="cb1-376"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-377"><a></a>          x = xs,</span>
+<span id="cb1-378"><a></a>          density = dnorm(xs, mu, sd)</span>
+<span id="cb1-379"><a></a>        )</span>
+<span id="cb1-380"><a></a></span>
+<span id="cb1-381"><a></a>        list(</span>
+<span id="cb1-382"><a></a>          type = "continuous",</span>
+<span id="cb1-383"><a></a>          theory = theory,</span>
+<span id="cb1-384"><a></a>          xlim = c(x_min, x_max),</span>
+<span id="cb1-385"><a></a>          ymax = max(theory$density),</span>
+<span id="cb1-386"><a></a>          xlabel = "Value",</span>
+<span id="cb1-387"><a></a>          ylabel = "Density"</span>
+<span id="cb1-388"><a></a>        )</span>
+<span id="cb1-389"><a></a>      } else if (dist == "Uniform") {</span>
+<span id="cb1-390"><a></a>        # ---- UNIFORM ----</span>
+<span id="cb1-391"><a></a>        a &lt;- input$umin</span>
+<span id="cb1-392"><a></a>        b &lt;- input$umax</span>
+<span id="cb1-393"><a></a>        if (b &lt;= a) {</span>
+<span id="cb1-394"><a></a>          return(NULL)</span>
+<span id="cb1-395"><a></a>        }</span>
+<span id="cb1-396"><a></a></span>
+<span id="cb1-397"><a></a>        xs &lt;- seq(a, b, length.out = 400)</span>
+<span id="cb1-398"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-399"><a></a>          x = xs,</span>
+<span id="cb1-400"><a></a>          density = dunif(xs, a, b)</span>
+<span id="cb1-401"><a></a>        )</span>
+<span id="cb1-402"><a></a></span>
+<span id="cb1-403"><a></a>        list(</span>
+<span id="cb1-404"><a></a>          type = "continuous",</span>
+<span id="cb1-405"><a></a>          theory = theory,</span>
+<span id="cb1-406"><a></a>          xlim = c(a, b),</span>
+<span id="cb1-407"><a></a>          ymax = max(theory$density),</span>
+<span id="cb1-408"><a></a>          xlabel = "Value",</span>
+<span id="cb1-409"><a></a>          ylabel = "Density",</span>
+<span id="cb1-410"><a></a>          expand_mult = c(0, .85)</span>
+<span id="cb1-411"><a></a>        )</span>
+<span id="cb1-412"><a></a>      } else if (dist == "Exponential") {</span>
+<span id="cb1-413"><a></a>        # ---- EXPONENTIAL ----</span>
+<span id="cb1-414"><a></a>        rate &lt;- safe_pos(input$exp_rate)</span>
+<span id="cb1-415"><a></a></span>
+<span id="cb1-416"><a></a>        x_min &lt;- 0</span>
+<span id="cb1-417"><a></a>        x_max &lt;- qexp(.999, rate)</span>
+<span id="cb1-418"><a></a></span>
+<span id="cb1-419"><a></a>        xs &lt;- seq(x_min, x_max, length.out = 400)</span>
+<span id="cb1-420"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-421"><a></a>          x = xs,</span>
+<span id="cb1-422"><a></a>          density = dexp(xs, rate)</span>
+<span id="cb1-423"><a></a>        )</span>
+<span id="cb1-424"><a></a></span>
+<span id="cb1-425"><a></a>        list(</span>
+<span id="cb1-426"><a></a>          type = "continuous",</span>
+<span id="cb1-427"><a></a>          theory = theory,</span>
+<span id="cb1-428"><a></a>          xlim = c(x_min, x_max),</span>
+<span id="cb1-429"><a></a>          ymax = max(theory$density),</span>
+<span id="cb1-430"><a></a>          xlabel = "Value",</span>
+<span id="cb1-431"><a></a>          ylabel = "Density"</span>
+<span id="cb1-432"><a></a>        )</span>
+<span id="cb1-433"><a></a>      } else if (dist == "Poisson") {</span>
+<span id="cb1-434"><a></a>        # ---- POISSON ----</span>
+<span id="cb1-435"><a></a>        lambda &lt;- safe_nonneg(input$poisson_lambda)</span>
+<span id="cb1-436"><a></a></span>
+<span id="cb1-437"><a></a>        x_max_theory &lt;- ceiling(qpois(.999, lambda))</span>
+<span id="cb1-438"><a></a>        x_max_sim &lt;- if (length(sim)) {</span>
+<span id="cb1-439"><a></a>          max(ceiling(sim), x_max_theory)</span>
+<span id="cb1-440"><a></a>        } else {</span>
+<span id="cb1-441"><a></a>          x_max_theory</span>
+<span id="cb1-442"><a></a>        }</span>
+<span id="cb1-443"><a></a>        xs &lt;- 0:x_max_sim</span>
+<span id="cb1-444"><a></a></span>
+<span id="cb1-445"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-446"><a></a>          x = xs,</span>
+<span id="cb1-447"><a></a>          prob = dpois(xs, lambda)</span>
+<span id="cb1-448"><a></a>        )</span>
+<span id="cb1-449"><a></a></span>
+<span id="cb1-450"><a></a>        list(</span>
+<span id="cb1-451"><a></a>          type = "discrete",</span>
+<span id="cb1-452"><a></a>          theory = theory,</span>
+<span id="cb1-453"><a></a>          xlim = c(0, x_max_sim),</span>
+<span id="cb1-454"><a></a>          ymax = max(theory$prob),</span>
+<span id="cb1-455"><a></a>          xlabel = "k",</span>
+<span id="cb1-456"><a></a>          ylabel = "Probability",</span>
+<span id="cb1-457"><a></a>          tooltip_theory = function(df) {</span>
+<span id="cb1-458"><a></a>            paste0("k = ", df$x, "&lt;br&gt;Probability = ", round(df$prob, 4))</span>
+<span id="cb1-459"><a></a>          }</span>
+<span id="cb1-460"><a></a>        )</span>
+<span id="cb1-461"><a></a>      } else if (dist == "Beta") {</span>
+<span id="cb1-462"><a></a>        # ---- BETA ----</span>
+<span id="cb1-463"><a></a>        a &lt;- safe_pos(input$beta_alpha)</span>
+<span id="cb1-464"><a></a>        b &lt;- safe_pos(input$beta_beta)</span>
+<span id="cb1-465"><a></a></span>
+<span id="cb1-466"><a></a>        xs &lt;- seq(0, 1, length.out = 400)</span>
+<span id="cb1-467"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-468"><a></a>          x = xs,</span>
+<span id="cb1-469"><a></a>          density = dbeta(xs, a, b)</span>
+<span id="cb1-470"><a></a>        )</span>
+<span id="cb1-471"><a></a></span>
+<span id="cb1-472"><a></a>        list(</span>
+<span id="cb1-473"><a></a>          type = "continuous",</span>
+<span id="cb1-474"><a></a>          theory = theory,</span>
+<span id="cb1-475"><a></a>          xlim = c(0, 1),</span>
+<span id="cb1-476"><a></a>          ymax = max(theory$density),</span>
+<span id="cb1-477"><a></a>          xlabel = "Value",</span>
+<span id="cb1-478"><a></a>          ylabel = "Density"</span>
+<span id="cb1-479"><a></a>        )</span>
+<span id="cb1-480"><a></a>      } else if (dist == "Gamma") {</span>
+<span id="cb1-481"><a></a>        # ---- GAMMA ----</span>
+<span id="cb1-482"><a></a>        shape &lt;- safe_pos(input$gamma_shape)</span>
+<span id="cb1-483"><a></a>        rate &lt;- safe_pos(input$gamma_rate)</span>
+<span id="cb1-484"><a></a></span>
+<span id="cb1-485"><a></a>        x_min &lt;- 0</span>
+<span id="cb1-486"><a></a>        x_max &lt;- qgamma(.999, shape, rate)</span>
+<span id="cb1-487"><a></a></span>
+<span id="cb1-488"><a></a>        xs &lt;- seq(x_min, x_max, length.out = 400)</span>
+<span id="cb1-489"><a></a>        theory &lt;- data.frame(</span>
+<span id="cb1-490"><a></a>          x = xs,</span>
+<span id="cb1-491"><a></a>          density = dgamma(xs, shape, rate)</span>
+<span id="cb1-492"><a></a>        )</span>
+<span id="cb1-493"><a></a></span>
+<span id="cb1-494"><a></a>        list(</span>
+<span id="cb1-495"><a></a>          type = "continuous",</span>
+<span id="cb1-496"><a></a>          theory = theory,</span>
+<span id="cb1-497"><a></a>          xlim = c(x_min, x_max),</span>
+<span id="cb1-498"><a></a>          ymax = max(theory$density),</span>
+<span id="cb1-499"><a></a>          xlabel = "Value",</span>
+<span id="cb1-500"><a></a>          ylabel = "Density"</span>
+<span id="cb1-501"><a></a>        )</span>
+<span id="cb1-502"><a></a>      } else {</span>
+<span id="cb1-503"><a></a>        NULL</span>
+<span id="cb1-504"><a></a>      }</span>
+<span id="cb1-505"><a></a>    }</span>
+<span id="cb1-506"><a></a></span>
+<span id="cb1-507"><a></a>    # ---------- build plot ----------</span>
+<span id="cb1-508"><a></a>    spec &lt;- get_dist_spec(sim)</span>
+<span id="cb1-509"><a></a>    if (is.null(spec)) {</span>
+<span id="cb1-510"><a></a>      return(empty_plot())</span>
+<span id="cb1-511"><a></a>    }</span>
+<span id="cb1-512"><a></a></span>
+<span id="cb1-513"><a></a>    g &lt;- ggplot()</span>
 <span id="cb1-514"><a></a></span>
-<span id="cb1-515"><a></a>    g &lt;- ggplot()</span>
-<span id="cb1-516"><a></a></span>
-<span id="cb1-517"><a></a>    # ---- simulated layer ----</span>
-<span id="cb1-518"><a></a>    if (spec$type == "continuous") {</span>
-<span id="cb1-519"><a></a>      if (length(sim) &gt; 0) {</span>
-<span id="cb1-520"><a></a>        g &lt;- g +</span>
-<span id="cb1-521"><a></a>          geom_histogram_interactive(</span>
-<span id="cb1-522"><a></a>            data = data.frame(x = sim),</span>
-<span id="cb1-523"><a></a>            aes(</span>
-<span id="cb1-524"><a></a>              x = x,</span>
-<span id="cb1-525"><a></a>              y = after_stat(density),</span>
-<span id="cb1-526"><a></a>              tooltip = paste0("Count: ", after_stat(count)),</span>
-<span id="cb1-527"><a></a>              data_id = after_stat(x)</span>
-<span id="cb1-528"><a></a>            ),</span>
-<span id="cb1-529"><a></a>            bins = 40,</span>
-<span id="cb1-530"><a></a>            boundary = spec$xlim[1],</span>
-<span id="cb1-531"><a></a>            fill = "steelblue",</span>
-<span id="cb1-532"><a></a>            alpha = .6,</span>
-<span id="cb1-533"><a></a>            color = "white",</span>
-<span id="cb1-534"><a></a>            linewidth = .4</span>
-<span id="cb1-535"><a></a>          )</span>
-<span id="cb1-536"><a></a>      }</span>
-<span id="cb1-537"><a></a></span>
-<span id="cb1-538"><a></a>      g &lt;- g +</span>
-<span id="cb1-539"><a></a>        geom_line(</span>
-<span id="cb1-540"><a></a>          data = spec$theory,</span>
-<span id="cb1-541"><a></a>          aes(x = x, y = density),</span>
-<span id="cb1-542"><a></a>          linewidth = 1</span>
-<span id="cb1-543"><a></a>        )</span>
-<span id="cb1-544"><a></a>    } else if (spec$type == "discrete") {</span>
-<span id="cb1-545"><a></a>      # sim df</span>
-<span id="cb1-546"><a></a>      df_sim &lt;- if (length(sim) == 0) {</span>
-<span id="cb1-547"><a></a>        data.frame(x = integer(), prob = numeric(), count = integer())</span>
-<span id="cb1-548"><a></a>      } else {</span>
-<span id="cb1-549"><a></a>        tab &lt;- table(sim)</span>
-<span id="cb1-550"><a></a>        data.frame(</span>
-<span id="cb1-551"><a></a>          x = as.integer(names(tab)),</span>
-<span id="cb1-552"><a></a>          count = as.integer(tab),</span>
-<span id="cb1-553"><a></a>          prob = as.integer(tab) / sum(tab)</span>
-<span id="cb1-554"><a></a>        )</span>
-<span id="cb1-555"><a></a>      }</span>
-<span id="cb1-556"><a></a></span>
-<span id="cb1-557"><a></a>      g &lt;- g +</span>
-<span id="cb1-558"><a></a>        geom_col_interactive(</span>
-<span id="cb1-559"><a></a>          data = df_sim,</span>
-<span id="cb1-560"><a></a>          aes(</span>
-<span id="cb1-561"><a></a>            x = x,</span>
-<span id="cb1-562"><a></a>            y = prob,</span>
-<span id="cb1-563"><a></a>            tooltip = paste0(</span>
-<span id="cb1-564"><a></a>              "Count: ",</span>
-<span id="cb1-565"><a></a>              count,</span>
-<span id="cb1-566"><a></a>              " out of ",</span>
-<span id="cb1-567"><a></a>              length(sim),</span>
-<span id="cb1-568"><a></a>              "&lt;br&gt;Proportion: ",</span>
-<span id="cb1-569"><a></a>              round(prob, 4)</span>
-<span id="cb1-570"><a></a>            ),</span>
-<span id="cb1-571"><a></a>            data_id = x</span>
-<span id="cb1-572"><a></a>          ),</span>
-<span id="cb1-573"><a></a>          fill = "steelblue",</span>
-<span id="cb1-574"><a></a>          width = .8,</span>
-<span id="cb1-575"><a></a>          alpha = .6</span>
-<span id="cb1-576"><a></a>        ) +</span>
-<span id="cb1-577"><a></a>        geom_line(</span>
-<span id="cb1-578"><a></a>          data = spec$theory,</span>
-<span id="cb1-579"><a></a>          aes(x = x, y = prob),</span>
-<span id="cb1-580"><a></a>          linewidth = 1</span>
-<span id="cb1-581"><a></a>        ) +</span>
-<span id="cb1-582"><a></a>        geom_point_interactive(</span>
-<span id="cb1-583"><a></a>          data = spec$theory,</span>
-<span id="cb1-584"><a></a>          aes(</span>
-<span id="cb1-585"><a></a>            x = x,</span>
-<span id="cb1-586"><a></a>            y = prob,</span>
-<span id="cb1-587"><a></a>            tooltip = spec$tooltip_theory(spec$theory),</span>
-<span id="cb1-588"><a></a>            data_id = paste0("theory_", spec$theory$x)</span>
-<span id="cb1-589"><a></a>          ),</span>
-<span id="cb1-590"><a></a>          size = 3</span>
-<span id="cb1-591"><a></a>        ) +</span>
-<span id="cb1-592"><a></a>        scale_x_continuous(</span>
-<span id="cb1-593"><a></a>          breaks = scales::breaks_pretty(n = 10, integer = TRUE)</span>
-<span id="cb1-594"><a></a>        )</span>
-<span id="cb1-595"><a></a>    }</span>
+<span id="cb1-515"><a></a>    # ---- simulated layer ----</span>
+<span id="cb1-516"><a></a>    if (spec$type == "continuous") {</span>
+<span id="cb1-517"><a></a>      if (length(sim) &gt; 0) {</span>
+<span id="cb1-518"><a></a>        g &lt;- g +</span>
+<span id="cb1-519"><a></a>          geom_histogram_interactive(</span>
+<span id="cb1-520"><a></a>            data = data.frame(x = sim),</span>
+<span id="cb1-521"><a></a>            aes(</span>
+<span id="cb1-522"><a></a>              x = x,</span>
+<span id="cb1-523"><a></a>              y = after_stat(density),</span>
+<span id="cb1-524"><a></a>              tooltip = paste0("Count: ", after_stat(count)),</span>
+<span id="cb1-525"><a></a>              data_id = after_stat(x)</span>
+<span id="cb1-526"><a></a>            ),</span>
+<span id="cb1-527"><a></a>            bins = 40,</span>
+<span id="cb1-528"><a></a>            boundary = spec$xlim[1],</span>
+<span id="cb1-529"><a></a>            fill = "steelblue",</span>
+<span id="cb1-530"><a></a>            alpha = .6,</span>
+<span id="cb1-531"><a></a>            color = "white",</span>
+<span id="cb1-532"><a></a>            linewidth = .4</span>
+<span id="cb1-533"><a></a>          )</span>
+<span id="cb1-534"><a></a>      }</span>
+<span id="cb1-535"><a></a></span>
+<span id="cb1-536"><a></a>      g &lt;- g +</span>
+<span id="cb1-537"><a></a>        geom_line(</span>
+<span id="cb1-538"><a></a>          data = spec$theory,</span>
+<span id="cb1-539"><a></a>          aes(x = x, y = density),</span>
+<span id="cb1-540"><a></a>          linewidth = 1</span>
+<span id="cb1-541"><a></a>        )</span>
+<span id="cb1-542"><a></a>    } else if (spec$type == "discrete") {</span>
+<span id="cb1-543"><a></a>      # sim df</span>
+<span id="cb1-544"><a></a>      df_sim &lt;- if (length(sim) == 0) {</span>
+<span id="cb1-545"><a></a>        data.frame(x = integer(), prob = numeric(), count = integer())</span>
+<span id="cb1-546"><a></a>      } else {</span>
+<span id="cb1-547"><a></a>        tab &lt;- table(sim)</span>
+<span id="cb1-548"><a></a>        data.frame(</span>
+<span id="cb1-549"><a></a>          x = as.integer(names(tab)),</span>
+<span id="cb1-550"><a></a>          count = as.integer(tab),</span>
+<span id="cb1-551"><a></a>          prob = as.integer(tab) / sum(tab)</span>
+<span id="cb1-552"><a></a>        )</span>
+<span id="cb1-553"><a></a>      }</span>
+<span id="cb1-554"><a></a></span>
+<span id="cb1-555"><a></a>      g &lt;- g +</span>
+<span id="cb1-556"><a></a>        geom_col_interactive(</span>
+<span id="cb1-557"><a></a>          data = df_sim,</span>
+<span id="cb1-558"><a></a>          aes(</span>
+<span id="cb1-559"><a></a>            x = x,</span>
+<span id="cb1-560"><a></a>            y = prob,</span>
+<span id="cb1-561"><a></a>            tooltip = paste0(</span>
+<span id="cb1-562"><a></a>              "Count: ",</span>
+<span id="cb1-563"><a></a>              count,</span>
+<span id="cb1-564"><a></a>              " out of ",</span>
+<span id="cb1-565"><a></a>              length(sim),</span>
+<span id="cb1-566"><a></a>              "&lt;br&gt;Proportion: ",</span>
+<span id="cb1-567"><a></a>              round(prob, 4)</span>
+<span id="cb1-568"><a></a>            ),</span>
+<span id="cb1-569"><a></a>            data_id = x</span>
+<span id="cb1-570"><a></a>          ),</span>
+<span id="cb1-571"><a></a>          fill = "steelblue",</span>
+<span id="cb1-572"><a></a>          width = .8,</span>
+<span id="cb1-573"><a></a>          alpha = .6</span>
+<span id="cb1-574"><a></a>        ) +</span>
+<span id="cb1-575"><a></a>        geom_line(</span>
+<span id="cb1-576"><a></a>          data = spec$theory,</span>
+<span id="cb1-577"><a></a>          aes(x = x, y = prob),</span>
+<span id="cb1-578"><a></a>          linewidth = 1</span>
+<span id="cb1-579"><a></a>        ) +</span>
+<span id="cb1-580"><a></a>        geom_point_interactive(</span>
+<span id="cb1-581"><a></a>          data = spec$theory,</span>
+<span id="cb1-582"><a></a>          aes(</span>
+<span id="cb1-583"><a></a>            x = x,</span>
+<span id="cb1-584"><a></a>            y = prob,</span>
+<span id="cb1-585"><a></a>            tooltip = spec$tooltip_theory(spec$theory),</span>
+<span id="cb1-586"><a></a>            data_id = paste0("theory_", spec$theory$x)</span>
+<span id="cb1-587"><a></a>          ),</span>
+<span id="cb1-588"><a></a>          size = 3</span>
+<span id="cb1-589"><a></a>        ) +</span>
+<span id="cb1-590"><a></a>        scale_x_continuous(</span>
+<span id="cb1-591"><a></a>          breaks = scales::breaks_pretty(n = 10, integer = TRUE)</span>
+<span id="cb1-592"><a></a>        )</span>
+<span id="cb1-593"><a></a>    }</span>
+<span id="cb1-594"><a></a></span>
+<span id="cb1-595"><a></a>    expand_mult &lt;- spec$expand_mult %||% c(0, .25)</span>
 <span id="cb1-596"><a></a></span>
-<span id="cb1-597"><a></a>    expand_mult &lt;- spec$expand_mult %||% c(0, .25)</span>
-<span id="cb1-598"><a></a></span>
-<span id="cb1-599"><a></a>    g &lt;- g +</span>
-<span id="cb1-600"><a></a>      coord_cartesian(</span>
-<span id="cb1-601"><a></a>        xlim = spec$xlim,</span>
-<span id="cb1-602"><a></a>        ylim = c(0, spec$ymax),</span>
-<span id="cb1-603"><a></a>        clip = "off"</span>
-<span id="cb1-604"><a></a>      ) +</span>
-<span id="cb1-605"><a></a>      scale_y_continuous(expand = expansion(mult = expand_mult)) +</span>
-<span id="cb1-606"><a></a>      labs(x = spec$xlabel, y = spec$ylabel) +</span>
-<span id="cb1-607"><a></a>      base_theme</span>
-<span id="cb1-608"><a></a></span>
-<span id="cb1-609"><a></a>    girafe(ggobj = g, width_svg = 12, height_svg = 8)</span>
-<span id="cb1-610"><a></a>  })</span>
-<span id="cb1-611"><a></a>  # compact single-line simulation values, most recent on the left in bold</span>
-<span id="cb1-612"><a></a>  output$sim_list &lt;- renderUI({</span>
-<span id="cb1-613"><a></a>    sim_vals &lt;- draws()</span>
-<span id="cb1-614"><a></a></span>
-<span id="cb1-615"><a></a>    # small formatter: integers as integers, others rounded to 2 decimals</span>
-<span id="cb1-616"><a></a>    fmt_val &lt;- function(x) {</span>
-<span id="cb1-617"><a></a>      if (is.na(x)) {</span>
-<span id="cb1-618"><a></a>        return("NA")</span>
-<span id="cb1-619"><a></a>      }</span>
-<span id="cb1-620"><a></a>      if (!is.numeric(x)) {</span>
-<span id="cb1-621"><a></a>        return(as.character(x))</span>
-<span id="cb1-622"><a></a>      }</span>
-<span id="cb1-623"><a></a>      if (abs(x - round(x)) &lt; 1e-8) {</span>
-<span id="cb1-624"><a></a>        as.character(as.integer(round(x)))</span>
-<span id="cb1-625"><a></a>      } else {</span>
-<span id="cb1-626"><a></a>        sprintf("%.2f", round(x, 2))</span>
-<span id="cb1-627"><a></a>      }</span>
-<span id="cb1-628"><a></a>    }</span>
-<span id="cb1-629"><a></a></span>
-<span id="cb1-630"><a></a>    if (length(sim_vals) == 0) {</span>
-<span id="cb1-631"><a></a>      return(tags$div(</span>
-<span id="cb1-632"><a></a>        tags$div(</span>
-<span id="cb1-633"><a></a>          "Simulation Results:",</span>
-<span id="cb1-634"><a></a>          style = "font-weight:600; margin-bottom:4px;"</span>
-<span id="cb1-635"><a></a>        ),</span>
-<span id="cb1-636"><a></a>        tags$div("No simulations yet", style = "font-size:0.9em; color:#666;")</span>
-<span id="cb1-637"><a></a>      ))</span>
-<span id="cb1-638"><a></a>    }</span>
-<span id="cb1-639"><a></a></span>
-<span id="cb1-640"><a></a>    max_show &lt;- 100L</span>
-<span id="cb1-641"><a></a>    show_vals &lt;- tail(sim_vals, max_show)</span>
-<span id="cb1-642"><a></a>    show_vals_rev &lt;- rev(show_vals) # most recent first (left)</span>
-<span id="cb1-643"><a></a></span>
-<span id="cb1-644"><a></a>    spans &lt;- lapply(seq_along(show_vals_rev), function(i) {</span>
-<span id="cb1-645"><a></a>      v &lt;- show_vals_rev[i]</span>
-<span id="cb1-646"><a></a>      txt &lt;- fmt_val(v)</span>
-<span id="cb1-647"><a></a>      if (i == 1L) {</span>
-<span id="cb1-648"><a></a>        tags$span(</span>
-<span id="cb1-649"><a></a>          txt,</span>
-<span id="cb1-650"><a></a>          style = "font-weight:700; margin-right:10px; white-space:nowrap;"</span>
-<span id="cb1-651"><a></a>        )</span>
-<span id="cb1-652"><a></a>      } else {</span>
-<span id="cb1-653"><a></a>        tags$span(</span>
-<span id="cb1-654"><a></a>          txt,</span>
-<span id="cb1-655"><a></a>          style = "color:#333; margin-right:10px; white-space:nowrap;"</span>
-<span id="cb1-656"><a></a>        )</span>
-<span id="cb1-657"><a></a>      }</span>
-<span id="cb1-658"><a></a>    })</span>
-<span id="cb1-659"><a></a></span>
-<span id="cb1-660"><a></a>    tags$div(</span>
-<span id="cb1-661"><a></a>      tags$div(</span>
-<span id="cb1-662"><a></a>        "Recent simulations:",</span>
-<span id="cb1-663"><a></a>        style = "font-weight:600; margin-bottom:4px;"</span>
-<span id="cb1-664"><a></a>      ),</span>
-<span id="cb1-665"><a></a>      tags$div(</span>
-<span id="cb1-666"><a></a>        style = "font-size:0.9em; padding-top:2px; padding-bottom:6px; overflow-x:auto; white-space:nowrap;",</span>
-<span id="cb1-667"><a></a>        spans</span>
-<span id="cb1-668"><a></a>      )</span>
-<span id="cb1-669"><a></a>    )</span>
-<span id="cb1-670"><a></a>  })</span>
-<span id="cb1-671"><a></a>}</span>
-<span id="cb1-672"><a></a></span>
-<span id="cb1-673"><a></a>shinyApp(ui, server)</span>
-<span id="cb1-674"><a></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-597"><a></a>    g &lt;- g +</span>
+<span id="cb1-598"><a></a>      coord_cartesian(</span>
+<span id="cb1-599"><a></a>        xlim = spec$xlim,</span>
+<span id="cb1-600"><a></a>        ylim = c(0, spec$ymax),</span>
+<span id="cb1-601"><a></a>        clip = "off"</span>
+<span id="cb1-602"><a></a>      ) +</span>
+<span id="cb1-603"><a></a>      scale_y_continuous(expand = expansion(mult = expand_mult)) +</span>
+<span id="cb1-604"><a></a>      labs(x = spec$xlabel, y = spec$ylabel) +</span>
+<span id="cb1-605"><a></a>      base_theme</span>
+<span id="cb1-606"><a></a></span>
+<span id="cb1-607"><a></a>    girafe(ggobj = g, width_svg = 12, height_svg = 8)</span>
+<span id="cb1-608"><a></a>  })</span>
+<span id="cb1-609"><a></a>  # compact single-line simulation values, most recent on the left in bold</span>
+<span id="cb1-610"><a></a>  output$sim_list &lt;- renderUI({</span>
+<span id="cb1-611"><a></a>    sim_vals &lt;- draws()</span>
+<span id="cb1-612"><a></a></span>
+<span id="cb1-613"><a></a>    # small formatter: integers as integers, others rounded to 2 decimals</span>
+<span id="cb1-614"><a></a>    fmt_val &lt;- function(x) {</span>
+<span id="cb1-615"><a></a>      if (is.na(x)) {</span>
+<span id="cb1-616"><a></a>        return("NA")</span>
+<span id="cb1-617"><a></a>      }</span>
+<span id="cb1-618"><a></a>      if (!is.numeric(x)) {</span>
+<span id="cb1-619"><a></a>        return(as.character(x))</span>
+<span id="cb1-620"><a></a>      }</span>
+<span id="cb1-621"><a></a>      if (abs(x - round(x)) &lt; 1e-8) {</span>
+<span id="cb1-622"><a></a>        as.character(as.integer(round(x)))</span>
+<span id="cb1-623"><a></a>      } else {</span>
+<span id="cb1-624"><a></a>        sprintf("%.2f", round(x, 2))</span>
+<span id="cb1-625"><a></a>      }</span>
+<span id="cb1-626"><a></a>    }</span>
+<span id="cb1-627"><a></a></span>
+<span id="cb1-628"><a></a>    if (length(sim_vals) == 0) {</span>
+<span id="cb1-629"><a></a>      return(tags$div(</span>
+<span id="cb1-630"><a></a>        tags$div(</span>
+<span id="cb1-631"><a></a>          "Simulation Results:",</span>
+<span id="cb1-632"><a></a>          style = "font-weight:600; margin-bottom:4px;"</span>
+<span id="cb1-633"><a></a>        ),</span>
+<span id="cb1-634"><a></a>        tags$div("No simulations yet", style = "font-size:0.9em; color:#666;")</span>
+<span id="cb1-635"><a></a>      ))</span>
+<span id="cb1-636"><a></a>    }</span>
+<span id="cb1-637"><a></a></span>
+<span id="cb1-638"><a></a>    max_show &lt;- 100L</span>
+<span id="cb1-639"><a></a>    show_vals &lt;- tail(sim_vals, max_show)</span>
+<span id="cb1-640"><a></a>    show_vals_rev &lt;- rev(show_vals) # most recent first (left)</span>
+<span id="cb1-641"><a></a></span>
+<span id="cb1-642"><a></a>    spans &lt;- lapply(seq_along(show_vals_rev), function(i) {</span>
+<span id="cb1-643"><a></a>      v &lt;- show_vals_rev[i]</span>
+<span id="cb1-644"><a></a>      txt &lt;- fmt_val(v)</span>
+<span id="cb1-645"><a></a>      if (i == 1L) {</span>
+<span id="cb1-646"><a></a>        tags$span(</span>
+<span id="cb1-647"><a></a>          txt,</span>
+<span id="cb1-648"><a></a>          style = "font-weight:700; margin-right:10px; white-space:nowrap;"</span>
+<span id="cb1-649"><a></a>        )</span>
+<span id="cb1-650"><a></a>      } else {</span>
+<span id="cb1-651"><a></a>        tags$span(</span>
+<span id="cb1-652"><a></a>          txt,</span>
+<span id="cb1-653"><a></a>          style = "color:#333; margin-right:10px; white-space:nowrap;"</span>
+<span id="cb1-654"><a></a>        )</span>
+<span id="cb1-655"><a></a>      }</span>
+<span id="cb1-656"><a></a>    })</span>
+<span id="cb1-657"><a></a></span>
+<span id="cb1-658"><a></a>    tags$div(</span>
+<span id="cb1-659"><a></a>      tags$div(</span>
+<span id="cb1-660"><a></a>        "Recent simulations:",</span>
+<span id="cb1-661"><a></a>        style = "font-weight:600; margin-bottom:4px;"</span>
+<span id="cb1-662"><a></a>      ),</span>
+<span id="cb1-663"><a></a>      tags$div(</span>
+<span id="cb1-664"><a></a>        style = "font-size:0.9em; padding-top:2px; padding-bottom:6px; overflow-x:auto; white-space:nowrap;",</span>
+<span id="cb1-665"><a></a>        spans</span>
+<span id="cb1-666"><a></a>      )</span>
+<span id="cb1-667"><a></a>    )</span>
+<span id="cb1-668"><a></a>  })</span>
+<span id="cb1-669"><a></a>}</span>
+<span id="cb1-670"><a></a></span>
+<span id="cb1-671"><a></a>shinyApp(ui, server)</span>
+<span id="cb1-672"><a></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+
+<section id="grid-approximation-worksheet" class="title-slide slide level1 center">
+<h1>Grid approximation worksheet</h1>
+<p>A excel-like worksheet for building grid approximation manually</p>
 
 
 </section>
@@ -967,7 +1034,7 @@ DAGitty.setup()
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true},
-'multiplex': {"secret":null,"id":"125b91b43952e092ba74183dc961537fc09e40a02292cad55a9c73a4a6d03d6c","url":"https://multiplex.up.railway.app/"},
+'multiplex': {"secret":null,"id":"d6cf2821e2f29961dfed68f22923bc8156a022ac26d8b3099ee53bb67ad63d68","url":"https://multiplex.up.railway.app/"},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1152,71 +1219,62 @@ DAGitty.setup()
     </script>
     <script>
       (function () {
-        const STORED = "data-fragment-toggle-stored";
-
-        function storeFragmentState(el) {
-          // Store original class + fragment index once so we can restore exactly
-          if (el.hasAttribute(STORED)) return;
-          el.setAttribute(
-            STORED,
-            JSON.stringify({
-              className: el.className,
-              idx: el.getAttribute("data-fragment-index")
-            })
-          );
+        function inScrollView() {
+          // Scroll view sets this class on the viewport element
+          const vp = document.querySelector(".reveal-viewport");
+          return !!vp && vp.classList.contains("reveal-scroll");
         }
 
-        function disableFragmentDOM() {
-          // Remove actual fragment markers so Scroll View stops allocating extra height
-          document.querySelectorAll(".reveal .fragment").forEach((el) => {
-            storeFragmentState(el);
-            el.classList.remove("fragment");
-            el.removeAttribute("data-fragment-index");
-            el.classList.remove("current-fragment", "visible");
-          });
-        }
+        function patchScrollViewFragmentCounting() {
+          // reveal.js exposes the controller as Reveal.scrollView in v5+
+          const sv = window.Reveal && Reveal.scrollView;
+          if (!sv || sv.__patchedFragmentCounting) return;
+          if (typeof sv.createFragmentTriggersForPage !== "function") return;
 
-        function enableFragmentDOM() {
-          // Restore fragment markers exactly as they were
-          document.querySelectorAll(".reveal [" + STORED + "]").forEach((el) => {
-            try {
-              const data = JSON.parse(el.getAttribute(STORED));
-              el.className = data.className;
-              if (data.idx != null) el.setAttribute("data-fragment-index", data.idx);
-            } catch (e) {
-              // ignore
+          sv.__patchedFragmentCounting = true;
+
+          sv.createFragmentTriggersForPage = function (page, slideElement) {
+            slideElement = slideElement || page.slideElement;
+            page.scrollTriggers = page.scrollTriggers || [];
+
+            // IMPORTANT: only count fragments that are not disabled
+            const fragmentGroups = this.Reveal.fragments.sort(
+              slideElement.querySelectorAll(".fragment:not(.disabled)"),
+              true
+            );
+
+            if (fragmentGroups.length) {
+              page.fragments = this.Reveal.fragments.sort(
+                slideElement.querySelectorAll(".fragment:not(.disabled)")
+              );
+
+              // Initial state (no fragments visible)
+              page.scrollTriggers.push({
+                activate: () => {
+                  this.Reveal.fragments.update(-1, page.fragments, slideElement);
+                },
+              });
+
+              // One trigger per fragment group
+              fragmentGroups.forEach((fragments, i) => {
+                page.scrollTriggers.push({
+                  activate: () => {
+                    this.Reveal.fragments.update(i, page.fragments, slideElement);
+                  },
+                });
+              });
             }
-          });
 
-          // Also store any fragments that might have been introduced later
-          document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
-        }
-
-        function applyFragments(enabled) {
-          // 1) Toggle Reveal stepping behavior
-          Reveal.configure({ fragments: enabled });
-          Reveal.configure({ incremental: enabled });
-
-          // 2) Toggle DOM markers to fix Scroll View "dead scroll"
-          if (enabled) enableFragmentDOM();
-          else disableFragmentDOM();
-
-          // 3) Recompute fragments + relayout so Scroll View recalculates height
-          if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
-          if (typeof Reveal.layout === "function") Reveal.layout();
-          if (typeof Reveal.sync === "function") Reveal.sync();
-
-          // If turning fragments off, reveal all on current slide
-          if (!enabled) {
-            const i = Reveal.getIndices();
-            Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
-          }
+            return page.scrollTriggers.length;
+          };
         }
 
         function addControls() {
-          // Reveal sidebar container (present when menu or toc panel exists)
           const sidebar = document.querySelector(".slide-menu-panel");
           if (!sidebar) return;
+
+          // Patch once controls are being added (Reveal is ready)
+          patchScrollViewFragmentCounting();
 
           const box = document.createElement("div");
           box.style.padding = "0.5rem 0.75rem";
@@ -1236,24 +1294,23 @@ DAGitty.setup()
           const frag = box.querySelector("#toggleFragments");
           const trans = box.querySelector("#toggleTransitions");
 
-          // Initialize checkbox state from current Reveal config, and fix Scroll View padding on load
-          const cfg = (typeof Reveal.getConfig === "function") ? Reveal.getConfig() : {};
-          frag.checked = !!cfg.fragments;
-
-          // Always capture existing fragment state early so restoring works reliably
-          document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
-
-          // If your YAML sets fragments: false but DOM still contains .fragment (e.g., incremental: true),
-          // remove DOM markers immediately to avoid "dead scroll" in Scroll View.
-          if (cfg.fragments === false) {
-            disableFragmentDOM();
-            if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
-            if (typeof Reveal.layout === "function") Reveal.layout();
-            if (typeof Reveal.sync === "function") Reveal.sync();
-          }
+          // Optional: initialize checkbox to current config
+          try { frag.checked = !!Reveal.getConfig().fragments; } catch (e) { }
 
           frag.addEventListener("change", () => {
-            applyFragments(frag.checked);
+            Reveal.configure({ fragments: frag.checked, incremental: frag.checked });
+            Reveal.syncFragments();
+
+            // If we're in scroll view, rebuild scroll triggers/scrollbar segments
+            if (inScrollView()) {
+              Reveal.layout();
+            }
+
+            // If turning fragments off, reveal all on current slide
+            if (!frag.checked) {
+              const i = Reveal.getIndices();
+              Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
+            }
           });
 
           trans.addEventListener("change", () => {

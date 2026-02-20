@@ -405,29 +405,29 @@ admitted_i &amp;\sim \mathrm{Bernoulli}(p_i) \\
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 21 × 2
-   variable           mean
-   &lt;chr&gt;             &lt;dbl&gt;
- 1 alpha            0.791 
- 2 beta[male]      -0.131 
- 3 beta[female]     0.131 
- 4 gamma[A]         1.42  
- 5 gamma[B]         1.03  
- 6 gamma[C]         1.15  
- 7 gamma[D]        -1.65  
- 8 gamma[E]        -1.47  
- 9 gamma[F]        -0.477 
-10 delta[male,A]    1.08  
-11 delta[female,A] -1.08  
-12 delta[male,B]    0.233 
-13 delta[female,B] -0.233 
-14 delta[male,C]   -0.577 
-15 delta[female,C]  0.577 
-16 delta[male,D]    0.0940
-17 delta[female,D] -0.0940
-18 delta[male,E]   -0.109 
-19 delta[female,E]  0.109 
-20 delta[male,F]   -0.726 
-21 delta[female,F]  0.726 </code></pre>
+   variable          mean
+   &lt;chr&gt;            &lt;dbl&gt;
+ 1 alpha           -1.08 
+ 2 beta[male]      -1.87 
+ 3 beta[female]     1.87 
+ 4 gamma[A]        -0.360
+ 5 gamma[B]         0.578
+ 6 gamma[C]        -0.711
+ 7 gamma[D]         0.839
+ 8 gamma[E]        -0.944
+ 9 gamma[F]         0.599
+10 delta[male,A]   -0.273
+11 delta[female,A]  0.273
+12 delta[male,B]   -0.174
+13 delta[female,B]  0.174
+14 delta[male,C]    0.551
+15 delta[female,C] -0.551
+16 delta[male,D]    0.255
+17 delta[female,D] -0.255
+18 delta[male,E]    0.257
+19 delta[female,E] -0.257
+20 delta[male,F]   -0.616
+21 delta[female,F]  0.616</code></pre>
 </div>
 </div>
 <p>(More details soon…)</p>
@@ -459,27 +459,27 @@ admitted_i &amp;\sim \mathrm{Bernoulli}(p_i) \\
 <pre><code># A tibble: 21 × 8
    variable            mean   median     sd    mad       q5      q95  rhat
    &lt;chr&gt;              &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
- 1 alpha           -0.568   -0.568   0.0520 0.0517 -0.655   -0.483   1.00 
- 2 beta[male]      -0.0887  -0.0874  0.0518 0.0511 -0.174   -0.00366 1.00 
- 3 beta[female]     0.0887   0.0874  0.0518 0.0511  0.00366  0.174   1.00 
- 4 gamma[A]         1.53     1.53    0.112  0.113   1.35     1.71    1.00 
- 5 gamma[B]         1.17     1.17    0.163  0.167   0.913    1.44    1.00 
- 6 gamma[C]        -0.0326  -0.0324  0.0784 0.0798 -0.161    0.0979  1.00 
- 7 gamma[D]        -0.0962  -0.0968  0.0803 0.0828 -0.228    0.0362  1.00 
- 8 gamma[E]        -0.491   -0.491   0.0969 0.0957 -0.652   -0.336   1.000
- 9 gamma[F]        -2.08    -2.08    0.136  0.131  -2.31    -1.86    1.000
-10 delta[male,A]   -0.375   -0.373   0.109  0.109  -0.557   -0.203   1.00 
-11 delta[female,A]  0.375    0.373   0.109  0.109   0.203    0.557   1.00 
-12 delta[male,B]    0.0150   0.0195  0.158  0.155  -0.261    0.272   1.00 
-13 delta[female,B] -0.0150  -0.0195  0.158  0.155  -0.272    0.261   1.00 
-14 delta[male,C]    0.145    0.144   0.0766 0.0748  0.0194   0.273   1.000
-15 delta[female,C] -0.145   -0.144   0.0766 0.0748 -0.273   -0.0194  1.000
-16 delta[male,D]    0.0443   0.0433  0.0786 0.0788 -0.0851   0.175   1.00 
-17 delta[female,D] -0.0443  -0.0433  0.0786 0.0788 -0.175    0.0851  1.00 
-18 delta[male,E]    0.178    0.176   0.0930 0.0906  0.0223   0.333   1.000
-19 delta[female,E] -0.178   -0.176   0.0930 0.0906 -0.333   -0.0223  1.000
-20 delta[male,F]   -0.00703 -0.00630 0.125  0.120  -0.218    0.195   1.00 
-21 delta[female,F]  0.00703  0.00630 0.125  0.120  -0.195    0.218   1.00 </code></pre>
+ 1 alpha           -0.566   -0.567   0.0519 0.0511 -0.650   -0.481   1.00 
+ 2 beta[male]      -0.0894  -0.0891  0.0531 0.0529 -0.178   -0.00210 1.00 
+ 3 beta[female]     0.0894   0.0891  0.0531 0.0529  0.00210  0.178   1.00 
+ 4 gamma[A]         1.53     1.53    0.110  0.110   1.36     1.71    1.00 
+ 5 gamma[B]         1.17     1.17    0.166  0.164   0.903    1.46    1.00 
+ 6 gamma[C]        -0.0340  -0.0330  0.0795 0.0799 -0.167    0.0959  1.00 
+ 7 gamma[D]        -0.0971  -0.0963  0.0804 0.0793 -0.229    0.0325  1.00 
+ 8 gamma[E]        -0.495   -0.494   0.0963 0.0935 -0.657   -0.337   1.00 
+ 9 gamma[F]        -2.08    -2.07    0.133  0.132  -2.31    -1.87    1.00 
+10 delta[male,A]   -0.375   -0.374   0.109  0.108  -0.551   -0.199   1.000
+11 delta[female,A]  0.375    0.374   0.109  0.108   0.199    0.551   1.000
+12 delta[male,B]    0.0126   0.0172  0.159  0.158  -0.254    0.266   1.00 
+13 delta[female,B] -0.0126  -0.0172  0.159  0.158  -0.266    0.254   1.00 
+14 delta[male,C]    0.145    0.146   0.0757 0.0736  0.0195   0.264   1.000
+15 delta[female,C] -0.145   -0.146   0.0757 0.0736 -0.264   -0.0195  1.000
+16 delta[male,D]    0.0478   0.0479  0.0784 0.0778 -0.0792   0.176   1.00 
+17 delta[female,D] -0.0478  -0.0479  0.0784 0.0778 -0.176    0.0792  1.00 
+18 delta[male,E]    0.175    0.175   0.0923 0.0902  0.0256   0.332   1.00 
+19 delta[female,E] -0.175   -0.175   0.0923 0.0902 -0.332   -0.0256  1.00 
+20 delta[male,F]   -0.00600 -0.00586 0.126  0.127  -0.209    0.203   1.000
+21 delta[female,F]  0.00600  0.00586 0.126  0.127  -0.203    0.209   1.000</code></pre>
 </div>
 </div>
 <p>(More details soon…)</p>
