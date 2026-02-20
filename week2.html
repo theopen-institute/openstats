@@ -967,7 +967,7 @@ DAGitty.setup()
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true},
-'multiplex': {"secret":null,"id":"4dcbe18c5829a59c29b20e7f621834b66de7b041175804146826981fa7c870e4","url":"https://multiplex.up.railway.app/"},
+'multiplex': {"secret":null,"id":"125b91b43952e092ba74183dc961537fc09e40a02292cad55a9c73a4a6d03d6c","url":"https://multiplex.up.railway.app/"},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1152,40 +1152,108 @@ DAGitty.setup()
     </script>
     <script>
       (function () {
+        const STORED = "data-fragment-toggle-stored";
+
+        function storeFragmentState(el) {
+          // Store original class + fragment index once so we can restore exactly
+          if (el.hasAttribute(STORED)) return;
+          el.setAttribute(
+            STORED,
+            JSON.stringify({
+              className: el.className,
+              idx: el.getAttribute("data-fragment-index")
+            })
+          );
+        }
+
+        function disableFragmentDOM() {
+          // Remove actual fragment markers so Scroll View stops allocating extra height
+          document.querySelectorAll(".reveal .fragment").forEach((el) => {
+            storeFragmentState(el);
+            el.classList.remove("fragment");
+            el.removeAttribute("data-fragment-index");
+            el.classList.remove("current-fragment", "visible");
+          });
+        }
+
+        function enableFragmentDOM() {
+          // Restore fragment markers exactly as they were
+          document.querySelectorAll(".reveal [" + STORED + "]").forEach((el) => {
+            try {
+              const data = JSON.parse(el.getAttribute(STORED));
+              el.className = data.className;
+              if (data.idx != null) el.setAttribute("data-fragment-index", data.idx);
+            } catch (e) {
+              // ignore
+            }
+          });
+
+          // Also store any fragments that might have been introduced later
+          document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
+        }
+
+        function applyFragments(enabled) {
+          // 1) Toggle Reveal stepping behavior
+          Reveal.configure({ fragments: enabled });
+          Reveal.configure({ incremental: enabled });
+
+          // 2) Toggle DOM markers to fix Scroll View "dead scroll"
+          if (enabled) enableFragmentDOM();
+          else disableFragmentDOM();
+
+          // 3) Recompute fragments + relayout so Scroll View recalculates height
+          if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
+          if (typeof Reveal.layout === "function") Reveal.layout();
+          if (typeof Reveal.sync === "function") Reveal.sync();
+
+          // If turning fragments off, reveal all on current slide
+          if (!enabled) {
+            const i = Reveal.getIndices();
+            Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
+          }
+        }
+
         function addControls() {
           // Reveal sidebar container (present when menu or toc panel exists)
           const sidebar = document.querySelector(".slide-menu-panel");
-
           if (!sidebar) return;
 
           const box = document.createElement("div");
           box.style.padding = "0.5rem 0.75rem";
           box.style.borderTop = "1px solid #ccc";
           box.innerHTML = `
-          <label style="display:block; font-size:0.85rem;">
-            <input type="checkbox" id="toggleFragments">
-            Incremental Build
-          </label>
-          <label style="display:block; font-size:0.85rem;">
-            <input type="checkbox" id="toggleTransitions" checked>
-            Transitions
-          </label>
-        `;
+            <label style="display:block; font-size:0.85rem;">
+              <input type="checkbox" id="toggleFragments">
+              Incremental Build
+            </label>
+            <label style="display:block; font-size:0.85rem;">
+              <input type="checkbox" id="toggleTransitions" checked>
+              Transitions
+            </label>
+          `;
           sidebar.appendChild(box);
 
           const frag = box.querySelector("#toggleFragments");
           const trans = box.querySelector("#toggleTransitions");
 
-          frag.addEventListener("change", () => {
-            Reveal.configure({ fragments: frag.checked });
-            Reveal.configure({ incremental: frag.checked });
-            Reveal.syncFragments();
+          // Initialize checkbox state from current Reveal config, and fix Scroll View padding on load
+          const cfg = (typeof Reveal.getConfig === "function") ? Reveal.getConfig() : {};
+          frag.checked = !!cfg.fragments;
 
-            // If turning fragments off, reveal all on current slide
-            if (!frag.checked) {
-              const i = Reveal.getIndices();
-              Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
-            }
+          // Always capture existing fragment state early so restoring works reliably
+          document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
+
+          // If your YAML sets fragments: false but DOM still contains .fragment (e.g., incremental: true),
+          // remove DOM markers immediately to avoid "dead scroll" in Scroll View.
+          if (cfg.fragments === false) {
+            disableFragmentDOM();
+            if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
+            if (typeof Reveal.layout === "function") Reveal.layout();
+            if (typeof Reveal.sync === "function") Reveal.sync();
+          }
+
+          frag.addEventListener("change", () => {
+            applyFragments(frag.checked);
           });
 
           trans.addEventListener("change", () => {
@@ -1195,6 +1263,9 @@ DAGitty.setup()
               Reveal.configure({ transition: "none", backgroundTransition: "none" });
             }
           });
+
+          // Optional: expose to your own UI as well
+          window.setFragmentsEnabled = applyFragments;
         }
 
         if (window.Reveal) {
