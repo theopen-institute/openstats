@@ -101,6 +101,9 @@
           Reveal.configure({ transition: "none", backgroundTransition: "none" });
         }
       });
+
+      // Optional: expose to your own UI as well
+      window.setFragmentsEnabled = applyFragments;
     }
 
     if (window.Reveal) {
