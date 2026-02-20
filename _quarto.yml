@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: .output
+  render:
+    - "**/*.qmd"
+    - "!notes/"
   resources:
     - images/
     - css/
@@ -18,6 +21,7 @@ format:
     width: 1605
     height: 1050
     chalkboard: true
+    multiplex: true
     transition: slide
     fragments: false
     incremental: true

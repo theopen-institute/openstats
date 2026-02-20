@@ -223,9 +223,9 @@ What we usually actually want:
 
 # So why is most published research wrong?
 
-- We are thinking about statistics backwards.
+- Statistical significance flips backwards our natural intuitions about uncertainty..
 - If statistics has ever made you feel dumb or intimidated, it's not you...
-- p-value is just really, really weird.
+- Statistical significance (p-value) is just a really, really weird concept.
 - Most people don't actually understand what statistical significance means.
 
 # Bayesian Updating
