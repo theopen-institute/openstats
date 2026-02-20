@@ -11,7 +11,7 @@ A Fresh Start
 The Open Institute For Social Science
 :::
 
-::: {notes-from="notes/week1_notes.md#title"}
+::: {notes="notes/week1_notes.md#title"}
 :::
 
 # Most published research is false 
@@ -26,7 +26,7 @@ The Open Institute For Social Science
 </div>
 :::
 
-:::{notes-from="notes/week1_notes.md#published-research"}
+:::{notes="notes/week1_notes.md#published-research"}
 :::
 
 # This week's goals
@@ -63,7 +63,7 @@ The Open Institute For Social Science
 
 
 
-::: {notes-from="notes/week1_notes.md#goals"}
+::: {notes="notes/week1_notes.md#goals"}
 :::
 
 # Probability
@@ -94,7 +94,7 @@ We can do better with _conditional probabilities_:
 - P( rain | Feb ) = 2/28 (0.07)
 :::
 
-::: {notes-from="notes/week1_notes.md#probability"}
+::: {notes="notes/week1_notes.md#probability"}
 :::
 
 
@@ -134,7 +134,7 @@ We can write these using our probability language:
 - Specificity: P( test– | HIV– ) = 0.97 (97%)
 :::
 
-::: {notes-from="notes/week1_notes.md#applied-probability"}
+::: {notes="notes/week1_notes.md#applied-probability"}
 :::
 
 # Applied probability (continued)
@@ -160,7 +160,7 @@ What about P( HIV+ | test+): [3.2%]{.fragment fragment-index=2 .red}
 _Paradox: P(A|B) is not the same as P(B|A)_
 :::
 
-::: {notes-from="notes/week1_notes.md#applied-probability-continued"}
+::: {notes="notes/week1_notes.md#applied-probability-continued"}
 :::
 
 # Base Rate Paradox {.no-title}
@@ -217,7 +217,7 @@ What we usually actually want:
 :::
 
 
-::: {notes-from="notes/week1_notes.md#statistical-significance-revisited"}
+::: {notes="notes/week1_notes.md#statistical-significance-revisited"}
 :::
 
 
@@ -236,7 +236,7 @@ What we usually actually want:
 
 
 ## Bayesian Updating: What it is
-::: {notes-from="notes/week1_notes.md#bayesian-updating"}
+::: {notes="notes/week1_notes.md#bayesian-updating"}
 :::
 
 # Bayesian Updating Example {.no-title}
@@ -247,7 +247,7 @@ What we usually actually want:
 ```
 
 # Bayes Theorem
-::: {notes-from="notes/week1_notes.md#bayes-theorem"}
+::: {notes="notes/week1_notes.md#bayes-theorem"}
 :::
 
 $$
@@ -289,5 +289,5 @@ Also, there is no minimum samples size. -->
 - When we do ethnography, we _expect_ our data to be messy.
 - We need to start thinking about statistics in the same way.
 
-::: {notes-from="notes/week1_notes.md#statistics-is-observation"}
+::: {notes="notes/week1_notes.md#statistics-is-observation"}
 :::

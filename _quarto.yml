@@ -31,4 +31,4 @@ format:
 filters: 
   - shinylive
   - include-code-files
-  - _build/notes-from.lua
+  - _build/notes.lua
