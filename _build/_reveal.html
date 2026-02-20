@@ -1,39 +1,107 @@
 <script>
   (function () {
+    const STORED = "data-fragment-toggle-stored";
+
+    function storeFragmentState(el) {
+      // Store original class + fragment index once so we can restore exactly
+      if (el.hasAttribute(STORED)) return;
+      el.setAttribute(
+        STORED,
+        JSON.stringify({
+          className: el.className,
+          idx: el.getAttribute("data-fragment-index")
+        })
+      );
+    }
+
+    function disableFragmentDOM() {
+      // Remove actual fragment markers so Scroll View stops allocating extra height
+      document.querySelectorAll(".reveal .fragment").forEach((el) => {
+        storeFragmentState(el);
+        el.classList.remove("fragment");
+        el.removeAttribute("data-fragment-index");
+        el.classList.remove("current-fragment", "visible");
+      });
+    }
+
+    function enableFragmentDOM() {
+      // Restore fragment markers exactly as they were
+      document.querySelectorAll(".reveal [" + STORED + "]").forEach((el) => {
+        try {
+          const data = JSON.parse(el.getAttribute(STORED));
+          el.className = data.className;
+          if (data.idx != null) el.setAttribute("data-fragment-index", data.idx);
+        } catch (e) {
+          // ignore
+        }
+      });
+
+      // Also store any fragments that might have been introduced later
+      document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
+    }
+
+    function applyFragments(enabled) {
+      // 1) Toggle Reveal stepping behavior
+      Reveal.configure({ fragments: enabled });
+      Reveal.configure({ incremental: enabled });
+
+      // 2) Toggle DOM markers to fix Scroll View "dead scroll"
+      if (enabled) enableFragmentDOM();
+      else disableFragmentDOM();
+
+      // 3) Recompute fragments + relayout so Scroll View recalculates height
+      if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
+      if (typeof Reveal.layout === "function") Reveal.layout();
+      if (typeof Reveal.sync === "function") Reveal.sync();
+
+      // If turning fragments off, reveal all on current slide
+      if (!enabled) {
+        const i = Reveal.getIndices();
+        Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
+      }
+    }
+
     function addControls() {
       // Reveal sidebar container (present when menu or toc panel exists)
       const sidebar = document.querySelector(".slide-menu-panel");
-
       if (!sidebar) return;
 
       const box = document.createElement("div");
       box.style.padding = "0.5rem 0.75rem";
       box.style.borderTop = "1px solid #ccc";
       box.innerHTML = `
-      <label style="display:block; font-size:0.85rem;">
-        <input type="checkbox" id="toggleFragments">
-        Incremental Build
-      </label>
-      <label style="display:block; font-size:0.85rem;">
-        <input type="checkbox" id="toggleTransitions" checked>
-        Transitions
-      </label>
-    `;
+        <label style="display:block; font-size:0.85rem;">
+          <input type="checkbox" id="toggleFragments">
+          Incremental Build
+        </label>
+        <label style="display:block; font-size:0.85rem;">
+          <input type="checkbox" id="toggleTransitions" checked>
+          Transitions
+        </label>
+      `;
       sidebar.appendChild(box);
 
       const frag = box.querySelector("#toggleFragments");
       const trans = box.querySelector("#toggleTransitions");
 
-      frag.addEventListener("change", () => {
-        Reveal.configure({ fragments: frag.checked });
-        Reveal.configure({ incremental: frag.checked });
-        Reveal.syncFragments();
+      // Initialize checkbox state from current Reveal config, and fix Scroll View padding on load
+      const cfg = (typeof Reveal.getConfig === "function") ? Reveal.getConfig() : {};
+      frag.checked = !!cfg.fragments;
 
-        // If turning fragments off, reveal all on current slide
-        if (!frag.checked) {
-          const i = Reveal.getIndices();
-          Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
-        }
+      // Always capture existing fragment state early so restoring works reliably
+      document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
+
+      // If your YAML sets fragments: false but DOM still contains .fragment (e.g., incremental: true),
+      // remove DOM markers immediately to avoid "dead scroll" in Scroll View.
+      if (cfg.fragments === false) {
+        disableFragmentDOM();
+        if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
+        if (typeof Reveal.layout === "function") Reveal.layout();
+        if (typeof Reveal.sync === "function") Reveal.sync();
+      }
+
+      frag.addEventListener("change", () => {
+        applyFragments(frag.checked);
       });
 
       trans.addEventListener("change", () => {
@@ -43,6 +111,9 @@
           Reveal.configure({ transition: "none", backgroundTransition: "none" });
         }
       });
+
+      // Optional: expose to your own UI as well
+      window.setFragmentsEnabled = applyFragments;
     }
 
     if (window.Reveal) {
