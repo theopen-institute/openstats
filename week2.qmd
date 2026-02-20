@@ -21,8 +21,6 @@ Three components:
 - Variation
 - Randomness
 
-The problem of randomness is fundamental because it shapes how we think about sampling.
-
 # DAG editor
 
 <div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
@@ -44,17 +42,76 @@ DAGitty.setup()
 
 # Real problem
 
-- Who is going to win the election for mayor of our town?
-- In the last election, the current candidate got 60% of the votes.
+- Who is going to win the election for mayor?
+- In the last election, the current mayor got 60% of the votes. Should we assume that's what he'll get this time?
 - We can go out and take a survey asking people if they plan to vote for the current mayor again.
 - There are many non-statistical problems with this, but we won't dig into those now.
 - What do we need to provide a meaningful statistical answer?
 - According to Bayes theorem, all we need is a prior belief and a likelihood.
 
 # Core elements
-- prior
-- posterior
-- likelihood
+- prior: P( belief )
+- posterior: P( belief | data )
+- likelihood: P( data | belief )
+
+prior x likelihood -> posterior
+
+# Priors -> Posteriors
+
+- Demonstrate the sequential nature of priors and posteriors, with examples demonstrating common transformations and ask how we can interpret them.
+
+- Priors and posteriors are the same thing. Posteriors become priors for our next observation. This is what updating means.
+
+# Putting priors into practice
+
+- Priors _about what?_ (let's make our definition more specific)
+  - "parameters": unknown numerical quantities in the world
+  - "estimand": what we want to find out (sometimes a parameter, often a combination of parameters and other info)
+- P(belief) -> P(belief about a parameter or parameters)
+  - shorthand: P(parameters) or P(Θ)
+
+# Interactive definition of prior
+- drag and pull along grid approximation
+
+- Statistics is about randomness. 
+- If I flip a coin, I don't know what will happen.
+- If I flip a coin 1000 times, I can actually say a lot more.
+- Just because we don't know if it will rain tomorrow doesn't mean we don't know anything.
+- Probability distributions are they key to everything.
+
+- Dilemma: can't define every value like we did with the stones in the bag
+- Introducing grid approximation
+
+# But what is a likelihood?
+
+- Hume vs Gauss example?
+
+- For priors and posteriors, randomness is about our uncertainty, a subjective experience.
+- For likelihood, randomness is a property of the world.
+- What Hume didn't understand was the idea of a "generating process". Things have probabilities because randomness "comes from somewhere".
+
+
+# Calculating likelihood
+
+- This is the mathiest thing we're going to talk about together, but you don't ever actually have to do it by hand. We always use software for that. 
+
+- From Bayes theorem, we know that likelihood is: P( data | parameters )
+- But what does this mean?
+
+- Given a particular parameter value, how likely is the data we saw.
+- This is, not coincidentally, conceptually related to the idea of statistical significance.
+- We're treating thing parameter value as fixed, and we're treating the data as probabalistic
+- But we do this for every single possible value of our parameter
+
+- If our parameter is _actually_ 50%, what is the probability that we would see a result like 4 / 15 saying they will vote for the mayor.
+
+- If our parameter is _actually_ 30%, what is the probability that we would see a result like 4 / 15 saying they will vote for the mayor.
+
+- If our parameter is _actually_ 80%, what is the probability that we would see a result like 4 / 15 saying they will vote for the mayor.
+
+
+- The mathematics behind many generating processes is very well understood. A question like, "if I flip a coin 20 times, what is the probability of getting heads exactly 8 times?" is something that we can calculate. Any statistical software (including excel) will be able to tell you.
+
 
 # Common Distributions {.no-title}
 ```{shinylive-r}
@@ -62,3 +119,8 @@ DAGitty.setup()
 {{< include shiny/distributions.R >}}
 
 ```
+
+
+# Grid approximation worksheet
+
+A excel-like worksheet for building grid approximation manually

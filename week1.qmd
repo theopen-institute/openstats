@@ -3,7 +3,7 @@ format:
   revealjs: default
 ---
 
-# Data Lunch: Week 1 {.center}
+# Data Lunch: Week 1 {.center notes="notes/week1_notes.md#title"}
 
 A Fresh Start
 
@@ -11,22 +11,19 @@ A Fresh Start
 The Open Institute For Social Science
 :::
 
-::: {notes="notes/week1_notes.md#title"}
-:::
+# Most published research is false {notes="notes/week1_notes.md#published-research"}
 
-# Most published research is false 
+::: {.r-stack}
 ![](images/week1/ioannidis.png){width="100%"}
 [https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124)
 
 :::{.fragment}
-![](images/week1/capybara.png){.absolute bottom=75 left=0 width="100%"}
+![](images/week1/capybara.png){.absolute left=900 top=390}
 
-<div style="position: absolute; bottom: 100px; left: 940px; font-size: 150%; font-weight: bold;",>
+<div style="font-size: 150%; font-weight: bold; position: absolute; left: 900px; top: 780px;">
 ...and that's okay.
 </div>
 :::
-
-:::{notes="notes/week1_notes.md#published-research"}
 :::
 
 # This week's goals
@@ -137,7 +134,7 @@ We can write these using our probability language:
 ::: {notes="notes/week1_notes.md#applied-probability"}
 :::
 
-# Applied probability (continued)
+## Applied Probability (continued)
 
 ::: {.nonincremental}
 - Sensitivity P( test+ | HIV+ ): 99%
@@ -160,7 +157,7 @@ What about P( HIV+ | test+): [3.2%]{.fragment fragment-index=2 .red}
 _Paradox: P(A|B) is not the same as P(B|A)_
 :::
 
-::: {notes="notes/week1_notes.md#applied-probability-continued"}
+::: {notes="notes/week1_notes.md#base-rate"}
 :::
 
 # Base Rate Paradox {.no-title}
@@ -223,10 +220,9 @@ What we usually actually want:
 
 # So why is most published research wrong?
 
-- Statistical significance flips backwards our natural intuitions about uncertainty..
+- Statistical significance goes against our natural intuitions about uncertainty.
 - If statistics has ever made you feel dumb or intimidated, it's not you...
-- Statistical significance (p-value) is just a really, really weird concept.
-- Most people don't actually understand what statistical significance means.
+- p-value is just a really weird concept.
 
 # Bayesian Updating
 
@@ -234,8 +230,14 @@ What we usually actually want:
 ![*Statistical Rethinking*, p.2 (Richard McElreath, 2020)](images/week1/mcelreath-2.png){fig-align="center" width="100%"}
 
 
-
 ## Bayesian Updating: What it is
+
+Instead of tests, we have Bayesian Updating:
+
+- We have a **prior** belief about the world (specifically, about a parameter or "estimand").<br>[_I think that about 60% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
+- Then, we observe something, and we estimate the **likelihood** of what we saw.<br>[_I just took a survey, and only 30% of people said they will vote for the current mayor._]{.fragment .blue}
+- This new observation changes our prior belief (challenging it or making it stronger), to become our **posterior**.<br>[_I now think that about 45% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
+
 ::: {notes="notes/week1_notes.md#bayesian-updating"}
 :::
 
@@ -278,11 +280,6 @@ In simple terms:
 
 - prior × likelihood => posterior
 :::
-
-<!-- # Some points
-One important point: priors/posteriors are not single values. They are **probability distributions**, ranging over all possible values of our estimand.
-
-Also, there is no minimum samples size. -->
 
 # Statistics is observation
 

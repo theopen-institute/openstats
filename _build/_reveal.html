@@ -1,33 +1,91 @@
 <script>
   (function () {
-    function addControls() {
-      // Reveal sidebar container (present when menu or toc panel exists)
-      const sidebar = document.querySelector(".slide-menu-panel");
+    function inScrollView() {
+      // Scroll view sets this class on the viewport element
+      const vp = document.querySelector(".reveal-viewport");
+      return !!vp && vp.classList.contains("reveal-scroll");
+    }
 
+    function patchScrollViewFragmentCounting() {
+      // reveal.js exposes the controller as Reveal.scrollView in v5+
+      const sv = window.Reveal && Reveal.scrollView;
+      if (!sv || sv.__patchedFragmentCounting) return;
+      if (typeof sv.createFragmentTriggersForPage !== "function") return;
+
+      sv.__patchedFragmentCounting = true;
+
+      sv.createFragmentTriggersForPage = function (page, slideElement) {
+        slideElement = slideElement || page.slideElement;
+        page.scrollTriggers = page.scrollTriggers || [];
+
+        // IMPORTANT: only count fragments that are not disabled
+        const fragmentGroups = this.Reveal.fragments.sort(
+          slideElement.querySelectorAll(".fragment:not(.disabled)"),
+          true
+        );
+
+        if (fragmentGroups.length) {
+          page.fragments = this.Reveal.fragments.sort(
+            slideElement.querySelectorAll(".fragment:not(.disabled)")
+          );
+
+          // Initial state (no fragments visible)
+          page.scrollTriggers.push({
+            activate: () => {
+              this.Reveal.fragments.update(-1, page.fragments, slideElement);
+            },
+          });
+
+          // One trigger per fragment group
+          fragmentGroups.forEach((fragments, i) => {
+            page.scrollTriggers.push({
+              activate: () => {
+                this.Reveal.fragments.update(i, page.fragments, slideElement);
+              },
+            });
+          });
+        }
+
+        return page.scrollTriggers.length;
+      };
+    }
+
+    function addControls() {
+      const sidebar = document.querySelector(".slide-menu-panel");
       if (!sidebar) return;
+
+      // Patch once controls are being added (Reveal is ready)
+      patchScrollViewFragmentCounting();
 
       const box = document.createElement("div");
       box.style.padding = "0.5rem 0.75rem";
       box.style.borderTop = "1px solid #ccc";
       box.innerHTML = `
-      <label style="display:block; font-size:0.85rem;">
-        <input type="checkbox" id="toggleFragments">
-        Incremental Build
-      </label>
-      <label style="display:block; font-size:0.85rem;">
-        <input type="checkbox" id="toggleTransitions" checked>
-        Transitions
-      </label>
-    `;
+        <label style="display:block; font-size:0.85rem;">
+          <input type="checkbox" id="toggleFragments">
+          Incremental Build
+        </label>
+        <label style="display:block; font-size:0.85rem;">
+          <input type="checkbox" id="toggleTransitions" checked>
+          Transitions
+        </label>
+      `;
       sidebar.appendChild(box);
 
       const frag = box.querySelector("#toggleFragments");
       const trans = box.querySelector("#toggleTransitions");
 
+      // Optional: initialize checkbox to current config
+      try { frag.checked = !!Reveal.getConfig().fragments; } catch (e) { }
+
       frag.addEventListener("change", () => {
-        Reveal.configure({ fragments: frag.checked });
-        Reveal.configure({ incremental: frag.checked });
+        Reveal.configure({ fragments: frag.checked, incremental: frag.checked });
         Reveal.syncFragments();
+
+        // If we're in scroll view, rebuild scroll triggers/scrollbar segments
+        if (inScrollView()) {
+          Reveal.layout();
+        }
 
         // If turning fragments off, reveal all on current slide
         if (!frag.checked) {

@@ -49,7 +49,7 @@ One common use of statistics is to evaluate the accuracy of predictive tests.
 
 I want to illustrate a very famous example involving HIV testing. This is relevant because, until relatively recently, everybody who traveled to the US from Nepal had to take an HIV test for medical clearance.
 
-# Applied Probability Continued {#applied-probability-continued}
+# Applied Probability (continued) {#base-rate}
 
 - This, as we can see, an imperfect but reasonably good test. There's a problem, though. Can anybody spot it?
 
@@ -102,13 +102,7 @@ So I said that we were going to derive our entire statistics from first principl
 A million tests. We have one process, called Bayesian updating. Everything we build will be an application of that same logic.
 
 For those interested in math, I definitely encourage you to where the theorem comes from and how it's derived, but for our purposes, we need just one simple idea:
-:::
 
-Instead of tests, we have Bayesian Updating:
-
-- We have a **prior** belief about the world (specifically, about a parameter or "estimand").<br>[_I think that about 60% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
-- Then, we observe something, and we estimate the **likelihood** of what we saw.<br>[_I just took a survey, and only 30% of people said they will vote for the current mayor._]{.fragment .blue}
-- This new observation changes our prior belief (challenging it or making it stronger), to become our **posterior**.<br>[_I now think that about 45% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
 
 # Bayes Theorem {#bayes-theorem}
 
