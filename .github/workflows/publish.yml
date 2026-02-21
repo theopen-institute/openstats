@@ -71,3 +71,30 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build speaker bundle (artifact only)
+        run: |
+          rm -rf speaker-bundle
+          mkdir -p speaker-bundle
+
+          # Copy the deployed site/deck output
+          rsync -a .output/ speaker-bundle/
+
+          # Copy speaker files into the same relative paths in the bundle
+          find . -name '*-speaker.html' \
+            -not -path './.output/*' \
+            -not -path './speaker-bundle/*' \
+            -print0 | while IFS= read -r -d '' f; do
+              rel="${f#./}"
+              mkdir -p "speaker-bundle/$(dirname "$rel")"
+              cp "$f" "speaker-bundle/$rel"
+            done
+
+      - name: Upload speaker bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: speaker-bundle
+          path: speaker-bundle
+          if-no-files-found: error
+          retention-days: 7
+
