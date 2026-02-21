@@ -5,13 +5,13 @@ format:
     include-in-header:
       - text: |
           <script src="js/dagitty.js"></script>
+          <script src="js/graph.js"></script>
 ---
 
 
 # Data Lunch: Week 2 {.center}
 
 Describing uncertainty
-
 
 # What is statistics
 
@@ -81,6 +81,31 @@ prior x likelihood -> posterior
 
 - Dilemma: can't define every value like we did with the stones in the bag
 - Introducing grid approximation
+
+# Graph
+
+<div id="graph" style="width:640px; height:320px;"></div>
+<script type="module">
+  import { LineGraphWidget } from './js/graph.js';
+
+  const widget = new LineGraphWidget({
+    container: document.getElementById('graph'),
+    // optional initial y-values (21 numbers). Defaults to 50s.
+    yValues: Array.from({ length: 21 }, (_, i) => 50 + 20 * Math.sin(i / 3)),
+    onChange: (points) => {
+      // points: [{x:0, y:...}, {x:0.05, y:...}, ... {x:1, y:...}]
+      console.log('updated', points);
+      // call your update method here
+      // update(points);
+    },
+  });
+
+  // Example: read values
+  console.log(widget.getPoints());
+
+  // Example: programmatically set values
+  // widget.setYValues(Array(21).fill(75));
+</script>
 
 # But what is a likelihood?
 

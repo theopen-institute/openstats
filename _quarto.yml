@@ -21,7 +21,7 @@ format:
     width: 1605
     height: 1050
     chalkboard: true
-    multiplex: true
+    multiplex: false
     transition: slide
     fragments: false
     incremental: true
