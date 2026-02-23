@@ -1,3 +1,4 @@
+// js/graph.js
 export class LineGraphWidget {
   constructor({ container, yValues, onChange } = {}) {
     if (!container) throw new Error("LineGraphWidget: container is required");
@@ -40,9 +41,12 @@ export class LineGraphWidget {
 
     // Use { passive:false } so preventDefault is honored in more environments
     this.canvas.addEventListener("pointerdown", this._onPointerDown, { passive: false });
-    window.addEventListener("pointermove", this._onPointerMove, { passive: false });
-    window.addEventListener("pointerup", this._onPointerUp, { passive: false });
-    window.addEventListener("pointercancel", this._onPointerUp, { passive: false });
+
+    // IMPORTANT: attach move/up to the canvas (not window) for Reveal/Quarto reliability
+    this.canvas.addEventListener("pointermove", this._onPointerMove, { passive: false });
+    this.canvas.addEventListener("pointerup", this._onPointerUp, { passive: false });
+    this.canvas.addEventListener("pointercancel", this._onPointerUp, { passive: false });
+
     window.addEventListener("resize", this._onResize);
 
     this._resizeToContainer();
@@ -51,9 +55,9 @@ export class LineGraphWidget {
 
   destroy() {
     this.canvas.removeEventListener("pointerdown", this._onPointerDown);
-    window.removeEventListener("pointermove", this._onPointerMove);
-    window.removeEventListener("pointerup", this._onPointerUp);
-    window.removeEventListener("pointercancel", this._onPointerUp);
+    this.canvas.removeEventListener("pointermove", this._onPointerMove);
+    this.canvas.removeEventListener("pointerup", this._onPointerUp);
+    this.canvas.removeEventListener("pointercancel", this._onPointerUp);
     window.removeEventListener("resize", this._onResize);
     this.canvas.remove();
   }
@@ -126,7 +130,7 @@ export class LineGraphWidget {
       this._dragIndex = idx;
       this._changedDuringDrag = false;
 
-      // Capture pointer so dragging continues even if finger leaves canvas
+      // Capture pointer so dragging continues even if pointer leaves canvas
       this.canvas.setPointerCapture?.(e.pointerId);
 
       e.preventDefault();
@@ -228,11 +232,20 @@ export class LineGraphWidget {
     const ctx = this.ctx;
     const pr = this._plotRect();
 
+    // Tick configuration
+    const yTickStep = 10;
+    const xTickStep = 0.1;
+    const tickLen = 6 * this.dpr;
+
+    const fmtX = (v) => (Math.round(v * 100) / 100).toString();
+    const fmtY = (v) => String(v);
+
     ctx.save();
+
+    // Grid (Y)
     ctx.strokeStyle = "#e6e6e6";
     ctx.lineWidth = 1 * this.dpr;
-
-    for (let y = 0; y <= 100; y += 10) {
+    for (let y = this.yMin; y <= this.yMax; y += yTickStep) {
       const cy = this._valueToCanvasY(y);
       ctx.beginPath();
       ctx.moveTo(pr.x, cy);
@@ -240,6 +253,16 @@ export class LineGraphWidget {
       ctx.stroke();
     }
 
+    // Optional Grid (X)
+    for (let x = 0; x <= 1 + 1e-9; x += xTickStep) {
+      const cx = this._valueToCanvasX(x);
+      ctx.beginPath();
+      ctx.moveTo(cx, pr.y);
+      ctx.lineTo(cx, pr.y + pr.h);
+      ctx.stroke();
+    }
+
+    // Axes
     ctx.strokeStyle = "#333333";
     ctx.lineWidth = 1.5 * this.dpr;
 
@@ -253,18 +276,37 @@ export class LineGraphWidget {
     ctx.lineTo(pr.x + pr.w, pr.y + pr.h);
     ctx.stroke();
 
+    // Ticks + labels
     ctx.fillStyle = "#333333";
     ctx.font = `${12 * this.dpr}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
-    ctx.textBaseline = "middle";
 
+    // Y ticks + labels
     ctx.textAlign = "right";
-    ctx.fillText("100", pr.x - 8 * this.dpr, this._valueToCanvasY(100));
-    ctx.fillText("0", pr.x - 8 * this.dpr, this._valueToCanvasY(0));
+    ctx.textBaseline = "middle";
+    for (let y = this.yMin; y <= this.yMax; y += yTickStep) {
+      const cy = this._valueToCanvasY(y);
 
+      ctx.beginPath();
+      ctx.moveTo(pr.x, cy);
+      ctx.lineTo(pr.x - tickLen, cy);
+      ctx.stroke();
+
+      ctx.fillText(fmtY(y), pr.x - tickLen - 6 * this.dpr, cy);
+    }
+
+    // X ticks + labels
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    ctx.fillText("0", this._valueToCanvasX(0), pr.y + pr.h + 8 * this.dpr);
-    ctx.fillText("1", this._valueToCanvasX(1), pr.y + pr.h + 8 * this.dpr);
+    for (let x = 0; x <= 1 + 1e-9; x += xTickStep) {
+      const cx = this._valueToCanvasX(x);
+
+      ctx.beginPath();
+      ctx.moveTo(cx, pr.y + pr.h);
+      ctx.lineTo(cx, pr.y + pr.h + tickLen);
+      ctx.stroke();
+
+      ctx.fillText(fmtX(x), cx, pr.y + pr.h + tickLen + 4 * this.dpr);
+    }
 
     ctx.restore();
   }

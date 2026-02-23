@@ -1,9 +1,51 @@
 <script>
   (function () {
+    const STORED = "data-fragment-toggle-stored";
+
     function inScrollView() {
       // Scroll view sets this class on the viewport element
       const vp = document.querySelector(".reveal-viewport");
       return !!vp && vp.classList.contains("reveal-scroll");
+    }
+
+    function storeFragmentState(el) {
+      if (el.hasAttribute(STORED)) return;
+      el.setAttribute(
+        STORED,
+        JSON.stringify({
+          className: el.className,
+          idx: el.getAttribute("data-fragment-index"),
+          disabled: el.classList.contains("disabled")
+        })
+      );
+    }
+
+    function disableFragmentDOM() {
+      // Remove actual fragment markers so Scroll View stops allocating extra height
+      document.querySelectorAll(".reveal .fragment").forEach((el) => {
+        storeFragmentState(el);
+        el.classList.remove("fragment");
+        el.removeAttribute("data-fragment-index");
+        el.classList.remove("current-fragment", "visible");
+      });
+    }
+
+    function enableFragmentDOM() {
+      // Restore fragment markers exactly as they were
+      document.querySelectorAll(".reveal [" + STORED + "]").forEach((el) => {
+        try {
+          const data = JSON.parse(el.getAttribute(STORED));
+          el.className = data.className;
+          if (data.idx != null) el.setAttribute("data-fragment-index", data.idx);
+          // Ensure disabled state is preserved if it was present when stored
+          if (data.disabled) el.classList.add("disabled");
+        } catch (e) {
+          // ignore
+        }
+      });
+
+      // Store any fragments that might have been introduced later (e.g., dynamic content)
+      document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
     }
 
     function patchScrollViewFragmentCounting() {
@@ -14,11 +56,11 @@
 
       sv.__patchedFragmentCounting = true;
 
+      // Patch: ignore fragments that are dynamically disabled via class `.disabled`
       sv.createFragmentTriggersForPage = function (page, slideElement) {
         slideElement = slideElement || page.slideElement;
         page.scrollTriggers = page.scrollTriggers || [];
 
-        // IMPORTANT: only count fragments that are not disabled
         const fragmentGroups = this.Reveal.fragments.sort(
           slideElement.querySelectorAll(".fragment:not(.disabled)"),
           true
@@ -29,14 +71,12 @@
             slideElement.querySelectorAll(".fragment:not(.disabled)")
           );
 
-          // Initial state (no fragments visible)
           page.scrollTriggers.push({
             activate: () => {
               this.Reveal.fragments.update(-1, page.fragments, slideElement);
             },
           });
 
-          // One trigger per fragment group
           fragmentGroups.forEach((fragments, i) => {
             page.scrollTriggers.push({
               activate: () => {
@@ -48,6 +88,35 @@
 
         return page.scrollTriggers.length;
       };
+    }
+
+    function applyFragments(enabled) {
+      // 1) Toggle Reveal stepping behavior
+      Reveal.configure({ fragments: enabled, incremental: enabled });
+
+      // 2) Toggle DOM markers to fix Scroll View spacing
+      //    - When OFF: remove `.fragment` so Scroll View can't allocate fragment height
+      //    - When ON: restore `.fragment` and indices
+      if (enabled) {
+        enableFragmentDOM();
+      } else {
+        // Alternative path if you prefer: keep `.fragment` but disable them:
+        // document.querySelectorAll(".reveal .fragment").forEach(el => el.classList.add("disabled"));
+        // (Your scrollview patch would then exclude them.)
+        // However removing `.fragment` is the most reliable for eliminating spacing.
+        disableFragmentDOM();
+      }
+
+      // 3) Recompute + relayout so Scroll View rebuilds triggers/space
+      if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
+      if (typeof Reveal.layout === "function") Reveal.layout();
+      if (typeof Reveal.sync === "function") Reveal.sync();
+
+      // If turning fragments off, reveal all on current slide
+      if (!enabled) {
+        const i = Reveal.getIndices();
+        Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
+      }
     }
 
     function addControls() {
@@ -75,22 +144,31 @@
       const frag = box.querySelector("#toggleFragments");
       const trans = box.querySelector("#toggleTransitions");
 
-      // Optional: initialize checkbox to current config
-      try { frag.checked = !!Reveal.getConfig().fragments; } catch (e) { }
+      // Capture fragment state early so re-enabling restores correctly
+      document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
+
+      // Initialize checkbox to current config (and fix scroll spacing on load)
+      try {
+        const cfg = Reveal.getConfig();
+        frag.checked = !!cfg.fragments;
+
+        // If config says fragments are off, remove fragment DOM markers immediately
+        // so Scroll View doesn't allocate dead-scroll space.
+        if (cfg.fragments === false) {
+          disableFragmentDOM();
+          if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
+          if (typeof Reveal.layout === "function") Reveal.layout();
+          if (typeof Reveal.sync === "function") Reveal.sync();
+        }
+      } catch (e) { }
 
       frag.addEventListener("change", () => {
-        Reveal.configure({ fragments: frag.checked, incremental: frag.checked });
-        Reveal.syncFragments();
+        applyFragments(frag.checked);
 
-        // If we're in scroll view, rebuild scroll triggers/scrollbar segments
+        // If we're in scroll view, layout already called in applyFragments(),
+        // but leaving this is harmless.
         if (inScrollView()) {
           Reveal.layout();
-        }
-
-        // If turning fragments off, reveal all on current slide
-        if (!frag.checked) {
-          const i = Reveal.getIndices();
-          Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
         }
       });
 
