@@ -34,6 +34,20 @@
   /* top align content */
 }
 
+
+/* daggity overrides */
+.dagitty svg {
+  rect {
+    fill: transparent
+  }
+
+  text {
+    font-size: 40%
+  }
+
+}
+
+
 /* shinylive slides */
 .sourceCode[data-engine="r"] {
   border: none !important;

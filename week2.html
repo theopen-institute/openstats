@@ -99,7 +99,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-dd4c88b0eee49eb387d4ff51a77e58ea.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0c7e984034e36649b87d041cdc673c9c.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -194,7 +194,11 @@
     }
   </style>
   <script src="js/dagitty.js"></script>
-  <script src="js/graph.js"></script>
+  <script src="js/jspreadsheet.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@5/dist/jspreadsheet.css">
+  <script src="js/graph.js" type="module"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsuites@5/dist/jsuites.css">
+  <script src="https://cdn.jsdelivr.net/npm/jsuites@5/dist/jsuites.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -208,136 +212,431 @@
 
 <section id="what-is-statistics" class="title-slide slide level1 center">
 <h1>What is statistics</h1>
-<p>Three components:</p>
+<p>Three components of statistical questions:</p>
 <ul>
 <li class="fragment">Population</li>
 <li class="fragment">Variation</li>
 <li class="fragment">Randomness</li>
 </ul>
-</section>
-
-<section id="dag-editor" class="title-slide slide level1 center">
-<h1>DAG editor</h1>
-<div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
-<p>dag { Admitted [outcome,pos="-0.619,0.077"] Department [exposure,pos="-0.858,0.192"] Sex [exposure,pos="-1.059,-0.272"] UNKNOWN [latent,pos="-0.414,0.077"] Department -&gt; Admitted Sex -&gt; Admitted Sex -&gt; Department UNKNOWN -&gt; Admitted }</p>
+<div class="fragment">
+<ul>
+<li>If I flip a coin 1 time, I can’t say what will happen.</li>
+<li>If I flip a coin 1000 times, I can say a lot more.</li>
+</ul>
 </div>
-<script>
-DAGitty.setup()
-</script>
+<div class="fragment">
+<p>Random individuals → Predictable populations</p>
+</div>
 </section>
 
-<section id="real-problem" class="title-slide slide level1 center">
-<h1>Real problem</h1>
+<section id="causal-diagramming" class="title-slide slide level1 center">
+<h1>Causal diagramming</h1>
+<iframe id="dag-frame-1" data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
+<!-- <iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="js/dag-embed.html"
+></iframe> -->
+
+<!-- <script>
+(() => {
+  const dag = `dag {
+    Admitted [outcome,pos="-0.619,0.077"]
+    Department [exposure,pos="-0.858,0.192"]
+    Sex [exposure,pos="-1.059,-0.272"]
+    UNKNOWN [latent,pos="-0.414,0.077"]
+    Department -> Admitted
+    Sex -> Admitted
+    Sex -> Department
+    UNKNOWN -> Admitted
+  }`;
+
+  const frame = document.getElementById("dag-frame-1");
+
+  function send() {
+    if (!frame?.contentWindow) return;
+    frame.contentWindow.postMessage({ type: "dagitty", dag }, "*");
+  }
+
+  frame.addEventListener("load", send);
+
+  // Optional: re-send when returning to the slide (Reveal may not exist in non-reveal contexts)
+  window.addEventListener("load", () => {
+    if (window.Reveal?.on) {
+      Reveal.on("ready", send);
+      Reveal.on("slidechanged", (e) => {
+        if (e.currentSlide?.querySelector("#dag-frame-1")) send();
+      });
+    }
+  });
+})();
+</script> -->
+</section>
+
+<section id="who-is-going-to-win-the-election" class="title-slide slide level1 center">
+<h1>Who is going to win the election?</h1>
 <ul>
-<li class="fragment">Who is going to win the election for mayor?</li>
-<li class="fragment">In the last election, the current mayor got 60% of the votes. Should we assume that’s what he’ll get this time?</li>
-<li class="fragment">We can go out and take a survey asking people if they plan to vote for the current mayor again.</li>
-<li class="fragment">There are many non-statistical problems with this, but we won’t dig into those now.</li>
+<li class="fragment">Last election: the current candidate got 60% of the votes.</li>
+<li class="fragment">We have the resources to conduct a survey.</li>
+<li class="fragment">(Many non-statistical problems to solve when we design a survey.)</li>
 <li class="fragment">What do we need to provide a meaningful statistical answer?</li>
-<li class="fragment">According to Bayes theorem, all we need is a prior belief and a likelihood.</li>
 </ul>
 </section>
 
-<section id="core-elements" class="title-slide slide level1 center">
-<h1>Core elements</h1>
+<section id="bayes-theorem-in-practice" class="title-slide slide level1 center">
+<h1>Bayes Theorem in practice</h1>
+<p><span class="math display">\[
+\color{green}{P(\text{belief} \mid \text{data})}
+=
+\frac{
+\color{#1b91ff}{P(\text{data} \mid \text{belief})}
+\;\color{#ff2c2d}{P(\text{belief})}
+}{
+\color{#999}{P(\text{data})}
+}
+\]</span></p>
 <ul>
-<li class="fragment">prior: P( belief )</li>
-<li class="fragment">posterior: P( belief | data )</li>
-<li class="fragment">likelihood: P( data | belief )</li>
+<li><span class="red"><strong>P(belief)</strong></span>: prior</li>
+<li><span class="green"><strong>P(belief | data)</strong></span>: posterior</li>
+<li><span class="blue"><strong>P(data | belief)</strong></span>: likelihood</li>
+<li><span class="gray"><strong>P(data)</strong></span>: marginal likelihood (not interesting)</li>
 </ul>
-<p>prior x likelihood -&gt; posterior</p>
+<p>prior ⨉ likelihood → posterior</p>
 </section>
 
-<section id="priors---posteriors" class="title-slide slide level1 center">
-<h1>Priors -&gt; Posteriors</h1>
-<ul>
-<li class="fragment"><p>Demonstrate the sequential nature of priors and posteriors, with examples demonstrating common transformations and ask how we can interpret them.</p></li>
-<li class="fragment"><p>Priors and posteriors are the same thing. Posteriors become priors for our next observation. This is what updating means.</p></li>
-</ul>
+<section id="updating-priors-become-posteriors" class="title-slide slide level1 center">
+<h1>Updating: Priors become Posteriors</h1>
+<p>P(belief) → P(belief | data)</p>
+<div class="columns">
+<div class="column">
+<div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-1-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+<div class="columns">
+<div class="column">
+<div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></div>
 </section>
 
-<section id="putting-priors-into-practice" class="title-slide slide level1 center">
-<h1>Putting priors into practice</h1>
+<section id="clarifying-our-terms" class="title-slide slide level1 center">
+<h1>Clarifying our terms</h1>
 <ul>
-<li class="fragment">Priors <em>about what?</em> (let’s make our definition more specific)
+<li class="fragment">Priors <em>about what?</em>
 <ul>
 <li class="fragment">“parameters”: unknown numerical quantities in the world</li>
-<li class="fragment">“estimand”: what we want to find out (sometimes a parameter, often a combination of parameters and other info)</li>
-</ul></li>
-<li class="fragment">P(belief) -&gt; P(belief about a parameter or parameters)
-<ul>
+<li class="fragment">“estimand”: what we want to find out (often a parameter)</li>
 <li class="fragment">shorthand: P(parameters) or P(Θ)</li>
 </ul></li>
 </ul>
-</section>
-
-<section id="interactive-definition-of-prior" class="title-slide slide level1 center">
-<h1>Interactive definition of prior</h1>
+<hr>
 <ul>
-<li class="fragment"><p>drag and pull along grid approximation</p></li>
-<li class="fragment"><p>Statistics is about randomness.</p></li>
-<li class="fragment"><p>If I flip a coin, I don’t know what will happen.</p></li>
-<li class="fragment"><p>If I flip a coin 1000 times, I can actually say a lot more.</p></li>
-<li class="fragment"><p>Just because we don’t know if it will rain tomorrow doesn’t mean we don’t know anything.</p></li>
-<li class="fragment"><p>Probability distributions are they key to everything.</p></li>
-<li class="fragment"><p>Dilemma: can’t define every value like we did with the stones in the bag</p></li>
-<li class="fragment"><p>Introducing grid approximation</p></li>
+<li class="fragment">When we talk about priors and posteriors, we’re never talking about <em>single values</em>.</li>
+<li class="fragment">We’re always talking about a <em>probability distribution</em>.</li>
 </ul>
 </section>
 
-<section id="graph" class="title-slide slide level1 center">
-<h1>Graph</h1>
-<div id="graph" style="width:640px; height:320px;">
+<section id="build-your-own-prior" class="title-slide slide level1 center">
+<h1>Build your own prior!</h1>
+<style>
+  .prior-layout{
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+    width: 100%;
+  }
+  #graph-wrapper{
+    flex: 0 0 70%;
+    aspect-ratio: 3/2;
+  }
+  #sheet-wrapper{
+    flex: 1 1 auto;
+    min-width: 260px;
+    font-size: 16pt;
+  }
+  .jss_about, .jss_textarea {
+    display: none;
+  }
+</style>
+<div class="prior-layout">
+<div id="graph-wrapper">
 
+</div>
+<div id="sheet-wrapper">
+
+</div>
 </div>
 <script type="module">
   import { LineGraphWidget } from './js/graph.js';
 
+  const graphEl = document.getElementById('graph-wrapper');
+  const sheetEl = document.getElementById('sheet-wrapper');
+
+  // If Reveal/Quarto re-runs this slide script, clear previous instances.
+  graphEl.innerHTML = '';
+  sheetEl.innerHTML = '';
+
+  function pointsToTable(points) {
+    const ys = points.map(p => Number(p.y) || 0);
+    const sum = ys.reduce((a, b) => a + b, 0);
+    return ys.map((v,i) => [i*0.05, v, sum > 0 ? v / sum : 0]);
+  }
+
+  // --- Create graph ---
   const widget = new LineGraphWidget({
-    container: document.getElementById('graph'),
-    // optional initial y-values (21 numbers). Defaults to 50s.
-    yValues: Array.from({ length: 21 }, (_, i) => 50 + 20 * Math.sin(i / 3)),
-    onChange: (points) => {
-      // points: [{x:0, y:...}, {x:0.05, y:...}, ... {x:1, y:...}]
-      console.log('updated', points);
-      // call your update method here
-      // update(points);
-    },
+    container: graphEl,
+    yValues: Array.from({ length: 21 }, () => 50),
+    onChange: (points) => updateSheet(points),
   });
 
-  // Example: read values
-  console.log(widget.getPoints());
+  // --- Create spreadsheet (Jspreadsheet versions that throw "worksheets are not defined"
+  //     REQUIRE the worksheets:[] option at the top level) ---
+  const initData = pointsToTable(widget.getPoints());
 
-  // Example: programmatically set values
-  // widget.setYValues(Array(21).fill(75));
+  const created = window.jspreadsheet(sheetEl, {
+    tabs: false,
+    worksheets: [{
+      data: initData,
+      editable: false,
+      minDimensions: [2, 21],
+      rowHeaders: (rowIndex) => (rowIndex * 0.05).toFixed(2),
+      allowInsertRow: false,
+      allowDeleteRow: false,
+      allowInsertColumn: false,
+      allowDeleteColumn: false,
+      columnSorting: false,
+      columns: [
+        { type: 'numeric', title: 'Value', width: 90, mask: '0.00'},
+        { type: 'numeric', title: 'Score', width: 90, mask:'0.00' },
+        { type: 'numeric', title: 'Probability', width: 120, mask: '0.0000' },
+      ],
+    }],
+  });
+
+  // Some builds return a Promise. Others return an object or array. Normalize safely.
+  const spreadsheet = await Promise.resolve(created);
+
+  function getWorksheetHandle(obj) {
+    if (!obj) return null;
+
+    // Already a worksheet-like object (has cell/data mutation methods)
+    if (typeof obj.setData === 'function' ||
+        typeof obj.loadData === 'function' ||
+        typeof obj.setValueFromCoords === 'function' ||
+        typeof obj.setValue === 'function') {
+      return obj;
+    }
+
+    // Array of worksheets
+    if (Array.isArray(obj)) return getWorksheetHandle(obj[0]);
+
+    // Spreadsheet container with worksheets
+    if (Array.isArray(obj.worksheets)) return getWorksheetHandle(obj.worksheets[0]);
+
+    // Spreadsheet container with getter
+    if (typeof obj.getWorksheet === 'function') return getWorksheetHandle(obj.getWorksheet(0));
+
+    return null;
+  }
+
+  const ws = getWorksheetHandle(spreadsheet);
+  if (!ws) {
+    console.log('jspreadsheet return value:', spreadsheet);
+    throw new Error('Could not find a worksheet handle. See console log for returned object.');
+  }
+
+  function updateSheet(points) {
+    const data = pointsToTable(points);
+
+    // Prefer bulk update if available.
+    if (typeof ws.setData === 'function') {
+      ws.setData(data);
+      return;
+    }
+    if (typeof ws.loadData === 'function') {
+      ws.loadData(data, true);
+      return;
+    }
+
+    // Fallback: update cells individually.
+    if (typeof ws.setValueFromCoords === 'function') {
+      for (let r = 0; r < 21; r++) {
+        ws.setValueFromCoords(0, r, data[r][0], true);
+        ws.setValueFromCoords(1, r, data[r][1], true);
+      }
+      return;
+    }
+    if (typeof ws.setValue === 'function') {
+      for (let r = 0; r < 21; r++) {
+        ws.setValue(`A${r + 1}`, data[r][0], true);
+        ws.setValue(`B${r + 1}`, data[r][1], true);
+      }
+      return;
+    }
+
+    console.log('worksheet handle:', ws);
+    throw new Error('Worksheet has no supported update method (setData/loadData/setValueFromCoords/setValue).');
+  }
+
+  // Initial sync
+  updateSheet(widget.getPoints());
 </script>
+</section>
+
+<section id="understanding-likelihood" class="title-slide slide level1 center">
+<h1>Understanding likelihood</h1>
+<!-- TODO: Add images here -->
+<ul>
+<li class="fragment">Tomorrow, either the sun will rise or it won’t. These are the only two possibilities, thus there is a 50/50 chance.</li>
+<li class="fragment">Come join my weekly poker game!</li>
+</ul>
+<div class="fragment">
+<p>Probability isn’t just in our heads. Sometimes, it’s generated by a process in the world.</p>
+</div>
+</section>
+
+<section id="generative-processes" class="title-slide slide level1 center">
+<h1>Generative processes</h1>
+<!-- TODO: Come up with some kind of demo of generative processes -->
+<ul>
+<li class="fragment">Monty hall problem demo</li>
+</ul>
 </section>
 
 <section id="but-what-is-a-likelihood" class="title-slide slide level1 center">
 <h1>But what is a likelihood?</h1>
 <ul>
-<li class="fragment"><p>Hume vs Gauss example?</p></li>
-<li class="fragment"><p>For priors and posteriors, randomness is about our uncertainty, a subjective experience.</p></li>
-<li class="fragment"><p>For likelihood, randomness is a property of the world.</p></li>
-<li class="fragment"><p>What Hume didn’t understand was the idea of a “generating process”. Things have probabilities because randomness “comes from somewhere”.</p></li>
+<li class="fragment">For priors and posteriors, randomness is about our uncertainty (a subjective experience).</li>
+<li class="fragment">For likelihood, randomness is a characteristic of the world.</li>
+<li class="fragment">Our job is to describe how that randomness occurs.</li>
 </ul>
 </section>
 
 <section id="calculating-likelihood" class="title-slide slide level1 center">
 <h1>Calculating likelihood</h1>
 <ul>
-<li class="fragment"><p>This is the mathiest thing we’re going to talk about together, but you don’t ever actually have to do it by hand. We always use software for that.</p></li>
-<li class="fragment"><p>From Bayes theorem, we know that likelihood is: P( data | parameters )</p></li>
-<li class="fragment"><p>But what does this mean?</p></li>
-<li class="fragment"><p>Given a particular parameter value, how likely is the data we saw.</p></li>
-<li class="fragment"><p>This is, not coincidentally, conceptually related to the idea of statistical significance.</p></li>
-<li class="fragment"><p>We’re treating thing parameter value as fixed, and we’re treating the data as probabalistic</p></li>
-<li class="fragment"><p>But we do this for every single possible value of our parameter</p></li>
-<li class="fragment"><p>If our parameter is <em>actually</em> 50%, what is the probability that we would see a result like 4 / 15 saying they will vote for the mayor.</p></li>
-<li class="fragment"><p>If our parameter is <em>actually</em> 30%, what is the probability that we would see a result like 4 / 15 saying they will vote for the mayor.</p></li>
-<li class="fragment"><p>If our parameter is <em>actually</em> 80%, what is the probability that we would see a result like 4 / 15 saying they will vote for the mayor.</p></li>
-<li class="fragment"><p>The mathematics behind many generating processes is very well understood. A question like, “if I flip a coin 20 times, what is the probability of getting heads exactly 8 times?” is something that we can calculate. Any statistical software (including excel) will be able to tell you.</p></li>
+<li class="fragment">From Bayes theorem, we know that likelihood is: P( data | parameters )</li>
+<li class="fragment">But what does this mean?</li>
 </ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Survey Results!</strong></p>
+</div>
+<div class="callout-content">
+<p>Let’s say we surveyed 15 people and 4 said that they will vote for the current mayor.</p>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">Given a particular parameter value, how likely is the data we saw?
+<ul>
+<li class="fragment">If our parameter is <em>actually</em> 50%, what is the probability of seeing 4 out of 15?</li>
+<li class="fragment">If our parameter is <em>actually</em> 30%, what is the probability of seeing 4 out of 15?</li>
+<li class="fragment">If our parameter is <em>actually</em> 80%, what is the probability of seeing 4 out of 15?</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<p>This is a well-understood question that a calculator can answer.</p>
+</div>
 </section>
 
 <section id="common-distributions" class="title-slide slide level1 no-title center">
@@ -1069,7 +1368,7 @@ DAGitty.setup()
 
 <section id="grid-approximation-worksheet" class="title-slide slide level1 center">
 <h1>Grid approximation worksheet</h1>
-<p>A excel-like worksheet for building grid approximation manually</p>
+<!-- TODO: Implement worksheet -->
 
 
 </section>
@@ -1296,10 +1595,52 @@ DAGitty.setup()
     </script>
     <script>
       (function () {
+        const STORED = "data-fragment-toggle-stored";
+
         function inScrollView() {
           // Scroll view sets this class on the viewport element
           const vp = document.querySelector(".reveal-viewport");
           return !!vp && vp.classList.contains("reveal-scroll");
+        }
+
+        function storeFragmentState(el) {
+          if (el.hasAttribute(STORED)) return;
+          el.setAttribute(
+            STORED,
+            JSON.stringify({
+              className: el.className,
+              idx: el.getAttribute("data-fragment-index"),
+              disabled: el.classList.contains("disabled")
+            })
+          );
+        }
+
+        function disableFragmentDOM() {
+          // Remove actual fragment markers so Scroll View stops allocating extra height
+          document.querySelectorAll(".reveal .fragment").forEach((el) => {
+            storeFragmentState(el);
+            el.classList.remove("fragment");
+            el.removeAttribute("data-fragment-index");
+            el.classList.remove("current-fragment", "visible");
+          });
+        }
+
+        function enableFragmentDOM() {
+          // Restore fragment markers exactly as they were
+          document.querySelectorAll(".reveal [" + STORED + "]").forEach((el) => {
+            try {
+              const data = JSON.parse(el.getAttribute(STORED));
+              el.className = data.className;
+              if (data.idx != null) el.setAttribute("data-fragment-index", data.idx);
+              // Ensure disabled state is preserved if it was present when stored
+              if (data.disabled) el.classList.add("disabled");
+            } catch (e) {
+              // ignore
+            }
+          });
+
+          // Store any fragments that might have been introduced later (e.g., dynamic content)
+          document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
         }
 
         function patchScrollViewFragmentCounting() {
@@ -1310,11 +1651,11 @@ DAGitty.setup()
 
           sv.__patchedFragmentCounting = true;
 
+          // Patch: ignore fragments that are dynamically disabled via class `.disabled`
           sv.createFragmentTriggersForPage = function (page, slideElement) {
             slideElement = slideElement || page.slideElement;
             page.scrollTriggers = page.scrollTriggers || [];
 
-            // IMPORTANT: only count fragments that are not disabled
             const fragmentGroups = this.Reveal.fragments.sort(
               slideElement.querySelectorAll(".fragment:not(.disabled)"),
               true
@@ -1325,14 +1666,12 @@ DAGitty.setup()
                 slideElement.querySelectorAll(".fragment:not(.disabled)")
               );
 
-              // Initial state (no fragments visible)
               page.scrollTriggers.push({
                 activate: () => {
                   this.Reveal.fragments.update(-1, page.fragments, slideElement);
                 },
               });
 
-              // One trigger per fragment group
               fragmentGroups.forEach((fragments, i) => {
                 page.scrollTriggers.push({
                   activate: () => {
@@ -1344,6 +1683,35 @@ DAGitty.setup()
 
             return page.scrollTriggers.length;
           };
+        }
+
+        function applyFragments(enabled) {
+          // 1) Toggle Reveal stepping behavior
+          Reveal.configure({ fragments: enabled, incremental: enabled });
+
+          // 2) Toggle DOM markers to fix Scroll View spacing
+          //    - When OFF: remove `.fragment` so Scroll View can't allocate fragment height
+          //    - When ON: restore `.fragment` and indices
+          if (enabled) {
+            enableFragmentDOM();
+          } else {
+            // Alternative path if you prefer: keep `.fragment` but disable them:
+            // document.querySelectorAll(".reveal .fragment").forEach(el => el.classList.add("disabled"));
+            // (Your scrollview patch would then exclude them.)
+            // However removing `.fragment` is the most reliable for eliminating spacing.
+            disableFragmentDOM();
+          }
+
+          // 3) Recompute + relayout so Scroll View rebuilds triggers/space
+          if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
+          if (typeof Reveal.layout === "function") Reveal.layout();
+          if (typeof Reveal.sync === "function") Reveal.sync();
+
+          // If turning fragments off, reveal all on current slide
+          if (!enabled) {
+            const i = Reveal.getIndices();
+            Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
+          }
         }
 
         function addControls() {
@@ -1371,22 +1739,31 @@ DAGitty.setup()
           const frag = box.querySelector("#toggleFragments");
           const trans = box.querySelector("#toggleTransitions");
 
-          // Optional: initialize checkbox to current config
-          try { frag.checked = !!Reveal.getConfig().fragments; } catch (e) { }
+          // Capture fragment state early so re-enabling restores correctly
+          document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
+
+          // Initialize checkbox to current config (and fix scroll spacing on load)
+          try {
+            const cfg = Reveal.getConfig();
+            frag.checked = !!cfg.fragments;
+
+            // If config says fragments are off, remove fragment DOM markers immediately
+            // so Scroll View doesn't allocate dead-scroll space.
+            if (cfg.fragments === false) {
+              disableFragmentDOM();
+              if (typeof Reveal.syncFragments === "function") Reveal.syncFragments();
+              if (typeof Reveal.layout === "function") Reveal.layout();
+              if (typeof Reveal.sync === "function") Reveal.sync();
+            }
+          } catch (e) { }
 
           frag.addEventListener("change", () => {
-            Reveal.configure({ fragments: frag.checked, incremental: frag.checked });
-            Reveal.syncFragments();
+            applyFragments(frag.checked);
 
-            // If we're in scroll view, rebuild scroll triggers/scrollbar segments
+            // If we're in scroll view, layout already called in applyFragments(),
+            // but leaving this is harmless.
             if (inScrollView()) {
               Reveal.layout();
-            }
-
-            // If turning fragments off, reveal all on current slide
-            if (!frag.checked) {
-              const i = Reveal.getIndices();
-              Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
             }
           });
 
@@ -1409,6 +1786,44 @@ DAGitty.setup()
         }
       })();
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")

@@ -1,0 +1,486 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Quarto preview injects quarto-preview.js into served HTML files.
+       In an iframe there is no Reveal; stub/forward it so preview code doesn't crash. -->
+  <script>
+    window.Reveal =
+      window.Reveal ||
+      (window.parent && window.parent.Reveal) || {
+        on() { },
+        addEventListener() { },
+        removeEventListener() { },
+        configure() { },
+        sync() { },
+        layout() { }
+      };
+  </script>
+
+  <!-- DAGitty embed library -->
+  <script src="dagitty.js"></script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+    }
+
+    .wrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    #toolbar {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      z-index: 9999;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid #999;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font: 14px/1.2 sans-serif;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #toolbar .hint {
+      opacity: 0.7;
+      font-size: 12px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid #777;
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .btn[aria-pressed="true"] {
+      background: #e9e9e9;
+      border-color: #333;
+    }
+
+    .btn:focus {
+      outline: 2px solid #666;
+      outline-offset: 2px;
+    }
+
+    .dagitty {
+      width: 100%;
+      height: 100%;
+    }
+
+    .dagitty svg rect {
+      fill: transparent
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div id="toolbar" role="toolbar" aria-label="Node type">
+      <span class="hint">Click a node, then set type:</span>
+      <div class="btn-group" role="group" aria-label="Node type toggles">
+        <button type="button" class="btn" data-prop="" aria-pressed="false">none</button>
+        <button type="button" class="btn" data-prop="source" aria-pressed="false">exposure</button>
+        <button type="button" class="btn" data-prop="target" aria-pressed="false">outcome</button>
+        <button type="button" class="btn" data-prop="adjustedNode" aria-pressed="false">adjusted</button>
+        <button type="button" class="btn" data-prop="selectedNode" aria-pressed="false">selected</button>
+        <button type="button" class="btn" data-prop="latentNode" aria-pressed="false">unobserved</button>
+      </div>
+    </div>
+
+    <!-- data-mutable lets DAGitty attach editor behavior reliably -->
+    <div id="dag-editor-tool" class="dagitty" data-mutable="true"></div>
+  </div>
+
+  <script>
+    (function () {
+      // NOTE: 'container' is 'let' because we replace the node to force re-init.
+      let container = document.getElementById("dag-editor-tool");
+      const buttons = Array.from(document.querySelectorAll("#toolbar .btn"));
+
+      let ctrl = null;
+      let currentVertex = null;   // string id or null
+      let svgHooked = false;
+
+      // vertex id -> {x,y} in DAGitty coordinate space
+      const posCache = new Map();
+
+      function isValidId(id) {
+        return typeof id === "string" && id.trim().length > 0;
+      }
+
+      function normalizeVertexId(v) {
+        if (!v) return null;
+        if (typeof v === "string") return v;
+        if (typeof v === "object" && typeof v.id === "string") return v.id;
+        return null;
+      }
+
+      function setActive(prop) {
+        buttons.forEach(b => b.setAttribute("aria-pressed", (b.dataset.prop === prop) ? "true" : "false"));
+      }
+      function clearActive() { setActive(""); }
+
+      function patchGetVertexGuards() {
+        try {
+          const g = ctrl.getGraph();
+          const proto = Object.getPrototypeOf(g);
+          if (!proto || proto.__getVertexGuarded) return;
+          const orig = proto.getVertex;
+
+          proto.getVertex = function (id) {
+            if (id == null) return null;
+            if (Array.isArray(id)) return orig.call(this, id);
+            if (typeof id !== "string") return null;
+            if (id.trim().length === 0) return null;
+            return orig.call(this, id);
+          };
+
+          proto.__getVertexGuarded = true;
+        } catch (e) { }
+      }
+
+      function setVertexPos(v, p) {
+        v.layout_pos_x = p.x;
+        v.layout_pos_y = p.y;
+      }
+
+      function cachePositionsFromGraph() {
+        try {
+          const g = ctrl.getGraph();
+          if (!g || !g.getVertices) return;
+          for (const v of g.getVertices()) {
+            if (!v || typeof v.id !== "string") continue;
+            if (typeof v.layout_pos_x === "number" && typeof v.layout_pos_y === "number") {
+              posCache.set(v.id, { x: v.layout_pos_x, y: v.layout_pos_y });
+            }
+          }
+        } catch (_) { }
+      }
+
+      function applyCachedPositionsToGraph() {
+        try {
+          const g = ctrl.getGraph();
+          if (!g || !g.getVertices) return;
+          for (const v of g.getVertices()) {
+            if (!v || typeof v.id !== "string") continue;
+            const p = posCache.get(v.id);
+            if (p) setVertexPos(v, p);
+          }
+        } catch (_) { }
+      }
+
+      function syncContainerTextFromGraph() {
+        try {
+          const g = ctrl.getGraph();
+          if (g && typeof g.toString === "function") {
+            container.textContent = g.toString();
+          }
+        } catch (_) { }
+      }
+
+      function commitPositionsFromSVG() {
+        const svg = document.querySelector("#" + container.id + " svg");
+        if (!svg) return;
+
+        const groups = svg.querySelectorAll("g[transform]");
+        if (!groups || groups.length === 0) return;
+
+        let changed = false;
+        const g = ctrl.getGraph();
+
+        for (const gr of groups) {
+          const t = gr.getAttribute("transform") || "";
+          const m = t.match(/translate\(\s*([-\d.]+)[ ,]\s*([-\d.]+)\s*\)/);
+          if (!m) continue;
+
+          const textEl = gr.querySelector("text");
+          if (!textEl) continue;
+
+          const id = (textEl.textContent || "").trim();
+          if (!isValidId(id)) continue;
+
+          const x = parseFloat(m[1]);
+          const y = parseFloat(m[2]);
+          if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+
+          const v = g.getVertex(id);
+          if (!v) continue;
+
+          posCache.set(id, { x, y });
+          setVertexPos(v, { x, y });
+          changed = true;
+        }
+
+        if (changed) {
+          syncContainerTextFromGraph();
+        }
+      }
+
+      function patchGraphChangedToPreserveLayout() {
+        const original = ctrl.graphChanged ? ctrl.graphChanged.bind(ctrl) : null;
+        if (!original || ctrl.__graphChangedPatched) return;
+
+        ctrl.graphChanged = function () {
+          commitPositionsFromSVG();
+          cachePositionsFromGraph();
+          applyCachedPositionsToGraph();
+
+          original();
+
+          cachePositionsFromGraph();
+          syncContainerTextFromGraph();
+        };
+
+        ctrl.__graphChangedPatched = true;
+      }
+
+      function vertexType(id) {
+        if (!isValidId(id)) return "";
+        const g = ctrl.getGraph();
+        const v = g.getVertex(id);
+        if (!v) return "";
+        if (g.isSource(v)) return "source";
+        if (g.isTarget(v)) return "target";
+        if (g.isAdjustedNode(v)) return "adjustedNode";
+        if (g.isSelectedNode(v)) return "selectedNode";
+        if (g.isLatentNode(v)) return "latentNode";
+        return "";
+      }
+
+      function clearTypes(id) {
+        if (!isValidId(id)) return;
+        const og = ctrl.getObservedGraph();
+        const g = ctrl.getGraph();
+        const v = g.getVertex(id);
+        if (!v) return;
+        og.removeSource(v);
+        og.removeTarget(v);
+        og.removeAdjustedNode(v);
+        og.removeSelectedNode(v);
+        og.removeLatentNode(v);
+      }
+
+      function focusVertex(id) {
+        if (!isValidId(id)) return false;
+        const svg = document.querySelector("#" + container.id + " svg");
+        if (!svg) return false;
+
+        const texts = svg.querySelectorAll("text");
+        let targetText = null;
+        for (const t of texts) {
+          if ((t.textContent || "").trim() === id) { targetText = t; break; }
+        }
+        if (!targetText) return false;
+
+        const r = targetText.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const opts = { bubbles: true, cancelable: true, clientX: cx, clientY: cy };
+
+        targetText.dispatchEvent(new MouseEvent("mousedown", opts));
+        targetText.dispatchEvent(new MouseEvent("mouseup", opts));
+        targetText.dispatchEvent(new MouseEvent("click", opts));
+        return true;
+      }
+
+      function refocusSoon(id) {
+        if (!isValidId(id)) return;
+        requestAnimationFrame(() => requestAnimationFrame(() => focusVertex(id)));
+      }
+
+      function uniqueId(base) {
+        const g = ctrl.getGraph();
+        let i = 1;
+        let id = base + i;
+        while (g.getVertex(id)) { i += 1; id = base + i; }
+        return id;
+      }
+
+      function defaultNewPosition() {
+        cachePositionsFromGraph();
+        let xs = 0, ys = 0, n = 0;
+        for (const p of posCache.values()) { xs += p.x; ys += p.y; n += 1; }
+        if (n === 0) return { x: 0, y: 0 };
+        return { x: (xs / n) + 0.2, y: (ys / n) + 0.2 };
+      }
+
+      function createNewNodeAndSelect() {
+        commitPositionsFromSVG();
+        cachePositionsFromGraph();
+
+        const id = uniqueId("N");
+        const p = defaultNewPosition();
+
+        posCache.set(id, { x: p.x, y: p.y });
+
+        ctrl.newVertex(id, p.x, p.y);
+        currentVertex = id;
+
+        clearActive();
+        refocusSoon(id);
+
+        setTimeout(() => {
+          commitPositionsFromSVG();
+          cachePositionsFromGraph();
+          syncContainerTextFromGraph();
+        }, 0);
+
+        return id;
+      }
+
+      function hookSvgInteractions() {
+        if (svgHooked) return;
+        const svg = document.querySelector("#" + container.id + " svg");
+        if (!svg) return;
+
+        svgHooked = true;
+
+        svg.addEventListener("click", (ev) => {
+          const t = ev.target;
+          const tag = (t && t.tagName) ? t.tagName.toLowerCase() : "";
+
+          if (tag !== "svg" && tag !== "rect") return;
+
+          if (!isValidId(currentVertex)) {
+            createNewNodeAndSelect();
+            clearActive();
+            return;
+          }
+
+          currentVertex = null;
+          clearActive();
+        }, true);
+
+        const commitSoon = () => setTimeout(() => {
+          commitPositionsFromSVG();
+          cachePositionsFromGraph();
+          syncContainerTextFromGraph();
+        }, 0);
+
+        svg.addEventListener("pointerup", commitSoon, true);
+        svg.addEventListener("mouseup", commitSoon, true);
+        svg.addEventListener("touchend", commitSoon, true);
+
+        window.addEventListener("keydown", (ev) => {
+          if (ev.key === "Escape") {
+            currentVertex = null;
+            clearActive();
+          }
+        });
+      }
+
+      function waitForSvg() {
+        hookSvgInteractions();
+        if (!svgHooked) setTimeout(waitForSvg, 50);
+      }
+
+      function wireController() {
+        // IMPORTANT: use the current container id (we replace the node)
+        ctrl = DAGitty.get(container.id);
+
+        patchGetVertexGuards();
+        patchGraphChangedToPreserveLayout();
+
+        ctrl.on("vertex_marked", (v) => {
+          const id = normalizeVertexId(v);
+          if (!isValidId(id)) {
+            currentVertex = null;
+            clearActive();
+            return;
+          }
+          currentVertex = id;
+          setActive(vertexType(id));
+        });
+
+        buttons.forEach(btn => {
+          btn.addEventListener("click", () => {
+            const chosen = btn.dataset.prop || "";
+
+            if (!isValidId(currentVertex)) {
+              clearActive();
+              return;
+            }
+
+            commitPositionsFromSVG();
+            cachePositionsFromGraph();
+
+            const current = vertexType(currentVertex);
+
+            if (chosen === current || chosen === "") {
+              clearTypes(currentVertex);
+              clearActive();
+              refocusSoon(currentVertex);
+              return;
+            }
+
+            ctrl.setVertexProperty(currentVertex, chosen);
+            setActive(chosen);
+            refocusSoon(currentVertex);
+
+            setTimeout(() => {
+              commitPositionsFromSVG();
+              cachePositionsFromGraph();
+              syncContainerTextFromGraph();
+            }, 0);
+          });
+        });
+
+        cachePositionsFromGraph();
+        syncContainerTextFromGraph();
+
+        clearActive();
+        waitForSvg();
+      }
+
+      // Rebuild the dagitty node each time so DAGitty.setup() reliably re-initializes
+      function renderDag(dagText) {
+        const fresh = document.createElement("div");
+        fresh.id = "dag-editor-tool";
+        fresh.className = "dagitty";
+        fresh.setAttribute("data-mutable", "true");
+        fresh.textContent = dagText;
+
+        container.replaceWith(fresh);
+        container = fresh;
+
+        currentVertex = null;
+        clearActive();
+        svgHooked = false;
+        posCache.clear();
+
+        requestAnimationFrame(() => {
+          DAGitty.setup();
+          wireController();
+        });
+      }
+
+      // Parent sends DAG via postMessage
+      window.addEventListener("message", (ev) => {
+        const data = ev.data;
+        if (!data || data.type !== "dagitty") return;
+        if (typeof data.dag !== "string") return;
+        renderDag(data.dag);
+      });
+    })();
+  </script>
+</body>
+
+</html>
