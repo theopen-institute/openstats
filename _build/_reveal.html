@@ -91,19 +91,23 @@
     }
 
     function applyFragments(enabled) {
+      // Capture where we are before changing anything
+      const i = Reveal.getIndices();
+      const currentSlide = Reveal.getCurrentSlide();
+
       // 1) Toggle Reveal stepping behavior
       Reveal.configure({ fragments: enabled, incremental: enabled });
 
       // 2) Toggle DOM markers to fix Scroll View spacing
-      //    - When OFF: remove `.fragment` so Scroll View can't allocate fragment height
-      //    - When ON: restore `.fragment` and indices
       if (enabled) {
         enableFragmentDOM();
+
+        // IMPORTANT: when re-enabling, clear any stale "already revealed" state
+        // (otherwise next slides can look fully built until a navigation occurs)
+        document.querySelectorAll(".reveal .fragment").forEach((el) => {
+          el.classList.remove("visible", "current-fragment");
+        });
       } else {
-        // Alternative path if you prefer: keep `.fragment` but disable them:
-        // document.querySelectorAll(".reveal .fragment").forEach(el => el.classList.add("disabled"));
-        // (Your scrollview patch would then exclude them.)
-        // However removing `.fragment` is the most reliable for eliminating spacing.
         disableFragmentDOM();
       }
 
@@ -112,9 +116,23 @@
       if (typeof Reveal.layout === "function") Reveal.layout();
       if (typeof Reveal.sync === "function") Reveal.sync();
 
-      // If turning fragments off, reveal all on current slide
-      if (!enabled) {
-        const i = Reveal.getIndices();
+      // 4) Reset slide state immediately (this is what you were missing)
+      if (enabled) {
+        // Force "start of slide" (no fragments visible)
+        // Using Reveal.slide ensures Reveal updates internal fragment state too.
+        Reveal.slide(i.h, i.v, -1);
+
+        // Also explicitly update fragments on the current slide right now
+        // (helps avoid needing forward/back to get incremental behavior)
+        try {
+          const frags = Reveal.fragments.sort(
+            currentSlide.querySelectorAll(".fragment"),
+            false
+          );
+          Reveal.fragments.update(-1, frags, currentSlide);
+        } catch (e) { }
+      } else {
+        // Force "end of slide" (everything visible)
         Reveal.slide(i.h, i.v, Number.MAX_SAFE_INTEGER);
       }
     }
