@@ -18,7 +18,10 @@ format:
 
 Describing uncertainty
 
-# The three components of statistics
+
+
+
+# The three parts of statistical questions
 
 - Population
 - Variation
@@ -32,7 +35,10 @@ Describing uncertainty
 :::
 
 
-# Relationships of Cause and Effect
+
+
+
+# Statistical models
 
 ```{=html}
 <iframe
@@ -83,13 +89,136 @@ Describing uncertainty
 </script> -->
 ```
 
-# Who is going to win the election?
+
+
+
+# Randomness has patterns
+:::{.r-stack}
+![Bullet hole patterns of returning aircraft](images/week2/Survivorship-bias.svg){width="80%" style="text-align:center;"}
+:::
+
+# Goals this week
+- Get more specific about "beliefs"
+- Learn how to use Bayes Theorem
+  - Priors and posteriors
+  - Likelihood
+- Design a real analysis
+
+
+# Parameters: What is a "belief"?
+
+- Beliefs _about what?_
+  - "parameters": unknown numerical quantities in the world
+  - "estimand": what we want to find out (often a parameter)
+
+- Refined Definition:
+  - P(belief): P(belief about the possible values of a parameter)
+  - Shorthand: P(params) or P(Θ)
+
+
+# Parameters: Examples
+
+A parameter is a numerical fact about the world that we don't know (but want to find out)
+
+- The average height of adults in Pokhara
+- The number of cars driven in Kathmandu on a typical Saturday
+- The average exam results in a particular school
+- The difference between men's and women's salaries
+- The effect of socioeconomic status on college admissions
+- The effect of education level on moral judgments
+
+
+# Parameters: Probability distributions
+
+::: {.fragment .callout-note}
+- We talk about probability distributions all the time: "He's probably about 50, but he could be quite a bit older". 
+- Here, we're just visualizing that kind of description over the range of all possible values.
+:::
+
+::: {.columns}
+
+::: {.column width="30%"}
+::: {.fragment}
+<p style="font-size: 12pt;"><b>Uninformed</b> I have no idea. He could be between 0 and 100 and I don't think any possibility is more likely than any other.</p>
+```{r}
+curve(dunif(x, min = 0, max = 100),
+      from = 0, to = 100,
+      xlab = "Age", ylab = "Density",
+      col="red", lwd=2)
+```
+
+:::
+
+::: {.fragment}
+<p style="font-size: 12pt"><b>Weakly informed</b> He seems like he's about 50, but I could be very wrong about that. Anything between 30 and 70 seems plausible and even more extreme values are possible.</p>
+```{r}
+curve(dnorm(x, mean = 50, sd = 15),
+      from = 0, to = 100,
+      ylim=c(0,0.1),
+      xlab = "Age", ylab = "Density",
+      col="red", lwd=2)
+```
+:::
+:::
+
+::: {.column width="40%"}
+::: {.fragment fragment-index=1}
+![Parameter: How old is this person?](images/week2/man.png){height="550px" style="text-align:center;"}
+:::
+:::
+
+::: {.column width="30%"}
+::: {.fragment }
+<p style="font-size: 12pt"><b>Strongly informed</b> I'm quite certain that he's fifty or relatively close to it.</p>
+```{r}
+curve(dnorm(x, mean = 50, sd = 1),
+      from = 0, to = 100,
+      xlab = "Age", ylab = "Density",
+      col="red", lwd=2)
+```
+:::
+
+::: {.fragment}
+<p style="font-size: 12pt"><b>Domain-specific distributions</b> I'm relatively certain he's between 40 and 60, but I have really no idea where in that range he lands. Older or younger than that seems unlikely, though.</p>
+```{r}
+# Steeper sides: shrink the taper width b
+a <- 20   # plateau width (40 to 60)
+b <- 15   # smaller = steeper sides
+
+w <- function(x) {
+  y <- numeric(length(x))
+
+  L1 <- 50 - (a/2 + b); L2 <- 50 - a/2
+  i <- x >= L1 & x < L2
+  y[i] <- 0.5 * (1 - cos(pi * (x[i] - L1) / b))
+
+  i <- x >= (50 - a/2) & x <= (50 + a/2)
+  y[i] <- 1
+
+  R1 <- 50 + a/2; R2 <- 50 + (a/2 + b)
+  i <- x > R1 & x <= R2
+  y[i] <- 0.5 * (1 + cos(pi * (x[i] - R1) / b))
+
+  y
+}
+
+A <- integrate(w, 0, 100)$value
+curve(w(x) / A, from = 0, to = 100, ylim=c(0, 0.05), xlab = "Age", ylab = "Density", col="red", lwd=2)
+```
+:::
+:::
+
+:::
+
+
+
+# Practical: Who will win the election?
 - Last election: the current candidate got 60% of the votes.
 - We have the resources to conduct a survey.
 - (Many non-statistical problems to solve when we design a survey.)
 - What do we need to provide a meaningful statistical answer?
 
-# Bayes Theorem in practice
+# Practical: Bayes Theorem
 
 $$
 \color{green}{P(\text{belief} \mid \text{data})}
@@ -112,7 +241,7 @@ $$
 prior ⨉ likelihood → posterior
 
 
-# Updating: Priors become Posteriors
+# Priors and Posteriors: Updating
 P(belief) → P(belief | data)
 
 ::: {.columns}
@@ -197,19 +326,9 @@ legend("topright", legend = c("Prior", "Posterior"), col = c("red", "blue"), lwd
 :::
 :::
 
-# Definitions: Priors and Posteriors
 
-- Priors _about what?_
-  - "parameters": unknown numerical quantities in the world
-  - "estimand": what we want to find out (often a parameter)
-  - shorthand: P(parameters) or P(Θ)
 
-<hr>
-
-- When we talk about priors and posteriors, we're never talking about _single values_.
-- We're always talking about a _probability distribution_.
-
-# Build your own prior!
+# Priors and Posteriors: Defining a distribution
 
 <style>
   .prior-layout{
@@ -353,7 +472,9 @@ legend("topright", legend = c("Prior", "Posterior"), col = c("red", "blue"), lwd
   updateSheet(widget.getPoints());
 </script>
 
-# Probability in the World
+
+
+# Likelihood: Probability in the World
 :::{.r-stack}
 
 :::{.fragment .fade-in-then-out}
@@ -370,22 +491,15 @@ legend("topright", legend = c("Prior", "Posterior"), col = c("red", "blue"), lwd
 Probability isn't just in our heads. Sometimes, it's generated by a process in the world.
 :::
 
-# Likelihood
-
+# Likelihood: What it is
+<!-- TODO: Expand this to include a better comparison -->
 - For priors and posteriors, randomness is about our uncertainty (a subjective experience).
 - For likelihood, randomness is a characteristic of the world.
 - Our job is to describe how patterns of variation (including randomness) occur.
 
 
-# Generative Processes
-:::{.r-stack}
-![](images/week2/Survivorship-bias.svg){width="80%"}
-:::
 
-Where should the extra armor go?
-
-
-# Calculating likelihood
+# Likelihood: Building Models
 - From Bayes theorem, we know that likelihood is: P( data | parameters )
 - But what does this mean?
 
@@ -403,7 +517,7 @@ Let's say we surveyed 15 people and 4 said that they will vote for the current m
 These are questions that any calculator can answer.
 :::
 
-# Common Distributions {.no-title}
+# Distributions Demo {.no-title}
 
 ```{shinylive-r}
 #| standalone: true
