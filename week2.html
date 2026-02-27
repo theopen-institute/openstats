@@ -211,8 +211,8 @@
 <p>Describing uncertainty</p>
 </section>
 
-<section id="the-three-components-of-statistics" class="title-slide slide level1 center">
-<h1>The three components of statistics</h1>
+<section id="the-three-parts-of-statistical-questions" class="title-slide slide level1 center">
+<h1>The three parts of statistical questions</h1>
 <ul>
 <li class="fragment">Population</li>
 <li class="fragment">Variation</li>
@@ -238,8 +238,8 @@
 </div>
 </section>
 
-<section id="relationships-of-cause-and-effect" class="title-slide slide level1 center">
-<h1>Relationships of Cause and Effect</h1>
+<section id="statistical-models" class="title-slide slide level1 center">
+<h1>Statistical models</h1>
 <iframe id="dag-frame-1" data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
 <!-- <iframe
   id="dag-frame-1"
@@ -283,8 +283,153 @@
 </script> -->
 </section>
 
-<section id="who-is-going-to-win-the-election" class="title-slide slide level1 center">
-<h1>Who is going to win the election?</h1>
+<section id="randomness-has-patterns" class="title-slide slide level1 center">
+<h1>Randomness has patterns</h1>
+<div class="r-stack">
+<div class="quarto-figure quarto-figure-center" style="text-align:center;">
+<figure>
+<p><img data-src="images/week2/Survivorship-bias.svg" style="width:80.0%"></p>
+<figcaption>Bullet hole patterns of returning aircraft</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<section id="goals-this-week" class="title-slide slide level1 center">
+<h1>Goals this week</h1>
+<ul>
+<li class="fragment">Get more specific about “beliefs”</li>
+<li class="fragment">Learn how to use Bayes Theorem
+<ul>
+<li class="fragment">Priors and posteriors</li>
+<li class="fragment">Likelihood</li>
+</ul></li>
+<li class="fragment">Design a real analysis</li>
+</ul>
+</section>
+
+<section id="parameters-what-is-a-belief" class="title-slide slide level1 center">
+<h1>Parameters: What is a “belief”?</h1>
+<ul>
+<li class="fragment">Beliefs <em>about what?</em>
+<ul>
+<li class="fragment">“parameters”: unknown numerical quantities in the world</li>
+<li class="fragment">“estimand”: what we want to find out (often a parameter)</li>
+</ul></li>
+<li class="fragment">Refined Definition:
+<ul>
+<li class="fragment">P(belief): P(belief about the possible values of a parameter)</li>
+<li class="fragment">Shorthand: P(params) or P(Θ)</li>
+</ul></li>
+</ul>
+</section>
+
+<section id="parameters-examples" class="title-slide slide level1 center">
+<h1>Parameters: Examples</h1>
+<p>A parameter is a numerical fact about the world that we don’t know (but want to find out)</p>
+<ul>
+<li class="fragment">The average height of adults in Pokhara</li>
+<li class="fragment">The number of cars driven in Kathmandu on a typical Saturday</li>
+<li class="fragment">The average exam results in a particular school</li>
+<li class="fragment">The difference between men’s and women’s salaries</li>
+<li class="fragment">The effect of socioeconomic status on college admissions</li>
+<li class="fragment">The effect of education level on moral judgments</li>
+</ul>
+</section>
+
+<section id="parameters-probability-distributions" class="title-slide slide level1 center">
+<h1>Parameters: Probability distributions</h1>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li class="fragment">We talk about probability distributions all the time: “He’s probably about 50, but he could be quite a bit older”.</li>
+<li class="fragment">Here, we’re just visualizing that kind of description over the range of all possible values.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="fragment">
+<p style="font-size: 12pt;">
+<b>Uninformed</b> I have no idea. He could be between 0 and 100 and I don’t think any possibility is more likely than any other.
+</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-1-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p style="font-size: 12pt">
+<b>Weakly informed</b> He seems like he’s about 50, but I could be very wrong about that. Anything between 30 and 70 seems plausible and even more extreme values are possible.
+</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="fragment" data-fragment-index="1">
+<div class="quarto-figure quarto-figure-center" style="text-align:center;">
+<figure>
+<p><img data-src="images/week2/man.png" height="550"></p>
+<figcaption>Parameter: How old is this person?</figcaption>
+</figure>
+</div>
+</div>
+</div><div class="column" style="width:30%;">
+<div class="fragment">
+<p style="font-size: 12pt">
+<b>Strongly informed</b> I’m quite certain that he’s fifty or relatively close to it.
+</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p style="font-size: 12pt">
+<b>Domain-specific distributions</b> I’m relatively certain he’s between 40 and 60, but I have really no idea where in that range he lands. Older or younger than that seems unlikely, though.
+</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+
+<section id="practical-who-will-win-the-election" class="title-slide slide level1 center">
+<h1>Practical: Who will win the election?</h1>
 <ul>
 <li class="fragment">Last election: the current candidate got 60% of the votes.</li>
 <li class="fragment">We have the resources to conduct a survey.</li>
@@ -293,8 +438,8 @@
 </ul>
 </section>
 
-<section id="bayes-theorem-in-practice" class="title-slide slide level1 center">
-<h1>Bayes Theorem in practice</h1>
+<section id="practical-bayes-theorem" class="title-slide slide level1 center">
+<h1>Practical: Bayes Theorem</h1>
 <p><span class="math display">\[
 \color{green}{P(\text{belief} \mid \text{data})}
 =
@@ -314,61 +459,9 @@
 <p>prior ⨉ likelihood → posterior</p>
 </section>
 
-<section id="updating-priors-become-posteriors" class="title-slide slide level1 center">
-<h1>Updating: Priors become Posteriors</h1>
+<section id="priors-and-posteriors-updating" class="title-slide slide level1 center">
+<h1>Priors and Posteriors: Updating</h1>
 <p>P(belief) → P(belief | data)</p>
-<div class="columns">
-<div class="column">
-<div class="r-stack">
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-1-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="column">
-<div class="r-stack">
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div></div>
 <div class="columns">
 <div class="column">
 <div class="r-stack">
@@ -421,27 +514,62 @@
 </div>
 </div>
 </div></div>
+<div class="columns">
+<div class="column">
+<div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></div>
 </section>
 
-<section id="definitions-priors-and-posteriors" class="title-slide slide level1 center">
-<h1>Definitions: Priors and Posteriors</h1>
-<ul>
-<li class="fragment">Priors <em>about what?</em>
-<ul>
-<li class="fragment">“parameters”: unknown numerical quantities in the world</li>
-<li class="fragment">“estimand”: what we want to find out (often a parameter)</li>
-<li class="fragment">shorthand: P(parameters) or P(Θ)</li>
-</ul></li>
-</ul>
-<hr>
-<ul>
-<li class="fragment">When we talk about priors and posteriors, we’re never talking about <em>single values</em>.</li>
-<li class="fragment">We’re always talking about a <em>probability distribution</em>.</li>
-</ul>
-</section>
-
-<section id="build-your-own-prior" class="title-slide slide level1 center">
-<h1>Build your own prior!</h1>
+<section id="priors-and-posteriors-defining-a-distribution" class="title-slide slide level1 center">
+<h1>Priors and Posteriors: Defining a distribution</h1>
 <style>
   .prior-layout{
     display: flex;
@@ -587,8 +715,8 @@
 </script>
 </section>
 
-<section id="probability-in-the-world" class="title-slide slide level1 center">
-<h1>Probability in the World</h1>
+<section id="likelihood-probability-in-the-world" class="title-slide slide level1 center">
+<h1>Likelihood: Probability in the World</h1>
 <div class="r-stack">
 <div class="fragment fade-in-then-out">
 <p><img data-src="images/week2/sunrise.jpeg" width="900"></p>
@@ -602,8 +730,9 @@
 </div>
 </section>
 
-<section id="likelihood" class="title-slide slide level1 center">
-<h1>Likelihood</h1>
+<section id="likelihood-what-it-is" class="title-slide slide level1 center">
+<h1>Likelihood: What it is</h1>
+<!-- TODO: Expand this to include a better comparison -->
 <ul>
 <li class="fragment">For priors and posteriors, randomness is about our uncertainty (a subjective experience).</li>
 <li class="fragment">For likelihood, randomness is a characteristic of the world.</li>
@@ -611,16 +740,8 @@
 </ul>
 </section>
 
-<section id="generative-processes" class="title-slide slide level1 center">
-<h1>Generative Processes</h1>
-<div class="r-stack">
-<p><img data-src="images/week2/Survivorship-bias.svg" style="width:80.0%"></p>
-</div>
-<p>Where should the extra armor go?</p>
-</section>
-
-<section id="calculating-likelihood" class="title-slide slide level1 center">
-<h1>Calculating likelihood</h1>
+<section id="likelihood-building-models" class="title-slide slide level1 center">
+<h1>Likelihood: Building Models</h1>
 <ul>
 <li class="fragment">From Bayes theorem, we know that likelihood is: P( data | parameters )</li>
 <li class="fragment">But what does this mean?</li>
@@ -653,8 +774,8 @@
 </div>
 </section>
 
-<section id="common-distributions" class="title-slide slide level1 no-title center">
-<h1>Common Distributions</h1>
+<section id="distributions-demo" class="title-slide slide level1 no-title center">
+<h1>Distributions Demo</h1>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>#| '!! shinylive warning !!': |</span>
 <span id="cb1-2"><a></a>#|   shinylive does not work in self-contained HTML documents.</span>
 <span id="cb1-3"><a></a>#|   Please set `embed-resources: false` in your metadata.</span>
