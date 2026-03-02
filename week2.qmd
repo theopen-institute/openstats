@@ -6,10 +6,9 @@ format:
       - text: |
           <script src="js/dagitty.js"></script>
           <script src="js/graph.js" type="module"></script>
-          <script src="js/jspreadsheet.js"></script>
-          <script src="js/jspreadsheet-charts.min.js"></script>
-          <script src="js/jsuites.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@5/dist/index.js"></script>
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@5/dist/jspreadsheet.css">
+          <script src="https://cdn.jsdelivr.net/npm/jsuites@5/dist/jsuites.js"></script>
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsuites@5/dist/jsuites.css">
 ---
 
@@ -23,15 +22,28 @@ Describing uncertainty
 
 # The three parts of statistical questions
 
-- Population
-- Variation
-- Randomness
+Problem: we want to understand how the admissions process works at a university. 
 
-::: {.fragment .nonincremental .callout-note}
-## Random individuals → Predictable populations
+::: {.fragment .callout-note}
+# Population: This isn't about one individual case but rather a group of cases
+- "Applications to this university last year"
+- "Applications to this university in the last ten years"
+- "Applications to all state-run universities in this country last year"
+:::
 
+::: {.fragment .callout-tip}
+# Variation: These cases are different from each other in ways that interest us
+- "Exam results"
+- "Family wealth"
+- "Gender"
+- "Department"
+:::
+
+::: {.fragment .callout-important}
+## Randomness: Reality is messy, and we'll never predict admission perfectly
 - If I flip a coin 1 time, I can't say what will happen. 
 - If I flip a coin 1000 times, I can say a lot more. 
+- Random individuals → Predictable populations
 :::
 
 
@@ -51,8 +63,7 @@ Describing uncertainty
   id="dag-frame-1"
   data-external="1"
   style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="js/dag-embed.html"
-></iframe> -->
+  src="js/dag-embed.html"></iframe> -->
 
 <!-- <script>
 (() => {
@@ -130,7 +141,7 @@ A parameter is a numerical fact about the world that we don't know (but want to 
 
 # Parameters: Probability distributions
 
-::: {.fragment .callout-note}
+::: {.fragment .callout-note .nonincremental}
 - We talk about probability distributions all the time: "He's probably about 50, but he could be quite a bit older". 
 - Here, we're just visualizing that kind of description over the range of all possible values.
 :::
@@ -180,6 +191,7 @@ curve(dnorm(x, mean = 50, sd = 1),
 
 ::: {.fragment}
 <p style="font-size: 12pt"><b>Domain-specific distributions</b> I'm relatively certain he's between 40 and 60, but I have really no idea where in that range he lands. Older or younger than that seems unlikely, though.</p>
+
 ```{r}
 # Steeper sides: shrink the taper width b
 a <- 20   # plateau width (40 to 60)
@@ -205,6 +217,7 @@ w <- function(x) {
 A <- integrate(w, 0, 100)$value
 curve(w(x) / A, from = 0, to = 100, ylim=c(0, 0.05), xlab = "Age", ylab = "Density", col="red", lwd=2)
 ```
+
 :::
 :::
 
@@ -328,7 +341,7 @@ legend("topright", legend = c("Prior", "Posterior"), col = c("red", "blue"), lwd
 
 
 
-# Priors and Posteriors: Defining a distribution
+# Priors and Posteriors: DIY Prior
 
 <style>
   .prior-layout{
@@ -346,131 +359,210 @@ legend("topright", legend = c("Prior", "Posterior"), col = c("red", "blue"), lwd
     min-width: 260px;
     font-size: 16pt;
   }
+  .sheet-controls{
+    margin-top: 8px;
+    text-align: right;
+  }
+  #sheet-reset{
+    font-size: 12pt;
+    padding: 6px 10px;
+  }
   .jss_about, .jss_textarea {
     display: none;
   }
+# ...existing code...
 </style>
 
+```{=html}
 <div class="prior-layout">
   <div id="graph-wrapper"></div>
-  <div id="sheet-wrapper"></div>
+  <div>
+    <div id="sheet-wrapper"></div>
+    <div class="sheet-controls">
+      <button id="sheet-reset" type="button">Reset</button>
+    </div>
+  </div>
 </div>
+```
+
+<!-- ...existing code... -->
 
 <script type="module">
   import { LineGraphWidget } from './js/graph.js';
 
   const graphEl = document.getElementById('graph-wrapper');
   const sheetEl = document.getElementById('sheet-wrapper');
+  const resetBtn = document.getElementById('sheet-reset');
+  const STORAGE_KEY = 'diy-prior-values-v1';
 
-  // If Reveal/Quarto re-runs this slide script, clear previous instances.
-  graphEl.innerHTML = '';
-  sheetEl.innerHTML = '';
+  if (!graphEl || !sheetEl) {
+    console.warn('DIY Prior: missing graph or sheet container.');
+  } else if (!graphEl.dataset.initialized) {
+    graphEl.dataset.initialized = 'true';
 
-  function pointsToTable(points) {
-    const ys = points.map(p => Number(p.y) || 0);
-    const sum = ys.reduce((a, b) => a + b, 0);
-    return ys.map((v,i) => [i*0.05, v, sum > 0 ? v / sum : 0]);
-  }
+    let widget = null;
+    let ws = null;
 
-  // --- Create graph ---
-  const widget = new LineGraphWidget({
-    container: graphEl,
-    yValues: Array.from({ length: 21 }, () => 50),
-    onChange: (points) => updateSheet(points),
-  });
-
-  // --- Create spreadsheet (Jspreadsheet versions that throw "worksheets are not defined"
-  //     REQUIRE the worksheets:[] option at the top level) ---
-  const initData = pointsToTable(widget.getPoints());
-
-  const created = window.jspreadsheet(sheetEl, {
-    tabs: false,
-    worksheets: [{
-      data: initData,
-      editable: false,
-      minDimensions: [2, 21],
-      rowHeaders: (rowIndex) => (rowIndex * 0.05).toFixed(2),
-      allowInsertRow: false,
-      allowDeleteRow: false,
-      allowInsertColumn: false,
-      allowDeleteColumn: false,
-      columnSorting: false,
-      columns: [
-        { type: 'numeric', title: 'Value', width: 90, mask: '0.00'},
-        { type: 'numeric', title: 'Score', width: 90, mask:'0.00' },
-        { type: 'numeric', title: 'Probability', width: 120, mask: '0.0000' },
-      ],
-    }],
-  });
-
-  // Some builds return a Promise. Others return an object or array. Normalize safely.
-  const spreadsheet = await Promise.resolve(created);
-
-  function getWorksheetHandle(obj) {
-    if (!obj) return null;
-
-    // Already a worksheet-like object (has cell/data mutation methods)
-    if (typeof obj.setData === 'function' ||
-        typeof obj.loadData === 'function' ||
-        typeof obj.setValueFromCoords === 'function' ||
-        typeof obj.setValue === 'function') {
-      return obj;
-    }
-
-    // Array of worksheets
-    if (Array.isArray(obj)) return getWorksheetHandle(obj[0]);
-
-    // Spreadsheet container with worksheets
-    if (Array.isArray(obj.worksheets)) return getWorksheetHandle(obj.worksheets[0]);
-
-    // Spreadsheet container with getter
-    if (typeof obj.getWorksheet === 'function') return getWorksheetHandle(obj.getWorksheet(0));
-
-    return null;
-  }
-
-  const ws = getWorksheetHandle(spreadsheet);
-  if (!ws) {
-    console.log('jspreadsheet return value:', spreadsheet);
-    throw new Error('Could not find a worksheet handle. See console log for returned object.');
-  }
-
-  function updateSheet(points) {
-    const data = pointsToTable(points);
-
-    // Prefer bulk update if available.
-    if (typeof ws.setData === 'function') {
-      ws.setData(data);
-      return;
-    }
-    if (typeof ws.loadData === 'function') {
-      ws.loadData(data, true);
-      return;
-    }
-
-    // Fallback: update cells individually.
-    if (typeof ws.setValueFromCoords === 'function') {
-      for (let r = 0; r < 21; r++) {
-        ws.setValueFromCoords(0, r, data[r][0], true);
-        ws.setValueFromCoords(1, r, data[r][1], true);
+    function loadStoredValues() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return null;
+        return parsed.map((v) => Number(v));
+      } catch {
+        return null;
       }
-      return;
     }
-    if (typeof ws.setValue === 'function') {
-      for (let r = 0; r < 21; r++) {
-        ws.setValue(`A${r + 1}`, data[r][0], true);
-        ws.setValue(`B${r + 1}`, data[r][1], true);
+
+    function saveStoredValues(values) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+      } catch {
+        // ignore storage errors
       }
-      return;
     }
 
-    console.log('worksheet handle:', ws);
-    throw new Error('Worksheet has no supported update method (setData/loadData/setValueFromCoords/setValue).');
-  }
+    function pointsToTable(points) {
+      const ys = points.map(p => Number(p.y) || 0);
+      const sum = ys.reduce((a, b) => a + b, 0);
+      return ys.map((v,i) => [i*0.05, v, sum > 0 ? v / sum : 0]);
+    }
 
-  // Initial sync
-  updateSheet(widget.getPoints());
+    function getWorksheetHandle(obj) {
+      if (!obj) return null;
+
+      if (typeof obj.setData === 'function' ||
+          typeof obj.loadData === 'function' ||
+          typeof obj.setValueFromCoords === 'function' ||
+          typeof obj.setValue === 'function') {
+        return obj;
+      }
+
+      if (Array.isArray(obj)) return getWorksheetHandle(obj[0]);
+      if (Array.isArray(obj.worksheets)) return getWorksheetHandle(obj.worksheets[0]);
+      if (typeof obj.getWorksheet === 'function') return getWorksheetHandle(obj.getWorksheet(0));
+
+      return null;
+    }
+
+    function updateSheet(points) {
+      if (!ws) return;
+      const data = pointsToTable(points);
+
+      if (typeof ws.setData === 'function') {
+        ws.setData(data);
+        return;
+      }
+      if (typeof ws.loadData === 'function') {
+        ws.loadData(data, true);
+        return;
+      }
+      if (typeof ws.setValueFromCoords === 'function') {
+        for (let r = 0; r < 21; r++) {
+          ws.setValueFromCoords(0, r, data[r][0], true);
+          ws.setValueFromCoords(1, r, data[r][1], true);
+        }
+        return;
+      }
+      if (typeof ws.setValue === 'function') {
+        for (let r = 0; r < 21; r++) {
+          ws.setValue(`A${r + 1}`, data[r][0], true);
+          ws.setValue(`B${r + 1}`, data[r][1], true);
+        }
+      }
+    }
+
+    function ensureReadyThenInit() {
+      const rect = graphEl.getBoundingClientRect();
+      const visible = rect.width > 0 && rect.height > 0;
+      if (!visible) return false;
+
+      if (window.Reveal?.getCurrentSlide) {
+        const cur = window.Reveal.getCurrentSlide();
+        if (!cur?.querySelector('#graph-wrapper')) return false;
+      }
+
+      if (!widget) {
+        graphEl.innerHTML = '';
+        sheetEl.innerHTML = '';
+
+        const stored = loadStoredValues();
+        const initialValues = Array.isArray(stored) && stored.length === 21
+          ? stored
+          : Array.from({ length: 21 }, () => 50);
+
+        widget = new LineGraphWidget({
+          container: graphEl,
+          yValues: initialValues,
+          onChange: (points) => {
+            updateSheet(points);
+            saveStoredValues(points.map((p) => p.y));
+          },
+        });
+
+        const initData = pointsToTable(widget.getPoints());
+        const created = window.jspreadsheet(sheetEl, {
+          tabs: false,
+          worksheets: [{
+            data: initData,
+            editable: false,
+            minDimensions: [2, 21],
+            rowHeaders: (rowIndex) => (rowIndex * 0.05).toFixed(2),
+            allowInsertRow: false,
+            allowDeleteRow: false,
+            allowInsertColumn: false,
+            allowDeleteColumn: false,
+            columnSorting: false,
+            columns: [
+              { type: 'numeric', title: 'Vote %', width: 90, mask: '0%' },
+              { type: 'numeric', title: 'Score', width: 90, mask:'0.00' },
+              { type: 'numeric', title: 'Probability', width: 120, mask: '0.0000' },
+            ],
+          }],
+        });
+
+        Promise.resolve(created).then((spreadsheet) => {
+          ws = getWorksheetHandle(spreadsheet);
+          if (!ws) {
+            console.log('jspreadsheet return value:', spreadsheet);
+            throw new Error('Could not find a worksheet handle. See console log for returned object.');
+          }
+          updateSheet(widget.getPoints());
+        });
+
+        if (resetBtn) {
+          resetBtn.addEventListener('click', () => {
+            const resetValues = Array.from({ length: 21 }, () => 50);
+            widget.setYValues(resetValues);
+            saveStoredValues(resetValues);
+          });
+        }
+      }
+
+      return true;
+    }
+
+    const observer = new ResizeObserver(() => {
+      if (ensureReadyThenInit()) observer.disconnect();
+    });
+    observer.observe(graphEl);
+
+    const runWhenReady = () => {
+      if (!ensureReadyThenInit()) requestAnimationFrame(runWhenReady);
+    };
+
+    if (window.Reveal?.on) {
+      Reveal.on('ready', runWhenReady);
+      Reveal.on('slidechanged', runWhenReady);
+    } else {
+      window.addEventListener('load', runWhenReady);
+      runWhenReady();
+    }
+  }
 </script>
+
+<!-- ...existing code... -->
 
 
 
@@ -491,23 +583,17 @@ legend("topright", legend = c("Prior", "Posterior"), col = c("red", "blue"), lwd
 Probability isn't just in our heads. Sometimes, it's generated by a process in the world.
 :::
 
-# Likelihood: What it is
-<!-- TODO: Expand this to include a better comparison -->
-- For priors and posteriors, randomness is about our uncertainty (a subjective experience).
-- For likelihood, randomness is a characteristic of the world.
-- Our job is to describe how patterns of variation (including randomness) occur.
-
-
 
 # Likelihood: Building Models
 - From Bayes theorem, we know that likelihood is: P( data | parameters )
 - But what does this mean?
 
 ::: {.fragment .callout-tip}
-## Survey Results!
-Let's say we surveyed 15 people and 4 said that they will vote for the current mayor.
+## Instead of starting with our beliefs, likelihood starts with what we *saw*.
+We surveyed 15 people and 4 said that they will vote for the current mayor.
 :::
 
+- Now, we need to ask, "How consistent is this observation with different possible values of our parameter?"
 - Given a particular parameter value, how likely is the data we saw?
   - If our parameter is _actually_ 50%, what are the chances of seeing 4 out of 15?
   - If our parameter is _actually_ 30%, what are the chances of seeing 4 out of 15?
@@ -516,6 +602,12 @@ Let's say we surveyed 15 people and 4 said that they will vote for the current m
 ::: {.fragment}
 These are questions that any calculator can answer.
 :::
+
+# Likelihood: So what it is
+<!-- TODO: Expand this to include a better comparison -->
+- For priors and posteriors, randomness is about our uncertainty (a subjective experience).
+- For likelihood, randomness is generated by specific processes in the world.
+- Our job is to describe how patterns of variation (including randomness) occur.
 
 # Distributions Demo {.no-title}
 

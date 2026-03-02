@@ -28,6 +28,7 @@ export class LineGraphWidget {
     this.ctx = this.canvas.getContext("2d");
 
     this._dragIndex = null;
+    this._hoverIndex = null;
     this._needsRedraw = true;
 
     // Only emit changes on pointer up/cancel
@@ -36,6 +37,7 @@ export class LineGraphWidget {
     this._onPointerDown = this._onPointerDown.bind(this);
     this._onPointerMove = this._onPointerMove.bind(this);
     this._onPointerUp = this._onPointerUp.bind(this);
+    this._onPointerLeave = this._onPointerLeave.bind(this);
     this._onResize = this._onResize.bind(this);
     this._raf = this._raf.bind(this);
 
@@ -46,6 +48,7 @@ export class LineGraphWidget {
     this.canvas.addEventListener("pointermove", this._onPointerMove, { passive: false });
     this.canvas.addEventListener("pointerup", this._onPointerUp, { passive: false });
     this.canvas.addEventListener("pointercancel", this._onPointerUp, { passive: false });
+    this.canvas.addEventListener("pointerleave", this._onPointerLeave, { passive: true });
 
     window.addEventListener("resize", this._onResize);
 
@@ -58,6 +61,7 @@ export class LineGraphWidget {
     this.canvas.removeEventListener("pointermove", this._onPointerMove);
     this.canvas.removeEventListener("pointerup", this._onPointerUp);
     this.canvas.removeEventListener("pointercancel", this._onPointerUp);
+    this.canvas.removeEventListener("pointerleave", this._onPointerLeave);
     window.removeEventListener("resize", this._onResize);
     this.canvas.remove();
   }
@@ -138,9 +142,18 @@ export class LineGraphWidget {
   }
 
   _onPointerMove(e) {
-    if (this._dragIndex == null) return;
-
     const p = this._eventToCanvas(e);
+    const hitIndex = this._hitTestPoint(p.x, p.y);
+
+    if (this._dragIndex == null) {
+      if (hitIndex !== this._hoverIndex) {
+        this._hoverIndex = hitIndex;
+        this.canvas.style.cursor = hitIndex == null ? "default" : "pointer";
+        this._invalidate();
+      }
+      return;
+    }
+
     const yVal = this._canvasYToValue(p.y);
     const clamped = this._clamp(yVal, this.yMin, this.yMax);
 
@@ -334,7 +347,8 @@ export class LineGraphWidget {
       const y = this._valueToCanvasY(this.yValues[i]);
 
       ctx.beginPath();
-      ctx.fillStyle = i === this._dragIndex ? "#ff7043" : "#ffffff";
+      const isActive = i === this._dragIndex || i === this._hoverIndex;
+      ctx.fillStyle = isActive ? "#ff7043" : "#ffffff";
       ctx.strokeStyle = "#1976d2";
       ctx.lineWidth = 2 * this.dpr;
       ctx.arc(x, y, this.pointRadius * this.dpr, 0, Math.PI * 2);
@@ -343,9 +357,65 @@ export class LineGraphWidget {
     }
 
     ctx.restore();
+
+    this._applyNodeHoverHandlers();
+  }
+
+  _applyNodeHoverHandlers() {
+    // find nodes by the class used when creating them (adjust selector if your nodes use a different class)
+    const nodes = this.container.querySelectorAll('.lg-node, circle.node, .node');
+    nodes.forEach((node) => {
+      // ensure pointer cursor
+      node.style.cursor = 'pointer';
+
+      // store original attributes so we can restore them
+      if (!node.dataset._origFill) {
+        node.dataset._origFill = node.getAttribute('fill') || window.getComputedStyle(node).fill || '';
+      }
+      if (!node.dataset._origR) {
+        node.dataset._origR = node.getAttribute('r') || node.style.r || '';
+      }
+
+      // choose hover color: prefer a dataset hint, otherwise a safe default
+      const hoverColor = node.dataset.hoverFill || '#ff9800';
+
+      // handlers (defined as named functions so removals avoid duplicates)
+      function onEnter() {
+        // enlarge slightly if it's a circle
+        if (node.tagName && node.tagName.toLowerCase() === 'circle') {
+          const r = parseFloat(node.getAttribute('r') || node.dataset._origR || 3);
+          node.setAttribute('r', (r * 1.25).toString());
+        }
+        // set hover fill
+        node.setAttribute('fill', hoverColor);
+        node.classList && node.classList.add('lg-node--hover');
+      }
+      function onLeave() {
+        if (node.tagName && node.tagName.toLowerCase() === 'circle') {
+          if (node.dataset._origR) node.setAttribute('r', node.dataset._origR);
+        }
+        if (node.dataset._origFill) node.setAttribute('fill', node.dataset._origFill);
+        node.classList && node.classList.remove('lg-node--hover');
+      }
+
+      // remove any previous handlers to avoid duplicates (safe no-op if they weren't attached)
+      node.removeEventListener('mouseenter', onEnter);
+      node.removeEventListener('mouseleave', onLeave);
+
+      node.addEventListener('mouseenter', onEnter);
+      node.addEventListener('mouseleave', onLeave);
+    });
   }
 
   _clamp(v, lo, hi) {
     return Math.max(lo, Math.min(hi, v));
+  }
+
+  _onPointerLeave() {
+    if (this._hoverIndex != null) {
+      this._hoverIndex = null;
+      this.canvas.style.cursor = "default";
+      this._invalidate();
+    }
   }
 }
