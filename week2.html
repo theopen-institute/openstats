@@ -99,7 +99,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0c7e984034e36649b87d041cdc673c9c.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4100f3e1b92ad828dc915ec34b8e3c58.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -628,10 +628,18 @@
     font-size: 12pt;
     padding: 6px 10px;
   }
-  .jss_about, .jss_textarea {
+  .jss_about {
     display: none;
   }
-# ...existing code...
+  .jss_textarea{
+    position: absolute !important;
+    left: -10000px !important;
+    top: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 </style>
 <div class="prior-layout">
   <div id="graph-wrapper"></div>
@@ -642,7 +650,6 @@
     </div>
   </div>
 </div>
-<!-- ...existing code... -->
 <script type="module">
   import { LineGraphWidget } from './js/graph.js';
 
@@ -771,10 +778,12 @@
             allowDeleteColumn: false,
             columnSorting: false,
             columns: [
-              { type: 'numeric', title: 'Vote %', width: 90, mask: '0%' },
+              { type: 'numeric', title: 'Voters', width: 90, mask: '0%' },
               { type: 'numeric', title: 'Score', width: 90, mask:'0.00' },
               { type: 'numeric', title: 'Probability', width: 120, mask: '0.0000' },
             ],
+            selectionCopy: true,   // enables copying selected range
+            selection: true,       // ensures range selection is on (harmless if default)
           }],
         });
 
@@ -817,7 +826,6 @@
     }
   }
 </script>
-<!-- ...existing code... -->
 </section>
 
 <section id="likelihood-probability-in-the-world" class="title-slide slide level1 center">
