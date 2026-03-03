@@ -48,6 +48,34 @@
 }
 
 
+/* allow selecting text inside the sheet */
+.reveal #sheet-wrapper,
+.reveal #sheet-wrapper * {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+
+/* Prevent native text selection highlight inside the grid */
+.reveal #sheet-wrapper .jss_content,
+.reveal #sheet-wrapper .jss_content * {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+/* But keep the internal clipboard textarea available (don’t display:none) */
+.reveal #sheet-wrapper .jss_textarea {
+  position: absolute !important;
+  left: -10000px !important;
+  top: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+
+
 /* shinylive slides */
 .sourceCode[data-engine="r"] {
   border: none !important;

@@ -20,6 +20,7 @@ Describing uncertainty
 
 
 
+
 # The three parts of statistical questions
 
 Problem: we want to understand how the admissions process works at a university. 
@@ -367,10 +368,18 @@ legend("topright", legend = c("Prior", "Posterior"), col = c("red", "blue"), lwd
     font-size: 12pt;
     padding: 6px 10px;
   }
-  .jss_about, .jss_textarea {
+  .jss_about {
     display: none;
   }
-# ...existing code...
+  .jss_textarea{
+    position: absolute !important;
+    left: -10000px !important;
+    top: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 </style>
 
 ```{=html}
@@ -384,8 +393,6 @@ legend("topright", legend = c("Prior", "Posterior"), col = c("red", "blue"), lwd
   </div>
 </div>
 ```
-
-<!-- ...existing code... -->
 
 <script type="module">
   import { LineGraphWidget } from './js/graph.js';
@@ -515,10 +522,12 @@ legend("topright", legend = c("Prior", "Posterior"), col = c("red", "blue"), lwd
             allowDeleteColumn: false,
             columnSorting: false,
             columns: [
-              { type: 'numeric', title: 'Vote %', width: 90, mask: '0%' },
+              { type: 'numeric', title: 'Voters', width: 90, mask: '0%' },
               { type: 'numeric', title: 'Score', width: 90, mask:'0.00' },
               { type: 'numeric', title: 'Probability', width: 120, mask: '0.0000' },
             ],
+            selectionCopy: true,   // enables copying selected range
+            selection: true,       // ensures range selection is on (harmless if default)
           }],
         });
 
@@ -561,9 +570,6 @@ legend("topright", legend = c("Prior", "Posterior"), col = c("red", "blue"), lwd
     }
   }
 </script>
-
-<!-- ...existing code... -->
-
 
 
 # Likelihood: Probability in the World

@@ -12,7 +12,7 @@ export class LineGraphWidget {
     this.yMin = 0;
     this.yMax = 100;
 
-    this.padding = { left: 44, right: 16, top: 16, bottom: 34 };
+    this.padding = { left: 44, right: 16, top: 16, bottom: 46 };
     this.pointRadius = 7; // slightly bigger for touch
     this.hitRadius = 18;  // touch-friendly hit area
 
@@ -250,7 +250,7 @@ export class LineGraphWidget {
     const xTickStep = 0.1;
     const tickLen = 6 * this.dpr;
 
-    const fmtX = (v) => (Math.round(v * 100) / 100).toString();
+    const fmtX = (v) => `${Math.round(v * 100)}`;
     const fmtY = (v) => String(v);
 
     ctx.save();
@@ -320,6 +320,11 @@ export class LineGraphWidget {
 
       ctx.fillText(fmtX(x), cx, pr.y + pr.h + tickLen + 4 * this.dpr);
     }
+
+    // X axis label
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillText("Percent of Voters", pr.x + pr.w / 2, pr.y + pr.h + tickLen + 20 * this.dpr);
 
     ctx.restore();
   }
