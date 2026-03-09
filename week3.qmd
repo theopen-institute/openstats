@@ -12,10 +12,12 @@ The Open Institute For Social Science
 :::
 
 # What have we done so far?
-- We've define a parameter
-- Then, for each possible value of our parameter, we state our *prior* belief and the *likelihood* of the data we saw.
-- These combine to produce an updated *posterior* belief.
-- That's statistics.
+- We've defined a parameter
+- Then, we stated our *prior* belief, ranking every possible value of the parameter against each other.
+- Next, we gathered observation data.
+- We calculated the *likelihood* of the data we saw for each possible value of our prior.
+- We combined our prior and likelihood to produce an updated *posterior* belief.
+- That's it. That's all of statistics.
 
 # So how do we actually design a study?
 We need two things:
