@@ -1,0 +1,70 @@
+---
+format: 
+  revealjs: default
+---
+
+# Data Lunch: Week 1 {.center notes="notes/week1_notes.md#title"}
+
+Models
+
+::: {.footer}
+The Open Institute For Social Science
+:::
+
+# What have we done so far?
+- We've define a parameter
+- Then, for each possible value of our parameter, we state our *prior* belief and the *likelihood* of the data we saw.
+- These combine to produce an updated *posterior* belief.
+- That's statistics.
+
+# So how do we actually design a study?
+We need two things:
+- data
+- our priors and likelihoods, which together are called a model
+
+How do we define our model?
+- What do we need to define?
+  - Our priors, which are never a single value but rather a probability distribution
+  - A process for deriving our likelihood for every possible value of our priors
+
+# How to write priors
+
+- We could, if we wanted, set values for every interval manually, just like we did in our election poll example.
+- Usually, though, it's easier to just use "ready made" probability distributions for this purpose.
+- Normal distributions are frequently used because they roughly resemble how our uncertainty often works.
+- Many other possibilities exist.
+
+# How to write likelihood functions
+
+- Here, we also need to use a probability distribution.
+- We can't use "=" because randomness remains.
+- But, the probability distribution here represents a "generative process".
+- How did our data get made?
+
+# Posterior results come from "fitting" our data to our model
+
+The process here is the same as we've always done.
+- In our stones in a bag example, we tested literally every possible value.
+- In our voting estimation example, we used "grid approximation" to test every 5%.
+- As our models become more complex, these approaches become impractical.
+- Going forward, we'll use software to do the work for us.
+- If we could, it would always be better to test every value manually. MCMC is just a practical efficiency, not otherwise important.
+
+
+
+
+# Two major types of models:
+
+- Understanding the distribution of variables (parameter estimation)
+  - Based on limited survey data, who do we think will win an election?
+  - Based on social network analysis, how many Nepali citizens currently live abroad?
+
+- Understanding relationships between variables (regression)
+  - Does yoga lead to longer, healthier lives?
+  - Does education make people happy?
+  - What interventions can change national birth rates?
+
+
+# Cause is super weird
+- it's always a theoretical attribution, simplifying arbitrary complexity
+- in the social science, we tend to think about cause as sites of intervention
