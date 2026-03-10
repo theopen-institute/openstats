@@ -20,17 +20,21 @@ The Open Institute For Social Science
 
 # What is a model?
 
-- A **model** is a theoretical description of how data is generated
-- It is the combination of:
-  - Our *priors*
-  - A method of calculating our *likelihood* from data.
+- Our **data** is the observation we made [(# of Surveys, # of Votes)]{.fragment .green}
+- A **model** is a theoretical description of how this data was generated, combining:
+  - Our *prior* belief about our parameter(s) [(Popularity)]{.fragment .blue}
+  - A method of calculating our *likelihood* from data
 
-<!-- # The mechanics of "fitting"
+# What is "fitting"?
 
-- In our stones in a bag example, we tested literally every possible value of our parameter.
-- In our voting estimation example, we used "grid approximation" to test our parameter on 5% increments.
-- As our models become more complex, these approaches become impractical.
-- Software to the rescue, but even the most complicated software is just looking for ways to count possibilities more efficiently. -->
+- We "fit" our model to our data using Bayes' Theorem.
+- This updates our prior -> posterior.
+- We can use different techniques for this process:
+  - Stones in a bag: we counted all possibilities
+  - Election polling: we used "grid approximation" to estimate the parameter every 5%
+  - Going forward: we'll use software (Markov Chain Montey Carlo, or MCMC)
+
+
 
 # Distributions Demo {.no-title}
 
@@ -41,6 +45,7 @@ The Open Institute For Social Science
 
 
 # Writing Priors
+We need a way to *describe* our prior belief for all values of our parameter (Popularity)
 
 ::: {.columns}
 
@@ -183,24 +188,30 @@ plot(
 
 :::
 
-# How to write likelihood functions
+# Writing likelihood functions
 
-- How did our data get made?
+We need a way to describe how our data got made, linking our parameter (Popularity) to our observed data (Surveys and Votes)
 
 $$
-Votes \sim \mathrm{Binomial}(Surveys, Popularity)
+{\color{green}{Votes}} \sim \mathrm{Binomial}({\color{green}{Surveys}}, {\color{blue}{Popularity}})
 $$
 
+[Observed Data]{.green}
 
+[Parameter(s)]{.blue}
 
-# Complete Model
+# Writing complete models
 
 $$
 \begin{align}
-Votes &\sim \mathrm{Binomial}(Surveys, Popularity) \\
-Popularity &\sim \mathrm{Normal}(60\%, 15\%)
+\color{green}{Votes} &\sim \color{green}{\mathrm{Binomial}(Surveys, Popularity)} \\
+\color{red}{Popularity} &\sim \color{red}{\mathrm{Normal}(60\%, 15\%)}
 \end{align}
 $$
+
+[Likelihood function]{.green}
+
+[Prior Belief]{.red}
 
 <!-- # Two major types of models:
 
@@ -218,6 +229,158 @@ $$
 - it's always a theoretical attribution, simplifying arbitrary complexity
 - in the social science, we tend to think about cause as sites of intervention -->
 
+# Understanding global birth rates
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(tidybayes)
+library(bayesplot)
+library(cmdstanr)
+library(jsonlite)
+options(mc.cores = parallel::detectCores())
+filename <- "datasets/wb2022.csv"
+
+# build a variable label vector for better labelling of df
+label_vec <- read_csv(filename) |>
+  distinct(`Series Code`, `Series Name`) |>
+  filter(!is.na(`Series Code`), !is.na(`Series Name`)) |>
+  group_by(`Series Code`) |> # in case of duplicates
+  summarise(label = first(`Series Name`), .groups = "drop") |>
+  with(setNames(label, `Series Code`))
+
+# compose dataframe
+df <- read_csv(filename) |>
+  select(-c(`Series Name`)) |>
+  slice(1:(n() - 5)) |>
+  pivot_longer(
+    cols = matches("^\\d{4} \\[YR\\d{4}\\]$"),
+    names_to = "year",
+    values_to = "value",
+    names_transform = list(year = ~ str_extract(.x, "^\\d{4}"))
+  ) |>
+  pivot_wider(names_from = `Series Code`, values_from = value) |>
+  mutate(across(
+    any_of(names(label_vec)),
+    ~ {
+      attr(.x, "label") <- unname(label_vec[cur_column()])
+      .x
+    }
+  )) |>
+  left_join(
+    read_csv("datasets/wb_country.csv"),
+    join_by(`Country Code` == Code)
+  )
+
+# build variable summary showing only eligible variables
+label_df <- df |>
+  summarise(across(everything(), ~ sum(is.na(.x)))) |>
+  pivot_longer(everything(), names_to = "column", values_to = "n_NA") |>
+  # filter(n_NA < 50) |>
+  rowwise() |>
+  filter(
+    !any(is.na(df[df$`Country Name` == "Nepal", .data$column, drop = TRUE]))
+  ) |>
+  ungroup() |>
+  transmute(
+    `Series Code` = column,
+    label = unname(label_vec[column])
+  ) |>
+  filter(!is.na(label))
+```
+
+:::{.r-stack }
+
+:::{.fragment width="1605"}
+```{r echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+ggplot(df, aes(x = SP.DYN.TFRT.IN)) +
+  geom_histogram(bins = 11, colour = "darkgray") +
+  scale_fill_discrete(
+    labels = scales::label_wrap(20)
+  ) +
+  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
+```
+
+
+
+:::
+
+:::{.fragment width="1605"}
+```{r echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+ggplot(df, aes(x = SP.DYN.TFRT.IN, fill = Region)) +
+  geom_histogram(bins = 11, colour = "darkgray", position = "stack") +
+  scale_fill_discrete(
+    labels = scales::label_wrap(20)
+  ) +
+  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
+```
+:::
+
+
+:::
+
+
+# Birthrate ~ Women's College Enrollment
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(df, aes(x = SE.TER.ENRR.FE, y = SP.DYN.TFRT.IN)) +
+  geom_point(aes(color = Region)) +
+  stat_smooth(method = "lm") +
+  scale_color_discrete(
+    labels = scales::label_wrap(20)
+  ) +
+  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
+```
+
+
+# Birthrate ~ Infant Mortality
+
+:::{.r-stack}
+
+:::{.fragment width="1605"}
+```{r echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+ggplot(df, aes(x = SP.DYN.IMRT.IN, y = SP.DYN.TFRT.IN)) +
+  geom_point(aes(color = Region)) +
+  stat_smooth(method = "lm") +
+  scale_color_discrete(
+    labels = scales::label_wrap(20)
+  ) +
+  scale_x_continuous(limits = c(0, 100)) +
+  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
+
+
+
+```
+
+:::
+
+:::{.fragment width="100%"}
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+ggplot(df, aes(x = log(SP.DYN.IMRT.IN), y = SP.DYN.TFRT.IN)) +
+  geom_point(aes(color = Region)) +
+  stat_smooth(method = "lm") +
+  scale_color_discrete(
+    labels = scales::label_wrap(20)
+  ) +
+  # scale_x_continuous(limits=c(0,100)) +
+  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
+
+```
+
+:::
+:::
+
+# Data: no meaning without a story
+
+```{=html}
+<iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="https://dagitty.net/dags.html"
+></iframe>
+```
+
 
 # Modeling individual weight
 
@@ -226,7 +389,7 @@ library(rethinking)
 library(tidyverse)
 data(Howell1)
 
-df <- Howell1 |>
+df_weight <- Howell1 |>
   filter(age >= 18) |>
   mutate(
     height_std = standardize(height),
@@ -234,10 +397,10 @@ df <- Howell1 |>
     sex = ifelse((male == 0), "female", "male") |> as_factor()
   )
 
-ggplot(df, aes(x=weight)) +
+ggplot(df_weight, aes(x=weight)) +
   geom_histogram(bins=32, color="gray") + 
   geom_vline(
-    xintercept = mean(df$weight),
+    xintercept = mean(df_weight$weight),
     color = "red",
     linetype = "dashed"
   )
@@ -246,15 +409,15 @@ ggplot(df, aes(x=weight)) +
 
 # Vertical plot 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(df) +
+ggplot(df_weight) +
   geom_jitter(
-    data = df,
+    data = df_weight,
     aes(x = 0, y = weight, color=sex),
     shape = "cross",
     color = "purple"
   ) +
   geom_hline(
-    yintercept = mean(df$weight),
+    yintercept = mean(df_weight$weight),
     color = "red",
     linetype = "dashed"
   ) +
@@ -264,19 +427,19 @@ ggplot(df) +
 # Vertical plot (sex differentiated)
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(df) +
+ggplot(df_weight) +
   geom_jitter(
-    data = df,
+    data = df_weight,
     aes(x = ifelse(sex == "male", -1, 1), y = weight, color=sex),
     shape = "cross",
   ) +
   geom_hline(
-    yintercept = mean((df |> filter(sex == "male"))$weight),
+    yintercept = mean((df_weight |> filter(sex == "male"))$weight),
     color = "red",
     linetype = "dashed"
   ) +
   geom_hline(
-    yintercept = mean((df |> filter(sex == "female"))$weight),
+    yintercept = mean((df_weight |> filter(sex == "female"))$weight),
     color = "blue",
     linetype = "dashed"
   ) +
@@ -284,19 +447,19 @@ ggplot(df) +
 ```
 
 # Scatter plot (with height)
-:::{.r-stack}
-:::{.fragment}
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-df |>
+:::{.r-stack width="1605"}
+:::{.fragment width="1605"}
+```{r echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+df_weight |>
   ggplot(aes(x = height, y = weight)) +
   geom_point(color = "purple", shape = "plus") +
   labs(x = "Height (cm)", y = "Weight (kg)")
 
 ```
 :::
-:::{.fragment}
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-df |>
+:::{.fragment width="1605"}
+```{r echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+df_weight |>
   ggplot(aes(x = height, y = weight)) +
   geom_point(color = "purple", shape = "plus") +
   geom_smooth(method="lm", se=FALSE) +
@@ -305,9 +468,9 @@ df |>
 ```
 :::
 
-:::{.fragment}
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-df |>
+:::{.fragment width="1605"}
+```{r echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+df_weight |>
   ggplot(aes(x = height / 2.56, y = weight)) +
   geom_point(color = "purple", shape = "plus") +
   geom_smooth(method="lm", se=FALSE) +
@@ -316,9 +479,9 @@ df |>
 ```
 :::
 
-:::{.fragment}
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-df |>
+:::{.fragment width="1605"}
+```{r echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+df_weight |>
   ggplot(aes(x = scale(height), y = weight)) +
   geom_point(color = "purple", shape = "plus") +
   geom_smooth(method="lm", se=FALSE) +
@@ -329,10 +492,19 @@ df |>
 
 :::
 
+# Simple stories
+
+```{=html}
+<iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="https://dagitty.net/dags.html"
+></iframe>
+```
 
 
-
-# Model definition
+# Model definition (Weight)
 
 $$
 \begin{align}
@@ -350,7 +522,7 @@ model <- ulam(
     mu ~ normal(50, 10),
     sigma ~ uniform(0, 50)
   ),
-  data = df
+  data = df_weight
 )
 ```
 ```{r}
@@ -358,12 +530,12 @@ precis(model, prob = 0.95)
 ```
 
 
-# Model (with sex)
+# Model (Weight ~ Sex)
 $$
 \begin{align}
 \text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
 \mu_i &= \alpha_{sex[i]} \\
-\alpha_{sex[i]} &\sim \text{Normal}(50, 10) \\
+\alpha_{sex} &\sim \text{Normal}(50, 10) \\
 \sigma &\sim \text{Uniform}(0, 50)
 \end{align}
 $$
@@ -377,7 +549,7 @@ model <- ulam(
     a[sex] ~ normal(50, 10),
     sigma ~ uniform(0, 50)
   ),
-  data = df
+  data = df_weight
 )
 ```
 ```{r}
@@ -385,7 +557,7 @@ precis(model, prob = 0.95, depth=2)
 ```
 
 
-# Model (with height)
+# Model (Weight ~ Height)
 
 $$
 \begin{align}
@@ -407,7 +579,7 @@ model <- ulam(
     b ~ normal(0, 10),
     sigma ~ uniform(0, 50)
   ),
-  data = df
+  data = df_weight
 )
 ```
 
@@ -415,7 +587,7 @@ model <- ulam(
 precis(model, prob = 0.95)
 ```
 
-# Model (Sex + Height)
+# Model (Weight ~ Sex + Height)
 
 $$
 \begin{align}
@@ -437,10 +609,118 @@ model <- ulam(
     b ~ normal(0, 10),
     sigma ~ uniform(0, 50)
   ),
-  data = df
+  data = df_weight
 )
 ```
 
 ```{r}
 precis(model, prob = 0.95, depth = 2)
+```
+
+# Model (Fertility ~ Women in College)
+```{r, message=FALSE, results="hide"}
+model1a <- cmdstan_model("models/wb_model1a.stan")
+fit1a <- df |>
+  transmute(
+    fertility_rate = SP.DYN.TFRT.IN,
+    women_in_college = scale(SE.TER.ENRR.FE) |> as.numeric()
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model1a$sample()
+
+fit1a |>
+  spread_draws(alpha, beta, sigma) |>
+  ggplot(aes(x = beta)) +
+  stat_halfeye()
+
+fit1a |>
+  spread_draws(alpha, beta, sigma) |>
+  mutate(
+    r2 = beta^2 / (beta^2 + sigma^2)
+  ) |>
+  summarise(
+    r2_mean = mean(r2),
+    r2_median = median(r2),
+    r2_q05 = quantile(r2, 0.05),
+    r2_q95 = quantile(r2, 0.95)
+  )
+```
+
+```{r}
+fit1a$summary()
+```
+
+
+# Model (Fertility ~ Infant Mortality)
+```{r, message=FALSE, results="hide"}
+model1b <- cmdstan_model("models/wb_model1b.stan")
+fit1b <- df |>
+  transmute(
+    fertility_rate = SP.DYN.TFRT.IN,
+    infant_mortality = scale(SP.DYN.IMRT.IN) |> as.numeric()
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model1b$sample()
+
+fit1b |>
+  spread_draws(alpha, beta, sigma) |>
+  # pivot_longer(c(alpha, beta, sigma)) |>
+  ggplot(aes(x = beta)) +
+  stat_halfeye()
+
+fit1b |>
+  spread_draws(alpha, beta, sigma) |>
+  mutate(
+    r2 = beta^2 / (beta^2 + sigma^2)
+  ) |>
+  summarise(
+    r2_mean = mean(r2),
+    r2_median = median(r2),
+    r2_q05 = quantile(r2, 0.05),
+    r2_q95 = quantile(r2, 0.95)
+  )
+
+```
+
+```{r}
+fit1b$summary()
+```
+
+
+# Model (Fertility ~ Women in College + Infant Mortality)
+```{r, message=FALSE, results="hide"}
+model2 <- cmdstan_model("models/wb_model2.stan")
+fit2 <- df |>
+  transmute(
+    fertility_rate = SP.DYN.TFRT.IN,
+    women_in_college = scale(SE.TER.ENRR.FE) |> as.numeric(),
+    infant_mortality = scale(SP.DYN.IMRT.IN) |> as.numeric()
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model2$sample()
+
+fit2 |>
+  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
+  # pivot_longer(c(alpha, beta, sigma)) |>
+  ggplot() +
+  stat_halfeye(aes(x = beta_college))
+
+fit2 |>
+  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
+  mutate(
+    r2 = beta_college^2 / (beta_mortality^2 + sigma^2)
+  ) |>
+  summarise(
+    r2_mean = mean(r2),
+    r2_median = median(r2),
+    r2_q05 = quantile(r2, 0.05),
+    r2_q95 = quantile(r2, 0.95)
+  )
+```
+
+```{r}
+fit2$summary()
 ```
