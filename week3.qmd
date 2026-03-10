@@ -616,7 +616,7 @@ precis(model, prob = 0.95, depth = 2)
 ```
 
 # Model (Fertility ~ Women in College)
-```{r, message=FALSE, results="hide"}
+```{r model1a, message=FALSE, results="hide"}
 model1a <- cmdstan_model("models/wb_model1a.stan")
 fit1a <- df |>
   transmute(
@@ -629,31 +629,31 @@ fit1a <- df |>
 
 fit1a$output()
 
+# fit1a |>
+#   spread_draws(alpha, beta, sigma) |>
+#   mutate(
+#     r2 = beta^2 / (beta^2 + sigma^2)
+#   ) |>
+#   summarise(
+#     r2_mean = mean(r2),
+#     r2_median = median(r2),
+#     r2_q05 = quantile(r2, 0.05),
+#     r2_q95 = quantile(r2, 0.95)
+#   )
+```
+
+```{r}
 fit1a |>
   spread_draws(alpha, beta, sigma) |>
   ggplot(aes(x = beta)) +
   stat_halfeye()
 
-fit1a |>
-  spread_draws(alpha, beta, sigma) |>
-  mutate(
-    r2 = beta^2 / (beta^2 + sigma^2)
-  ) |>
-  summarise(
-    r2_mean = mean(r2),
-    r2_median = median(r2),
-    r2_q05 = quantile(r2, 0.05),
-    r2_q95 = quantile(r2, 0.95)
-  )
-```
-
-```{r}
 fit1a$summary()
 ```
 
 
 # Model (Fertility ~ Infant Mortality)
-```{r, message=FALSE, results="hide"}
+```{r model1b, message=FALSE, results="hide"}
 model1b <- cmdstan_model("models/wb_model1b.stan")
 fit1b <- df |>
   transmute(
@@ -664,33 +664,33 @@ fit1b <- df |>
   compose_data() |>
   model1b$sample(chains=1)
 
+# fit1b |>
+#   spread_draws(alpha, beta, sigma) |>
+#   mutate(
+#     r2 = beta^2 / (beta^2 + sigma^2)
+#   ) |>
+#   summarise(
+#     r2_mean = mean(r2),
+#     r2_median = median(r2),
+#     r2_q05 = quantile(r2, 0.05),
+#     r2_q95 = quantile(r2, 0.95)
+#   )
+
+```
+
+```{r}
 fit1b |>
   spread_draws(alpha, beta, sigma) |>
   # pivot_longer(c(alpha, beta, sigma)) |>
   ggplot(aes(x = beta)) +
   stat_halfeye()
 
-fit1b |>
-  spread_draws(alpha, beta, sigma) |>
-  mutate(
-    r2 = beta^2 / (beta^2 + sigma^2)
-  ) |>
-  summarise(
-    r2_mean = mean(r2),
-    r2_median = median(r2),
-    r2_q05 = quantile(r2, 0.05),
-    r2_q95 = quantile(r2, 0.95)
-  )
-
-```
-
-```{r}
 fit1b$summary()
 ```
 
 
 # Model (Fertility ~ Women in College + Infant Mortality)
-```{r, message=FALSE, results="hide"}
+```{r model2, message=FALSE, results="hide"}
 model2 <- cmdstan_model("models/wb_model2.stan")
 fit2 <- df |>
   transmute(
@@ -702,17 +702,17 @@ fit2 <- df |>
   compose_data() |>
   model2$sample(chains=1)
 
-fit2 |>
-  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
-  mutate(
-    r2 = beta_college^2 / (beta_mortality^2 + sigma^2)
-  ) |>
-  summarise(
-    r2_mean = mean(r2),
-    r2_median = median(r2),
-    r2_q05 = quantile(r2, 0.05),
-    r2_q95 = quantile(r2, 0.95)
-  )
+# fit2 |>
+#   spread_draws(alpha, beta_college, beta_mortality, sigma) |>
+#   mutate(
+#     r2 = beta_college^2 / (beta_mortality^2 + sigma^2)
+#   ) |>
+#   summarise(
+#     r2_mean = mean(r2),
+#     r2_median = median(r2),
+#     r2_q05 = quantile(r2, 0.05),
+#     r2_q95 = quantile(r2, 0.95)
+#   )
 ```
 
 :::{.columns}
