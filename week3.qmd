@@ -347,8 +347,6 @@ ggplot(df, aes(x = SP.DYN.IMRT.IN, y = SP.DYN.TFRT.IN)) +
   scale_x_continuous(limits = c(0, 100)) +
   theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
 
-
-
 ```
 
 :::
@@ -627,7 +625,7 @@ fit1a <- df |>
   ) |>
   drop_na() |>
   compose_data() |>
-  model1a$sample()
+  model1a$sample(chains=1)
 
 fit1a |>
   spread_draws(alpha, beta, sigma) |>
@@ -662,7 +660,7 @@ fit1b <- df |>
   ) |>
   drop_na() |>
   compose_data() |>
-  model1b$sample()
+  model1b$sample(chains=1)
 
 fit1b |>
   spread_draws(alpha, beta, sigma) |>
@@ -700,7 +698,7 @@ fit2 <- df |>
   ) |>
   drop_na() |>
   compose_data() |>
-  model2$sample()
+  model2$sample(chains=1)
 
 fit2 |>
   spread_draws(alpha, beta_college, beta_mortality, sigma) |>
