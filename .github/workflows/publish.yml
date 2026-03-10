@@ -54,7 +54,7 @@ jobs:
           key: ${{ runner.os }}-cmdstan
 
       - name: Install CmdStan
-        run: Rscript -e "cmdstanr::install_cmdstan()"
+        run: Rscript -e "cmdstanr::install_cmdstan(cores = 2, overwrite = TRUE)"
 
       # Install Quarto extensions at runtime (not committed to repo)
       - name: Install Quarto shinylive extension
@@ -63,6 +63,9 @@ jobs:
       - name: Install Quarto code embed extension
         run: quarto add quarto-ext/include-code-files --no-prompt
         
+      - name: Remove cached Stan executables
+        run: rm -rf .stancache
+
       - name: Ensure cache directories exists
         run: |
           mkdir -p .stancache
