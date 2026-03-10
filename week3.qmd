@@ -632,12 +632,12 @@ fit1a <- df |>
 ```
 
 ```{r model1a_output}
-fit1a |>
-  spread_draws(alpha, beta, sigma) |>
-  ggplot(aes(x = beta)) +
-  stat_halfeye()
+# fit1a |>
+#   spread_draws(alpha, beta, sigma) |>
+#   ggplot(aes(x = beta)) +
+#   stat_halfeye()
 
-# fit1a$summary()
+fit1a$summary()
 ```
 
 
