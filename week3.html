@@ -239,19 +239,27 @@ technical material is not the point.</li>
 <section id="what-is-a-model" class="title-slide slide level1 center">
 <h1>What is a model?</h1>
 <ul>
-<li class="fragment">A <strong>model</strong> is a theoretical description of how data is generated</li>
-<li class="fragment">It is the combination of:
+<li class="fragment">Our <strong>data</strong> is the observation we made <span class="fragment green">(# of Surveys, # of Votes)</span></li>
+<li class="fragment">A <strong>model</strong> is a theoretical description of how this data was generated, combining:
 <ul>
-<li class="fragment">Our <em>priors</em></li>
-<li class="fragment">A method of calculating our <em>likelihood</em> from data.</li>
+<li class="fragment">Our <em>prior</em> belief about our parameter(s) <span class="fragment blue">(Popularity)</span></li>
+<li class="fragment">A method of calculating our <em>likelihood</em> from data</li>
 </ul></li>
 </ul>
-<!-- # The mechanics of "fitting"
+</section>
 
-- In our stones in a bag example, we tested literally every possible value of our parameter.
-- In our voting estimation example, we used "grid approximation" to test our parameter on 5% increments.
-- As our models become more complex, these approaches become impractical.
-- Software to the rescue, but even the most complicated software is just looking for ways to count possibilities more efficiently. -->
+<section id="what-is-fitting" class="title-slide slide level1 center">
+<h1>What is “fitting”?</h1>
+<ul>
+<li class="fragment">We “fit” our model to our data using Bayes’ Theorem.</li>
+<li class="fragment">This updates our prior -&gt; posterior.</li>
+<li class="fragment">We can use different techniques for this process:
+<ul>
+<li class="fragment">Stones in a bag: we counted all possibilities</li>
+<li class="fragment">Election polling: we used “grid approximation” to estimate the parameter every 5%</li>
+<li class="fragment">Going forward: we’ll use software (Markov Chain Montey Carlo, or MCMC)</li>
+</ul></li>
+</ul>
 </section>
 
 <section id="distributions-demo" class="title-slide slide level1 no-title center">
@@ -1134,6 +1142,7 @@ technical material is not the point.</li>
 
 <section id="writing-priors" class="title-slide slide level1 center">
 <h1>Writing Priors</h1>
+<p>We need a way to <em>describe</em> our prior belief for all values of our parameter (Popularity)</p>
 <div class="columns">
 <div class="column" style="width:33%;">
 <div class="fragment">
@@ -1207,24 +1216,26 @@ technical material is not the point.</li>
 </div></div>
 </section>
 
-<section id="how-to-write-likelihood-functions" class="title-slide slide level1 center">
-<h1>How to write likelihood functions</h1>
-<ul>
-<li class="fragment">How did our data get made?</li>
-</ul>
+<section id="writing-likelihood-functions" class="title-slide slide level1 center">
+<h1>Writing likelihood functions</h1>
+<p>We need a way to describe how our data got made, linking our parameter (Popularity) to our observed data (Surveys and Votes)</p>
 <p><span class="math display">\[
-Votes \sim \mathrm{Binomial}(Surveys, Popularity)
+{\color{green}{Votes}} \sim \mathrm{Binomial}({\color{green}{Surveys}}, {\color{blue}{Popularity}})
 \]</span></p>
+<p><span class="green">Observed Data</span></p>
+<p><span class="blue">Parameter(s)</span></p>
 </section>
 
-<section id="complete-model" class="title-slide slide level1 center">
-<h1>Complete Model</h1>
+<section id="writing-complete-models" class="title-slide slide level1 center">
+<h1>Writing complete models</h1>
 <p><span class="math display">\[
 \begin{align}
-Votes &amp;\sim \mathrm{Binomial}(Surveys, Popularity) \\
-Popularity &amp;\sim \mathrm{Normal}(60\%, 15\%)
+\color{green}{Votes} &amp;\sim \color{green}{\mathrm{Binomial}(Surveys, Popularity)} \\
+\color{red}{Popularity} &amp;\sim \color{red}{\mathrm{Normal}(60\%, 15\%)}
 \end{align}
 \]</span></p>
+<p><span class="green">Likelihood function</span></p>
+<p><span class="red">Prior Belief</span></p>
 <!-- # Two major types of models:
 
 - Understanding the distribution of variables (parameter estimation)
@@ -1240,63 +1251,26 @@ Popularity &amp;\sim \mathrm{Normal}(60\%, 15\%)
 - in the social science, we tend to think about cause as sites of intervention -->
 </section>
 
-<section id="modeling-individual-weight" class="title-slide slide level1 center">
-<h1>Modeling individual weight</h1>
-
-<img data-src="week3_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
-
-<section id="vertical-plot" class="title-slide slide level1 center">
-<h1>Vertical plot</h1>
-
-<img data-src="week3_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
-
-<section id="vertical-plot-sex-differentiated" class="title-slide slide level1 center">
-<h1>Vertical plot (sex differentiated)</h1>
-
-<img data-src="week3_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
-
-<section id="scatter-plot-with-height" class="title-slide slide level1 center">
-<h1>Scatter plot (with height)</h1>
+<section id="understanding-global-birth-rates" class="title-slide slide level1 center">
+<h1>Understanding global birth rates</h1>
 <div class="r-stack">
-<div class="fragment">
+<div class="fragment" width="1605">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-8-1.png" width="1605"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div class="fragment">
+<div class="fragment" width="1605">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
+<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-9-1.png" width="1605"></p>
 </figure>
 </div>
 </div>
@@ -1305,8 +1279,116 @@ Popularity &amp;\sim \mathrm{Normal}(60\%, 15\%)
 </div>
 </section>
 
-<section id="model-definition" class="title-slide slide level1 center">
-<h1>Model definition</h1>
+<section id="birthrate-womens-college-enrollment" class="title-slide slide level1 center">
+<h1>Birthrate ~ Women’s College Enrollment</h1>
+
+<img data-src="week3_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+
+<section id="birthrate-infant-mortality" class="title-slide slide level1 center">
+<h1>Birthrate ~ Infant Mortality</h1>
+<div class="r-stack">
+<div class="fragment" width="1605">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-11-1.png" width="1605"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" width="100%">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-12-1.png" width="1605"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="data-no-meaning-without-a-story" class="title-slide slide level1 center">
+<h1>Data: no meaning without a story</h1>
+<iframe id="dag-frame-1" data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
+</section>
+
+<section id="modeling-individual-weight" class="title-slide slide level1 center">
+<h1>Modeling individual weight</h1>
+
+<img data-src="week3_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+
+<section id="vertical-plot" class="title-slide slide level1 center">
+<h1>Vertical plot</h1>
+
+<img data-src="week3_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+
+<section id="vertical-plot-sex-differentiated" class="title-slide slide level1 center">
+<h1>Vertical plot (sex differentiated)</h1>
+
+<img data-src="week3_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+
+<section id="scatter-plot-with-height" class="title-slide slide level1 center">
+<h1>Scatter plot (with height)</h1>
+<div class="r-stack" width="1605">
+<div class="fragment" width="1605">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-16-1.png" width="1605"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" width="1605">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-17-1.png" width="1605"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" width="1605">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-18-1.png" width="1605"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" width="1605">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/unnamed-chunk-19-1.png" width="1605"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="simple-stories" class="title-slide slide level1 center">
+<h1>Simple stories</h1>
+<iframe id="dag-frame-1" data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
+</section>
+
+<section id="model-definition-weight" class="title-slide slide level1 center">
+<h1>Model definition (Weight)</h1>
 <p><span class="math display">\[
 \begin{align}
 weight_i &amp;\sim \text{Normal}(\mu, \sigma) \\
@@ -1323,13 +1405,13 @@ sigma  6.458195 0.2365766  6.022862  6.954235 1.027775 350.1732</code></pre>
 </div>
 </section>
 
-<section id="model-with-sex" class="title-slide slide level1 center">
-<h1>Model (with sex)</h1>
+<section id="model-weight-sex" class="title-slide slide level1 center">
+<h1>Model (Weight ~ Sex)</h1>
 <p><span class="math display">\[
 \begin{align}
 \text{weight}_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
 \mu_i &amp;= \alpha_{sex[i]} \\
-\alpha_{sex[i]} &amp;\sim \text{Normal}(50, 10) \\
+\alpha_{sex} &amp;\sim \text{Normal}(50, 10) \\
 \sigma &amp;\sim \text{Uniform}(0, 50)
 \end{align}
 \]</span></p>
@@ -1343,8 +1425,8 @@ sigma  5.532576 0.2160557  5.147892  5.960451 1.006089 369.7655</code></pre>
 </div>
 </section>
 
-<section id="model-with-height" class="title-slide slide level1 center">
-<h1>Model (with height)</h1>
+<section id="model-weight-height" class="title-slide slide level1 center">
+<h1>Model (Weight ~ Height)</h1>
 <p><span class="math display">\[
 \begin{align}
 \text{weight}_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
@@ -1364,8 +1446,8 @@ sigma  4.246329 0.1531567  3.967734  4.547446 1.0101649 344.9605</code></pre>
 </div>
 </section>
 
-<section id="model-sex-height" class="title-slide slide level1 center">
-<h1>Model (Sex + Height)</h1>
+<section id="model-weight-sex-height" class="title-slide slide level1 center">
+<h1>Model (Weight ~ Sex + Height)</h1>
 <p><span class="math display">\[
 \begin{align}
 \text{weight}_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
@@ -1384,6 +1466,26 @@ b      4.907916 0.3143433  4.282036  5.491431 1.0258512  96.18636
 sigma  4.252760 0.1531087  3.974815  4.583011 0.9990955 364.64369</code></pre>
 </div>
 </div>
+</section>
+
+<section id="model-fertility-women-in-college" class="title-slide slide level1 center">
+<h1>Model (Fertility ~ Women in College)</h1>
+
+</section>
+
+<section id="model-fertility-infant-mortality" class="title-slide slide level1 center">
+<h1>Model (Fertility ~ Infant Mortality)</h1>
+
+</section>
+
+<section id="model-fertility-women-in-college-infant-mortality" class="title-slide slide level1 center">
+<h1>Model (Fertility ~ Women in College + Infant Mortality)</h1>
+<div class="columns">
+<div class="column">
+
+</div><div class="column">
+
+</div></div>
 
 
 </section>
