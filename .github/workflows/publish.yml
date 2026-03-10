@@ -37,6 +37,7 @@ jobs:
             tidybayes
             posterior
             stan-dev/cmdstanr
+            rethinking
           cache-version: 1
 
       # System toolchain required for CmdStan

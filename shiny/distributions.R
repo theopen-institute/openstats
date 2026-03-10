@@ -135,7 +135,7 @@ ui <- page_sidebar(
             "A normal distribution is generated when many small and independent random influences combine."
           ),
           p(tags$i(
-            "Examples: (1) Measurement errors arising from many small sources of variation in a laboratory instrument. (2) Adult human heights within a large, homogeneous population. (3) Test scores on a well-designed exam taken by many students."
+            "Examples: (1) Measurement errors arising from many small sources of variation in a laboratory instrument. (2) Adult human heights within a homogeneous population. (3) Test scores on a well-designed exam taken by many students."
           ))
         ),
 
@@ -253,6 +253,43 @@ ui <- page_sidebar(
 server <- function(input, output, session) {
   draws <- reactiveVal(numeric(0))
 
+  observeEvent(input$axis_modal, {
+    showModal(
+      modalDialog(
+        title = "Axis limits",
+        checkboxInput(
+          "manual_xlim",
+          "Manual x-axis range",
+          value = isTRUE(input$manual_xlim)
+        ),
+        conditionalPanel(
+          condition = "input.manual_xlim === true",
+          numericInput("xlim_min", "x-min", value = input$xlim_min %||% NA),
+          numericInput("xlim_max", "x-max", value = input$xlim_max %||% NA)
+        ),
+        checkboxInput(
+          "manual_ylim",
+          "Manual y-axis range",
+          value = isTRUE(input$manual_ylim)
+        ),
+        conditionalPanel(
+          condition = "input.manual_ylim === true",
+          numericInput("ylim_min", "y-min", value = input$ylim_min %||% NA),
+          numericInput("ylim_max", "y-max", value = input$ylim_max %||% NA)
+        ),
+        footer = tagList(
+          tags$button(
+            type = "button",
+            class = "btn btn-secondary",
+            `data-bs-dismiss` = "modal",
+            style = "padding-left:10px; padding-right:10px;",
+            "Close"
+          )
+        )
+      )
+    )
+  })
+
   observeEvent(
     list(
       input$trialCount,
@@ -268,7 +305,13 @@ server <- function(input, output, session) {
       input$beta_alpha,
       input$beta_beta,
       input$gamma_shape,
-      input$gamma_rate
+      input$gamma_rate,
+      input$manual_xlim,
+      input$xlim_min,
+      input$xlim_max,
+      input$manual_ylim,
+      input$ylim_min,
+      input$ylim_max
     ),
     {
       draws(numeric(0))
@@ -342,6 +385,14 @@ server <- function(input, output, session) {
 
     updateNumericInput(session, "gamma_shape", value = 2)
     updateNumericInput(session, "gamma_rate", value = 1)
+
+    updateCheckboxInput(session, "manual_xlim", value = FALSE)
+    updateNumericInput(session, "xlim_min", value = NA)
+    updateNumericInput(session, "xlim_max", value = NA)
+
+    updateCheckboxInput(session, "manual_ylim", value = FALSE)
+    updateNumericInput(session, "ylim_min", value = NA)
+    updateNumericInput(session, "ylim_max", value = NA)
   })
 
   output$plot <- renderGirafe({
@@ -425,6 +476,8 @@ server <- function(input, output, session) {
         )
 
         list(
+          dist = "Normal",
+          params = list(mu = mu, sd = sd),
           type = "continuous",
           theory = theory,
           xlim = c(x_min, x_max),
@@ -556,6 +609,87 @@ server <- function(input, output, session) {
       return(empty_plot())
     }
 
+    apply_manual_xlim <- function(spec) {
+      if (!isTRUE(input$manual_xlim)) {
+        return(spec)
+      }
+
+      xmin <- input$xlim_min
+      xmax <- input$xlim_max
+
+      if (
+        is.null(xmin) ||
+          is.null(xmax) ||
+          !is.finite(xmin) ||
+          !is.finite(xmax) ||
+          xmin >= xmax
+      ) {
+        return(spec)
+      }
+
+      spec$xlim <- c(xmin, xmax)
+
+      if (spec$type == "continuous") {
+        if (identical(spec$dist, "Normal")) {
+          mu <- spec$params$mu
+          sd <- spec$params$sd
+          xs <- seq(xmin, xmax, length.out = 400)
+          spec$theory <- data.frame(
+            x = xs,
+            density = dnorm(xs, mu, sd)
+          )
+        } else {
+          spec$theory <- spec$theory[
+            spec$theory$x >= xmin & spec$theory$x <= xmax,
+            ,
+            drop = FALSE
+          ]
+        }
+        ymax <- max(spec$theory$density, na.rm = TRUE)
+        if (is.finite(ymax)) {
+          spec$ymax <- ymax
+        }
+      } else {
+        spec$theory <- spec$theory[
+          spec$theory$x >= xmin & spec$theory$x <= xmax,
+          ,
+          drop = FALSE
+        ]
+        ymax <- max(spec$theory$prob, na.rm = TRUE)
+        if (is.finite(ymax)) {
+          spec$ymax <- ymax
+        }
+      }
+
+      spec
+    }
+
+    spec <- apply_manual_xlim(spec)
+
+    apply_manual_ylim <- function(spec) {
+      if (!isTRUE(input$manual_ylim)) {
+        return(spec)
+      }
+
+      ymin <- input$ylim_min
+      ymax <- input$ylim_max
+
+      if (
+        is.null(ymin) ||
+          is.null(ymax) ||
+          !is.finite(ymin) ||
+          !is.finite(ymax) ||
+          ymin >= ymax
+      ) {
+        return(spec)
+      }
+
+      spec$ylim <- c(ymin, ymax)
+      spec
+    }
+
+    spec <- apply_manual_ylim(spec)
+
     g <- ggplot()
 
     # ---- simulated layer ----
@@ -643,7 +777,7 @@ server <- function(input, output, session) {
     g <- g +
       coord_cartesian(
         xlim = spec$xlim,
-        ylim = c(0, spec$ymax),
+        ylim = spec$ylim %||% c(0, spec$ymax),
         clip = "off"
       ) +
       scale_y_continuous(expand = expansion(mult = expand_mult)) +
@@ -674,11 +808,20 @@ server <- function(input, output, session) {
 
     if (length(sim_vals) == 0) {
       return(tags$div(
-        tags$div(
-          "Simulation Results:",
-          style = "font-weight:600; margin-bottom:4px;"
+        style = "display:flex; align-items:center; gap:12px;",
+        actionButton(
+          "axis_modal",
+          "Axis limits",
+          style = "padding-left:10px; padding-right:10px;"
         ),
-        tags$div("No simulations yet", style = "font-size:0.9em; color:#666;")
+        tags$div(
+          style = "min-width:0;",
+          tags$div(
+            "Simulation Results:",
+            style = "font-weight:600; margin-bottom:4px;"
+          ),
+          tags$div("No simulations yet", style = "font-size:0.9em; color:#666;")
+        )
       ))
     }
 
@@ -703,13 +846,22 @@ server <- function(input, output, session) {
     })
 
     tags$div(
-      tags$div(
-        "Recent simulations:",
-        style = "font-weight:600; margin-bottom:4px;"
+      style = "display:flex; align-items:center; gap:12px;",
+      actionButton(
+        "axis_modal",
+        "Axis limits",
+        style = "padding-left:10px; padding-right:10px;"
       ),
       tags$div(
-        style = "font-size:0.9em; padding-top:2px; padding-bottom:6px; overflow-x:auto; white-space:nowrap;",
-        spans
+        style = "min-width:0;",
+        tags$div(
+          "Recent simulations:",
+          style = "font-weight:600; margin-bottom:4px;"
+        ),
+        tags$div(
+          style = "font-size:0.9em; padding-top:2px; padding-bottom:6px; overflow-x:auto; white-space:nowrap;",
+          spans
+        )
       )
     )
   })

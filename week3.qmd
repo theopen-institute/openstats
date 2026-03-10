@@ -3,7 +3,7 @@ format:
   revealjs: default
 ---
 
-# Data Lunch: Week 1 {.center notes="notes/week1_notes.md#title"}
+# Data Lunch: Week 3 {.center notes="notes/week1_notes.md#title"}
 
 Models
 
@@ -12,50 +12,197 @@ The Open Institute For Social Science
 :::
 
 # What have we done so far?
-- We've defined a parameter
-- Then, we stated our *prior* belief, ranking every possible value of the parameter against each other.
-- Next, we gathered observation data.
-- We calculated the *likelihood* of the data we saw for each possible value of our prior.
+- We chose a parameter.
+- We stated our *prior* belief.
+- We made observations.
+- We calculated the *likelihood* of the things we observed.
 - We combined our prior and likelihood to produce an updated *posterior* belief.
-- That's it. That's all of statistics.
 
-# So how do we actually design a study?
-We need two things:
-- data
-- our priors and likelihoods, which together are called a model
+# What is a model?
 
-How do we define our model?
-- What do we need to define?
-  - Our priors, which are never a single value but rather a probability distribution
-  - A process for deriving our likelihood for every possible value of our priors
+- A **model** is a theoretical description of how data is generated
+- It is the combination of:
+  - Our *priors*
+  - A method of calculating our *likelihood* from data.
 
-# How to write priors
+<!-- # The mechanics of "fitting"
 
-- We could, if we wanted, set values for every interval manually, just like we did in our election poll example.
-- Usually, though, it's easier to just use "ready made" probability distributions for this purpose.
-- Normal distributions are frequently used because they roughly resemble how our uncertainty often works.
-- Many other possibilities exist.
+- In our stones in a bag example, we tested literally every possible value of our parameter.
+- In our voting estimation example, we used "grid approximation" to test our parameter on 5% increments.
+- As our models become more complex, these approaches become impractical.
+- Software to the rescue, but even the most complicated software is just looking for ways to count possibilities more efficiently. -->
+
+# Distributions Demo {.no-title}
+
+```{shinylive-r}
+#| standalone: true
+{{< include shiny/distributions.R >}}
+``` 
+
+
+# Writing Priors
+
+::: {.columns}
+
+::: {.column width="33%"}
+::: {.fragment}
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+x <- seq(0, 100, length.out = 1001)
+y <- dunif(x, min = 0, max = 100)
+
+plot(
+  x,
+  y,
+  type = "l",
+  lwd = 2,
+  col = "red",
+  xlim = c(0, 100),
+  xlab = "Votes",
+  ylab = "Density",
+  main = "Popularity ~ Uniform(0,100)",
+  cex.main = 3
+)
+```
+
+:::
+
+::: {.fragment}
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+x <- seq(0, 100, length.out = 1001)
+y <- dunif(x, min = 20, max = 80)
+
+plot(
+  x,
+  y,
+  type = "l",
+  lwd = 2,
+  col = "red",
+  xlim = c(0, 100),
+  xlab = "Votes",
+  ylab = "Density",
+  main = "Popularity ~ Uniform(20,80)",
+  cex.main = 3
+)
+```
+
+:::
+:::
+
+::: {.column width="33%"}
+::: {.fragment}
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+x <- seq(0, 100, length.out = 1001)
+y <- dnorm(x, mean = 50, sd = 20)
+
+plot(
+  x,
+  y,
+  type = "l",
+  lwd = 2,
+  col = "red",
+  xlim = c(0, 100),
+  xlab = "Votes",
+  ylab = "Density",
+  main = "Popularity ~ Normal(50,20)",
+  cex.main = 3
+)
+```
+
+:::
+
+::: {.fragment}
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+x <- seq(0, 100, length.out = 1001)
+y <- dnorm(x, mean = 40, sd = 5)
+
+plot(
+  x,
+  y,
+  type = "l",
+  lwd = 2,
+  col = "red",
+  xlim = c(0, 100),
+  xlab = "Votes",
+  ylab = "Density",
+  main = "Popularity ~ Normal(40,5)",
+  cex.main = 3
+)
+```
+
+:::
+:::
+
+::: {.column width="33%"}
+::: {.fragment}
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+x <- seq(0, 100, length.out = 1001)
+y <- dnorm(x, mean = 60, sd = 15)
+plot(
+  x,
+  y,
+  type = "l",
+  lwd = 2,
+  col = "red",
+  xlim = c(0, 100),
+  xlab = "Votes",
+  ylab = "Density",
+  main = "Popularity ~ Normal(60,15)",
+  cex.main = 3
+)
+```
+
+:::
+
+::: {.fragment}
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+x <- seq(0, 100, length.out = 1001)
+y <- dnorm(x, mean = 80, sd = 3)
+
+plot(
+  x,
+  y,
+  type = "l",
+  lwd = 2,
+  col = "red",
+  xlim = c(0, 100),
+  xlab = "Votes",
+  ylab = "Density",
+  main = "Popularity ~ Normal(80,3)",
+  cex.main = 3
+)
+```
+
+:::
+:::
+
+:::
 
 # How to write likelihood functions
 
-- Here, we also need to use a probability distribution.
-- We can't use "=" because randomness remains.
-- But, the probability distribution here represents a "generative process".
 - How did our data get made?
 
-# Posterior results come from "fitting" our data to our model
-
-The process here is the same as we've always done.
-- In our stones in a bag example, we tested literally every possible value.
-- In our voting estimation example, we used "grid approximation" to test every 5%.
-- As our models become more complex, these approaches become impractical.
-- Going forward, we'll use software to do the work for us.
-- If we could, it would always be better to test every value manually. MCMC is just a practical efficiency, not otherwise important.
+$$
+Votes \sim \mathrm{Binomial}(Surveys, Popularity)
+$$
 
 
 
+# Complete Model
 
-# Two major types of models:
+$$
+\begin{align}
+Votes &\sim \mathrm{Binomial}(Surveys, Popularity) \\
+Popularity &\sim \mathrm{Normal}(60\%, 15\%)
+\end{align}
+$$
+
+<!-- # Two major types of models:
 
 - Understanding the distribution of variables (parameter estimation)
   - Based on limited survey data, who do we think will win an election?
@@ -64,9 +211,236 @@ The process here is the same as we've always done.
 - Understanding relationships between variables (regression)
   - Does yoga lead to longer, healthier lives?
   - Does education make people happy?
-  - What interventions can change national birth rates?
+  - What interventions can change national birth rates? -->
 
 
-# Cause is super weird
+<!-- # Cause is super weird
 - it's always a theoretical attribution, simplifying arbitrary complexity
-- in the social science, we tend to think about cause as sites of intervention
+- in the social science, we tend to think about cause as sites of intervention -->
+
+
+# Modeling individual weight
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(rethinking)
+library(tidyverse)
+data(Howell1)
+
+df <- Howell1 |>
+  filter(age >= 18) |>
+  mutate(
+    height_std = standardize(height),
+    age_std = standardize(age),
+    sex = ifelse((male == 0), "female", "male") |> as_factor()
+  )
+
+ggplot(df, aes(x=weight)) +
+  geom_histogram(bins=32, color="gray") + 
+  geom_vline(
+    xintercept = mean(df$weight),
+    color = "red",
+    linetype = "dashed"
+  )
+```
+
+
+# Vertical plot 
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(df) +
+  geom_jitter(
+    data = df,
+    aes(x = 0, y = weight, color=sex),
+    shape = "cross",
+    color = "purple"
+  ) +
+  geom_hline(
+    yintercept = mean(df$weight),
+    color = "red",
+    linetype = "dashed"
+  ) +
+  xlim(-2, 2)
+```
+
+# Vertical plot (sex differentiated)
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(df) +
+  geom_jitter(
+    data = df,
+    aes(x = ifelse(sex == "male", -1, 1), y = weight, color=sex),
+    shape = "cross",
+  ) +
+  geom_hline(
+    yintercept = mean((df |> filter(sex == "male"))$weight),
+    color = "red",
+    linetype = "dashed"
+  ) +
+  geom_hline(
+    yintercept = mean((df |> filter(sex == "female"))$weight),
+    color = "blue",
+    linetype = "dashed"
+  ) +
+  xlim(-2, 2)
+```
+
+# Scatter plot (with height)
+:::{.r-stack}
+:::{.fragment}
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+df |>
+  ggplot(aes(x = height, y = weight)) +
+  geom_point(color = "purple", shape = "plus") +
+  labs(x = "Height (cm)", y = "Weight (kg)")
+
+```
+:::
+:::{.fragment}
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+df |>
+  ggplot(aes(x = height, y = weight)) +
+  geom_point(color = "purple", shape = "plus") +
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x = "Height (cm)", y = "Weight (kg)")
+
+```
+:::
+
+:::{.fragment}
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+df |>
+  ggplot(aes(x = height / 2.56, y = weight)) +
+  geom_point(color = "purple", shape = "plus") +
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x = "Height (inches)", y = "Weight (kg)")
+
+```
+:::
+
+:::{.fragment}
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+df |>
+  ggplot(aes(x = scale(height), y = weight)) +
+  geom_point(color = "purple", shape = "plus") +
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x = "Height (standardized)", y = "Weight (kg)")
+
+```
+:::
+
+:::
+
+
+
+
+# Model definition
+
+$$
+\begin{align}
+weight_i &\sim \text{Normal}(\mu, \sigma) \\
+\mu &\sim \text{Normal}(50, 10) \\
+\sigma &\sim \text{Uniform}(0, 50)
+\end{align}
+$$
+
+```{r, message=FALSE, results="hide"}
+set.seed(101)
+model <- ulam(
+  alist(
+    weight ~ normal(mu, sigma),
+    mu ~ normal(50, 10),
+    sigma ~ uniform(0, 50)
+  ),
+  data = df
+)
+```
+```{r}
+precis(model, prob = 0.95)
+```
+
+
+# Model (with sex)
+$$
+\begin{align}
+\text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha_{sex[i]} \\
+\alpha_{sex[i]} &\sim \text{Normal}(50, 10) \\
+\sigma &\sim \text{Uniform}(0, 50)
+\end{align}
+$$
+
+```{r, message=FALSE, results="hide"}
+set.seed(101)
+model <- ulam(
+  alist(
+    weight ~ normal(mu, sigma),
+    mu <- a[sex],
+    a[sex] ~ normal(50, 10),
+    sigma ~ uniform(0, 50)
+  ),
+  data = df
+)
+```
+```{r}
+precis(model, prob = 0.95, depth=2)
+```
+
+
+# Model (with height)
+
+$$
+\begin{align}
+\text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha + \beta\times \text{height}_i \\
+\alpha &\sim \text{Normal}(50, 10) \\
+\beta &\sim \text{Normal}(0, 10) \\
+\sigma &\sim \text{Uniform}(0, 50)
+\end{align}
+$$
+
+```{r, message=FALSE, results="hide"}
+set.seed(101)
+model <- ulam(
+  alist(
+    weight ~ normal(mu, sigma),
+    mu <- a + b * height_std,
+    a ~ normal(50, 10),
+    b ~ normal(0, 10),
+    sigma ~ uniform(0, 50)
+  ),
+  data = df
+)
+```
+
+```{r}
+precis(model, prob = 0.95)
+```
+
+# Model (Sex + Height)
+
+$$
+\begin{align}
+\text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha_{sex[i]} + \beta\times \text{height}_i \\
+\alpha_{sex[i]} &\sim \text{Normal}(50, 10) \\
+\beta &\sim \text{Normal}(0, 10) \\
+\sigma &\sim \text{Uniform}(0, 50)
+\end{align}
+$$
+
+```{r, message=FALSE, results="hide"}
+set.seed(101)
+model <- ulam(
+  alist(
+    weight ~ normal(mu, sigma),
+    mu <- a[sex] + b * height_std,
+    a[sex] ~ normal(50, 10),
+    b ~ normal(0, 10),
+    sigma ~ uniform(0, 50)
+  ),
+  data = df
+)
+```
+
+```{r}
+precis(model, prob = 0.95, depth = 2)
+```
