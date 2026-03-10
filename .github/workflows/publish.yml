@@ -39,7 +39,7 @@ jobs:
             stan-dev/cmdstanr
             rmcelreath/rethinking
             bayesplot
-            jsonlight
+            jsonlite
           cache-version: 1
 
       # System toolchain required for CmdStan
