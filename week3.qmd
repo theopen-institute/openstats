@@ -637,7 +637,9 @@ fit1a <- df |>
 #   ggplot(aes(x = beta)) +
 #   stat_halfeye()
 
-fit1a$summary()
+# fit1a$summary()
+
+fit1a$output()
 ```
 
 
@@ -655,12 +657,12 @@ fit1b <- df |>
 ```
 
 ```{r model1b_output}
-fit1b |>
-  spread_draws(alpha, beta, sigma) |>
-  ggplot(aes(x = beta)) +
-  stat_halfeye()
+# fit1b |>
+#   spread_draws(alpha, beta, sigma) |>
+#   ggplot(aes(x = beta)) +
+#   stat_halfeye()
 
-fit1b$summary()
+# fit1b$summary()
 ```
 
 
@@ -683,10 +685,10 @@ fit2 <- df |>
 :::{.column}
 
 ```{r model2_output1, message=FALSE, results="hide"}
-fit2 |>
-  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
-  ggplot() +
-  stat_halfeye(aes(x = beta_college))
+# fit2 |>
+#   spread_draws(alpha, beta_college, beta_mortality, sigma) |>
+#   ggplot() +
+#   stat_halfeye(aes(x = beta_college))
 ```
 
 
@@ -694,10 +696,10 @@ fit2 |>
 :::{.column}
 
 ```{r model2_output2, message=FALSE, results="hide"}
-fit2 |>
-  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
-  ggplot() +
-  stat_halfeye(aes(x = beta_mortality))
+# fit2 |>
+#   spread_draws(alpha, beta_college, beta_mortality, sigma) |>
+#   ggplot() +
+#   stat_halfeye(aes(x = beta_mortality))
 ```
 
 :::
@@ -705,5 +707,5 @@ fit2 |>
 
 
 ```{r model2_output3}
-fit2$summary()
+# fit2$summary()
 ```
