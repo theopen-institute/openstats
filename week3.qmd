@@ -627,6 +627,8 @@ fit1a <- df |>
   compose_data() |>
   model1a$sample(chains=1)
 
+fit1a$output()
+
 fit1a |>
   spread_draws(alpha, beta, sigma) |>
   ggplot(aes(x = beta)) +
@@ -702,12 +704,6 @@ fit2 <- df |>
 
 fit2 |>
   spread_draws(alpha, beta_college, beta_mortality, sigma) |>
-  # pivot_longer(c(alpha, beta, sigma)) |>
-  ggplot() +
-  stat_halfeye(aes(x = beta_college))
-
-fit2 |>
-  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
   mutate(
     r2 = beta_college^2 / (beta_mortality^2 + sigma^2)
   ) |>
@@ -718,6 +714,33 @@ fit2 |>
     r2_q95 = quantile(r2, 0.95)
   )
 ```
+
+:::{.columns}
+:::{.column}
+
+```{r, message=FALSE, results="hide"}
+fit2 |>
+  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
+  # pivot_longer(c(alpha, beta, sigma)) |>
+  ggplot() +
+  stat_halfeye(aes(x = beta_college))
+```
+
+
+:::
+:::{.column}
+
+```{r, message=FALSE, results="hide"}
+fit2 |>
+  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
+  # pivot_longer(c(alpha, beta, sigma)) |>
+  ggplot() +
+  stat_halfeye(aes(x = beta_mortality))
+```
+
+:::
+:::
+
 
 ```{r}
 fit2$summary()
