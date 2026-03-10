@@ -38,6 +38,8 @@ jobs:
             posterior
             stan-dev/cmdstanr
             rmcelreath/rethinking
+            bayesplot
+            jsonlight
           cache-version: 1
 
       # System toolchain required for CmdStan
