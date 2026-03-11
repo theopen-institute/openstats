@@ -514,13 +514,13 @@ $$
 \end{align}
 $$
 
-```{r model_weight, message=FALSE, results="hide"}
+```{r model_weight1, message=FALSE, results="hide"}
 model_weight1 <- cmdstan_model("models/weight1.stan", dir=".stancache")
 fit_weight1 <- df_weight |>
   compose_data() |>
   model_weight1$sample()
 ```
-```{r precis_weight}
+```{r summary_weight1}
 fit_weight1$summary()
 ```
 
@@ -541,7 +541,7 @@ fit_weight2 <- df_weight |>
   compose_data() |>
   model_weight2$sample()
 ```
-```{r precis_weight2}
+```{r summary_weight2}
 fit_weight2$summary() |>
   replace_indexes(df_weight, alpha[sex])
 ```
@@ -565,7 +565,7 @@ fit_weight3 <- df_weight |>
   compose_data() |>
   model_weight3$sample()
 ```
-```{r precis_weight3}
+```{r summary_weight3}
 fit_weight3$summary()
 ```
 
@@ -587,7 +587,7 @@ fit_weight4 <- df_weight |>
   compose_data() |>
   model_weight4$sample()
 ```
-```{r precis_weight3}
+```{r summary_weight4}
 fit_weight4$summary() |>
   replace_indexes(df_weight, alpha[sex])
 ```
