@@ -620,7 +620,7 @@ precis(model, prob = 0.95, depth = 2)
 
 # Model (Fertility ~ Women in College)
 ```{r model1a, message=FALSE, results="hide"}
-model1a <- cmdstan_model("models/wb_model1a.stan", force_recompile = TRUE)
+model1a <- cmdstan_model("models/wb_model1a.stan", dir=".stancache")
 fit1a <- df |>
   transmute(
     fertility_rate = SP.DYN.TFRT.IN,
@@ -632,20 +632,18 @@ fit1a <- df |>
 ```
 
 ```{r model1a_output}
-# fit1a |>
-#   spread_draws(alpha, beta, sigma) |>
-#   ggplot(aes(x = beta)) +
-#   stat_halfeye()
+fit1a |>
+  spread_draws(alpha, beta, sigma) |>
+  ggplot(aes(x = beta)) +
+  stat_halfeye()
 
-# fit1a$summary()
-
-fit1a$output()
+fit1a$summary()
 ```
 
 
 # Model (Fertility ~ Infant Mortality)
 ```{r model1b, message=FALSE, results="hide"}
-model1b <- cmdstan_model("models/wb_model1b.stan")
+model1b <- cmdstan_model("models/wb_model1b.stan", dir=".stancache")
 fit1b <- df |>
   transmute(
     fertility_rate = SP.DYN.TFRT.IN,
@@ -657,18 +655,18 @@ fit1b <- df |>
 ```
 
 ```{r model1b_output}
-# fit1b |>
-#   spread_draws(alpha, beta, sigma) |>
-#   ggplot(aes(x = beta)) +
-#   stat_halfeye()
+fit1b |>
+  spread_draws(alpha, beta, sigma) |>
+  ggplot(aes(x = beta)) +
+  stat_halfeye()
 
-# fit1b$summary()
+fit1b$summary()
 ```
 
 
 # Model (Fertility ~ Women in College + Infant Mortality)
 ```{r model2, message=FALSE, results="hide"}
-model2 <- cmdstan_model("models/wb_model2.stan")
+model2 <- cmdstan_model("models/wb_model2.stan", dir=".stancache")
 fit2 <- df |>
   transmute(
     fertility_rate = SP.DYN.TFRT.IN,
@@ -685,10 +683,10 @@ fit2 <- df |>
 :::{.column}
 
 ```{r model2_output1, message=FALSE, results="hide"}
-# fit2 |>
-#   spread_draws(alpha, beta_college, beta_mortality, sigma) |>
-#   ggplot() +
-#   stat_halfeye(aes(x = beta_college))
+fit2 |>
+  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
+  ggplot() +
+  stat_halfeye(aes(x = beta_college))
 ```
 
 
@@ -696,10 +694,10 @@ fit2 <- df |>
 :::{.column}
 
 ```{r model2_output2, message=FALSE, results="hide"}
-# fit2 |>
-#   spread_draws(alpha, beta_college, beta_mortality, sigma) |>
-#   ggplot() +
-#   stat_halfeye(aes(x = beta_mortality))
+fit2 |>
+  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
+  ggplot() +
+  stat_halfeye(aes(x = beta_mortality))
 ```
 
 :::
@@ -707,5 +705,5 @@ fit2 <- df |>
 
 
 ```{r model2_output3}
-# fit2$summary()
+fit2$summary()
 ```
