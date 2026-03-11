@@ -392,8 +392,8 @@ ggplot(df, aes(x = log(SP.DYN.IMRT.IN), y = SP.DYN.TFRT.IN)) +
 df_weight <- read_csv("datasets/kungsan.csv") |>
   filter(age >= 18) |>
   mutate(
-    height_std = scale(height),
-    age_std = scale(age),
+    height_std = scale(height) |> as.numeric(),
+    age_std = scale(age) |> as.numeric(),
     sex = ifelse((male == 0), "female", "male") |> as_factor()
   )
 
