@@ -620,7 +620,7 @@ precis(model, prob = 0.95, depth = 2)
 
 # Model (Fertility ~ Women in College)
 ```{r model1a, message=FALSE, results="hide"}
-model1a <- cmdstan_model("models/wb_model1a.stan")
+model1a <- cmdstan_model("models/wb_model1a.stan", force_recompile = TRUE)
 fit1a <- df |>
   transmute(
     fertility_rate = SP.DYN.TFRT.IN,
@@ -628,7 +628,7 @@ fit1a <- df |>
   ) |>
   drop_na() |>
   compose_data() |>
-  model1a$sample(chains=1)
+  model1a$sample()
 ```
 
 ```{r model1a_output}
