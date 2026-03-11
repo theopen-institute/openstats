@@ -240,26 +240,21 @@ technical material is not the point.</li>
 <h1>What is a model?</h1>
 <ul>
 <li class="fragment">Our <strong>data</strong> is the observation we made <span class="fragment green">(# of Surveys, # of Votes)</span></li>
-<li class="fragment">A <strong>model</strong> is a theoretical description of how this data was generated, combining:
+<li class="fragment">Our <strong>model</strong> is a theoretical description of how this data was generated, combining:
 <ul>
 <li class="fragment">Our <em>prior</em> belief about our parameter(s) <span class="fragment blue">(Popularity)</span></li>
 <li class="fragment">A method of calculating our <em>likelihood</em> from data</li>
 </ul></li>
 </ul>
-</section>
+<!-- # What is "fitting"?
 
-<section id="what-is-fitting" class="title-slide slide level1 center">
-<h1>What is “fitting”?</h1>
-<ul>
-<li class="fragment">We “fit” our model to our data using Bayes’ Theorem.</li>
-<li class="fragment">This updates our prior -&gt; posterior.</li>
-<li class="fragment">We can use different techniques for this process:
-<ul>
-<li class="fragment">Stones in a bag: we counted all possibilities</li>
-<li class="fragment">Election polling: we used “grid approximation” to estimate the parameter every 5%</li>
-<li class="fragment">Going forward: we’ll use software (Markov Chain Montey Carlo, or MCMC)</li>
-</ul></li>
-</ul>
+- We "fit" our model to our data using Bayes' Theorem.
+- This updates our prior -> posterior.
+- We can use different techniques for this process:
+  - Stones in a bag: we counted all possibilities
+  - Election polling: we used "grid approximation" to estimate the parameter every 5%
+  - Going forward: we'll use software (Markov Chain Montey Carlo, or MCMC)
+ -->
 </section>
 
 <section id="distributions-demo" class="title-slide slide level1 no-title center">
@@ -1392,16 +1387,19 @@ technical material is not the point.</li>
 <h1>Model definition (Weight)</h1>
 <p><span class="math display">\[
 \begin{align}
-weight_i &amp;\sim \text{Normal}(\mu, \sigma) \\
+\text{weight}_i &amp;\sim \text{Normal}(\mu, \sigma) \\
 \mu &amp;\sim \text{Normal}(50, 10) \\
-\sigma &amp;\sim \text{Uniform}(0, 50)
+\sigma &amp;\sim \text{Normal}(0, 10), \quad \sigma &gt; 0
 \end{align}
 \]</span></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>           mean        sd      2.5%     97.5%     rhat ess_bulk
-mu    44.964487 0.3588423 44.216600 45.646569 1.001590 388.2219
-sigma  6.458195 0.2365766  6.022862  6.954235 1.027775 350.1732</code></pre>
+<pre><code># A tibble: 3 × 10
+  variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
+  &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 lp__     -831.   -831.   1.01  0.702 -833.   -831.    1.00    1854.    2452.
+2 mu         45.0    45.0  0.342 0.342   44.5    45.6   1.00    3080.    2097.
+3 sigma       6.48    6.47 0.244 0.242    6.09    6.89  1.00    2976.    2219.</code></pre>
 </div>
 </div>
 </section>
@@ -1411,17 +1409,20 @@ sigma  6.458195 0.2365766  6.022862  6.954235 1.027775 350.1732</code></pre>
 <p><span class="math display">\[
 \begin{align}
 \text{weight}_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
-\mu_i &amp;= \alpha_{sex[i]} \\
-\alpha_{sex} &amp;\sim \text{Normal}(50, 10) \\
-\sigma &amp;\sim \text{Uniform}(0, 50)
+\mu_i &amp;= \alpha_{\text{sex}[i]} \\
+\alpha_j &amp;\sim \text{Normal}(50, 10) \\
+\sigma &amp;\sim \text{Normal}(0, 10), \quad \sigma &gt; 0
 \end{align}
 \]</span></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>           mean        sd      2.5%     97.5%     rhat ess_bulk
-a[1]  48.600405 0.4291915 47.788288 49.448915 1.003861 430.2713
-a[2]  41.845194 0.3931261 41.080500 42.611715 1.003094 514.4501
-sigma  5.532576 0.2160557  5.147892  5.960451 1.006089 369.7655</code></pre>
+<pre><code># A tibble: 4 × 10
+  variable      mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
+  &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 lp__       -776.   -775.   1.24  0.992 -778.   -774.   1.00     1780.    2643.
+2 alpha[mal…   48.6    48.6  0.435 0.433   47.9    49.3  1.000    3846.    2705.
+3 alpha[fem…   41.8    41.8  0.404 0.399   41.2    42.5  1.00     4387.    2950.
+4 sigma         5.52    5.51 0.209 0.209    5.20    5.87 1.00     3680.    2676.</code></pre>
 </div>
 </div>
 </section>
@@ -1434,15 +1435,18 @@ sigma  5.532576 0.2160557  5.147892  5.960451 1.006089 369.7655</code></pre>
 \mu_i &amp;= \alpha + \beta\times \text{height}_i \\
 \alpha &amp;\sim \text{Normal}(50, 10) \\
 \beta &amp;\sim \text{Normal}(0, 10) \\
-\sigma &amp;\sim \text{Uniform}(0, 50)
+\sigma &amp;\sim \text{Normal}(0, 10), \quad \sigma &gt; 0
 \end{align}
 \]</span></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>           mean        sd      2.5%     97.5%      rhat ess_bulk
-a     45.008302 0.2302654 44.568423 45.460216 0.9998891 564.7267
-b      4.858297 0.2194084  4.427990  5.285442 1.0049412 472.3716
-sigma  4.246329 0.1531567  3.967734  4.547446 1.0101649 344.9605</code></pre>
+<pre><code># A tibble: 4 × 10
+  variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
+  &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 lp__     -687.   -687.   1.20  0.970 -689.   -686.   1.000    2060.    2856.
+2 alpha      45.0    45.0  0.226 0.223   44.6    45.4  1.00     3515.    2900.
+3 beta        4.81    4.81 0.229 0.232    4.44    5.19 1.00     4139.    3014.
+4 sigma       4.25    4.24 0.159 0.157    3.99    4.52 1.00     4067.    3070.</code></pre>
 </div>
 </div>
 </section>
@@ -1452,19 +1456,22 @@ sigma  4.246329 0.1531567  3.967734  4.547446 1.0101649 344.9605</code></pre>
 <p><span class="math display">\[
 \begin{align}
 \text{weight}_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
-\mu_i &amp;= \alpha_{sex[i]} + \beta\times \text{height}_i \\
-\alpha_{sex[i]} &amp;\sim \text{Normal}(50, 10) \\
+\mu_i &amp;= \alpha_{\text{sex}[i]} + \beta\times \text{height}_i \\
+\alpha_j &amp;\sim \text{Normal}(50, 10) \\
 \beta &amp;\sim \text{Normal}(0, 10) \\
-\sigma &amp;\sim \text{Uniform}(0, 50)
+\sigma &amp;\sim \text{Normal}(0, 10), \quad \sigma &gt; 0
 \end{align}
 \]</span></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>           mean        sd      2.5%     97.5%      rhat  ess_bulk
-a[1]  44.950999 0.3972514 44.196660 45.768317 1.0115343 215.74544
-a[2]  45.041006 0.3504517 44.315962 45.726883 1.0374340  44.78828
-b      4.907916 0.3143433  4.282036  5.491431 1.0258512  96.18636
-sigma  4.252760 0.1531087  3.974815  4.583011 0.9990955 364.64369</code></pre>
+<pre><code># A tibble: 5 × 10
+  variable      mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
+  &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 lp__       -687.   -687.   1.48  1.21  -690.   -686.   1.00     1768.    2444.
+2 alpha[mal…   45.0    45.0  0.403 0.400   44.4    45.7  1.00     3080.    3274.
+3 alpha[fem…   45.0    45.0  0.372 0.372   44.3    45.6  1.000    2718.    2765.
+4 beta          4.78    4.78 0.311 0.303    4.26    5.30 1.00     2552.    2834.
+5 sigma         4.26    4.26 0.167 0.162    4.00    4.55 1.00     3375.    2709.</code></pre>
 </div>
 </div>
 </section>
@@ -1477,10 +1484,10 @@ sigma  4.252760 0.1531087  3.974815  4.583011 0.9990955 364.64369</code></pre>
 <pre><code># A tibble: 4 × 10
   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -17.8   -17.5   1.24   1.02   -20.1   -16.5    1.00    2124.    2533.
-2 alpha      1.98    1.98  0.0627 0.0613   1.88    2.08   1.00    3966.    2687.
-3 beta      -0.555  -0.555 0.0633 0.0645  -0.656  -0.450  1.00    4131.    2846.
-4 sigma      0.697   0.695 0.0451 0.0450   0.626   0.773  1.00    4563.    3190.</code></pre>
+1 lp__     -17.8   -17.5   1.27   1.02   -20.3   -16.5    1.00    1909.    2691.
+2 alpha      1.98    1.98  0.0629 0.0628   1.88    2.08   1.00    3353.    2641.
+3 beta      -0.554  -0.553 0.0640 0.0630  -0.660  -0.445  1.00    3724.    2675.
+4 sigma      0.696   0.694 0.0454 0.0437   0.627   0.774  1.00    3770.    2794.</code></pre>
 </div>
 </div>
 <img data-src="week3_files/figure-revealjs/model1a_output-1.png" width="960" class="r-stretch"></section>
@@ -1493,10 +1500,10 @@ sigma  4.252760 0.1531087  3.974815  4.583011 0.9990955 364.64369</code></pre>
 <pre><code># A tibble: 4 × 10
   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -53.1   -52.8   1.28   1.01   -55.5   -51.7   1.00      432.     623.
-2 alpha      2.49    2.49  0.0586 0.0579   2.40    2.59  0.999    1125.     646.
-3 beta       0.964   0.964 0.0548 0.0511   0.877   1.06  1.00      999.     501.
-4 sigma      0.790   0.789 0.0395 0.0384   0.729   0.856 1.00      804.     625.</code></pre>
+1 lp__     -53.1   -52.8   1.21   0.953  -55.4   -51.8   1.00      422.     671.
+2 alpha      2.49    2.49  0.0567 0.0547   2.40    2.58  1.00      932.     642.
+3 beta       0.965   0.963 0.0569 0.0560   0.875   1.06  1.000    1007.     818.
+4 sigma      0.793   0.792 0.0399 0.0401   0.728   0.863 0.999     930.     681.</code></pre>
 </div>
 </div>
 <img data-src="week3_files/figure-revealjs/model1b_output-1.png" width="960" class="r-stretch"></section>
@@ -1530,11 +1537,11 @@ sigma  4.252760 0.1531087  3.974815  4.583011 0.9990955 364.64369</code></pre>
 <pre><code># A tibble: 5 × 10
   variable     mean  median     sd    mad     q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__      19.9    20.2    1.59   1.37   16.8   2.17e+1 1.00      432.     521.
-2 alpha      2.41    2.41   0.0660 0.0657  2.30  2.51e+0 1.00      373.     333.
-3 beta_col… -0.0972 -0.0962 0.0682 0.0675 -0.212 9.27e-3 1.00      389.     349.
-4 beta_mor…  1.12    1.12   0.121  0.113   0.910 1.31e+0 1.000     315.     315.
-5 sigma      0.507   0.505  0.0363 0.0358  0.452 5.72e-1 0.999     848.     604.</code></pre>
+1 lp__      19.9    20.2    1.45   1.23   17.3   21.6    1.00      481.     504.
+2 alpha      2.42    2.41   0.0646 0.0680  2.31   2.52   0.999     452.     400.
+3 beta_col… -0.0894 -0.0875 0.0673 0.0656 -0.207  0.0181 1.01      521.     540.
+4 beta_mor…  1.13    1.13   0.115  0.117   0.941  1.31   1.00      442.     447.
+5 sigma      0.512   0.511  0.0326 0.0321  0.462  0.570  1.00      691.     551.</code></pre>
 </div>
 </div>
 
