@@ -32,14 +32,12 @@ jobs:
             shinylive
             rmarkdown
             knitr
-            tidyverse
             rlang
-            tidybayes
-            posterior
+            tidyverse
             stan-dev/cmdstanr
-            rmcelreath/rethinking
+            posterior
+            tidybayes
             bayesplot
-            jsonlite
           cache-version: 1
 
       # System toolchain required for CmdStan
@@ -62,9 +60,6 @@ jobs:
 
       - name: Install Quarto code embed extension
         run: quarto add quarto-ext/include-code-files --no-prompt
-        
-      - name: Remove cached Stan executables
-        run: rm -rf .stancache
 
       - name: Ensure cache directories exists
         run: |

@@ -16,9 +16,10 @@ library(tidyverse)
 library(tidybayes)
 library(bayesplot)
 library(cmdstanr)
-library(jsonlite)
-library(rethinking)
 options(mc.cores = parallel::detectCores())
+
+# {{< include r/rlib.R >}}
+source("r/rlib.R")
 ```
 
 # What have we done so far?
@@ -31,11 +32,11 @@ options(mc.cores = parallel::detectCores())
 # What is a model?
 
 - Our **data** is the observation we made [(# of Surveys, # of Votes)]{.fragment .green}
-- A **model** is a theoretical description of how this data was generated, combining:
+- Our **model** is a theoretical description of how this data was generated, combining:
   - Our *prior* belief about our parameter(s) [(Popularity)]{.fragment .blue}
   - A method of calculating our *likelihood* from data
 
-# What is "fitting"?
+<!-- # What is "fitting"?
 
 - We "fit" our model to our data using Bayes' Theorem.
 - This updates our prior -> posterior.
@@ -43,7 +44,7 @@ options(mc.cores = parallel::detectCores())
   - Stones in a bag: we counted all possibilities
   - Election polling: we used "grid approximation" to estimate the parameter every 5%
   - Going forward: we'll use software (Markov Chain Montey Carlo, or MCMC)
-
+ -->
 
 
 # Distributions Demo {.no-title}
@@ -388,13 +389,11 @@ ggplot(df, aes(x = log(SP.DYN.IMRT.IN), y = SP.DYN.TFRT.IN)) +
 # Modeling individual weight
 
 ```{r weight, echo=FALSE, warning=FALSE, message=FALSE}
-data(Howell1)
-
-df_weight <- Howell1 |>
+df_weight <- read_csv("datasets/kungsan.csv") |>
   filter(age >= 18) |>
   mutate(
-    height_std = standardize(height),
-    age_std = standardize(age),
+    height_std = scale(height),
+    age_std = scale(age),
     sex = ifelse((male == 0), "female", "male") |> as_factor()
   )
 
@@ -509,25 +508,20 @@ df_weight |>
 
 $$
 \begin{align}
-weight_i &\sim \text{Normal}(\mu, \sigma) \\
+\text{weight}_i &\sim \text{Normal}(\mu, \sigma) \\
 \mu &\sim \text{Normal}(50, 10) \\
-\sigma &\sim \text{Uniform}(0, 50)
+\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
 \end{align}
 $$
 
 ```{r model_weight, message=FALSE, results="hide"}
-set.seed(101)
-model <- ulam(
-  alist(
-    weight ~ normal(mu, sigma),
-    mu ~ normal(50, 10),
-    sigma ~ uniform(0, 50)
-  ),
-  data = df_weight
-)
+model_weight1 <- cmdstan_model("models/weight1.stan", dir=".stancache")
+fit_weight1 <- df_weight |>
+  compose_data() |>
+  model_weight1$sample()
 ```
 ```{r precis_weight}
-precis(model, prob = 0.95)
+fit_weight1$summary()
 ```
 
 
@@ -535,26 +529,21 @@ precis(model, prob = 0.95)
 $$
 \begin{align}
 \text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha_{sex[i]} \\
-\alpha_{sex} &\sim \text{Normal}(50, 10) \\
-\sigma &\sim \text{Uniform}(0, 50)
+\mu_i &= \alpha_{\text{sex}[i]} \\
+\alpha_j &\sim \text{Normal}(50, 10) \\
+\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
 \end{align}
 $$
 
 ```{r model_weight2, message=FALSE, results="hide"}
-set.seed(101)
-model <- ulam(
-  alist(
-    weight ~ normal(mu, sigma),
-    mu <- a[sex],
-    a[sex] ~ normal(50, 10),
-    sigma ~ uniform(0, 50)
-  ),
-  data = df_weight
-)
+model_weight2 <- cmdstan_model("models/weight2.stan", dir=".stancache")
+fit_weight2 <- df_weight |>
+  compose_data() |>
+  model_weight2$sample()
 ```
 ```{r precis_weight2}
-precis(model, prob = 0.95, depth=2)
+fit_weight2$summary() |>
+  replace_indexes(df_weight, alpha[sex])
 ```
 
 
@@ -566,26 +555,18 @@ $$
 \mu_i &= \alpha + \beta\times \text{height}_i \\
 \alpha &\sim \text{Normal}(50, 10) \\
 \beta &\sim \text{Normal}(0, 10) \\
-\sigma &\sim \text{Uniform}(0, 50)
+\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
 \end{align}
 $$
 
 ```{r model_weight3, message=FALSE, results="hide"}
-set.seed(101)
-model <- ulam(
-  alist(
-    weight ~ normal(mu, sigma),
-    mu <- a + b * height_std,
-    a ~ normal(50, 10),
-    b ~ normal(0, 10),
-    sigma ~ uniform(0, 50)
-  ),
-  data = df_weight
-)
+model_weight3 <- cmdstan_model("models/weight3.stan", dir=".stancache")
+fit_weight3 <- df_weight |>
+  compose_data() |>
+  model_weight3$sample()
 ```
-
 ```{r precis_weight3}
-precis(model, prob = 0.95)
+fit_weight3$summary()
 ```
 
 # Model (Weight ~ Sex + Height)
@@ -593,34 +574,27 @@ precis(model, prob = 0.95)
 $$
 \begin{align}
 \text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha_{sex[i]} + \beta\times \text{height}_i \\
-\alpha_{sex[i]} &\sim \text{Normal}(50, 10) \\
+\mu_i &= \alpha_{\text{sex}[i]} + \beta\times \text{height}_i \\
+\alpha_j &\sim \text{Normal}(50, 10) \\
 \beta &\sim \text{Normal}(0, 10) \\
-\sigma &\sim \text{Uniform}(0, 50)
+\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
 \end{align}
 $$
 
 ```{r model_weight4, message=FALSE, results="hide"}
-set.seed(101)
-model <- ulam(
-  alist(
-    weight ~ normal(mu, sigma),
-    mu <- a[sex] + b * height_std,
-    a[sex] ~ normal(50, 10),
-    b ~ normal(0, 10),
-    sigma ~ uniform(0, 50)
-  ),
-  data = df_weight
-)
+model_weight4 <- cmdstan_model("models/weight4.stan", dir=".stancache")
+fit_weight4 <- df_weight |>
+  compose_data() |>
+  model_weight4$sample()
 ```
-
-```{r precis_weight4}
-precis(model, prob = 0.95, depth = 2)
+```{r precis_weight3}
+fit_weight4$summary() |>
+  replace_indexes(df_weight, alpha[sex])
 ```
 
 # Model (Fertility ~ Women in College)
 ```{r model1a, message=FALSE, results="hide"}
-model1a <- cmdstan_model("models/wb_model1a.stan", dir=".stancache")
+model1a <- cmdstan_model("models/fertility1a.stan", dir=".stancache")
 fit1a <- df |>
   transmute(
     fertility_rate = SP.DYN.TFRT.IN,
@@ -643,7 +617,7 @@ fit1a$summary()
 
 # Model (Fertility ~ Infant Mortality)
 ```{r model1b, message=FALSE, results="hide"}
-model1b <- cmdstan_model("models/wb_model1b.stan", dir=".stancache")
+model1b <- cmdstan_model("models/fertility1b.stan", dir=".stancache")
 fit1b <- df |>
   transmute(
     fertility_rate = SP.DYN.TFRT.IN,
@@ -666,7 +640,7 @@ fit1b$summary()
 
 # Model (Fertility ~ Women in College + Infant Mortality)
 ```{r model2, message=FALSE, results="hide"}
-model2 <- cmdstan_model("models/wb_model2.stan", dir=".stancache")
+model2 <- cmdstan_model("models/fertility2.stan", dir=".stancache")
 fit2 <- df |>
   transmute(
     fertility_rate = SP.DYN.TFRT.IN,
