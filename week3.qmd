@@ -528,6 +528,28 @@ ggplot(df_weight, aes(x=weight)) +
 ```
 
 
+
+# Model definition (Weight)
+
+$$
+\begin{align}
+\text{weight}_i &\sim \text{Normal}(\mu, \sigma) \\
+\mu &\sim \text{Normal}(50, 10) \\
+\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
+\end{align}
+$$
+
+```{r model_weight1, message=FALSE, results="hide"}
+model_weight1 <- cmdstan_model("models/weight1.stan", dir=".stancache")
+fit_weight1 <- df_weight |>
+  compose_data() |>
+  model_weight1$sample()
+```
+```{r summary_weight1}
+fit_weight1$summary()
+```
+
+
 # Vertical plot 
 ```{r weight_vert, echo=FALSE, warning=FALSE, message=FALSE}
 ggplot(df_weight) +
@@ -567,6 +589,29 @@ ggplot(df_weight) +
   xlim(-2, 2)
 ```
 
+
+# Model (Weight ~ Sex)
+$$
+\begin{align}
+\text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha_{\text{sex}[i]} \\
+\alpha_j &\sim \text{Normal}(50, 10) \\
+\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
+\end{align}
+$$
+
+```{r model_weight2, message=FALSE, results="hide"}
+model_weight2 <- cmdstan_model("models/weight2.stan", dir=".stancache")
+fit_weight2 <- df_weight |>
+  compose_data() |>
+  model_weight2$sample()
+```
+```{r summary_weight2}
+fit_weight2$summary() |>
+  replace_indexes(df_weight, alpha[sex])
+```
+
+
 # Scatter plot (with height)
 :::{.r-stack width="1605"}
 :::{.fragment width="1605"}
@@ -600,73 +645,6 @@ df_weight |>
 ```
 :::
 
-:::{.fragment width="1605"}
-```{r weight_height4, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-df_weight |>
-  ggplot(aes(x = scale(height), y = weight)) +
-  geom_point(color = "purple", shape = "plus") +
-  geom_smooth(method="lm", se=FALSE) +
-  labs(x = "Height (standardized)", y = "Weight (kg)")
-
-```
-:::
-
-:::
-
-# Simple stories
-
-```{=html}
-<iframe
-  id="dag-frame-1"
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="https://dagitty.net/dags.html"
-></iframe>
-```
-
-
-# Model definition (Weight)
-
-$$
-\begin{align}
-\text{weight}_i &\sim \text{Normal}(\mu, \sigma) \\
-\mu &\sim \text{Normal}(50, 10) \\
-\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
-\end{align}
-$$
-
-```{r model_weight1, message=FALSE, results="hide"}
-model_weight1 <- cmdstan_model("models/weight1.stan", dir=".stancache")
-fit_weight1 <- df_weight |>
-  compose_data() |>
-  model_weight1$sample()
-```
-```{r summary_weight1}
-fit_weight1$summary()
-```
-
-
-# Model (Weight ~ Sex)
-$$
-\begin{align}
-\text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha_{\text{sex}[i]} \\
-\alpha_j &\sim \text{Normal}(50, 10) \\
-\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
-\end{align}
-$$
-
-```{r model_weight2, message=FALSE, results="hide"}
-model_weight2 <- cmdstan_model("models/weight2.stan", dir=".stancache")
-fit_weight2 <- df_weight |>
-  compose_data() |>
-  model_weight2$sample()
-```
-```{r summary_weight2}
-fit_weight2$summary() |>
-  replace_indexes(df_weight, alpha[sex])
-```
-
 
 # Model (Weight ~ Height)
 
@@ -690,6 +668,32 @@ fit_weight3 <- df_weight |>
 fit_weight3$summary()
 ```
 
+
+:::{.fragment width="1605"}
+```{r weight_height4, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+df_weight |>
+  ggplot(aes(x = scale(height), y = weight)) +
+  geom_point(color = "purple", shape = "plus") +
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x = "Height (standardized)", y = "Weight (kg)")
+
+```
+:::
+
+:::
+
+# Models tell stories
+
+```{=html}
+<iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="https://dagitty.net/dags.html"
+></iframe>
+```
+
+
 # Model (Weight ~ Sex + Height)
 
 $$
@@ -712,6 +716,9 @@ fit_weight4 <- df_weight |>
 fit_weight4$summary() |>
   replace_indexes(df_weight, alpha[sex])
 ```
+
+
+
 
 # Model (Fertility ~ Women in College)
 ```{r model1a, message=FALSE, results="hide"}
