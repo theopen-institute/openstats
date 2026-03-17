@@ -1,0 +1,74 @@
+---
+format: 
+  revealjs: 
+    fragments: true
+---
+
+# Simpson's Paradox
+
+## Surgery Success {auto-animate=true}
+
+<table style="box-sizing: border-box;" data-id="table">
+  <thead>
+    <tr>
+      <td style="border-right: 1px solid black; width: 350px;">&nbsp;</td>
+      <td style="width: 0; padding: 0;"></td>
+      <td style="width: 0; padding: 0;"></td>
+      <td style="width: 0; padding: 0;"></td>
+      <td style="border-left: 1px solid black;">Success</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border-right: 1px solid black; width: 350px;">Normal&nbsp;Surgeon</td>
+      <td style="width: 0; padding: 0;"></td>
+      <td style="width: 0; padding: 0;"></td>
+      <td style="width: 0; padding: 0;"></td>
+      <td style="border-left: 1px solid black;">[89.6%]{.green}</td>
+    </tr>
+    <tr>
+      <td style="border-right: 1px solid black; width: 350px;">Famous&nbsp;Surgeon</td>
+      <td style="width: 0; padding: 0;"></td>
+      <td style="width: 0; padding: 0;"></td>
+      <td style="width: 0; padding: 0;"></td>
+      <td style="border-left: 1px solid black;">[74.9%]{.red  }</td>
+    </tr>
+  </tbody>
+</table>
+
+Two surgeons, one normal and one famous, have different success rates for a procedure. How should we interpret this?
+
+
+## Surgery Success (with Case Complexity) {auto-animate=true}
+
+<table style="width=100%" data-id="table">
+  <thead>
+    <tr>
+      <td style="border-right: 1px solid black; width: 350px;">&nbsp;</td>
+      <td>Standard</td>
+      <td>Complex</td>
+      <td>Critical</td>
+      <td style="border-left: 1px solid black;">Success</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border-right: 1px solid black; width: 350px;">Normal&nbsp;Surgeon</td>
+      <td>[97.3%]{.red  }</td>
+      <td>[66.0%]{.red  }</td>
+      <td>[38.0%]{.red  }</td>
+      <td style="border-left: 1px solid black;">[89.6%]{.green}</td>
+    </tr>
+    <tr>
+      <td style="border-right: 1px solid black; width: 350px;">Famous&nbsp;Surgeon</td>
+      <td>[99.7%]{.green}</td>
+      <td>[75.0%]{.green}</td>
+      <td>[50.0%]{.green}</td>
+      <td style="border-left: 1px solid black;">[74.9%]{.red  }</td>
+    </tr>
+  </tbody>
+</table>
+
+How about now?
+
+# Hi there

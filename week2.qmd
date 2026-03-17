@@ -18,22 +18,31 @@ format:
 Describing uncertainty
 
 
+# Airplanes return from battle
+<!-- TODO: turn this into an animation of some sort -->
+:::{.r-stack}
+![Bullet hole patterns of returning aircraft](images/week2/Survivorship-bias.svg){width="80%" style="text-align:center;"}
+:::
 
+# Population histogram
+<!-- TODO: Add NLSS age data. Why the bumps? -->
+![Population of Nepal](images/week2/population.svg){width="80%" style="text-align:center;"}
 
+# Randomness has patterns
 
 # The three parts of statistical questions
 
 Problem: we want to understand how the admissions process works at a university. 
 
 ::: {.fragment .callout-note}
-# Population: This isn't about one individual case but rather a group of cases
+## Population: This isn't about one individual case but rather a group of cases
 - "Applications to this university last year"
 - "Applications to this university in the last ten years"
 - "Applications to all state-run universities in this country last year"
 :::
 
 ::: {.fragment .callout-tip}
-# Variation: These cases are different from each other in ways that interest us
+## Variation: These cases are different from each other in ways that interest us
 - "Exam results"
 - "Family wealth"
 - "Gender"
@@ -41,79 +50,20 @@ Problem: we want to understand how the admissions process works at a university.
 :::
 
 ::: {.fragment .callout-important}
-## Randomness: Reality is messy, and we'll never predict admission perfectly
+## Randomness: Reality is messy, and we'll never predict admission perfectly. But, randomness has patterns. We can describe how it was generated.
 - If I flip a coin 1 time, I can't say what will happen. 
 - If I flip a coin 1000 times, I can say a lot more. 
 - Random individuals → Predictable populations
 :::
 
 
-
-
-
-# Statistical models
-
-```{=html}
-<iframe
-  id="dag-frame-1"
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="https://dagitty.net/dags.html"
-></iframe>
-<!-- <iframe
-  id="dag-frame-1"
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="js/dag-embed.html"></iframe> -->
-
-<!-- <script>
-(() => {
-  const dag = `dag {
-    Admitted [outcome,pos="-0.619,0.077"]
-    Department [exposure,pos="-0.858,0.192"]
-    Sex [exposure,pos="-1.059,-0.272"]
-    UNKNOWN [latent,pos="-0.414,0.077"]
-    Department -> Admitted  
-    Sex -> Admitted
-    Sex -> Department
-    UNKNOWN -> Admitted
-  }`;
-
-  const frame = document.getElementById("dag-frame-1");
-
-  function send() {
-    if (!frame?.contentWindow) return;
-    frame.contentWindow.postMessage({ type: "dagitty", dag }, "*");
-  }
-
-  frame.addEventListener("load", send);
-
-  // Optional: re-send when returning to the slide (Reveal may not exist in non-reveal contexts)
-  window.addEventListener("load", () => {
-    if (window.Reveal?.on) {
-      Reveal.on("ready", send);
-      Reveal.on("slidechanged", (e) => {
-        if (e.currentSlide?.querySelector("#dag-frame-1")) send();
-      });
-    }
-  });
-})();
-</script> -->
-```
-
-
-
-
-# Randomness has patterns
-:::{.r-stack}
-![Bullet hole patterns of returning aircraft](images/week2/Survivorship-bias.svg){width="80%" style="text-align:center;"}
-:::
-
 # Goals this week
 - Get more specific about "beliefs"
+  - Concept: Parameters
+  - Concept: Probability Distributions
 - Learn how to use Bayes Theorem
-  - Priors and posteriors
-  - Likelihood
+  - Concept: Priors and posteriors
+  - Concept: Likelihood
 - Design a real analysis
 
 
@@ -140,7 +90,7 @@ A parameter is a numerical fact about the world that we don't know (but want to 
 - The effect of education level on moral judgments
 
 
-# Parameters: Probability distributions
+# Probability distributions
 
 ::: {.fragment .callout-note .nonincremental}
 - We talk about probability distributions all the time: "He's probably about 50, but he could be quite a bit older". 

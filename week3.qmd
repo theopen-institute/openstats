@@ -22,12 +22,133 @@ options(mc.cores = parallel::detectCores())
 source("r/rlib.R")
 ```
 
+
+# Simpson's paradox
+<!-- TODO: set this up as a table -->
+
+## {auto-animate=true}
+Two surgeons, one normal and one famous, have different success rates for a procedure. How should we interpret this?
+
+::: {data-id="table"}
+<table>
+  <thead>
+    <tr>
+      <td data-id="leftmargin1"></td>
+      <td data-id="rightmargin1">Success</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-id="leftmargin2">Normal&nbsp;Surgeon</td>
+      <td data-id="rightmargin2">[89.6%]{.green}</td>
+    </tr>
+    <tr>
+      <td data-id="leftmargin3">Famous&nbsp;Surgeon</td>
+      <td data-id="rightmargin3">[74.9%]{.red  }</td>
+    </tr>
+  </tbody>
+</table>
+:::
+
+## {auto-animate=true}
+How about now?
+
+::: {data-id="table"}
+<table>
+  <thead>
+    <tr>
+      <td data-id="leftmargin1"></td>
+      <td>Standard</td>
+      <td>Complex</td>
+      <td>Critical</td>
+      <td  data-id="rightmargin1" style="border-left: 1px solid black;">Total</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-id="leftmargin2">Normal&nbsp;Surgeon</td>
+      <td>[97.3%]{.red}</td>
+      <td>[66.0%]{.red  }</td>
+      <td>[38.0%]{.red  }</td>
+      <td data-id="rightmargin2" style="border-left: 1px solid black;">[89.6%]{.green}</td>
+    </tr>
+    <tr>
+      <td data-id="leftmargin3">Famous&nbsp;Surgeon</td>
+      <td>[99.7%]{.green}</td>
+      <td>[75.0%]{.green}</td>
+      <td>[50.0%]{.green}</td>
+      <td data-id="rightmargin3" style="border-left: 1px solid black;">[74.9%]{.red  }</td>
+    </tr>
+  </tbody>
+</table>
+:::
+
+# Models impose order on randomness
+
+```{=html}
+<iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="https://dagitty.net/dags.html"
+></iframe>
+<!-- <iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="js/dag-embed.html"></iframe> -->
+
+<!-- <script>
+(() => {
+  const dag = `dag {
+    Admitted [outcome,pos="-0.619,0.077"]
+    Department [exposure,pos="-0.858,0.192"]
+    Sex [exposure,pos="-1.059,-0.272"]
+    UNKNOWN [latent,pos="-0.414,0.077"]
+    Department -> Admitted  
+    Sex -> Admitted
+    Sex -> Department
+    UNKNOWN -> Admitted
+  }`;
+
+  const frame = document.getElementById("dag-frame-1");
+
+  function send() {
+    if (!frame?.contentWindow) return;
+    frame.contentWindow.postMessage({ type: "dagitty", dag }, "*");
+  }
+
+  frame.addEventListener("load", send);
+
+  // Optional: re-send when returning to the slide (Reveal may not exist in non-reveal contexts)
+  window.addEventListener("load", () => {
+    if (window.Reveal?.on) {
+      Reveal.on("ready", send);
+      Reveal.on("slidechanged", (e) => {
+        if (e.currentSlide?.querySelector("#dag-frame-1")) send();
+      });
+    }
+  });
+})();
+</script> -->
+```
+
+
+
 # What have we done so far?
 - We chose a parameter.
 - We stated our *prior* belief.
 - We made observations.
 - We calculated the *likelihood* of the things we observed.
 - We combined our prior and likelihood to produce an updated *posterior* belief.
+
+# Goals for this week
+- Concept: models
+- Model definition language
+- Explore two types of models:
+  - Parameter estimates
+  - Regressions
+
 
 # What is a model?
 

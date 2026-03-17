@@ -71,8 +71,8 @@ So what is probability? [It's just a way of talking about uncertainty.]{.fragmen
 Two conventions:
 :::
 
-- _We express probability as a number between 0 and 1 (0% to 100%)._
-- _We write probability as P( event ) or P( event | condition )._
+- _We measure probability as a number between 0 and 1 (0% to 100%)._
+- _We write statements about probability as P( event ) or P( event | condition )._
 
 ::: {.fragment}
 In 2025, Kathmandu saw rain on 179 days:
@@ -220,6 +220,8 @@ What we usually actually want:
 
 # So why is most published research wrong?
 
+<!-- TODO: add more explanation. It's a base rate problem. Given that true, interesting hypotheses are rare, we should expect more false positives than true positives. -->
+
 - Statistical significance goes against our natural intuitions about uncertainty.
 - If statistics has ever made you feel dumb or intimidated, it's not you...
 - p-value is just a really weird concept.
@@ -235,7 +237,7 @@ What we usually actually want:
 Instead of tests, we have Bayesian Updating:
 
 - We have a **prior** belief about the world (specifically, about a parameter or "estimand").<br>[_I think that about 60% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
-- Then, we observe something, and we estimate the **likelihood** of what we saw.<br>[_I just took a survey, and only 30% of people said they will vote for the current mayor._]{.fragment .blue}
+- Then, we observe something, and we estimate the **likelihood** of what we saw.<br>[_I just took a survey, and only 30% of people said they will vote for the current mayor. This doesn't really fit with what I expected._]{.fragment .blue}
 - This new observation changes our prior belief (challenging it or making it stronger), to become our **posterior**.<br>[_I now think that about 45% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
 
 ::: {notes="notes/week1_notes.md#bayesian-updating"}
@@ -284,6 +286,7 @@ In simple terms:
 # Statistics is observation
 
 - When we do ethnography, we _expect_ our data to be messy.
+- We build knowledge not from one observation but from a process of theory building based on many observations.
 - We need to start thinking about statistics in the same way.
 
 ::: {notes="notes/week1_notes.md#statistics-is-observation"}
