@@ -349,8 +349,8 @@ unintuitive.</li>
 <p>Two conventions:</p>
 </div>
 <ul>
-<li class="fragment"><em>We express probability as a number between 0 and 1 (0% to 100%).</em></li>
-<li class="fragment"><em>We write probability as P( event ) or P( event | condition ).</em></li>
+<li class="fragment"><em>We measure probability as a number between 0 and 1 (0% to 100%).</em></li>
+<li class="fragment"><em>We write statements about probability as P( event ) or P( event | condition ).</em></li>
 </ul>
 <div class="fragment">
 <p>In 2025, Kathmandu saw rain on 179 days:</p>
@@ -978,6 +978,7 @@ making a serious mistake.</p>
 
 <section id="so-why-is-most-published-research-wrong" class="title-slide slide level1 center">
 <h1>So why is most published research wrong?</h1>
+<!-- TODO: add more explanation. It's a base rate problem. Given that true, interesting hypotheses are rare, we should expect more false positives than true positives. -->
 <ul>
 <li class="fragment">Statistical significance goes against our natural intuitions about uncertainty.</li>
 <li class="fragment">If statistics has ever made you feel dumb or intimidated, it’s not you…</li>
@@ -999,7 +1000,7 @@ making a serious mistake.</p>
 <p>Instead of tests, we have Bayesian Updating:</p>
 <ul>
 <li class="fragment">We have a <strong>prior</strong> belief about the world (specifically, about a parameter or “estimand”).<br><span class="fragment blue"><em>I think that about 60% of Kathmandu will vote for the current mayor in the next election.</em></span></li>
-<li class="fragment">Then, we observe something, and we estimate the <strong>likelihood</strong> of what we saw.<br><span class="fragment blue"><em>I just took a survey, and only 30% of people said they will vote for the current mayor.</em></span></li>
+<li class="fragment">Then, we observe something, and we estimate the <strong>likelihood</strong> of what we saw.<br><span class="fragment blue"><em>I just took a survey, and only 30% of people said they will vote for the current mayor. This doesn’t really fit with what I expected.</em></span></li>
 <li class="fragment">This new observation changes our prior belief (challenging it or making it stronger), to become our <strong>posterior</strong>.<br><span class="fragment blue"><em>I now think that about 45% of Kathmandu will vote for the current mayor in the next election.</em></span></li>
 </ul>
 <aside class="notes">
@@ -1798,6 +1799,7 @@ P(A|B) = \frac{P(B|A)\,P(A)}{P(B)}
 <h1>Statistics is observation</h1>
 <ul>
 <li class="fragment">When we do ethnography, we <em>expect</em> our data to be messy.</li>
+<li class="fragment">We build knowledge not from one observation but from a process of theory building based on many observations.</li>
 <li class="fragment">We need to start thinking about statistics in the same way.</li>
 </ul>
 <aside class="notes">

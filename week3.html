@@ -225,6 +225,152 @@ technical material is not the point.</li>
 </div>
 </section>
 
+<section>
+<section id="simpsons-paradox" class="title-slide slide level1 center">
+<h1>Simpson’s paradox</h1>
+<!-- TODO: set this up as a table -->
+</section>
+<section id="section" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title"></h2>
+<p>Two surgeons, one normal and one famous, have different success rates for a procedure. How should we interpret this?</p>
+<div data-id="table">
+<table>
+<thead>
+<tr>
+<td data-id="leftmargin1">
+</td>
+<td data-id="rightmargin1">
+Success
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-id="leftmargin2">
+Normal&nbsp;Surgeon
+</td>
+<td data-id="rightmargin2">
+<span class="green">89.6%</span>
+</td>
+</tr>
+<tr>
+<td data-id="leftmargin3">
+Famous&nbsp;Surgeon
+</td>
+<td data-id="rightmargin3">
+<span class="red">74.9%</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="section-1" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title"></h2>
+<p>How about now?</p>
+<div data-id="table">
+<table>
+<thead>
+<tr>
+<td data-id="leftmargin1">
+</td>
+<td>
+Standard
+</td>
+<td>
+Complex
+</td>
+<td>
+Critical
+</td>
+<td data-id="rightmargin1" style="border-left: 1px solid black;">
+Total
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-id="leftmargin2">
+Normal&nbsp;Surgeon
+</td>
+<td>
+<span class="red">97.3%</span>
+</td>
+<td>
+<span class="red">66.0%</span>
+</td>
+<td>
+<span class="red">38.0%</span>
+</td>
+<td data-id="rightmargin2" style="border-left: 1px solid black;">
+<span class="green">89.6%</span>
+</td>
+</tr>
+<tr>
+<td data-id="leftmargin3">
+Famous&nbsp;Surgeon
+</td>
+<td>
+<span class="green">99.7%</span>
+</td>
+<td>
+<span class="green">75.0%</span>
+</td>
+<td>
+<span class="green">50.0%</span>
+</td>
+<td data-id="rightmargin3" style="border-left: 1px solid black;">
+<span class="red">74.9%</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section></section>
+<section id="models-impose-order-on-randomness" class="title-slide slide level1 center">
+<h1>Models impose order on randomness</h1>
+<iframe id="dag-frame-1" data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
+<!-- <iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="js/dag-embed.html"></iframe> -->
+
+<!-- <script>
+(() => {
+  const dag = `dag {
+    Admitted [outcome,pos="-0.619,0.077"]
+    Department [exposure,pos="-0.858,0.192"]
+    Sex [exposure,pos="-1.059,-0.272"]
+    UNKNOWN [latent,pos="-0.414,0.077"]
+    Department -> Admitted  
+    Sex -> Admitted
+    Sex -> Department
+    UNKNOWN -> Admitted
+  }`;
+
+  const frame = document.getElementById("dag-frame-1");
+
+  function send() {
+    if (!frame?.contentWindow) return;
+    frame.contentWindow.postMessage({ type: "dagitty", dag }, "*");
+  }
+
+  frame.addEventListener("load", send);
+
+  // Optional: re-send when returning to the slide (Reveal may not exist in non-reveal contexts)
+  window.addEventListener("load", () => {
+    if (window.Reveal?.on) {
+      Reveal.on("ready", send);
+      Reveal.on("slidechanged", (e) => {
+        if (e.currentSlide?.querySelector("#dag-frame-1")) send();
+      });
+    }
+  });
+})();
+</script> -->
+</section>
+
 <section id="what-have-we-done-so-far" class="title-slide slide level1 center">
 <h1>What have we done so far?</h1>
 <ul>
@@ -233,6 +379,19 @@ technical material is not the point.</li>
 <li class="fragment">We made observations.</li>
 <li class="fragment">We calculated the <em>likelihood</em> of the things we observed.</li>
 <li class="fragment">We combined our prior and likelihood to produce an updated <em>posterior</em> belief.</li>
+</ul>
+</section>
+
+<section id="goals-for-this-week" class="title-slide slide level1 center">
+<h1>Goals for this week</h1>
+<ul>
+<li class="fragment">Concept: models</li>
+<li class="fragment">Model definition language</li>
+<li class="fragment">Explore two types of models:
+<ul>
+<li class="fragment">Parameter estimates</li>
+<li class="fragment">Regressions</li>
+</ul></li>
 </ul>
 </section>
 
@@ -1397,9 +1556,9 @@ technical material is not the point.</li>
 <pre><code># A tibble: 3 × 10
   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -831.   -831.   1.01  0.702 -833.   -831.    1.00    1854.    2452.
-2 mu         45.0    45.0  0.342 0.342   44.5    45.6   1.00    3080.    2097.
-3 sigma       6.48    6.47 0.244 0.242    6.09    6.89  1.00    2976.    2219.</code></pre>
+1 lp__     -831.   -831.   1.01  0.690 -834.   -831.   1.00     1689.    2446.
+2 mu         45.0    45.0  0.350 0.344   44.4    45.6  1.00     4269.    2751.
+3 sigma       6.47    6.46 0.237 0.226    6.11    6.89 1.000    3382.    2638.</code></pre>
 </div>
 </div>
 </section>
@@ -1419,10 +1578,10 @@ technical material is not the point.</li>
 <pre><code># A tibble: 4 × 10
   variable      mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__       -776.   -775.   1.24  0.992 -778.   -774.   1.00     1780.    2643.
-2 alpha[mal…   48.6    48.6  0.435 0.433   47.9    49.3  1.000    3846.    2705.
-3 alpha[fem…   41.8    41.8  0.404 0.399   41.2    42.5  1.00     4387.    2950.
-4 sigma         5.52    5.51 0.209 0.209    5.20    5.87 1.00     3680.    2676.</code></pre>
+1 lp__       -776.   -775.   1.24  1.03  -778.   -774.   1.000    2193.    2600.
+2 alpha[mal…   48.6    48.6  0.427 0.429   47.9    49.3  0.999    3896.    3166.
+3 alpha[fem…   41.8    41.8  0.408 0.402   41.2    42.5  1.00     3293.    2947.
+4 sigma         5.52    5.52 0.215 0.211    5.18    5.89 1.00     3602.    2769.</code></pre>
 </div>
 </div>
 </section>
@@ -1443,10 +1602,10 @@ technical material is not the point.</li>
 <pre><code># A tibble: 4 × 10
   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -687.   -687.   1.20  0.970 -689.   -686.   1.000    2060.    2856.
-2 alpha      45.0    45.0  0.226 0.223   44.6    45.4  1.00     3515.    2900.
-3 beta        4.81    4.81 0.229 0.232    4.44    5.19 1.00     4139.    3014.
-4 sigma       4.25    4.24 0.159 0.157    3.99    4.52 1.00     4067.    3070.</code></pre>
+1 lp__     -687.   -686.   1.19  0.944 -689.   -686.    1.00    1994.    2649.
+2 alpha      45.0    45.0  0.224 0.228   44.6    45.3   1.00    4587.    3352.
+3 beta        4.81    4.81 0.223 0.219    4.45    5.18  1.00    4095.    2828.
+4 sigma       4.25    4.25 0.157 0.156    4.01    4.52  1.00    4971.    3203.</code></pre>
 </div>
 </div>
 </section>
@@ -1467,11 +1626,11 @@ technical material is not the point.</li>
 <pre><code># A tibble: 5 × 10
   variable      mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__       -687.   -687.   1.48  1.21  -690.   -686.   1.00     1768.    2444.
-2 alpha[mal…   45.0    45.0  0.403 0.400   44.4    45.7  1.00     3080.    3274.
-3 alpha[fem…   45.0    45.0  0.372 0.372   44.3    45.6  1.000    2718.    2765.
-4 beta          4.78    4.78 0.311 0.303    4.26    5.30 1.00     2552.    2834.
-5 sigma         4.26    4.26 0.167 0.162    4.00    4.55 1.00     3375.    2709.</code></pre>
+1 lp__       -687.   -687.   1.39  1.23  -690.   -686.   1.000    1969.    2573.
+2 alpha[mal…   45.0    45.0  0.399 0.406   44.4    45.7  1.00     2734.    2731.
+3 alpha[fem…   45.0    45.0  0.374 0.364   44.3    45.6  1.00     2831.    2655.
+4 beta          4.79    4.78 0.311 0.309    4.27    5.30 0.999    2735.    2812.
+5 sigma         4.26    4.25 0.162 0.164    4.00    4.53 1.00     3561.    2664.</code></pre>
 </div>
 </div>
 </section>
@@ -1484,10 +1643,10 @@ technical material is not the point.</li>
 <pre><code># A tibble: 4 × 10
   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -17.8   -17.5   1.27   1.02   -20.3   -16.5    1.00    1909.    2691.
-2 alpha      1.98    1.98  0.0629 0.0628   1.88    2.08   1.00    3353.    2641.
-3 beta      -0.554  -0.553 0.0640 0.0630  -0.660  -0.445  1.00    3724.    2675.
-4 sigma      0.696   0.694 0.0454 0.0437   0.627   0.774  1.00    3770.    2794.</code></pre>
+1 lp__     -17.8   -17.5   1.26   1.03   -20.2   -16.5   1.000    1888.    2390.
+2 alpha      1.98    1.98  0.0633 0.0630   1.88    2.09  1.00     3886.    2725.
+3 beta      -0.552  -0.552 0.0630 0.0618  -0.656  -0.449 1.00     4326.    3352.
+4 sigma      0.696   0.694 0.0443 0.0436   0.628   0.773 1.00     3563.    2593.</code></pre>
 </div>
 </div>
 <img data-src="week3_files/figure-revealjs/model1a_output-1.png" width="960" class="r-stretch"></section>
@@ -1500,10 +1659,10 @@ technical material is not the point.</li>
 <pre><code># A tibble: 4 × 10
   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -53.1   -52.8   1.21   0.953  -55.4   -51.8   1.00      422.     671.
-2 alpha      2.49    2.49  0.0567 0.0547   2.40    2.58  1.00      932.     642.
-3 beta       0.965   0.963 0.0569 0.0560   0.875   1.06  1.000    1007.     818.
-4 sigma      0.793   0.792 0.0399 0.0401   0.728   0.863 0.999     930.     681.</code></pre>
+1 lp__     -53.2   -52.8   1.32   1.02   -55.7   -51.8   1.000     467.     457.
+2 alpha      2.49    2.49  0.0563 0.0580   2.40    2.58  1.000    1270.     690.
+3 beta       0.969   0.969 0.0578 0.0571   0.877   1.06  1.00     1017.     743.
+4 sigma      0.793   0.791 0.0423 0.0430   0.726   0.863 0.999    1311.     815.</code></pre>
 </div>
 </div>
 <img data-src="week3_files/figure-revealjs/model1b_output-1.png" width="960" class="r-stretch"></section>
@@ -1537,11 +1696,11 @@ technical material is not the point.</li>
 <pre><code># A tibble: 5 × 10
   variable     mean  median     sd    mad     q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__      19.9    20.2    1.45   1.23   17.3   21.6    1.00      481.     504.
-2 alpha      2.42    2.41   0.0646 0.0680  2.31   2.52   0.999     452.     400.
-3 beta_col… -0.0894 -0.0875 0.0673 0.0656 -0.207  0.0181 1.01      521.     540.
-4 beta_mor…  1.13    1.13   0.115  0.117   0.941  1.31   1.00      442.     447.
-5 sigma      0.512   0.511  0.0326 0.0321  0.462  0.570  1.00      691.     551.</code></pre>
+1 lp__      19.9    20.2    1.41   1.23   17.4   21.6    1.00      473.     585.
+2 alpha      2.41    2.41   0.0628 0.0605  2.30   2.52   1.00      544.     659.
+3 beta_col… -0.0954 -0.0951 0.0683 0.0699 -0.210  0.0139 1.00      510.     576.
+4 beta_mor…  1.12    1.12   0.113  0.112   0.931  1.31   1.000     483.     548.
+5 sigma      0.510   0.507  0.0345 0.0372  0.461  0.567  0.999     947.     690.</code></pre>
 </div>
 </div>
 

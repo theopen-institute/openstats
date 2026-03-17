@@ -210,6 +210,30 @@
 <p>Describing uncertainty</p>
 </section>
 
+<section id="airplanes-return-from-battle" class="title-slide slide level1 center">
+<h1>Airplanes return from battle</h1>
+<!-- TODO: turn this into an animation of some sort -->
+<div class="r-stack">
+<div class="quarto-figure quarto-figure-center" style="text-align:center;">
+<figure>
+<p><img data-src="images/week2/Survivorship-bias.svg" style="width:80.0%"></p>
+<figcaption>Bullet hole patterns of returning aircraft</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<section id="population-histogram" class="title-slide slide level1 center">
+<h1>Population histogram</h1>
+<!-- TODO: Add NLSS age data. Why the bumps? -->
+
+<img data-src="images/week2/population.svg" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Population of Nepal</p></section>
+
+<section id="randomness-has-patterns" class="title-slide slide level1 center">
+<h1>Randomness has patterns</h1>
+
+</section>
+
 <section id="the-three-parts-of-statistical-questions" class="title-slide slide level1 center">
 <h1>The three parts of statistical questions</h1>
 <p>Problem: we want to understand how the admissions process works at a university.</p>
@@ -259,7 +283,7 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Randomness: Reality is messy, and we’ll never predict admission perfectly</strong></p>
+<p><strong>Randomness: Reality is messy, and we’ll never predict admission perfectly. But, randomness has patterns. We can describe how it was generated.</strong></p>
 </div>
 <div class="callout-content">
 <ul>
@@ -273,70 +297,18 @@
 </div>
 </section>
 
-<section id="statistical-models" class="title-slide slide level1 center">
-<h1>Statistical models</h1>
-<iframe id="dag-frame-1" data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
-<!-- <iframe
-  id="dag-frame-1"
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="js/dag-embed.html"></iframe> -->
-
-<!-- <script>
-(() => {
-  const dag = `dag {
-    Admitted [outcome,pos="-0.619,0.077"]
-    Department [exposure,pos="-0.858,0.192"]
-    Sex [exposure,pos="-1.059,-0.272"]
-    UNKNOWN [latent,pos="-0.414,0.077"]
-    Department -> Admitted  
-    Sex -> Admitted
-    Sex -> Department
-    UNKNOWN -> Admitted
-  }`;
-
-  const frame = document.getElementById("dag-frame-1");
-
-  function send() {
-    if (!frame?.contentWindow) return;
-    frame.contentWindow.postMessage({ type: "dagitty", dag }, "*");
-  }
-
-  frame.addEventListener("load", send);
-
-  // Optional: re-send when returning to the slide (Reveal may not exist in non-reveal contexts)
-  window.addEventListener("load", () => {
-    if (window.Reveal?.on) {
-      Reveal.on("ready", send);
-      Reveal.on("slidechanged", (e) => {
-        if (e.currentSlide?.querySelector("#dag-frame-1")) send();
-      });
-    }
-  });
-})();
-</script> -->
-</section>
-
-<section id="randomness-has-patterns" class="title-slide slide level1 center">
-<h1>Randomness has patterns</h1>
-<div class="r-stack">
-<div class="quarto-figure quarto-figure-center" style="text-align:center;">
-<figure>
-<p><img data-src="images/week2/Survivorship-bias.svg" style="width:80.0%"></p>
-<figcaption>Bullet hole patterns of returning aircraft</figcaption>
-</figure>
-</div>
-</div>
-</section>
-
 <section id="goals-this-week" class="title-slide slide level1 center">
 <h1>Goals this week</h1>
 <ul>
-<li class="fragment">Get more specific about “beliefs”</li>
+<li class="fragment">Get more specific about “beliefs”
+<ul>
+<li class="fragment">Concept: Parameters</li>
+<li class="fragment">Concept: Probability Distributions</li>
+</ul></li>
 <li class="fragment">Learn how to use Bayes Theorem
 <ul>
-<li class="fragment">Priors and posteriors</li>
-<li class="fragment">Likelihood</li>
+<li class="fragment">Concept: Priors and posteriors</li>
+<li class="fragment">Concept: Likelihood</li>
 </ul></li>
 <li class="fragment">Design a real analysis</li>
 </ul>
@@ -371,8 +343,8 @@
 </ul>
 </section>
 
-<section id="parameters-probability-distributions" class="title-slide slide level1 center">
-<h1>Parameters: Probability distributions</h1>
+<section id="probability-distributions" class="title-slide slide level1 center">
+<h1>Probability distributions</h1>
 <div class="fragment">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
