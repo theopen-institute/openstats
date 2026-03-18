@@ -1,0 +1,70 @@
+---
+title: World Bank Development Indicators
+format:
+  html: 
+    df-print: kable
+---
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+Source: [World Bank](https://databank.worldbank.org/source/world-development-indicators)
+
+(Removede variables with less than 75% data coverage or not including Nepal.)
+
+
+```{r wb_setup, echo=FALSE, warning=FALSE, message=FALSE}
+filename <- "datasets/wb2022.csv"
+
+# build a variable label vector for better labelling of df
+label_vec <- read_csv(filename) |>
+  distinct(`Series Code`, `Series Name`) |>
+  filter(!is.na(`Series Code`), !is.na(`Series Name`)) |>
+  group_by(`Series Code`) |> # in case of duplicates
+  summarise(label = first(`Series Name`), .groups = "drop") |>
+  with(setNames(label, `Series Code`))
+
+# compose dataframe
+df <- read_csv(filename) |>
+  select(-c(`Series Name`)) |>
+  slice(1:(n() - 5)) |>
+  pivot_longer(
+    cols = matches("^\\d{4} \\[YR\\d{4}\\]$"),
+    names_to = "year",
+    values_to = "value",
+    names_transform = list(year = ~ str_extract(.x, "^\\d{4}"))
+  ) |>
+  pivot_wider(names_from = `Series Code`, values_from = value) |>
+  mutate(across(
+    any_of(names(label_vec)),
+    ~ {
+      attr(.x, "label") <- unname(label_vec[cur_column()])
+      .x
+    }
+  )) |>
+  left_join(
+    read_csv("datasets/wb_country.csv"),
+    join_by(`Country Code` == Code)
+  )
+
+# build variable summary showing only eligible variables
+label_df <- df |>
+  summarise(across(everything(), ~ sum(is.na(.x)))) |>
+  pivot_longer(everything(), names_to = "column", values_to = "n_NA") |>
+  filter(n_NA < 50) |>
+  rowwise() |>
+  filter(
+    !any(is.na(df[df$`Country Name` == "Nepal", .data$column, drop = TRUE]))
+  ) |>
+  ungroup() |>
+  transmute(
+    `Series Code` = column,
+    label = unname(label_vec[column])
+  ) |>
+  filter(!is.na(label))
+
+
+label_df %>%
+  mutate(label = gsub("\\$", "\\\\$", label))
+```
+
