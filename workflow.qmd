@@ -13,8 +13,8 @@ This document describes a standard workflow for exploratory modeling.
 Imagine you're in charge of admissions at a large university. You want to know if your admissions process is fair. You've got data from thousands of individual applicants. What now?
 
 
-# Step 1: Conceptual Model
-This first step is to define your conceptual model. A conceptual model includes no numbers, just a visual representation of the different variables you want to include and the relationships between them. You'll hear people call this kind of visualization a DAG (Directed Acyclic Graph), but 
+# Step 1: Causal Model
+This first step is to define your causal model. A causal model includes no numbers, just a visual representation of the different variables you want to include and the relationships between them. You'll hear people call this kind of visualization a DAG (Directed Acyclic Graph), but that's a complicated name for a simple idea.
 
 <div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
 dag {
