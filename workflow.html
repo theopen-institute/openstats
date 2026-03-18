@@ -149,7 +149,7 @@ window.Quarto = {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#step-1-conceptual-model" id="toc-step-1-conceptual-model" class="nav-link active" data-scroll-target="#step-1-conceptual-model">Step 1: Conceptual Model</a></li>
+  <li><a href="#step-1-causal-model" id="toc-step-1-causal-model" class="nav-link active" data-scroll-target="#step-1-causal-model">Step 1: Causal Model</a></li>
   <li><a href="#step-2-formal-model" id="toc-step-2-formal-model" class="nav-link" data-scroll-target="#step-2-formal-model">Step 2: Formal Model</a></li>
   <li><a href="#step-3-computational-model" id="toc-step-3-computational-model" class="nav-link" data-scroll-target="#step-3-computational-model">Step 3: Computational Model</a></li>
   <li><a href="#step-4-simulation" id="toc-step-4-simulation" class="nav-link" data-scroll-target="#step-4-simulation">Step 4: Simulation</a></li>
@@ -186,9 +186,9 @@ window.Quarto = {
 
 <p>This document describes a standard workflow for exploratory modeling.</p>
 <p>Imagine you’re in charge of admissions at a large university. You want to know if your admissions process is fair. You’ve got data from thousands of individual applicants. What now?</p>
-<section id="step-1-conceptual-model" class="level1">
-<h1>Step 1: Conceptual Model</h1>
-<p>This first step is to define your conceptual model. A conceptual model includes no numbers, just a visual representation of the different variables you want to include and the relationships between them. You’ll hear people call this kind of visualization a DAG (Directed Acyclic Graph), but</p>
+<section id="step-1-causal-model" class="level1">
+<h1>Step 1: Causal Model</h1>
+<p>This first step is to define your causal model. A causal model includes no numbers, just a visual representation of the different variables you want to include and the relationships between them. You’ll hear people call this kind of visualization a DAG (Directed Acyclic Graph), but that’s a complicated name for a simple idea.</p>
 <div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
 <p>dag { Admitted [outcome,pos="-0.619,0.077"] Department [exposure,pos="-0.858,0.192"] Sex [exposure,pos="-1.059,-0.272"] UNKNOWN [latent,pos="-0.414,0.077"] Department -&gt; Admitted Sex -&gt; Admitted Sex -&gt; Department UNKNOWN -&gt; Admitted }</p>
 </div>
@@ -405,29 +405,29 @@ admitted_i &amp;\sim \mathrm{Bernoulli}(p_i) \\
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 21 × 2
-   variable           mean
-   &lt;chr&gt;             &lt;dbl&gt;
- 1 alpha            0.705 
- 2 beta[male]       0.422 
- 3 beta[female]    -0.422 
- 4 gamma[A]        -0.495 
- 5 gamma[B]        -1.51  
- 6 gamma[C]         0.630 
- 7 gamma[D]         2.30  
- 8 gamma[E]        -0.826 
- 9 gamma[F]        -0.0937
-10 delta[male,A]   -0.411 
-11 delta[female,A]  0.411 
-12 delta[male,B]   -0.0558
-13 delta[female,B]  0.0558
-14 delta[male,C]   -0.349 
-15 delta[female,C]  0.349 
-16 delta[male,D]    0.505 
-17 delta[female,D] -0.505 
-18 delta[male,E]   -0.247 
-19 delta[female,E]  0.247 
-20 delta[male,F]    0.559 
-21 delta[female,F] -0.559 </code></pre>
+   variable            mean
+   &lt;chr&gt;              &lt;dbl&gt;
+ 1 alpha            0.0781 
+ 2 beta[male]      -1.06   
+ 3 beta[female]     1.06   
+ 4 gamma[A]        -1.07   
+ 5 gamma[B]        -1.49   
+ 6 gamma[C]        -0.438  
+ 7 gamma[D]         0.694  
+ 8 gamma[E]         1.70   
+ 9 gamma[F]         0.612  
+10 delta[male,A]   -0.0484 
+11 delta[female,A]  0.0484 
+12 delta[male,B]    0.00102
+13 delta[female,B] -0.00102
+14 delta[male,C]   -0.211  
+15 delta[female,C]  0.211  
+16 delta[male,D]    0.217  
+17 delta[female,D] -0.217  
+18 delta[male,E]    0.0786 
+19 delta[female,E] -0.0786 
+20 delta[male,F]   -0.0363 
+21 delta[female,F]  0.0363 </code></pre>
 </div>
 </div>
 <p>(More details soon…)</p>
@@ -459,27 +459,27 @@ admitted_i &amp;\sim \mathrm{Bernoulli}(p_i) \\
 <pre><code># A tibble: 21 × 8
    variable            mean   median     sd    mad       q5      q95  rhat
    &lt;chr&gt;              &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
- 1 alpha           -0.568   -0.568   0.0515 0.0509 -0.653   -0.484    1.00
- 2 beta[male]      -0.0863  -0.0866  0.0526 0.0522 -0.175   -0.00104  1.00
- 3 beta[female]     0.0863   0.0866  0.0526 0.0522  0.00104  0.175    1.00
- 4 gamma[A]         1.53     1.52    0.111  0.109   1.34     1.71     1.00
- 5 gamma[B]         1.17     1.17    0.165  0.165   0.896    1.44     1.00
- 6 gamma[C]        -0.0322  -0.0312  0.0792 0.0777 -0.164    0.0964   1.00
- 7 gamma[D]        -0.0951  -0.0942  0.0792 0.0815 -0.227    0.0337   1.00
- 8 gamma[E]        -0.491   -0.491   0.0951 0.0946 -0.647   -0.336    1.00
- 9 gamma[F]        -2.08    -2.07    0.130  0.130  -2.29    -1.87     1.00
-10 delta[male,A]   -0.375   -0.372   0.109  0.111  -0.561   -0.203    1.00
-11 delta[female,A]  0.375    0.372   0.109  0.111   0.203    0.561    1.00
-12 delta[male,B]    0.0160   0.0172  0.160  0.161  -0.245    0.275    1.00
-13 delta[female,B] -0.0160  -0.0172  0.160  0.161  -0.275    0.245    1.00
-14 delta[male,C]    0.144    0.144   0.0794 0.0796  0.0111   0.272    1.00
-15 delta[female,C] -0.144   -0.144   0.0794 0.0796 -0.272   -0.0111   1.00
-16 delta[male,D]    0.0423   0.0419  0.0800 0.0816 -0.0898   0.173    1.00
-17 delta[female,D] -0.0423  -0.0419  0.0800 0.0816 -0.173    0.0898   1.00
-18 delta[male,E]    0.175    0.176   0.0921 0.0936  0.0240   0.326    1.00
-19 delta[female,E] -0.175   -0.176   0.0921 0.0936 -0.326   -0.0240   1.00
-20 delta[male,F]   -0.00242 -0.00267 0.123  0.118  -0.203    0.202    1.00
-21 delta[female,F]  0.00242  0.00267 0.123  0.118  -0.202    0.203    1.00</code></pre>
+ 1 alpha           -0.567   -0.567   0.0514 0.0521 -0.651   -0.482    1.00
+ 2 beta[male]      -0.0887  -0.0887  0.0521 0.0525 -0.176   -0.00369  1.00
+ 3 beta[female]     0.0887   0.0887  0.0521 0.0525  0.00369  0.176    1.00
+ 4 gamma[A]         1.53     1.53    0.114  0.113   1.34     1.72     1.00
+ 5 gamma[B]         1.18     1.17    0.166  0.164   0.917    1.45     1.00
+ 6 gamma[C]        -0.0338  -0.0332  0.0764 0.0768 -0.160    0.0900   1.00
+ 7 gamma[D]        -0.0954  -0.0945  0.0810 0.0813 -0.228    0.0364   1.00
+ 8 gamma[E]        -0.496   -0.496   0.0937 0.0915 -0.655   -0.340    1.00
+ 9 gamma[F]        -2.08    -2.07    0.131  0.129  -2.29    -1.86     1.00
+10 delta[male,A]   -0.372   -0.369   0.111  0.113  -0.559   -0.192    1.00
+11 delta[female,A]  0.372    0.369   0.111  0.113   0.192    0.559    1.00
+12 delta[male,B]    0.0117   0.0135  0.161  0.160  -0.257    0.271    1.00
+13 delta[female,B] -0.0117  -0.0135  0.161  0.160  -0.271    0.257    1.00
+14 delta[male,C]    0.146    0.147   0.0763 0.0754  0.0203   0.270    1.00
+15 delta[female,C] -0.146   -0.147   0.0763 0.0754 -0.270   -0.0203   1.00
+16 delta[male,D]    0.0466   0.0462  0.0778 0.0775 -0.0814   0.175    1.00
+17 delta[female,D] -0.0466  -0.0462  0.0778 0.0775 -0.175    0.0814   1.00
+18 delta[male,E]    0.171    0.170   0.0924 0.0917  0.0233   0.325    1.00
+19 delta[female,E] -0.171   -0.170   0.0924 0.0917 -0.325   -0.0233   1.00
+20 delta[male,F]   -0.00443 -0.00296 0.121  0.120  -0.203    0.196    1.00
+21 delta[female,F]  0.00443  0.00296 0.121  0.120  -0.196    0.203    1.00</code></pre>
 </div>
 </div>
 <p>(More details soon…)</p>
