@@ -606,6 +606,7 @@ fit_weight2 <- df_weight |>
   compose_data() |>
   model_weight2$sample()
 ```
+
 ```{r summary_weight2}
 fit_weight2$summary() |>
   replace_indexes(df_weight, alpha[sex])
@@ -613,6 +614,7 @@ fit_weight2$summary() |>
 
 
 # Scatter plot (with height)
+
 :::{.r-stack width="1605"}
 :::{.fragment width="1605"}
 ```{r weight_height1, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
@@ -623,6 +625,7 @@ df_weight |>
 
 ```
 :::
+
 :::{.fragment width="1605"}
 ```{r weight_height2, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
 df_weight |>
@@ -645,6 +648,18 @@ df_weight |>
 ```
 :::
 
+:::{.fragment width="1605"}
+```{r weight_height4, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+df_weight |>
+  ggplot(aes(x = scale(height), y = weight)) +
+  geom_point(color = "purple", shape = "plus") +
+  geom_smooth(method="lm", se=FALSE) +
+  labs(x = "Height (standardized)", y = "Weight (kg)")
+
+```
+:::
+
+:::
 
 # Model (Weight ~ Height)
 
@@ -667,20 +682,6 @@ fit_weight3 <- df_weight |>
 ```{r summary_weight3}
 fit_weight3$summary()
 ```
-
-
-:::{.fragment width="1605"}
-```{r weight_height4, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-df_weight |>
-  ggplot(aes(x = scale(height), y = weight)) +
-  geom_point(color = "purple", shape = "plus") +
-  geom_smooth(method="lm", se=FALSE) +
-  labs(x = "Height (standardized)", y = "Weight (kg)")
-
-```
-:::
-
-:::
 
 # Models tell stories
 
