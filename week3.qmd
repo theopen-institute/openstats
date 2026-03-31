@@ -168,14 +168,6 @@ How about now?
  -->
 
 
-# Distributions Demo {.no-title}
-
-```{shinylive-r}
-#| standalone: true
-{{< include shiny/distributions.R >}}
-``` 
-
-
 # Writing Priors
 We need a way to *describe* our prior belief for all values of our parameter (Popularity)
 
@@ -319,6 +311,14 @@ plot(
 :::
 
 :::
+
+# Distributions Demo {.no-title}
+
+```{shinylive-r}
+#| standalone: true
+{{< include shiny/distributions.R >}}
+``` 
+
 
 # Writing likelihood functions
 
