@@ -10,6 +10,7 @@ project:
     - js/
     - www/
     - notes/
+engine: knitr
 format: 
   revealjs:
     theme: [simple, css/deck.scss]
