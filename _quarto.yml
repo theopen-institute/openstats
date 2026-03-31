@@ -3,14 +3,13 @@ project:
   output-dir: .output
   render:
     - "**/*.qmd"
-    - "!notes/"
+    - "!notes/**"
   resources:
     - images/
     - css/
     - js/
     - www/
     - notes/
-engine: knitr
 format: 
   revealjs:
     theme: [simple, css/deck.scss]
