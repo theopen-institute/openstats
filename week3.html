@@ -419,6 +419,82 @@ Famous&nbsp;Surgeon
  -->
 </section>
 
+<section id="writing-priors" class="title-slide slide level1 center">
+<h1>Writing Priors</h1>
+<p>We need a way to <em>describe</em> our prior belief for all values of our parameter (Popularity)</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/prior1-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/prior2-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/prior3-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/prior4-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/prior5-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week3_files/figure-revealjs/prior6-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+
 <section id="distributions-demo" class="title-slide slide level1 no-title center">
 <h1>Distributions Demo</h1>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>#| '!! shinylive warning !!': |</span>
@@ -1297,82 +1373,6 @@ Famous&nbsp;Surgeon
 <span id="cb1-874"><a></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 
-<section id="writing-priors" class="title-slide slide level1 center">
-<h1>Writing Priors</h1>
-<p>We need a way to <em>describe</em> our prior belief for all values of our parameter (Popularity)</p>
-<div class="columns">
-<div class="column" style="width:33%;">
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week3_files/figure-revealjs/prior1-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week3_files/figure-revealjs/prior2-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:33%;">
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week3_files/figure-revealjs/prior3-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week3_files/figure-revealjs/prior4-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:33%;">
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week3_files/figure-revealjs/prior5-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week3_files/figure-revealjs/prior6-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-
 <section id="writing-likelihood-functions" class="title-slide slide level1 center">
 <h1>Writing likelihood functions</h1>
 <p>We need a way to describe how our data got made, linking our parameter (Popularity) to our observed data (Surveys and Votes)</p>
@@ -2216,9 +2216,9 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 3 × 10
   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -832.   -831.   1.03  0.723 -834.   -831.    1.00    1693.    2116.
-2 mu         45.0    45.0  0.349 0.347   44.4    45.6   1.00    3183.    2547.
-3 sigma       6.48    6.48 0.245 0.242    6.10    6.90  1.00    3136.    2137.</code></pre>
+1 lp__     -832.   -831.   1.03  0.732 -834.   -831.    1.00    1833.    2397.
+2 mu         45.0    45.0  0.353 0.352   44.4    45.6   1.00    4067.    2678.
+3 sigma       6.48    6.47 0.247 0.252    6.09    6.90  1.00    4038.    2811.</code></pre>
 </div>
 </div>
 </section>
@@ -2248,10 +2248,10 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 4 × 10
   variable      mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__       -776.   -775.   1.26  1.02  -778.   -774.   1.00     1834.    2971.
-2 alpha[mal…   48.6    48.6  0.426 0.416   47.9    49.3  1.00     4873.    3377.
-3 alpha[fem…   41.8    41.8  0.404 0.394   41.1    42.5  1.00     3791.    2834.
-4 sigma         5.53    5.52 0.212 0.209    5.20    5.88 1.000    4665.    2736.</code></pre>
+1 lp__       -776.   -775.   1.25  1.03  -778.   -774.    1.00    2216.    2865.
+2 alpha[mal…   48.6    48.6  0.437 0.437   47.9    49.3   1.00    4216.    2967.
+3 alpha[fem…   41.8    41.8  0.413 0.407   41.1    42.5   1.00    4016.    3016.
+4 sigma         5.52    5.52 0.206 0.196    5.20    5.88  1.00    3784.    2769.</code></pre>
 </div>
 </div>
 </section>
@@ -2322,10 +2322,10 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 4 × 10
   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -687.   -687.   1.24  0.991 -689.   -686.    1.00    2087.    2453.
-2 alpha      45.0    45.0  0.225 0.227   44.6    45.4   1.00    4567.    2937.
-3 beta        4.81    4.80 0.231 0.235    4.43    5.19  1.00    4052.    2844.
-4 sigma       4.26    4.25 0.159 0.158    4.00    4.52  1.00    3836.    2598.</code></pre>
+1 lp__     -687.   -687.   1.20  0.980 -689.   -686.    1.00    2239.    2757.
+2 alpha      45.0    45.0  0.225 0.230   44.6    45.4   1.00    4856.    3022.
+3 beta        4.81    4.81 0.226 0.223    4.43    5.17  1.00    4269.    3276.
+4 sigma       4.26    4.26 0.162 0.164    4.01    4.54  1.00    4602.    3342.</code></pre>
 </div>
 </div>
 </section>
@@ -2351,11 +2351,11 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 5 × 10
   variable      mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__       -687.   -687.   1.38  1.15  -690.   -686.   1.00     1960.    2646.
-2 alpha[mal…   45.0    45.0  0.398 0.403   44.4    45.7  1.00     2910.    2608.
-3 alpha[fem…   45.0    45.0  0.376 0.376   44.3    45.6  1.00     2650.    2612.
-4 beta          4.79    4.78 0.313 0.315    4.28    5.30 1.000    2831.    2557.
-5 sigma         4.26    4.26 0.157 0.157    4.01    4.53 1.00     3374.    2721.</code></pre>
+1 lp__       -688.   -687.   1.46  1.27  -690.   -686.    1.00    1900.    2280.
+2 alpha[mal…   45.0    45.0  0.419 0.416   44.3    45.7   1.00    2642.    2928.
+3 alpha[fem…   45.0    45.0  0.378 0.369   44.3    45.6   1.00    2668.    2717.
+4 beta          4.78    4.78 0.316 0.304    4.26    5.30  1.00    2506.    2573.
+5 sigma         4.27    4.26 0.165 0.162    4.00    4.54  1.00    3432.    2664.</code></pre>
 </div>
 </div>
 </section>
@@ -2434,10 +2434,10 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 4 × 10
   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -17.8   -17.5   1.26   1.01   -20.4   -16.5    1.00    1726.    2231.
-2 alpha      1.98    1.98  0.0624 0.0626   1.88    2.08   1.00    3925.    2818.
-3 beta      -0.556  -0.556 0.0648 0.0645  -0.663  -0.450  1.00    3937.    2828.
-4 sigma      0.697   0.694 0.0451 0.0442   0.627   0.774  1.00    3926.    3071.</code></pre>
+1 lp__     -17.8   -17.5   1.18   0.970  -20.1   -16.5    1.00    1597.    2772.
+2 alpha      1.98    1.98  0.0639 0.0645   1.88    2.09   1.00    3875.    2840.
+3 beta      -0.554  -0.554 0.0608 0.0606  -0.651  -0.453  1.00    3943.    2865.
+4 sigma      0.696   0.695 0.0437 0.0433   0.628   0.772  1.00    3486.    2743.</code></pre>
 </div>
 </div>
 <img data-src="week3_files/figure-revealjs/model1a_output-1.png" width="960" class="r-stretch"></section>
@@ -2450,10 +2450,10 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 4 × 10
   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -53.1   -52.8   1.30   1.01   -55.5   -51.8    1.00     473.     622.
-2 alpha      2.49    2.49  0.0585 0.0560   2.39    2.59   1.00    2108.     715.
-3 beta       0.968   0.967 0.0558 0.0562   0.883   1.07   1.00    1279.     643.
-4 sigma      0.792   0.791 0.0410 0.0423   0.728   0.859  1.00     930.     500.</code></pre>
+1 lp__     -53.1   -52.7   1.21   0.963  -55.4   -51.8   1.01      442.     625.
+2 alpha      2.49    2.49  0.0551 0.0578   2.40    2.58  1.00      987.     909.
+3 beta       0.965   0.963 0.0558 0.0569   0.875   1.05  0.999    1199.     755.
+4 sigma      0.792   0.789 0.0407 0.0409   0.730   0.863 1.01     1195.     674.</code></pre>
 </div>
 </div>
 <img data-src="week3_files/figure-revealjs/model1b_output-1.png" width="960" class="r-stretch"></section>
@@ -2487,11 +2487,11 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 5 × 10
   variable     mean  median     sd    mad     q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__      19.9    20.3    1.44   1.22   17.1   21.6    1.000     419.     660.
-2 alpha      2.41    2.41   0.0582 0.0615  2.32   2.51   1.00      671.     680.
-3 beta_col… -0.0927 -0.0934 0.0643 0.0654 -0.199  0.0108 0.999     479.     576.
-4 beta_mor…  1.12    1.12   0.107  0.103   0.948  1.30   1.00      513.     788.
-5 sigma      0.509   0.508  0.0352 0.0359  0.458  0.570  1.00      782.     485.</code></pre>
+1 lp__      20.0    20.3    1.39   1.23   17.3   21.6    0.999     429.     744.
+2 alpha      2.41    2.41   0.0610 0.0600  2.31   2.51   0.999     497.     568.
+3 beta_col… -0.0925 -0.0915 0.0642 0.0643 -0.196  0.0146 0.999     517.     608.
+4 beta_mor…  1.13    1.13   0.107  0.103   0.945  1.30   0.999     482.     448.
+5 sigma      0.509   0.506  0.0334 0.0339  0.455  0.565  1.00      810.     709.</code></pre>
 </div>
 </div>
 
