@@ -362,150 +362,12 @@ $$
 - it's always a theoretical attribution, simplifying arbitrary complexity
 - in the social science, we tend to think about cause as sites of intervention -->
 
-# Understanding global birth rates
+# Generative Model Demo {.no-title}
 
-```{r wb_setup, echo=FALSE, warning=FALSE, message=FALSE}
-filename <- "datasets/wb2022.csv"
-
-# build a variable label vector for better labelling of df
-label_vec <- read_csv(filename) |>
-  distinct(`Series Code`, `Series Name`) |>
-  filter(!is.na(`Series Code`), !is.na(`Series Name`)) |>
-  group_by(`Series Code`) |> # in case of duplicates
-  summarise(label = first(`Series Name`), .groups = "drop") |>
-  with(setNames(label, `Series Code`))
-
-# compose dataframe
-df <- read_csv(filename) |>
-  select(-c(`Series Name`)) |>
-  slice(1:(n() - 5)) |>
-  pivot_longer(
-    cols = matches("^\\d{4} \\[YR\\d{4}\\]$"),
-    names_to = "year",
-    values_to = "value",
-    names_transform = list(year = ~ str_extract(.x, "^\\d{4}"))
-  ) |>
-  pivot_wider(names_from = `Series Code`, values_from = value) |>
-  mutate(across(
-    any_of(names(label_vec)),
-    ~ {
-      attr(.x, "label") <- unname(label_vec[cur_column()])
-      .x
-    }
-  )) |>
-  left_join(
-    read_csv("datasets/wb_country.csv"),
-    join_by(`Country Code` == Code)
-  )
-
-# build variable summary showing only eligible variables
-label_df <- df |>
-  summarise(across(everything(), ~ sum(is.na(.x)))) |>
-  pivot_longer(everything(), names_to = "column", values_to = "n_NA") |>
-  # filter(n_NA < 50) |>
-  rowwise() |>
-  filter(
-    !any(is.na(df[df$`Country Name` == "Nepal", .data$column, drop = TRUE]))
-  ) |>
-  ungroup() |>
-  transmute(
-    `Series Code` = column,
-    label = unname(label_vec[column])
-  ) |>
-  filter(!is.na(label))
-```
-
-:::{.r-stack }
-
-:::{.fragment width="1605"}
-```{r wb_fertility1, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-ggplot(df, aes(x = SP.DYN.TFRT.IN)) +
-  geom_histogram(bins = 11, colour = "darkgray") +
-  scale_fill_discrete(
-    labels = scales::label_wrap(20)
-  ) +
-  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
-```
-
-
-
-:::
-
-:::{.fragment width="1605"}
-```{r wb_fertility2, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-ggplot(df, aes(x = SP.DYN.TFRT.IN, fill = Region)) +
-  geom_histogram(bins = 11, colour = "darkgray", position = "stack") +
-  scale_fill_discrete(
-    labels = scales::label_wrap(20)
-  ) +
-  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
-```
-:::
-
-
-:::
-
-
-# Birthrate ~ Women's College Enrollment
-
-```{r wb_college, echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(df, aes(x = SE.TER.ENRR.FE, y = SP.DYN.TFRT.IN)) +
-  geom_point(aes(color = Region)) +
-  stat_smooth(method = "lm") +
-  scale_color_discrete(
-    labels = scales::label_wrap(20)
-  ) +
-  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
-```
-
-
-# Birthrate ~ Infant Mortality
-
-:::{.r-stack}
-
-:::{.fragment width="1605"}
-```{r wb_infant1, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-ggplot(df, aes(x = SP.DYN.IMRT.IN, y = SP.DYN.TFRT.IN)) +
-  geom_point(aes(color = Region)) +
-  stat_smooth(method = "lm") +
-  scale_color_discrete(
-    labels = scales::label_wrap(20)
-  ) +
-  scale_x_continuous(limits = c(0, 100)) +
-  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
-
-```
-
-:::
-
-:::{.fragment width="100%"}
-
-```{r wb_infant2, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-ggplot(df, aes(x = log(SP.DYN.IMRT.IN), y = SP.DYN.TFRT.IN)) +
-  geom_point(aes(color = Region)) +
-  stat_smooth(method = "lm") +
-  scale_color_discrete(
-    labels = scales::label_wrap(20)
-  ) +
-  # scale_x_continuous(limits=c(0,100)) +
-  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
-
-```
-
-:::
-:::
-
-# Data: no meaning without a story
-
-```{=html}
-<iframe
-  id="dag-frame-1"
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="https://dagitty.net/dags.html"
-></iframe>
-```
-
+```{shinylive-r}
+#| standalone: true
+{{< include shiny/regression.R >}}
+``` 
 
 # Modeling individual weight
 
@@ -718,6 +580,151 @@ fit_weight4$summary() |>
   replace_indexes(df_weight, alpha[sex])
 ```
 
+
+
+# Understanding global birth rates
+
+```{r wb_setup, echo=FALSE, warning=FALSE, message=FALSE}
+filename <- "datasets/wb2022.csv"
+
+# build a variable label vector for better labelling of df
+label_vec <- read_csv(filename) |>
+  distinct(`Series Code`, `Series Name`) |>
+  filter(!is.na(`Series Code`), !is.na(`Series Name`)) |>
+  group_by(`Series Code`) |> # in case of duplicates
+  summarise(label = first(`Series Name`), .groups = "drop") |>
+  with(setNames(label, `Series Code`))
+
+# compose dataframe
+df <- read_csv(filename) |>
+  select(-c(`Series Name`)) |>
+  slice(1:(n() - 5)) |>
+  pivot_longer(
+    cols = matches("^\\d{4} \\[YR\\d{4}\\]$"),
+    names_to = "year",
+    values_to = "value",
+    names_transform = list(year = ~ str_extract(.x, "^\\d{4}"))
+  ) |>
+  pivot_wider(names_from = `Series Code`, values_from = value) |>
+  mutate(across(
+    any_of(names(label_vec)),
+    ~ {
+      attr(.x, "label") <- unname(label_vec[cur_column()])
+      .x
+    }
+  )) |>
+  left_join(
+    read_csv("datasets/wb_country.csv"),
+    join_by(`Country Code` == Code)
+  )
+
+# build variable summary showing only eligible variables
+label_df <- df |>
+  summarise(across(everything(), ~ sum(is.na(.x)))) |>
+  pivot_longer(everything(), names_to = "column", values_to = "n_NA") |>
+  # filter(n_NA < 50) |>
+  rowwise() |>
+  filter(
+    !any(is.na(df[df$`Country Name` == "Nepal", .data$column, drop = TRUE]))
+  ) |>
+  ungroup() |>
+  transmute(
+    `Series Code` = column,
+    label = unname(label_vec[column])
+  ) |>
+  filter(!is.na(label))
+```
+
+:::{.r-stack }
+
+:::{.fragment width="1605"}
+```{r wb_fertility1, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+ggplot(df, aes(x = SP.DYN.TFRT.IN)) +
+  geom_histogram(bins = 11, colour = "darkgray") +
+  scale_fill_discrete(
+    labels = scales::label_wrap(20)
+  ) +
+  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
+```
+
+
+
+:::
+
+:::{.fragment width="1605"}
+```{r wb_fertility2, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+ggplot(df, aes(x = SP.DYN.TFRT.IN, fill = Region)) +
+  geom_histogram(bins = 11, colour = "darkgray", position = "stack") +
+  scale_fill_discrete(
+    labels = scales::label_wrap(20)
+  ) +
+  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
+```
+:::
+
+
+:::
+
+
+# Birthrate ~ Women's College Enrollment
+
+```{r wb_college, echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(df, aes(x = SE.TER.ENRR.FE, y = SP.DYN.TFRT.IN)) +
+  geom_point(aes(color = Region)) +
+  stat_smooth(method = "lm") +
+  scale_color_discrete(
+    labels = scales::label_wrap(20)
+  ) +
+  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
+```
+
+
+# Birthrate ~ Infant Mortality
+
+:::{.r-stack}
+
+:::{.fragment width="1605"}
+```{r wb_infant1, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+ggplot(df, aes(x = SP.DYN.IMRT.IN, y = SP.DYN.TFRT.IN)) +
+  geom_point(aes(color = Region)) +
+  stat_smooth(method = "lm") +
+  scale_color_discrete(
+    labels = scales::label_wrap(20)
+  ) +
+  scale_x_continuous(limits = c(0, 100)) +
+  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
+
+```
+
+:::
+
+:::{.fragment width="100%"}
+
+```{r wb_infant2, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
+ggplot(df, aes(x = log(SP.DYN.IMRT.IN), y = SP.DYN.TFRT.IN)) +
+  geom_point(aes(color = Region)) +
+  stat_smooth(method = "lm") +
+  scale_color_discrete(
+    labels = scales::label_wrap(20)
+  ) +
+  # scale_x_continuous(limits=c(0,100)) +
+  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
+
+```
+
+:::
+:::
+
+# Data: no meaning without a story
+
+```{=html}
+<iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="https://dagitty.net/dags.html"
+></iframe>
+```
 
 
 
