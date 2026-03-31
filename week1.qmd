@@ -161,10 +161,10 @@ _Paradox: P(A|B) is not the same as P(B|A)_
 :::
 
 # Base Rate Paradox {.no-title}
-<!-- ```{shinylive-r}
+```{shinylive-r}
 #| standalone: true
 {{< include shiny/baserate.R >}}
-``` -->
+```
 
 # Direction of conditions
 
