@@ -3,6 +3,8 @@ format:
   revealjs: default
 ---
 
+<!-- TODO: This whole unit needs to be fundamentally reimagined. Start with the problem, then find the solution. -->
+
 # Data Lunch: Week 3 {.center notes="notes/week1_notes.md#title"}
 
 Models
