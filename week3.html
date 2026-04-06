@@ -8,9 +8,9 @@
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <meta name="shinylive:serviceworker_dir" content=".">
-<script src="site_libs/quarto-contrib/shinylive-0.9.1/shinylive/load-shinylive-sw.js" type="module"></script>
-<script src="site_libs/quarto-contrib/shinylive-0.9.1/shinylive/run-python-blocks.js" type="module"></script>
-<link href="site_libs/quarto-contrib/shinylive-0.9.1/shinylive/shinylive.css" rel="stylesheet">
+<script src="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/run-python-blocks.js" type="module"></script>
+<link href="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/shinylive.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.36">
 
@@ -202,6 +202,10 @@
     <div class="slides">
 
 
+<section class="slide level2">
+
+<!-- TODO: This whole unit needs to be fundamentally reimagined. Start with the problem, then find the solution. -->
+</section>
 <section id="data-lunch-week-3" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#title">
 <h1>Data Lunch: Week 3</h1>
 <aside class="notes">
@@ -2216,9 +2220,9 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 3 × 10
   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -832.   -831.   1.03  0.732 -834.   -831.    1.00    1833.    2397.
-2 mu         45.0    45.0  0.353 0.352   44.4    45.6   1.00    4067.    2678.
-3 sigma       6.48    6.47 0.247 0.252    6.09    6.90  1.00    4038.    2811.</code></pre>
+1 lp__     -831.   -831.   0.986 0.694 -833.   -831.    1.00    1820.    2650.
+2 mu         45.0    45.0  0.348 0.349   44.4    45.6   1.00    3697.    2567.
+3 sigma       6.48    6.47 0.239 0.237    6.10    6.88  1.00    3737.    2925.</code></pre>
 </div>
 </div>
 </section>
@@ -2248,10 +2252,10 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 4 × 10
   variable      mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__       -776.   -775.   1.25  1.03  -778.   -774.    1.00    2216.    2865.
-2 alpha[mal…   48.6    48.6  0.437 0.437   47.9    49.3   1.00    4216.    2967.
-3 alpha[fem…   41.8    41.8  0.413 0.407   41.1    42.5   1.00    4016.    3016.
-4 sigma         5.52    5.52 0.206 0.196    5.20    5.88  1.00    3784.    2769.</code></pre>
+1 lp__       -776.   -775.   1.23  0.990 -778.   -774.   1.00     2041.    2616.
+2 alpha[mal…   48.6    48.6  0.440 0.438   47.9    49.3  1.00     3342.    2721.
+3 alpha[fem…   41.8    41.8  0.404 0.399   41.2    42.5  1.00     4485.    3054.
+4 sigma         5.52    5.51 0.210 0.209    5.19    5.87 1.000    4036.    2962.</code></pre>
 </div>
 </div>
 </section>
@@ -2322,10 +2326,10 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 4 × 10
   variable    mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -687.   -687.   1.20  0.980 -689.   -686.    1.00    2239.    2757.
-2 alpha      45.0    45.0  0.225 0.230   44.6    45.4   1.00    4856.    3022.
-3 beta        4.81    4.81 0.226 0.223    4.43    5.17  1.00    4269.    3276.
-4 sigma       4.26    4.26 0.162 0.164    4.01    4.54  1.00    4602.    3342.</code></pre>
+1 lp__     -687.   -686.   1.21  0.974 -689.   -686.    1.00    2256.    2743.
+2 alpha      45.0    45.0  0.231 0.229   44.6    45.4   1.00    3965.    2635.
+3 beta        4.81    4.81 0.222 0.221    4.45    5.18  1.00    4063.    3088.
+4 sigma       4.26    4.25 0.159 0.161    4.01    4.52  1.00    4798.    3323.</code></pre>
 </div>
 </div>
 </section>
@@ -2351,11 +2355,11 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 5 × 10
   variable      mean  median    sd   mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__       -688.   -687.   1.46  1.27  -690.   -686.    1.00    1900.    2280.
-2 alpha[mal…   45.0    45.0  0.419 0.416   44.3    45.7   1.00    2642.    2928.
-3 alpha[fem…   45.0    45.0  0.378 0.369   44.3    45.6   1.00    2668.    2717.
-4 beta          4.78    4.78 0.316 0.304    4.26    5.30  1.00    2506.    2573.
-5 sigma         4.27    4.26 0.165 0.162    4.00    4.54  1.00    3432.    2664.</code></pre>
+1 lp__       -687.   -687.   1.42  1.21  -690.   -686.    1.00    1871.    2687.
+2 alpha[mal…   45.0    45.0  0.406 0.406   44.4    45.7   1.00    2700.    2689.
+3 alpha[fem…   45.0    45.0  0.359 0.352   44.4    45.6   1.00    3090.    3053.
+4 beta          4.80    4.80 0.305 0.305    4.29    5.30  1.00    2594.    3136.
+5 sigma         4.26    4.26 0.161 0.160    4.01    4.53  1.00    3019.    2540.</code></pre>
 </div>
 </div>
 </section>
@@ -2434,10 +2438,10 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 4 × 10
   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -17.8   -17.5   1.18   0.970  -20.1   -16.5    1.00    1597.    2772.
-2 alpha      1.98    1.98  0.0639 0.0645   1.88    2.09   1.00    3875.    2840.
-3 beta      -0.554  -0.554 0.0608 0.0606  -0.651  -0.453  1.00    3943.    2865.
-4 sigma      0.696   0.695 0.0437 0.0433   0.628   0.772  1.00    3486.    2743.</code></pre>
+1 lp__     -17.8   -17.5   1.19   1.04   -20.2   -16.5    1.00    2125.    2559.
+2 alpha      1.98    1.98  0.0614 0.0620   1.88    2.08   1.00    4110.    3287.
+3 beta      -0.553  -0.555 0.0635 0.0631  -0.654  -0.447  1.00    3658.    3078.
+4 sigma      0.696   0.693 0.0453 0.0431   0.624   0.775  1.00    4199.    2813.</code></pre>
 </div>
 </div>
 <img data-src="week3_files/figure-revealjs/model1a_output-1.png" width="960" class="r-stretch"></section>
@@ -2450,10 +2454,10 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 4 × 10
   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__     -53.1   -52.7   1.21   0.963  -55.4   -51.8   1.01      442.     625.
-2 alpha      2.49    2.49  0.0551 0.0578   2.40    2.58  1.00      987.     909.
-3 beta       0.965   0.963 0.0558 0.0569   0.875   1.05  0.999    1199.     755.
-4 sigma      0.792   0.789 0.0407 0.0409   0.730   0.863 1.01     1195.     674.</code></pre>
+1 lp__     -53.2   -52.9   1.27   1.13   -55.6   -51.8   0.999     572.     807.
+2 alpha      2.49    2.49  0.0591 0.0558   2.40    2.59  0.999     913.     627.
+3 beta       0.965   0.966 0.0569 0.0541   0.873   1.06  1.00      958.     815.
+4 sigma      0.789   0.787 0.0406 0.0408   0.727   0.859 1.00      854.     725.</code></pre>
 </div>
 </div>
 <img data-src="week3_files/figure-revealjs/model1b_output-1.png" width="960" class="r-stretch"></section>
@@ -2487,11 +2491,11 @@ Famous&nbsp;Surgeon
 <pre><code># A tibble: 5 × 10
   variable     mean  median     sd    mad     q5     q95  rhat ess_bulk ess_tail
   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 lp__      20.0    20.3    1.39   1.23   17.3   21.6    0.999     429.     744.
-2 alpha      2.41    2.41   0.0610 0.0600  2.31   2.51   0.999     497.     568.
-3 beta_col… -0.0925 -0.0915 0.0642 0.0643 -0.196  0.0146 0.999     517.     608.
-4 beta_mor…  1.13    1.13   0.107  0.103   0.945  1.30   0.999     482.     448.
-5 sigma      0.509   0.506  0.0334 0.0339  0.455  0.565  1.00      810.     709.</code></pre>
+1 lp__      20.0    20.3    1.47   1.19   17.3   21.6    1.00      462.     539.
+2 alpha      2.42    2.42   0.0608 0.0608  2.32   2.52   1.00      508.     609.
+3 beta_col… -0.0909 -0.0928 0.0655 0.0658 -0.198  0.0125 1.000     507.     550.
+4 beta_mor…  1.13    1.14   0.109  0.114   0.959  1.31   1.00      500.     672.
+5 sigma      0.511   0.510  0.0351 0.0358  0.457  0.569  1.00      804.     693.</code></pre>
 </div>
 </div>
 
