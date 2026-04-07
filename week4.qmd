@@ -13,11 +13,460 @@ The Open Institute For Social Science
 
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
-library(tidybayes)
-library(bayesplot)
-library(cmdstanr)
-options(mc.cores = parallel::detectCores())
-
-# {{< include r/rlib.R >}}
-source("r/rlib.R")
 ```
+
+
+# Confounds
+
+- Forks
+- Pipes
+- Colliders
+- Descendant
+
+
+
+# Fork
+
+```{r fork_data, echo=FALSE, warning=FALSE, message=FALSE}
+#| code-summary: "Show data generator code"
+# A = age at marriage
+# H = happiness
+# G = geography
+set.seed(116)
+n <- 500
+df <- tibble(
+  G = rbinom(n, 1, 0.5),
+  A = rnorm(n, 2 * G - 1),
+  H = rnorm(n, 2 * G - 1)
+)
+```
+
+
+## Happiness ~ Age at Marriage
+
+::: {.r-stack}
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  H ~ A,
+  data = df,
+  col = "#555",
+  lwd = 2,
+  xlab = "Age at Marriage",
+  ylab = "Happiness"
+)
+```
+
+:::
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  H ~ A,
+  data = df,
+  col = "#555",
+  lwd = 2,
+  xlab = "Age at Marriage",
+  ylab = "Happiness"
+)
+abline(lm(H ~ A, data = df), lwd = 3)
+```
+
+:::
+
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  H ~ A,
+  data = df,
+  col = c("coral2", "cornflowerblue")[G + 1],
+  lwd = 2,
+  xlab = "Age at Marriage",
+  ylab = "Happiness"
+)
+abline(lm(H ~ A, data = df), lwd = 3)
+# abline(lm(H[G == 0] ~ A[G == 0], data = df), col = "coral2", lwd = 3)
+# abline(lm(H[G == 1] ~ A[G == 1], data = df), col = "cornflowerblue", lwd = 3)
+legend(
+  "bottomright",
+  legend = c("Rural", "Urban"),
+  col = c("coral2", "cornflowerblue"),
+  lwd = 2
+)
+```
+
+:::
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  H ~ A,
+  data = df,
+  col = c("coral2", "cornflowerblue")[G + 1],
+  lwd = 2,
+  xlab = "Age at Marriage",
+  ylab = "Happiness"
+)
+abline(lm(H ~ A, data = df), lwd = 3)
+abline(lm(H[G == 0] ~ A[G == 0], data = df), col = "coral2", lwd = 3)
+abline(lm(H[G == 1] ~ A[G == 1], data = df), col = "cornflowerblue", lwd = 3)
+legend(
+  "bottomright",
+  legend = c("Rural", "Urban"),
+  col = c("coral2", "cornflowerblue"),
+  lwd = 2
+)
+```
+
+:::
+
+:::
+
+
+## Fork Graph
+
+```{=html}
+<iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="https://dagitty.net/dags.html"
+></iframe>
+```
+
+
+
+
+
+
+# Pipes
+
+```{r pipe_data, echo=FALSE, warning=FALSE, message=FALSE}
+#| code-summary: "Show data generator code"
+
+# G = gender
+# T = time spent studying
+# R = exam results
+set.seed(100)
+n <- 500
+df <- tibble(
+  G = rbinom(n, 1, 0.5),
+  T = rnorm(n, ifelse(G == 0, 2, -2), 2),
+  R = rnorm(n, T, 3)
+)
+```
+
+## Exam Results ~ Gender
+
+::: {.r-stack}
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  density(df$R),
+  xlab = "Exam results",
+  ylim = c(0, max(density(df$R)$y) * 1.5),
+  main = "Exam Results Density Plot"
+)
+# lines(density(df$R[df$G == 0]), col = "blue")
+# lines(density(df$R[df$G == 1]), col = "red")
+legend(
+  "topright",
+  legend = c("Male", "Female"),
+  col = c("blue", "red"),
+  lwd = 2
+)
+```
+
+:::
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  density(df$R),
+  xlab = "Exam results",
+  ylim = c(0, max(density(df$R)$y) * 1.5),
+  main = "Exam Results Density Plot"
+)
+lines(density(df$R[df$G == 0]), col = "blue")
+lines(density(df$R[df$G == 1]), col = "red")
+legend(
+  "topright",
+  legend = c("Male", "Female"),
+  col = c("blue", "red"),
+  lwd = 2
+)
+```
+
+:::
+
+
+:::
+
+## Exam Results ~ Time Studying
+
+::: {.r-stack}
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  R ~ T,
+  xlab = "Time Spent Studying",
+  ylab = "Exam Results",
+  data = df,
+  # col = c(4, 2)[G + 1],
+  lwd = 2
+)
+# legend(
+#   "bottomright",
+#   legend = c("Male", "Female"),
+#   col = c("blue", "red"),
+#   lwd = 2
+# )
+# abline(lm(R ~ T, data = df), lwd = 2)
+# abline(lm(R[G == 0] ~ T[G == 0], data = df), col = 4, lwd = 2)
+# abline(lm(R[G == 1] ~ T[G == 1], data = df), col = 2, lwd = 2)
+```
+
+:::
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  R ~ T,
+  xlab = "Time Spent Studying",
+  ylab = "Exam Results",
+  data = df,
+  # col = c(4, 2)[G + 1],
+  lwd = 2
+)
+# legend(
+#   "bottomright",
+#   legend = c("Male", "Female"),
+#   col = c("blue", "red"),
+#   lwd = 2
+# )
+abline(lm(R ~ T, data = df), lwd = 2)
+# abline(lm(R[G == 0] ~ T[G == 0], data = df), col = 4, lwd = 2)
+# abline(lm(R[G == 1] ~ T[G == 1], data = df), col = 2, lwd = 2)
+```
+
+:::
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  R ~ T,
+  xlab = "Time Spent Studying",
+  ylab = "Exam Results",
+  data = df,
+  col = c(4, 2)[G + 1],
+  lwd = 2
+)
+legend(
+  "bottomright",
+  legend = c("Male", "Female"),
+  col = c("blue", "red"),
+  lwd = 2
+)
+abline(lm(R ~ T, data = df), lwd = 2)
+# abline(lm(R[G == 0] ~ T[G == 0], data = df), col = 4, lwd = 2)
+# abline(lm(R[G == 1] ~ T[G == 1], data = df), col = 2, lwd = 2)
+```
+
+:::
+
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  R ~ T,
+  xlab = "Time Spent Studying",
+  ylab = "Exam Results",
+  data = df,
+  col = c(4, 2)[G + 1],
+  lwd = 2
+)
+legend(
+  "bottomright",
+  legend = c("Male", "Female"),
+  col = c("blue", "red"),
+  lwd = 2
+)
+abline(lm(R ~ T, data = df), lwd = 2)
+abline(lm(R[G == 0] ~ T[G == 0], data = df), col = 4, lwd = 2)
+abline(lm(R[G == 1] ~ T[G == 1], data = df), col = 2, lwd = 2)
+```
+
+:::
+
+
+
+
+:::
+
+## Pipe Graph
+
+```{=html}
+<iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="https://dagitty.net/dags.html"
+></iframe>
+```
+
+
+
+# Colliders
+
+```{r collider_data, echo=FALSE, warning=FALSE, message=FALSE}
+#| code-summary: "Show data generator code"
+# F = family wealth
+# H = hardwork
+# J = prestigeous job
+
+n <- 500
+df <- tibble(
+  F = rnorm(n),
+  H = rnorm(n),
+  R = rnorm(n, 0, 0.3),
+  J = ifelse(F + H + R > 0.5, TRUE, FALSE)
+)
+```
+
+
+## Hardwork ~ Family Wealth
+
+:::{.r-stack}
+
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  H ~ F,
+  data = df,
+  lwd = 2,
+  col = ifelse(J, "royalblue", "transparent"),
+  xlab = "Family Wealth",
+  ylab = "Hardwork"
+)
+abline(lm(H[J == TRUE] ~ F[J == TRUE], data = df), lwd = 3, col = "royalblue")
+```
+
+:::
+
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  H ~ F,
+  data = df,
+  lwd = 2,
+  col = ifelse(J, "royalblue", "darkgray"),
+  xlab = "Family Wealth",
+  ylab = "Hardwork"
+)
+abline(lm(H[J] ~ F[J], data = df), lwd = 3, col = "royalblue")
+abline(lm(H[!J] ~ F[!J], data = df), lwd = 3, col = "darkgray")
+# abline(lm(H ~ F, data = df), lwd = 3, col = "black")
+legend(
+  "topright",
+  legend = c("Job", "No Job"),
+  col = c("blue", "darkgray"),
+  lwd = 2
+)
+```
+
+:::
+
+
+:::{.fragment}
+```{r}
+#| fig-width: 14
+#| fig-height: 8
+#| out-width: 100%
+plot(
+  H ~ F,
+  data = df,
+  lwd = 2,
+  col = ifelse(J, "royalblue", "darkgray"),
+  xlab = "Family Wealth",
+  ylab = "Hardwork"
+)
+abline(lm(H[J] ~ F[J], data = df), lwd = 3, col = "royalblue")
+abline(lm(H[!J] ~ F[!J], data = df), lwd = 3, col = "darkgray")
+abline(lm(H ~ F, data = df), lwd = 3, col = "black")
+legend(
+  "topright",
+  legend = c("Job", "No Job"),
+  col = c("blue", "darkgray"),
+  lwd = 2
+)
+```
+
+:::
+
+
+:::
+
+## Collider Graph
+
+```{=html}
+<iframe
+  id="dag-frame-1"
+  data-external="1"
+  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
+  src="https://dagitty.net/dags.html"
+></iframe>
+```
+
+
+# Summary
+
+| **Collider Type** | **Should you control?** |
+|-------------------|------------------------:|
+| Fork              |                Probably |
+| Pipe              |              It depends |
+| Collider          |            Probably Not |
+| Descender         |         Depends on Type |
+
+
