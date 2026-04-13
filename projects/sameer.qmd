@@ -1,0 +1,167 @@
+---
+title: Sameer's project
+engine: knitr
+format:
+  html:
+    df-print: kable
+    include-in-header:
+      - text: |
+          <script src="../js/dagitty.js"></script>
+---
+
+```{r project_config, echo=FALSE, warning=FALSE, message=FALSE}
+variables <- c(
+  'SL.EMP.VULN.ZS',
+  'SE.COM.DURS',
+  'SL.UEM.NEET.ME.ZS',
+  'RL.EST',
+  'VA.EST'
+)
+
+histograms <- list(
+  c('SE.COM.DURS', 'SL.EMP.VULN.ZS')
+)
+
+dag <- '
+"Compulsory Education Duration"[exposure, pos = "-0.917,0.137"]
+"Rule of Law"[adjusted, pos = "-0.385,-0.178"]
+"Voice and Accountability"[adjusted, pos = "-0.375,-0.477"]
+"Vulnerable Employment"[outcome, pos = "0.169,0.153"]
+"Youth NEETs"[pos = "-0.375,0.448"]
+"Compulsory Education Duration" -> "Vulnerable Employment"
+"Compulsory Education Duration" -> "Youth NEETs"
+"Rule of Law" -> "Compulsory Education Duration"
+"Rule of Law" -> "Vulnerable Employment"
+"Voice and Accountability" -> "Compulsory Education Duration"
+"Voice and Accountability" -> "Vulnerable Employment"
+"Youth NEETs" -> "Vulnerable Employment"
+'
+```
+
+{{< include _base.qmd >}}
+
+
+# Formal Model
+$$
+\begin{align}
+VE_i &\sim \text{Normal}(\mu_i,\sigma) \\
+\mu_i &= \alpha
++	\beta_{CED}  CED_i
++	\beta_{YN} YN_i
++	\beta_{RL} RL_i
++	\beta_{VA} VA_i \\
+\alpha &\sim \text{Normal}(50,20) \\
+\beta_{CED} &\sim \text{Normal}(0,1) \\
+\beta_{YN} &\sim \text{Normal}(0,1) \\
+\beta_{RL} &\sim \text{Normal}(0,1) \\
+\beta_{VA} &\sim \text{Normal}(0,1) \\
+\sigma &\sim \text{Normal}(0,10), \quad \sigma > 0
+\end{align}
+$$
+
+| Variable | Description | Unit |
+|----------|-------------|------|
+| $VE_i$  | Vulnerable Employment | percentage |
+| $CED_i$  | Compulsory Education Duration | standardized |
+| $YN_i$  | Youth not in Education, Employment, or Training | standardized |
+| $RL_i$  | Rule of Law | standardized |
+| $VA_i$  | Voice and Accountability | standardized |
+
+
+# Statistical model
+
+Impact of different variables on Vulnerable Employment rates
+
+Red is our prior distribution; blue is our posterior distribution.
+```{r model, message=FALSE, results="hide"}
+model <- write_stan_file(
+  "
+data {
+  int<lower=1> n;
+  vector[n] VE;
+  vector[n] CED;
+  vector[n] YN;
+  vector[n] RL;
+  vector[n] VA;
+}
+
+parameters {
+  real alpha;
+  real beta_CED;
+  real beta_YN;
+  real beta_RL;
+  real beta_VA;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha
+               + beta_CED * CED
+               + beta_YN  * YN
+               + beta_RL  * RL
+               + beta_VA  * VA;
+}
+
+model {
+  alpha    ~ normal(50, 20);
+  beta_CED ~ normal(0, 1);
+  beta_YN  ~ normal(0, 1);
+  beta_RL  ~ normal(0, 1);
+  beta_VA  ~ normal(0, 1);
+  sigma    ~ normal(0, 10);
+
+  VE ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] VE_rep;
+  for (i in 1:n) {
+    VE_rep[i] = normal_rng(mu[i], sigma);
+  }
+}"
+) |>
+  cmdstan_model()
+
+
+fit <- df |>
+  transmute(
+    VE = SL.EMP.VULN.ZS |> scale() |> as.numeric(),
+    CED = SE.COM.DURS |> scale() |> as.numeric(),
+    YN = SL.UEM.NEET.ME.ZS |> scale() |> as.numeric(),
+    RL = RL.EST |> scale() |> as.numeric(),
+    VA = VA.EST |> scale() |> as.numeric()
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model$sample()
+```
+
+```{r}
+
+fit$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "VE_rep\\[")
+  )
+
+plot_param <- function(draws, param) {
+  ggplot(draws, aes(x = .data[[param]])) +
+    stat_function(
+      fun = dnorm,
+      args = list(mean = 0, sd = 1),
+      linewidth = 1,
+      color = "indianred3"
+    ) +
+    stat_halfeye(fill = "cornflowerblue", alpha = 0.7) +
+    scale_x_continuous(limits = c(-2, 2)) +
+    labs(title = param)
+}
+
+params <- c("beta_CED", "beta_YN", "beta_RL", "beta_VA")
+
+draws <- fit |>
+  spread_draws(alpha, beta_CED, beta_YN, beta_RL, beta_VA, sigma)
+
+params |> purrr::walk(\(param) print(plot_param(draws, param)))
+
+```

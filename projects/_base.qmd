@@ -1,0 +1,244 @@
+
+
+```{r wb_setup, warning=FALSE, message=FALSE}
+library(knitr)
+library(kableExtra)
+
+library(tidyverse)
+library(tidybayes)
+library(bayesplot)
+library(cmdstanr)
+options(mc.cores = parallel::detectCores())
+
+filename <- "../datasets/wb2022.csv"
+filename2 <- "../datasets/wb_country.csv"
+
+# build a variable label vector for better labelling of df
+label_vec <- read_csv(filename) |>
+  distinct(`Series Code`, `Series Name`) |>
+  filter(!is.na(`Series Code`), !is.na(`Series Name`)) |>
+  group_by(`Series Code`) |> # in case of duplicates
+  summarise(label = first(`Series Name`), .groups = "drop") |>
+  with(setNames(label, `Series Code`))
+
+# compose dataframe
+df <- read_csv(filename) |>
+  select(-c(`Series Name`)) |>
+  slice(1:(n() - 5)) |>
+  pivot_longer(
+    cols = matches("^\\d{4} \\[YR\\d{4}\\]$"),
+    names_to = "year",
+    values_to = "value",
+    names_transform = list(year = ~ str_extract(.x, "^\\d{4}"))
+  ) |>
+  pivot_wider(names_from = `Series Code`, values_from = value) |>
+  mutate(across(
+    any_of(names(label_vec)),
+    ~ {
+      attr(.x, "label") <- unname(label_vec[cur_column()])
+      .x
+    }
+  )) |>
+  left_join(
+    read_csv(filename2),
+    join_by(`Country Code` == Code)
+  )
+
+```
+
+# Causal model
+
+<pre class="dagitty" style="width: 100%; padding: 0; aspect-ratio: 3/2; overflow: visible; z-index: 10;">
+dag {
+`r dag`
+}
+</pre>
+
+# Raw data
+```{r raw_output}
+tibble(column = variables) |>
+  mutate(
+    label = map_chr(
+      column,
+      ~ if (.x %in% names(df)) {
+        attr(df[[.x]], "label") %||% NA_character_
+      } else {
+        NA_character_
+      }
+    )
+  )
+
+df |>
+  select(
+    'Country Name',
+    all_of(variables)
+  ) |>
+  kable(format = "html") %>%
+  kable_styling(
+    fixed_thead = TRUE, # Makes header sticky
+    bootstrap_options = c("striped", "hover")
+  ) %>%
+  # Optionally restrict container height to enable scrolling
+  scroll_box(height = "400px")
+
+```
+
+# Variable Distributions
+(Red dotted line indicates value for Nepal)
+```{r variable_plots}
+plots <- variables |>
+  keep(~ .x %in% names(df) && is.numeric(df[[.x]])) |>
+  set_names() |>
+  map(
+    \(v) {
+      x_lab <- attr(df[[v]], "label") %||% v
+
+      x_vals <- df[[v]]
+      x_vals_non_na <- x_vals[!is.na(x_vals)]
+
+      # Summary stats
+      mean_val <- mean(x_vals_non_na)
+      sd_val <- sd(x_vals_non_na)
+
+      nepal_value <- df |>
+        filter(`Country Name` == "Nepal") |>
+        pull(.data[[v]]) |>
+        first()
+
+      # Detect whether values are effectively integers
+      is_integerish <- length(x_vals_non_na) > 0 &&
+        all(abs(x_vals_non_na - round(x_vals_non_na)) < 1e-8)
+
+      # Choose histogram settings automatically
+      if (is_integerish && diff(range(x_vals_non_na)) <= 50) {
+        hist_geom <- geom_histogram(
+          binwidth = 1,
+          boundary = -0.5,
+          color = "gray40",
+          fill = "gray80",
+          na.rm = TRUE
+        )
+      } else {
+        # Freedman-Diaconis rule for continuous variables
+        iqr_val <- IQR(x_vals_non_na)
+        n_val <- length(x_vals_non_na)
+
+        fd_binwidth <- 2 * iqr_val / (n_val^(1 / 3))
+        fd_binwidth <- 0.5 * fd_binwidth
+
+        # Fallback if IQR is zero or binwidth is not usable
+        if (!is.finite(fd_binwidth) || fd_binwidth <= 0) {
+          rng <- diff(range(x_vals_non_na))
+          fd_binwidth <- if (is.finite(rng) && rng > 0) rng / 30 else 1
+        }
+
+        hist_geom <- geom_histogram(
+          binwidth = fd_binwidth,
+          color = "gray40",
+          fill = "gray80",
+          na.rm = TRUE
+        )
+      }
+
+      caption_text <- paste0(
+        "Mean = ",
+        scales::number(mean_val, accuracy = 0.01),
+        "   |   SD = ",
+        scales::number(sd_val, accuracy = 0.01)
+      )
+
+      p <- ggplot(df, aes(x = .data[[v]])) +
+        hist_geom +
+        annotate(
+          "rect",
+          xmin = mean_val - sd_val,
+          xmax = mean_val + sd_val,
+          ymin = -Inf,
+          ymax = Inf,
+          fill = "blue",
+          alpha = 0.12
+        ) +
+        geom_vline(
+          xintercept = mean_val,
+          color = "blue",
+          linewidth = 0.9,
+          alpha = 0.48
+        ) +
+        # geom_vline(
+        #   xintercept = c(mean_val - sd_val, mean_val + sd_val),
+        #   color = "blue",
+        #   linetype = "dashed",
+        #   linewidth = 0.8
+        # ) +
+        labs(
+          title = paste("Histogram of", x_lab),
+          x = x_lab,
+          y = "Count",
+          caption = caption_text
+        ) +
+        theme_minimal() +
+        theme(
+          plot.caption = element_text(
+            hjust = 0.5,
+            margin = margin(t = 8)
+          ),
+          plot.caption.position = "plot"
+        )
+
+      if (!is.na(nepal_value)) {
+        p <- p +
+          geom_vline(
+            xintercept = nepal_value,
+            color = "red",
+            linetype = "dotted",
+            linewidth = 0.8
+          )
+      }
+
+      p
+    }
+  )
+
+walk(plots, print)
+```
+
+# Exposure-Outcome Scatterplots
+```{r scatterplots}
+scatter_plots <- histograms |>
+  purrr::map(\(xy) {
+    x_var <- xy[[1]]
+    y_var <- xy[[2]]
+
+    x_lab <- attr(df[[x_var]], "label") %||% x_var
+    y_lab <- attr(df[[y_var]], "label") %||% y_var
+
+    ggplot(df, aes(x = .data[[x_var]], y = .data[[y_var]])) +
+      geom_point(alpha = 0.7, na.rm = TRUE) +
+      geom_smooth(
+        method = "lm",
+        formula = "y ~ x",
+        se = FALSE,
+        color = "red",
+        linewidth = 1,
+        na.rm = TRUE
+      ) +
+      labs(
+        title = paste0(y_lab, " vs ", x_lab),
+        x = x_lab,
+        y = y_lab
+      ) +
+      theme_minimal()
+  })
+
+purrr::walk(scatter_plots, print)
+```
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  DAGitty.setup();
+});
+</script>
+<style>
+  svg { overflow: visible; }
+</style>
