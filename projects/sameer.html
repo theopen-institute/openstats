@@ -1,0 +1,3007 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Sameer’s project</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-244ce1b9ec229af56bb6f90d24b3371d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="../js/dagitty.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="floating quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#causal-model" id="toc-causal-model" class="nav-link active" data-scroll-target="#causal-model">Causal model</a></li>
+  <li><a href="#raw-data" id="toc-raw-data" class="nav-link" data-scroll-target="#raw-data">Raw data</a></li>
+  <li><a href="#variable-distributions" id="toc-variable-distributions" class="nav-link" data-scroll-target="#variable-distributions">Variable Distributions</a></li>
+  <li><a href="#exposure-outcome-scatterplots" id="toc-exposure-outcome-scatterplots" class="nav-link" data-scroll-target="#exposure-outcome-scatterplots">Exposure-Outcome Scatterplots</a></li>
+  <li><a href="#formal-model" id="toc-formal-model" class="nav-link" data-scroll-target="#formal-model">Formal Model</a></li>
+  <li><a href="#statistical-model" id="toc-statistical-model" class="nav-link" data-scroll-target="#statistical-model">Statistical model</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Sameer’s project</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">"../datasets/wb2022.csv"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>filename2 <span class="ot">&lt;-</span> <span class="st">"../datasets/wb_country.csv"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># build a variable label vector for better labelling of df</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>label_vec <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(filename) <span class="sc">|&gt;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(<span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>, <span class="st">`</span><span class="at">Series Name</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>), <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Series Name</span><span class="st">`</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>) <span class="sc">|&gt;</span> <span class="co"># in case of duplicates</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">label =</span> <span class="fu">first</span>(<span class="st">`</span><span class="at">Series Name</span><span class="st">`</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">setNames</span>(label, <span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># compose dataframe</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(filename) <span class="sc">|&gt;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Series Name</span><span class="st">`</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span>(<span class="fu">n</span>() <span class="sc">-</span> <span class="dv">5</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">matches</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">d{4} </span><span class="sc">\\</span><span class="st">[YR</span><span class="sc">\\</span><span class="st">d{4}</span><span class="sc">\\</span><span class="st">]$"</span>),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"year"</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"value"</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_transform =</span> <span class="fu">list</span>(<span class="at">year =</span> <span class="sc">~</span> <span class="fu">str_extract</span>(.x, <span class="st">"^</span><span class="sc">\\</span><span class="st">d{4}"</span>))</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>, <span class="at">values_from =</span> value) <span class="sc">|&gt;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">any_of</span>(<span class="fu">names</span>(label_vec)),</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> {</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>      <span class="fu">attr</span>(.x, <span class="st">"label"</span>) <span class="ot">&lt;-</span> <span class="fu">unname</span>(label_vec[<span class="fu">cur_column</span>()])</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>      .x</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_csv</span>(filename2),</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(<span class="st">`</span><span class="at">Country Code</span><span class="st">`</span> <span class="sc">==</span> Code)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="causal-model" class="level1">
+<h1>Causal model</h1>
+<pre class="dagitty" style="width: 100%; padding: 0; aspect-ratio: 3/2; overflow: visible; z-index: 10;">dag {
+
+"Compulsory Education Duration"[exposure, pos = "-0.917,0.137"]
+"Rule of Law"[adjusted, pos = "-0.385,-0.178"]
+"Voice and Accountability"[adjusted, pos = "-0.375,-0.477"]
+"Vulnerable Employment"[outcome, pos = "0.169,0.153"]
+"Youth NEETs"[pos = "-0.375,0.448"]
+"Compulsory Education Duration" -&gt; "Vulnerable Employment"
+"Compulsory Education Duration" -&gt; "Youth NEETs"
+"Rule of Law" -&gt; "Compulsory Education Duration"
+"Rule of Law" -&gt; "Vulnerable Employment"
+"Voice and Accountability" -&gt; "Compulsory Education Duration"
+"Voice and Accountability" -&gt; "Vulnerable Employment"
+"Youth NEETs" -&gt; "Vulnerable Employment"
+
+}
+</pre>
+</section>
+<section id="raw-data" class="level1">
+<h1>Raw data</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">column =</span> variables) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">map_chr</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      column,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="cf">if</span> (.x <span class="sc">%in%</span> <span class="fu">names</span>(df)) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">attr</span>(df[[.x]], <span class="st">"label"</span>) <span class="sc">%||%</span> <span class="cn">NA_character_</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cn">NA_character_</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 86%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">column</th>
+<th style="text-align: left;">label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SL.EMP.VULN.ZS</td>
+<td style="text-align: left;">Vulnerable employment, total (% of total employment) (modeled ILO estimate)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SE.COM.DURS</td>
+<td style="text-align: left;">Compulsory education, duration (years)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SL.UEM.NEET.ME.ZS</td>
+<td style="text-align: left;">Share of youth not in education, employment or training, total (% of youth population) (modeled ILO estimate)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RL.EST</td>
+<td style="text-align: left;">Rule of Law: Estimate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">VA.EST</td>
+<td style="text-align: left;">Voice and Accountability: Estimate</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Country Name'</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">all_of</span>(variables)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">format =</span> <span class="st">"html"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed_thead =</span> <span class="cn">TRUE</span>, <span class="co"># Makes header sticky</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Optionally restrict container height to enable scrolling</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">"400px"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; ">
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">Country Name</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">SL.EMP.VULN.ZS</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">SE.COM.DURS</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">SL.UEM.NEET.ME.ZS</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">RL.EST</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">VA.EST</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">81.0913815</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">56.063</td>
+<td style="text-align: right;">-1.6598456</td>
+<td style="text-align: right;">-1.7535287</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Albania</td>
+<td style="text-align: right;">48.9771172</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">23.714</td>
+<td style="text-align: right;">-0.1655851</td>
+<td style="text-align: right;">0.1417402</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: right;">26.1032766</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">19.890</td>
+<td style="text-align: right;">-0.8332600</td>
+<td style="text-align: right;">-1.0119189</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">American Samoa</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.2211159</td>
+<td style="text-align: right;">0.9520842</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Andorra</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.4854831</td>
+<td style="text-align: right;">1.1067891</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Angola</td>
+<td style="text-align: right;">66.3124878</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">24.766</td>
+<td style="text-align: right;">-1.0220357</td>
+<td style="text-align: right;">-0.8075780</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Antigua and Barbuda</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.3907871</td>
+<td style="text-align: right;">0.7245528</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Argentina</td>
+<td style="text-align: right;">23.2797968</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">15.872</td>
+<td style="text-align: right;">-0.4823518</td>
+<td style="text-align: right;">0.5463170</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Armenia</td>
+<td style="text-align: right;">35.4281538</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">24.533</td>
+<td style="text-align: right;">-0.1695158</td>
+<td style="text-align: right;">0.0903258</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aruba</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.2780261</td>
+<td style="text-align: right;">1.0131638</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Australia</td>
+<td style="text-align: right;">9.3793100</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">8.389</td>
+<td style="text-align: right;">1.5088187</td>
+<td style="text-align: right;">1.3239068</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Austria</td>
+<td style="text-align: right;">8.1826611</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">12.155</td>
+<td style="text-align: right;">1.7042732</td>
+<td style="text-align: right;">1.4136577</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Azerbaijan</td>
+<td style="text-align: right;">54.3428702</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">3.237</td>
+<td style="text-align: right;">-0.6255522</td>
+<td style="text-align: right;">-1.4416267</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bahamas, The</td>
+<td style="text-align: right;">15.4526382</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">15.584</td>
+<td style="text-align: right;">0.1345404</td>
+<td style="text-align: right;">0.8723084</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bahrain</td>
+<td style="text-align: right;">0.9017337</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">11.621</td>
+<td style="text-align: right;">0.4383093</td>
+<td style="text-align: right;">-1.4184097</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bangladesh</td>
+<td style="text-align: right;">57.8403807</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">14.958</td>
+<td style="text-align: right;">-0.6016901</td>
+<td style="text-align: right;">-0.7533016</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Barbados</td>
+<td style="text-align: right;">19.1530324</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">27.002</td>
+<td style="text-align: right;">0.3594125</td>
+<td style="text-align: right;">1.1330256</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Belarus</td>
+<td style="text-align: right;">6.7984054</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">5.149</td>
+<td style="text-align: right;">-1.2210003</td>
+<td style="text-align: right;">-1.6277285</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Belgium</td>
+<td style="text-align: right;">11.6307276</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">7.107</td>
+<td style="text-align: right;">1.3482308</td>
+<td style="text-align: right;">1.2970926</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Belize</td>
+<td style="text-align: right;">30.0678853</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">24.472</td>
+<td style="text-align: right;">-0.7201607</td>
+<td style="text-align: right;">0.5353203</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benin</td>
+<td style="text-align: right;">79.5320546</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">14.241</td>
+<td style="text-align: right;">-0.5961094</td>
+<td style="text-align: right;">-0.3356940</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bermuda</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.6923816</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bhutan</td>
+<td style="text-align: right;">69.8527722</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">17.069</td>
+<td style="text-align: right;">0.6735728</td>
+<td style="text-align: right;">0.1576215</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bolivia</td>
+<td style="text-align: right;">64.3683028</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">9.969</td>
+<td style="text-align: right;">-1.3014042</td>
+<td style="text-align: right;">-0.1974856</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bosnia and Herzegovina</td>
+<td style="text-align: right;">19.1427375</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">17.623</td>
+<td style="text-align: right;">-0.3069831</td>
+<td style="text-align: right;">-0.3247303</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Botswana</td>
+<td style="text-align: right;">25.9268497</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">37.003</td>
+<td style="text-align: right;">0.4592276</td>
+<td style="text-align: right;">0.4497841</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: right;">27.8044136</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">20.975</td>
+<td style="text-align: right;">-0.2578791</td>
+<td style="text-align: right;">0.2252683</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">British Virgin Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brunei Darussalam</td>
+<td style="text-align: right;">4.4776051</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">20.004</td>
+<td style="text-align: right;">0.9337597</td>
+<td style="text-align: right;">-0.8154676</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bulgaria</td>
+<td style="text-align: right;">6.9678219</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12.550</td>
+<td style="text-align: right;">-0.1079227</td>
+<td style="text-align: right;">0.2875121</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Burkina Faso</td>
+<td style="text-align: right;">80.7951991</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">21.942</td>
+<td style="text-align: right;">-0.6119338</td>
+<td style="text-align: right;">-0.6840450</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Burundi</td>
+<td style="text-align: right;">83.7816742</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">12.523</td>
+<td style="text-align: right;">-1.2765462</td>
+<td style="text-align: right;">-1.3963536</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cabo Verde</td>
+<td style="text-align: right;">35.4300331</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">27.941</td>
+<td style="text-align: right;">0.3986609</td>
+<td style="text-align: right;">0.9460427</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cambodia</td>
+<td style="text-align: right;">53.0609368</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">11.430</td>
+<td style="text-align: right;">-0.8658809</td>
+<td style="text-align: right;">-1.3099368</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cameroon</td>
+<td style="text-align: right;">68.1798439</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">23.131</td>
+<td style="text-align: right;">-1.0389357</td>
+<td style="text-align: right;">-1.1472535</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: right;">9.7843553</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">11.599</td>
+<td style="text-align: right;">1.5646201</td>
+<td style="text-align: right;">1.4400297</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cayman Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.7210703</td>
+<td style="text-align: right;">0.7557726</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Central African Republic</td>
+<td style="text-align: right;">79.7145778</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">29.818</td>
+<td style="text-align: right;">-1.6999122</td>
+<td style="text-align: right;">-1.2140044</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chad</td>
+<td style="text-align: right;">89.9818572</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">37.252</td>
+<td style="text-align: right;">-1.3735617</td>
+<td style="text-align: right;">-1.4712534</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Channel Islands</td>
+<td style="text-align: right;">4.4328936</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">8.161</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chile</td>
+<td style="text-align: right;">21.3956020</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">14.420</td>
+<td style="text-align: right;">0.6884544</td>
+<td style="text-align: right;">0.9767694</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">China</td>
+<td style="text-align: right;">34.6621398</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10.756</td>
+<td style="text-align: right;">-0.0421763</td>
+<td style="text-align: right;">-1.6013710</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: right;">44.2221915</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">24.423</td>
+<td style="text-align: right;">-0.4277602</td>
+<td style="text-align: right;">0.1686872</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Comoros</td>
+<td style="text-align: right;">57.1175867</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">21.099</td>
+<td style="text-align: right;">-1.3146049</td>
+<td style="text-align: right;">-0.8513243</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Congo, Dem. Rep.</td>
+<td style="text-align: right;">82.3220897</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">30.435</td>
+<td style="text-align: right;">-1.6717845</td>
+<td style="text-align: right;">-1.1914421</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Congo, Rep.</td>
+<td style="text-align: right;">75.9833630</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">29.137</td>
+<td style="text-align: right;">-1.0903462</td>
+<td style="text-align: right;">-1.1991947</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Costa Rica</td>
+<td style="text-align: right;">24.8774870</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">17.181</td>
+<td style="text-align: right;">0.4359328</td>
+<td style="text-align: right;">1.0734078</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cote d'Ivoire</td>
+<td style="text-align: right;">70.4359456</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">18.834</td>
+<td style="text-align: right;">-0.4740182</td>
+<td style="text-align: right;">-0.3930423</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Croatia</td>
+<td style="text-align: right;">7.9854562</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">11.425</td>
+<td style="text-align: right;">0.3677971</td>
+<td style="text-align: right;">0.6162912</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cuba</td>
+<td style="text-align: right;">20.2362786</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">12.020</td>
+<td style="text-align: right;">-0.4614497</td>
+<td style="text-align: right;">-1.3393124</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Curacao</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cyprus</td>
+<td style="text-align: right;">9.1723443</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">14.721</td>
+<td style="text-align: right;">0.5701258</td>
+<td style="text-align: right;">0.8503504</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Czechia</td>
+<td style="text-align: right;">13.9586072</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">7.580</td>
+<td style="text-align: right;">1.1003965</td>
+<td style="text-align: right;">1.0411413</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: right;">5.7571606</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">6.766</td>
+<td style="text-align: right;">1.8995806</td>
+<td style="text-align: right;">1.5912544</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Djibouti</td>
+<td style="text-align: right;">30.6597172</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">50.657</td>
+<td style="text-align: right;">-1.1026407</td>
+<td style="text-align: right;">-1.2912233</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dominica</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.7341805</td>
+<td style="text-align: right;">0.7967693</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dominican Republic</td>
+<td style="text-align: right;">39.5146131</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">26.610</td>
+<td style="text-align: right;">-0.0933534</td>
+<td style="text-align: right;">0.3131171</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ecuador</td>
+<td style="text-align: right;">50.9722906</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">17.990</td>
+<td style="text-align: right;">-0.6207808</td>
+<td style="text-align: right;">0.0273947</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Egypt, Arab Rep.</td>
+<td style="text-align: right;">23.0648769</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">26.920</td>
+<td style="text-align: right;">-0.2656045</td>
+<td style="text-align: right;">-1.4504499</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">El Salvador</td>
+<td style="text-align: right;">32.0681012</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">23.462</td>
+<td style="text-align: right;">-0.7422177</td>
+<td style="text-align: right;">-0.3712449</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Equatorial Guinea</td>
+<td style="text-align: right;">22.3571756</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">23.964</td>
+<td style="text-align: right;">-1.4082679</td>
+<td style="text-align: right;">-1.7043157</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eritrea</td>
+<td style="text-align: right;">48.4828073</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">25.520</td>
+<td style="text-align: right;">-1.7730595</td>
+<td style="text-align: right;">-1.8829279</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estonia</td>
+<td style="text-align: right;">6.8387303</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10.735</td>
+<td style="text-align: right;">1.4262840</td>
+<td style="text-align: right;">1.2019542</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eswatini</td>
+<td style="text-align: right;">29.3830999</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">36.000</td>
+<td style="text-align: right;">-0.6454281</td>
+<td style="text-align: right;">-1.2210575</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ethiopia</td>
+<td style="text-align: right;">85.0570340</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">17.175</td>
+<td style="text-align: right;">-0.6358941</td>
+<td style="text-align: right;">-1.0484149</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Faroe Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fiji</td>
+<td style="text-align: right;">33.7007791</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">20.787</td>
+<td style="text-align: right;">0.3253163</td>
+<td style="text-align: right;">-0.1439528</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Finland</td>
+<td style="text-align: right;">10.3058666</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">8.068</td>
+<td style="text-align: right;">1.9578998</td>
+<td style="text-align: right;">1.6067698</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">France</td>
+<td style="text-align: right;">8.0765220</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">11.557</td>
+<td style="text-align: right;">1.1805834</td>
+<td style="text-align: right;">1.1101568</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">French Polynesia</td>
+<td style="text-align: right;">15.2663501</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">22.076</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gabon</td>
+<td style="text-align: right;">29.9504602</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">28.939</td>
+<td style="text-align: right;">-0.8237569</td>
+<td style="text-align: right;">-0.8801740</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gambia, The</td>
+<td style="text-align: right;">65.1728276</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">37.648</td>
+<td style="text-align: right;">-0.4551208</td>
+<td style="text-align: right;">-0.0407559</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Georgia</td>
+<td style="text-align: right;">47.2297363</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">23.708</td>
+<td style="text-align: right;">0.1694694</td>
+<td style="text-align: right;">0.0156398</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">4.5747196</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">7.223</td>
+<td style="text-align: right;">1.5319952</td>
+<td style="text-align: right;">1.4144870</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ghana</td>
+<td style="text-align: right;">60.8654801</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">27.604</td>
+<td style="text-align: right;">-0.0795473</td>
+<td style="text-align: right;">0.4001531</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gibraltar</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Greece</td>
+<td style="text-align: right;">22.6635493</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">11.352</td>
+<td style="text-align: right;">0.3251349</td>
+<td style="text-align: right;">0.9568817</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Greenland</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.6898872</td>
+<td style="text-align: right;">1.2705550</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Grenada</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.5555901</td>
+<td style="text-align: right;">0.7058302</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Guam</td>
+<td style="text-align: right;">12.0656102</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12.242</td>
+<td style="text-align: right;">1.2211159</td>
+<td style="text-align: right;">1.0991155</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Guatemala</td>
+<td style="text-align: right;">39.2273504</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">29.552</td>
+<td style="text-align: right;">-1.1274636</td>
+<td style="text-align: right;">-0.5226138</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Guinea</td>
+<td style="text-align: right;">80.0684203</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">33.947</td>
+<td style="text-align: right;">-1.0977193</td>
+<td style="text-align: right;">-1.0831621</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Guinea-Bissau</td>
+<td style="text-align: right;">75.5925502</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">13.201</td>
+<td style="text-align: right;">-1.4540299</td>
+<td style="text-align: right;">-0.4171985</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Guyana</td>
+<td style="text-align: right;">28.2738408</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">43.253</td>
+<td style="text-align: right;">-0.3134377</td>
+<td style="text-align: right;">0.1934888</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Haiti</td>
+<td style="text-align: right;">75.8901630</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">20.887</td>
+<td style="text-align: right;">-1.3779521</td>
+<td style="text-align: right;">-1.1927223</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Honduras</td>
+<td style="text-align: right;">34.6280941</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">31.232</td>
+<td style="text-align: right;">-1.0175416</td>
+<td style="text-align: right;">-0.4910518</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hong Kong SAR, China</td>
+<td style="text-align: right;">6.2073023</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">6.701</td>
+<td style="text-align: right;">1.2781630</td>
+<td style="text-align: right;">-0.4005261</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hungary</td>
+<td style="text-align: right;">8.5430435</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">9.841</td>
+<td style="text-align: right;">0.4220671</td>
+<td style="text-align: right;">0.4253474</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iceland</td>
+<td style="text-align: right;">12.0488428</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">5.639</td>
+<td style="text-align: right;">1.7029051</td>
+<td style="text-align: right;">1.4274595</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">India</td>
+<td style="text-align: right;">74.0023374</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">25.763</td>
+<td style="text-align: right;">0.1139434</td>
+<td style="text-align: right;">0.0458775</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: right;">50.2806597</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">22.336</td>
+<td style="text-align: right;">-0.1881303</td>
+<td style="text-align: right;">0.1439696</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iran, Islamic Rep.</td>
+<td style="text-align: right;">39.4508282</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">26.940</td>
+<td style="text-align: right;">-1.0175846</td>
+<td style="text-align: right;">-1.4606020</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iraq</td>
+<td style="text-align: right;">27.0179930</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">36.326</td>
+<td style="text-align: right;">-1.7499402</td>
+<td style="text-align: right;">-0.9485788</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: right;">10.1821688</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">6.441</td>
+<td style="text-align: right;">1.5267775</td>
+<td style="text-align: right;">1.4542950</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Isle of Man</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Israel</td>
+<td style="text-align: right;">7.9207169</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">15.453</td>
+<td style="text-align: right;">0.9445176</td>
+<td style="text-align: right;">0.6778176</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">14.6687263</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">15.858</td>
+<td style="text-align: right;">0.2969740</td>
+<td style="text-align: right;">1.0743179</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jamaica</td>
+<td style="text-align: right;">33.1067382</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">21.790</td>
+<td style="text-align: right;">-0.0709534</td>
+<td style="text-align: right;">0.5910380</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Japan</td>
+<td style="text-align: right;">7.8877080</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">3.142</td>
+<td style="text-align: right;">1.5579692</td>
+<td style="text-align: right;">1.0210028</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jordan</td>
+<td style="text-align: right;">8.3822400</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">31.495</td>
+<td style="text-align: right;">0.2173925</td>
+<td style="text-align: right;">-0.8020900</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kazakhstan</td>
+<td style="text-align: right;">24.9834881</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">7.389</td>
+<td style="text-align: right;">-0.4746701</td>
+<td style="text-align: right;">-1.0671166</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kenya</td>
+<td style="text-align: right;">64.5648824</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">19.274</td>
+<td style="text-align: right;">-0.3179894</td>
+<td style="text-align: right;">-0.1508995</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kiribati</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.6259116</td>
+<td style="text-align: right;">1.0914503</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Korea, Dem. People's Rep.</td>
+<td style="text-align: right;">56.9893200</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">10.072</td>
+<td style="text-align: right;">-1.6624323</td>
+<td style="text-align: right;">-2.0240707</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Korea, Rep.</td>
+<td style="text-align: right;">18.5907854</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">11.122</td>
+<td style="text-align: right;">1.1581644</td>
+<td style="text-align: right;">0.8781139</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kosovo</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.3652724</td>
+<td style="text-align: right;">-0.0566456</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kuwait</td>
+<td style="text-align: right;">1.9264421</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">15.538</td>
+<td style="text-align: right;">0.2786371</td>
+<td style="text-align: right;">-0.6848392</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kyrgyz Republic</td>
+<td style="text-align: right;">30.6547651</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">19.826</td>
+<td style="text-align: right;">-1.1477091</td>
+<td style="text-align: right;">-0.7300209</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lao PDR</td>
+<td style="text-align: right;">77.1092946</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">22.509</td>
+<td style="text-align: right;">-0.8044280</td>
+<td style="text-align: right;">-1.6581088</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Latvia</td>
+<td style="text-align: right;">8.2499265</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">7.767</td>
+<td style="text-align: right;">0.9210314</td>
+<td style="text-align: right;">0.9374438</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lebanon</td>
+<td style="text-align: right;">19.4660658</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">23.442</td>
+<td style="text-align: right;">-1.1030635</td>
+<td style="text-align: right;">-0.6306300</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lesotho</td>
+<td style="text-align: right;">32.7384486</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">36.758</td>
+<td style="text-align: right;">-0.4732940</td>
+<td style="text-align: right;">0.0501875</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Liberia</td>
+<td style="text-align: right;">77.6401208</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">14.487</td>
+<td style="text-align: right;">-0.9159266</td>
+<td style="text-align: right;">-0.0021534</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Libya</td>
+<td style="text-align: right;">22.5060833</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">30.837</td>
+<td style="text-align: right;">-1.8014230</td>
+<td style="text-align: right;">-1.3812933</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Liechtenstein</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.7199560</td>
+<td style="text-align: right;">1.3774185</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lithuania</td>
+<td style="text-align: right;">10.8139248</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">9.653</td>
+<td style="text-align: right;">1.0603323</td>
+<td style="text-align: right;">1.0677859</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Luxembourg</td>
+<td style="text-align: right;">7.2090651</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">9.969</td>
+<td style="text-align: right;">1.7685105</td>
+<td style="text-align: right;">1.5414746</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Macao SAR, China</td>
+<td style="text-align: right;">3.8908870</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">4.830</td>
+<td style="text-align: right;">0.7912363</td>
+<td style="text-align: right;">-0.5311835</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Madagascar</td>
+<td style="text-align: right;">84.9434807</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">24.327</td>
+<td style="text-align: right;">-0.9500217</td>
+<td style="text-align: right;">-0.2936770</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Malawi</td>
+<td style="text-align: right;">60.0633319</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">21.412</td>
+<td style="text-align: right;">-0.2219733</td>
+<td style="text-align: right;">0.0621553</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Malaysia</td>
+<td style="text-align: right;">22.2450763</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">10.220</td>
+<td style="text-align: right;">0.5614192</td>
+<td style="text-align: right;">0.0004232</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Maldives</td>
+<td style="text-align: right;">17.7230534</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">24.939</td>
+<td style="text-align: right;">0.0442503</td>
+<td style="text-align: right;">-0.2050179</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mali</td>
+<td style="text-align: right;">76.5924520</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">26.671</td>
+<td style="text-align: right;">-0.9823430</td>
+<td style="text-align: right;">-0.9209226</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Malta</td>
+<td style="text-align: right;">10.2810008</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">6.177</td>
+<td style="text-align: right;">0.7856548</td>
+<td style="text-align: right;">1.0808672</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Marshall Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.7298498</td>
+<td style="text-align: right;">1.1057235</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mauritania</td>
+<td style="text-align: right;">54.1465117</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">36.250</td>
+<td style="text-align: right;">-0.6464370</td>
+<td style="text-align: right;">-0.7305079</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mauritius</td>
+<td style="text-align: right;">15.8397059</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">20.742</td>
+<td style="text-align: right;">0.7962922</td>
+<td style="text-align: right;">0.6135810</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: right;">26.7121638</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">16.824</td>
+<td style="text-align: right;">-0.8694251</td>
+<td style="text-align: right;">-0.1197567</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Micronesia, Fed. Sts.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.6896540</td>
+<td style="text-align: right;">1.1250308</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moldova</td>
+<td style="text-align: right;">58.5846799</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">14.963</td>
+<td style="text-align: right;">-0.2864012</td>
+<td style="text-align: right;">0.0965941</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Monaco</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.4854831</td>
+<td style="text-align: right;">0.7160826</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mongolia</td>
+<td style="text-align: right;">40.0864298</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">15.318</td>
+<td style="text-align: right;">-0.1877818</td>
+<td style="text-align: right;">0.2645924</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Montenegro</td>
+<td style="text-align: right;">15.6930576</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">20.133</td>
+<td style="text-align: right;">-0.1261169</td>
+<td style="text-align: right;">0.2752419</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Morocco</td>
+<td style="text-align: right;">36.3768248</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">32.714</td>
+<td style="text-align: right;">-0.2066449</td>
+<td style="text-align: right;">-0.5455483</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mozambique</td>
+<td style="text-align: right;">84.0700181</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">19.239</td>
+<td style="text-align: right;">-1.0246904</td>
+<td style="text-align: right;">-0.5862649</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Myanmar</td>
+<td style="text-align: right;">62.7382657</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">16.171</td>
+<td style="text-align: right;">-1.5280929</td>
+<td style="text-align: right;">-1.8112376</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Namibia</td>
+<td style="text-align: right;">30.6894021</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">30.793</td>
+<td style="text-align: right;">0.4149222</td>
+<td style="text-align: right;">0.5672219</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nauru</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.0233930</td>
+<td style="text-align: right;">0.6211549</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nepal</td>
+<td style="text-align: right;">77.7965803</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">32.166</td>
+<td style="text-align: right;">-0.4482037</td>
+<td style="text-align: right;">-0.0446579</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Netherlands</td>
+<td style="text-align: right;">13.3857370</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">3.259</td>
+<td style="text-align: right;">1.6567659</td>
+<td style="text-align: right;">1.5471327</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">New Caledonia</td>
+<td style="text-align: right;">13.8575806</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">23.618</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">New Zealand</td>
+<td style="text-align: right;">13.2449649</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">11.560</td>
+<td style="text-align: right;">1.7303737</td>
+<td style="text-align: right;">1.6516861</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nicaragua</td>
+<td style="text-align: right;">39.6154534</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">23.246</td>
+<td style="text-align: right;">-1.3109119</td>
+<td style="text-align: right;">-1.3500199</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Niger</td>
+<td style="text-align: right;">84.3641038</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">15.657</td>
+<td style="text-align: right;">-0.4981173</td>
+<td style="text-align: right;">-0.3754451</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nigeria</td>
+<td style="text-align: right;">67.2492937</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">13.860</td>
+<td style="text-align: right;">-0.9139851</td>
+<td style="text-align: right;">-0.5985633</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Macedonia</td>
+<td style="text-align: right;">12.1542347</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">18.427</td>
+<td style="text-align: right;">-0.0968876</td>
+<td style="text-align: right;">0.1620953</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Northern Mariana Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Norway</td>
+<td style="text-align: right;">4.2597983</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">6.225</td>
+<td style="text-align: right;">1.7608529</td>
+<td style="text-align: right;">1.7806753</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Oman</td>
+<td style="text-align: right;">3.7536285</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">25.500</td>
+<td style="text-align: right;">0.4988608</td>
+<td style="text-align: right;">-1.1478138</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pakistan</td>
+<td style="text-align: right;">56.0258160</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">34.311</td>
+<td style="text-align: right;">-0.6721163</td>
+<td style="text-align: right;">-0.8621170</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Palau</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.9528992</td>
+<td style="text-align: right;">1.0686712</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Panama</td>
+<td style="text-align: right;">42.1207767</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">17.564</td>
+<td style="text-align: right;">-0.3598516</td>
+<td style="text-align: right;">0.5413749</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Papua New Guinea</td>
+<td style="text-align: right;">71.3898208</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">27.690</td>
+<td style="text-align: right;">-0.6159877</td>
+<td style="text-align: right;">-0.0208922</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Paraguay</td>
+<td style="text-align: right;">37.3347800</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">18.184</td>
+<td style="text-align: right;">-0.5914984</td>
+<td style="text-align: right;">0.0037104</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Peru</td>
+<td style="text-align: right;">49.6637300</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">22.779</td>
+<td style="text-align: right;">-0.5528314</td>
+<td style="text-align: right;">0.0529897</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Philippines</td>
+<td style="text-align: right;">34.5174062</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">12.960</td>
+<td style="text-align: right;">-0.5182632</td>
+<td style="text-align: right;">-0.0548803</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: right;">17.7973099</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10.500</td>
+<td style="text-align: right;">0.4281348</td>
+<td style="text-align: right;">0.6035019</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Portugal</td>
+<td style="text-align: right;">10.5043537</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">7.774</td>
+<td style="text-align: right;">1.1122183</td>
+<td style="text-align: right;">1.2576935</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Puerto Rico (US)</td>
+<td style="text-align: right;">10.3750269</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">19.763</td>
+<td style="text-align: right;">0.5310266</td>
+<td style="text-align: right;">0.4455555</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Qatar</td>
+<td style="text-align: right;">0.4701416</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">5.565</td>
+<td style="text-align: right;">0.9171401</td>
+<td style="text-align: right;">-1.0483549</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Romania</td>
+<td style="text-align: right;">13.4197241</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">17.518</td>
+<td style="text-align: right;">0.4034019</td>
+<td style="text-align: right;">0.5662615</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Russian Federation</td>
+<td style="text-align: right;">5.2616318</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">12.967</td>
+<td style="text-align: right;">-1.1965904</td>
+<td style="text-align: right;">-1.2617706</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rwanda</td>
+<td style="text-align: right;">37.9814502</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">28.584</td>
+<td style="text-align: right;">0.1477475</td>
+<td style="text-align: right;">-0.9359674</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Samoa</td>
+<td style="text-align: right;">42.0245623</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">30.090</td>
+<td style="text-align: right;">0.9478827</td>
+<td style="text-align: right;">1.0020893</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">San Marino</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.7498503</td>
+<td style="text-align: right;">1.2314045</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sao Tome and Principe</td>
+<td style="text-align: right;">35.2300324</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">49.838</td>
+<td style="text-align: right;">-0.6344405</td>
+<td style="text-align: right;">0.2766013</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Saudi Arabia</td>
+<td style="text-align: right;">1.7950146</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">18.369</td>
+<td style="text-align: right;">0.2899137</td>
+<td style="text-align: right;">-1.4843935</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Senegal</td>
+<td style="text-align: right;">63.7301648</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">33.880</td>
+<td style="text-align: right;">-0.2687649</td>
+<td style="text-align: right;">0.1769306</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Serbia</td>
+<td style="text-align: right;">24.0710645</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">13.231</td>
+<td style="text-align: right;">-0.1139558</td>
+<td style="text-align: right;">-0.0982480</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Seychelles</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.4617373</td>
+<td style="text-align: right;">0.5962480</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sierra Leone</td>
+<td style="text-align: right;">86.7660972</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">30.914</td>
+<td style="text-align: right;">-0.8309809</td>
+<td style="text-align: right;">-0.1466548</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Singapore</td>
+<td style="text-align: right;">9.1915225</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6.623</td>
+<td style="text-align: right;">1.7781904</td>
+<td style="text-align: right;">-0.0601326</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sint Maarten (Dutch part)</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Slovak Republic</td>
+<td style="text-align: right;">12.3414459</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">9.995</td>
+<td style="text-align: right;">0.6209987</td>
+<td style="text-align: right;">0.8897835</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Slovenia</td>
+<td style="text-align: right;">11.1881036</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">8.234</td>
+<td style="text-align: right;">0.9709052</td>
+<td style="text-align: right;">0.9763335</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Solomon Islands</td>
+<td style="text-align: right;">69.0424834</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">8.201</td>
+<td style="text-align: right;">-0.2407746</td>
+<td style="text-align: right;">0.3369800</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Somalia, Fed. Rep.</td>
+<td style="text-align: right;">46.1199828</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">43.994</td>
+<td style="text-align: right;">-2.2872789</td>
+<td style="text-align: right;">-1.6689421</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">South Africa</td>
+<td style="text-align: right;">11.2608247</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">35.188</td>
+<td style="text-align: right;">0.0407748</td>
+<td style="text-align: right;">0.7232744</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">South Sudan</td>
+<td style="text-align: right;">80.5251263</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">33.591</td>
+<td style="text-align: right;">-2.0552170</td>
+<td style="text-align: right;">-1.6969926</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">10.8344079</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">9.221</td>
+<td style="text-align: right;">0.7991677</td>
+<td style="text-align: right;">1.0168357</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sri Lanka</td>
+<td style="text-align: right;">39.0627287</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">18.051</td>
+<td style="text-align: right;">-0.0580026</td>
+<td style="text-align: right;">-0.2145371</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">St. Kitts and Nevis</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.5017341</td>
+<td style="text-align: right;">0.7674363</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">St. Lucia</td>
+<td style="text-align: right;">24.1074788</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">27.088</td>
+<td style="text-align: right;">0.6621917</td>
+<td style="text-align: right;">0.8469678</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">St. Martin (French part)</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">St. Vincent and the Grenadines</td>
+<td style="text-align: right;">22.3766568</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">27.145</td>
+<td style="text-align: right;">0.6448087</td>
+<td style="text-align: right;">0.8495726</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sudan</td>
+<td style="text-align: right;">39.6653001</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">46.529</td>
+<td style="text-align: right;">-1.2600933</td>
+<td style="text-align: right;">-1.4944623</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Suriname</td>
+<td style="text-align: right;">18.8820662</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">19.041</td>
+<td style="text-align: right;">-0.1283078</td>
+<td style="text-align: right;">0.3694015</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sweden</td>
+<td style="text-align: right;">7.0844150</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">4.948</td>
+<td style="text-align: right;">1.6885090</td>
+<td style="text-align: right;">1.5261279</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Switzerland</td>
+<td style="text-align: right;">9.7475032</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">7.234</td>
+<td style="text-align: right;">1.7511884</td>
+<td style="text-align: right;">1.6213468</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Syrian Arab Republic</td>
+<td style="text-align: right;">39.1050875</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">34.135</td>
+<td style="text-align: right;">-2.0691409</td>
+<td style="text-align: right;">-1.8954170</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tajikistan</td>
+<td style="text-align: right;">28.4666276</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">39.236</td>
+<td style="text-align: right;">-1.2555650</td>
+<td style="text-align: right;">-1.6736581</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tanzania</td>
+<td style="text-align: right;">84.2489653</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">11.069</td>
+<td style="text-align: right;">-0.4622819</td>
+<td style="text-align: right;">-0.6531970</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Thailand</td>
+<td style="text-align: right;">49.7297564</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">13.347</td>
+<td style="text-align: right;">0.0657474</td>
+<td style="text-align: right;">-0.6203515</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Timor-Leste</td>
+<td style="text-align: right;">57.3174736</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">29.122</td>
+<td style="text-align: right;">-0.8803778</td>
+<td style="text-align: right;">0.4897920</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Togo</td>
+<td style="text-align: right;">75.9643653</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">13.020</td>
+<td style="text-align: right;">-0.5503590</td>
+<td style="text-align: right;">-0.7550176</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tonga</td>
+<td style="text-align: right;">34.7327908</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">26.627</td>
+<td style="text-align: right;">0.5955383</td>
+<td style="text-align: right;">0.8500718</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Trinidad and Tobago</td>
+<td style="text-align: right;">21.2792386</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">16.882</td>
+<td style="text-align: right;">-0.1685622</td>
+<td style="text-align: right;">0.6493124</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tunisia</td>
+<td style="text-align: right;">17.9540686</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">23.768</td>
+<td style="text-align: right;">-0.1127621</td>
+<td style="text-align: right;">-0.2481002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Turkiye</td>
+<td style="text-align: right;">24.8219912</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">24.158</td>
+<td style="text-align: right;">-0.4596806</td>
+<td style="text-align: right;">-0.9264044</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Turkmenistan</td>
+<td style="text-align: right;">28.7938838</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">17.474</td>
+<td style="text-align: right;">-1.4923116</td>
+<td style="text-align: right;">-1.9462645</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Turks and Caicos Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tuvalu</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.8169860</td>
+<td style="text-align: right;">1.2067147</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Uganda</td>
+<td style="text-align: right;">75.0346603</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">13.336</td>
+<td style="text-align: right;">-0.3740349</td>
+<td style="text-align: right;">-0.7995323</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ukraine</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.9179479</td>
+<td style="text-align: right;">-0.0233074</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United Arab Emirates</td>
+<td style="text-align: right;">1.1460153</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">9.985</td>
+<td style="text-align: right;">0.8360565</td>
+<td style="text-align: right;">-1.1274915</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">11.7474590</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">11.809</td>
+<td style="text-align: right;">1.4137982</td>
+<td style="text-align: right;">1.2585411</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United States</td>
+<td style="text-align: right;">3.8645508</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">11.244</td>
+<td style="text-align: right;">1.3692020</td>
+<td style="text-align: right;">0.8603481</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Uruguay</td>
+<td style="text-align: right;">24.7332434</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">14.273</td>
+<td style="text-align: right;">0.7679475</td>
+<td style="text-align: right;">1.2849234</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Uzbekistan</td>
+<td style="text-align: right;">33.8797392</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">14.975</td>
+<td style="text-align: right;">-0.8523073</td>
+<td style="text-align: right;">-1.3309237</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vanuatu</td>
+<td style="text-align: right;">57.9372628</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">34.399</td>
+<td style="text-align: right;">0.3221841</td>
+<td style="text-align: right;">0.5857114</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Venezuela, RB</td>
+<td style="text-align: right;">36.4255333</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">23.615</td>
+<td style="text-align: right;">-2.1981628</td>
+<td style="text-align: right;">-1.5447547</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Viet Nam</td>
+<td style="text-align: right;">52.7993697</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">11.062</td>
+<td style="text-align: right;">-0.1584695</td>
+<td style="text-align: right;">-1.2864074</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Virgin Islands (U.S.)</td>
+<td style="text-align: right;">5.5693570</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">16.871</td>
+<td style="text-align: right;">0.9567488</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">West Bank and Gaza</td>
+<td style="text-align: right;">18.3805287</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">25.443</td>
+<td style="text-align: right;">-0.5551717</td>
+<td style="text-align: right;">-1.0356138</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Yemen, Rep.</td>
+<td style="text-align: right;">45.2981754</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">45.717</td>
+<td style="text-align: right;">-1.8519399</td>
+<td style="text-align: right;">-1.6197032</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Zambia</td>
+<td style="text-align: right;">70.8828492</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">29.368</td>
+<td style="text-align: right;">-0.5170235</td>
+<td style="text-align: right;">-0.0794508</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Zimbabwe</td>
+<td style="text-align: right;">68.9300948</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">32.236</td>
+<td style="text-align: right;">-1.2370275</td>
+<td style="text-align: right;">-1.1095031</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="variable-distributions" class="level1">
+<h1>Variable Distributions</h1>
+<p>(Red dotted line indicates value for Nepal)</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> variables <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">keep</span>(<span class="sc">~</span> .x <span class="sc">%in%</span> <span class="fu">names</span>(df) <span class="sc">&amp;&amp;</span> <span class="fu">is.numeric</span>(df[[.x]])) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    \(v) {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      x_lab <span class="ot">&lt;-</span> <span class="fu">attr</span>(df[[v]], <span class="st">"label"</span>) <span class="sc">%||%</span> v</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      x_vals <span class="ot">&lt;-</span> df[[v]]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      x_vals_non_na <span class="ot">&lt;-</span> x_vals[<span class="sc">!</span><span class="fu">is.na</span>(x_vals)]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Summary stats</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      mean_val <span class="ot">&lt;-</span> <span class="fu">mean</span>(x_vals_non_na)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      sd_val <span class="ot">&lt;-</span> <span class="fu">sd</span>(x_vals_non_na)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      nepal_value <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(<span class="st">`</span><span class="at">Country Name</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Nepal"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pull</span>(.data[[v]]) <span class="sc">|&gt;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">first</span>()</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Detect whether values are effectively integers</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      is_integerish <span class="ot">&lt;-</span> <span class="fu">length</span>(x_vals_non_na) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all</span>(<span class="fu">abs</span>(x_vals_non_na <span class="sc">-</span> <span class="fu">round</span>(x_vals_non_na)) <span class="sc">&lt;</span> <span class="fl">1e-8</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Choose histogram settings automatically</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (is_integerish <span class="sc">&amp;&amp;</span> <span class="fu">diff</span>(<span class="fu">range</span>(x_vals_non_na)) <span class="sc">&lt;=</span> <span class="dv">50</span>) {</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        hist_geom <span class="ot">&lt;-</span> <span class="fu">geom_histogram</span>(</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>          <span class="at">binwidth =</span> <span class="dv">1</span>,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>          <span class="at">boundary =</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>          <span class="at">color =</span> <span class="st">"gray40"</span>,</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"gray80"</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>          <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Freedman-Diaconis rule for continuous variables</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        iqr_val <span class="ot">&lt;-</span> <span class="fu">IQR</span>(x_vals_non_na)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        n_val <span class="ot">&lt;-</span> <span class="fu">length</span>(x_vals_non_na)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        fd_binwidth <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> iqr_val <span class="sc">/</span> (n_val<span class="sc">^</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>))</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        fd_binwidth <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> fd_binwidth</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Fallback if IQR is zero or binwidth is not usable</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.finite</span>(fd_binwidth) <span class="sc">||</span> fd_binwidth <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>          rng <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">range</span>(x_vals_non_na))</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>          fd_binwidth <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">is.finite</span>(rng) <span class="sc">&amp;&amp;</span> rng <span class="sc">&gt;</span> <span class="dv">0</span>) rng <span class="sc">/</span> <span class="dv">30</span> <span class="cf">else</span> <span class="dv">1</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>        hist_geom <span class="ot">&lt;-</span> <span class="fu">geom_histogram</span>(</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>          <span class="at">binwidth =</span> fd_binwidth,</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>          <span class="at">color =</span> <span class="st">"gray40"</span>,</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"gray80"</span>,</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>          <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>      caption_text <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Mean = "</span>,</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>        scales<span class="sc">::</span><span class="fu">number</span>(mean_val, <span class="at">accuracy =</span> <span class="fl">0.01</span>),</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        <span class="st">"   |   SD = "</span>,</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        scales<span class="sc">::</span><span class="fu">number</span>(sd_val, <span class="at">accuracy =</span> <span class="fl">0.01</span>)</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>      p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> .data[[v]])) <span class="sc">+</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>        hist_geom <span class="sc">+</span></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>        <span class="fu">annotate</span>(</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>          <span class="st">"rect"</span>,</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>          <span class="at">xmin =</span> mean_val <span class="sc">-</span> sd_val,</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>          <span class="at">xmax =</span> mean_val <span class="sc">+</span> sd_val,</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>          <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>,</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>          <span class="at">ymax =</span> <span class="cn">Inf</span>,</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"blue"</span>,</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>          <span class="at">alpha =</span> <span class="fl">0.12</span></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">+</span></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_vline</span>(</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>          <span class="at">xintercept =</span> mean_val,</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>          <span class="at">color =</span> <span class="st">"blue"</span>,</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>          <span class="at">linewidth =</span> <span class="fl">0.9</span>,</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>          <span class="at">alpha =</span> <span class="fl">0.48</span></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">+</span></span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>        <span class="co"># geom_vline(</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   xintercept = c(mean_val - sd_val, mean_val + sd_val),</span></span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   color = "blue",</span></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   linetype = "dashed",</span></span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   linewidth = 0.8</span></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ) +</span></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>        <span class="fu">labs</span>(</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Histogram of"</span>, x_lab),</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> x_lab,</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>          <span class="at">y =</span> <span class="st">"Count"</span>,</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>          <span class="at">caption =</span> caption_text</span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">+</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme</span>(</span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>          <span class="at">plot.caption =</span> <span class="fu">element_text</span>(</span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>            <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">8</span>)</span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>          ),</span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>          <span class="at">plot.caption.position =</span> <span class="st">"plot"</span></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(nepal_value)) {</span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>        p <span class="ot">&lt;-</span> p <span class="sc">+</span></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>          <span class="fu">geom_vline</span>(</span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>            <span class="at">xintercept =</span> nepal_value,</span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>            <span class="at">linetype =</span> <span class="st">"dotted"</span>,</span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">0.8</span></span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>      p</span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a><span class="fu">walk</span>(plots, print)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sameer_files/figure-html/variable_plots-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sameer_files/figure-html/variable_plots-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sameer_files/figure-html/variable_plots-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sameer_files/figure-html/variable_plots-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sameer_files/figure-html/variable_plots-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exposure-outcome-scatterplots" class="level1">
+<h1>Exposure-Outcome Scatterplots</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scatter_plots <span class="ot">&lt;-</span> histograms <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(\(xy) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    x_var <span class="ot">&lt;-</span> xy[[<span class="dv">1</span>]]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    y_var <span class="ot">&lt;-</span> xy[[<span class="dv">2</span>]]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    x_lab <span class="ot">&lt;-</span> <span class="fu">attr</span>(df[[x_var]], <span class="st">"label"</span>) <span class="sc">%||%</span> x_var</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    y_lab <span class="ot">&lt;-</span> <span class="fu">attr</span>(df[[y_var]], <span class="st">"label"</span>) <span class="sc">%||%</span> y_var</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> .data[[x_var]], <span class="at">y =</span> .data[[y_var]])) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_smooth</span>(</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">formula =</span> <span class="st">"y ~ x"</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="dv">1</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">paste0</span>(y_lab, <span class="st">" vs "</span>, x_lab),</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> x_lab,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> y_lab</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>()</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">walk</span>(scatter_plots, print)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sameer_files/figure-html/scatterplots-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  DAGitty.setup();
+});
+</script>
+<style>
+  svg { overflow: visible; }
+</style>
+</section>
+<section id="formal-model" class="level1">
+<h1>Formal Model</h1>
+<p><span class="math display">\[
+\begin{align}
+VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
+\mu_i &amp;= \alpha
++   \beta_{CED}  CED_i
++   \beta_{YN} YN_i
++   \beta_{RL} RL_i
++   \beta_{VA} VA_i \\
+\alpha &amp;\sim \text{Normal}(50,20) \\
+\beta_{CED} &amp;\sim \text{Normal}(0,1) \\
+\beta_{YN} &amp;\sim \text{Normal}(0,1) \\
+\beta_{RL} &amp;\sim \text{Normal}(0,1) \\
+\beta_{VA} &amp;\sim \text{Normal}(0,1) \\
+\sigma &amp;\sim \text{Normal}(0,10), \quad \sigma &gt; 0
+\end{align}
+\]</span></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 44%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Description</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(VE_i\)</span></td>
+<td>Vulnerable Employment</td>
+<td>percentage</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(CED_i\)</span></td>
+<td>Compulsory Education Duration</td>
+<td>standardized</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(YN_i\)</span></td>
+<td>Youth not in Education, Employment, or Training</td>
+<td>standardized</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(RL_i\)</span></td>
+<td>Rule of Law</td>
+<td>standardized</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(VA_i\)</span></td>
+<td>Voice and Accountability</td>
+<td>standardized</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="statistical-model" class="level1">
+<h1>Statistical model</h1>
+<p>Impact of different variables on Vulnerable Employment rates</p>
+<p>Red is our prior distribution; blue is our posterior distribution.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">write_stan_file</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">data {</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">  int&lt;lower=1&gt; n;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] VE;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] CED;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] YN;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] RL;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] VA;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="st">parameters {</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">  real alpha;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="st">  real beta_CED;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="st">  real beta_YN;</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="st">  real beta_RL;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="st">  real beta_VA;</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="st">  real&lt;lower=0&gt; sigma;</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="st">transformed parameters {</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] mu = alpha</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="st">               + beta_CED * CED</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="st">               + beta_YN  * YN</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="st">               + beta_RL  * RL</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="st">               + beta_VA  * VA;</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="st">model {</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="st">  alpha    ~ normal(50, 20);</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="st">  beta_CED ~ normal(0, 1);</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="st">  beta_YN  ~ normal(0, 1);</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="st">  beta_RL  ~ normal(0, 1);</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="st">  beta_VA  ~ normal(0, 1);</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma    ~ normal(0, 10);</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="st">  VE ~ normal(mu, sigma);</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="st">generated quantities {</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] VE_rep;</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="st">  for (i in 1:n) {</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="st">    VE_rep[i] = normal_rng(mu[i], sigma);</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="st">}"</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">VE =</span> SL.EMP.VULN.ZS <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">CED =</span> SE.COM.DURS <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">YN =</span> SL.UEM.NEET.ME.ZS <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">RL =</span> RL.EST <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">VA =</span> VA.EST <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compose_data</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>  model<span class="sc">$</span><span class="fu">sample</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fit<span class="sc">$</span><span class="fu">summary</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"mu</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"VE_rep</span><span class="sc">\\</span><span class="st">["</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">variable</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">median</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">mad</th>
+<th style="text-align: right;">q5</th>
+<th style="text-align: right;">q95</th>
+<th style="text-align: right;">rhat</th>
+<th style="text-align: right;">ess_bulk</th>
+<th style="text-align: right;">ess_tail</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">lp__</td>
+<td style="text-align: right;">-34.3499849</td>
+<td style="text-align: right;">-34.0216260</td>
+<td style="text-align: right;">1.7812977</td>
+<td style="text-align: right;">1.5972962</td>
+<td style="text-align: right;">-37.7601366</td>
+<td style="text-align: right;">-32.0943196</td>
+<td style="text-align: right;">1.003078</td>
+<td style="text-align: right;">1839.379</td>
+<td style="text-align: right;">2466.854</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">alpha</td>
+<td style="text-align: right;">-0.1009663</td>
+<td style="text-align: right;">-0.1004888</td>
+<td style="text-align: right;">0.0557518</td>
+<td style="text-align: right;">0.0533712</td>
+<td style="text-align: right;">-0.1940983</td>
+<td style="text-align: right;">-0.0079276</td>
+<td style="text-align: right;">1.002068</td>
+<td style="text-align: right;">4129.806</td>
+<td style="text-align: right;">2786.265</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">beta_CED</td>
+<td style="text-align: right;">-0.1956808</td>
+<td style="text-align: right;">-0.1969199</td>
+<td style="text-align: right;">0.0607957</td>
+<td style="text-align: right;">0.0598560</td>
+<td style="text-align: right;">-0.2956178</td>
+<td style="text-align: right;">-0.0937395</td>
+<td style="text-align: right;">1.001126</td>
+<td style="text-align: right;">3784.275</td>
+<td style="text-align: right;">2600.558</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">beta_YN</td>
+<td style="text-align: right;">0.0227645</td>
+<td style="text-align: right;">0.0233727</td>
+<td style="text-align: right;">0.0702651</td>
+<td style="text-align: right;">0.0688887</td>
+<td style="text-align: right;">-0.0932900</td>
+<td style="text-align: right;">0.1384714</td>
+<td style="text-align: right;">1.001568</td>
+<td style="text-align: right;">3380.535</td>
+<td style="text-align: right;">2638.478</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">beta_RL</td>
+<td style="text-align: right;">-0.7489291</td>
+<td style="text-align: right;">-0.7492429</td>
+<td style="text-align: right;">0.1072179</td>
+<td style="text-align: right;">0.1060349</td>
+<td style="text-align: right;">-0.9226874</td>
+<td style="text-align: right;">-0.5738002</td>
+<td style="text-align: right;">1.002371</td>
+<td style="text-align: right;">2364.698</td>
+<td style="text-align: right;">2534.810</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">beta_VA</td>
+<td style="text-align: right;">0.2145608</td>
+<td style="text-align: right;">0.2130919</td>
+<td style="text-align: right;">0.0953542</td>
+<td style="text-align: right;">0.0954717</td>
+<td style="text-align: right;">0.0614723</td>
+<td style="text-align: right;">0.3710265</td>
+<td style="text-align: right;">1.001605</td>
+<td style="text-align: right;">2616.195</td>
+<td style="text-align: right;">2169.073</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma</td>
+<td style="text-align: right;">0.7278411</td>
+<td style="text-align: right;">0.7254768</td>
+<td style="text-align: right;">0.0404584</td>
+<td style="text-align: right;">0.0412892</td>
+<td style="text-align: right;">0.6657981</td>
+<td style="text-align: right;">0.7969469</td>
+<td style="text-align: right;">1.000868</td>
+<td style="text-align: right;">3825.611</td>
+<td style="text-align: right;">3084.806</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plot_param <span class="ot">&lt;-</span> <span class="cf">function</span>(draws, param) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(draws, <span class="fu">aes</span>(<span class="at">x =</span> .data[[param]])) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">fun =</span> dnorm,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">1</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"indianred3"</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_halfeye</span>(<span class="at">fill =</span> <span class="st">"cornflowerblue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> param)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"beta_CED"</span>, <span class="st">"beta_YN"</span>, <span class="st">"beta_RL"</span>, <span class="st">"beta_VA"</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> fit <span class="sc">|&gt;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(alpha, beta_CED, beta_YN, beta_RL, beta_VA, sigma)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>params <span class="sc">|&gt;</span> purrr<span class="sc">::</span><span class="fu">walk</span>(\(param) <span class="fu">print</span>(<span class="fu">plot_param</span>(draws, param)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sameer_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sameer_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sameer_files/figure-html/unnamed-chunk-1-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sameer_files/figure-html/unnamed-chunk-1-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/theopen-institute\.github\.io\/openstats\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
