@@ -212,7 +212,10 @@ scatter_plots <- histograms |>
     x_lab <- attr(df[[x_var]], "label") %||% x_var
     y_lab <- attr(df[[y_var]], "label") %||% y_var
 
-    ggplot(df, aes(x = .data[[x_var]], y = .data[[y_var]])) +
+    ggplot(
+      df,
+      aes(x = .data[[x_var]], y = .data[[y_var]])
+    ) +
       geom_point(alpha = 0.7, na.rm = TRUE) +
       geom_smooth(
         method = "lm",

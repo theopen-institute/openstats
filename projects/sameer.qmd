@@ -22,6 +22,11 @@ histograms <- list(
   c('SE.COM.DURS', 'SL.EMP.VULN.ZS')
 )
 
+ALPHA_MEAN <- 50
+ALPHA_SD <- 25
+BETA_SD <- 10
+SIGMA_SD <- 20
+
 dag <- '
 "Compulsory Education Duration"[exposure, pos = "-0.917,0.137"]
 "Rule of Law"[adjusted, pos = "-0.385,-0.178"]
@@ -50,12 +55,12 @@ VE_i &\sim \text{Normal}(\mu_i,\sigma) \\
 +	\beta_{YN} YN_i
 +	\beta_{RL} RL_i
 +	\beta_{VA} VA_i \\
-\alpha &\sim \text{Normal}(50,20) \\
-\beta_{CED} &\sim \text{Normal}(0,1) \\
-\beta_{YN} &\sim \text{Normal}(0,1) \\
-\beta_{RL} &\sim \text{Normal}(0,1) \\
-\beta_{VA} &\sim \text{Normal}(0,1) \\
-\sigma &\sim \text{Normal}(0,10), \quad \sigma > 0
+\alpha &\sim \text{Normal}(`r ALPHA_MEAN`,`r ALPHA_SD`) \\
+\beta_{CED} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{YN} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{RL} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{VA} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\sigma &\sim \text{Normal}(0,`r SIGMA_SD`), \quad \sigma > 0
 \end{align}
 $$
 
@@ -68,14 +73,85 @@ $$
 | $VA_i$  | Voice and Accountability | standardized |
 
 
+# Base model
+
+Just $VE_i$ ~ $CED_i$
+
+```{r model1, message=FALSE, results="hide"}
+model1 <- write_stan_file(
+  paste0(
+    "
+data {
+  int<lower=1> n;
+  vector[n] VE;
+  vector[n] CED;
+}
+
+parameters {
+  real alpha;
+  real beta_CED;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha + beta_CED * CED;
+}
+
+model {
+  alpha    ~ normal(",
+    ALPHA_MEAN,
+    ", ",
+    ALPHA_SD,
+    ");
+  beta_CED ~ normal(0, ",
+    BETA_SD,
+    ");
+  sigma    ~ normal(0, ",
+    SIGMA_SD,
+    ");
+
+  VE ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] VE_rep;
+  for (i in 1:n) {
+    VE_rep[i] = normal_rng(mu[i], sigma);
+  }
+}"
+  )
+) |>
+  cmdstan_model()
+
+
+fit1 <- df |>
+  transmute(
+    VE = SL.EMP.VULN.ZS,
+    CED = SE.COM.DURS |> scale() |> as.numeric(),
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model1$sample()
+```
+
+```{r}
+fit1$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "VE_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+```
+
 # Statistical model
 
-Impact of different variables on Vulnerable Employment rates
+Impact of Compulsory Education Duration on Vulnerable Employment rates
 
 Red is our prior distribution; blue is our posterior distribution.
-```{r model, message=FALSE, results="hide"}
-model <- write_stan_file(
-  "
+```{r model2, message=FALSE, results="hide"}
+model2 <- write_stan_file(
+  paste0(
+    "
 data {
   int<lower=1> n;
   vector[n] VE;
@@ -103,12 +179,26 @@ transformed parameters {
 }
 
 model {
-  alpha    ~ normal(50, 20);
-  beta_CED ~ normal(0, 1);
-  beta_YN  ~ normal(0, 1);
-  beta_RL  ~ normal(0, 1);
-  beta_VA  ~ normal(0, 1);
-  sigma    ~ normal(0, 10);
+  alpha    ~ normal(",
+    ALPHA_MEAN,
+    ", ",
+    ALPHA_SD,
+    ");
+  beta_CED ~ normal(0, ",
+    BETA_SD,
+    ");
+  beta_YN  ~ normal(0, ",
+    BETA_SD,
+    ");
+  beta_RL  ~ normal(0, ",
+    BETA_SD,
+    ");
+  beta_VA  ~ normal(0, ",
+    BETA_SD,
+    ");
+  sigma    ~ normal(0, ",
+    SIGMA_SD,
+    ");
 
   VE ~ normal(mu, sigma);
 }
@@ -119,13 +209,14 @@ generated quantities {
     VE_rep[i] = normal_rng(mu[i], sigma);
   }
 }"
+  )
 ) |>
   cmdstan_model()
 
 
-fit <- df |>
+fit2 <- df |>
   transmute(
-    VE = SL.EMP.VULN.ZS |> scale() |> as.numeric(),
+    VE = SL.EMP.VULN.ZS,
     CED = SE.COM.DURS |> scale() |> as.numeric(),
     YN = SL.UEM.NEET.ME.ZS |> scale() |> as.numeric(),
     RL = RL.EST |> scale() |> as.numeric(),
@@ -133,33 +224,46 @@ fit <- df |>
   ) |>
   drop_na() |>
   compose_data() |>
-  model$sample()
+  model2$sample()
 ```
 
 ```{r}
 
-fit$summary() |>
+fit2$summary() |>
   filter(
     !stringr::str_detect(variable, "mu\\[") &
-      !stringr::str_detect(variable, "VE_rep\\[")
+      !stringr::str_detect(variable, "VE_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
   )
 
-plot_param <- function(draws, param) {
+plot_param <- function(draws, param, prior_sd = BETA_SD) {
   ggplot(draws, aes(x = .data[[param]])) +
     stat_function(
       fun = dnorm,
-      args = list(mean = 0, sd = 1),
-      linewidth = 1,
-      color = "indianred3"
+      args = list(mean = 0, sd = prior_sd),
+      color = "indianred3",
+      linewidth = 1
     ) +
-    stat_halfeye(fill = "cornflowerblue", alpha = 0.7) +
-    scale_x_continuous(limits = c(-2, 2)) +
-    labs(title = param)
+    geom_density(
+      fill = "cornflowerblue",
+      alpha = 0.35
+    ) +
+    stat_pointinterval(
+      aes(y = 0),
+      point_interval = median_qi
+    ) +
+    scale_x_continuous(limits = c(-3 * BETA_SD, 3 * BETA_SD)) +
+    scale_y_continuous(limits = c(0, 0.35)) +
+    labs(
+      title = param,
+      x = param,
+      y = "Density"
+    )
 }
 
 params <- c("beta_CED", "beta_YN", "beta_RL", "beta_VA")
 
-draws <- fit |>
+draws <- fit2 |>
   spread_draws(alpha, beta_CED, beta_YN, beta_RL, beta_VA, sigma)
 
 params |> purrr::walk(\(param) print(plot_param(draws, param)))
