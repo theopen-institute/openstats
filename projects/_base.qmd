@@ -49,9 +49,7 @@ df <- read_csv(filename) |>
 # Causal model
 
 <pre class="dagitty" style="width: 100%; padding: 0; aspect-ratio: 3/2; overflow: visible; z-index: 10;">
-dag {
 `r dag`
-}
 </pre>
 
 # Raw data
@@ -84,7 +82,7 @@ df |>
 ```
 
 # Variable Distributions
-(Red dotted line indicates value for Nepal)
+Red dotted line indicates value for Nepal; blue line is mean, and blue rectangle is the range of -1 to 1 standard units.
 ```{r variable_plots}
 plots <- variables |>
   keep(~ .x %in% names(df) && is.numeric(df[[.x]])) |>
@@ -236,6 +234,33 @@ scatter_plots <- histograms |>
 purrr::walk(scatter_plots, print)
 ```
 
+```{r parameter_plot_function}
+
+plot_param <- function(draws, param, prior_sd = BETA_SD) {
+  ggplot(draws, aes(x = .data[[param]])) +
+    stat_function(
+      fun = dnorm,
+      args = list(mean = 0, sd = prior_sd),
+      color = "indianred3",
+      linewidth = 1
+    ) +
+    geom_density(
+      fill = "cornflowerblue",
+      alpha = 0.35
+    ) +
+    stat_pointinterval(
+      aes(y = 0),
+      point_interval = median_qi
+    ) +
+    scale_x_continuous(limits = c(-3 * BETA_SD, 3 * BETA_SD)) +
+    scale_y_continuous(limits = c(0, 0.35)) +
+    labs(
+      title = param,
+      x = param,
+      y = "Density"
+    )
+}
+```
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {

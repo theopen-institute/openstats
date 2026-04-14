@@ -1,5 +1,5 @@
 ---
-title: Sameer's project
+title: Tsering's project
 engine: knitr
 format:
   html:
@@ -10,18 +10,19 @@ format:
 ---
 
 <!-- TODO: come up with a better way to do string interpoplation to make the models easier to read -->
+<!-- TODO: fix repetition of params in the spread draws -->
 
 ```{r project_config, echo=FALSE, warning=FALSE, message=FALSE}
 variables <- c(
   'SL.EMP.VULN.ZS',
-  'SE.COM.DURS',
+  'SL.EMP.TOTL.SP.FE.ZS',
+  'NY.GDP.PCAP.PP.CD',
   'SL.UEM.NEET.ME.ZS',
-  'RL.EST',
-  'VA.EST'
+  'SP.RUR.TOTL.ZS'
 )
 
 histograms <- list(
-  c('SE.COM.DURS', 'SL.EMP.VULN.ZS')
+  c('SL.EMP.TOTL.SP.FE.ZS', 'SL.EMP.VULN.ZS')
 )
 
 ALPHA_MEAN <- 50
@@ -30,19 +31,19 @@ BETA_SD <- 10
 SIGMA_SD <- 20
 
 dag <- '
-dag{
-"Compulsory Education Duration"[exposure, pos = "-0.917,0.137"]
-"Rule of Law"[adjusted, pos = "-0.385,-0.178"]
-"Voice and Accountability"[adjusted, pos = "-0.375,-0.477"]
-"Vulnerable Employment"[outcome, pos = "0.169,0.153"]
-"Youth NEETs"[pos = "-0.375,0.448"]
-"Compulsory Education Duration" -> "Vulnerable Employment"
-"Compulsory Education Duration" -> "Youth NEETs"
-"Rule of Law" -> "Compulsory Education Duration"
-"Rule of Law" -> "Vulnerable Employment"
-"Voice and Accountability" -> "Compulsory Education Duration"
-"Voice and Accountability" -> "Vulnerable Employment"
+dag {
+"Rural Population" [latent,pos="0.493,0.601"]
+"Vulnerable Employment" [outcome,pos="0.894,0.445"]
+"Per Capita GDP" [pos="0.491,0.289"]
+"Womens Employment" [exposure,pos="0.148,0.444"]
+"Youth NEETs" [adjusted,pos="0.494,0.506"]
+"Vulnerable Employment" -> "Rural Population"
+"Per Capita GDP" -> "Vulnerable Employment"
+"Womens Employment" -> "Rural Population"
+"Womens Employment" -> "Vulnerable Employment"
+"Womens Employment" -> "Per Capita GDP"
 "Youth NEETs" -> "Vulnerable Employment"
+"Youth NEETs" -> "Womens Employment"
 }
 '
 ```
@@ -55,15 +56,13 @@ $$
 \begin{align}
 VE_i &\sim \text{Normal}(\mu_i,\sigma) \\
 \mu_i &= \alpha
-+	\beta_{CED}  CED_i
-+	\beta_{YN} YN_i
-+	\beta_{RL} RL_i
-+	\beta_{VA} VA_i \\
++	\beta_{WE} WE_i
++	\beta_{IN} IN_i
++	\beta_{YN} YN_i \\
 \alpha &\sim \text{Normal}(`r ALPHA_MEAN`,`r ALPHA_SD`) \\
-\beta_{CED} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{WE} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{IN} &\sim \text{Normal}(0,`r BETA_SD`) \\
 \beta_{YN} &\sim \text{Normal}(0,`r BETA_SD`) \\
-\beta_{RL} &\sim \text{Normal}(0,`r BETA_SD`) \\
-\beta_{VA} &\sim \text{Normal}(0,`r BETA_SD`) \\
 \sigma &\sim \text{Normal}(0,`r SIGMA_SD`), \quad \sigma > 0
 \end{align}
 $$
@@ -71,15 +70,14 @@ $$
 | Variable | Description | Unit |
 |----------|-------------|------|
 | $VE_i$  | Vulnerable Employment | percentage |
-| $CED_i$  | Compulsory Education Duration | standardized |
+| $WE_i$  | Women's Employment Rate | standardized |
+| $IN_i$  | Per Capita GDP | standardized |
 | $YN_i$  | Youth not in Education, Employment, or Training | standardized |
-| $RL_i$  | Rule of Law | standardized |
-| $VA_i$  | Voice and Accountability | standardized |
 
 
-# Base model
+# Base Model
 
-Just $VE_i$ ~ $CED_i$
+Just $VE_i$ ~ $WE_i$
 
 ```{r model1, message=FALSE, results="hide"}
 model1 <- write_stan_file(
@@ -88,17 +86,17 @@ model1 <- write_stan_file(
 data {
   int<lower=1> n;
   vector[n] VE;
-  vector[n] CED;
+  vector[n] WE;
 }
 
 parameters {
   real alpha;
-  real beta_CED;
+  real beta_WE;
   real<lower=0> sigma;
 }
 
 transformed parameters {
-  vector[n] mu = alpha + beta_CED * CED;
+  vector[n] mu = alpha + beta_WE * WE;
 }
 
 model {
@@ -107,7 +105,7 @@ model {
     ", ",
     ALPHA_SD,
     ");
-  beta_CED ~ normal(0, ",
+  beta_WE ~ normal(0, ",
     BETA_SD,
     ");
   sigma    ~ normal(0, ",
@@ -131,7 +129,7 @@ generated quantities {
 fit1 <- df |>
   transmute(
     VE = SL.EMP.VULN.ZS,
-    CED = SE.COM.DURS |> scale() |> as.numeric(),
+    WE = SL.EMP.TOTL.SP.FE.ZS |> scale() |> as.numeric(),
   ) |>
   drop_na() |>
   compose_data() |>
@@ -147,7 +145,7 @@ fit1$summary() |>
   )
 ```
 
-# Statistical model
+# Statistical Model
 
 Impact of Compulsory Education Duration on Vulnerable Employment rates
 
@@ -159,27 +157,24 @@ model2 <- write_stan_file(
 data {
   int<lower=1> n;
   vector[n] VE;
-  vector[n] CED;
+  vector[n] WE;
+  vector[n] IN;
   vector[n] YN;
-  vector[n] RL;
-  vector[n] VA;
 }
 
 parameters {
   real alpha;
-  real beta_CED;
+  real beta_WE;
+  real beta_IN;
   real beta_YN;
-  real beta_RL;
-  real beta_VA;
   real<lower=0> sigma;
 }
 
 transformed parameters {
   vector[n] mu = alpha
-               + beta_CED * CED
-               + beta_YN  * YN
-               + beta_RL  * RL
-               + beta_VA  * VA;
+               + beta_WE  * WE
+               + beta_IN  * IN
+               + beta_YN  * YN;
 }
 
 model {
@@ -188,16 +183,13 @@ model {
     ", ",
     ALPHA_SD,
     ");
-  beta_CED ~ normal(0, ",
+  beta_WE  ~ normal(0, ",
+    BETA_SD,
+    ");
+  beta_IN  ~ normal(0, ",
     BETA_SD,
     ");
   beta_YN  ~ normal(0, ",
-    BETA_SD,
-    ");
-  beta_RL  ~ normal(0, ",
-    BETA_SD,
-    ");
-  beta_VA  ~ normal(0, ",
     BETA_SD,
     ");
   sigma    ~ normal(0, ",
@@ -221,10 +213,9 @@ generated quantities {
 fit2 <- df |>
   transmute(
     VE = SL.EMP.VULN.ZS,
-    CED = SE.COM.DURS |> scale() |> as.numeric(),
-    YN = SL.UEM.NEET.ME.ZS |> scale() |> as.numeric(),
-    RL = RL.EST |> scale() |> as.numeric(),
-    VA = VA.EST |> scale() |> as.numeric()
+    WE = SL.EMP.TOTL.SP.FE.ZS |> scale() |> as.numeric(),
+    IN = NY.GDP.PCAP.PP.CD |> scale() |> as.numeric(),
+    YN = SL.UEM.NEET.ME.ZS |> scale() |> as.numeric()
   ) |>
   drop_na() |>
   compose_data() |>
@@ -240,10 +231,10 @@ fit2$summary() |>
       !stringr::str_detect(variable, "lp__")
   )
 
-params <- c("beta_CED", "beta_YN", "beta_RL", "beta_VA")
+params <- c("beta_WE", "beta_IN", "beta_YN")
 
 draws <- fit2 |>
-  spread_draws(alpha, beta_CED, beta_YN, beta_RL, beta_VA, sigma)
+  spread_draws(alpha, beta_WE, beta_IN, beta_YN, sigma)
 
 params |> purrr::walk(\(param) print(plot_param(draws, param)))
 
