@@ -187,7 +187,6 @@ window.Quarto = {
 </header>
 
 
-<!-- TODO: come up with a better way to do string interpoplation to make the models easier to read -->
 <!-- TODO: fix repetition of params in the spread draws -->
 <div class="cell">
 <details class="code-fold">
@@ -2378,74 +2377,69 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <section id="base-model" class="level1">
 <h1>Base Model</h1>
 <p>Just <span class="math inline">\(VE_i\)</span> ~ <span class="math inline">\(WE_i\)</span></p>
-<div class="cell">
+<div class="cell" data-output.var="model1_stan">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">write_stan_file</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">data {</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">  int&lt;lower=1&gt; n;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] VE;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] WE;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">parameters {</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">  real alpha;</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="st">  real beta_WE;</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="st">  real&lt;lower=0&gt; sigma;</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="st">transformed parameters {</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] mu = alpha + beta_WE * WE;</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="st">model {</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="st">  alpha    ~ normal("</span>,</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    ALPHA_MEAN,</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">", "</span>,</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    ALPHA_SD,</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">");</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="st">  beta_WE ~ normal(0, "</span>,</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    BETA_SD,</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">");</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma    ~ normal(0, "</span>,</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    SIGMA_SD,</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">");</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="st">  VE ~ normal(mu, sigma);</span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="st">generated quantities {</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] VE_rep;</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="st">  for (i in 1:n) {</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="st">    VE_rep[i] = normal_rng(mu[i], sigma);</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="st">}"</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">VE =</span> SL.EMP.VULN.ZS,</span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">WE =</span> SL.EMP.TOTL.SP.FE.ZS <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compose_data</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>  model1<span class="sc">$</span><span class="fu">sample</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n;</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] VE;</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] WE;</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> alpha;</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta_WE;</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] mu = alpha + beta_WE * WE;</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  alpha    ~ normal(&lt;&lt;ALPHA_MEAN&gt;&gt;, &lt;&lt;ALPHA_SD&gt;&gt;);</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  beta_WE ~ normal(<span class="dv">0</span>, &lt;&lt;BETA_SD&gt;&gt;);</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  sigma    ~ normal(<span class="dv">0</span>, &lt;&lt;SIGMA_SD&gt;&gt;);</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  VE ~ normal(mu, sigma);</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] VE_rep;</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:n) {</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    VE_rep[i] = normal_rng(mu[i], sigma);</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fit1<span class="sc">$</span><span class="fu">summary</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"mu</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"VE_rep</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"lp__"</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> knitr<span class="sc">::</span>knit_code<span class="sc">$</span><span class="fu">get</span>(<span class="st">"model1_stan"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="at">.open =</span> <span class="st">"&lt;&lt;"</span>, <span class="at">.close =</span> <span class="st">"&gt;&gt;"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">VE =</span> SL.EMP.VULN.ZS,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">WE =</span> SL.EMP.TOTL.SP.FE.ZS <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compose_data</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  model1<span class="sc">$</span><span class="fu">sample</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fit1<span class="sc">$</span><span class="fu">summary</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"mu</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"VE_rep</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"lp__"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="kable-table">
@@ -2456,9 +2450,9 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <col style="width: 10%">
 <col style="width: 9%">
 <col style="width: 9%">
-<col style="width: 9%">
 <col style="width: 10%">
-<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
 <col style="width: 9%">
 <col style="width: 9%">
 </colgroup>
@@ -2479,42 +2473,55 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">alpha</td>
-<td style="text-align: right;">35.502418</td>
-<td style="text-align: right;">35.484634</td>
-<td style="text-align: right;">1.856678</td>
-<td style="text-align: right;">1.842290</td>
-<td style="text-align: right;">32.42323</td>
-<td style="text-align: right;">38.592872</td>
-<td style="text-align: right;">1.001063</td>
-<td style="text-align: right;">3863.594</td>
-<td style="text-align: right;">2882.182</td>
+<td style="text-align: right;">35.487304</td>
+<td style="text-align: right;">35.517764</td>
+<td style="text-align: right;">1.808143</td>
+<td style="text-align: right;">1.771031</td>
+<td style="text-align: right;">32.477327</td>
+<td style="text-align: right;">38.461905</td>
+<td style="text-align: right;">1.0000447</td>
+<td style="text-align: right;">4245.934</td>
+<td style="text-align: right;">3070.137</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_WE</td>
-<td style="text-align: right;">5.202506</td>
-<td style="text-align: right;">5.192729</td>
-<td style="text-align: right;">1.838322</td>
-<td style="text-align: right;">1.778525</td>
-<td style="text-align: right;">2.17965</td>
-<td style="text-align: right;">8.247285</td>
-<td style="text-align: right;">1.000960</td>
-<td style="text-align: right;">3871.900</td>
-<td style="text-align: right;">2904.890</td>
+<td style="text-align: right;">5.193208</td>
+<td style="text-align: right;">5.201159</td>
+<td style="text-align: right;">1.779845</td>
+<td style="text-align: right;">1.769075</td>
+<td style="text-align: right;">2.235535</td>
+<td style="text-align: right;">8.151754</td>
+<td style="text-align: right;">0.9999799</td>
+<td style="text-align: right;">4460.766</td>
+<td style="text-align: right;">3325.455</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">25.195143</td>
-<td style="text-align: right;">25.126161</td>
-<td style="text-align: right;">1.311210</td>
-<td style="text-align: right;">1.264718</td>
-<td style="text-align: right;">23.15153</td>
-<td style="text-align: right;">27.471323</td>
-<td style="text-align: right;">1.003269</td>
-<td style="text-align: right;">3873.070</td>
-<td style="text-align: right;">2833.841</td>
+<td style="text-align: right;">25.234629</td>
+<td style="text-align: right;">25.172335</td>
+<td style="text-align: right;">1.319055</td>
+<td style="text-align: right;">1.293330</td>
+<td style="text-align: right;">23.150906</td>
+<td style="text-align: right;">27.544811</td>
+<td style="text-align: right;">0.9998384</td>
+<td style="text-align: right;">3443.892</td>
+<td style="text-align: right;">2544.035</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> fit1 <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(alpha, beta_WE, sigma)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_param</span>(draws, <span class="st">"beta_WE"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tsering_files/figure-html/model1_summary-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
 </div>
@@ -2523,89 +2530,80 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <h1>Statistical Model</h1>
 <p>Impact of Compulsory Education Duration on Vulnerable Employment rates</p>
 <p>Red is our prior distribution; blue is our posterior distribution.</p>
-<div class="cell">
+<div class="cell" data-output.var="model2_stan">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">write_stan_file</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">data {</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">  int&lt;lower=1&gt; n;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] VE;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] WE;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] IN;</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] YN;</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">parameters {</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="st">  real alpha;</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="st">  real beta_WE;</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="st">  real beta_IN;</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="st">  real beta_YN;</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="st">  real&lt;lower=0&gt; sigma;</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="st">transformed parameters {</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] mu = alpha</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="st">               + beta_WE  * WE</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="st">               + beta_IN  * IN</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="st">               + beta_YN  * YN;</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="st">model {</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="st">  alpha    ~ normal("</span>,</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    ALPHA_MEAN,</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">", "</span>,</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    ALPHA_SD,</span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">");</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="st">  beta_WE  ~ normal(0, "</span>,</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    BETA_SD,</span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">");</span></span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="st">  beta_IN  ~ normal(0, "</span>,</span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    BETA_SD,</span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">");</span></span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="st">  beta_YN  ~ normal(0, "</span>,</span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    BETA_SD,</span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">");</span></span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma    ~ normal(0, "</span>,</span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    SIGMA_SD,</span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">");</span></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="st">  VE ~ normal(mu, sigma);</span></span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="st">generated quantities {</span></span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[n] VE_rep;</span></span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="st">  for (i in 1:n) {</span></span>
-<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="st">    VE_rep[i] = normal_rng(mu[i], sigma);</span></span>
-<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="st">}"</span></span>
-<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
-<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
-<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">VE =</span> SL.EMP.VULN.ZS,</span>
-<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">WE =</span> SL.EMP.TOTL.SP.FE.ZS <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
-<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">IN =</span> NY.GDP.PCAP.PP.CD <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
-<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">YN =</span> SL.UEM.NEET.ME.ZS <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()</span>
-<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compose_data</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>  model2<span class="sc">$</span><span class="fu">sample</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n;</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] VE;</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] WE;</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] IN;</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] YN;</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> alpha;</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta_WE;</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta_IN;</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta_YN;</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] mu = alpha</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>               + beta_WE  * WE</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>               + beta_IN  * IN</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>               + beta_YN  * YN;</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  alpha    ~ normal(&lt;&lt;ALPHA_MEAN&gt;&gt;, &lt;&lt;ALPHA_SD&gt;&gt;);</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  beta_WE  ~ normal(<span class="dv">0</span>, &lt;&lt;BETA_SD&gt;&gt;);</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  beta_IN  ~ normal(<span class="dv">0</span>, &lt;&lt;BETA_SD&gt;&gt;);</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  beta_YN  ~ normal(<span class="dv">0</span>, &lt;&lt;BETA_SD&gt;&gt;);</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  sigma    ~ normal(<span class="dv">0</span>, &lt;&lt;SIGMA_SD&gt;&gt;);</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  VE ~ normal(mu, sigma);</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] VE_rep;</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:n) {</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    VE_rep[i] = normal_rng(mu[i], sigma);</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fit2<span class="sc">$</span><span class="fu">summary</span>() <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"mu</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"VE_rep</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"lp__"</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> knitr<span class="sc">::</span>knit_code<span class="sc">$</span><span class="fu">get</span>(<span class="st">"model2_stan"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="at">.open =</span> <span class="st">"&lt;&lt;"</span>, <span class="at">.close =</span> <span class="st">"&gt;&gt;"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">VE =</span> SL.EMP.VULN.ZS,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">WE =</span> SL.EMP.TOTL.SP.FE.ZS <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">IN =</span> NY.GDP.PCAP.PP.CD <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">YN =</span> SL.UEM.NEET.ME.ZS <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compose_data</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  model2<span class="sc">$</span><span class="fu">sample</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fit2<span class="sc">$</span><span class="fu">summary</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"mu</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"VE_rep</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"lp__"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="kable-table">
@@ -2614,7 +2612,7 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <col style="width: 9%">
 <col style="width: 11%">
 <col style="width: 11%">
-<col style="width: 9%">
+<col style="width: 10%">
 <col style="width: 10%">
 <col style="width: 11%">
 <col style="width: 10%">
@@ -2639,63 +2637,63 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">alpha</td>
-<td style="text-align: right;">35.103808</td>
-<td style="text-align: right;">35.101715</td>
-<td style="text-align: right;">1.142880</td>
-<td style="text-align: right;">1.1438022</td>
-<td style="text-align: right;">33.241766</td>
-<td style="text-align: right;">37.01601</td>
-<td style="text-align: right;">1.000473</td>
-<td style="text-align: right;">4392.473</td>
-<td style="text-align: right;">2996.790</td>
+<td style="text-align: right;">35.118793</td>
+<td style="text-align: right;">35.130192</td>
+<td style="text-align: right;">1.1284702</td>
+<td style="text-align: right;">1.1563635</td>
+<td style="text-align: right;">33.295363</td>
+<td style="text-align: right;">36.96873</td>
+<td style="text-align: right;">1.000812</td>
+<td style="text-align: right;">4980.898</td>
+<td style="text-align: right;">3103.432</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_WE</td>
-<td style="text-align: right;">13.597355</td>
-<td style="text-align: right;">13.595050</td>
-<td style="text-align: right;">1.472105</td>
-<td style="text-align: right;">1.4572935</td>
-<td style="text-align: right;">11.204101</td>
-<td style="text-align: right;">16.04632</td>
-<td style="text-align: right;">1.000629</td>
-<td style="text-align: right;">2728.591</td>
-<td style="text-align: right;">2727.763</td>
+<td style="text-align: right;">13.584500</td>
+<td style="text-align: right;">13.629732</td>
+<td style="text-align: right;">1.4898022</td>
+<td style="text-align: right;">1.4646798</td>
+<td style="text-align: right;">11.045727</td>
+<td style="text-align: right;">15.95581</td>
+<td style="text-align: right;">1.000712</td>
+<td style="text-align: right;">3084.016</td>
+<td style="text-align: right;">2767.690</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">beta_IN</td>
-<td style="text-align: right;">-15.443211</td>
-<td style="text-align: right;">-15.457762</td>
-<td style="text-align: right;">1.469086</td>
-<td style="text-align: right;">1.4617131</td>
-<td style="text-align: right;">-17.812293</td>
-<td style="text-align: right;">-13.01228</td>
-<td style="text-align: right;">1.001603</td>
-<td style="text-align: right;">2816.262</td>
-<td style="text-align: right;">2921.894</td>
+<td style="text-align: right;">-15.491531</td>
+<td style="text-align: right;">-15.483791</td>
+<td style="text-align: right;">1.4250464</td>
+<td style="text-align: right;">1.4297120</td>
+<td style="text-align: right;">-17.851018</td>
+<td style="text-align: right;">-13.16417</td>
+<td style="text-align: right;">1.000914</td>
+<td style="text-align: right;">3137.078</td>
+<td style="text-align: right;">3160.404</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_YN</td>
-<td style="text-align: right;">8.701127</td>
-<td style="text-align: right;">8.699323</td>
-<td style="text-align: right;">1.767850</td>
-<td style="text-align: right;">1.8027466</td>
-<td style="text-align: right;">5.855729</td>
-<td style="text-align: right;">11.57323</td>
-<td style="text-align: right;">1.001586</td>
-<td style="text-align: right;">2349.498</td>
-<td style="text-align: right;">2278.723</td>
+<td style="text-align: right;">8.665861</td>
+<td style="text-align: right;">8.648376</td>
+<td style="text-align: right;">1.7959956</td>
+<td style="text-align: right;">1.7924264</td>
+<td style="text-align: right;">5.690031</td>
+<td style="text-align: right;">11.61238</td>
+<td style="text-align: right;">1.001430</td>
+<td style="text-align: right;">2560.897</td>
+<td style="text-align: right;">3041.569</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">15.174019</td>
-<td style="text-align: right;">15.124123</td>
-<td style="text-align: right;">0.824264</td>
-<td style="text-align: right;">0.8084225</td>
-<td style="text-align: right;">13.907747</td>
-<td style="text-align: right;">16.58596</td>
-<td style="text-align: right;">1.003436</td>
-<td style="text-align: right;">4537.293</td>
-<td style="text-align: right;">2657.459</td>
+<td style="text-align: right;">15.140662</td>
+<td style="text-align: right;">15.104038</td>
+<td style="text-align: right;">0.8356348</td>
+<td style="text-align: right;">0.8288357</td>
+<td style="text-align: right;">13.858895</td>
+<td style="text-align: right;">16.55623</td>
+<td style="text-align: right;">1.000703</td>
+<td style="text-align: right;">5167.982</td>
+<td style="text-align: right;">3149.805</td>
 </tr>
 </tbody>
 </table>
@@ -2703,31 +2701,29 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 </div>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"beta_WE"</span>, <span class="st">"beta_IN"</span>, <span class="st">"beta_YN"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> fit2 <span class="sc">|&gt;</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(alpha, beta_WE, beta_IN, beta_YN, sigma)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>params <span class="sc">|&gt;</span> purrr<span class="sc">::</span><span class="fu">walk</span>(\(param) <span class="fu">print</span>(<span class="fu">plot_param</span>(draws, param)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"beta_WE"</span>, <span class="st">"beta_IN"</span>, <span class="st">"beta_YN"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> fit2 <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(alpha, <span class="sc">!!!</span><span class="fu">syms</span>(params), sigma)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>params <span class="sc">|&gt;</span> purrr<span class="sc">::</span><span class="fu">walk</span>(\(param) <span class="fu">print</span>(<span class="fu">plot_param</span>(draws, param)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="tsering_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="tsering_files/figure-html/model2_summary-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="tsering_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="tsering_files/figure-html/model2_summary-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="tsering_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="tsering_files/figure-html/model2_summary-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
