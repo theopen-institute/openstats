@@ -32,6 +32,7 @@ jobs:
             shinylive
             rmarkdown
             knitr
+            glue
             kableExtra
             rlang
             tidyverse

@@ -9,8 +9,6 @@ format:
           <script src="../js/dagitty.js"></script>
 ---
 
-<!-- TODO: come up with a better way to do string interpoplation to make the models easier to read -->
-
 ```{r project_config, echo=FALSE, warning=FALSE, message=FALSE}
 variables <- c(
   'SL.EMP.VULN.ZS',
@@ -81,10 +79,7 @@ $$
 
 Just $VE_i$ ~ $CED_i$
 
-```{r model1, message=FALSE, results="hide"}
-model1 <- write_stan_file(
-  paste0(
-    "
+```{stan model1_stan, eval=FALSE, output.var="model1_stan"}
 data {
   int<lower=1> n;
   vector[n] VE;
@@ -102,17 +97,9 @@ transformed parameters {
 }
 
 model {
-  alpha    ~ normal(",
-    ALPHA_MEAN,
-    ", ",
-    ALPHA_SD,
-    ");
-  beta_CED ~ normal(0, ",
-    BETA_SD,
-    ");
-  sigma    ~ normal(0, ",
-    SIGMA_SD,
-    ");
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_CED ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
 
   VE ~ normal(mu, sigma);
 }
@@ -122,11 +109,15 @@ generated quantities {
   for (i in 1:n) {
     VE_rep[i] = normal_rng(mu[i], sigma);
   }
-}"
-  )
-) |>
-  cmdstan_model()
+}
+```
 
+```{r model1, message=FALSE, results="hide"}
+model1 <- knitr::knit_code$get("model1_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
 
 fit1 <- df |>
   transmute(
@@ -145,6 +136,10 @@ fit1$summary() |>
       !stringr::str_detect(variable, "VE_rep\\[") &
       !stringr::str_detect(variable, "lp__")
   )
+
+draws1 <- fit1 |>
+  spread_draws(alpha, beta_CED, sigma)
+plot_param(draws1, "beta_CED")
 ```
 
 # Statistical model
@@ -152,10 +147,8 @@ fit1$summary() |>
 Impact of Compulsory Education Duration on Vulnerable Employment rates
 
 Red is our prior distribution; blue is our posterior distribution.
-```{r model2, message=FALSE, results="hide"}
-model2 <- write_stan_file(
-  paste0(
-    "
+
+```{stan model2_stan, eval=FALSE, output.var="model2_stan"}
 data {
   int<lower=1> n;
   vector[n] VE;
@@ -183,26 +176,12 @@ transformed parameters {
 }
 
 model {
-  alpha    ~ normal(",
-    ALPHA_MEAN,
-    ", ",
-    ALPHA_SD,
-    ");
-  beta_CED ~ normal(0, ",
-    BETA_SD,
-    ");
-  beta_YN  ~ normal(0, ",
-    BETA_SD,
-    ");
-  beta_RL  ~ normal(0, ",
-    BETA_SD,
-    ");
-  beta_VA  ~ normal(0, ",
-    BETA_SD,
-    ");
-  sigma    ~ normal(0, ",
-    SIGMA_SD,
-    ");
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_CED ~ normal(0, <<BETA_SD>>);
+  beta_YN  ~ normal(0, <<BETA_SD>>);
+  beta_RL  ~ normal(0, <<BETA_SD>>);
+  beta_VA  ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
 
   VE ~ normal(mu, sigma);
 }
@@ -212,11 +191,15 @@ generated quantities {
   for (i in 1:n) {
     VE_rep[i] = normal_rng(mu[i], sigma);
   }
-}"
-  )
-) |>
-  cmdstan_model()
+}
+```
 
+```{r model2, message=FALSE, results="hide"}
+model2 <- knitr::knit_code$get("model2_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
 
 fit2 <- df |>
   transmute(
@@ -232,7 +215,6 @@ fit2 <- df |>
 ```
 
 ```{r}
-
 fit2$summary() |>
   filter(
     !stringr::str_detect(variable, "mu\\[") &
@@ -241,10 +223,7 @@ fit2$summary() |>
   )
 
 params <- c("beta_CED", "beta_YN", "beta_RL", "beta_VA")
-
 draws <- fit2 |>
-  spread_draws(alpha, beta_CED, beta_YN, beta_RL, beta_VA, sigma)
-
+  spread_draws(alpha, !!!syms(params), sigma)
 params |> purrr::walk(\(param) print(plot_param(draws, param)))
-
 ```
