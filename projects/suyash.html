@@ -2308,7 +2308,7 @@ Inflation -&gt; "GDP Growth"
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">point_interval =</span> median_qi</span>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> BETA_SD, <span class="dv">3</span> <span class="sc">*</span> BETA_SD)) <span class="sc">+</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.55</span>)) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span></span>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> param,</span>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> param,</span>
@@ -2463,8 +2463,8 @@ GGR_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <col style="width: 10%">
 <col style="width: 10%">
 <col style="width: 10%">
+<col style="width: 11%">
 <col style="width: 10%">
-<col style="width: 9%">
 <col style="width: 9%">
 <col style="width: 9%">
 </colgroup>
@@ -2485,39 +2485,39 @@ GGR_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">alpha</td>
-<td style="text-align: right;">4.3218545</td>
-<td style="text-align: right;">4.3262916</td>
-<td style="text-align: right;">0.5089856</td>
-<td style="text-align: right;">0.5042443</td>
-<td style="text-align: right;">3.472491</td>
-<td style="text-align: right;">5.1413912</td>
-<td style="text-align: right;">1.000520</td>
-<td style="text-align: right;">4330.981</td>
-<td style="text-align: right;">3002.660</td>
+<td style="text-align: right;">4.3242308</td>
+<td style="text-align: right;">4.3319664</td>
+<td style="text-align: right;">0.5299710</td>
+<td style="text-align: right;">0.5166940</td>
+<td style="text-align: right;">3.430011</td>
+<td style="text-align: right;">5.1816143</td>
+<td style="text-align: right;">1.0011676</td>
+<td style="text-align: right;">4596.060</td>
+<td style="text-align: right;">2806.409</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_INF</td>
-<td style="text-align: right;">-0.8413355</td>
-<td style="text-align: right;">-0.8461006</td>
-<td style="text-align: right;">0.5279530</td>
-<td style="text-align: right;">0.5226104</td>
-<td style="text-align: right;">-1.705725</td>
-<td style="text-align: right;">0.0358159</td>
-<td style="text-align: right;">1.004173</td>
-<td style="text-align: right;">3754.480</td>
-<td style="text-align: right;">2579.639</td>
+<td style="text-align: right;">-0.8491817</td>
+<td style="text-align: right;">-0.8421462</td>
+<td style="text-align: right;">0.4998129</td>
+<td style="text-align: right;">0.4802441</td>
+<td style="text-align: right;">-1.677952</td>
+<td style="text-align: right;">-0.0443439</td>
+<td style="text-align: right;">0.9998092</td>
+<td style="text-align: right;">3778.702</td>
+<td style="text-align: right;">3084.480</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">6.9686071</td>
-<td style="text-align: right;">6.9574957</td>
-<td style="text-align: right;">0.3768662</td>
-<td style="text-align: right;">0.3691481</td>
-<td style="text-align: right;">6.378472</td>
-<td style="text-align: right;">7.6147041</td>
-<td style="text-align: right;">1.001512</td>
-<td style="text-align: right;">4225.233</td>
-<td style="text-align: right;">3018.179</td>
+<td style="text-align: right;">6.9567787</td>
+<td style="text-align: right;">6.9389755</td>
+<td style="text-align: right;">0.3781995</td>
+<td style="text-align: right;">0.3645553</td>
+<td style="text-align: right;">6.365420</td>
+<td style="text-align: right;">7.6119188</td>
+<td style="text-align: right;">1.0018722</td>
+<td style="text-align: right;">4173.014</td>
+<td style="text-align: right;">2814.912</td>
 </tr>
 </tbody>
 </table>
@@ -2633,7 +2633,7 @@ GGR_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <col style="width: 10%">
 <col style="width: 11%">
 <col style="width: 10%">
-<col style="width: 10%">
+<col style="width: 9%">
 <col style="width: 9%">
 <col style="width: 9%">
 </colgroup>
@@ -2654,75 +2654,75 @@ GGR_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">alpha</td>
-<td style="text-align: right;">3.7128166</td>
-<td style="text-align: right;">3.7172870</td>
-<td style="text-align: right;">0.4265141</td>
-<td style="text-align: right;">0.4202433</td>
-<td style="text-align: right;">3.0228475</td>
-<td style="text-align: right;">4.4205118</td>
-<td style="text-align: right;">0.9999818</td>
-<td style="text-align: right;">5136.354</td>
-<td style="text-align: right;">2703.474</td>
+<td style="text-align: right;">3.7060081</td>
+<td style="text-align: right;">3.7069628</td>
+<td style="text-align: right;">0.4344935</td>
+<td style="text-align: right;">0.4185599</td>
+<td style="text-align: right;">3.0006933</td>
+<td style="text-align: right;">4.4194837</td>
+<td style="text-align: right;">1.000826</td>
+<td style="text-align: right;">4682.325</td>
+<td style="text-align: right;">2627.588</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_INF</td>
-<td style="text-align: right;">-0.5128927</td>
-<td style="text-align: right;">-0.5092137</td>
-<td style="text-align: right;">0.4201635</td>
-<td style="text-align: right;">0.4055567</td>
-<td style="text-align: right;">-1.2083905</td>
-<td style="text-align: right;">0.1672881</td>
-<td style="text-align: right;">1.0000435</td>
-<td style="text-align: right;">4436.500</td>
-<td style="text-align: right;">2876.803</td>
+<td style="text-align: right;">-0.5146499</td>
+<td style="text-align: right;">-0.5119016</td>
+<td style="text-align: right;">0.4357198</td>
+<td style="text-align: right;">0.4325116</td>
+<td style="text-align: right;">-1.2244428</td>
+<td style="text-align: right;">0.1885413</td>
+<td style="text-align: right;">1.000241</td>
+<td style="text-align: right;">4384.583</td>
+<td style="text-align: right;">2853.226</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">beta_PST</td>
-<td style="text-align: right;">0.0343729</td>
-<td style="text-align: right;">0.0415944</td>
-<td style="text-align: right;">0.6810571</td>
-<td style="text-align: right;">0.6802097</td>
-<td style="text-align: right;">-1.0780274</td>
-<td style="text-align: right;">1.1523185</td>
-<td style="text-align: right;">1.0008068</td>
-<td style="text-align: right;">3208.351</td>
-<td style="text-align: right;">2982.184</td>
+<td style="text-align: right;">0.0330334</td>
+<td style="text-align: right;">0.0274595</td>
+<td style="text-align: right;">0.6786193</td>
+<td style="text-align: right;">0.6797041</td>
+<td style="text-align: right;">-1.0641615</td>
+<td style="text-align: right;">1.1354335</td>
+<td style="text-align: right;">1.002044</td>
+<td style="text-align: right;">3138.462</td>
+<td style="text-align: right;">2832.060</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_GEF</td>
-<td style="text-align: right;">0.5885196</td>
-<td style="text-align: right;">0.5815891</td>
-<td style="text-align: right;">0.6335075</td>
-<td style="text-align: right;">0.6342292</td>
-<td style="text-align: right;">-0.4373268</td>
-<td style="text-align: right;">1.6387846</td>
-<td style="text-align: right;">1.0001470</td>
-<td style="text-align: right;">3452.163</td>
-<td style="text-align: right;">2966.034</td>
+<td style="text-align: right;">0.5801422</td>
+<td style="text-align: right;">0.5852066</td>
+<td style="text-align: right;">0.6515808</td>
+<td style="text-align: right;">0.6428479</td>
+<td style="text-align: right;">-0.5117303</td>
+<td style="text-align: right;">1.6340807</td>
+<td style="text-align: right;">1.000306</td>
+<td style="text-align: right;">3230.728</td>
+<td style="text-align: right;">2923.022</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">beta_IMP</td>
-<td style="text-align: right;">-0.5670438</td>
-<td style="text-align: right;">-0.5699657</td>
-<td style="text-align: right;">0.4482117</td>
-<td style="text-align: right;">0.4494934</td>
-<td style="text-align: right;">-1.2977843</td>
-<td style="text-align: right;">0.1718308</td>
-<td style="text-align: right;">1.0003481</td>
-<td style="text-align: right;">4779.295</td>
-<td style="text-align: right;">3010.117</td>
+<td style="text-align: right;">-0.5668141</td>
+<td style="text-align: right;">-0.5743215</td>
+<td style="text-align: right;">0.4478210</td>
+<td style="text-align: right;">0.4327825</td>
+<td style="text-align: right;">-1.3015670</td>
+<td style="text-align: right;">0.1784079</td>
+<td style="text-align: right;">1.000568</td>
+<td style="text-align: right;">5112.683</td>
+<td style="text-align: right;">3140.893</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">5.2752345</td>
-<td style="text-align: right;">5.2596802</td>
-<td style="text-align: right;">0.3071778</td>
-<td style="text-align: right;">0.3030398</td>
-<td style="text-align: right;">4.7901474</td>
-<td style="text-align: right;">5.8151428</td>
-<td style="text-align: right;">1.0017488</td>
-<td style="text-align: right;">5288.305</td>
-<td style="text-align: right;">3049.405</td>
+<td style="text-align: right;">5.2771367</td>
+<td style="text-align: right;">5.2622884</td>
+<td style="text-align: right;">0.3033290</td>
+<td style="text-align: right;">0.2960420</td>
+<td style="text-align: right;">4.8097627</td>
+<td style="text-align: right;">5.7943242</td>
+<td style="text-align: right;">1.000379</td>
+<td style="text-align: right;">5541.631</td>
+<td style="text-align: right;">3099.806</td>
 </tr>
 </tbody>
 </table>
