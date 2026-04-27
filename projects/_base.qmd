@@ -256,7 +256,7 @@ plot_param <- function(draws, param, prior_sd = BETA_SD) {
       point_interval = median_qi
     ) +
     scale_x_continuous(limits = c(-3 * BETA_SD, 3 * BETA_SD)) +
-    scale_y_continuous(limits = c(0, 0.55)) +
+    scale_y_continuous(limits = c(0, NA)) +
     labs(
       title = param,
       x = param,

@@ -1,5 +1,5 @@
 ---
-title: Suyash's project
+title: Ranju's project
 engine: knitr
 format:
   html:
@@ -11,20 +11,20 @@ format:
 
 ```{r project_config, echo=FALSE, warning=FALSE, message=FALSE}
 variables <- c(
-  PSB = 'PV.PER.RNK',
-  COR = 'CC.PER.RNK',
-  VNA = 'VA.PER.RNK',
-  GEF = 'GE.PER.RNK',
-  ROL = 'RL.PER.RNK' #ROL
+  PSB = 'PV.EST',
+  COR = 'CC.EST',
+  VNA = 'VA.EST',
+  GEF = 'GE.EST',
+  ROL = 'RL.EST'
 )
 
 histograms <- list(
   c(variables['COR'], variables['PSB'])
 )
 
-ALPHA_MEAN <- 50
-ALPHA_SD <- 25
-BETA_SD <- 10
+ALPHA_MEAN <- 0
+ALPHA_SD <- 1
+BETA_SD <- 1
 SIGMA_SD <- 20
 
 dag <- '
