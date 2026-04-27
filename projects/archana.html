@@ -1,0 +1,2927 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Suyash’s project</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-244ce1b9ec229af56bb6f90d24b3371d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="../js/dagitty.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="floating quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#causal-model" id="toc-causal-model" class="nav-link active" data-scroll-target="#causal-model">Causal model</a></li>
+  <li><a href="#raw-data" id="toc-raw-data" class="nav-link" data-scroll-target="#raw-data">Raw data</a></li>
+  <li><a href="#variable-distributions" id="toc-variable-distributions" class="nav-link" data-scroll-target="#variable-distributions">Variable Distributions</a></li>
+  <li><a href="#exposure-outcome-scatterplots" id="toc-exposure-outcome-scatterplots" class="nav-link" data-scroll-target="#exposure-outcome-scatterplots">Exposure-Outcome Scatterplots</a></li>
+  <li><a href="#formal-model" id="toc-formal-model" class="nav-link" data-scroll-target="#formal-model">Formal Model</a></li>
+  <li><a href="#base-model" id="toc-base-model" class="nav-link" data-scroll-target="#base-model">Base model</a></li>
+  <li><a href="#statistical-model" id="toc-statistical-model" class="nav-link" data-scroll-target="#statistical-model">Statistical model</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Suyash’s project</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">"../datasets/wb2022.csv"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>filename2 <span class="ot">&lt;-</span> <span class="st">"../datasets/wb_country.csv"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># build a variable label vector for better labelling of df</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>label_vec <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(filename) <span class="sc">|&gt;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(<span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>, <span class="st">`</span><span class="at">Series Name</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>), <span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">Series Name</span><span class="st">`</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>) <span class="sc">|&gt;</span> <span class="co"># in case of duplicates</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">label =</span> <span class="fu">first</span>(<span class="st">`</span><span class="at">Series Name</span><span class="st">`</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">setNames</span>(label, <span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># compose dataframe</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(filename) <span class="sc">|&gt;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Series Name</span><span class="st">`</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span>(<span class="fu">n</span>() <span class="sc">-</span> <span class="dv">5</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">matches</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">d{4} </span><span class="sc">\\</span><span class="st">[YR</span><span class="sc">\\</span><span class="st">d{4}</span><span class="sc">\\</span><span class="st">]$"</span>),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"year"</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"value"</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_transform =</span> <span class="fu">list</span>(<span class="at">year =</span> <span class="sc">~</span> <span class="fu">str_extract</span>(.x, <span class="st">"^</span><span class="sc">\\</span><span class="st">d{4}"</span>))</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>, <span class="at">values_from =</span> value) <span class="sc">|&gt;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">any_of</span>(<span class="fu">names</span>(label_vec)),</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> {</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>      <span class="fu">attr</span>(.x, <span class="st">"label"</span>) <span class="ot">&lt;-</span> <span class="fu">unname</span>(label_vec[<span class="fu">cur_column</span>()])</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>      .x</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_csv</span>(filename2),</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(<span class="st">`</span><span class="at">Country Code</span><span class="st">`</span> <span class="sc">==</span> Code)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">SM.POP.NETM.prop =</span> (SM.POP.NETM <span class="sc">/</span> SP.POP.TOTL) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="causal-model" class="level1">
+<h1>Causal model</h1>
+<pre class="dagitty" style="width: 100%; padding: 0; aspect-ratio: 3/2; overflow: visible; z-index: 10;">
+dag {
+bb="0,0,1,1"
+"People with Drinking Water Services" [exposure,pos="0.168,0.545"]
+"Rural Population (%)" [adjusted,pos="0.520,0.364"]
+"Wage/Salaried Workers" [adjusted,pos="0.519,0.207"]
+"Water Stress" [outcome,pos="0.840,0.550"]
+"People with Drinking Water Services" -&gt; "Water Stress"
+"Rural Population (%)" -&gt; "People with Drinking Water Services"
+"Rural Population (%)" -&gt; "Water Stress"
+"Wage/Salaried Workers" -&gt; "People with Drinking Water Services"
+"Wage/Salaried Workers" -&gt; "Water Stress"
+}
+
+
+</pre>
+</section>
+<section id="raw-data" class="level1">
+<h1>Raw data</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">column =</span> variables) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">map_chr</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      column,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="cf">if</span> (.x <span class="sc">%in%</span> <span class="fu">names</span>(df)) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">attr</span>(df[[.x]], <span class="st">"label"</span>) <span class="sc">%||%</span> <span class="cn">NA_character_</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cn">NA_character_</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 86%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">column</th>
+<th style="text-align: left;">label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ER.H2O.FWST.ZS</td>
+<td style="text-align: left;">Level of water stress: freshwater withdrawal as a proportion of available freshwater resources</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SH.H2O.BASW.ZS</td>
+<td style="text-align: left;">People using at least basic drinking water services (% of population)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SP.RUR.TOTL.ZS</td>
+<td style="text-align: left;">Rural population (% of total population)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SL.EMP.WORK.ZS</td>
+<td style="text-align: left;">Wage and salaried workers, total (% of total employment) (modeled ILO estimate)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Country Name'</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">all_of</span>(variables)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">format =</span> <span class="st">"html"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed_thead =</span> <span class="cn">TRUE</span>, <span class="co"># Makes header sticky</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Optionally restrict container height to enable scrolling</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">"400px"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; ">
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">Country Name</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">WST</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">DWS</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">RUR</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF; position: sticky; top: 0; background-color: #FFFFFF;">WSW</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">54.7570194</td>
+<td style="text-align: right;">76.93921</td>
+<td style="text-align: right;">74.6060749</td>
+<td style="text-align: right;">17.247146</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Albania</td>
+<td style="text-align: right;">4.7896635</td>
+<td style="text-align: right;">95.09457</td>
+<td style="text-align: right;">42.1356522</td>
+<td style="text-align: right;">47.041594</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: right;">144.8149712</td>
+<td style="text-align: right;">92.32367</td>
+<td style="text-align: right;">25.8204138</td>
+<td style="text-align: right;">69.298446</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">American Samoa</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">18.2052023</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Andorra</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">11.2451234</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Angola</td>
+<td style="text-align: right;">1.8718833</td>
+<td style="text-align: right;">66.47633</td>
+<td style="text-align: right;">30.9493811</td>
+<td style="text-align: right;">24.154879</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Antigua and Barbuda</td>
+<td style="text-align: right;">8.4615385</td>
+<td style="text-align: right;">98.92271</td>
+<td style="text-align: right;">75.4885516</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Argentina</td>
+<td style="text-align: right;">10.4566641</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">7.8871618</td>
+<td style="text-align: right;">73.289643</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Armenia</td>
+<td style="text-align: right;">61.9729675</td>
+<td style="text-align: right;">99.91285</td>
+<td style="text-align: right;">34.4375537</td>
+<td style="text-align: right;">63.673385</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aruba</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">38.1188342</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Australia</td>
+<td style="text-align: right;">4.6722959</td>
+<td style="text-align: right;">99.96973</td>
+<td style="text-align: right;">12.6656732</td>
+<td style="text-align: right;">83.475848</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Austria</td>
+<td style="text-align: right;">8.6764300</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">31.0019149</td>
+<td style="text-align: right;">87.466395</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Azerbaijan</td>
+<td style="text-align: right;">57.5270479</td>
+<td style="text-align: right;">96.00357</td>
+<td style="text-align: right;">41.5617184</td>
+<td style="text-align: right;">32.495450</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bahamas, The</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">18.6799283</td>
+<td style="text-align: right;">83.511696</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bahrain</td>
+<td style="text-align: right;">133.7068966</td>
+<td style="text-align: right;">99.91990</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">97.401172</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bangladesh</td>
+<td style="text-align: right;">5.7233395</td>
+<td style="text-align: right;">98.57930</td>
+<td style="text-align: right;">68.3262653</td>
+<td style="text-align: right;">38.362606</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Barbados</td>
+<td style="text-align: right;">87.5000000</td>
+<td style="text-align: right;">99.11507</td>
+<td style="text-align: right;">40.6461486</td>
+<td style="text-align: right;">80.258026</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Belarus</td>
+<td style="text-align: right;">4.6605142</td>
+<td style="text-align: right;">99.85841</td>
+<td style="text-align: right;">21.5267212</td>
+<td style="text-align: right;">92.684764</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Belgium</td>
+<td style="text-align: right;">52.8257422</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">12.5107997</td>
+<td style="text-align: right;">84.732607</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Belize</td>
+<td style="text-align: right;">1.2602945</td>
+<td style="text-align: right;">94.72204</td>
+<td style="text-align: right;">57.8626749</td>
+<td style="text-align: right;">64.622380</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benin</td>
+<td style="text-align: right;">0.9752438</td>
+<td style="text-align: right;">68.95898</td>
+<td style="text-align: right;">49.0373000</td>
+<td style="text-align: right;">19.173570</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bermuda</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bhutan</td>
+<td style="text-align: right;">1.4138075</td>
+<td style="text-align: right;">99.31081</td>
+<td style="text-align: right;">59.0634856</td>
+<td style="text-align: right;">29.448595</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bolivia</td>
+<td style="text-align: right;">0.2029796</td>
+<td style="text-align: right;">92.53752</td>
+<td style="text-align: right;">29.3647401</td>
+<td style="text-align: right;">32.222573</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bosnia and Herzegovina</td>
+<td style="text-align: right;">2.0717131</td>
+<td style="text-align: right;">96.10862</td>
+<td style="text-align: right;">48.9784713</td>
+<td style="text-align: right;">76.948170</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Botswana</td>
+<td style="text-align: right;">2.2300098</td>
+<td style="text-align: right;">91.67030</td>
+<td style="text-align: right;">33.4110213</td>
+<td style="text-align: right;">71.591394</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: right;">1.4958168</td>
+<td style="text-align: right;">99.61494</td>
+<td style="text-align: right;">12.6504438</td>
+<td style="text-align: right;">67.872567</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">British Virgin Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">99.86438</td>
+<td style="text-align: right;">45.2040883</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brunei Darussalam</td>
+<td style="text-align: right;">3.4664657</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">25.2227358</td>
+<td style="text-align: right;">92.487492</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bulgaria</td>
+<td style="text-align: right;">40.2353009</td>
+<td style="text-align: right;">99.21874</td>
+<td style="text-align: right;">26.5200836</td>
+<td style="text-align: right;">88.406917</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Burkina Faso</td>
+<td style="text-align: right;">7.8202677</td>
+<td style="text-align: right;">49.76626</td>
+<td style="text-align: right;">72.7208630</td>
+<td style="text-align: right;">17.162456</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Burundi</td>
+<td style="text-align: right;">10.1928675</td>
+<td style="text-align: right;">65.69756</td>
+<td style="text-align: right;">77.6797554</td>
+<td style="text-align: right;">15.022202</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cabo Verde</td>
+<td style="text-align: right;">59.6837100</td>
+<td style="text-align: right;">90.00893</td>
+<td style="text-align: right;">24.9662619</td>
+<td style="text-align: right;">60.328847</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cambodia</td>
+<td style="text-align: right;">1.0365449</td>
+<td style="text-align: right;">80.85995</td>
+<td style="text-align: right;">59.6253838</td>
+<td style="text-align: right;">43.697983</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cameroon</td>
+<td style="text-align: right;">1.5604301</td>
+<td style="text-align: right;">70.26006</td>
+<td style="text-align: right;">45.1541254</td>
+<td style="text-align: right;">30.055280</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: right;">3.7207003</td>
+<td style="text-align: right;">98.35893</td>
+<td style="text-align: right;">17.6499103</td>
+<td style="text-align: right;">86.530335</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cayman Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">95.49785</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Central African Republic</td>
+<td style="text-align: right;">0.3356481</td>
+<td style="text-align: right;">36.29504</td>
+<td style="text-align: right;">56.7248033</td>
+<td style="text-align: right;">14.302378</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chad</td>
+<td style="text-align: right;">4.2949219</td>
+<td style="text-align: right;">51.99515</td>
+<td style="text-align: right;">74.2364441</td>
+<td style="text-align: right;">8.660648</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Channel Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">67.2079561</td>
+<td style="text-align: right;">91.218801</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chile</td>
+<td style="text-align: right;">8.9821211</td>
+<td style="text-align: right;">98.88393</td>
+<td style="text-align: right;">11.3604647</td>
+<td style="text-align: right;">75.392190</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">China</td>
+<td style="text-align: right;">41.5185288</td>
+<td style="text-align: right;">95.43858</td>
+<td style="text-align: right;">34.7823639</td>
+<td style="text-align: right;">61.142765</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: right;">3.6322814</td>
+<td style="text-align: right;">96.73804</td>
+<td style="text-align: right;">21.9535367</td>
+<td style="text-align: right;">52.897821</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Comoros</td>
+<td style="text-align: right;">0.8333333</td>
+<td style="text-align: right;">85.26234</td>
+<td style="text-align: right;">67.2253964</td>
+<td style="text-align: right;">41.830082</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Congo, Dem. Rep.</td>
+<td style="text-align: right;">0.2268835</td>
+<td style="text-align: right;">35.12735</td>
+<td style="text-align: right;">55.9967123</td>
+<td style="text-align: right;">14.114070</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Congo, Rep.</td>
+<td style="text-align: right;">0.0274463</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">36.3577997</td>
+<td style="text-align: right;">23.031351</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Costa Rica</td>
+<td style="text-align: right;">5.8819625</td>
+<td style="text-align: right;">99.81312</td>
+<td style="text-align: right;">21.5594312</td>
+<td style="text-align: right;">72.355757</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cote d'Ivoire</td>
+<td style="text-align: right;">5.0875657</td>
+<td style="text-align: right;">76.65663</td>
+<td style="text-align: right;">47.1507450</td>
+<td style="text-align: right;">28.038777</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Croatia</td>
+<td style="text-align: right;">1.5095598</td>
+<td style="text-align: right;">99.90256</td>
+<td style="text-align: right;">43.0022428</td>
+<td style="text-align: right;">85.808543</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cuba</td>
+<td style="text-align: right;">23.9394461</td>
+<td style="text-align: right;">94.90022</td>
+<td style="text-align: right;">22.8943939</td>
+<td style="text-align: right;">74.231634</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Curacao</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">8.5992316</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cyprus</td>
+<td style="text-align: right;">30.4811372</td>
+<td style="text-align: right;">99.72922</td>
+<td style="text-align: right;">33.3305171</td>
+<td style="text-align: right;">89.085619</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Czechia</td>
+<td style="text-align: right;">21.9738443</td>
+<td style="text-align: right;">98.73310</td>
+<td style="text-align: right;">27.3032362</td>
+<td style="text-align: right;">83.501369</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: right;">25.2663602</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">11.6119760</td>
+<td style="text-align: right;">91.739090</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Djibouti</td>
+<td style="text-align: right;">6.3333333</td>
+<td style="text-align: right;">79.19589</td>
+<td style="text-align: right;">27.3890061</td>
+<td style="text-align: right;">48.347624</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dominica</td>
+<td style="text-align: right;">10.0000000</td>
+<td style="text-align: right;">96.78690</td>
+<td style="text-align: right;">27.3173514</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dominican Republic</td>
+<td style="text-align: right;">39.5533141</td>
+<td style="text-align: right;">97.36033</td>
+<td style="text-align: right;">27.5796844</td>
+<td style="text-align: right;">56.949546</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ecuador</td>
+<td style="text-align: right;">6.7823529</td>
+<td style="text-align: right;">91.72648</td>
+<td style="text-align: right;">36.9098164</td>
+<td style="text-align: right;">46.541126</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Egypt, Arab Rep.</td>
+<td style="text-align: right;">141.1657559</td>
+<td style="text-align: right;">97.43289</td>
+<td style="text-align: right;">57.3674871</td>
+<td style="text-align: right;">73.837400</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">El Salvador</td>
+<td style="text-align: right;">12.0930920</td>
+<td style="text-align: right;">90.79484</td>
+<td style="text-align: right;">25.8534979</td>
+<td style="text-align: right;">63.468759</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Equatorial Guinea</td>
+<td style="text-align: right;">0.1835032</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">29.1089971</td>
+<td style="text-align: right;">73.231594</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eritrea</td>
+<td style="text-align: right;">11.1751152</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">65.1530724</td>
+<td style="text-align: right;">47.046308</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estonia</td>
+<td style="text-align: right;">13.0462852</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">29.5107666</td>
+<td style="text-align: right;">88.273607</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eswatini</td>
+<td style="text-align: right;">77.5599128</td>
+<td style="text-align: right;">77.94058</td>
+<td style="text-align: right;">74.6033171</td>
+<td style="text-align: right;">68.665367</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ethiopia</td>
+<td style="text-align: right;">32.2571865</td>
+<td style="text-align: right;">52.64493</td>
+<td style="text-align: right;">77.2632313</td>
+<td style="text-align: right;">14.793604</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Faroe Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">61.0040175</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fiji</td>
+<td style="text-align: right;">0.2973730</td>
+<td style="text-align: right;">95.48863</td>
+<td style="text-align: right;">41.8647299</td>
+<td style="text-align: right;">65.063233</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Finland</td>
+<td style="text-align: right;">7.1140621</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">26.3032402</td>
+<td style="text-align: right;">86.536677</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">France</td>
+<td style="text-align: right;">21.3846272</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">21.2408079</td>
+<td style="text-align: right;">86.893121</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">French Polynesia</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">38.3086193</td>
+<td style="text-align: right;">81.323993</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gabon</td>
+<td style="text-align: right;">0.5021661</td>
+<td style="text-align: right;">88.24194</td>
+<td style="text-align: right;">8.7756645</td>
+<td style="text-align: right;">67.480878</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gambia, The</td>
+<td style="text-align: right;">2.2096564</td>
+<td style="text-align: right;">86.32124</td>
+<td style="text-align: right;">36.7130119</td>
+<td style="text-align: right;">30.042031</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Georgia</td>
+<td style="text-align: right;">4.2129642</td>
+<td style="text-align: right;">97.01646</td>
+<td style="text-align: right;">39.9898377</td>
+<td style="text-align: right;">51.231238</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">35.3516571</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">18.2132147</td>
+<td style="text-align: right;">91.521353</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ghana</td>
+<td style="text-align: right;">6.3147341</td>
+<td style="text-align: right;">87.87755</td>
+<td style="text-align: right;">42.7493904</td>
+<td style="text-align: right;">31.585505</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gibraltar</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Greece</td>
+<td style="text-align: right;">20.3257131</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">21.4497809</td>
+<td style="text-align: right;">69.656431</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Greenland</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">12.1950595</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Grenada</td>
+<td style="text-align: right;">7.0500000</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">63.6311160</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Guam</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">99.52930</td>
+<td style="text-align: right;">5.8931738</td>
+<td style="text-align: right;">84.175702</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Guatemala</td>
+<td style="text-align: right;">5.7420971</td>
+<td style="text-align: right;">92.75350</td>
+<td style="text-align: right;">44.7418772</td>
+<td style="text-align: right;">56.071576</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Guinea</td>
+<td style="text-align: right;">1.3692308</td>
+<td style="text-align: right;">72.05328</td>
+<td style="text-align: right;">62.7615033</td>
+<td style="text-align: right;">17.176561</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Guinea-Bissau</td>
+<td style="text-align: right;">1.4957265</td>
+<td style="text-align: right;">61.63635</td>
+<td style="text-align: right;">54.8372841</td>
+<td style="text-align: right;">23.892721</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Guyana</td>
+<td style="text-align: right;">3.2984018</td>
+<td style="text-align: right;">95.64494</td>
+<td style="text-align: right;">73.5463265</td>
+<td style="text-align: right;">65.887280</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Haiti</td>
+<td style="text-align: right;">13.3837918</td>
+<td style="text-align: right;">71.93723</td>
+<td style="text-align: right;">46.1475050</td>
+<td style="text-align: right;">23.346033</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Honduras</td>
+<td style="text-align: right;">4.6212688</td>
+<td style="text-align: right;">95.09040</td>
+<td style="text-align: right;">42.1635311</td>
+<td style="text-align: right;">55.116253</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hong Kong SAR, China</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">91.545228</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hungary</td>
+<td style="text-align: right;">8.1084974</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">29.8414936</td>
+<td style="text-align: right;">87.618612</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iceland</td>
+<td style="text-align: right;">0.3940753</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">5.8212929</td>
+<td style="text-align: right;">83.277285</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">India</td>
+<td style="text-align: right;">66.4920928</td>
+<td style="text-align: right;">94.41913</td>
+<td style="text-align: right;">65.2444326</td>
+<td style="text-align: right;">23.130444</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: right;">29.6965453</td>
+<td style="text-align: right;">89.71135</td>
+<td style="text-align: right;">42.5065296</td>
+<td style="text-align: right;">46.555165</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iran, Islamic Rep.</td>
+<td style="text-align: right;">81.2890813</td>
+<td style="text-align: right;">97.63014</td>
+<td style="text-align: right;">23.6657791</td>
+<td style="text-align: right;">57.220050</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iraq</td>
+<td style="text-align: right;">59.5838483</td>
+<td style="text-align: right;">98.38285</td>
+<td style="text-align: right;">30.1317139</td>
+<td style="text-align: right;">68.488767</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: right;">8.0510106</td>
+<td style="text-align: right;">97.06457</td>
+<td style="text-align: right;">36.1079750</td>
+<td style="text-align: right;">85.977137</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Isle of Man</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">99.88385</td>
+<td style="text-align: right;">47.8044391</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Israel</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">8.5020166</td>
+<td style="text-align: right;">88.372752</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">29.7673804</td>
+<td style="text-align: right;">99.91703</td>
+<td style="text-align: right;">30.5160220</td>
+<td style="text-align: right;">78.575844</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jamaica</td>
+<td style="text-align: right;">12.3828189</td>
+<td style="text-align: right;">88.23149</td>
+<td style="text-align: right;">42.0120094</td>
+<td style="text-align: right;">62.693063</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Japan</td>
+<td style="text-align: right;">36.6436782</td>
+<td style="text-align: right;">99.14824</td>
+<td style="text-align: right;">8.0223468</td>
+<td style="text-align: right;">90.457023</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jordan</td>
+<td style="text-align: right;">105.2021265</td>
+<td style="text-align: right;">99.22914</td>
+<td style="text-align: right;">7.5951621</td>
+<td style="text-align: right;">88.283027</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kazakhstan</td>
+<td style="text-align: right;">34.6269071</td>
+<td style="text-align: right;">97.53134</td>
+<td style="text-align: right;">38.5558427</td>
+<td style="text-align: right;">73.675852</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kenya</td>
+<td style="text-align: right;">33.2399011</td>
+<td style="text-align: right;">63.96426</td>
+<td style="text-align: right;">68.5692180</td>
+<td style="text-align: right;">34.428598</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kiribati</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">78.70165</td>
+<td style="text-align: right;">39.4260873</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Korea, Dem. People's Rep.</td>
+<td style="text-align: right;">27.7404678</td>
+<td style="text-align: right;">93.88750</td>
+<td style="text-align: right;">36.7725634</td>
+<td style="text-align: right;">37.734303</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Korea, Rep.</td>
+<td style="text-align: right;">85.2218330</td>
+<td style="text-align: right;">99.90854</td>
+<td style="text-align: right;">18.8375058</td>
+<td style="text-align: right;">76.548315</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kosovo</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">52.1998003</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kuwait</td>
+<td style="text-align: right;">3850.5000000</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">97.298985</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kyrgyz Republic</td>
+<td style="text-align: right;">50.0389560</td>
+<td style="text-align: right;">93.77708</td>
+<td style="text-align: right;">65.2996947</td>
+<td style="text-align: right;">67.868589</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lao PDR</td>
+<td style="text-align: right;">4.7913950</td>
+<td style="text-align: right;">89.14502</td>
+<td style="text-align: right;">61.9317617</td>
+<td style="text-align: right;">22.083782</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Latvia</td>
+<td style="text-align: right;">1.0155215</td>
+<td style="text-align: right;">98.70194</td>
+<td style="text-align: right;">31.7429782</td>
+<td style="text-align: right;">87.011808</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lebanon</td>
+<td style="text-align: right;">58.7929916</td>
+<td style="text-align: right;">92.60000</td>
+<td style="text-align: right;">9.7936863</td>
+<td style="text-align: right;">71.646227</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lesotho</td>
+<td style="text-align: right;">2.5659051</td>
+<td style="text-align: right;">76.88866</td>
+<td style="text-align: right;">58.3296035</td>
+<td style="text-align: right;">61.306876</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Liberia</td>
+<td style="text-align: right;">0.2643116</td>
+<td style="text-align: right;">77.52491</td>
+<td style="text-align: right;">45.5408943</td>
+<td style="text-align: right;">20.874319</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Libya</td>
+<td style="text-align: right;">817.1428571</td>
+<td style="text-align: right;">95.80866</td>
+<td style="text-align: right;">12.1513911</td>
+<td style="text-align: right;">73.327133</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Liechtenstein</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">85.3076930</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lithuania</td>
+<td style="text-align: right;">2.1655371</td>
+<td style="text-align: right;">99.58022</td>
+<td style="text-align: right;">31.7133548</td>
+<td style="text-align: right;">88.066705</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Luxembourg</td>
+<td style="text-align: right;">3.9585406</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">5.2394599</td>
+<td style="text-align: right;">89.199389</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Macao SAR, China</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">92.668321</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Madagascar</td>
+<td style="text-align: right;">11.2615063</td>
+<td style="text-align: right;">53.73867</td>
+<td style="text-align: right;">68.4602187</td>
+<td style="text-align: right;">11.156630</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Malawi</td>
+<td style="text-align: right;">17.5048381</td>
+<td style="text-align: right;">71.40138</td>
+<td style="text-align: right;">83.2853968</td>
+<td style="text-align: right;">38.591452</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Malaysia</td>
+<td style="text-align: right;">3.4394872</td>
+<td style="text-align: right;">97.83975</td>
+<td style="text-align: right;">24.0258643</td>
+<td style="text-align: right;">74.290027</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Maldives</td>
+<td style="text-align: right;">15.6666667</td>
+<td style="text-align: right;">99.70251</td>
+<td style="text-align: right;">58.9358230</td>
+<td style="text-align: right;">79.153390</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mali</td>
+<td style="text-align: right;">8.0030864</td>
+<td style="text-align: right;">83.68012</td>
+<td style="text-align: right;">69.5984294</td>
+<td style="text-align: right;">22.808844</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Malta</td>
+<td style="text-align: right;">72.6000079</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">4.3996845</td>
+<td style="text-align: right;">85.782233</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Marshall Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">87.52553</td>
+<td style="text-align: right;">22.0144034</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mauritania</td>
+<td style="text-align: right;">13.2462173</td>
+<td style="text-align: right;">74.86190</td>
+<td style="text-align: right;">41.1879004</td>
+<td style="text-align: right;">41.757187</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mauritius</td>
+<td style="text-align: right;">22.9734642</td>
+<td style="text-align: right;">99.87807</td>
+<td style="text-align: right;">60.9999874</td>
+<td style="text-align: right;">81.287262</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: right;">44.9451473</td>
+<td style="text-align: right;">99.27380</td>
+<td style="text-align: right;">20.8003168</td>
+<td style="text-align: right;">68.150818</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Micronesia, Fed. Sts.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">77.5877298</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moldova</td>
+<td style="text-align: right;">12.5631126</td>
+<td style="text-align: right;">91.84156</td>
+<td style="text-align: right;">57.5951157</td>
+<td style="text-align: right;">41.145996</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Monaco</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mongolia</td>
+<td style="text-align: right;">3.3950073</td>
+<td style="text-align: right;">84.53443</td>
+<td style="text-align: right;">30.2161942</td>
+<td style="text-align: right;">56.540223</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Montenegro</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">99.28206</td>
+<td style="text-align: right;">34.5987035</td>
+<td style="text-align: right;">81.129724</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Morocco</td>
+<td style="text-align: right;">50.7512120</td>
+<td style="text-align: right;">90.14621</td>
+<td style="text-align: right;">37.4881531</td>
+<td style="text-align: right;">59.078836</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mozambique</td>
+<td style="text-align: right;">1.7514863</td>
+<td style="text-align: right;">62.42375</td>
+<td style="text-align: right;">64.9463362</td>
+<td style="text-align: right;">14.303446</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Myanmar</td>
+<td style="text-align: right;">5.8015014</td>
+<td style="text-align: right;">85.58038</td>
+<td style="text-align: right;">69.6889042</td>
+<td style="text-align: right;">34.679946</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Namibia</td>
+<td style="text-align: right;">0.3146683</td>
+<td style="text-align: right;">85.76200</td>
+<td style="text-align: right;">50.4708962</td>
+<td style="text-align: right;">62.847512</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nauru</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">97.90131</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nepal</td>
+<td style="text-align: right;">8.3118327</td>
+<td style="text-align: right;">92.58703</td>
+<td style="text-align: right;">33.7007031</td>
+<td style="text-align: right;">20.701938</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Netherlands</td>
+<td style="text-align: right;">16.6585070</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">5.0143822</td>
+<td style="text-align: right;">83.345017</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">New Caledonia</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">99.53867</td>
+<td style="text-align: right;">32.4279695</td>
+<td style="text-align: right;">83.136827</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">New Zealand</td>
+<td style="text-align: right;">8.0480848</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">16.1452695</td>
+<td style="text-align: right;">80.931294</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nicaragua</td>
+<td style="text-align: right;">2.2209002</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">41.0045624</td>
+<td style="text-align: right;">55.001280</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Niger</td>
+<td style="text-align: right;">11.0209377</td>
+<td style="text-align: right;">52.08068</td>
+<td style="text-align: right;">82.5227930</td>
+<td style="text-align: right;">9.900031</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nigeria</td>
+<td style="text-align: right;">9.6682171</td>
+<td style="text-align: right;">79.45795</td>
+<td style="text-align: right;">38.6272349</td>
+<td style="text-align: right;">13.076203</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Macedonia</td>
+<td style="text-align: right;">52.5532430</td>
+<td style="text-align: right;">98.15896</td>
+<td style="text-align: right;">38.0469433</td>
+<td style="text-align: right;">83.752258</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Northern Mariana Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">8.1214211</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Norway</td>
+<td style="text-align: right;">2.0440076</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">17.0436338</td>
+<td style="text-align: right;">94.986340</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Oman</td>
+<td style="text-align: right;">116.7142857</td>
+<td style="text-align: right;">92.43997</td>
+<td style="text-align: right;">19.9882947</td>
+<td style="text-align: right;">95.075756</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pakistan</td>
+<td style="text-align: right;">109.9932519</td>
+<td style="text-align: right;">90.67046</td>
+<td style="text-align: right;">61.6259560</td>
+<td style="text-align: right;">42.471741</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Palau</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">99.52758</td>
+<td style="text-align: right;">20.8865168</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Panama</td>
+<td style="text-align: right;">0.9010711</td>
+<td style="text-align: right;">94.85343</td>
+<td style="text-align: right;">34.1788656</td>
+<td style="text-align: right;">55.678501</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Papua New Guinea</td>
+<td style="text-align: right;">0.1322428</td>
+<td style="text-align: right;">51.35313</td>
+<td style="text-align: right;">85.2641342</td>
+<td style="text-align: right;">20.944523</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Paraguay</td>
+<td style="text-align: right;">1.8353997</td>
+<td style="text-align: right;">99.51800</td>
+<td style="text-align: right;">31.3603462</td>
+<td style="text-align: right;">57.791370</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Peru</td>
+<td style="text-align: right;">4.8284277</td>
+<td style="text-align: right;">94.50230</td>
+<td style="text-align: right;">15.6336445</td>
+<td style="text-align: right;">47.063268</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Philippines</td>
+<td style="text-align: right;">27.8315171</td>
+<td style="text-align: right;">95.07041</td>
+<td style="text-align: right;">45.2097656</td>
+<td style="text-align: right;">62.909392</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: right;">32.4852890</td>
+<td style="text-align: right;">91.17763</td>
+<td style="text-align: right;">40.1684512</td>
+<td style="text-align: right;">78.364400</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Portugal</td>
+<td style="text-align: right;">12.3157123</td>
+<td style="text-align: right;">99.26041</td>
+<td style="text-align: right;">38.8740744</td>
+<td style="text-align: right;">84.808907</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Puerto Rico (US)</td>
+<td style="text-align: right;">19.5356106</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">5.8889077</td>
+<td style="text-align: right;">87.326277</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Qatar</td>
+<td style="text-align: right;">431.0344828</td>
+<td style="text-align: right;">99.98897</td>
+<td style="text-align: right;">0.7560025</td>
+<td style="text-align: right;">99.140079</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Romania</td>
+<td style="text-align: right;">7.6313079</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">47.8365168</td>
+<td style="text-align: right;">85.178566</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Russian Federation</td>
+<td style="text-align: right;">4.1222427</td>
+<td style="text-align: right;">96.83509</td>
+<td style="text-align: right;">25.1455106</td>
+<td style="text-align: right;">93.454476</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rwanda</td>
+<td style="text-align: right;">20.1986755</td>
+<td style="text-align: right;">60.23022</td>
+<td style="text-align: right;">72.2193297</td>
+<td style="text-align: right;">61.014524</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Samoa</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">98.18471</td>
+<td style="text-align: right;">82.4992050</td>
+<td style="text-align: right;">55.078767</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">San Marino</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">2.8858111</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sao Tome and Principe</td>
+<td style="text-align: right;">1.8761468</td>
+<td style="text-align: right;">77.55741</td>
+<td style="text-align: right;">31.6279080</td>
+<td style="text-align: right;">55.733945</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Saudi Arabia</td>
+<td style="text-align: right;">974.1666667</td>
+<td style="text-align: right;">99.04394</td>
+<td style="text-align: right;">15.8650570</td>
+<td style="text-align: right;">93.554794</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Senegal</td>
+<td style="text-align: right;">16.2764487</td>
+<td style="text-align: right;">85.77963</td>
+<td style="text-align: right;">46.5564939</td>
+<td style="text-align: right;">34.939009</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Serbia</td>
+<td style="text-align: right;">5.7376310</td>
+<td style="text-align: right;">95.41636</td>
+<td style="text-align: right;">38.0986186</td>
+<td style="text-align: right;">72.879719</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Seychelles</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">97.38059</td>
+<td style="text-align: right;">55.0891790</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sierra Leone</td>
+<td style="text-align: right;">0.4957944</td>
+<td style="text-align: right;">65.74765</td>
+<td style="text-align: right;">55.7333656</td>
+<td style="text-align: right;">10.488238</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Singapore</td>
+<td style="text-align: right;">33.2552227</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">86.748917</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sint Maarten (Dutch part)</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Slovak Republic</td>
+<td style="text-align: right;">2.4252303</td>
+<td style="text-align: right;">99.78711</td>
+<td style="text-align: right;">46.8097169</td>
+<td style="text-align: right;">84.992519</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Slovenia</td>
+<td style="text-align: right;">5.5916160</td>
+<td style="text-align: right;">99.57958</td>
+<td style="text-align: right;">44.6622182</td>
+<td style="text-align: right;">85.504699</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Solomon Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">71.36738</td>
+<td style="text-align: right;">70.6488310</td>
+<td style="text-align: right;">29.662089</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Somalia, Fed. Rep.</td>
+<td style="text-align: right;">24.5277406</td>
+<td style="text-align: right;">70.37633</td>
+<td style="text-align: right;">46.4989884</td>
+<td style="text-align: right;">47.664482</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">South Africa</td>
+<td style="text-align: right;">67.5952610</td>
+<td style="text-align: right;">90.68254</td>
+<td style="text-align: right;">36.5233301</td>
+<td style="text-align: right;">83.060789</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">South Sudan</td>
+<td style="text-align: right;">4.2260758</td>
+<td style="text-align: right;">39.50923</td>
+<td style="text-align: right;">79.2247879</td>
+<td style="text-align: right;">17.027218</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">43.2540392</td>
+<td style="text-align: right;">99.92515</td>
+<td style="text-align: right;">20.0451205</td>
+<td style="text-align: right;">84.625862</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sri Lanka</td>
+<td style="text-align: right;">90.7854137</td>
+<td style="text-align: right;">89.89640</td>
+<td style="text-align: right;">80.0122067</td>
+<td style="text-align: right;">58.033635</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">St. Kitts and Nevis</td>
+<td style="text-align: right;">50.8333333</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">68.3843595</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">St. Lucia</td>
+<td style="text-align: right;">14.3000000</td>
+<td style="text-align: right;">97.87395</td>
+<td style="text-align: right;">70.9023215</td>
+<td style="text-align: right;">70.182267</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">St. Martin (French part)</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">99.92870</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">St. Vincent and the Grenadines</td>
+<td style="text-align: right;">7.9000000</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">52.4141022</td>
+<td style="text-align: right;">73.812592</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sudan</td>
+<td style="text-align: right;">118.6563877</td>
+<td style="text-align: right;">63.03247</td>
+<td style="text-align: right;">65.2790148</td>
+<td style="text-align: right;">53.478949</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Suriname</td>
+<td style="text-align: right;">3.9506094</td>
+<td style="text-align: right;">97.99301</td>
+<td style="text-align: right;">34.1014557</td>
+<td style="text-align: right;">77.041451</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sweden</td>
+<td style="text-align: right;">3.5829726</td>
+<td style="text-align: right;">99.74991</td>
+<td style="text-align: right;">11.5961423</td>
+<td style="text-align: right;">89.547371</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Switzerland</td>
+<td style="text-align: right;">6.4988558</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">15.0793734</td>
+<td style="text-align: right;">83.627356</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Syrian Arab Republic</td>
+<td style="text-align: right;">124.3601389</td>
+<td style="text-align: right;">94.07794</td>
+<td style="text-align: right;">27.3875008</td>
+<td style="text-align: right;">57.234985</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tajikistan</td>
+<td style="text-align: right;">69.9432643</td>
+<td style="text-align: right;">89.14723</td>
+<td style="text-align: right;">73.8042873</td>
+<td style="text-align: right;">67.901591</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tanzania</td>
+<td style="text-align: right;">12.9632408</td>
+<td style="text-align: right;">61.52310</td>
+<td style="text-align: right;">65.1765264</td>
+<td style="text-align: right;">14.066116</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Thailand</td>
+<td style="text-align: right;">23.0139352</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">40.2576256</td>
+<td style="text-align: right;">47.963066</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Timor-Leste</td>
+<td style="text-align: right;">28.2682103</td>
+<td style="text-align: right;">84.41125</td>
+<td style="text-align: right;">71.4142708</td>
+<td style="text-align: right;">25.323192</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Togo</td>
+<td style="text-align: right;">3.3916350</td>
+<td style="text-align: right;">62.76561</td>
+<td style="text-align: right;">57.2667672</td>
+<td style="text-align: right;">22.450083</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tonga</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">98.81148</td>
+<td style="text-align: right;">78.8527805</td>
+<td style="text-align: right;">55.956753</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Trinidad and Tobago</td>
+<td style="text-align: right;">20.3264813</td>
+<td style="text-align: right;">98.99061</td>
+<td style="text-align: right;">46.0525962</td>
+<td style="text-align: right;">74.188212</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tunisia</td>
+<td style="text-align: right;">98.1133992</td>
+<td style="text-align: right;">95.93726</td>
+<td style="text-align: right;">30.2928614</td>
+<td style="text-align: right;">74.945593</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Turkiye</td>
+<td style="text-align: right;">47.8865335</td>
+<td style="text-align: right;">95.97003</td>
+<td style="text-align: right;">10.9618835</td>
+<td style="text-align: right;">70.698363</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Turkmenistan</td>
+<td style="text-align: right;">135.2138073</td>
+<td style="text-align: right;">99.82057</td>
+<td style="text-align: right;">52.9407897</td>
+<td style="text-align: right;">67.482724</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Turks and Caicos Islands</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">98.80354</td>
+<td style="text-align: right;">6.3077528</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tuvalu</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">98.78003</td>
+<td style="text-align: right;">36.6934232</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Uganda</td>
+<td style="text-align: right;">5.8279963</td>
+<td style="text-align: right;">59.62437</td>
+<td style="text-align: right;">70.0748030</td>
+<td style="text-align: right;">18.846472</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ukraine</td>
+<td style="text-align: right;">6.2981342</td>
+<td style="text-align: right;">93.52089</td>
+<td style="text-align: right;">30.5765409</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United Arab Emirates</td>
+<td style="text-align: right;">1509.9333330</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">14.4852652</td>
+<td style="text-align: right;">95.124227</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">14.3546462</td>
+<td style="text-align: right;">100.00000</td>
+<td style="text-align: right;">16.9246017</td>
+<td style="text-align: right;">86.693481</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United States</td>
+<td style="text-align: right;">28.1552598</td>
+<td style="text-align: right;">99.96411</td>
+<td style="text-align: right;">19.9675022</td>
+<td style="text-align: right;">93.716415</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Uruguay</td>
+<td style="text-align: right;">12.0520144</td>
+<td style="text-align: right;">99.60166</td>
+<td style="text-align: right;">4.5022583</td>
+<td style="text-align: right;">71.664008</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Uzbekistan</td>
+<td style="text-align: right;">123.0283912</td>
+<td style="text-align: right;">96.62281</td>
+<td style="text-align: right;">49.0152588</td>
+<td style="text-align: right;">53.910752</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vanuatu</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">86.98952</td>
+<td style="text-align: right;">77.7458750</td>
+<td style="text-align: right;">39.429696</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Venezuela, RB</td>
+<td style="text-align: right;">7.5403667</td>
+<td style="text-align: right;">93.33161</td>
+<td style="text-align: right;">10.7867795</td>
+<td style="text-align: right;">60.281386</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Viet Nam</td>
+<td style="text-align: right;">18.1303154</td>
+<td style="text-align: right;">97.54928</td>
+<td style="text-align: right;">62.4521484</td>
+<td style="text-align: right;">45.347706</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Virgin Islands (U.S.)</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">99.46568</td>
+<td style="text-align: right;">4.7828485</td>
+<td style="text-align: right;">90.837137</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">West Bank and Gaza</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">98.78094</td>
+<td style="text-align: right;">13.4038577</td>
+<td style="text-align: right;">76.172742</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Yemen, Rep.</td>
+<td style="text-align: right;">169.7619048</td>
+<td style="text-align: right;">71.62435</td>
+<td style="text-align: right;">63.6773690</td>
+<td style="text-align: right;">47.623720</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Zambia</td>
+<td style="text-align: right;">2.8354978</td>
+<td style="text-align: right;">71.29589</td>
+<td style="text-align: right;">55.4011489</td>
+<td style="text-align: right;">26.098910</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Zimbabwe</td>
+<td style="text-align: right;">46.0916203</td>
+<td style="text-align: right;">67.16891</td>
+<td style="text-align: right;">61.2944793</td>
+<td style="text-align: right;">28.244374</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="variable-distributions" class="level1">
+<h1>Variable Distributions</h1>
+<p>Red dotted line indicates value for Nepal; blue line is mean, and blue rectangle is the range of -1 to 1 standard units.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> variables <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">keep</span>(<span class="sc">~</span> .x <span class="sc">%in%</span> <span class="fu">names</span>(df) <span class="sc">&amp;&amp;</span> <span class="fu">is.numeric</span>(df[[.x]])) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    \(v) {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      x_lab <span class="ot">&lt;-</span> <span class="fu">attr</span>(df[[v]], <span class="st">"label"</span>) <span class="sc">%||%</span> v</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      x_vals <span class="ot">&lt;-</span> df[[v]]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      x_vals_non_na <span class="ot">&lt;-</span> x_vals[<span class="sc">!</span><span class="fu">is.na</span>(x_vals)]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Summary stats</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      mean_val <span class="ot">&lt;-</span> <span class="fu">mean</span>(x_vals_non_na)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      sd_val <span class="ot">&lt;-</span> <span class="fu">sd</span>(x_vals_non_na)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      nepal_value <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(<span class="st">`</span><span class="at">Country Name</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Nepal"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pull</span>(.data[[v]]) <span class="sc">|&gt;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">first</span>()</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Detect whether values are effectively integers</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      is_integerish <span class="ot">&lt;-</span> <span class="fu">length</span>(x_vals_non_na) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all</span>(<span class="fu">abs</span>(x_vals_non_na <span class="sc">-</span> <span class="fu">round</span>(x_vals_non_na)) <span class="sc">&lt;</span> <span class="fl">1e-8</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Choose histogram settings automatically</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (is_integerish <span class="sc">&amp;&amp;</span> <span class="fu">diff</span>(<span class="fu">range</span>(x_vals_non_na)) <span class="sc">&lt;=</span> <span class="dv">50</span>) {</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        hist_geom <span class="ot">&lt;-</span> <span class="fu">geom_histogram</span>(</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>          <span class="at">binwidth =</span> <span class="dv">1</span>,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>          <span class="at">boundary =</span> <span class="sc">-</span><span class="fl">0.5</span>,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>          <span class="at">color =</span> <span class="st">"gray40"</span>,</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"gray80"</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>          <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Freedman-Diaconis rule for continuous variables</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        iqr_val <span class="ot">&lt;-</span> <span class="fu">IQR</span>(x_vals_non_na)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        n_val <span class="ot">&lt;-</span> <span class="fu">length</span>(x_vals_non_na)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        fd_binwidth <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> iqr_val <span class="sc">/</span> (n_val<span class="sc">^</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>))</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        fd_binwidth <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> fd_binwidth</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Fallback if IQR is zero or binwidth is not usable</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.finite</span>(fd_binwidth) <span class="sc">||</span> fd_binwidth <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>          rng <span class="ot">&lt;-</span> <span class="fu">diff</span>(<span class="fu">range</span>(x_vals_non_na))</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>          fd_binwidth <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">is.finite</span>(rng) <span class="sc">&amp;&amp;</span> rng <span class="sc">&gt;</span> <span class="dv">0</span>) rng <span class="sc">/</span> <span class="dv">30</span> <span class="cf">else</span> <span class="dv">1</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>        hist_geom <span class="ot">&lt;-</span> <span class="fu">geom_histogram</span>(</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>          <span class="at">binwidth =</span> fd_binwidth,</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>          <span class="at">color =</span> <span class="st">"gray40"</span>,</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"gray80"</span>,</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>          <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>      caption_text <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Mean = "</span>,</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>        scales<span class="sc">::</span><span class="fu">number</span>(mean_val, <span class="at">accuracy =</span> <span class="fl">0.01</span>),</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        <span class="st">"   |   SD = "</span>,</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        scales<span class="sc">::</span><span class="fu">number</span>(sd_val, <span class="at">accuracy =</span> <span class="fl">0.01</span>)</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>      p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> .data[[v]])) <span class="sc">+</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>        hist_geom <span class="sc">+</span></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>        <span class="fu">annotate</span>(</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>          <span class="st">"rect"</span>,</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>          <span class="at">xmin =</span> mean_val <span class="sc">-</span> sd_val,</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>          <span class="at">xmax =</span> mean_val <span class="sc">+</span> sd_val,</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>          <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>,</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>          <span class="at">ymax =</span> <span class="cn">Inf</span>,</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"blue"</span>,</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>          <span class="at">alpha =</span> <span class="fl">0.12</span></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">+</span></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_vline</span>(</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>          <span class="at">xintercept =</span> mean_val,</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>          <span class="at">color =</span> <span class="st">"blue"</span>,</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>          <span class="at">linewidth =</span> <span class="fl">0.9</span>,</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>          <span class="at">alpha =</span> <span class="fl">0.48</span></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">+</span></span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>        <span class="co"># geom_vline(</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   xintercept = c(mean_val - sd_val, mean_val + sd_val),</span></span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   color = "blue",</span></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   linetype = "dashed",</span></span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>        <span class="co">#   linewidth = 0.8</span></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ) +</span></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>        <span class="fu">labs</span>(</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Histogram of"</span>, x_lab),</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> x_lab,</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>          <span class="at">y =</span> <span class="st">"Count"</span>,</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>          <span class="at">caption =</span> caption_text</span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">+</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme</span>(</span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>          <span class="at">plot.caption =</span> <span class="fu">element_text</span>(</span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>            <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">8</span>)</span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>          ),</span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>          <span class="at">plot.caption.position =</span> <span class="st">"plot"</span></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(nepal_value)) {</span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>        p <span class="ot">&lt;-</span> p <span class="sc">+</span></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>          <span class="fu">geom_vline</span>(</span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>            <span class="at">xintercept =</span> nepal_value,</span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>            <span class="at">linetype =</span> <span class="st">"dotted"</span>,</span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">0.8</span></span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>      p</span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a><span class="fu">walk</span>(plots, print)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="archana_files/figure-html/variable_plots-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="archana_files/figure-html/variable_plots-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="archana_files/figure-html/variable_plots-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="archana_files/figure-html/variable_plots-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exposure-outcome-scatterplots" class="level1">
+<h1>Exposure-Outcome Scatterplots</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scatter_plots <span class="ot">&lt;-</span> histograms <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(\(xy) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    x_var <span class="ot">&lt;-</span> xy[[<span class="dv">1</span>]]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    y_var <span class="ot">&lt;-</span> xy[[<span class="dv">2</span>]]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    x_lab <span class="ot">&lt;-</span> <span class="fu">attr</span>(df[[x_var]], <span class="st">"label"</span>) <span class="sc">%||%</span> x_var</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    y_lab <span class="ot">&lt;-</span> <span class="fu">attr</span>(df[[y_var]], <span class="st">"label"</span>) <span class="sc">%||%</span> y_var</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      df,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> .data[[x_var]], <span class="at">y =</span> .data[[y_var]])</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_smooth</span>(</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">formula =</span> <span class="st">"y ~ x"</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="dv">1</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">paste0</span>(y_lab, <span class="st">" vs "</span>, x_lab),</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> x_lab,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> y_lab</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>()</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">walk</span>(scatter_plots, print)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="archana_files/figure-html/scatterplots-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plot_param <span class="ot">&lt;-</span> <span class="cf">function</span>(draws, param, <span class="at">prior_sd =</span> BETA_SD) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(draws, <span class="fu">aes</span>(<span class="at">x =</span> .data[[param]])) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">fun =</span> dnorm,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> prior_sd),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"indianred3"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"cornflowerblue"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="fl">0.35</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_pointinterval</span>(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">0</span>),</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">point_interval =</span> median_qi</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> BETA_SD, <span class="dv">3</span> <span class="sc">*</span> BETA_SD)) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.55</span>)) <span class="sc">+</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> param,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> param,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Density"</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  DAGitty.setup();
+});
+</script>
+<style>
+  svg { overflow: visible; }
+</style>
+</section>
+<section id="formal-model" class="level1">
+<h1>Formal Model</h1>
+<p><span class="math display">\[
+\begin{align}
+WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
+\mu_i &amp;= \alpha
++   \beta_{DWS} DWS_i
++   \beta_{RUR} RUR_i
++   \beta_{WSW} WSW_i \\
+\alpha &amp;\sim \text{Normal}(50,25) \\
+\beta_{DWS} &amp;\sim \text{Normal}(0,10) \\
+\beta_{RUR} &amp;\sim \text{Normal}(0,10) \\
+\beta_{WSW} &amp;\sim \text{Normal}(0,10) \\
+\sigma &amp;\sim \text{Normal}(0,20), \quad \sigma &gt; 0
+\end{align}
+\]</span></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Description</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(WST_i\)</span></td>
+<td>Water Stress (draw vs availability)</td>
+<td>percentage</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(DWS_i\)</span></td>
+<td>Population with Drinking Water Service (%)</td>
+<td>standardized</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(RUR_i\)</span></td>
+<td>Rural Population (percent)</td>
+<td>standardized</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(WSW_i\)</span></td>
+<td>Government Effectiveness (percentile)</td>
+<td>standardized</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="base-model" class="level1">
+<h1>Base model</h1>
+<p>Just <span class="math inline">\(WST_i\)</span> ~ <span class="math inline">\(DWS_i\)</span></p>
+<div class="cell" data-output.var="model1_stan">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n;</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] WST;</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] DWS;</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> alpha;</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta_DWS;</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] mu = alpha + beta_DWS * DWS;</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  alpha    ~ normal(&lt;&lt;ALPHA_MEAN&gt;&gt;, &lt;&lt;ALPHA_SD&gt;&gt;);</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  beta_DWS ~ normal(<span class="dv">0</span>, &lt;&lt;BETA_SD&gt;&gt;);</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  sigma    ~ normal(<span class="dv">0</span>, &lt;&lt;SIGMA_SD&gt;&gt;);</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  WST ~ normal(mu, sigma);</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] WST_rep;</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:n) {</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    WST_rep[i] = normal_rng(mu[i], sigma);</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> knitr<span class="sc">::</span>knit_code<span class="sc">$</span><span class="fu">get</span>(<span class="st">"model1_stan"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="at">.open =</span> <span class="st">"&lt;&lt;"</span>, <span class="at">.close =</span> <span class="st">"&gt;&gt;"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">WST =</span> .data[[variables[<span class="st">'WST'</span>]]],</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">DWS =</span> .data[[variables[<span class="st">'DWS'</span>]]] <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compose_data</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  model1<span class="sc">$</span><span class="fu">sample</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fit1<span class="sc">$</span><span class="fu">summary</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"mu</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"_rep</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"lp__"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">variable</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">median</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">mad</th>
+<th style="text-align: right;">q5</th>
+<th style="text-align: right;">q95</th>
+<th style="text-align: right;">rhat</th>
+<th style="text-align: right;">ess_bulk</th>
+<th style="text-align: right;">ess_tail</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">alpha</td>
+<td style="text-align: right;">64.288648</td>
+<td style="text-align: right;">64.530496</td>
+<td style="text-align: right;">14.929731</td>
+<td style="text-align: right;">14.441342</td>
+<td style="text-align: right;">39.360029</td>
+<td style="text-align: right;">89.23854</td>
+<td style="text-align: right;">1.000313</td>
+<td style="text-align: right;">3805.281</td>
+<td style="text-align: right;">2922.405</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">beta_DWS</td>
+<td style="text-align: right;">7.941605</td>
+<td style="text-align: right;">7.854047</td>
+<td style="text-align: right;">8.655935</td>
+<td style="text-align: right;">8.667566</td>
+<td style="text-align: right;">-6.345915</td>
+<td style="text-align: right;">22.24109</td>
+<td style="text-align: right;">1.000881</td>
+<td style="text-align: right;">4391.225</td>
+<td style="text-align: right;">2663.747</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma</td>
+<td style="text-align: right;">242.312919</td>
+<td style="text-align: right;">242.012675</td>
+<td style="text-align: right;">7.858430</td>
+<td style="text-align: right;">7.948419</td>
+<td style="text-align: right;">229.397084</td>
+<td style="text-align: right;">255.67389</td>
+<td style="text-align: right;">1.001454</td>
+<td style="text-align: right;">4518.936</td>
+<td style="text-align: right;">3421.016</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>draws1 <span class="ot">&lt;-</span> fit1 <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(alpha, beta_DWS, sigma)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_param</span>(draws1, <span class="st">"beta_DWS"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 21 rows containing missing values or values outside the scale range
+(`stat_slabinterval()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="archana_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="statistical-model" class="level1">
+<h1>Statistical model</h1>
+<p>Impact of Water Services on Water Stress</p>
+<p>Red is our prior distribution; blue is our posterior distribution.</p>
+<div class="cell" data-output.var="model2_stan">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n;</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] WST;</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] DWS;</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] RUR;</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] WSW;</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> alpha;</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta_DWS;</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta_RUR;</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta_WSW;</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] mu = alpha</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>               + beta_DWS * DWS</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>               + beta_RUR * RUR</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>               + beta_WSW * WSW;</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  alpha    ~ normal(&lt;&lt;ALPHA_MEAN&gt;&gt;, &lt;&lt;ALPHA_SD&gt;&gt;);</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  beta_DWS  ~ normal(<span class="dv">0</span>, &lt;&lt;BETA_SD&gt;&gt;);</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  beta_RUR  ~ normal(<span class="dv">0</span>, &lt;&lt;BETA_SD&gt;&gt;);</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  beta_WSW  ~ normal(<span class="dv">0</span>, &lt;&lt;BETA_SD&gt;&gt;);</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  sigma    ~ normal(<span class="dv">0</span>, &lt;&lt;SIGMA_SD&gt;&gt;);</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  WST ~ normal(mu, sigma);</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n] WST_rep;</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:n) {</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    WST_rep[i] = normal_rng(mu[i], sigma);</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> knitr<span class="sc">::</span>knit_code<span class="sc">$</span><span class="fu">get</span>(<span class="st">"model2_stan"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="at">.open =</span> <span class="st">"&lt;&lt;"</span>, <span class="at">.close =</span> <span class="st">"&gt;&gt;"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">WST =</span> .data[[variables[<span class="st">'WST'</span>]]],</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">DWS =</span> .data[[variables[<span class="st">'DWS'</span>]]] <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">RUR =</span> .data[[variables[<span class="st">'RUR'</span>]]] <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">WSW =</span> .data[[variables[<span class="st">'WSW'</span>]]] <span class="sc">|&gt;</span> <span class="fu">scale</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compose_data</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  model2<span class="sc">$</span><span class="fu">sample</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fit2<span class="sc">$</span><span class="fu">summary</span>() <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"mu</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"_rep</span><span class="sc">\\</span><span class="st">["</span>) <span class="sc">&amp;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(variable, <span class="st">"lp__"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">variable</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">median</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">mad</th>
+<th style="text-align: right;">q5</th>
+<th style="text-align: right;">q95</th>
+<th style="text-align: right;">rhat</th>
+<th style="text-align: right;">ess_bulk</th>
+<th style="text-align: right;">ess_tail</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">alpha</td>
+<td style="text-align: right;">65.563496</td>
+<td style="text-align: right;">65.556405</td>
+<td style="text-align: right;">14.876029</td>
+<td style="text-align: right;">14.731583</td>
+<td style="text-align: right;">41.53581</td>
+<td style="text-align: right;">90.324419</td>
+<td style="text-align: right;">1.001119</td>
+<td style="text-align: right;">4135.293</td>
+<td style="text-align: right;">2924.453</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">beta_DWS</td>
+<td style="text-align: right;">4.377934</td>
+<td style="text-align: right;">4.506679</td>
+<td style="text-align: right;">8.989580</td>
+<td style="text-align: right;">9.021240</td>
+<td style="text-align: right;">-10.23101</td>
+<td style="text-align: right;">19.013372</td>
+<td style="text-align: right;">1.000591</td>
+<td style="text-align: right;">4043.127</td>
+<td style="text-align: right;">2978.787</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">beta_RUR</td>
+<td style="text-align: right;">-12.299766</td>
+<td style="text-align: right;">-12.318931</td>
+<td style="text-align: right;">8.934381</td>
+<td style="text-align: right;">8.663214</td>
+<td style="text-align: right;">-26.96838</td>
+<td style="text-align: right;">2.507938</td>
+<td style="text-align: right;">1.000040</td>
+<td style="text-align: right;">4607.106</td>
+<td style="text-align: right;">2918.214</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">beta_WSW</td>
+<td style="text-align: right;">11.946258</td>
+<td style="text-align: right;">11.963565</td>
+<td style="text-align: right;">9.085307</td>
+<td style="text-align: right;">9.235512</td>
+<td style="text-align: right;">-3.13467</td>
+<td style="text-align: right;">26.765498</td>
+<td style="text-align: right;">1.000959</td>
+<td style="text-align: right;">4027.669</td>
+<td style="text-align: right;">2774.534</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma</td>
+<td style="text-align: right;">241.326543</td>
+<td style="text-align: right;">241.232170</td>
+<td style="text-align: right;">8.081514</td>
+<td style="text-align: right;">8.027337</td>
+<td style="text-align: right;">228.26618</td>
+<td style="text-align: right;">254.985323</td>
+<td style="text-align: right;">1.000902</td>
+<td style="text-align: right;">4452.411</td>
+<td style="text-align: right;">3322.638</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"beta_DWS"</span>, <span class="st">"beta_RUR"</span>, <span class="st">"beta_WSW"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> fit2 <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(alpha, <span class="sc">!!!</span><span class="fu">syms</span>(params), sigma)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>params <span class="sc">|&gt;</span> purrr<span class="sc">::</span><span class="fu">walk</span>(\(param) <span class="fu">print</span>(<span class="fu">plot_param</span>(draws, param)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 rows containing missing values or values outside the scale range
+(`stat_slabinterval()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="archana_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 100 rows containing missing values or values outside the scale range
+(`stat_slabinterval()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="archana_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 93 rows containing missing values or values outside the scale range
+(`stat_slabinterval()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="archana_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/theopen-institute\.github\.io\/openstats\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

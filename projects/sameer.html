@@ -231,7 +231,12 @@ window.Quarto = {
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_csv</span>(filename2),</span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join_by</span>(<span class="st">`</span><span class="at">Country Code</span><span class="st">`</span> <span class="sc">==</span> Code)</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">SM.POP.NETM.prop =</span> (SM.POP.NETM <span class="sc">/</span> SP.POP.TOTL) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <section id="causal-model" class="level1">
@@ -2295,20 +2300,21 @@ dag{
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"cornflowerblue"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="fl">0.35</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_pointinterval</span>(</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">0</span>),</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">point_interval =</span> median_qi</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> BETA_SD, <span class="dv">3</span> <span class="sc">*</span> BETA_SD)) <span class="sc">+</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.35</span>)) <span class="sc">+</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> param,</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> param,</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Density"</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="fl">0.35</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_pointinterval</span>(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">0</span>),</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">point_interval =</span> median_qi</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> BETA_SD, <span class="dv">3</span> <span class="sc">*</span> BETA_SD)) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.55</span>)) <span class="sc">+</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> param,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> param,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Density"</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <script>
@@ -2458,7 +2464,7 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <col style="width: 9%">
 <col style="width: 10%">
 <col style="width: 10%">
-<col style="width: 10%">
+<col style="width: 9%">
 <col style="width: 9%">
 <col style="width: 9%">
 </colgroup>
@@ -2479,39 +2485,39 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">alpha</td>
-<td style="text-align: right;">33.811787</td>
-<td style="text-align: right;">33.809277</td>
-<td style="text-align: right;">1.875511</td>
-<td style="text-align: right;">1.876857</td>
-<td style="text-align: right;">30.733036</td>
-<td style="text-align: right;">36.900334</td>
-<td style="text-align: right;">0.9998169</td>
-<td style="text-align: right;">3744.342</td>
-<td style="text-align: right;">2892.060</td>
+<td style="text-align: right;">33.828201</td>
+<td style="text-align: right;">33.823362</td>
+<td style="text-align: right;">1.830374</td>
+<td style="text-align: right;">1.821661</td>
+<td style="text-align: right;">30.820333</td>
+<td style="text-align: right;">36.826720</td>
+<td style="text-align: right;">1.001063</td>
+<td style="text-align: right;">4354.295</td>
+<td style="text-align: right;">3151.898</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_CED</td>
-<td style="text-align: right;">-6.148117</td>
-<td style="text-align: right;">-6.162974</td>
-<td style="text-align: right;">1.797707</td>
-<td style="text-align: right;">1.783756</td>
-<td style="text-align: right;">-9.108601</td>
-<td style="text-align: right;">-3.171439</td>
-<td style="text-align: right;">1.0010153</td>
-<td style="text-align: right;">3625.824</td>
-<td style="text-align: right;">2955.748</td>
+<td style="text-align: right;">-6.173492</td>
+<td style="text-align: right;">-6.182721</td>
+<td style="text-align: right;">1.832609</td>
+<td style="text-align: right;">1.812652</td>
+<td style="text-align: right;">-9.207748</td>
+<td style="text-align: right;">-3.151732</td>
+<td style="text-align: right;">1.000640</td>
+<td style="text-align: right;">4058.252</td>
+<td style="text-align: right;">2907.647</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">24.264991</td>
-<td style="text-align: right;">24.212366</td>
-<td style="text-align: right;">1.323803</td>
-<td style="text-align: right;">1.328782</td>
-<td style="text-align: right;">22.208526</td>
-<td style="text-align: right;">26.498873</td>
-<td style="text-align: right;">1.0003047</td>
-<td style="text-align: right;">4164.962</td>
-<td style="text-align: right;">3314.957</td>
+<td style="text-align: right;">24.299811</td>
+<td style="text-align: right;">24.226100</td>
+<td style="text-align: right;">1.338976</td>
+<td style="text-align: right;">1.341166</td>
+<td style="text-align: right;">22.216477</td>
+<td style="text-align: right;">26.589201</td>
+<td style="text-align: right;">1.000903</td>
+<td style="text-align: right;">4701.486</td>
+<td style="text-align: right;">2928.353</td>
 </tr>
 </tbody>
 </table>
@@ -2627,7 +2633,7 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <col style="width: 8%">
 <col style="width: 11%">
 <col style="width: 10%">
-<col style="width: 8%">
+<col style="width: 9%">
 <col style="width: 8%">
 <col style="width: 8%">
 </colgroup>
@@ -2648,75 +2654,75 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">alpha</td>
-<td style="text-align: right;">32.8934772</td>
-<td style="text-align: right;">32.8757750</td>
-<td style="text-align: right;">1.434878</td>
-<td style="text-align: right;">1.432875</td>
-<td style="text-align: right;">30.5718537</td>
-<td style="text-align: right;">35.239996</td>
-<td style="text-align: right;">1.001084</td>
-<td style="text-align: right;">4216.219</td>
-<td style="text-align: right;">2948.246</td>
+<td style="text-align: right;">32.8487570</td>
+<td style="text-align: right;">32.8589140</td>
+<td style="text-align: right;">1.417430</td>
+<td style="text-align: right;">1.418200</td>
+<td style="text-align: right;">30.5602715</td>
+<td style="text-align: right;">35.195982</td>
+<td style="text-align: right;">1.0022871</td>
+<td style="text-align: right;">4018.574</td>
+<td style="text-align: right;">2976.161</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_CED</td>
-<td style="text-align: right;">-4.8363074</td>
-<td style="text-align: right;">-4.8340638</td>
-<td style="text-align: right;">1.490904</td>
-<td style="text-align: right;">1.464935</td>
-<td style="text-align: right;">-7.3440641</td>
-<td style="text-align: right;">-2.381700</td>
-<td style="text-align: right;">1.000471</td>
-<td style="text-align: right;">3960.629</td>
-<td style="text-align: right;">3054.874</td>
+<td style="text-align: right;">-4.8776096</td>
+<td style="text-align: right;">-4.8808771</td>
+<td style="text-align: right;">1.529704</td>
+<td style="text-align: right;">1.588225</td>
+<td style="text-align: right;">-7.3937469</td>
+<td style="text-align: right;">-2.398367</td>
+<td style="text-align: right;">0.9998766</td>
+<td style="text-align: right;">3872.216</td>
+<td style="text-align: right;">2742.836</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">beta_YN</td>
-<td style="text-align: right;">0.9197998</td>
-<td style="text-align: right;">0.9154073</td>
-<td style="text-align: right;">1.668177</td>
-<td style="text-align: right;">1.660327</td>
-<td style="text-align: right;">-1.8415108</td>
-<td style="text-align: right;">3.699448</td>
-<td style="text-align: right;">1.000645</td>
-<td style="text-align: right;">3618.453</td>
-<td style="text-align: right;">3382.747</td>
+<td style="text-align: right;">0.9022622</td>
+<td style="text-align: right;">0.8982374</td>
+<td style="text-align: right;">1.707847</td>
+<td style="text-align: right;">1.683283</td>
+<td style="text-align: right;">-1.8920305</td>
+<td style="text-align: right;">3.750446</td>
+<td style="text-align: right;">1.0009819</td>
+<td style="text-align: right;">3796.447</td>
+<td style="text-align: right;">3049.063</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_RL</td>
-<td style="text-align: right;">-17.9548838</td>
-<td style="text-align: right;">-17.9661010</td>
-<td style="text-align: right;">2.494930</td>
-<td style="text-align: right;">2.479135</td>
-<td style="text-align: right;">-22.0776272</td>
-<td style="text-align: right;">-13.896761</td>
-<td style="text-align: right;">1.000604</td>
-<td style="text-align: right;">2564.085</td>
-<td style="text-align: right;">2772.936</td>
+<td style="text-align: right;">-17.8804337</td>
+<td style="text-align: right;">-17.9058870</td>
+<td style="text-align: right;">2.565730</td>
+<td style="text-align: right;">2.545100</td>
+<td style="text-align: right;">-22.1045638</td>
+<td style="text-align: right;">-13.581148</td>
+<td style="text-align: right;">1.0024046</td>
+<td style="text-align: right;">2917.043</td>
+<td style="text-align: right;">2773.655</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">beta_VA</td>
-<td style="text-align: right;">4.5498206</td>
-<td style="text-align: right;">4.5802230</td>
-<td style="text-align: right;">2.253404</td>
-<td style="text-align: right;">2.255470</td>
-<td style="text-align: right;">0.8974304</td>
-<td style="text-align: right;">8.197154</td>
-<td style="text-align: right;">1.000163</td>
-<td style="text-align: right;">2696.152</td>
-<td style="text-align: right;">2726.961</td>
+<td style="text-align: right;">4.4773716</td>
+<td style="text-align: right;">4.4974181</td>
+<td style="text-align: right;">2.332899</td>
+<td style="text-align: right;">2.309522</td>
+<td style="text-align: right;">0.7060122</td>
+<td style="text-align: right;">8.346618</td>
+<td style="text-align: right;">1.0012170</td>
+<td style="text-align: right;">3357.742</td>
+<td style="text-align: right;">3162.092</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">18.6581947</td>
-<td style="text-align: right;">18.6247880</td>
-<td style="text-align: right;">1.024007</td>
-<td style="text-align: right;">1.031905</td>
-<td style="text-align: right;">17.0565084</td>
-<td style="text-align: right;">20.447299</td>
-<td style="text-align: right;">1.001621</td>
-<td style="text-align: right;">3874.949</td>
-<td style="text-align: right;">2950.705</td>
+<td style="text-align: right;">18.6107538</td>
+<td style="text-align: right;">18.5350120</td>
+<td style="text-align: right;">1.028660</td>
+<td style="text-align: right;">1.022009</td>
+<td style="text-align: right;">17.0484380</td>
+<td style="text-align: right;">20.389870</td>
+<td style="text-align: right;">1.0006998</td>
+<td style="text-align: right;">3888.692</td>
+<td style="text-align: right;">2814.423</td>
 </tr>
 </tbody>
 </table>
