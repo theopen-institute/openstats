@@ -1,0 +1,230 @@
+---
+title: Suyash's project
+engine: knitr
+format:
+  html:
+    df-print: kable
+    include-in-header:
+      - text: |
+          <script src="../js/dagitty.js"></script>
+---
+
+```{r project_config, echo=FALSE, warning=FALSE, message=FALSE}
+variables <- c(
+  PSB = 'PV.PER.RNK',
+  COR = 'CC.PER.RNK',
+  VNA = 'VA.PER.RNK',
+  GEF = 'GE.PER.RNK',
+  ROL = 'RL.PER.RNK' #ROL
+)
+
+histograms <- list(
+  c(variables['COR'], variables['PSB'])
+)
+
+ALPHA_MEAN <- 50
+ALPHA_SD <- 25
+BETA_SD <- 10
+SIGMA_SD <- 20
+
+dag <- '
+dag {
+bb="0,0,1,1"
+"Government Effectiveness" [adjusted,pos="0.510,0.318"]
+"Political Stability" [outcome,pos="0.847,0.643"]
+"Rule of Law" [adjusted,pos="0.514,0.193"]
+"Voice and Accountability" [adjusted,pos="0.506,0.466"]
+Corruption [exposure,pos="0.099,0.642"]
+"Government Effectiveness" -> "Political Stability"
+"Government Effectiveness" -> Corruption
+"Rule of Law" -> "Political Stability"
+"Rule of Law" -> Corruption
+"Voice and Accountability" -> "Political Stability"
+"Voice and Accountability" -> Corruption
+Corruption -> "Political Stability"
+}
+'
+```
+
+{{< include _base.qmd >}}
+
+
+# Formal Model
+$$
+\begin{align}
+PSB_i &\sim \text{Normal}(\mu_i,\sigma) \\
+\mu_i &= \alpha
++	\beta_{COR} COR_i
++	\beta_{VNA} VNA_i
++	\beta_{GEF} GEF_i
++	\beta_{ROL} ROL_i \\
+\alpha &\sim \text{Normal}(`r ALPHA_MEAN`,`r ALPHA_SD`) \\
+\beta_{COR} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{VNA} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{GEF} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{ROL} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\sigma &\sim \text{Normal}(0,`r SIGMA_SD`), \quad \sigma > 0
+\end{align}
+$$
+
+| Variable | Description | Unit |
+|----------|-------------|------|
+| $PSB_i$  | Political stability | percentile |
+| $COR_i$  | Perception of Corruption | standardized |
+| $VNA_i$  | Voice and Accountability | standardized |
+| $GEF_i$  | Government Effectiveness (percentile) | standardized |
+| $ROL_i$  | Rule of Law | standardized |
+
+
+# Base model
+
+Just $PSB_i$ ~ $COR_i$
+
+```{stan model1_stan, eval=FALSE, output.var="model1_stan"}
+data {
+  int<lower=1> n;
+  vector[n] PSB;
+  vector[n] COR;
+}
+
+parameters {
+  real alpha;
+  real beta_COR;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha + beta_COR * COR;
+}
+
+model {
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_COR ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
+
+  PSB ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] PSB_rep;
+  for (i in 1:n) {
+    PSB_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r model1, message=FALSE, results="hide"}
+model1 <- knitr::knit_code$get("model1_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
+
+fit1 <- df |>
+  transmute(
+    PSB = .data[[variables['PSB']]],
+    COR = .data[[variables['COR']]] |> scale() |> as.numeric(),
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model1$sample()
+```
+
+```{r}
+fit1$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+
+draws1 <- fit1 |>
+  spread_draws(alpha, beta_COR, sigma)
+plot_param(draws1, "beta_COR")
+```
+
+# Statistical model
+
+Impact of Corruption on Political Stability
+
+Red is our prior distribution; blue is our posterior distribution.
+
+```{stan model2_stan, eval=FALSE, output.var="model2_stan"}
+data {
+  int<lower=1> n;
+  vector[n] PSB;
+  vector[n] COR;
+  vector[n] VNA;
+  vector[n] GEF;
+  vector[n] ROL;
+}
+
+parameters {
+  real alpha;
+  real beta_COR;
+  real beta_VNA;
+  real beta_GEF;
+  real beta_ROL;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha
+               + beta_COR * COR
+               + beta_VNA * VNA
+               + beta_GEF * GEF
+               + beta_ROL * ROL;
+}
+
+model {
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_COR  ~ normal(0, <<BETA_SD>>);
+  beta_VNA  ~ normal(0, <<BETA_SD>>);
+  beta_GEF  ~ normal(0, <<BETA_SD>>);
+  beta_ROL  ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
+
+  PSB ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] PSB_rep;
+  for (i in 1:n) {
+    PSB_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r model2, message=FALSE, results="hide"}
+model2 <- knitr::knit_code$get("model2_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
+
+fit2 <- df |>
+  transmute(
+    PSB = .data[[variables['PSB']]],
+    COR = .data[[variables['COR']]] |> scale() |> as.numeric(),
+    VNA = .data[[variables['VNA']]] |> scale() |> as.numeric(),
+    GEF = .data[[variables['GEF']]] |> scale() |> as.numeric(),
+    ROL = .data[[variables['ROL']]] |> scale() |> as.numeric()
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model2$sample()
+```
+
+```{r}
+fit2$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+
+params <- c("beta_COR", "beta_VNA", "beta_GEF", "beta_ROL")
+draws <- fit2 |>
+  spread_draws(alpha, !!!syms(params), sigma)
+params |> purrr::walk(\(param) print(plot_param(draws, param)))
+```

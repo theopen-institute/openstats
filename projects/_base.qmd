@@ -44,6 +44,10 @@ df <- read_csv(filename) |>
     join_by(`Country Code` == Code)
   )
 
+df <- df |>
+  mutate(
+    SM.POP.NETM.prop = (SM.POP.NETM / SP.POP.TOTL) * 100
+  )
 ```
 
 # Causal model
@@ -78,7 +82,6 @@ df |>
   ) %>%
   # Optionally restrict container height to enable scrolling
   scroll_box(height = "400px")
-
 ```
 
 # Variable Distributions
@@ -235,7 +238,6 @@ purrr::walk(scatter_plots, print)
 ```
 
 ```{r parameter_plot_function}
-
 plot_param <- function(draws, param, prior_sd = BETA_SD) {
   ggplot(draws, aes(x = .data[[param]])) +
     stat_function(
@@ -246,14 +248,15 @@ plot_param <- function(draws, param, prior_sd = BETA_SD) {
     ) +
     geom_density(
       fill = "cornflowerblue",
-      alpha = 0.35
+      alpha = 0.35,
+      na.rm = TRUE
     ) +
     stat_pointinterval(
       aes(y = 0),
       point_interval = median_qi
     ) +
     scale_x_continuous(limits = c(-3 * BETA_SD, 3 * BETA_SD)) +
-    scale_y_continuous(limits = c(0, 0.35)) +
+    scale_y_continuous(limits = c(0, 0.55)) +
     labs(
       title = param,
       x = param,

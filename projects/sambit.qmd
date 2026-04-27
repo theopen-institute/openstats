@@ -1,0 +1,231 @@
+---
+title: Sambit's project
+engine: knitr
+format:
+  html:
+    df-print: kable
+    include-in-header:
+      - text: |
+          <script src="../js/dagitty.js"></script>
+---
+
+```{r project_config, echo=FALSE, warning=FALSE, message=FALSE}
+variables <- c(
+  YN = 'SL.UEM.NEET.ME.ZS',
+  IN = 'IT.NET.USER.ZS',
+  EU = 'SP.URB.TOTL.IN.ZS',
+  EA = 'EG.ELC.ACCS.ZS',
+  UR = 'NY.GDP.PCAP.PP.CD'
+)
+
+histograms <- list(
+  c('IT.NET.USER.ZS', 'SL.UEM.NEET.ME.ZS')
+)
+
+ALPHA_MEAN <- 50
+ALPHA_SD <- 25
+BETA_SD <- 5
+SIGMA_SD <- 20
+
+dag <- '
+dag {
+bb="0,0,1,1"
+"Electricity Access" [adjusted,pos="0.560,0.288"]
+"GDP per Capita" [adjusted,pos="0.195,0.309"]
+"Internet Users (%)" [exposure,pos="0.190,0.777"]
+"Youth NEETs" [outcome,pos="0.878,0.802"]
+Urbanization [adjusted,pos="0.867,0.357"]
+"Electricity Access" -> "Internet Users (%)"
+"Electricity Access" -> "Youth NEETs"
+"GDP per Capita" -> "Electricity Access"
+"GDP per Capita" -> "Internet Users (%)"
+"GDP per Capita" -> "Youth NEETs"
+"Internet Users (%)" -> "Youth NEETs"
+Urbanization -> "Electricity Access"
+Urbanization -> "Youth NEETs"
+}
+'
+```
+
+{{< include _base.qmd >}}
+
+
+# Formal Model
+$$
+\begin{align}
+YN_i &\sim \text{Normal}(\mu_i,\sigma) \\
+\mu_i &= \alpha
++	\beta_{IU}  IU_i
++	\beta_{IN} IN_i
++	\beta_{EA} EA_i
++	\beta_{UR} UR_i \\
+\alpha &\sim \text{Normal}(`r ALPHA_MEAN`,`r ALPHA_SD`) \\
+\beta_{IU} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{IN} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{EA} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{UR} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\sigma &\sim \text{Normal}(0,`r SIGMA_SD`), \quad \sigma > 0
+\end{align}
+$$
+
+| Variable | Description | Unit |
+|----------|-------------|------|
+| $YN_i$  | Youth not in Education, Employment, or Training | percentage |
+| $IU_i$  | Internet Users (%) | standardized |
+| $IN_i$  | GDP, per capita (PPP) | standardized |
+| $EA_i$  | Electricity Access (%) | standardized |
+| $UR_i$  | Urbanization (%) | standardized |
+
+
+# Base model
+
+Just $YN_i$ ~ $IU_i$
+
+```{stan model1_stan, eval=FALSE, output.var="model1_stan"}
+data {
+  int<lower=1> n;
+  vector[n] YN;
+  vector[n] IU;
+}
+
+parameters {
+  real alpha;
+  real beta_IU;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha + beta_IU * IU;
+}
+
+model {
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_IU ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
+
+  YN ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] YN_rep;
+  for (i in 1:n) {
+    YN_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r model1, message=FALSE, results="hide"}
+model1 <- knitr::knit_code$get("model1_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
+
+fit1 <- df |>
+  transmute(
+    YN = SL.UEM.NEET.ME.ZS,
+    IU = IT.NET.USER.ZS |> scale() |> as.numeric(),
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model1$sample()
+```
+
+```{r}
+fit1$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+
+draws1 <- fit1 |>
+  spread_draws(alpha, beta_IU, sigma)
+plot_param(draws1, "beta_IU")
+```
+
+# Statistical model
+
+Impact of Internet Access on Youth NEETs
+
+Red is our prior distribution; blue is our posterior distribution.
+
+```{stan model2_stan, eval=FALSE, output.var="model2_stan"}
+data {
+  int<lower=1> n;
+  vector[n] YN;
+  vector[n] IU;
+  vector[n] IN;
+  vector[n] EA;
+  vector[n] UR;
+}
+
+parameters {
+  real alpha;
+  real beta_IU;
+  real beta_IN;
+  real beta_EA;
+  real beta_UR;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha
+               + beta_IU * IU
+               + beta_IN * IN
+               + beta_EA * EA
+               + beta_UR * UR;
+}
+
+model {
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_IU  ~ normal(0, <<BETA_SD>>);
+  beta_IN  ~ normal(0, <<BETA_SD>>);
+  beta_EA  ~ normal(0, <<BETA_SD>>);
+  beta_UR  ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
+
+  YN ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] YN_rep;
+  for (i in 1:n) {
+    YN_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r model2, message=FALSE, results="hide"}
+model2 <- knitr::knit_code$get("model2_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
+
+fit2 <- df |>
+  transmute(
+    YN = SL.UEM.NEET.ME.ZS,
+    IU = IT.NET.USER.ZS |> scale() |> as.numeric(),
+    IN = SP.URB.TOTL.IN.ZS |> scale() |> as.numeric(),
+    EA = EG.ELC.ACCS.ZS |> scale() |> as.numeric(),
+    UR = NY.GDP.PCAP.PP.CD |> scale() |> as.numeric()
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model2$sample()
+```
+
+```{r}
+fit2$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+
+params <- c("beta_IU", "beta_IN", "beta_EA", "beta_UR")
+draws <- fit2 |>
+  spread_draws(alpha, !!!syms(params), sigma)
+params |> purrr::walk(\(param) print(plot_param(draws, param)))
+```

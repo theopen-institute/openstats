@@ -1,0 +1,229 @@
+---
+title: Suyash's project
+engine: knitr
+format:
+  html:
+    df-print: kable
+    include-in-header:
+      - text: |
+          <script src="../js/dagitty.js"></script>
+---
+
+```{r project_config, echo=FALSE, warning=FALSE, message=FALSE}
+variables <- c(
+  GGR = 'NY.GDP.MKTP.KD.ZG',
+  INF = 'FP.CPI.TOTL.ZG',
+  PST = 'PV.PER.RNK',
+  GEF = 'GE.PER.RNK',
+  IMP = 'NE.IMP.GNFS.ZS'
+)
+
+histograms <- list(
+  c(variables['INF'], variables['GGR'])
+)
+
+ALPHA_MEAN <- 50
+ALPHA_SD <- 25
+BETA_SD <- 10
+SIGMA_SD <- 20
+
+dag <- '
+dag {
+bb="0,0,1,1"
+"GDP Growth" [outcome,pos="0.906,0.627"]
+"Government Effectiveness" [adjusted,pos="0.387,0.179"]
+"Import of Goods" [adjusted,pos="0.668,0.362"]
+"Political Stability" [adjusted,pos="0.259,0.413"]
+Inflation [exposure,pos="0.135,0.613"]
+"Government Effectiveness" -> "Import of Goods"
+"Government Effectiveness" -> "Political Stability"
+"Import of Goods" -> "GDP Growth"
+"Political Stability" -> "GDP Growth"
+"Political Stability" -> Inflation
+Inflation -> "GDP Growth"
+}
+'
+```
+
+{{< include _base.qmd >}}
+
+
+# Formal Model
+$$
+\begin{align}
+GGR_i &\sim \text{Normal}(\mu_i,\sigma) \\
+\mu_i &= \alpha
++	\beta_{INF} INF_i
++	\beta_{PST} PST_i
++	\beta_{GEF} GEF_i
++	\beta_{IMP} IMP_i \\
+\alpha &\sim \text{Normal}(`r ALPHA_MEAN`,`r ALPHA_SD`) \\
+\beta_{INF} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{PST} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{GEF} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{IMP} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\sigma &\sim \text{Normal}(0,`r SIGMA_SD`), \quad \sigma > 0
+\end{align}
+$$
+
+| Variable | Description | Unit |
+|----------|-------------|------|
+| $GGR_i$  | GDP Growth, annual | percentage |
+| $INF_i$  | Inflation, annual, percent of GDP | standardized |
+| $PST_i$  | Political Stability (percentile) | standardized |
+| $GEF_i$  | Government Effectiveness (percentile) | standardized |
+| $IMP_i$  | Import of Goods and Services (percent of GDP) | standardized |
+
+
+# Base model
+
+Just $GGR_i$ ~ $INF_i$
+
+```{stan model1_stan, eval=FALSE, output.var="model1_stan"}
+data {
+  int<lower=1> n;
+  vector[n] GGR;
+  vector[n] INF;
+}
+
+parameters {
+  real alpha;
+  real beta_INF;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha + beta_INF * INF;
+}
+
+model {
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_INF ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
+
+  GGR ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] GGR_rep;
+  for (i in 1:n) {
+    GGR_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r model1, message=FALSE, results="hide"}
+model1 <- knitr::knit_code$get("model1_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
+
+fit1 <- df |>
+  transmute(
+    GGR = .data[[variables['GGR']]],
+    INF = .data[[variables['INF']]] |> scale() |> as.numeric(),
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model1$sample()
+```
+
+```{r}
+fit1$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+
+draws1 <- fit1 |>
+  spread_draws(alpha, beta_INF, sigma)
+plot_param(draws1, "beta_INF")
+```
+
+# Statistical model
+
+Impact of Inflation on GDP Growth
+
+Red is our prior distribution; blue is our posterior distribution.
+
+```{stan model2_stan, eval=FALSE, output.var="model2_stan"}
+data {
+  int<lower=1> n;
+  vector[n] GGR;
+  vector[n] INF;
+  vector[n] PST;
+  vector[n] GEF;
+  vector[n] IMP;
+}
+
+parameters {
+  real alpha;
+  real beta_INF;
+  real beta_PST;
+  real beta_GEF;
+  real beta_IMP;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha
+               + beta_INF * INF
+               + beta_PST * PST
+               + beta_GEF * GEF
+               + beta_IMP * IMP;
+}
+
+model {
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_INF  ~ normal(0, <<BETA_SD>>);
+  beta_PST  ~ normal(0, <<BETA_SD>>);
+  beta_GEF  ~ normal(0, <<BETA_SD>>);
+  beta_IMP  ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
+
+  GGR ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] GGR_rep;
+  for (i in 1:n) {
+    GGR_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r model2, message=FALSE, results="hide"}
+model2 <- knitr::knit_code$get("model2_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
+
+fit2 <- df |>
+  transmute(
+    GGR = .data[[variables['GGR']]],
+    INF = .data[[variables['INF']]] |> scale() |> as.numeric(),
+    PST = .data[[variables['PST']]] |> scale() |> as.numeric(),
+    GEF = .data[[variables['GEF']]] |> scale() |> as.numeric(),
+    IMP = .data[[variables['IMP']]] |> scale() |> as.numeric()
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model2$sample()
+```
+
+```{r}
+fit2$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+
+params <- c("beta_INF", "beta_PST", "beta_GEF", "beta_IMP")
+draws <- fit2 |>
+  spread_draws(alpha, !!!syms(params), sigma)
+params |> purrr::walk(\(param) print(plot_param(draws, param)))
+```

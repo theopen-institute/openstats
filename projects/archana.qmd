@@ -1,0 +1,219 @@
+---
+title: Suyash's project
+engine: knitr
+format:
+  html:
+    df-print: kable
+    include-in-header:
+      - text: |
+          <script src="../js/dagitty.js"></script>
+---
+
+```{r project_config, echo=FALSE, warning=FALSE, message=FALSE}
+variables <- c(
+  WST = 'ER.H2O.FWST.ZS',
+  DWS = 'SH.H2O.BASW.ZS',
+  RUR = 'SP.RUR.TOTL.ZS',
+  WSW = 'SL.EMP.WORK.ZS' # WSW
+)
+
+histograms <- list(
+  c(variables['DWS'], variables['WST'])
+)
+
+ALPHA_MEAN <- 50
+ALPHA_SD <- 25
+BETA_SD <- 10
+SIGMA_SD <- 20
+
+dag <- '
+dag {
+bb="0,0,1,1"
+"People with Drinking Water Services" [exposure,pos="0.168,0.545"]
+"Rural Population (%)" [adjusted,pos="0.520,0.364"]
+"Wage/Salaried Workers" [adjusted,pos="0.519,0.207"]
+"Water Stress" [outcome,pos="0.840,0.550"]
+"People with Drinking Water Services" -> "Water Stress"
+"Rural Population (%)" -> "People with Drinking Water Services"
+"Rural Population (%)" -> "Water Stress"
+"Wage/Salaried Workers" -> "People with Drinking Water Services"
+"Wage/Salaried Workers" -> "Water Stress"
+}
+
+'
+```
+
+{{< include _base.qmd >}}
+
+
+# Formal Model
+$$
+\begin{align}
+WST_i &\sim \text{Normal}(\mu_i,\sigma) \\
+\mu_i &= \alpha
++	\beta_{DWS} DWS_i
++	\beta_{RUR} RUR_i
++	\beta_{WSW} WSW_i \\
+\alpha &\sim \text{Normal}(`r ALPHA_MEAN`,`r ALPHA_SD`) \\
+\beta_{DWS} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{RUR} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{WSW} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\sigma &\sim \text{Normal}(0,`r SIGMA_SD`), \quad \sigma > 0
+\end{align}
+$$
+
+| Variable | Description | Unit |
+|----------|-------------|------|
+| $WST_i$  | Water Stress (draw vs availability) | percentage |
+| $DWS_i$  | Population with Drinking Water Service (%) | standardized |
+| $RUR_i$  | Rural Population (percent) | standardized |
+| $WSW_i$  | Government Effectiveness (percentile) | standardized |
+
+
+# Base model
+
+Just $WST_i$ ~ $DWS_i$
+
+```{stan model1_stan, eval=FALSE, output.var="model1_stan"}
+data {
+  int<lower=1> n;
+  vector[n] WST;
+  vector[n] DWS;
+}
+
+parameters {
+  real alpha;
+  real beta_DWS;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha + beta_DWS * DWS;
+}
+
+model {
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_DWS ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
+
+  WST ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] WST_rep;
+  for (i in 1:n) {
+    WST_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r model1, message=FALSE, results="hide"}
+model1 <- knitr::knit_code$get("model1_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
+
+fit1 <- df |>
+  transmute(
+    WST = .data[[variables['WST']]],
+    DWS = .data[[variables['DWS']]] |> scale() |> as.numeric(),
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model1$sample()
+```
+
+```{r}
+fit1$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+
+draws1 <- fit1 |>
+  spread_draws(alpha, beta_DWS, sigma)
+plot_param(draws1, "beta_DWS")
+```
+
+# Statistical model
+
+Impact of Water Services on Water Stress
+
+Red is our prior distribution; blue is our posterior distribution.
+
+```{stan model2_stan, eval=FALSE, output.var="model2_stan"}
+data {
+  int<lower=1> n;
+  vector[n] WST;
+  vector[n] DWS;
+  vector[n] RUR;
+  vector[n] WSW;
+}
+
+parameters {
+  real alpha;
+  real beta_DWS;
+  real beta_RUR;
+  real beta_WSW;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha
+               + beta_DWS * DWS
+               + beta_RUR * RUR
+               + beta_WSW * WSW;
+}
+
+model {
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_DWS  ~ normal(0, <<BETA_SD>>);
+  beta_RUR  ~ normal(0, <<BETA_SD>>);
+  beta_WSW  ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
+
+  WST ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] WST_rep;
+  for (i in 1:n) {
+    WST_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r model2, message=FALSE, results="hide"}
+model2 <- knitr::knit_code$get("model2_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
+
+fit2 <- df |>
+  transmute(
+    WST = .data[[variables['WST']]],
+    DWS = .data[[variables['DWS']]] |> scale() |> as.numeric(),
+    RUR = .data[[variables['RUR']]] |> scale() |> as.numeric(),
+    WSW = .data[[variables['WSW']]] |> scale() |> as.numeric()
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model2$sample()
+```
+
+```{r}
+fit2$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+
+params <- c("beta_DWS", "beta_RUR", "beta_WSW")
+draws <- fit2 |>
+  spread_draws(alpha, !!!syms(params), sigma)
+params |> purrr::walk(\(param) print(plot_param(draws, param)))
+```

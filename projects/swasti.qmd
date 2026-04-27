@@ -1,0 +1,232 @@
+---
+title: Suyash's project
+engine: knitr
+format:
+  html:
+    df-print: kable
+    include-in-header:
+      - text: |
+          <script src="../js/dagitty.js"></script>
+---
+
+```{r project_config, echo=FALSE, warning=FALSE, message=FALSE}
+variables <- c(
+  NMG = 'SM.POP.NETM.prop',
+  YNE = 'SL.UEM.NEET.ME.ZS',
+  AFR = 'SP.ADO.TFRT',
+  YUE = 'SL.UEM.1524.ZS',
+  GPC = 'NY.GDP.PCAP.PP.CD'
+)
+
+histograms <- list(
+  c(variables['YNE'], variables['NMG'])
+)
+
+ALPHA_MEAN <- 0
+ALPHA_SD <- 5
+BETA_SD <- 10
+SIGMA_SD <- 20
+
+dag <- '
+dag {
+bb="0,0,1,1"
+"Adolescent Fertility Rate" [adjusted,pos="0.471,0.457"]
+"GDP (per capital)" [adjusted,pos="0.467,0.142"]
+"Net Migration" [outcome,pos="0.927,0.623"]
+"Youth NEETs" [exposure,pos="0.060,0.611"]
+"Youth Unemployment" [adjusted,pos="0.469,0.321"]
+"Adolescent Fertility Rate" -> "Net Migration"
+"Adolescent Fertility Rate" -> "Youth NEETs"
+"GDP (per capital)" -> "Net Migration"
+"GDP (per capital)" -> "Youth NEETs"
+"GDP (per capital)" -> "Youth Unemployment"
+"Youth NEETs" -> "Net Migration"
+"Youth Unemployment" -> "Net Migration"
+"Youth Unemployment" -> "Youth NEETs"
+}
+'
+```
+
+{{< include _base.qmd >}}
+
+
+
+# Formal Model
+$$
+\begin{align}
+NMG_i &\sim \text{Normal}(\mu_i,\sigma) \\
+\mu_i &= \alpha
++	\beta_{YNE} YNE_i
++	\beta_{AFR} AFR_i
++	\beta_{YUE} YUE_i
++	\beta_{GPC} GPC_i \\
+\alpha &\sim \text{Normal}(`r ALPHA_MEAN`,`r ALPHA_SD`) \\
+\beta_{YNE} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{AFR} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{YUE} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\beta_{GPC} &\sim \text{Normal}(0,`r BETA_SD`) \\
+\sigma &\sim \text{Normal}(0,`r SIGMA_SD`), \quad \sigma > 0
+\end{align}
+$$
+
+| Variable | Description | Unit |
+|----------|-------------|------|
+| $NMG_i$  | Net Migration | standardized |
+| $YNE_i$  | Youth Not in Education, Employment or Training (%) | standardized |
+| $AFR_i$  | Adolescent Fertility Rate (per 1000) | standardized |
+| $YUE_i$  | Youth Unemployment Rate | standardized |
+| $GPC_i$  | GDP per Capita (PPP) | standardized |
+
+
+# Base model
+
+Just $NMG_i$ ~ $YNE_i$
+
+```{stan model1_stan, eval=FALSE, output.var="model1_stan"}
+data {
+  int<lower=1> n;
+  vector[n] NMG;
+  vector[n] YNE;
+}
+
+parameters {
+  real alpha;
+  real beta_YNE;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha + beta_YNE * YNE;
+}
+
+model {
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_YNE ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
+
+  NMG ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] NMG_rep;
+  for (i in 1:n) {
+    NMG_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r model1, message=FALSE, results="hide"}
+model1 <- knitr::knit_code$get("model1_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
+
+fit1 <- df |>
+  transmute(
+    NMG = .data[[variables['NMG']]],
+    YNE = .data[[variables['YNE']]] |> scale() |> as.numeric(),
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model1$sample()
+```
+
+```{r}
+fit1$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+
+draws1 <- fit1 |>
+  spread_draws(alpha, beta_YNE, sigma)
+plot_param(draws1, "beta_YNE")
+```
+
+# Statistical model
+
+Impact of Youth NEET on Net Migration
+
+Red is our prior distribution; blue is our posterior distribution.
+
+```{stan model2_stan, eval=FALSE, output.var="model2_stan"}
+data {
+  int<lower=1> n;
+  vector[n] NMG;
+  vector[n] YNE;
+  vector[n] AFR;
+  vector[n] YUE;
+  vector[n] GPC;
+}
+
+parameters {
+  real alpha;
+  real beta_YNE;
+  real beta_AFR;
+  real beta_YUE;
+  real beta_GPC;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu = alpha
+               + beta_YNE * YNE
+               + beta_AFR * AFR
+               + beta_YUE * YUE
+               + beta_GPC * GPC;
+}
+
+model {
+  alpha    ~ normal(<<ALPHA_MEAN>>, <<ALPHA_SD>>);
+  beta_YNE  ~ normal(0, <<BETA_SD>>);
+  beta_AFR  ~ normal(0, <<BETA_SD>>);
+  beta_YUE  ~ normal(0, <<BETA_SD>>);
+  beta_GPC  ~ normal(0, <<BETA_SD>>);
+  sigma    ~ normal(0, <<SIGMA_SD>>);
+
+  NMG ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] NMG_rep;
+  for (i in 1:n) {
+    NMG_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r model2, message=FALSE, results="hide"}
+model2 <- knitr::knit_code$get("model2_stan") |>
+  paste(collapse = "\n") |>
+  glue::glue(.open = "<<", .close = ">>") |>
+  write_stan_file() |>
+  cmdstan_model()
+
+fit2 <- df |>
+  transmute(
+    NMG = .data[[variables['NMG']]],
+    YNE = .data[[variables['YNE']]] |> scale() |> as.numeric(),
+    AFR = .data[[variables['AFR']]] |> scale() |> as.numeric(),
+    YUE = .data[[variables['YUE']]] |> scale() |> as.numeric(),
+    GPC = .data[[variables['GPC']]] |> scale() |> as.numeric()
+  ) |>
+  drop_na() |>
+  compose_data() |>
+  model2$sample()
+```
+
+```{r}
+fit2$summary() |>
+  filter(
+    !stringr::str_detect(variable, "mu\\[") &
+      !stringr::str_detect(variable, "_rep\\[") &
+      !stringr::str_detect(variable, "lp__")
+  )
+
+params <- c("beta_YNE", "beta_AFR", "beta_YUE", "beta_GPC")
+draws <- fit2 |>
+  spread_draws(alpha, !!!syms(params), sigma)
+params |> purrr::walk(\(param) print(plot_param(draws, param)))
+```
