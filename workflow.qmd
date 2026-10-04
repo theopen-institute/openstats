@@ -235,9 +235,7 @@ Now we translate the formal model into a program the computer can run:
 
 A few details:
 
-- The priors live in the model. Their default scales are set in `transformed data`. The
-  `override_priors` switch lets us replace them from R without editing the model, which we
-  use to test sensitivity to priors in Step 8.
+- The priors are written directly in the `model` block, exactly as in the formal model.
 - Stan enforces the constraints with `sum_to_zero_vector`. Forcing
   effects to sum to zero shrinks their spread, so the code widens each prior's scale to
   compensate. That way, each effect's prior matches the formal model.
@@ -250,18 +248,13 @@ We compile the model and write a small helper so every fit in this document uses
 settings:
 
 ```{r compile, message=FALSE, results="hide"}
-model <- cmdstan_model("models/berkeley.stan", dir = ".stancache")
+berkeley <- cmdstan_model("models/berkeley.stan", dir = ".stancache")
 
-# prior_sd: NULL uses the model's default priors, or c(alpha, beta, gamma) overrides them
-fit_model <- function(data, prior_only = 0, prior_sd = NULL) {
+fit_model <- function(data, prior_only = 0, model = berkeley) {
   data |>
     select(dept, sex, admitted) |>
     compose_data() |>
-    c(list(
-      prior_only = prior_only,
-      override_priors = as.integer(!is.null(prior_sd)),
-      prior_sd = if (is.null(prior_sd)) numeric(0) else prior_sd
-    )) |>
+    c(list(prior_only = prior_only)) |>
     model$sample(seed = 2026, refresh = 0, show_messages = FALSE)
 }
 
@@ -492,19 +485,33 @@ them.
 
 ### Sensitivity to priors
 
-We refit with a much tighter and a much looser prior on the sex effect:
+We refit with a much tighter and a much looser prior on the sex effect. Each variant is
+the same model with one line changed: the scale in the prior on `beta`.
 
 ```{r sensitivity_priors, message=FALSE, results="hide"}
-# prior scales for (alpha, beta, gamma); NULL keeps the model's defaults
+# a copy of the model with the prior on beta set to Normal(0, beta_sd)
+with_beta_prior <- function(beta_sd) {
+  code <- readLines("models/berkeley.stan")
+  line <- grep("beta ~ normal(0, 1 *", code, fixed = TRUE)
+  stopifnot(length(line) == 1)
+  code[line] <- sub(
+    "normal(0, 1 *",
+    paste0("normal(0, ", beta_sd, " *"),
+    code[line],
+    fixed = TRUE
+  )
+  cmdstan_model(write_stan_file(code, dir = ".stancache"))
+}
+
 prior_scenarios <- list(
-  "Tight (beta_sd = 0.1)" = c(1.5, 0.1, 1),
-  "Default (beta_sd = 1)" = NULL,
-  "Loose (beta_sd = 2.5)" = c(1.5, 2.5, 1)
+  "Tight (beta ~ Normal(0, 0.1))" = with_beta_prior(0.1),
+  "Default (beta ~ Normal(0, 1))" = berkeley,
+  "Loose (beta ~ Normal(0, 2.5))" = with_beta_prior(2.5)
 )
 
 prior_sensitivity <- prior_scenarios |>
-  imap(\(prior_sd, name) {
-    direct_effect(fit_model(df, prior_sd = prior_sd)) |> mutate(scenario = name)
+  imap(\(model, name) {
+    direct_effect(fit_model(df, model = model)) |> mutate(scenario = name)
   }) |>
   list_rbind()
 ```

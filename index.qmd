@@ -1,0 +1,72 @@
+---
+title: Data Lunch
+subtitle: Statistics from the ground up · The Open Institute For Social Science
+format:
+  html:
+    toc: true
+---
+
+Data Lunch is a short course in applied statistics. It starts from a single uncomfortable
+claim, that most published research findings are false, and rebuilds statistics so you
+can tell when a finding deserves to be believed.
+
+The course is Bayesian, in the style of McElreath's *Statistical Rethinking*. We think
+about causes before we touch the data, draw our assumptions as causal diagrams (DAGs),
+write models in [Stan](https://mc-stan.org), and check every model on simulated data
+before trusting it on real data. Students apply each week's ideas to their own question
+using World Bank development indicators.
+
+# Lectures
+
+Each week is a slide deck. Most weeks have a concepts part and an applied part.
+
+| Week | Topic | What you'll learn |
+|:-----|:------|:------------------|
+| [Week 1](week1.qmd) | A fresh start | Why most published research is false: statistical significance, the base rate paradox, and Bayesian updating. |
+| [Week 2](week2.qmd) | Describing data | Probability distributions, z-scores, correlation, and our first regression coefficient. Applied: what makes a house expensive? |
+| [Week 3](week3.qmd) | Causes and DAGs | Drawing what causes what, what "cause" means in statistics, and the workflow from estimand to estimate. Worked example: does sex affect weight? |
+| [Week 4](week4.qmd) | Confounding | The three building blocks of every DAG (fork, pipe, collider), the paradoxes each one creates, and how to decide what to control for. |
+| [Week 5](week5.qmd) | Acting on evidence | Seven questions to ask of any finding, turning a decision into an estimand, and designing the experiment you wish you could run. |
+
+# A Bayesian workflow
+
+[A Bayesian Workflow](workflow.qmd) is a full worked example that pulls the course
+together. It asks whether a university's admissions process discriminates by sex, and
+goes through eight steps:
+
+1. Define the estimand.
+2. Draw the causal model (DAG).
+3. Simulate the population.
+4. Write the formal model.
+5. Write the Stan code.
+6. Test on simulated data.
+7. Fit and validate the model.
+8. Compute the estimand and test its robustness.
+
+Along the way it shows Simpson's paradox: a large overall gap in admission rates that
+disappears once we compare applicants to the same department.
+
+# Homework
+
+- [Week 1 homework](homework/week1.qmd): probability, base rates, and Bayesian updating.
+
+# Student projects
+
+Each student picks a question about development outcomes, draws a DAG, and fits a
+Bayesian regression to the 2022 World Bank data. Nepal is highlighted throughout as the
+reference case.
+
+| Project | Question |
+|:--------|:---------|
+| [Archana](projects/archana.qmd) | Does access to drinking water services affect water stress? |
+| [Ranju](projects/ranju.qmd) | Does corruption affect political stability? |
+| [Sambit](projects/sambit.qmd) | Does internet use affect the share of young people not in education, employment or training (NEETs)? |
+| [Sameer](projects/sameer.qmd) | Does the length of compulsory education affect vulnerable employment? |
+| [Suyash](projects/suyash.qmd) | Does inflation affect GDP growth? |
+| [Swasti](projects/swasti.qmd) | Does the share of youth NEETs affect net migration? |
+| [Tsering](projects/tsering.qmd) | Does women's employment affect vulnerable employment? |
+
+# Reference
+
+- [World Bank Development Indicators](wb-vars.qmd): the variables available for
+  projects, with their codes and coverage.

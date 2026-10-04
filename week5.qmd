@@ -1,0 +1,471 @@
+---
+format:
+  revealjs: default
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+source("r/rlib.R")
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 12,
+  fig.height = 6.5,
+  dpi = 150,
+  dev.args = list(bg = "transparent")
+)
+
+BLUE <- "#1b91ff"
+RED <- "#ff2c2d"
+GRAY <- "#999999"
+INK <- "#16314d"
+
+theme_set(
+  theme_minimal(base_size = 22) +
+    theme(
+      panel.grid.minor = element_blank(),
+      plot.title = element_text(face = "bold", color = INK),
+      legend.position = "top"
+    )
+)
+
+fmt <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = ",")
+pct <- function(x) paste0(round(100 * x), "%")
+```
+
+
+# Data Lunch: Week 5 {.center}
+
+Reading a finding, asking a question
+
+
+# Should we act on this?
+
+<!-- TODO: a real headline (ideally Nepal or South Asia) making a confident causal claim -->
+
+> _"[Headline goes here]"_
+
+- Hands up: would you fund a program based on this?
+- Keep your answer. We'll vote again at the end of Part 1.
+
+
+# Last four weeks → this week
+
+- **Week 1**: P(A|B) ≠ P(B|A). Surprising findings are usually false.
+- **Week 2**: Describe numbers by distributions. Coefficients have units.
+- **Week 3**: Seeing ≠ doing. The DAG decides which number answers your question.
+- **Week 4**: Forks, pipes, colliders. Holding the wrong thing fixed creates paradoxes.
+- This week: put it together, from **both sides** of an analysis.
+
+
+# Goals this week
+
+- Part 1: Evaluating someone else's finding
+  - Seven questions to ask of any claim
+  - Worked case: bicycles for girls in Bihar
+- Part 2: Asking your own question
+  - From a decision to an estimand
+  - The target trial: the experiment you wish you could run
+- Part 3: Applied
+  - Critique a study, design an estimand, revisit your project
+
+
+# Part 1: Evaluating a finding {.center}
+
+Seven questions
+
+
+## Seven questions
+
+::: {.nonincremental}
+1. **What exactly is the claim?**
+2. **What did they actually measure?**
+3. **How was the data made?**
+4. **What's in their DAG, and what's in their model?**
+5. **Who is it about?**
+6. **How big, and how sure?**
+7. **How plausible was it before?**
+:::
+
+::: {.fragment}
+Every one of these comes from a week you've already done, except one or two new pieces.
+:::
+
+
+# 1. What exactly is the claim?
+
+::: {.columns}
+::: {.column width="33%"}
+::: {.callout-note .nonincremental title="Descriptive"}
+_How much? How many?_
+
+"38% of Kathmandu voters support the mayor."
+:::
+:::
+
+::: {.column width="33%"}
+::: {.callout-tip .nonincremental title="Predictive"}
+_What will happen?_
+
+"The mayor will probably win."
+:::
+:::
+
+::: {.column width="33%"}
+::: {.callout-important .nonincremental title="Causal"}
+_What if we intervened?_
+
+"Free school meals raise attendance."
+:::
+:::
+:::
+
+- Each kind needs different evidence. Causal claims need the most.
+- Watch the verbs: _boosts, drives, leads to, protects against_ are causal claims, even
+  when the study was only able to support a descriptive one.
+- Exercise: rewrite the headline as an **estimand**. Is it seeing or doing? _(Week 3)_
+
+<!-- TODO: 3-4 real headlines; students classify each and spot causal verbs on descriptive evidence -->
+
+
+# 2. What did they actually measure?
+
+- The **concept** in the headline vs. the **variable** in the data.
+  - "Education" → years of schooling? enrollment? test scores?
+  - "Women's college enrollment (% gross)": can exceed 100%. Why?
+- **Proxies** are descendants: they carry the concept only partly. _(Week 4)_
+- **Missing data**: who didn't answer, and why? Missingness is often selection on a collider.
+- Measured once, or tracked over time? Self-reported, or observed?
+
+<!-- TODO: example of a measure that drifts from its concept (e.g. "poverty" as income vs. consumption) -->
+
+
+# 3. How was the data made?
+
+::: {.columns}
+::: {.column}
+```{r obs-dag, fig.width = 7, fig.height = 4.5}
+dag_plot(
+  c("U -> X", "U -> Y", "X -> Y"),
+  list(X = c(0, 0), U = c(1, 1.1), Y = c(2, 0)),
+  labels = c(X = "Program", U = "Motivation, wealth, ...", Y = "Outcome"),
+  above = "U",
+  highlight = c("U -> X", "U -> Y"),
+  exposure = "X",
+  outcome = "Y",
+  unobserved = "U"
+)
+```
+
+**Observational**: people chose X. Everything that drove that choice is a possible
+back door.
+:::
+
+::: {.column}
+::: {.fragment}
+```{r rct-dag, fig.width = 7, fig.height = 4.5}
+dag_plot(
+  c("R -> X", "U -> Y", "X -> Y"),
+  list(X = c(0, 0), U = c(1, 1.1), Y = c(2, 0), R = c(-0.2, 1.1)),
+  labels = c(R = "Coin flip", X = "Program", U = "Motivation, wealth, ...", Y = "Outcome"),
+  above = c("U", "R"),
+  exposure = "X",
+  outcome = "Y",
+  unobserved = "U"
+)
+```
+
+**Randomized**: a coin flip chose X. Every arrow into X is **deleted**. This is
+`do(X)` done physically.
+:::
+:::
+:::
+
+
+## Between the extremes
+
+- **Randomized experiments**: strongest for "does it work _here, for these people_?"
+- **Natural experiments**: something _like_ a coin flip (a lottery, a cutoff, a border,
+  a policy rollout date).
+- **Before / after, with a comparison group**: works if the groups would have moved
+  together without the program.
+- **Cross-sectional comparison**: one snapshot, many back doors. Everything in Week 4
+  applies.
+
+::: {.fragment}
+Ask: **"What decided who got X?"** If the answer is "people chose," start drawing back
+doors.
+:::
+
+<!-- TODO: regression to the mean slide here, or in Week 2: "we intervened on the worst
+schools and they improved" (before/after with no comparison group) -->
+
+
+# 4. What's in their DAG, and what's in their model?
+
+Most reports never draw a DAG. Draw it for them.
+
+::: {.nonincremental}
+- Which **forks** did they control for? Which did they miss?
+- Did they control for a **mediator**, hiding the effect? ("after adjusting for...")
+- Did they select on a **collider**? ("among patients," "among graduates,"
+  "among funded firms")
+:::
+
+::: {.fragment}
+The phrase **"after controlling for..."** is the most important sentence in the
+methods section. Check every variable in that list against your DAG. _(Week 4)_
+:::
+
+
+# 5. Who is it about?
+
+- **Sample vs. population**: who was studied, and who are you making a decision for?
+- **Would it work here?** Different place, time, prices, institutions, baseline rates.
+- **Average vs. everyone**: an average effect can hide people it hurts.
+
+::: {.fragment .callout-important .nonincremental title="Ecological fallacy"}
+Countries with more X have more Y does **not** mean people with more X have more Y.
+
+Your projects use country-level data. What can they say about individual women,
+households, students?
+:::
+
+<!-- TODO: classic ecological example (e.g. Robinson 1950, literacy and immigration) -->
+
+
+# 6. How big, and how sure?
+
+::: {.columns}
+::: {.column}
+**How big**
+
+- Translate into units that matter for the decision: rupees, students, lives per
+  10,000.
+- **Relative vs. absolute**: "doubles your risk" from 1 in 10,000 to 2 in 10,000 is
+  one extra case per 10,000 people.
+- Compare to the cost, and to the alternatives.
+:::
+
+::: {.column}
+**How sure**
+
+- Look at the **range** of plausible values, not just the middle.
+- Does the decision change anywhere in that range?
+- If the range runs from "large benefit" to "slight harm," you don't know yet. That is
+  a finding too.
+:::
+:::
+
+
+## Reading a table you're handed
+
+Most reports you'll read aren't Bayesian. You can still read them.
+
+<!-- TODO: replace with a real (or realistic) regression table from a report -->
+
+| | Estimate | Std. error | |
+|---|---:|---:|---|
+| Program | 0.42 | 0.15 | \*\* |
+| Household income (log) | 1.10 | 0.30 | \*\*\* |
+| Distance to school (km) | −0.08 | 0.06 | |
+: {.nonincremental}
+
+- **Rough plausible range**: estimate ± 2 × std. error.
+  - Program: `r fmt(0.42 - 2 * 0.15, 2)` to `r fmt(0.42 + 2 * 0.15, 2)`.
+- **Stars** only tell you whether that range crosses zero. Ignore them; read the range.
+- "Not significant" ≠ "no effect." Distance: `r fmt(-0.08 - 2 * 0.06, 2)` to
+  `r fmt(-0.08 + 2 * 0.06, 2)`. That's _uncertain_, not _zero_.
+- Then go back to question 4: why is household income in this model?
+
+
+# 7. How plausible was it before?
+
+- Back to Week 1: **P( true | significant )** depends on the **base rate**.
+- Warning signs:
+  - The finding is surprising, cheap, and convenient.
+  - Small sample, large effect.
+  - Many outcomes measured, one reported.
+  - Selected for publication or press (a collider). _(Week 4)_
+- **Replications** and **pre-registration** raise the base rate.
+
+::: {.fragment}
+Extraordinary claims need more than one study.
+:::
+
+
+# Worked case: bicycles for girls {.center}
+
+Muralidharan & Prakash (2017), _Cycling to School_, AEJ: Applied
+
+
+## The claim
+
+<!-- TODO: verify figures against the paper before presenting -->
+
+- **Program**: Bihar gave girls entering secondary school money for a bicycle (2006–).
+- **Finding**: girls' secondary enrollment rose substantially; the gender gap narrowed.
+- Should Madhesh Province copy it?
+
+
+## Seven questions, applied
+
+| Question | Bihar bicycles |
+|---|---|
+| 1. Claim | <!-- TODO --> |
+| 2. Measured | <!-- TODO --> |
+| 3. Design | <!-- TODO: triple difference: girls vs. boys, Bihar vs. Jharkhand, before vs. after --> |
+| 4. DAG / model | <!-- TODO --> |
+| 5. Who | <!-- TODO --> |
+| 6. Size / certainty | <!-- TODO --> |
+| 7. Prior plausibility | <!-- TODO --> |
+: {.nonincremental}
+
+::: {.fragment}
+Vote again: would you fund it in Madhesh? What would you need to know first?
+:::
+
+
+# Part 1: Summary
+
+::: {.nonincremental}
+1. **Claim**: descriptive, predictive or causal? Seeing or doing?
+2. **Measure**: does the variable mean what the headline says?
+3. **Design**: what decided who got X?
+4. **DAG**: what did they control for, and should they have?
+5. **Who**: whose data, and whose decision?
+6. **Size & certainty**: in decision units, as a range.
+7. **Prior**: how surprising, and how many tries?
+:::
+
+
+# Part 2: Asking your own question {.center}
+
+Start from the decision, not the data
+
+
+## Start with the decision
+
+- What will you **do differently** depending on the answer?
+- If the answer is high, you'll ___. If it's low, you'll ___.
+- If both blanks say the same thing, **don't do the analysis.**
+
+::: {.fragment}
+"What do the data say about education?" is not a question. "Should we fund
+transport for girls in grades 9–10 in this district?" is.
+:::
+
+
+## Building an estimand
+
+::: {.callout-tip .nonincremental title="Estimand template"}
+Among **[population]**, what is the **[summary]** of **[outcome]** after **[time]**,
+if **[intervention]** compared to **[alternative]**?
+:::
+
+| Piece | Example |
+|---|---|
+| Population | Girls finishing grade 8 in rural Madhesh |
+| Outcome | Enrolled in grade 9 |
+| Intervention | Bicycle provided |
+| Compared to what | No program (or: a cash transfer of the same value) |
+| Time | One year later |
+| Summary | Difference in share enrolled |
+: {.nonincremental}
+
+- The **comparison** is the part people forget. "Effect of X" always means "X
+  compared to what?"
+
+<!-- TODO: cite Lundberg, Johnson & Stewart (2021), "What Is Your Estimand?", ASR -->
+
+
+## The target trial
+
+**If you could run any experiment, what would it be?**
+
+- Who would you randomize? To what? Measured when?
+- This is the estimand made concrete.
+- Then compare it with the data you **actually** have.
+- Every gap between the two is a **limitation**, named before you see results.
+
+| Ideal experiment | Data we have | Gap |
+|---|---|---|
+| <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+: {.nonincremental}
+
+<!-- TODO: cite Hernán & Robins, target trial emulation -->
+
+
+## From estimand to data
+
+1. **Draw the DAG** for your estimand. _(Weeks 3–4)_
+2. Which variables must you measure to close the back doors?
+3. Can you measure them? If not, which **design** gets around them? _(Question 3)_
+4. Who needs to be in the sample for the answer to apply to **your** decision?
+   _(Question 5)_
+5. How precise does the answer need to be to change the decision?
+
+
+## Is it worth finding out?
+
+- If every plausible answer leads to the same decision, the data has no value _to you_.
+- If the decision is expensive and hard to reverse, precision is worth paying for.
+- Sometimes the best decision is a **small pilot**, designed as an experiment.
+
+<!-- TODO: simple "decision threshold" diagram: posterior vs. the cost-effectiveness line -->
+
+
+# Part 2: Summary
+
+- Start from the **decision**. If no answer would change it, stop.
+- Write the **estimand**: population, outcome, intervention, comparison, time, summary.
+- Imagine the **target trial**. Its gaps with your data are your limitations.
+- The DAG says what to measure. The decision says how precise it needs to be.
+
+
+# Part 3: Applied {.center}
+
+
+## Round 1: Critique
+
+<!-- TODO: 3-4 one-page study summaries, one per group -->
+
+In groups, take one study summary and answer the seven questions.
+
+- Which question was hardest to answer from what they reported?
+- What's the **one thing** you'd need to know before acting?
+
+
+## Round 2: Design
+
+<!-- TODO: decision prompts, e.g. municipal budget decisions -->
+
+Each group gets a decision. Write:
+
+1. The decision and what each answer would change.
+2. The estimand, using the template.
+3. The target trial.
+4. The data you could realistically get, and the gaps.
+
+
+## Your project
+
+- Rewrite your project's question using the **estimand template**.
+- What is your **target trial**? How far is World Bank 2022 data from it?
+- List your **scope limits**:
+  - One year, cross-sectional
+  - Country-level: what can you say about individuals?
+  - Measurement: does each variable mean what its label says?
+- Which of the seven questions would a skeptic ask you first?
+
+
+# Homework
+
+**A one-page critique memo** on a real report or finding from your own work.
+
+- Organized by the seven questions.
+- Ends with: **"What I'd need to see before acting on this."**
+
+<!-- TODO: homework/week5.qmd with a worked example memo -->
