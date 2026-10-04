@@ -1,0 +1,407 @@
+---
+title: "Week 5 Homework"
+subtitle: "Reading a finding, asking a question: the seven questions, estimands, and the target trial"
+engine: knitr
+format:
+  html:
+    toc: true
+---
+
+These exercises go with the Week 5 lecture. Part A checks your understanding of the
+ideas. Parts B–E are problems to work through, in the same order as the lecture: the
+seven questions, the bicycle case, estimands, and the target trial. Part F is the main
+assignment from the last slide: a critique memo, plus a check on your own project.
+Part G is an optional R challenge.
+
+A few ground rules:
+
+- **Show your work.** A correct answer with no reasoning is worth less than a wrong
+  answer with clear reasoning. For many of these questions, drawing a small DAG is the
+  easiest way to think.
+- **Write in plain language.** If you can't explain it to a friend who missed the
+  lecture, you haven't finished understanding it yet.
+- **There is often more than one good answer.** This week is about judgement. Say what
+  you assume, and why.
+- Problems marked ★ are harder. Give them a real try, but don't get stuck on them.
+
+All the studies, programs, and numbers in this homework are **made up for practice**,
+unless the question says it comes from the lecture slides.
+
+# Part A: Concepts
+
+**A1.** Write the seven questions to ask of any finding, from memory if you can. Next to
+each one, write the week of the course it comes from (Week 1, 2, 3 or 4). Which one or
+two are new this week?
+
+**A2.** Is each sentence a **descriptive**, **predictive**, or **causal** claim? Underline
+any causal verbs (words like *boosts, drives, leads to, protects against*).
+
+a. "In our survey of 500 households in Dhading, 1 in 4 received money from a family
+   member working abroad."
+b. "Remittances drive higher school enrollment in the hills."
+c. "Given the rain so far this monsoon, the river will probably flood in August."
+d. "Students who use the school library more get better grades."
+e. "Using the school library boosts grades."
+
+Pick one causal claim. Rewrite it as an **estimand**: what number would answer it? Is
+it a question about **seeing** or about **doing**? *(Week 3)*
+
+**A3.** *Concept vs. variable.* A headline talks about a **concept**. The data contain a
+**variable**.
+
+a. Give three different variables someone could use to measure "education" in Nepal.
+   Could they give different answers to the same question?
+b. The World Bank variable "women's college enrollment (% gross)" can be more than 100%.
+   How is that possible? What does that tell you about reading variable names?
+c. Why is a **proxy** like a **descendant** in a DAG? *(Week 4)*
+
+**A4.** *What decided who got X?* For each study, name the design (randomized
+experiment, natural experiment, before/after with a comparison group, or
+cross-sectional comparison). Then say what decided who got the program.
+
+a. A municipality had 400 applicants for 200 places in a free coding course, and chose
+   who got in by lottery. Researchers compare the winners and losers a year later.
+b. An NGO compares child health in districts that have its clinics with districts that
+   don't, using one year of survey data.
+c. Twenty schools started a new maths curriculum in 2023. Twenty similar schools
+   started it in 2025. Researchers compare how scores changed from 2022 to 2024 in both
+   groups.
+d. For each of 60 wards, researchers flipped a coin to decide which wards got new
+   water filters.
+
+Which design has the most back doors to worry about? Why?
+
+**A5.** *"After controlling for…"* Each sentence comes from the methods section of a
+study. Is the control variable a **fork**, a **pipe** (mediator), or a **collider**? Was
+it a good idea to control for it (or select on it)?
+
+a. "Clinic visits were linked to better child health, after controlling for household
+   wealth."
+b. "The fertilizer subsidy raised rice yields. But after controlling for how much
+   fertilizer each farmer used, the effect disappeared."
+c. "Among students who passed the SEE, those from richer families studied fewer hours."
+
+**A6.** *Who is it about?* Countries with higher internet use have a lower share of
+young people who are not in school, work, or training.
+
+a. Can you conclude that a young person in Nepal who starts using the internet is less
+   likely to end up out of school and work? Why or why not?
+b. What is the name for this mistake?
+c. Give one way the country-level pattern could be true even if internet use made
+   no difference to any individual.
+
+**A7.** True or false? Give a one-sentence reason for each.
+
+a. If a program's effect is "not significant," the program did nothing.
+b. The stars (\*, \*\*, \*\*\*) in a table tell you how big an effect is.
+c. A well-run randomized experiment in Bihar tells us what would happen in Madhesh.
+d. A program that raises the *average* score can still make some students worse off.
+e. A small study that finds a large, surprising effect deserves more doubt than a large
+   study that finds a small, expected one.
+f. If a risk "halves," the absolute change must be large.
+
+# Part B: Critique a study
+
+Read this study summary. **It is made up.** The program, the NGO, and the numbers do
+not exist.
+
+::: {.callout-note title="Fictional study: TabletLearn"}
+**Headline:** *"Tablets boost learning: pass rates up 10%."*
+
+The NGO TabletLearn gave every grade 9 student a tablet with maths and science lessons
+in 30 private schools in Kathmandu Valley. Schools **applied** to join. After one year,
+the NGO compared these 30 schools with 30 schools that did not apply.
+
+- **Outcome:** a practice exam written by the NGO. 66% of students in tablet schools
+  passed, compared with 60% in the other schools.
+- The NGO says it measured **10 outcomes** in total (attendance, homework completion,
+  several subject scores, and so on). The report shows the practice-exam result.
+- Only schools where the tablets **still worked at the end of the year** were included.
+  Five schools whose tablets broke were dropped.
+- The program cost **Rs 12,000 per student**.
+- The report includes this table. The outcome is the practice-exam score, in points.
+
+| | Estimate | Std. error | |
+|---|---:|---:|---|
+| Tablet program | 4.0 | 1.5 | \*\* |
+| Student attendance (days) | 0.30 | 0.05 | \*\*\* |
+| Household income (log) | 2.5 | 0.8 | \*\* |
+| Distance to school (km) | −0.40 | 0.30 | |
+
+The NGO concludes: *"Every public school in Nepal should get tablets."*
+:::
+
+Answer one question at a time.
+
+**B1.** *What exactly is the claim?* Is the headline descriptive, predictive, or causal?
+Which word tells you? Write the estimand the NGO *seems* to have in mind.
+
+**B2.** *What did they actually measure?* The headline says "learning." What was
+measured? Give one reason the NGO's own practice exam might not match "learning."
+
+**B3.** *How was the data made?* What decided which schools got tablets? Draw a DAG with
+the tablet program, the exam score, and at least one unmeasured cause of both. Name the
+structure.
+
+**B4.** *What's in their DAG, and what's in their model?*
+
+a. The model "controls for" student attendance. Draw an arrow from the tablet program to
+   attendance, if you think it belongs. Is attendance a fork, a pipe, or a collider? What
+   does controlling for it do to the program's estimate?
+b. Only schools with working tablets were included. Tablets might keep working in
+   well-run schools, and well-run schools might also have better exam results. What
+   structure is this? Which way might it push the result?
+
+**B5.** *Who is it about?* Who was studied? Who is the NGO's conclusion about? List
+two differences between the two groups that could change the effect.
+
+**B6.** *How big?*
+
+a. The headline says pass rates rose "10%." What was the change in **percentage
+   points**? Show how both numbers come from 60% and 66%.
+b. In a school of 1,000 grade 9 students, how many extra students would pass?
+c. Using the cost of Rs 12,000 per student, about how much does each *extra* passing
+   student cost? (Assume, for now, that the 6-point gap is all caused by the tablets.)
+
+**B7.** *How sure?* Use the table.
+
+a. Write the rough plausible range (estimate ± 2 × std. error) for the tablet program
+   and for distance to school.
+b. Distance to school has no stars. Does that mean distance doesn't matter? Explain.
+
+**B8.** *How plausible was it before?* *(Week 1)*
+
+a. Suppose that before seeing this study, you think only 1 in 10 programs like this
+   truly raise exam scores. Studies like this have about 50% power, and use α = 0.05.
+   What is P( true effect | significant result )?
+b. ★ The NGO measured 10 outcomes. Suppose the tablets did nothing for any of them, and
+   each outcome has a 5% chance of a false "significant" result, independently. What is
+   the chance that **at least one** of the 10 looks significant anyway?
+
+**B9.** Which of the seven questions was hardest to answer from what the NGO reported?
+What is the **one thing** you'd need to know before acting?
+
+# Part C: Worked case, bicycles for girls
+
+The lecture discussed Muralidharan & Prakash (2017), *Cycling to School*. From the
+slides: Bihar gave girls entering secondary school money for a bicycle, starting in
+2006. The finding was that girls' secondary enrollment rose substantially and the gender
+gap narrowed. The design was a **triple difference**: girls vs. boys, Bihar vs.
+Jharkhand, before vs. after. Use only this information; you don't need the paper.
+
+**C1.** *Claim.* Is the finding descriptive, predictive, or causal? Write it as an
+estimand using the template from Part 2 of the lecture.
+
+**C2.** *Design.* Explain in plain words why each comparison is there.
+
+a. Why not just compare girls in Bihar **before vs. after** 2006?
+b. Why also compare girls with **boys** in Bihar?
+c. Why also compare with **Jharkhand**?
+d. What has to be true for this design to work? Finish the sentence: *"Without the
+   program, the gap between girls and boys in Bihar would have changed…"*
+
+**C3.** ★ *A triple difference by hand.* These numbers are **invented** for practice and
+are **not** from the paper. They are the share (%) of children enrolled in secondary
+school.
+
+| | Before | After |
+|---|---:|---:|
+| Bihar girls | 30 | 45 |
+| Bihar boys | 50 | 58 |
+| Jharkhand girls | 32 | 40 |
+| Jharkhand boys | 52 | 58 |
+
+a. How much did enrollment change for Bihar girls? Is that the effect of the program?
+b. Subtract the change for Bihar boys. What do you get?
+c. Do the same for Jharkhand (girls' change minus boys' change).
+d. Subtract (c) from (b). This is the triple difference. Compare the three answers in
+   (a), (b) and (d). Why do they shrink?
+
+**C4.** *DAG.* Draw a DAG for how the program could raise enrollment. Include at least
+the program, owning a bicycle, travel time or safety on the way to school, and
+enrollment. A later study "controls for whether the girl owns a bicycle." What happens
+to the estimated effect of the program, and why?
+
+**C5.** *Who.* Should Madhesh Province copy the program? List three ways Madhesh might
+differ from Bihar in 2006 that could make the effect bigger or smaller. Which girls
+would probably gain the **least** from a bicycle?
+
+**C6.** *Size and certainty.* Before funding it in Madhesh, what would you want the
+effect stated in? Give the units, and name one **alternative** you'd compare it to.
+
+**C7.** *Prior plausibility.* Was this a surprising, cheap, convenient finding, or a
+plausible one with a clear mechanism? How should that affect how much you trust it?
+
+**C8.** *Vote again.* Would you fund it in Madhesh? Answer yes, no, or "not yet," and
+name the one thing you would need to know first.
+
+# Part D: From a decision to an estimand
+
+**D1.** For each situation, fill in: *"If the answer is high, I'll \_\_\_. If it's
+low, I'll \_\_\_."* Then say whether the analysis is worth doing.
+
+a. A ward office has already spent its budget building a footbridge. It now wants a
+   study on whether the bridge raises school attendance.
+b. A savings cooperative is deciding whether to offer lower interest rates to women's
+   groups. It wants to know if lower rates lead to more repaid loans.
+c. A school is deciding whether to start a free morning tiffin for grades 1–3.
+
+**D2.** Which of these are real questions (ones that could change a decision)? Rewrite
+the ones that aren't.
+
+a. "What do the data say about migration?"
+b. "Should Pokhara subsidize bus passes for grade 11–12 students next year?"
+c. "Is women's education important?"
+d. "Should our district hire 20 more health workers or build 2 more health posts?"
+
+**D3.** A municipality asks: *"Should we pay for free school meals for grades 1–5?"*
+Fill in the estimand template:
+
+| Piece | Your answer |
+|---|---|
+| Population | |
+| Outcome | |
+| Intervention | |
+| Compared to what | |
+| Time | |
+| Summary | |
+
+Then write the whole estimand as one sentence: *"Among \[population\], what is the
+\[summary\] of \[outcome\] after \[time\], if \[intervention\] compared to
+\[alternative\]?"*
+
+**D4.** Each estimand below is missing something. Name the missing piece(s) and fix it.
+
+a. "The effect of microfinance on women's income."
+b. "Among rice farmers in Chitwan, the difference in average yield if they get
+   drought-resistant seed."
+c. "The effect of the bicycle program compared to a cash transfer of the same value."
+
+**D5.** *Compared to what?* For the bicycle program, compare two estimands: (i) bicycle
+vs. **no program**, and (ii) bicycle vs. **a cash transfer of the same value**. Could
+they give different answers? Which one matters if the municipality has already
+decided to spend the money on girls' schooling somehow?
+
+**D6.** ★ *Is it worth finding out?* A bicycle costs Rs 10,000 per girl. The council will
+only fund the program if each **extra** girl enrolled costs **Rs 200,000 or less**.
+
+a. What is the smallest effect, in percentage points, at which the program is worth
+   it? *(Hint: if the program raises enrollment by e percentage points, 100 bicycles
+   produce e extra enrolled girls.)*
+b. For a 4-point effect, how much does each extra enrolled girl cost?
+c. Three studies give these plausible ranges for the effect. For each, what should the
+   council do?
+   - (i) 8 to 15 points
+   - (ii) −1 to 3 points
+   - (iii) 2 to 12 points
+d. For case (iii), why might a **small pilot, designed as an experiment,** be the best
+   decision?
+
+# Part E: The target trial
+
+**E1.** Use your estimand from D3 (school meals). If you could run **any** experiment,
+what would it be? Answer: who would you randomize, to what, and when would you measure
+the outcome? Why is a coin flip so useful here? *(Hint: what does it do to the arrows
+into the program?)*
+
+**E2.** Now suppose this is the data you **actually** have (also made up): one
+household survey from 2023. For each household, it records whether a daughter aged
+15–16 is enrolled in school, whether the household owns a bicycle, the distance to the
+nearest secondary school, and household income.
+
+You want to know whether giving girls bicycles would raise enrollment. Fill in the
+table with at least three rows.
+
+| Ideal experiment | Data we have | Gap |
+|---|---|---|
+| | | |
+| | | |
+| | | |
+
+Which variables would you need to measure to close the back doors? Which could you
+measure, and which not?
+
+**E3.** The lecture said to name your limitations **before** you see the results. Why
+does the order matter?
+
+**E4.** ★ Write the target trial for the Bihar study (Part C). Then compare it with what
+the researchers could actually do. What is the biggest gap, and how did the triple
+difference try to get around it?
+
+# Part F: Applied
+
+**F1.** *Your project.* Open your project page in `projects/`.
+
+a. Rewrite your project's question using the **estimand template**.
+b. What is your **target trial**? Be concrete: what would be randomized, and among
+   whom? (It is fine if this experiment is impossible. Say why.)
+c. Fill in the "Ideal experiment / Data we have / Gap" table for your project. The data
+   you have is World Bank 2022.
+d. List your **scope limits**:
+   - One year, cross-sectional. What can't one snapshot tell you?
+   - Country-level. What can your project say about individual people or households?
+   - Measurement. Pick one of your variables. Does it mean what its label says?
+e. Which of the seven questions would a skeptic ask you **first**? Write a short answer
+   to it.
+
+**F2.** *A one-page critique memo.* This is the main assignment for the week. Pick a
+real report or finding from your own work: a government report, an NGO evaluation, a
+news story, a consultant's slide deck.
+
+- Organize the memo by the **seven questions**: one short paragraph each.
+- End with a section called **"What I'd need to see before acting on this."**
+- Keep it to one page. Short and clear beats long and complete.
+
+Here is a short example, written about a **made-up** claim, to show the shape:
+
+::: {.callout-tip title="Example memo (fictional claim)" collapse="true"}
+**Claim:** *"Wards with more health posts have fewer child deaths, so every ward should
+get a second health post."*
+
+1. **Claim.** Causal ("so every ward should get"), but the evidence is a comparison
+   between wards.
+2. **Measured.** "Child deaths" is deaths *recorded* at the ward office. Wards with more
+   health posts may record deaths more completely, which would hide part of the effect.
+3. **Design.** Cross-sectional. Health posts were placed by the government, probably in
+   richer or better-connected wards. People didn't get a health post by coin flip.
+4. **DAG.** Wealth and road access are forks (they cause both health posts and child
+   survival). The report doesn't control for either.
+5. **Who.** Wards in one district. The claim is about every ward in the country.
+6. **Size and certainty.** The report says "fewer deaths" but gives no number or range.
+7. **Prior.** It is plausible that health posts help. The open question is *how much*,
+   and whether a second post adds as much as the first.
+
+**What I'd need to see before acting on this:** the comparison repeated within wards of
+similar wealth and road access, the effect stated per 1,000 children with a range, and
+the cost of a second health post next to the alternatives.
+:::
+
+# Part G: R challenge (optional)
+
+**G1.** Write an R function `plausible_range(estimate, se)` that returns the low and high
+ends of estimate ± 2 × std. error, and whether the range crosses zero. Use it to check
+your answers to B7 for all four rows of the TabletLearn table.
+
+**G2.** ★ *Self-selection, simulated.* Simulate 1,000 schools. Each school has a
+`motivation` drawn from `rnorm()`. Motivated schools are more likely to join the
+tablet program: `tablet <- rbinom(n, 1, plogis(2 * motivation))`. The exam score is
+`50 + 5 * motivation + effect * tablet + rnorm(n, 0, 5)`.
+
+a. Set `effect <- 0` (the tablets do nothing). Compute the average score of tablet
+   schools minus the average score of other schools. Repeat this 200 times and take the
+   average. What do you get, and why isn't it 0?
+b. Now give out tablets by coin flip instead: `tablet <- rbinom(n, 1, 0.5)`. What is
+   the difference now?
+c. Repeat (a) and (b) with `effect <- 3`. Which design recovers the true effect?
+d. Connect this to question 3 of the seven: *"What decided who got X?"*
+
+# Part H: Reflection
+
+**H1.** At the start of the lecture you were asked whether you'd fund a program based on
+one confident headline. In a short paragraph:
+
+- Did your answer change by the end? Why?
+- Which of the seven questions do you now think is the most often skipped, in the
+  reports you see at work?
+- Name one thing you used to believe from a single study or news story that you would
+  now want to check.

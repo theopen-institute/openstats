@@ -1,0 +1,363 @@
+---
+title: "Week 4 Homework"
+subtitle: "Forks, pipes, colliders, and the paradoxes they create"
+engine: knitr
+format:
+  html:
+    toc: true
+---
+
+These exercises go with the Week 4 lecture. Part A checks your understanding of the
+ideas. Parts B and C are problems to work through with pen and paper. Part D asks you to
+make the paradoxes happen yourself in R. Part E is about your own project. Part F is an
+optional R challenge.
+
+A few ground rules:
+
+- **Draw the DAG first.** Almost every question this week gets easier once you have the
+  picture in front of you. Pen and paper is fine. So is [dagitty.net](https://dagitty.net/dags.html).
+- **Show your work.** Name every path between X and Y and say whether it is open or
+  closed. A correct answer with no paths is worth less than a wrong answer with clear
+  reasoning.
+- **Write in plain language.** If you can't explain it to a friend who missed the
+  lecture, you haven't finished understanding it yet.
+- Problems marked ★ are harder. Give them a real try, but don't get stuck on them.
+
+A reminder of the words we use. **Holding Z fixed**, **controlling for Z**, **adjusting
+for Z** and **conditioning on Z** all mean the same thing. A path is **open** if
+association can flow along it, and **closed** if it can't.
+
+# Part A: Concepts
+
+**A1.** Copy and fill in this table. Use the words *open* and *closed*.
+
+| Structure | Draw it with arrows | Through Z, by default | If you hold Z fixed | Should you control for Z? |
+|-----------|---------------------|-----------------------|---------------------|---------------------------|
+| Fork      |                     |                       |                     |                           |
+| Pipe      |                     |                       |                     |                           |
+| Collider  |                     |                       |                     |                           |
+
+Then give one example of each from the lecture, in one line each.
+
+**A2.** In lecture we saw three ways to "hold Z fixed". For each study below, say
+*what* is being held fixed and *how* (adding it to a regression, splitting the data into
+groups, or selecting the sample).
+
+a. A researcher studies the effect of tuition classes on SEE results. She adds family
+   income to her regression.
+b. A study of back pain only surveys patients at a hospital in Kathmandu.
+c. A report compares rice yields in fields that use fertilizer and fields that don't,
+   separately for the Terai and the hills.
+d. A study of what makes a good employee only looks at people who passed the job
+   interview.
+
+Which one of these is easiest to miss, and why?
+
+**A3.** Holding Z fixed *closes* a fork and also *closes* a pipe. So why is the advice
+"control for it" for a fork but "usually don't" for a pipe? Answer in 3–4 sentences.
+Use the words *confounder*, *mediator* and *real effect*.
+
+**A4.** In the anti-fungal plant example, the treated plants grew more. But when we
+compared plants with the same fungus status, the treatment looked useless.
+
+a. Draw the DAG.
+b. What is **post-treatment bias**? Explain it in your own words.
+c. Is there *any* question for which holding fungus fixed would be the right choice?
+
+**A5.** *Descendants.*
+
+a. In lecture, we wanted to control for wealth but could only measure **income group**.
+   Why did some correlation between phones and births remain after we controlled for
+   income group?
+b. Wealth and hard work can each get you a prestigious job. A study only looks at
+   people who earn a high **salary**. Why does this partly open the collider, even
+   though no one selected on the job itself?
+
+**A6.** True or false? Give a one-sentence reason for each.
+
+a. Adding more control variables to a regression always gets you closer to the truth.
+b. If two variables are not correlated in the data, neither one can cause the other.
+c. If X and Y are unrelated in the whole population, they will also be unrelated in any
+   sample you take from it.
+d. Simpson's paradox, where a trend reverses when you split the data, is usually
+   caused by a fork.
+e. You can find out from the data alone whether a variable is a confounder or a
+   mediator.
+
+**A7.** The **back-door rule** has four steps. In your own words, explain what a "back
+door" is. Then explain which step each of last week's examples follows:
+
+a. We did *not* control for height when estimating the effect of sex on weight.
+b. We *did* control for living area when estimating the value of an extra bedroom.
+
+# Part B: Name the structure
+
+**B1.** For each story, find the third variable. Say whether it is a **fork**, a
+**pipe** or a **collider**, and draw the DAG. (Some have more than one good answer.
+Pick the one you believe and explain why.)
+
+a. In years with a heavy monsoon, Nepal has more landslides *and* bigger rice harvests.
+   So landslides "go with" good harvests.
+b. A scholarship is given to students with top marks *or* to top athletes. Among
+   scholarship students, the best athletes have the lowest marks.
+c. Districts with more health posts report more cases of TB.
+d. A fertilizer trial in Chitwan measures soil nitrogen at the end of the season.
+   Comparing fields with the same soil nitrogen, fertilizer seems to make no
+   difference to the harvest.
+e. Among trekking agencies that survived the COVID years, the ones with the worst
+   websites have the best reviews.
+f. Households that receive remittances spend more on their children's schooling, and
+   their children get better results. Comparing households that spend the same
+   amount on schooling, remittances make no difference.
+
+**B2.** *Spot the confound.* For each claim, draw the DAG, name the structure, and say
+what you would (or would not) control for.
+
+a. Students who use ChatGPT more get lower marks.
+b. Among patients at a large hospital, people with diabetes are *less* likely to have a
+   broken bone.
+c. After controlling for monthly income, years of schooling has almost no effect on
+   whether a household has enough food.
+d. ★ Among published studies of a new medicine, the small studies report much bigger
+   effects than the large ones. *Hint: which studies get published?*
+
+**B3.** ★ *The low-birth-weight paradox.* Among babies born with low birth weight,
+babies of mothers who smoked die *less* often than babies of mothers who didn't smoke.
+Does this mean smoking protects low-weight babies?
+
+a. Draw a DAG with: Smoking, Other problems (for example, a birth defect), Low birth
+   weight, and Death.
+b. Which variable is the collider? What is the path that holding it fixed opens?
+c. Explain in 3–4 plain sentences why smokers' low-weight babies look healthier.
+
+# Part C: Should I control for it?
+
+You can type each DAG below into [dagitty.net](https://dagitty.net/dags.html) to check
+your answers. But do each question by hand first.
+
+**C1.** *Remittances and school results.* We want the effect of a household receiving
+**remittances** on a child's **school results**. Assume this DAG:
+
+```
+dag {
+  District -> Wealth
+  District -> Results
+  Wealth -> Remittances
+  Wealth -> Results
+  Remittances -> Results
+  Remittances -> Tuition
+  Tuition -> Results
+  Remittances -> Boarding
+  Results -> Boarding
+}
+```
+
+*Wealth* is the household's wealth before anyone went abroad. *Tuition* is money spent
+on tuition classes. *Boarding* means the child moved to a boarding school in Kathmandu,
+which needs money *and* good results.
+
+a. List every path between Remittances and Results. There are five.
+b. For each path: is it a causal path or a back door? Is it open or closed right now?
+   Name each fork, pipe and collider along the way.
+c. For each of District, Wealth, Tuition and Boarding, say whether you should control
+   for it to get the **total effect** of remittances. Give a reason for each.
+d. What is the smallest set of variables that closes every back door?
+e. A classmate controls for Wealth **and** Boarding. What goes wrong?
+f. What would you control for if you wanted only the **direct** effect, not the part
+   that works through tuition?
+
+**C2.** ★ *A collider that comes first.* We want the effect of taking **Lok Sewa
+coaching classes** on **passing** the Lok Sewa exam. Assume this DAG. Motivation is not
+measured.
+
+```
+dag {
+  Wealth -> Coaching
+  Wealth -> Kathmandu
+  Motivation -> Kathmandu
+  Motivation -> Passed
+  Coaching -> Passed
+}
+```
+
+*Kathmandu* means the person lives in Kathmandu. Richer people and more motivated
+people are both more likely to move there.
+
+a. List both paths between Coaching and Passed. Which one is open?
+b. A colleague says: "Where someone lives was decided *before* they took coaching, so it
+   is safe to control for it." Is she right? What happens if you control for Kathmandu
+   alone?
+c. Suppose you have already controlled for Kathmandu, and your supervisor insists it
+   stays in the model. What *else* could you control for to fix the problem?
+d. Which rule of the back-door rule does this question illustrate?
+
+**C3.** *A paradox inside a paradox.* Go back to the Berkeley admissions example, with
+**ability** added:
+
+```
+dag {
+  Sex -> Department
+  Department -> Admitted
+  Sex -> Admitted
+  Ability -> Department
+  Ability -> Admitted
+}
+```
+
+a. If we want the **total** effect of sex on admission, what should we control for?
+b. We want the **direct** effect (do committees treat women differently?), so we hold
+   department fixed. Write down the path this opens. Which part of it is the collider?
+c. Why can't we fix this by controlling for something else, if ability is not
+   measured?
+d. Suppose we *could* measure ability. What would we control for to get the direct
+   effect?
+
+# Part D: Make the paradoxes yourself
+
+In this part you build the made-up worlds from lecture in R. Because you make the world,
+you **know** the true answer, so you can see exactly when a method goes wrong. Use
+`cor()` and `lm()` for quick answers. Copy the code exactly, including `set.seed()`, so
+your numbers match your classmates'.
+
+**D1.** *The fork: marriage and happiness.* In this world, urban people marry later and
+are happier, but age at marriage has **no** effect on happiness.
+
+```r
+set.seed(116)
+n <- 500
+urban <- rbinom(n, 1, 0.5)
+age <- 25 + 3 * rnorm(n, 2 * urban - 1)
+happiness <- 5 + 1.5 * rnorm(n, 2 * urban - 1)
+```
+
+a. Find the correlation between age and happiness for everyone.
+b. Find the correlation separately for urban and for rural people.
+c. Fit `lm(happiness ~ age)` and `lm(happiness ~ age + urban)`. What is the
+   coefficient on age in each? Which one matches the truth?
+d. In one sentence: which path did adding `urban` close?
+
+**D2.** *The pipe: the anti-fungal treatment.* In this world, the treatment lowers the
+chance of fungus, and fungus slows growth. The treatment does nothing else.
+
+```r
+set.seed(71)
+n <- 400
+treated <- rep(c(0, 1), each = n / 2)
+fungus <- rbinom(n, 1, ifelse(treated == 1, 0.1, 0.5))
+growth <- rnorm(n, 5 - 3 * fungus, 1)
+```
+
+a. Compare the average growth of treated and untreated plants.
+b. Fit `lm(growth ~ treated)` and `lm(growth ~ treated + fungus)`. What is the
+   coefficient on `treated` in each?
+c. Which model would you show a farmer who asks "should I buy this treatment?" Why?
+
+**D3.** *The collider: grant proposals.* Newsworthiness and trustworthiness are
+unrelated. Reviewers fund proposals with the highest *combined* score.
+
+```r
+set.seed(1914)
+n <- 200
+newsworthy <- rnorm(n)
+trustworthy <- rnorm(n)
+score <- newsworthy + trustworthy
+funded <- score >= quantile(score, 0.9)   # top 10% get funded
+```
+
+a. Find the correlation between newsworthiness and trustworthiness for all 200
+   proposals, and for the funded ones only.
+b. Using the same data, change the cutoff so the top 50% get funded. What is the
+   correlation among funded proposals now? What happens as funding gets more selective?
+c. Now fund the top 10% on newsworthiness **alone**. What is the correlation among
+   funded proposals? Why is it so different from (a)?
+d. Selecting the sample is one way to hold Z fixed. Adding Z to a regression is another.
+   Fit `lm(trustworthy ~ newsworthy + funded)` on all 200 proposals. What is the
+   coefficient on `newsworthy`? What does this tell you about putting a collider in a
+   regression?
+
+# Part E: Your project
+
+**E1.** Open your project's `.qmd` file and copy your `dag` into
+[dagitty.net](https://dagitty.net/dags.html). (In DAGitty: *Model → New model*, then
+paste it into the *Model code* box.)
+
+a. Write down your **exposure** (X) and **outcome** (Y) in one sentence each.
+b. List every path between X and Y. Label each one as causal or a back door, and name
+   each fork, pipe and collider along it.
+c. Look at the **Causal effect identification** panel. Write down the adjustment set(s)
+   DAGitty gives you.
+d. Compare these with the variables your model actually controls for (the ones marked
+   `adjusted` in your `dag`). Do they match? If you control for something DAGitty does
+   not ask for, is it a mediator, a collider, or harmless?
+e. Is there a variable you control for that a skeptic might say is caused by your X?
+   Draw the skeptic's DAG. Would it change your adjustment set?
+f. Your data is a sample of countries with World Bank data for 2022. Countries with
+   missing data were dropped. Could this selection act like a collider? Give one
+   reason why it might, or might not.
+
+# Part F: R challenge (optional)
+
+**F1.** *A proxy for a confounder.* Simulate a world where wealth causes both phones and
+births, and phones have **no** effect on births. Then try controlling for wealth itself,
+for a good proxy, and for a poor proxy.
+
+```r
+set.seed(42)
+n <- 1000
+wealth <- rnorm(n)
+phones <- wealth + rnorm(n, 0, 0.5)
+births <- -wealth + rnorm(n, 0, 0.5)
+proxy_good <- wealth + rnorm(n, 0, 0.3)
+proxy_bad <- wealth + rnorm(n, 0, 1)
+```
+
+Report the coefficient on `phones` in four models: no control, `+ wealth`,
+`+ proxy_good`, `+ proxy_bad`. Explain the pattern using the word *descendant*.
+
+**F2.** *Berkson's paradox.* Two diseases each affect 10% of people and are completely
+unrelated. Either one makes hospital admission much more likely.
+
+```r
+set.seed(2020)
+n <- 10000
+d1 <- rbinom(n, 1, 0.1)
+d2 <- rbinom(n, 1, 0.1)
+hospital <- rbinom(n, 1, pmin(1, 0.02 + 0.5 * d1 + 0.5 * d2)) == 1
+```
+
+a. Find the correlation between `d1` and `d2` for everyone and for hospital patients
+   only.
+b. Among hospital patients, what share of people *with* disease 1 also have disease 2?
+   What share of people *without* disease 1 have disease 2?
+c. Explain why a doctor who only sees hospital patients might wrongly think disease 1
+   protects against disease 2.
+
+**F3.** ★ Simulate the Lok Sewa world from C2 and check your answers. Here the true
+effect of coaching on the exam score is **0.3**.
+
+```r
+set.seed(5)
+n <- 10000
+wealth <- rnorm(n)
+motivation <- rnorm(n)
+kathmandu <- wealth + motivation + rnorm(n) > 0
+coaching <- wealth + rnorm(n)
+score <- 0.3 * coaching + motivation + rnorm(n)
+```
+
+Compare the coefficient on `coaching` with no controls, with `kathmandu`, and with
+`kathmandu + wealth`. Which models get close to 0.3? Does this match your answer to C2?
+
+**F4.** ★ Install the `dagitty` R package and use `adjustmentSets()` to check your
+answers to C1, C2 and C3, and your own project DAG.
+
+# Part G: Reflection
+
+**G1.** Find a news story or a published study that says something like "after
+controlling for…" or "among people who…". In a short paragraph:
+
+- What did they control for, or select on?
+- Draw the DAG you think they had in mind. Is the variable a fork, a pipe or a
+  collider?
+- Was controlling for it a good idea? What would you want to know before trusting the
+  result?

@@ -49,6 +49,10 @@ disappears once we compare applicants to the same department.
 # Homework
 
 - [Week 1 homework](homework/week1.qmd): probability, base rates, and Bayesian updating.
+- [Week 2 homework](homework/week2.qmd): distributions, z-scores, correlation, and regression.
+- [Week 3 homework](homework/week3.qmd): DAGs, causes, and the workflow.
+- [Week 4 homework](homework/week4.qmd): forks, pipes, colliders, and what to control for.
+- [Week 5 homework](homework/week5.qmd): evaluating findings, estimands, and target trials.
 
 # Student projects
 

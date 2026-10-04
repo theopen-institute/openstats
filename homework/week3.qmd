@@ -1,0 +1,349 @@
+---
+title: "Week 3 Homework"
+subtitle: "DAGs, causes, and the workflow from estimand to estimate"
+engine: knitr
+format:
+  html:
+    toc: true
+---
+
+These exercises go with the Week 3 lecture. Part A checks your understanding of the
+ideas. Parts B–D are problems to work through. Part E is an optional R challenge.
+
+A few ground rules:
+
+- **Show your work.** A correct answer with no reasoning is worth less than a wrong
+  answer with clear reasoning. For most problems this week, that means **drawing the
+  DAG**. Pen and paper is fine. So is [dagitty.net](https://dagitty.net/dags.html), or
+  writing it as text like `Rain -> Harvest <- Fertilizer`.
+- **Write in plain language.** If you can't explain it to a friend who missed the
+  lecture, you haven't finished understanding it yet.
+- **There is often more than one good DAG.** We grade your reasons, not whether you
+  drew the same picture as us.
+- Problems marked ★ are harder. Give them a real try, but don't get stuck on them.
+
+# Part A: Concepts
+
+**A1.** In your own words:
+
+a. What do the letters D, A, and G in "DAG" stand for? Explain each one in a sentence.
+b. What does an arrow `X -> Y` claim?
+c. What does a *missing* arrow between X and Y claim?
+d. A DAG shows *what depends on what*. Name one important thing it does **not** show.
+e. Where do the arrows in a DAG come from? Can we get them from the data?
+
+**A2.** Here is a DAG about rice farming in the Terai:
+
+```
+Monsoon rain -> Rice harvest
+Irrigation   -> Rice harvest
+Fertilizer   -> Rice harvest
+Family income -> Fertilizer
+Family income -> Irrigation
+```
+
+a. Which variables *directly* cause the rice harvest?
+b. Does family income affect the harvest in this DAG? If so, how?
+c. There is no arrow between monsoon rain and irrigation. Write in one sentence what
+   claim that missing arrow makes. Do you believe it? If not, which way would you draw
+   the arrow, and why?
+d. Suggest one more variable that causes the harvest, and draw where it goes.
+
+**A3.** Which of these are DAGs? For any that are not, say what's wrong.
+
+a. `Study hours -> Exam score <- Sleep`
+b. `Income -> Savings -> Income`
+c. `Rain -> Landslide -> Road closed`, `Rain -> Road closed`
+d. ★ In (b), income this year really does help you save, and savings really do help
+   you earn more later. How could you redraw (b) so it is a DAG *and* still tells this
+   story? *Hint: think about time.*
+
+**A4.** True or false? Give a one-sentence reason for each.
+
+a. If smoking causes lung cancer, then every smoker will get lung cancer.
+b. Most outcomes we care about in social science have just one cause.
+c. With enough data, we could work out the correct DAG from the data alone.
+d. Leaving an arrow out of a DAG is the "safe" choice, because it makes fewer
+   assumptions.
+e. Two analyses of the same data can both be calculated correctly and still give
+   opposite answers.
+f. Not every variable in the DAG has to go into the statistical model.
+
+**A5.** *Seeing vs. doing.* Students in Kathmandu who go to private tuition classes
+score higher on the SEE exam than students who don't.
+
+a. Write the "seeing" probability in `P( … | … )` notation.
+b. Write the "doing" probability, using `do( … )`.
+c. A parent is deciding whether to pay for tuition classes. Which of the two does the
+   parent care about? Why?
+d. Name one thing that could make the "seeing" number bigger than the "doing" number.
+   Draw a small DAG that shows it.
+
+**A6.** ★ In lecture we said that in social science we usually think of causes as
+places where we could *intervene*: a policy, a treatment, a decision. But our worked
+example asked about the effect of **sex** on weight, and we can't easily assign
+someone's sex. In 3–4 sentences: what do you think the estimand "how much heavier would
+an adult be if they were male rather than female?" means? Is it still a useful
+question?
+
+# Part B: The doctor paradox
+
+**B1.** Look again at the two surgeons from lecture. The famous surgeon had a higher
+success rate for standard, complex, *and* critical cases, but a lower success rate
+overall.
+
+a. Explain in 3–4 sentences, without any numbers, how both of these can be true.
+b. Draw the DAG from lecture. Label the **exposure** and the **outcome**.
+c. You need an operation. Which comparison should you use to choose a surgeon: the
+   overall rates, or the rates for your type of case? Why?
+
+**B2.** A district hospital and a big referral hospital in Kathmandu both treat
+patients for the same illness. Here are last year's records:
+
+| Hospital  | Severity | Patients | Recovered |
+|-----------|----------|----------|-----------|
+| District  | Mild     | 900      | 864       |
+| District  | Severe   | 100      | 60        |
+| Referral  | Mild     | 200      | 196       |
+| Referral  | Severe   | 800      | 560       |
+
+a. What is each hospital's **overall** recovery rate?
+b. What is each hospital's recovery rate for **mild** cases? For **severe** cases?
+c. Which hospital looks better overall? Which is better for each kind of patient?
+d. Draw a DAG with three variables: Severity, Hospital, and Recovery. Explain each
+   arrow in one sentence.
+e. A patient in Sindhupalchok has a severe case and can reach either hospital. Which
+   should they go to? Is this a "seeing" or a "doing" question?
+
+**B3.** The Ministry of Health decides to rank hospitals by their overall recovery
+rate, and to give more money to hospitals at the top.
+
+a. Which hospital wins under this rule? Is that fair?
+b. What could a hospital do to climb the ranking, *without* treating anyone better?
+c. ★ Suppose the referral hospital had treated the **same mix** of patients as the
+   district hospital (900 mild, 100 severe), with its own recovery rates for each kind
+   of case. What would its overall recovery rate be? Compare it with the district
+   hospital's.
+
+# Part C: The workflow
+
+**C1.** Here are the five steps of the workflow, in the wrong order:
+
+- Statistical model
+- Estimate
+- Estimand
+- Data
+- Generative model
+
+a. Put them in the right order.
+b. Next to each step, write the question it answers (one short line each).
+c. Which steps are "science", done before we touch the data? Why do they come first?
+
+**C2.** *Estimands.* "Does sex affect weight?" was too vague, so we rewrote it as: *How
+much heavier, on average, would an adult be if they were male rather than female?*
+The answer is a number, in kg.
+
+Rewrite each vague question below as a precise estimand. Say what the answer's
+**units** would be.
+
+a. Do tuition classes help?
+b. Is remittance money good for children's education in Nepal?
+c. Does the new road help farmers in Jumla?
+
+**C3.** *The generative model.* Here is the DAG from lecture for the !Kung San adults:
+
+```
+Sex -> Height
+Sex -> Weight
+Height -> Weight
+Age -> Height
+Age -> Weight
+```
+
+a. List every **path** from Sex to Weight that follows the arrows.
+b. Which arrow stands for "men have more muscle, even at the same height"?
+c. Why doesn't anything point *into* Sex?
+d. Which path(s) together make up the **total effect** of sex on weight? Which make up
+   the **direct effect**?
+
+**C4.** *Simulating the world we drew.* In lecture, our simulation said that men are
+10 cm taller, each cm of height adds 0.6 kg, and men are 2 kg heavier at the same
+height. That gave a direct effect of **2 kg** and a total effect of
+2 + 0.6 × 10 = **8 kg**.
+
+Work out the true **direct** and **total** effect of sex on weight in each of these
+made-up worlds:
+
+a. Men are 12 cm taller, each cm adds 0.5 kg, and men are 3 kg heavier at the same
+   height.
+b. Men are 10 cm taller, each cm adds 0.6 kg, and there is **no** direct effect (no
+   arrow `Sex -> Weight`).
+c. Men and women are the **same height** on average, each cm adds 0.6 kg, and men are
+   2 kg heavier at the same height.
+d. In world (c), would Model A (`weight ~ sex`) and Model B (`weight ~ sex + height`)
+   give about the same answer, or different answers? Explain using the DAG.
+
+**C5.** *Two models, real data.* Fit to the 352 !Kung San adults, the two models from
+lecture gave these posteriors for the difference *men − women*:
+
+| Model                       | Median | 89% interval   |
+|-----------------------------|--------|----------------|
+| A: `weight ~ sex`           | 6.8 kg | 5.8 to 7.7 kg  |
+| B: `weight ~ sex + height`  | 0.1 kg | −1.0 to 1.0 kg |
+
+a. Write one plain-language sentence explaining what each result means.
+b. Which model answers our estimand from C2 (the total effect)? Why?
+c. A classmate looks at Model B and says: *"See? Sex has no effect on weight."* What
+   is wrong with that claim?
+d. In this data, men are about 10.8 cm taller than women, and each extra cm goes with
+   about 0.63 kg more weight. Multiply these two numbers. Compare the result with
+   Model A and Model B. What does that tell you about *where* the effect of sex on
+   weight flows?
+e. Write an estimand (a question) for which Model B *would* be the right model.
+
+**C6.** *What about age?* Age is in the DAG, but we left it out of both models.
+
+a. Using the DAG in C3, explain why we can leave age out when we estimate the effect of
+   sex on weight.
+b. In lecture, adding age to the model changed the sex difference by only about
+   0.25 kg. Does that check *prove* the DAG is right? What does it tell us?
+
+**C7.** *Same move, opposite advice.* Last week we saw that more bedrooms go with a
+higher house price, but among houses of the same size, more bedrooms go with a lower
+price. This week, holding **living area** fixed was the right move for bedrooms, but
+holding **height** fixed was the wrong move for sex.
+
+a. Draw both DAGs (Bedrooms, Living area, Price) and (Sex, Height, Weight).
+b. Look at the arrow between the exposure and the "middle" variable in each DAG. Which
+   way does it point in each case?
+c. Use (b) to explain, in 3–4 sentences, why the advice is opposite. Use the words
+   **path** and **block** in your answer.
+
+# Part D: Designing DAGs
+
+**D1.** *Using the recipe.* Many Nepali families have a member working abroad in the
+Gulf or Malaysia and sending money home. Use the six-step recipe from lecture for this
+question: *What is the effect of a family receiving remittances on whether their
+children stay in school?*
+
+a. Write the estimand (step 1).
+b. List at least three things that cause children to stay in school (step 2).
+c. List at least two things that cause a family to receive remittances (step 3).
+d. Draw the DAG (step 4). Include at least one thing you **can't measure** and mark it
+   as unmeasured (step 5), for example with a dashed circle, or in dagitty as
+   `[latent]`.
+e. Trace every path from Remittances to School (step 6). Which ones carry the effect we
+   want? Which ones don't?
+f. Which arrow are you **least** sure about? What would change if you removed it?
+
+**D2.** *Education and birth rates.* In lecture we looked at 120 countries and asked
+about the effect of women's college enrollment on births per woman. We drew two DAGs:
+
+```
+DAG 1:  Development -> College
+        Development -> Infant mortality
+        College -> Births
+        Infant mortality -> Births
+
+DAG 2:  College -> Infant mortality
+        College -> Births
+        Infant mortality -> Births
+```
+
+a. Tell the story of each DAG in two sentences of plain language.
+b. In each DAG, does the path through infant mortality carry part of the effect of
+   college on births, or not?
+c. If you believe DAG 1, should your model hold infant mortality fixed? What if you
+   believe DAG 2?
+d. The two models gave an effect of about **−0.09** (DAG 1) and **−0.55** (DAG 2)
+   births per woman, for one standard deviation more enrollment (about 35 percentage
+   points). Nepal's women's college enrollment is about 15%. If Nepal raised it by one
+   standard deviation, how many fewer births per woman would each DAG predict?
+e. Which DAG do you find more believable for Nepal, and why? What evidence could
+   change your mind?
+f. ★ Draw a third DAG where **both** stories are true: development affects college
+   *and* infant mortality, and college *also* affects infant mortality. Can you get the
+   total effect of college just by holding infant mortality fixed, or by leaving it
+   out? Explain why this is hard.
+
+**D3.** *Critique a DAG.* A student studying literacy across countries wrote this DAG:
+
+```
+dag {
+  "Literacy" -> "Internet use"
+  "Internet use" -> "Literacy"
+  "GDP per capita" -> "Internet use"
+  "Literacy" -> "GDP per capita"
+}
+```
+
+Their estimand is *the effect of internet use on literacy*.
+
+a. Find the problem that means this is not a DAG. Fix it.
+b. Name one important cause of literacy that is missing. Draw it in.
+c. There is no arrow from GDP per capita to Literacy. Do you believe that? Explain.
+d. Write your improved version as a dagitty string.
+
+**D4.** *Your project.* Open your own project file in `projects/` and find the `dag`
+string near the top.
+
+a. Copy your DAG into [dagitty.net](https://dagitty.net/dags.html) and check that it
+   looks the way you expect.
+b. Write your **estimand** in one sentence: "the effect of X on Y", with units.
+c. Answer the questions from the "Your turn" slide:
+   1. Which arrow are you **least** sure about? Why?
+   2. What would a skeptic **add**? Add at least one variable or arrow.
+   3. Is anything important **unmeasured**? Add it and mark it `[latent]`.
+   4. Trace every path from X to Y. Which carry the effect you want? Which don't?
+d. Write your **revised** DAG as a dagitty string.
+e. Look at the variables your project's model includes. For each one, say whether
+   holding it fixed **blocks** a path you want (bad), blocks a path you don't want
+   (good), or neither. Should anything be added or removed?
+
+# Part E: R challenge (optional)
+
+Here is the simulation from lecture:
+
+```r
+library(tidyverse)
+
+simulate_people <- function(n) {
+  tibble(
+    sex = sample(c("female", "male"), n, TRUE),
+    male = sex == "male",
+    height = rnorm(n, 150 + 10 * male, 6),
+    weight = rnorm(n, -45 + 0.6 * height + 2 * male, 4)
+  )
+}
+```
+
+**E1.** Simulate 1,000 people. Fit `lm(weight ~ sex, data = sim)` and
+`lm(weight ~ sex + height, data = sim)`, and look at the `sexmale` coefficient in each.
+(`lm()` is a quick, non-Bayesian shortcut. With this much data and weak priors it
+gives almost the same answer as our Stan models.) Do you recover 8 kg and 2 kg? Now
+change the numbers in `simulate_people()` to match the worlds in C4 (a), (b), and (c)
+and check your answers.
+
+**E2.** Add age to the simulation, following the DAG from lecture. Give everyone an
+`age` between 18 and 80 (try `runif(n, 18, 80)`), and make older people a little
+shorter and lighter (for example, subtract `0.1 * (age - 50)` from both the height and
+the weight means). Fit `weight ~ sex` with and without `age`. Does adding age change
+the estimate of the total effect much? Why not?
+
+**E3.** ★ Now break the DAG's assumption. Suppose that in your sample, **older adults
+are more likely to be women** (for example, because women live longer). Draw this as an
+arrow `Age -> Sex`. Make the chance of being male depend on age, for example with
+`male = runif(n) < plogis(-(age - 50) / 8)`. Fit `weight ~ sex` with and without `age`.
+Which one recovers the true total effect of 8 kg? Use the DAG to explain why age now
+belongs in the model.
+
+# Part F: Reflection
+
+**F1.** Find a news story with a causal claim, such as "X leads to Y", "X boosts Y", or
+"X is linked to Y", about health, education, or the economy. In a short paragraph:
+
+- What was the claim? Is it about **seeing** or about **doing**?
+- Write the estimand the story *should* be about.
+- Draw a DAG with the exposure, the outcome, and at least one other thing that could
+  **interfere** with the comparison.
+- Using what you learned this week, how much do you believe the claim?
