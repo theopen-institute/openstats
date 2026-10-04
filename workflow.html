@@ -570,54 +570,37 @@ DAGitty.setup()
 <span id="cb4-13"><a href="#cb4-13" aria-label="13"></a></span>
 <span id="cb4-14"><a href="#cb4-14" aria-label="14"></a>  <span class="co">// prior predictive toggle (skips likelihood calculations)</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-label="15"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>, <span class="kw">upper</span>=<span class="dv">1</span>&gt; prior_only;</span>
-<span id="cb4-16"><a href="#cb4-16" aria-label="16"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-label="17"></a>  <span class="co">// optional prior overrides: set override_priors = 0 to use the defaults below,</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-label="18"></a>  <span class="co">// or 1 and supply all three scales as (alpha, beta, gamma)</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-label="19"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>, <span class="kw">upper</span>=<span class="dv">1</span>&gt; override_priors;</span>
-<span id="cb4-20"><a href="#cb4-20" aria-label="20"></a>  <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[override_priors ? <span class="dv">3</span> : <span class="dv">0</span>] prior_sd;</span>
+<span id="cb4-16"><a href="#cb4-16" aria-label="16"></a>}</span>
+<span id="cb4-17"><a href="#cb4-17" aria-label="17"></a><span class="kw">parameters</span> {</span>
+<span id="cb4-18"><a href="#cb4-18" aria-label="18"></a>  <span class="dt">real</span> alpha;</span>
+<span id="cb4-19"><a href="#cb4-19" aria-label="19"></a>  <span class="dt">sum_to_zero_vector</span>[n_sex] beta;</span>
+<span id="cb4-20"><a href="#cb4-20" aria-label="20"></a>  <span class="dt">sum_to_zero_vector</span>[n_dept] gamma;</span>
 <span id="cb4-21"><a href="#cb4-21" aria-label="21"></a>}</span>
-<span id="cb4-22"><a href="#cb4-22" aria-label="22"></a><span class="kw">transformed data</span> {</span>
-<span id="cb4-23"><a href="#cb4-23" aria-label="23"></a>  <span class="co">// default prior scales</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-label="24"></a>  <span class="dt">real</span> alpha_sd = <span class="fl">1.5</span>;</span>
-<span id="cb4-25"><a href="#cb4-25" aria-label="25"></a>  <span class="dt">real</span> beta_sd = <span class="dv">1</span>;</span>
-<span id="cb4-26"><a href="#cb4-26" aria-label="26"></a>  <span class="dt">real</span> gamma_sd = <span class="dv">1</span>;</span>
-<span id="cb4-27"><a href="#cb4-27" aria-label="27"></a></span>
-<span id="cb4-28"><a href="#cb4-28" aria-label="28"></a>  <span class="cf">if</span> (override_priors) {</span>
-<span id="cb4-29"><a href="#cb4-29" aria-label="29"></a>    alpha_sd = prior_sd[<span class="dv">1</span>];</span>
-<span id="cb4-30"><a href="#cb4-30" aria-label="30"></a>    beta_sd = prior_sd[<span class="dv">2</span>];</span>
-<span id="cb4-31"><a href="#cb4-31" aria-label="31"></a>    gamma_sd = prior_sd[<span class="dv">3</span>];</span>
-<span id="cb4-32"><a href="#cb4-32" aria-label="32"></a>  }</span>
-<span id="cb4-33"><a href="#cb4-33" aria-label="33"></a>}</span>
-<span id="cb4-34"><a href="#cb4-34" aria-label="34"></a><span class="kw">parameters</span> {</span>
-<span id="cb4-35"><a href="#cb4-35" aria-label="35"></a>  <span class="dt">real</span> alpha;</span>
-<span id="cb4-36"><a href="#cb4-36" aria-label="36"></a>  <span class="dt">sum_to_zero_vector</span>[n_sex] beta;</span>
-<span id="cb4-37"><a href="#cb4-37" aria-label="37"></a>  <span class="dt">sum_to_zero_vector</span>[n_dept] gamma;</span>
-<span id="cb4-38"><a href="#cb4-38" aria-label="38"></a>}</span>
-<span id="cb4-39"><a href="#cb4-39" aria-label="39"></a><span class="kw">model</span> {</span>
-<span id="cb4-40"><a href="#cb4-40" aria-label="40"></a>  alpha ~ normal(<span class="dv">0</span>, alpha_sd);</span>
-<span id="cb4-41"><a href="#cb4-41" aria-label="41"></a>  <span class="co">// the sum-to-zero constraints shrink each effect's spread; widening the scales</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-label="42"></a>  <span class="co">// undoes that, so each effect's prior SD matches the formal model</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-label="43"></a>  beta ~ normal(<span class="dv">0</span>, beta_sd * inv_sqrt(<span class="dv">1</span> - inv(n_sex)));</span>
-<span id="cb4-44"><a href="#cb4-44" aria-label="44"></a>  gamma ~ normal(<span class="dv">0</span>, gamma_sd * inv_sqrt(<span class="dv">1</span> - inv(n_dept)));</span>
-<span id="cb4-45"><a href="#cb4-45" aria-label="45"></a></span>
-<span id="cb4-46"><a href="#cb4-46" aria-label="46"></a>  <span class="cf">if</span> (!prior_only) {</span>
-<span id="cb4-47"><a href="#cb4-47" aria-label="47"></a>    <span class="dt">vector</span>[n] eta;</span>
-<span id="cb4-48"><a href="#cb4-48" aria-label="48"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span> : n)</span>
-<span id="cb4-49"><a href="#cb4-49" aria-label="49"></a>      eta[i] = alpha + beta[sex[i]] + gamma[dept[i]];</span>
-<span id="cb4-50"><a href="#cb4-50" aria-label="50"></a>    admitted ~ bernoulli_logit(eta);</span>
-<span id="cb4-51"><a href="#cb4-51" aria-label="51"></a>  }</span>
-<span id="cb4-52"><a href="#cb4-52" aria-label="52"></a>}</span>
-<span id="cb4-53"><a href="#cb4-53" aria-label="53"></a><span class="kw">generated quantities</span> {</span>
-<span id="cb4-54"><a href="#cb4-54" aria-label="54"></a>  <span class="co">// admission probability for every sex x department cell</span></span>
-<span id="cb4-55"><a href="#cb4-55" aria-label="55"></a>  <span class="dt">matrix</span>[n_sex, n_dept] p;</span>
-<span id="cb4-56"><a href="#cb4-56" aria-label="56"></a>  <span class="cf">for</span> (s <span class="cf">in</span> <span class="dv">1</span> : n_sex)</span>
-<span id="cb4-57"><a href="#cb4-57" aria-label="57"></a>    <span class="cf">for</span> (d <span class="cf">in</span> <span class="dv">1</span> : n_dept)</span>
-<span id="cb4-58"><a href="#cb4-58" aria-label="58"></a>      p[s, d] = inv_logit(alpha + beta[s] + gamma[d]);</span>
-<span id="cb4-59"><a href="#cb4-59" aria-label="59"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-22"><a href="#cb4-22" aria-label="22"></a><span class="kw">model</span> {</span>
+<span id="cb4-23"><a href="#cb4-23" aria-label="23"></a>  alpha ~ normal(<span class="dv">0</span>, <span class="fl">1.5</span>);</span>
+<span id="cb4-24"><a href="#cb4-24" aria-label="24"></a>  <span class="co">// the sum-to-zero constraints shrink each effect's spread; widening the scales</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-label="25"></a>  <span class="co">// undoes that, so each effect's prior SD matches the formal model (1)</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-label="26"></a>  beta ~ normal(<span class="dv">0</span>, <span class="dv">1</span> * inv_sqrt(<span class="dv">1</span> - inv(n_sex)));</span>
+<span id="cb4-27"><a href="#cb4-27" aria-label="27"></a>  gamma ~ normal(<span class="dv">0</span>, <span class="dv">1</span> * inv_sqrt(<span class="dv">1</span> - inv(n_dept)));</span>
+<span id="cb4-28"><a href="#cb4-28" aria-label="28"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-label="29"></a>  <span class="cf">if</span> (!prior_only) {</span>
+<span id="cb4-30"><a href="#cb4-30" aria-label="30"></a>    <span class="dt">vector</span>[n] eta;</span>
+<span id="cb4-31"><a href="#cb4-31" aria-label="31"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span> : n)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-label="32"></a>      eta[i] = alpha + beta[sex[i]] + gamma[dept[i]];</span>
+<span id="cb4-33"><a href="#cb4-33" aria-label="33"></a>    admitted ~ bernoulli_logit(eta);</span>
+<span id="cb4-34"><a href="#cb4-34" aria-label="34"></a>  }</span>
+<span id="cb4-35"><a href="#cb4-35" aria-label="35"></a>}</span>
+<span id="cb4-36"><a href="#cb4-36" aria-label="36"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb4-37"><a href="#cb4-37" aria-label="37"></a>  <span class="co">// admission probability for every sex x department cell</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-label="38"></a>  <span class="dt">matrix</span>[n_sex, n_dept] p;</span>
+<span id="cb4-39"><a href="#cb4-39" aria-label="39"></a>  <span class="cf">for</span> (s <span class="cf">in</span> <span class="dv">1</span> : n_sex)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-label="40"></a>    <span class="cf">for</span> (d <span class="cf">in</span> <span class="dv">1</span> : n_dept)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-label="41"></a>      p[s, d] = inv_logit(alpha + beta[s] + gamma[d]);</span>
+<span id="cb4-42"><a href="#cb4-42" aria-label="42"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A few details:</p>
 <ul>
-<li>The priors live in the model. Their default scales are set in <code>transformed data</code>. The <code>override_priors</code> switch lets us replace them from R without editing the model, which we use to test sensitivity to priors in Step 8.</li>
+<li>The priors are written directly in the <code>model</code> block, exactly as in the formal model.</li>
 <li>Stan enforces the constraints with <code>sum_to_zero_vector</code>. Forcing effects to sum to zero shrinks their spread, so the code widens each prior’s scale to compensate. That way, each effect’s prior matches the formal model.</li>
 <li>The <code>prior_only</code> switch skips the likelihood. With it on, the model samples from the priors alone, which is what we need for prior predictive checks.</li>
 <li><code>generated quantities</code> reports the admission probability for every sex × department cell. We’ll compute the estimand from these.</li>
@@ -626,36 +609,31 @@ DAGitty.setup()
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"models/berkeley.stan"</span>, <span class="at">dir =</span> <span class="st">".stancache"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>berkeley <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"models/berkeley.stan"</span>, <span class="at">dir =</span> <span class="st">".stancache"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># prior_sd: NULL uses the model's default priors, or c(alpha, beta, gamma) overrides them</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fit_model <span class="ot">&lt;-</span> <span class="cf">function</span>(data, <span class="at">prior_only =</span> <span class="dv">0</span>, <span class="at">prior_sd =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(dept, sex, admitted) <span class="sc">|&gt;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">compose_data</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="fu">list</span>(</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">prior_only =</span> prior_only,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">override_priors =</span> <span class="fu">as.integer</span>(<span class="sc">!</span><span class="fu">is.null</span>(prior_sd)),</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">prior_sd =</span> <span class="cf">if</span> (<span class="fu">is.null</span>(prior_sd)) <span class="fu">numeric</span>(<span class="dv">0</span>) <span class="cf">else</span> prior_sd</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">|&gt;</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    model<span class="sc">$</span><span class="fu">sample</span>(<span class="at">seed =</span> <span class="dv">2026</span>, <span class="at">refresh =</span> <span class="dv">0</span>, <span class="at">show_messages =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># the estimand from Step 1, computed for every posterior draw</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>direct_effect <span class="ot">&lt;-</span> <span class="cf">function</span>(fit, <span class="at">data =</span> df) {</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  weights <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(dept) <span class="sc">|&gt;</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">w =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(w)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  fit <span class="sc">|&gt;</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">spread_draws</span>(p[sex, dept]) <span class="sc">|&gt;</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">levels</span>(data<span class="sc">$</span>sex)[sex]) <span class="sc">|&gt;</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> sex, <span class="at">values_from =</span> p) <span class="sc">|&gt;</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">w =</span> weights[dept]) <span class="sc">|&gt;</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(.draw) <span class="sc">|&gt;</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">direct_effect =</span> <span class="fu">sum</span>(w <span class="sc">*</span> (female <span class="sc">-</span> male)))</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>fit_model <span class="ot">&lt;-</span> <span class="cf">function</span>(data, <span class="at">prior_only =</span> <span class="dv">0</span>, <span class="at">model =</span> berkeley) {</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(dept, sex, admitted) <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">compose_data</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="fu">list</span>(<span class="at">prior_only =</span> prior_only)) <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    model<span class="sc">$</span><span class="fu">sample</span>(<span class="at">seed =</span> <span class="dv">2026</span>, <span class="at">refresh =</span> <span class="dv">0</span>, <span class="at">show_messages =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># the estimand from Step 1, computed for every posterior draw</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>direct_effect <span class="ot">&lt;-</span> <span class="cf">function</span>(fit, <span class="at">data =</span> df) {</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  weights <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(dept) <span class="sc">|&gt;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">w =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(w)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  fit <span class="sc">|&gt;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">spread_draws</span>(p[sex, dept]) <span class="sc">|&gt;</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">levels</span>(data<span class="sc">$</span>sex)[sex]) <span class="sc">|&gt;</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> sex, <span class="at">values_from =</span> p) <span class="sc">|&gt;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">w =</span> weights[dept]) <span class="sc">|&gt;</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(.draw) <span class="sc">|&gt;</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">direct_effect =</span> <span class="fu">sum</span>(w <span class="sc">*</span> (female <span class="sc">-</span> male)))</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -932,22 +910,35 @@ $ebfmi
 <p>A result is only as good as the assumptions behind it, so we test how much it depends on them.</p>
 <section id="sensitivity-to-priors" class="level3">
 <h3 class="anchored" data-anchor-id="sensitivity-to-priors">Sensitivity to priors</h3>
-<p>We refit with a much tighter and a much looser prior on the sex effect:</p>
+<p>We refit with a much tighter and a much looser prior on the sex effect. Each variant is the same model with one line changed: the scale in the prior on <code>beta</code>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prior scales for (alpha, beta, gamma); NULL keeps the model's defaults</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>prior_scenarios <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Tight (beta_sd = 0.1)"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="fl">0.1</span>, <span class="dv">1</span>),</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Default (beta_sd = 1)"</span> <span class="ot">=</span> <span class="cn">NULL</span>,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Loose (beta_sd = 2.5)"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="dv">1</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>prior_sensitivity <span class="ot">&lt;-</span> prior_scenarios <span class="sc">|&gt;</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">imap</span>(\(prior_sd, name) {</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">direct_effect</span>(<span class="fu">fit_model</span>(df, <span class="at">prior_sd =</span> prior_sd)) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">scenario =</span> name)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">|&gt;</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list_rbind</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a copy of the model with the prior on beta set to Normal(0, beta_sd)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>with_beta_prior <span class="ot">&lt;-</span> <span class="cf">function</span>(beta_sd) {</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  code <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"models/berkeley.stan"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  line <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"beta ~ normal(0, 1 *"</span>, code, <span class="at">fixed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">length</span>(line) <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  code[line] <span class="ot">&lt;-</span> <span class="fu">sub</span>(</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"normal(0, 1 *"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"normal(0, "</span>, beta_sd, <span class="st">" *"</span>),</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    code[line],</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="cn">TRUE</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>(<span class="fu">write_stan_file</span>(code, <span class="at">dir =</span> <span class="st">".stancache"</span>))</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>prior_scenarios <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Tight (beta ~ Normal(0, 0.1))"</span> <span class="ot">=</span> <span class="fu">with_beta_prior</span>(<span class="fl">0.1</span>),</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Default (beta ~ Normal(0, 1))"</span> <span class="ot">=</span> berkeley,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Loose (beta ~ Normal(0, 2.5))"</span> <span class="ot">=</span> <span class="fu">with_beta_prior</span>(<span class="fl">2.5</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>prior_sensitivity <span class="ot">&lt;-</span> prior_scenarios <span class="sc">|&gt;</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">imap</span>(\(model, name) {</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">direct_effect</span>(<span class="fu">fit_model</span>(df, <span class="at">model =</span> model)) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">scenario =</span> name)</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">|&gt;</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list_rbind</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
