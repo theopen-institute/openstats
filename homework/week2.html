@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Week 2 Homework</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d76b89148f2051d413c67903796ad183.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="floating quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#part-a-concepts" id="toc-part-a-concepts" class="nav-link active" data-scroll-target="#part-a-concepts">Part A: Concepts</a></li>
+  <li><a href="#part-b-distributions-and-z-scores" id="toc-part-b-distributions-and-z-scores" class="nav-link" data-scroll-target="#part-b-distributions-and-z-scores">Part B: Distributions and z-scores</a></li>
+  <li><a href="#part-c-correlation-and-regression-by-hand" id="toc-part-c-correlation-and-regression-by-hand" class="nav-link" data-scroll-target="#part-c-correlation-and-regression-by-hand">Part C: Correlation and regression by hand</a></li>
+  <li><a href="#part-d-what-makes-a-house-expensive-in-r" id="toc-part-d-what-makes-a-house-expensive-in-r" class="nav-link" data-scroll-target="#part-d-what-makes-a-house-expensive-in-r">Part D: What makes a house expensive? (in R)</a></li>
+  <li><a href="#part-e-r-challenge-optional" id="toc-part-e-r-challenge-optional" class="nav-link" data-scroll-target="#part-e-r-challenge-optional">Part E: R challenge (optional)</a></li>
+  <li><a href="#part-f-reflection" id="toc-part-f-reflection" class="nav-link" data-scroll-target="#part-f-reflection">Part F: Reflection</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 2 Homework</h1>
+<p class="subtitle lead">Distributions, z-scores, correlation, and our first regression coefficient</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>These exercises go with the Week 2 lecture. Part A checks your understanding of the ideas. Parts B and C are problems to work through by hand. Part D is a data project in R using the Ames house prices from lecture. Part E is an optional R challenge.</p>
+<p>A few ground rules:</p>
+<ul>
+<li><strong>Show your work.</strong> A correct number with no reasoning is worth less than a wrong number with clear reasoning. For z-scores and correlations, write out each step (subtract the mean, divide by the SD, and so on).</li>
+<li><strong>Write in plain language.</strong> If you can’t explain it to a friend who missed the lecture, you haven’t finished understanding it yet.</li>
+<li><strong>Plot before you trust a number.</strong> Whenever you compute a mean or a correlation in R, make a picture of the data too.</li>
+<li>Problems marked ★ are harder. Give them a real try, but don’t get stuck on them.</li>
+</ul>
+<p>Numbers you will need for the !Kung San adults (352 adults, age 18 and over), rounded the same way as in lecture:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Mean</th>
+<th>SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Height</td>
+<td>154.6 cm</td>
+<td>7.7 cm</td>
+</tr>
+<tr class="even">
+<td>Weight</td>
+<td>45.0 kg</td>
+<td>6.5 kg</td>
+</tr>
+</tbody>
+</table>
+<p>The correlation between height and weight is <em>r</em> = 0.75.</p>
+<section id="part-a-concepts" class="level1">
+<h1>Part A: Concepts</h1>
+<p><strong>A1.</strong> In lecture we said <em>“random individuals → predictable populations.”</em></p>
+<ol type="a">
+<li>Can you predict whether the next coin you flip will land heads? Can you predict roughly how many heads you’ll get in 1,000 flips? Explain the difference in one or two sentences.</li>
+<li>Give your own example of the same idea from life in Nepal. (For example: you can’t say whether one particular bus will be late, but …)</li>
+<li>For the !Kung data, name the <strong>population</strong>, and name two ways the cases <strong>vary</strong>.</li>
+</ol>
+<p><strong>A2.</strong> <em>Talking about numbers differently.</em> A friend asks you, “How much does a plate of buff momo cost in Kathmandu?” Write four answers, one for each kind of distribution from lecture:</p>
+<ol type="a">
+<li><strong>Uninformed</strong> (you have no idea at all)</li>
+<li><strong>Weakly informed</strong></li>
+<li><strong>Strongly informed</strong></li>
+<li><strong>Domain-specific</strong> (a flat range you’re fairly sure about, with steep sides)</li>
+</ol>
+<p>For each one, write one sentence in words (like the lecture’s “He’s probably about 40, but he could be quite a bit older”) and draw a rough sketch of the curve. Label the x-axis with prices in rupees.</p>
+<p><strong>A3.</strong> Is each of these a <strong>distribution of data</strong> or a <strong>distribution of belief</strong>? Give a one-line reason.</p>
+<ol type="a">
+<li>The ages of everyone who voted in Pokhara in the last election.</li>
+<li>How plausible each value is for the share of Pokhara voters who will choose the current mayor next time.</li>
+<li>The sale prices of the 2,930 houses in Ames.</li>
+<li>How plausible each value of β is, after fitting weight on height.</li>
+<li>The monthly rainfall in Kathmandu for each month of 2025.</li>
+</ol>
+<p><strong>A4.</strong> Three words describe a distribution: <strong>center</strong>, <strong>spread</strong>, and <strong>shape</strong>.</p>
+<ol type="a">
+<li>Explain each word in one sentence, without using a formula.</li>
+<li>Two villages both have an average household size of 5 people. In village X almost every household has 4, 5, or 6 people. In village Y many households have 1 or 2 people, and many have 9 or 10. Which word tells these villages apart?</li>
+<li>Look at the lecture’s chart of Nepal’s population by age. Is its shape one smooth hump, or does it have bumps? Name one thing that could cause a bump, or a dip, at a certain age.</li>
+</ol>
+<p><strong>A5.</strong> <em>Mean vs.&nbsp;median.</em> Five households in a village earn these amounts each month (in rupees): 20,000; 25,000; 30,000; 35,000; and 390,000.</p>
+<ol type="a">
+<li>Compute the mean and the median.</li>
+<li>Which number better describes a “typical” household here? Why?</li>
+<li>In Ames, the mean house price is $180,796 and the median is $160,000. Which way is the long tail, and how do you know just from these two numbers?</li>
+</ol>
+<p><strong>A6.</strong> True or false? Give a one-sentence reason for each.</p>
+<ol type="a">
+<li>A z-score of −2 means the case is 2 units (cm, kg, rupees …) below average.</li>
+<li>If you convert all heights from centimeters to inches, every z-score stays the same.</li>
+<li>After you turn a variable into z-scores, the shape of its histogram changes.</li>
+<li>A correlation of <em>r</em> = 0 means the two variables have nothing to do with each other.</li>
+<li>If height and weight have <em>r</em> = 0.75, then 75% of people who are tall are heavy.</li>
+<li><em>r</em> = −0.8 is a stronger relationship than <em>r</em> = 0.5.</li>
+<li>In z-scores with one predictor, the best regression slope β is equal to <em>r</em>.</li>
+</ol>
+<p><strong>A7.</strong> <em>Correlation is average agreement.</em> In your own words (3–4 sentences), explain how each person “votes” in the correlation between height and weight. When is a vote positive? When is it negative? When is it close to zero? Why does a cloud of points in the “taller &amp; heavier” and “shorter &amp; lighter” corners give a positive <em>r</em>?</p>
+<p><strong>A8.</strong> Here are four scatterplots. Their correlations are about <strong>+0.9</strong>, <strong>−0.5</strong>, <strong>0</strong>, and <strong>0</strong>, in some order.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week2_files/figure-html/scatter-match-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol type="a">
+<li>Match each plot (P, Q, R, S) to its correlation.</li>
+<li>Two plots have <em>r</em> close to 0. Describe how they are different. In which one do the two variables clearly have a relationship?</li>
+<li>What lesson from lecture does this illustrate?</li>
+</ol>
+<p><strong>A9.</strong> <em>Our first coefficient.</em> In lecture we wrote <span class="math inline">\(z_{\text{weight}} = \beta \times z_{\text{height}}\)</span>.</p>
+<ol type="a">
+<li>Why does this line need only <strong>one</strong> parameter? What happened to the intercept?</li>
+<li>What does it mean for one line to be “better” than another? Use the word <em>errors</em>.</li>
+<li>We found β = 0.75. Write one sentence that explains this number to someone who has never heard of a z-score.</li>
+<li>★ The lecture showed two curves for β: one using 20 adults and one using all 352. Why is the curve for 20 adults wider? What does a wider curve tell us about our knowledge of β?</li>
+</ol>
+</section>
+<section id="part-b-distributions-and-z-scores" class="level1">
+<h1>Part B: Distributions and z-scores</h1>
+<p>Use the !Kung numbers in the table at the top of this page.</p>
+<p><strong>B1.</strong> <em>The 68–95–99.7 rule.</em> Suppose !Kung adult height follows Normal(μ = 154.6, σ = 7.7).</p>
+<ol type="a">
+<li>Between which two heights should about 68% of adults fall?</li>
+<li>Between which two heights should about 95% fall?</li>
+<li>In the real data, 65% of adults are within 1 SD of the mean and 96% are within 2 SD. Is the Normal distribution a good description? What else would you check?</li>
+<li>About how tall is an adult who is exactly 2 SD above average? Would you call that person rare, unusual, or ordinary? (Use the table from the “Reading z-scores” slide.)</li>
+</ol>
+<p><strong>B2.</strong> A !Kung woman is <strong>140 cm</strong> tall and weighs <strong>38 kg</strong>.</p>
+<ol type="a">
+<li>Compute her z-score for height.</li>
+<li>Compute her z-score for weight.</li>
+<li>Is she more unusually <em>short</em> or more unusually <em>light</em>? Explain in one sentence.</li>
+</ol>
+<p><strong>B3.</strong> <em>Going backwards.</em> A z-score turns a value into “SDs from average.” You can also go the other way: value = mean + z × SD.</p>
+<ol type="a">
+<li>What weight has a z-score of +1.5?</li>
+<li>What height has a z-score of −1?</li>
+<li>★ A classmate says, “A z-score of 1 in height and a z-score of 1 in weight mean the same number of centimeters and kilograms.” What is wrong with this?</li>
+</ol>
+<p><strong>B4.</strong> <em>A common ruler.</em> Sita takes two exams. In Maths she scores 72; the class mean is 60 and the SD is 12. In English she scores 80; the class mean is 72 and the SD is 4.</p>
+<ol type="a">
+<li>On which exam did she score more points above the class average?</li>
+<li>Compute her z-score on each exam.</li>
+<li>On which exam did she do <em>better compared to her classmates</em>? Why do (a) and (c) give different answers?</li>
+</ol>
+<p><strong>B5.</strong> ★ A shop in Biratnagar records the daily sales of rice in kilograms. The mean is 200 kg and the SD is 40 kg. The owner decides to report sales in <em>quintals</em> instead (1 quintal = 100 kg).</p>
+<ol type="a">
+<li>What are the new mean and SD?</li>
+<li>A day with 260 kg of sales had what z-score before the change? What z-score after?</li>
+<li>In one sentence, explain why z-scores let us compare things “measured on completely different scales.”</li>
+</ol>
+</section>
+<section id="part-c-correlation-and-regression-by-hand" class="level1">
+<h1>Part C: Correlation and regression by hand</h1>
+<p><strong>C1.</strong> <em>Computing r by hand.</em> Five students at a tuition centre in Lalitpur report how many hours they studied in a week and their mark on a test.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Student</th>
+<th>Hours studied</th>
+<th>Test mark</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>2</td>
+<td>50</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>2</td>
+<td>50</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>5</td>
+<td>70</td>
+</tr>
+<tr class="even">
+<td>D</td>
+<td>8</td>
+<td>60</td>
+</tr>
+<tr class="odd">
+<td>E</td>
+<td>8</td>
+<td>70</td>
+</tr>
+</tbody>
+</table>
+<p>For hours, the mean is 5 and the SD is 3. For marks, the mean is 60 and the SD is 10.</p>
+<ol type="a">
+<li>Compute the z-score of each student for hours and for marks.</li>
+<li>For each student, multiply the two z-scores. This is the student’s “vote.” Which students vote positive? Which vote zero?</li>
+<li>Use the lecture formula to compute <em>r</em>: <span class="math inline">\(r = \frac{1}{n-1} \sum z_{\text{hours}} \times z_{\text{mark}}\)</span>.</li>
+<li>Student C studied an average amount but got a high mark. How did C’s vote affect <em>r</em>?</li>
+</ol>
+<p><strong>C2.</strong> Using your answer from C1:</p>
+<ol type="a">
+<li>In z-scores, what is the best slope β? Write the line as <span class="math inline">\(z_{\text{mark}} = \beta \times z_{\text{hours}}\)</span>.</li>
+<li>Convert β to real units: marks per hour of study. (Use β × SD<sub>mark</sub> / SD<sub>hours</sub>.)</li>
+<li>Write one plain sentence that describes your answer to (b).</li>
+<li>With only five students, should we be confident about this number? What would make us more confident?</li>
+</ol>
+<p><strong>C3.</strong> <em>The !Kung regression.</em> Use β = <em>r</em> = 0.75 and the table at the top of the page.</p>
+<ol type="a">
+<li>Convert β to kilograms per centimeter.</li>
+<li>Two !Kung adults differ in height by 10 cm. About how much heavier would you expect the taller one to be?</li>
+<li>A !Kung man is 165 cm tall. What is his z-score for height? Using <span class="math inline">\(z_{\text{weight}} = 0.75 \times z_{\text{height}}\)</span>, what is his <em>predicted</em> z-score for weight? Turn that into kilograms.</li>
+<li>In lecture, this same 165 cm man actually weighs 58 kg. Is he above or below the line? By about how much?</li>
+</ol>
+<p><strong>C4.</strong> ★ <em>Turning it around.</em> In z-scores, the best line for weight on height is <span class="math inline">\(z_{\text{weight}} = 0.75 \times z_{\text{height}}\)</span>.</p>
+<ol type="a">
+<li>A classmate says, “Then the line for height on weight must be <span class="math inline">\(z_{\text{height}} = \frac{1}{0.75} \times z_{\text{weight}} = 1.33 \times z_{\text{weight}}\)</span>.” Use the lecture’s rule (with standardized data and one predictor, β = <em>r</em>) to find the correct slope.</li>
+<li>Someone is 2 SD heavier than average. Is their predicted height more or less than 2 SD above average? Why does this make sense when <em>r</em> is less than 1?</li>
+</ol>
+</section>
+<section id="part-d-what-makes-a-house-expensive-in-r" class="level1">
+<h1>Part D: What makes a house expensive? (in R)</h1>
+<p>For this part you need R and the file <code>datasets/ames.csv</code>. Each row is one house sold in Ames, Iowa (USA) between 2006 and 2010. Prices are in US dollars and areas are in m². Start with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>houses <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"datasets/ames.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Hand in your code and your plots along with your answers.</p>
+<p><strong>D1.</strong> <em>Look at the distribution.</em></p>
+<ol type="a">
+<li>How many houses are there? Make a histogram of <code>price</code>.</li>
+<li>Compute the mean, median, and SD of <code>price</code>.</li>
+<li>What share of houses sold for <em>more</em> than the mean price? Why is it not 50%?</li>
+<li>Describe the shape of the distribution in one or two sentences, using the words <em>center</em>, <em>spread</em>, and <em>shape</em>.</li>
+</ol>
+<p><strong>D2.</strong> <em>How unusual is this house?</em></p>
+<ol type="a">
+<li>Add two new columns, <code>z_price</code> and <code>z_area</code>, using the code from the “Reading z-scores” slide. Check that each has a mean of 0 and an SD of 1.</li>
+<li>Find the cheapest house. What is its z-score for price? Now find the most expensive house. What is its z-score?</li>
+<li>The most expensive house is much further from average than the cheapest one. Why? (Hint: look at your histogram.)</li>
+<li>What share of houses have a price within 1 SD of the mean? Within 2 SD? Compare with the 68–95 rule. What share are more than 2 SD <em>above</em> the mean, and what share more than 2 SD <em>below</em>? What does that tell you about using the 68–95 rule here?</li>
+</ol>
+<p><strong>D3.</strong> <em>Price and living area.</em></p>
+<ol type="a">
+<li>Make a scatterplot of <code>price</code> (y-axis) against <code>area_m2</code> (x-axis).</li>
+<li>Compute the correlation. Does it match the lecture?</li>
+<li>Five houses have more than 400 m² of living space. List them with their price and neighborhood. Which ones are “off the pattern”?</li>
+<li>Remove the three large houses in the Edwards neighborhood and compute <em>r</em> again. How much does it change? Why is the change small, even though these houses look so strange on the plot?</li>
+</ol>
+<p><strong>D4.</strong> <em>Guess first, then check.</em></p>
+<ol type="a">
+<li>Before you compute anything, write down your ranking of these from strongest to weakest correlation with price: bedrooms, bathrooms, living area, lot area, garage size, year built.</li>
+<li>Now compute the six correlations in R. How close was your guess? Which one surprised you most?</li>
+<li>Why can we compare a correlation for “number of cars” with one for “year built,” even though they are measured in completely different units?</li>
+</ol>
+<p><strong>D5.</strong> <em>One coefficient.</em></p>
+<ol type="a">
+<li>Fit the regression in z-scores with <code>lm(z_price ~ z_area, data = houses)</code>. Check that the slope equals the correlation from D3. (The intercept should be essentially zero. R may print a tiny number like <code>1e-16</code>, which is just rounding.)</li>
+<li>Convert β to dollars per m², using β × SD<sub>price</sub> / SD<sub>area</sub>. Then check your answer with <code>lm(price ~ area_m2, data = houses)</code>.</li>
+<li>Write one sentence that explains the slope to someone buying a house.</li>
+<li>A house is 1 SD larger than average. About how many dollars more would you expect it to sell for?</li>
+</ol>
+<p><strong>D6.</strong> ★ <em>The bedroom puzzle.</em></p>
+<ol type="a">
+<li>Compute the correlation between <code>bedrooms</code> and <code>price</code> for all houses.</li>
+<li>Now keep only houses with a living area between 120 and 150 m² (<code>filter(area_m2 &gt;= 120, area_m2 &lt; 150)</code>). Compute the same correlation. What happened?</li>
+<li>Compute the correlation between <code>bedrooms</code> and <code>area_m2</code> for all houses.</li>
+<li>In 3–4 plain sentences, suggest how both (a) and (b) can be true. You don’t need any new tools. Think about what else usually comes with more bedrooms. (We’ll come back to this next week.)</li>
+</ol>
+</section>
+<section id="part-e-r-challenge-optional" class="level1">
+<h1>Part E: R challenge (optional)</h1>
+<p><strong>E1.</strong> <em>Check the formula.</em> For the !Kung adults (<code>datasets/kungsan.csv</code>, keep <code>age &gt;= 18</code>), compute <em>r</em> by hand in R: make the two z-score columns, multiply them, add them up, and divide by <code>n - 1</code>. Check that you get the same answer as <code>cor(height, weight)</code>. Then fit <code>lm(z_weight ~ z_height)</code> and check that the slope is the same number again.</p>
+<p><strong>E2.</strong> <em>Nepal among the world’s countries.</em> Use the World Bank data from the student projects. This code builds one row per country with life expectancy, fertility (births per woman), and GDP per person:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"datasets/wb_country.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Region))            <span class="co"># drop groups like "South Asia" or "World"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>wb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"datasets/wb2022.csv"</span>, <span class="at">na =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>, <span class="st">".."</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series Code</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"SP.DYN.LE00.IN"</span>, <span class="st">"SP.DYN.TFRT.IN"</span>, <span class="st">"NY.GDP.PCAP.CD"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">country =</span> <span class="st">`</span><span class="at">Country Name</span><span class="st">`</span>, <span class="at">code =</span> <span class="st">`</span><span class="at">Country Code</span><span class="st">`</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">series =</span> <span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>, <span class="at">value =</span> <span class="st">`</span><span class="at">2022 [YR2022]</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> series, <span class="at">values_from =</span> value) <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">life_exp =</span> SP.DYN.LE00.IN, <span class="at">fertility =</span> SP.DYN.TFRT.IN,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">gdp_pc =</span> NY.GDP.PCAP.CD) <span class="sc">|&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(countries, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"code"</span> <span class="ot">=</span> <span class="st">"Code"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(life_exp, fertility, gdp_pc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="a">
+<li>Make a histogram of <code>life_exp</code>. One country has a value that cannot be right. Which country is it, and what is the value? (It is almost certainly a data error.)</li>
+<li>Compute Nepal’s z-score for life expectancy and for fertility, first with all countries, then without the bad value. Which z-score changes more, and why?</li>
+<li>Compare the mean and median of <code>gdp_pc</code>. What does that tell you about its shape?</li>
+<li>Make a scatterplot of <code>life_exp</code> against <code>fertility</code> and compute <em>r</em> (without the bad value). Describe the relationship in one sentence.</li>
+<li>★ Convert β to “years of life expectancy per extra birth per woman.” Then explain in 2–3 sentences why this number does <strong>not</strong> mean that having fewer children would make people in Nepal live longer.</li>
+</ol>
+<p><strong>E3.</strong> ★ <em>How much does r move with 20 people?</em> Draw 20 !Kung adults at random (<code>slice_sample(n = 20)</code>) and compute <em>r</em>. Repeat this 1,000 times and make a histogram of the 1,000 values. How wide is the spread? Do the same with samples of 100. Connect what you see to the two curves for β in lecture.</p>
+</section>
+<section id="part-f-reflection" class="level1">
+<h1>Part F: Reflection</h1>
+<p><strong>F1.</strong> Find a news story or social media post that says one thing is “linked to,” “associated with,” or “goes with” another, for example in health, education, or money. In a short paragraph:</p>
+<ul>
+<li>What are the two variables?</li>
+<li>Do you think the relationship is a straight line, a curve, or something else? Could one extreme case or two hidden groups be driving it?</li>
+<li>Does the story say <em>how strong</em> the relationship is? Does it suggest that one thing <em>causes</em> the other?</li>
+</ul>
+<p><strong>F2.</strong> Think of one number people often say about Nepal as if it were a single fact (the average income, the average age at marriage, the price of land in your area…). In 3–4 sentences, describe it as a <em>distribution</em> instead. What is its center? How spread out is it? What shape do you think it has?</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/theopen-institute\.github\.io\/openstats\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

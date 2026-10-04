@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Week 5 Homework</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d76b89148f2051d413c67903796ad183.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="floating quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#part-a-concepts" id="toc-part-a-concepts" class="nav-link active" data-scroll-target="#part-a-concepts">Part A: Concepts</a></li>
+  <li><a href="#part-b-critique-a-study" id="toc-part-b-critique-a-study" class="nav-link" data-scroll-target="#part-b-critique-a-study">Part B: Critique a study</a></li>
+  <li><a href="#part-c-worked-case-bicycles-for-girls" id="toc-part-c-worked-case-bicycles-for-girls" class="nav-link" data-scroll-target="#part-c-worked-case-bicycles-for-girls">Part C: Worked case, bicycles for girls</a></li>
+  <li><a href="#part-d-from-a-decision-to-an-estimand" id="toc-part-d-from-a-decision-to-an-estimand" class="nav-link" data-scroll-target="#part-d-from-a-decision-to-an-estimand">Part D: From a decision to an estimand</a></li>
+  <li><a href="#part-e-the-target-trial" id="toc-part-e-the-target-trial" class="nav-link" data-scroll-target="#part-e-the-target-trial">Part E: The target trial</a></li>
+  <li><a href="#part-f-applied" id="toc-part-f-applied" class="nav-link" data-scroll-target="#part-f-applied">Part F: Applied</a></li>
+  <li><a href="#part-g-r-challenge-optional" id="toc-part-g-r-challenge-optional" class="nav-link" data-scroll-target="#part-g-r-challenge-optional">Part G: R challenge (optional)</a></li>
+  <li><a href="#part-h-reflection" id="toc-part-h-reflection" class="nav-link" data-scroll-target="#part-h-reflection">Part H: Reflection</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 5 Homework</h1>
+<p class="subtitle lead">Reading a finding, asking a question: the seven questions, estimands, and the target trial</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>These exercises go with the Week 5 lecture. Part A checks your understanding of the ideas. Parts B–E are problems to work through, in the same order as the lecture: the seven questions, the bicycle case, estimands, and the target trial. Part F is the main assignment from the last slide: a critique memo, plus a check on your own project. Part G is an optional R challenge.</p>
+<p>A few ground rules:</p>
+<ul>
+<li><strong>Show your work.</strong> A correct answer with no reasoning is worth less than a wrong answer with clear reasoning. For many of these questions, drawing a small DAG is the easiest way to think.</li>
+<li><strong>Write in plain language.</strong> If you can’t explain it to a friend who missed the lecture, you haven’t finished understanding it yet.</li>
+<li><strong>There is often more than one good answer.</strong> This week is about judgement. Say what you assume, and why.</li>
+<li>Problems marked ★ are harder. Give them a real try, but don’t get stuck on them.</li>
+</ul>
+<p>All the studies, programs, and numbers in this homework are <strong>made up for practice</strong>, unless the question says it comes from the lecture slides.</p>
+<section id="part-a-concepts" class="level1">
+<h1>Part A: Concepts</h1>
+<p><strong>A1.</strong> Write the seven questions to ask of any finding, from memory if you can. Next to each one, write the week of the course it comes from (Week 1, 2, 3 or 4). Which one or two are new this week?</p>
+<p><strong>A2.</strong> Is each sentence a <strong>descriptive</strong>, <strong>predictive</strong>, or <strong>causal</strong> claim? Underline any causal verbs (words like <em>boosts, drives, leads to, protects against</em>).</p>
+<ol type="a">
+<li>“In our survey of 500 households in Dhading, 1 in 4 received money from a family member working abroad.”</li>
+<li>“Remittances drive higher school enrollment in the hills.”</li>
+<li>“Given the rain so far this monsoon, the river will probably flood in August.”</li>
+<li>“Students who use the school library more get better grades.”</li>
+<li>“Using the school library boosts grades.”</li>
+</ol>
+<p>Pick one causal claim. Rewrite it as an <strong>estimand</strong>: what number would answer it? Is it a question about <strong>seeing</strong> or about <strong>doing</strong>? <em>(Week 3)</em></p>
+<p><strong>A3.</strong> <em>Concept vs.&nbsp;variable.</em> A headline talks about a <strong>concept</strong>. The data contain a <strong>variable</strong>.</p>
+<ol type="a">
+<li>Give three different variables someone could use to measure “education” in Nepal. Could they give different answers to the same question?</li>
+<li>The World Bank variable “women’s college enrollment (% gross)” can be more than 100%. How is that possible? What does that tell you about reading variable names?</li>
+<li>Why is a <strong>proxy</strong> like a <strong>descendant</strong> in a DAG? <em>(Week 4)</em></li>
+</ol>
+<p><strong>A4.</strong> <em>What decided who got X?</em> For each study, name the design (randomized experiment, natural experiment, before/after with a comparison group, or cross-sectional comparison). Then say what decided who got the program.</p>
+<ol type="a">
+<li>A municipality had 400 applicants for 200 places in a free coding course, and chose who got in by lottery. Researchers compare the winners and losers a year later.</li>
+<li>An NGO compares child health in districts that have its clinics with districts that don’t, using one year of survey data.</li>
+<li>Twenty schools started a new maths curriculum in 2023. Twenty similar schools started it in 2025. Researchers compare how scores changed from 2022 to 2024 in both groups.</li>
+<li>For each of 60 wards, researchers flipped a coin to decide which wards got new water filters.</li>
+</ol>
+<p>Which design has the most back doors to worry about? Why?</p>
+<p><strong>A5.</strong> <em>“After controlling for…”</em> Each sentence comes from the methods section of a study. Is the control variable a <strong>fork</strong>, a <strong>pipe</strong> (mediator), or a <strong>collider</strong>? Was it a good idea to control for it (or select on it)?</p>
+<ol type="a">
+<li>“Clinic visits were linked to better child health, after controlling for household wealth.”</li>
+<li>“The fertilizer subsidy raised rice yields. But after controlling for how much fertilizer each farmer used, the effect disappeared.”</li>
+<li>“Among students who passed the SEE, those from richer families studied fewer hours.”</li>
+</ol>
+<p><strong>A6.</strong> <em>Who is it about?</em> Countries with higher internet use have a lower share of young people who are not in school, work, or training.</p>
+<ol type="a">
+<li>Can you conclude that a young person in Nepal who starts using the internet is less likely to end up out of school and work? Why or why not?</li>
+<li>What is the name for this mistake?</li>
+<li>Give one way the country-level pattern could be true even if internet use made no difference to any individual.</li>
+</ol>
+<p><strong>A7.</strong> True or false? Give a one-sentence reason for each.</p>
+<ol type="a">
+<li>If a program’s effect is “not significant,” the program did nothing.</li>
+<li>The stars (*, **, ***) in a table tell you how big an effect is.</li>
+<li>A well-run randomized experiment in Bihar tells us what would happen in Madhesh.</li>
+<li>A program that raises the <em>average</em> score can still make some students worse off.</li>
+<li>A small study that finds a large, surprising effect deserves more doubt than a large study that finds a small, expected one.</li>
+<li>If a risk “halves,” the absolute change must be large.</li>
+</ol>
+</section>
+<section id="part-b-critique-a-study" class="level1">
+<h1>Part B: Critique a study</h1>
+<p>Read this study summary. <strong>It is made up.</strong> The program, the NGO, and the numbers do not exist.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Fictional study: TabletLearn">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Fictional study: TabletLearn
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Headline:</strong> <em>“Tablets boost learning: pass rates up 10%.”</em></p>
+<p>The NGO TabletLearn gave every grade 9 student a tablet with maths and science lessons in 30 private schools in Kathmandu Valley. Schools <strong>applied</strong> to join. After one year, the NGO compared these 30 schools with 30 schools that did not apply.</p>
+<ul>
+<li><strong>Outcome:</strong> a practice exam written by the NGO. 66% of students in tablet schools passed, compared with 60% in the other schools.</li>
+<li>The NGO says it measured <strong>10 outcomes</strong> in total (attendance, homework completion, several subject scores, and so on). The report shows the practice-exam result.</li>
+<li>Only schools where the tablets <strong>still worked at the end of the year</strong> were included. Five schools whose tablets broke were dropped.</li>
+<li>The program cost <strong>Rs 12,000 per student</strong>.</li>
+<li>The report includes this table. The outcome is the practice-exam score, in points.</li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Std. error</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tablet program</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">1.5</td>
+<td>**</td>
+</tr>
+<tr class="even">
+<td>Student attendance (days)</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">0.05</td>
+<td>***</td>
+</tr>
+<tr class="odd">
+<td>Household income (log)</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">0.8</td>
+<td>**</td>
+</tr>
+<tr class="even">
+<td>Distance to school (km)</td>
+<td style="text-align: right;">−0.40</td>
+<td style="text-align: right;">0.30</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The NGO concludes: <em>“Every public school in Nepal should get tablets.”</em></p>
+</div>
+</div>
+<p>Answer one question at a time.</p>
+<p><strong>B1.</strong> <em>What exactly is the claim?</em> Is the headline descriptive, predictive, or causal? Which word tells you? Write the estimand the NGO <em>seems</em> to have in mind.</p>
+<p><strong>B2.</strong> <em>What did they actually measure?</em> The headline says “learning.” What was measured? Give one reason the NGO’s own practice exam might not match “learning.”</p>
+<p><strong>B3.</strong> <em>How was the data made?</em> What decided which schools got tablets? Draw a DAG with the tablet program, the exam score, and at least one unmeasured cause of both. Name the structure.</p>
+<p><strong>B4.</strong> <em>What’s in their DAG, and what’s in their model?</em></p>
+<ol type="a">
+<li>The model “controls for” student attendance. Draw an arrow from the tablet program to attendance, if you think it belongs. Is attendance a fork, a pipe, or a collider? What does controlling for it do to the program’s estimate?</li>
+<li>Only schools with working tablets were included. Tablets might keep working in well-run schools, and well-run schools might also have better exam results. What structure is this? Which way might it push the result?</li>
+</ol>
+<p><strong>B5.</strong> <em>Who is it about?</em> Who was studied? Who is the NGO’s conclusion about? List two differences between the two groups that could change the effect.</p>
+<p><strong>B6.</strong> <em>How big?</em></p>
+<ol type="a">
+<li>The headline says pass rates rose “10%.” What was the change in <strong>percentage points</strong>? Show how both numbers come from 60% and 66%.</li>
+<li>In a school of 1,000 grade 9 students, how many extra students would pass?</li>
+<li>Using the cost of Rs 12,000 per student, about how much does each <em>extra</em> passing student cost? (Assume, for now, that the 6-point gap is all caused by the tablets.)</li>
+</ol>
+<p><strong>B7.</strong> <em>How sure?</em> Use the table.</p>
+<ol type="a">
+<li>Write the rough plausible range (estimate ± 2 × std. error) for the tablet program and for distance to school.</li>
+<li>Distance to school has no stars. Does that mean distance doesn’t matter? Explain.</li>
+</ol>
+<p><strong>B8.</strong> <em>How plausible was it before?</em> <em>(Week 1)</em></p>
+<ol type="a">
+<li>Suppose that before seeing this study, you think only 1 in 10 programs like this truly raise exam scores. Studies like this have about 50% power, and use α = 0.05. What is P( true effect | significant result )?</li>
+<li>★ The NGO measured 10 outcomes. Suppose the tablets did nothing for any of them, and each outcome has a 5% chance of a false “significant” result, independently. What is the chance that <strong>at least one</strong> of the 10 looks significant anyway?</li>
+</ol>
+<p><strong>B9.</strong> Which of the seven questions was hardest to answer from what the NGO reported? What is the <strong>one thing</strong> you’d need to know before acting?</p>
+</section>
+<section id="part-c-worked-case-bicycles-for-girls" class="level1">
+<h1>Part C: Worked case, bicycles for girls</h1>
+<p>The lecture discussed Muralidharan &amp; Prakash (2017), <em>Cycling to School</em>. From the slides: Bihar gave girls entering secondary school money for a bicycle, starting in 2006. The finding was that girls’ secondary enrollment rose substantially and the gender gap narrowed. The design was a <strong>triple difference</strong>: girls vs.&nbsp;boys, Bihar vs. Jharkhand, before vs.&nbsp;after. Use only this information; you don’t need the paper.</p>
+<p><strong>C1.</strong> <em>Claim.</em> Is the finding descriptive, predictive, or causal? Write it as an estimand using the template from Part 2 of the lecture.</p>
+<p><strong>C2.</strong> <em>Design.</em> Explain in plain words why each comparison is there.</p>
+<ol type="a">
+<li>Why not just compare girls in Bihar <strong>before vs.&nbsp;after</strong> 2006?</li>
+<li>Why also compare girls with <strong>boys</strong> in Bihar?</li>
+<li>Why also compare with <strong>Jharkhand</strong>?</li>
+<li>What has to be true for this design to work? Finish the sentence: <em>“Without the program, the gap between girls and boys in Bihar would have changed…”</em></li>
+</ol>
+<p><strong>C3.</strong> ★ <em>A triple difference by hand.</em> These numbers are <strong>invented</strong> for practice and are <strong>not</strong> from the paper. They are the share (%) of children enrolled in secondary school.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Before</th>
+<th style="text-align: right;">After</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bihar girls</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">45</td>
+</tr>
+<tr class="even">
+<td>Bihar boys</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">58</td>
+</tr>
+<tr class="odd">
+<td>Jharkhand girls</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">40</td>
+</tr>
+<tr class="even">
+<td>Jharkhand boys</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">58</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>How much did enrollment change for Bihar girls? Is that the effect of the program?</li>
+<li>Subtract the change for Bihar boys. What do you get?</li>
+<li>Do the same for Jharkhand (girls’ change minus boys’ change).</li>
+<li>Subtract (c) from (b). This is the triple difference. Compare the three answers in (a), (b) and (d). Why do they shrink?</li>
+</ol>
+<p><strong>C4.</strong> <em>DAG.</em> Draw a DAG for how the program could raise enrollment. Include at least the program, owning a bicycle, travel time or safety on the way to school, and enrollment. A later study “controls for whether the girl owns a bicycle.” What happens to the estimated effect of the program, and why?</p>
+<p><strong>C5.</strong> <em>Who.</em> Should Madhesh Province copy the program? List three ways Madhesh might differ from Bihar in 2006 that could make the effect bigger or smaller. Which girls would probably gain the <strong>least</strong> from a bicycle?</p>
+<p><strong>C6.</strong> <em>Size and certainty.</em> Before funding it in Madhesh, what would you want the effect stated in? Give the units, and name one <strong>alternative</strong> you’d compare it to.</p>
+<p><strong>C7.</strong> <em>Prior plausibility.</em> Was this a surprising, cheap, convenient finding, or a plausible one with a clear mechanism? How should that affect how much you trust it?</p>
+<p><strong>C8.</strong> <em>Vote again.</em> Would you fund it in Madhesh? Answer yes, no, or “not yet,” and name the one thing you would need to know first.</p>
+</section>
+<section id="part-d-from-a-decision-to-an-estimand" class="level1">
+<h1>Part D: From a decision to an estimand</h1>
+<p><strong>D1.</strong> For each situation, fill in: <em>“If the answer is high, I’ll ___. If it’s low, I’ll ___.”</em> Then say whether the analysis is worth doing.</p>
+<ol type="a">
+<li>A ward office has already spent its budget building a footbridge. It now wants a study on whether the bridge raises school attendance.</li>
+<li>A savings cooperative is deciding whether to offer lower interest rates to women’s groups. It wants to know if lower rates lead to more repaid loans.</li>
+<li>A school is deciding whether to start a free morning tiffin for grades 1–3.</li>
+</ol>
+<p><strong>D2.</strong> Which of these are real questions (ones that could change a decision)? Rewrite the ones that aren’t.</p>
+<ol type="a">
+<li>“What do the data say about migration?”</li>
+<li>“Should Pokhara subsidize bus passes for grade 11–12 students next year?”</li>
+<li>“Is women’s education important?”</li>
+<li>“Should our district hire 20 more health workers or build 2 more health posts?”</li>
+</ol>
+<p><strong>D3.</strong> A municipality asks: <em>“Should we pay for free school meals for grades 1–5?”</em> Fill in the estimand template:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Piece</th>
+<th>Your answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Population</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Outcome</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Intervention</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Compared to what</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Time</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Summary</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Then write the whole estimand as one sentence: <em>“Among [population], what is the [summary] of [outcome] after [time], if [intervention] compared to [alternative]?”</em></p>
+<p><strong>D4.</strong> Each estimand below is missing something. Name the missing piece(s) and fix it.</p>
+<ol type="a">
+<li>“The effect of microfinance on women’s income.”</li>
+<li>“Among rice farmers in Chitwan, the difference in average yield if they get drought-resistant seed.”</li>
+<li>“The effect of the bicycle program compared to a cash transfer of the same value.”</li>
+</ol>
+<p><strong>D5.</strong> <em>Compared to what?</em> For the bicycle program, compare two estimands: (i) bicycle vs.&nbsp;<strong>no program</strong>, and (ii) bicycle vs.&nbsp;<strong>a cash transfer of the same value</strong>. Could they give different answers? Which one matters if the municipality has already decided to spend the money on girls’ schooling somehow?</p>
+<p><strong>D6.</strong> ★ <em>Is it worth finding out?</em> A bicycle costs Rs 10,000 per girl. The council will only fund the program if each <strong>extra</strong> girl enrolled costs <strong>Rs 200,000 or less</strong>.</p>
+<ol type="a">
+<li>What is the smallest effect, in percentage points, at which the program is worth it? <em>(Hint: if the program raises enrollment by e percentage points, 100 bicycles produce e extra enrolled girls.)</em></li>
+<li>For a 4-point effect, how much does each extra enrolled girl cost?</li>
+<li>Three studies give these plausible ranges for the effect. For each, what should the council do?
+<ul>
+<li><ol type="i">
+<li>8 to 15 points</li>
+</ol></li>
+<li><ol start="2" type="i">
+<li>−1 to 3 points</li>
+</ol></li>
+<li><ol start="3" type="i">
+<li>2 to 12 points</li>
+</ol></li>
+</ul></li>
+<li>For case (iii), why might a <strong>small pilot, designed as an experiment,</strong> be the best decision?</li>
+</ol>
+</section>
+<section id="part-e-the-target-trial" class="level1">
+<h1>Part E: The target trial</h1>
+<p><strong>E1.</strong> Use your estimand from D3 (school meals). If you could run <strong>any</strong> experiment, what would it be? Answer: who would you randomize, to what, and when would you measure the outcome? Why is a coin flip so useful here? <em>(Hint: what does it do to the arrows into the program?)</em></p>
+<p><strong>E2.</strong> Now suppose this is the data you <strong>actually</strong> have (also made up): one household survey from 2023. For each household, it records whether a daughter aged 15–16 is enrolled in school, whether the household owns a bicycle, the distance to the nearest secondary school, and household income.</p>
+<p>You want to know whether giving girls bicycles would raise enrollment. Fill in the table with at least three rows.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Ideal experiment</th>
+<th>Data we have</th>
+<th>Gap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Which variables would you need to measure to close the back doors? Which could you measure, and which not?</p>
+<p><strong>E3.</strong> The lecture said to name your limitations <strong>before</strong> you see the results. Why does the order matter?</p>
+<p><strong>E4.</strong> ★ Write the target trial for the Bihar study (Part C). Then compare it with what the researchers could actually do. What is the biggest gap, and how did the triple difference try to get around it?</p>
+</section>
+<section id="part-f-applied" class="level1">
+<h1>Part F: Applied</h1>
+<p><strong>F1.</strong> <em>Your project.</em> Open your project page in <code>projects/</code>.</p>
+<ol type="a">
+<li>Rewrite your project’s question using the <strong>estimand template</strong>.</li>
+<li>What is your <strong>target trial</strong>? Be concrete: what would be randomized, and among whom? (It is fine if this experiment is impossible. Say why.)</li>
+<li>Fill in the “Ideal experiment / Data we have / Gap” table for your project. The data you have is World Bank 2022.</li>
+<li>List your <strong>scope limits</strong>:
+<ul>
+<li>One year, cross-sectional. What can’t one snapshot tell you?</li>
+<li>Country-level. What can your project say about individual people or households?</li>
+<li>Measurement. Pick one of your variables. Does it mean what its label says?</li>
+</ul></li>
+<li>Which of the seven questions would a skeptic ask you <strong>first</strong>? Write a short answer to it.</li>
+</ol>
+<p><strong>F2.</strong> <em>A one-page critique memo.</em> This is the main assignment for the week. Pick a real report or finding from your own work: a government report, an NGO evaluation, a news story, a consultant’s slide deck.</p>
+<ul>
+<li>Organize the memo by the <strong>seven questions</strong>: one short paragraph each.</li>
+<li>End with a section called <strong>“What I’d need to see before acting on this.”</strong></li>
+<li>Keep it to one page. Short and clear beats long and complete.</li>
+</ul>
+<p>Here is a short example, written about a <strong>made-up</strong> claim, to show the shape:</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example memo (fictional claim)">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Example memo (fictional claim)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Claim:</strong> <em>“Wards with more health posts have fewer child deaths, so every ward should get a second health post.”</em></p>
+<ol type="1">
+<li><strong>Claim.</strong> Causal (“so every ward should get”), but the evidence is a comparison between wards.</li>
+<li><strong>Measured.</strong> “Child deaths” is deaths <em>recorded</em> at the ward office. Wards with more health posts may record deaths more completely, which would hide part of the effect.</li>
+<li><strong>Design.</strong> Cross-sectional. Health posts were placed by the government, probably in richer or better-connected wards. People didn’t get a health post by coin flip.</li>
+<li><strong>DAG.</strong> Wealth and road access are forks (they cause both health posts and child survival). The report doesn’t control for either.</li>
+<li><strong>Who.</strong> Wards in one district. The claim is about every ward in the country.</li>
+<li><strong>Size and certainty.</strong> The report says “fewer deaths” but gives no number or range.</li>
+<li><strong>Prior.</strong> It is plausible that health posts help. The open question is <em>how much</em>, and whether a second post adds as much as the first.</li>
+</ol>
+<p><strong>What I’d need to see before acting on this:</strong> the comparison repeated within wards of similar wealth and road access, the effect stated per 1,000 children with a range, and the cost of a second health post next to the alternatives.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="part-g-r-challenge-optional" class="level1">
+<h1>Part G: R challenge (optional)</h1>
+<p><strong>G1.</strong> Write an R function <code>plausible_range(estimate, se)</code> that returns the low and high ends of estimate ± 2 × std. error, and whether the range crosses zero. Use it to check your answers to B7 for all four rows of the TabletLearn table.</p>
+<p><strong>G2.</strong> ★ <em>Self-selection, simulated.</em> Simulate 1,000 schools. Each school has a <code>motivation</code> drawn from <code>rnorm()</code>. Motivated schools are more likely to join the tablet program: <code>tablet &lt;- rbinom(n, 1, plogis(2 * motivation))</code>. The exam score is <code>50 + 5 * motivation + effect * tablet + rnorm(n, 0, 5)</code>.</p>
+<ol type="a">
+<li>Set <code>effect &lt;- 0</code> (the tablets do nothing). Compute the average score of tablet schools minus the average score of other schools. Repeat this 200 times and take the average. What do you get, and why isn’t it 0?</li>
+<li>Now give out tablets by coin flip instead: <code>tablet &lt;- rbinom(n, 1, 0.5)</code>. What is the difference now?</li>
+<li>Repeat (a) and (b) with <code>effect &lt;- 3</code>. Which design recovers the true effect?</li>
+<li>Connect this to question 3 of the seven: <em>“What decided who got X?”</em></li>
+</ol>
+</section>
+<section id="part-h-reflection" class="level1">
+<h1>Part H: Reflection</h1>
+<p><strong>H1.</strong> At the start of the lecture you were asked whether you’d fund a program based on one confident headline. In a short paragraph:</p>
+<ul>
+<li>Did your answer change by the end? Why?</li>
+<li>Which of the seven questions do you now think is the most often skipped, in the reports you see at work?</li>
+<li>Name one thing you used to believe from a single study or news story that you would now want to check.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/theopen-institute\.github\.io\/openstats\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

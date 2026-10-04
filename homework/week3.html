@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Week 3 Homework</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d76b89148f2051d413c67903796ad183.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="floating quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#part-a-concepts" id="toc-part-a-concepts" class="nav-link active" data-scroll-target="#part-a-concepts">Part A: Concepts</a></li>
+  <li><a href="#part-b-the-doctor-paradox" id="toc-part-b-the-doctor-paradox" class="nav-link" data-scroll-target="#part-b-the-doctor-paradox">Part B: The doctor paradox</a></li>
+  <li><a href="#part-c-the-workflow" id="toc-part-c-the-workflow" class="nav-link" data-scroll-target="#part-c-the-workflow">Part C: The workflow</a></li>
+  <li><a href="#part-d-designing-dags" id="toc-part-d-designing-dags" class="nav-link" data-scroll-target="#part-d-designing-dags">Part D: Designing DAGs</a></li>
+  <li><a href="#part-e-r-challenge-optional" id="toc-part-e-r-challenge-optional" class="nav-link" data-scroll-target="#part-e-r-challenge-optional">Part E: R challenge (optional)</a></li>
+  <li><a href="#part-f-reflection" id="toc-part-f-reflection" class="nav-link" data-scroll-target="#part-f-reflection">Part F: Reflection</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 3 Homework</h1>
+<p class="subtitle lead">DAGs, causes, and the workflow from estimand to estimate</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>These exercises go with the Week 3 lecture. Part A checks your understanding of the ideas. Parts B–D are problems to work through. Part E is an optional R challenge.</p>
+<p>A few ground rules:</p>
+<ul>
+<li><strong>Show your work.</strong> A correct answer with no reasoning is worth less than a wrong answer with clear reasoning. For most problems this week, that means <strong>drawing the DAG</strong>. Pen and paper is fine. So is <a href="https://dagitty.net/dags.html">dagitty.net</a>, or writing it as text like <code>Rain -&gt; Harvest &lt;- Fertilizer</code>.</li>
+<li><strong>Write in plain language.</strong> If you can’t explain it to a friend who missed the lecture, you haven’t finished understanding it yet.</li>
+<li><strong>There is often more than one good DAG.</strong> We grade your reasons, not whether you drew the same picture as us.</li>
+<li>Problems marked ★ are harder. Give them a real try, but don’t get stuck on them.</li>
+</ul>
+<section id="part-a-concepts" class="level1">
+<h1>Part A: Concepts</h1>
+<p><strong>A1.</strong> In your own words:</p>
+<ol type="a">
+<li>What do the letters D, A, and G in “DAG” stand for? Explain each one in a sentence.</li>
+<li>What does an arrow <code>X -&gt; Y</code> claim?</li>
+<li>What does a <em>missing</em> arrow between X and Y claim?</li>
+<li>A DAG shows <em>what depends on what</em>. Name one important thing it does <strong>not</strong> show.</li>
+<li>Where do the arrows in a DAG come from? Can we get them from the data?</li>
+</ol>
+<p><strong>A2.</strong> Here is a DAG about rice farming in the Terai:</p>
+<pre><code>Monsoon rain -&gt; Rice harvest
+Irrigation   -&gt; Rice harvest
+Fertilizer   -&gt; Rice harvest
+Family income -&gt; Fertilizer
+Family income -&gt; Irrigation</code></pre>
+<ol type="a">
+<li>Which variables <em>directly</em> cause the rice harvest?</li>
+<li>Does family income affect the harvest in this DAG? If so, how?</li>
+<li>There is no arrow between monsoon rain and irrigation. Write in one sentence what claim that missing arrow makes. Do you believe it? If not, which way would you draw the arrow, and why?</li>
+<li>Suggest one more variable that causes the harvest, and draw where it goes.</li>
+</ol>
+<p><strong>A3.</strong> Which of these are DAGs? For any that are not, say what’s wrong.</p>
+<ol type="a">
+<li><code>Study hours -&gt; Exam score &lt;- Sleep</code></li>
+<li><code>Income -&gt; Savings -&gt; Income</code></li>
+<li><code>Rain -&gt; Landslide -&gt; Road closed</code>, <code>Rain -&gt; Road closed</code></li>
+<li>★ In (b), income this year really does help you save, and savings really do help you earn more later. How could you redraw (b) so it is a DAG <em>and</em> still tells this story? <em>Hint: think about time.</em></li>
+</ol>
+<p><strong>A4.</strong> True or false? Give a one-sentence reason for each.</p>
+<ol type="a">
+<li>If smoking causes lung cancer, then every smoker will get lung cancer.</li>
+<li>Most outcomes we care about in social science have just one cause.</li>
+<li>With enough data, we could work out the correct DAG from the data alone.</li>
+<li>Leaving an arrow out of a DAG is the “safe” choice, because it makes fewer assumptions.</li>
+<li>Two analyses of the same data can both be calculated correctly and still give opposite answers.</li>
+<li>Not every variable in the DAG has to go into the statistical model.</li>
+</ol>
+<p><strong>A5.</strong> <em>Seeing vs.&nbsp;doing.</em> Students in Kathmandu who go to private tuition classes score higher on the SEE exam than students who don’t.</p>
+<ol type="a">
+<li>Write the “seeing” probability in <code>P( … | … )</code> notation.</li>
+<li>Write the “doing” probability, using <code>do( … )</code>.</li>
+<li>A parent is deciding whether to pay for tuition classes. Which of the two does the parent care about? Why?</li>
+<li>Name one thing that could make the “seeing” number bigger than the “doing” number. Draw a small DAG that shows it.</li>
+</ol>
+<p><strong>A6.</strong> ★ In lecture we said that in social science we usually think of causes as places where we could <em>intervene</em>: a policy, a treatment, a decision. But our worked example asked about the effect of <strong>sex</strong> on weight, and we can’t easily assign someone’s sex. In 3–4 sentences: what do you think the estimand “how much heavier would an adult be if they were male rather than female?” means? Is it still a useful question?</p>
+</section>
+<section id="part-b-the-doctor-paradox" class="level1">
+<h1>Part B: The doctor paradox</h1>
+<p><strong>B1.</strong> Look again at the two surgeons from lecture. The famous surgeon had a higher success rate for standard, complex, <em>and</em> critical cases, but a lower success rate overall.</p>
+<ol type="a">
+<li>Explain in 3–4 sentences, without any numbers, how both of these can be true.</li>
+<li>Draw the DAG from lecture. Label the <strong>exposure</strong> and the <strong>outcome</strong>.</li>
+<li>You need an operation. Which comparison should you use to choose a surgeon: the overall rates, or the rates for your type of case? Why?</li>
+</ol>
+<p><strong>B2.</strong> A district hospital and a big referral hospital in Kathmandu both treat patients for the same illness. Here are last year’s records:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Hospital</th>
+<th>Severity</th>
+<th>Patients</th>
+<th>Recovered</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>District</td>
+<td>Mild</td>
+<td>900</td>
+<td>864</td>
+</tr>
+<tr class="even">
+<td>District</td>
+<td>Severe</td>
+<td>100</td>
+<td>60</td>
+</tr>
+<tr class="odd">
+<td>Referral</td>
+<td>Mild</td>
+<td>200</td>
+<td>196</td>
+</tr>
+<tr class="even">
+<td>Referral</td>
+<td>Severe</td>
+<td>800</td>
+<td>560</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>What is each hospital’s <strong>overall</strong> recovery rate?</li>
+<li>What is each hospital’s recovery rate for <strong>mild</strong> cases? For <strong>severe</strong> cases?</li>
+<li>Which hospital looks better overall? Which is better for each kind of patient?</li>
+<li>Draw a DAG with three variables: Severity, Hospital, and Recovery. Explain each arrow in one sentence.</li>
+<li>A patient in Sindhupalchok has a severe case and can reach either hospital. Which should they go to? Is this a “seeing” or a “doing” question?</li>
+</ol>
+<p><strong>B3.</strong> The Ministry of Health decides to rank hospitals by their overall recovery rate, and to give more money to hospitals at the top.</p>
+<ol type="a">
+<li>Which hospital wins under this rule? Is that fair?</li>
+<li>What could a hospital do to climb the ranking, <em>without</em> treating anyone better?</li>
+<li>★ Suppose the referral hospital had treated the <strong>same mix</strong> of patients as the district hospital (900 mild, 100 severe), with its own recovery rates for each kind of case. What would its overall recovery rate be? Compare it with the district hospital’s.</li>
+</ol>
+</section>
+<section id="part-c-the-workflow" class="level1">
+<h1>Part C: The workflow</h1>
+<p><strong>C1.</strong> Here are the five steps of the workflow, in the wrong order:</p>
+<ul>
+<li>Statistical model</li>
+<li>Estimate</li>
+<li>Estimand</li>
+<li>Data</li>
+<li>Generative model</li>
+</ul>
+<ol type="a">
+<li>Put them in the right order.</li>
+<li>Next to each step, write the question it answers (one short line each).</li>
+<li>Which steps are “science”, done before we touch the data? Why do they come first?</li>
+</ol>
+<p><strong>C2.</strong> <em>Estimands.</em> “Does sex affect weight?” was too vague, so we rewrote it as: <em>How much heavier, on average, would an adult be if they were male rather than female?</em> The answer is a number, in kg.</p>
+<p>Rewrite each vague question below as a precise estimand. Say what the answer’s <strong>units</strong> would be.</p>
+<ol type="a">
+<li>Do tuition classes help?</li>
+<li>Is remittance money good for children’s education in Nepal?</li>
+<li>Does the new road help farmers in Jumla?</li>
+</ol>
+<p><strong>C3.</strong> <em>The generative model.</em> Here is the DAG from lecture for the !Kung San adults:</p>
+<pre><code>Sex -&gt; Height
+Sex -&gt; Weight
+Height -&gt; Weight
+Age -&gt; Height
+Age -&gt; Weight</code></pre>
+<ol type="a">
+<li>List every <strong>path</strong> from Sex to Weight that follows the arrows.</li>
+<li>Which arrow stands for “men have more muscle, even at the same height”?</li>
+<li>Why doesn’t anything point <em>into</em> Sex?</li>
+<li>Which path(s) together make up the <strong>total effect</strong> of sex on weight? Which make up the <strong>direct effect</strong>?</li>
+</ol>
+<p><strong>C4.</strong> <em>Simulating the world we drew.</em> In lecture, our simulation said that men are 10 cm taller, each cm of height adds 0.6 kg, and men are 2 kg heavier at the same height. That gave a direct effect of <strong>2 kg</strong> and a total effect of 2 + 0.6 × 10 = <strong>8 kg</strong>.</p>
+<p>Work out the true <strong>direct</strong> and <strong>total</strong> effect of sex on weight in each of these made-up worlds:</p>
+<ol type="a">
+<li>Men are 12 cm taller, each cm adds 0.5 kg, and men are 3 kg heavier at the same height.</li>
+<li>Men are 10 cm taller, each cm adds 0.6 kg, and there is <strong>no</strong> direct effect (no arrow <code>Sex -&gt; Weight</code>).</li>
+<li>Men and women are the <strong>same height</strong> on average, each cm adds 0.6 kg, and men are 2 kg heavier at the same height.</li>
+<li>In world (c), would Model A (<code>weight ~ sex</code>) and Model B (<code>weight ~ sex + height</code>) give about the same answer, or different answers? Explain using the DAG.</li>
+</ol>
+<p><strong>C5.</strong> <em>Two models, real data.</em> Fit to the 352 !Kung San adults, the two models from lecture gave these posteriors for the difference <em>men − women</em>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Median</th>
+<th>89% interval</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A: <code>weight ~ sex</code></td>
+<td>6.8 kg</td>
+<td>5.8 to 7.7 kg</td>
+</tr>
+<tr class="even">
+<td>B: <code>weight ~ sex + height</code></td>
+<td>0.1 kg</td>
+<td>−1.0 to 1.0 kg</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>Write one plain-language sentence explaining what each result means.</li>
+<li>Which model answers our estimand from C2 (the total effect)? Why?</li>
+<li>A classmate looks at Model B and says: <em>“See? Sex has no effect on weight.”</em> What is wrong with that claim?</li>
+<li>In this data, men are about 10.8 cm taller than women, and each extra cm goes with about 0.63 kg more weight. Multiply these two numbers. Compare the result with Model A and Model B. What does that tell you about <em>where</em> the effect of sex on weight flows?</li>
+<li>Write an estimand (a question) for which Model B <em>would</em> be the right model.</li>
+</ol>
+<p><strong>C6.</strong> <em>What about age?</em> Age is in the DAG, but we left it out of both models.</p>
+<ol type="a">
+<li>Using the DAG in C3, explain why we can leave age out when we estimate the effect of sex on weight.</li>
+<li>In lecture, adding age to the model changed the sex difference by only about 0.25 kg. Does that check <em>prove</em> the DAG is right? What does it tell us?</li>
+</ol>
+<p><strong>C7.</strong> <em>Same move, opposite advice.</em> Last week we saw that more bedrooms go with a higher house price, but among houses of the same size, more bedrooms go with a lower price. This week, holding <strong>living area</strong> fixed was the right move for bedrooms, but holding <strong>height</strong> fixed was the wrong move for sex.</p>
+<ol type="a">
+<li>Draw both DAGs (Bedrooms, Living area, Price) and (Sex, Height, Weight).</li>
+<li>Look at the arrow between the exposure and the “middle” variable in each DAG. Which way does it point in each case?</li>
+<li>Use (b) to explain, in 3–4 sentences, why the advice is opposite. Use the words <strong>path</strong> and <strong>block</strong> in your answer.</li>
+</ol>
+</section>
+<section id="part-d-designing-dags" class="level1">
+<h1>Part D: Designing DAGs</h1>
+<p><strong>D1.</strong> <em>Using the recipe.</em> Many Nepali families have a member working abroad in the Gulf or Malaysia and sending money home. Use the six-step recipe from lecture for this question: <em>What is the effect of a family receiving remittances on whether their children stay in school?</em></p>
+<ol type="a">
+<li>Write the estimand (step 1).</li>
+<li>List at least three things that cause children to stay in school (step 2).</li>
+<li>List at least two things that cause a family to receive remittances (step 3).</li>
+<li>Draw the DAG (step 4). Include at least one thing you <strong>can’t measure</strong> and mark it as unmeasured (step 5), for example with a dashed circle, or in dagitty as <code>[latent]</code>.</li>
+<li>Trace every path from Remittances to School (step 6). Which ones carry the effect we want? Which ones don’t?</li>
+<li>Which arrow are you <strong>least</strong> sure about? What would change if you removed it?</li>
+</ol>
+<p><strong>D2.</strong> <em>Education and birth rates.</em> In lecture we looked at 120 countries and asked about the effect of women’s college enrollment on births per woman. We drew two DAGs:</p>
+<pre><code>DAG 1:  Development -&gt; College
+        Development -&gt; Infant mortality
+        College -&gt; Births
+        Infant mortality -&gt; Births
+
+DAG 2:  College -&gt; Infant mortality
+        College -&gt; Births
+        Infant mortality -&gt; Births</code></pre>
+<ol type="a">
+<li>Tell the story of each DAG in two sentences of plain language.</li>
+<li>In each DAG, does the path through infant mortality carry part of the effect of college on births, or not?</li>
+<li>If you believe DAG 1, should your model hold infant mortality fixed? What if you believe DAG 2?</li>
+<li>The two models gave an effect of about <strong>−0.09</strong> (DAG 1) and <strong>−0.55</strong> (DAG 2) births per woman, for one standard deviation more enrollment (about 35 percentage points). Nepal’s women’s college enrollment is about 15%. If Nepal raised it by one standard deviation, how many fewer births per woman would each DAG predict?</li>
+<li>Which DAG do you find more believable for Nepal, and why? What evidence could change your mind?</li>
+<li>★ Draw a third DAG where <strong>both</strong> stories are true: development affects college <em>and</em> infant mortality, and college <em>also</em> affects infant mortality. Can you get the total effect of college just by holding infant mortality fixed, or by leaving it out? Explain why this is hard.</li>
+</ol>
+<p><strong>D3.</strong> <em>Critique a DAG.</em> A student studying literacy across countries wrote this DAG:</p>
+<pre><code>dag {
+  "Literacy" -&gt; "Internet use"
+  "Internet use" -&gt; "Literacy"
+  "GDP per capita" -&gt; "Internet use"
+  "Literacy" -&gt; "GDP per capita"
+}</code></pre>
+<p>Their estimand is <em>the effect of internet use on literacy</em>.</p>
+<ol type="a">
+<li>Find the problem that means this is not a DAG. Fix it.</li>
+<li>Name one important cause of literacy that is missing. Draw it in.</li>
+<li>There is no arrow from GDP per capita to Literacy. Do you believe that? Explain.</li>
+<li>Write your improved version as a dagitty string.</li>
+</ol>
+<p><strong>D4.</strong> <em>Your project.</em> Open your own project file in <code>projects/</code> and find the <code>dag</code> string near the top.</p>
+<ol type="a">
+<li>Copy your DAG into <a href="https://dagitty.net/dags.html">dagitty.net</a> and check that it looks the way you expect.</li>
+<li>Write your <strong>estimand</strong> in one sentence: “the effect of X on Y”, with units.</li>
+<li>Answer the questions from the “Your turn” slide:
+<ol type="1">
+<li>Which arrow are you <strong>least</strong> sure about? Why?</li>
+<li>What would a skeptic <strong>add</strong>? Add at least one variable or arrow.</li>
+<li>Is anything important <strong>unmeasured</strong>? Add it and mark it <code>[latent]</code>.</li>
+<li>Trace every path from X to Y. Which carry the effect you want? Which don’t?</li>
+</ol></li>
+<li>Write your <strong>revised</strong> DAG as a dagitty string.</li>
+<li>Look at the variables your project’s model includes. For each one, say whether holding it fixed <strong>blocks</strong> a path you want (bad), blocks a path you don’t want (good), or neither. Should anything be added or removed?</li>
+</ol>
+</section>
+<section id="part-e-r-challenge-optional" class="level1">
+<h1>Part E: R challenge (optional)</h1>
+<p>Here is the simulation from lecture:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>simulate_people <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"female"</span>, <span class="st">"male"</span>), n, <span class="cn">TRUE</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">male =</span> sex <span class="sc">==</span> <span class="st">"male"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> <span class="fu">rnorm</span>(n, <span class="dv">150</span> <span class="sc">+</span> <span class="dv">10</span> <span class="sc">*</span> male, <span class="dv">6</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight =</span> <span class="fu">rnorm</span>(n, <span class="sc">-</span><span class="dv">45</span> <span class="sc">+</span> <span class="fl">0.6</span> <span class="sc">*</span> height <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> male, <span class="dv">4</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>E1.</strong> Simulate 1,000 people. Fit <code>lm(weight ~ sex, data = sim)</code> and <code>lm(weight ~ sex + height, data = sim)</code>, and look at the <code>sexmale</code> coefficient in each. (<code>lm()</code> is a quick, non-Bayesian shortcut. With this much data and weak priors it gives almost the same answer as our Stan models.) Do you recover 8 kg and 2 kg? Now change the numbers in <code>simulate_people()</code> to match the worlds in C4 (a), (b), and (c) and check your answers.</p>
+<p><strong>E2.</strong> Add age to the simulation, following the DAG from lecture. Give everyone an <code>age</code> between 18 and 80 (try <code>runif(n, 18, 80)</code>), and make older people a little shorter and lighter (for example, subtract <code>0.1 * (age - 50)</code> from both the height and the weight means). Fit <code>weight ~ sex</code> with and without <code>age</code>. Does adding age change the estimate of the total effect much? Why not?</p>
+<p><strong>E3.</strong> ★ Now break the DAG’s assumption. Suppose that in your sample, <strong>older adults are more likely to be women</strong> (for example, because women live longer). Draw this as an arrow <code>Age -&gt; Sex</code>. Make the chance of being male depend on age, for example with <code>male = runif(n) &lt; plogis(-(age - 50) / 8)</code>. Fit <code>weight ~ sex</code> with and without <code>age</code>. Which one recovers the true total effect of 8 kg? Use the DAG to explain why age now belongs in the model.</p>
+</section>
+<section id="part-f-reflection" class="level1">
+<h1>Part F: Reflection</h1>
+<p><strong>F1.</strong> Find a news story with a causal claim, such as “X leads to Y”, “X boosts Y”, or “X is linked to Y”, about health, education, or the economy. In a short paragraph:</p>
+<ul>
+<li>What was the claim? Is it about <strong>seeing</strong> or about <strong>doing</strong>?</li>
+<li>Write the estimand the story <em>should</em> be about.</li>
+<li>Draw a DAG with the exposure, the outcome, and at least one other thing that could <strong>interfere</strong> with the comparison.</li>
+<li>Using what you learned this week, how much do you believe the claim?</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/theopen-institute\.github\.io\/openstats\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

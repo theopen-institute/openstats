@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Week 4 Homework</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d76b89148f2051d413c67903796ad183.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="floating quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#part-a-concepts" id="toc-part-a-concepts" class="nav-link active" data-scroll-target="#part-a-concepts">Part A: Concepts</a></li>
+  <li><a href="#part-b-name-the-structure" id="toc-part-b-name-the-structure" class="nav-link" data-scroll-target="#part-b-name-the-structure">Part B: Name the structure</a></li>
+  <li><a href="#part-c-should-i-control-for-it" id="toc-part-c-should-i-control-for-it" class="nav-link" data-scroll-target="#part-c-should-i-control-for-it">Part C: Should I control for it?</a></li>
+  <li><a href="#part-d-make-the-paradoxes-yourself" id="toc-part-d-make-the-paradoxes-yourself" class="nav-link" data-scroll-target="#part-d-make-the-paradoxes-yourself">Part D: Make the paradoxes yourself</a></li>
+  <li><a href="#part-e-your-project" id="toc-part-e-your-project" class="nav-link" data-scroll-target="#part-e-your-project">Part E: Your project</a></li>
+  <li><a href="#part-f-r-challenge-optional" id="toc-part-f-r-challenge-optional" class="nav-link" data-scroll-target="#part-f-r-challenge-optional">Part F: R challenge (optional)</a></li>
+  <li><a href="#part-g-reflection" id="toc-part-g-reflection" class="nav-link" data-scroll-target="#part-g-reflection">Part G: Reflection</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 4 Homework</h1>
+<p class="subtitle lead">Forks, pipes, colliders, and the paradoxes they create</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>These exercises go with the Week 4 lecture. Part A checks your understanding of the ideas. Parts B and C are problems to work through with pen and paper. Part D asks you to make the paradoxes happen yourself in R. Part E is about your own project. Part F is an optional R challenge.</p>
+<p>A few ground rules:</p>
+<ul>
+<li><strong>Draw the DAG first.</strong> Almost every question this week gets easier once you have the picture in front of you. Pen and paper is fine. So is <a href="https://dagitty.net/dags.html">dagitty.net</a>.</li>
+<li><strong>Show your work.</strong> Name every path between X and Y and say whether it is open or closed. A correct answer with no paths is worth less than a wrong answer with clear reasoning.</li>
+<li><strong>Write in plain language.</strong> If you can’t explain it to a friend who missed the lecture, you haven’t finished understanding it yet.</li>
+<li>Problems marked ★ are harder. Give them a real try, but don’t get stuck on them.</li>
+</ul>
+<p>A reminder of the words we use. <strong>Holding Z fixed</strong>, <strong>controlling for Z</strong>, <strong>adjusting for Z</strong> and <strong>conditioning on Z</strong> all mean the same thing. A path is <strong>open</strong> if association can flow along it, and <strong>closed</strong> if it can’t.</p>
+<section id="part-a-concepts" class="level1">
+<h1>Part A: Concepts</h1>
+<p><strong>A1.</strong> Copy and fill in this table. Use the words <em>open</em> and <em>closed</em>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 20%">
+<col style="width: 22%">
+<col style="width: 20%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Structure</th>
+<th>Draw it with arrows</th>
+<th>Through Z, by default</th>
+<th>If you hold Z fixed</th>
+<th>Should you control for Z?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fork</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Pipe</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Collider</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Then give one example of each from the lecture, in one line each.</p>
+<p><strong>A2.</strong> In lecture we saw three ways to “hold Z fixed”. For each study below, say <em>what</em> is being held fixed and <em>how</em> (adding it to a regression, splitting the data into groups, or selecting the sample).</p>
+<ol type="a">
+<li>A researcher studies the effect of tuition classes on SEE results. She adds family income to her regression.</li>
+<li>A study of back pain only surveys patients at a hospital in Kathmandu.</li>
+<li>A report compares rice yields in fields that use fertilizer and fields that don’t, separately for the Terai and the hills.</li>
+<li>A study of what makes a good employee only looks at people who passed the job interview.</li>
+</ol>
+<p>Which one of these is easiest to miss, and why?</p>
+<p><strong>A3.</strong> Holding Z fixed <em>closes</em> a fork and also <em>closes</em> a pipe. So why is the advice “control for it” for a fork but “usually don’t” for a pipe? Answer in 3–4 sentences. Use the words <em>confounder</em>, <em>mediator</em> and <em>real effect</em>.</p>
+<p><strong>A4.</strong> In the anti-fungal plant example, the treated plants grew more. But when we compared plants with the same fungus status, the treatment looked useless.</p>
+<ol type="a">
+<li>Draw the DAG.</li>
+<li>What is <strong>post-treatment bias</strong>? Explain it in your own words.</li>
+<li>Is there <em>any</em> question for which holding fungus fixed would be the right choice?</li>
+</ol>
+<p><strong>A5.</strong> <em>Descendants.</em></p>
+<ol type="a">
+<li>In lecture, we wanted to control for wealth but could only measure <strong>income group</strong>. Why did some correlation between phones and births remain after we controlled for income group?</li>
+<li>Wealth and hard work can each get you a prestigious job. A study only looks at people who earn a high <strong>salary</strong>. Why does this partly open the collider, even though no one selected on the job itself?</li>
+</ol>
+<p><strong>A6.</strong> True or false? Give a one-sentence reason for each.</p>
+<ol type="a">
+<li>Adding more control variables to a regression always gets you closer to the truth.</li>
+<li>If two variables are not correlated in the data, neither one can cause the other.</li>
+<li>If X and Y are unrelated in the whole population, they will also be unrelated in any sample you take from it.</li>
+<li>Simpson’s paradox, where a trend reverses when you split the data, is usually caused by a fork.</li>
+<li>You can find out from the data alone whether a variable is a confounder or a mediator.</li>
+</ol>
+<p><strong>A7.</strong> The <strong>back-door rule</strong> has four steps. In your own words, explain what a “back door” is. Then explain which step each of last week’s examples follows:</p>
+<ol type="a">
+<li>We did <em>not</em> control for height when estimating the effect of sex on weight.</li>
+<li>We <em>did</em> control for living area when estimating the value of an extra bedroom.</li>
+</ol>
+</section>
+<section id="part-b-name-the-structure" class="level1">
+<h1>Part B: Name the structure</h1>
+<p><strong>B1.</strong> For each story, find the third variable. Say whether it is a <strong>fork</strong>, a <strong>pipe</strong> or a <strong>collider</strong>, and draw the DAG. (Some have more than one good answer. Pick the one you believe and explain why.)</p>
+<ol type="a">
+<li>In years with a heavy monsoon, Nepal has more landslides <em>and</em> bigger rice harvests. So landslides “go with” good harvests.</li>
+<li>A scholarship is given to students with top marks <em>or</em> to top athletes. Among scholarship students, the best athletes have the lowest marks.</li>
+<li>Districts with more health posts report more cases of TB.</li>
+<li>A fertilizer trial in Chitwan measures soil nitrogen at the end of the season. Comparing fields with the same soil nitrogen, fertilizer seems to make no difference to the harvest.</li>
+<li>Among trekking agencies that survived the COVID years, the ones with the worst websites have the best reviews.</li>
+<li>Households that receive remittances spend more on their children’s schooling, and their children get better results. Comparing households that spend the same amount on schooling, remittances make no difference.</li>
+</ol>
+<p><strong>B2.</strong> <em>Spot the confound.</em> For each claim, draw the DAG, name the structure, and say what you would (or would not) control for.</p>
+<ol type="a">
+<li>Students who use ChatGPT more get lower marks.</li>
+<li>Among patients at a large hospital, people with diabetes are <em>less</em> likely to have a broken bone.</li>
+<li>After controlling for monthly income, years of schooling has almost no effect on whether a household has enough food.</li>
+<li>★ Among published studies of a new medicine, the small studies report much bigger effects than the large ones. <em>Hint: which studies get published?</em></li>
+</ol>
+<p><strong>B3.</strong> ★ <em>The low-birth-weight paradox.</em> Among babies born with low birth weight, babies of mothers who smoked die <em>less</em> often than babies of mothers who didn’t smoke. Does this mean smoking protects low-weight babies?</p>
+<ol type="a">
+<li>Draw a DAG with: Smoking, Other problems (for example, a birth defect), Low birth weight, and Death.</li>
+<li>Which variable is the collider? What is the path that holding it fixed opens?</li>
+<li>Explain in 3–4 plain sentences why smokers’ low-weight babies look healthier.</li>
+</ol>
+</section>
+<section id="part-c-should-i-control-for-it" class="level1">
+<h1>Part C: Should I control for it?</h1>
+<p>You can type each DAG below into <a href="https://dagitty.net/dags.html">dagitty.net</a> to check your answers. But do each question by hand first.</p>
+<p><strong>C1.</strong> <em>Remittances and school results.</em> We want the effect of a household receiving <strong>remittances</strong> on a child’s <strong>school results</strong>. Assume this DAG:</p>
+<pre><code>dag {
+  District -&gt; Wealth
+  District -&gt; Results
+  Wealth -&gt; Remittances
+  Wealth -&gt; Results
+  Remittances -&gt; Results
+  Remittances -&gt; Tuition
+  Tuition -&gt; Results
+  Remittances -&gt; Boarding
+  Results -&gt; Boarding
+}</code></pre>
+<p><em>Wealth</em> is the household’s wealth before anyone went abroad. <em>Tuition</em> is money spent on tuition classes. <em>Boarding</em> means the child moved to a boarding school in Kathmandu, which needs money <em>and</em> good results.</p>
+<ol type="a">
+<li>List every path between Remittances and Results. There are five.</li>
+<li>For each path: is it a causal path or a back door? Is it open or closed right now? Name each fork, pipe and collider along the way.</li>
+<li>For each of District, Wealth, Tuition and Boarding, say whether you should control for it to get the <strong>total effect</strong> of remittances. Give a reason for each.</li>
+<li>What is the smallest set of variables that closes every back door?</li>
+<li>A classmate controls for Wealth <strong>and</strong> Boarding. What goes wrong?</li>
+<li>What would you control for if you wanted only the <strong>direct</strong> effect, not the part that works through tuition?</li>
+</ol>
+<p><strong>C2.</strong> ★ <em>A collider that comes first.</em> We want the effect of taking <strong>Lok Sewa coaching classes</strong> on <strong>passing</strong> the Lok Sewa exam. Assume this DAG. Motivation is not measured.</p>
+<pre><code>dag {
+  Wealth -&gt; Coaching
+  Wealth -&gt; Kathmandu
+  Motivation -&gt; Kathmandu
+  Motivation -&gt; Passed
+  Coaching -&gt; Passed
+}</code></pre>
+<p><em>Kathmandu</em> means the person lives in Kathmandu. Richer people and more motivated people are both more likely to move there.</p>
+<ol type="a">
+<li>List both paths between Coaching and Passed. Which one is open?</li>
+<li>A colleague says: “Where someone lives was decided <em>before</em> they took coaching, so it is safe to control for it.” Is she right? What happens if you control for Kathmandu alone?</li>
+<li>Suppose you have already controlled for Kathmandu, and your supervisor insists it stays in the model. What <em>else</em> could you control for to fix the problem?</li>
+<li>Which rule of the back-door rule does this question illustrate?</li>
+</ol>
+<p><strong>C3.</strong> <em>A paradox inside a paradox.</em> Go back to the Berkeley admissions example, with <strong>ability</strong> added:</p>
+<pre><code>dag {
+  Sex -&gt; Department
+  Department -&gt; Admitted
+  Sex -&gt; Admitted
+  Ability -&gt; Department
+  Ability -&gt; Admitted
+}</code></pre>
+<ol type="a">
+<li>If we want the <strong>total</strong> effect of sex on admission, what should we control for?</li>
+<li>We want the <strong>direct</strong> effect (do committees treat women differently?), so we hold department fixed. Write down the path this opens. Which part of it is the collider?</li>
+<li>Why can’t we fix this by controlling for something else, if ability is not measured?</li>
+<li>Suppose we <em>could</em> measure ability. What would we control for to get the direct effect?</li>
+</ol>
+</section>
+<section id="part-d-make-the-paradoxes-yourself" class="level1">
+<h1>Part D: Make the paradoxes yourself</h1>
+<p>In this part you build the made-up worlds from lecture in R. Because you make the world, you <strong>know</strong> the true answer, so you can see exactly when a method goes wrong. Use <code>cor()</code> and <code>lm()</code> for quick answers. Copy the code exactly, including <code>set.seed()</code>, so your numbers match your classmates’.</p>
+<p><strong>D1.</strong> <em>The fork: marriage and happiness.</em> In this world, urban people marry later and are happier, but age at marriage has <strong>no</strong> effect on happiness.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">116</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>urban <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="dv">25</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">rnorm</span>(n, <span class="dv">2</span> <span class="sc">*</span> urban <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>happiness <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">rnorm</span>(n, <span class="dv">2</span> <span class="sc">*</span> urban <span class="sc">-</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="a">
+<li>Find the correlation between age and happiness for everyone.</li>
+<li>Find the correlation separately for urban and for rural people.</li>
+<li>Fit <code>lm(happiness ~ age)</code> and <code>lm(happiness ~ age + urban)</code>. What is the coefficient on age in each? Which one matches the truth?</li>
+<li>In one sentence: which path did adding <code>urban</code> close?</li>
+</ol>
+<p><strong>D2.</strong> <em>The pipe: the anti-fungal treatment.</em> In this world, the treatment lowers the chance of fungus, and fungus slows growth. The treatment does nothing else.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">71</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">400</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>treated <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> n <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fungus <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fu">ifelse</span>(treated <span class="sc">==</span> <span class="dv">1</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>growth <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">5</span> <span class="sc">-</span> <span class="dv">3</span> <span class="sc">*</span> fungus, <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="a">
+<li>Compare the average growth of treated and untreated plants.</li>
+<li>Fit <code>lm(growth ~ treated)</code> and <code>lm(growth ~ treated + fungus)</code>. What is the coefficient on <code>treated</code> in each?</li>
+<li>Which model would you show a farmer who asks “should I buy this treatment?” Why?</li>
+</ol>
+<p><strong>D3.</strong> <em>The collider: grant proposals.</em> Newsworthiness and trustworthiness are unrelated. Reviewers fund proposals with the highest <em>combined</em> score.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1914</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>newsworthy <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>trustworthy <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> newsworthy <span class="sc">+</span> trustworthy</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>funded <span class="ot">&lt;-</span> score <span class="sc">&gt;=</span> <span class="fu">quantile</span>(score, <span class="fl">0.9</span>)   <span class="co"># top 10% get funded</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="a">
+<li>Find the correlation between newsworthiness and trustworthiness for all 200 proposals, and for the funded ones only.</li>
+<li>Using the same data, change the cutoff so the top 50% get funded. What is the correlation among funded proposals now? What happens as funding gets more selective?</li>
+<li>Now fund the top 10% on newsworthiness <strong>alone</strong>. What is the correlation among funded proposals? Why is it so different from (a)?</li>
+<li>Selecting the sample is one way to hold Z fixed. Adding Z to a regression is another. Fit <code>lm(trustworthy ~ newsworthy + funded)</code> on all 200 proposals. What is the coefficient on <code>newsworthy</code>? What does this tell you about putting a collider in a regression?</li>
+</ol>
+</section>
+<section id="part-e-your-project" class="level1">
+<h1>Part E: Your project</h1>
+<p><strong>E1.</strong> Open your project’s <code>.qmd</code> file and copy your <code>dag</code> into <a href="https://dagitty.net/dags.html">dagitty.net</a>. (In DAGitty: <em>Model → New model</em>, then paste it into the <em>Model code</em> box.)</p>
+<ol type="a">
+<li>Write down your <strong>exposure</strong> (X) and <strong>outcome</strong> (Y) in one sentence each.</li>
+<li>List every path between X and Y. Label each one as causal or a back door, and name each fork, pipe and collider along it.</li>
+<li>Look at the <strong>Causal effect identification</strong> panel. Write down the adjustment set(s) DAGitty gives you.</li>
+<li>Compare these with the variables your model actually controls for (the ones marked <code>adjusted</code> in your <code>dag</code>). Do they match? If you control for something DAGitty does not ask for, is it a mediator, a collider, or harmless?</li>
+<li>Is there a variable you control for that a skeptic might say is caused by your X? Draw the skeptic’s DAG. Would it change your adjustment set?</li>
+<li>Your data is a sample of countries with World Bank data for 2022. Countries with missing data were dropped. Could this selection act like a collider? Give one reason why it might, or might not.</li>
+</ol>
+</section>
+<section id="part-f-r-challenge-optional" class="level1">
+<h1>Part F: R challenge (optional)</h1>
+<p><strong>F1.</strong> <em>A proxy for a confounder.</em> Simulate a world where wealth causes both phones and births, and phones have <strong>no</strong> effect on births. Then try controlling for wealth itself, for a good proxy, and for a poor proxy.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>wealth <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>phones <span class="ot">&lt;-</span> wealth <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>births <span class="ot">&lt;-</span> <span class="sc">-</span>wealth <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>proxy_good <span class="ot">&lt;-</span> wealth <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.3</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>proxy_bad <span class="ot">&lt;-</span> wealth <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Report the coefficient on <code>phones</code> in four models: no control, <code>+ wealth</code>, <code>+ proxy_good</code>, <code>+ proxy_bad</code>. Explain the pattern using the word <em>descendant</em>.</p>
+<p><strong>F2.</strong> <em>Berkson’s paradox.</em> Two diseases each affect 10% of people and are completely unrelated. Either one makes hospital admission much more likely.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2020</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.1</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.1</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>hospital <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fu">pmin</span>(<span class="dv">1</span>, <span class="fl">0.02</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> d1 <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> d2)) <span class="sc">==</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="a">
+<li>Find the correlation between <code>d1</code> and <code>d2</code> for everyone and for hospital patients only.</li>
+<li>Among hospital patients, what share of people <em>with</em> disease 1 also have disease 2? What share of people <em>without</em> disease 1 have disease 2?</li>
+<li>Explain why a doctor who only sees hospital patients might wrongly think disease 1 protects against disease 2.</li>
+</ol>
+<p><strong>F3.</strong> ★ Simulate the Lok Sewa world from C2 and check your answers. Here the true effect of coaching on the exam score is <strong>0.3</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>wealth <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>motivation <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>kathmandu <span class="ot">&lt;-</span> wealth <span class="sc">+</span> motivation <span class="sc">+</span> <span class="fu">rnorm</span>(n) <span class="sc">&gt;</span> <span class="dv">0</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>coaching <span class="ot">&lt;-</span> wealth <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="fl">0.3</span> <span class="sc">*</span> coaching <span class="sc">+</span> motivation <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Compare the coefficient on <code>coaching</code> with no controls, with <code>kathmandu</code>, and with <code>kathmandu + wealth</code>. Which models get close to 0.3? Does this match your answer to C2?</p>
+<p><strong>F4.</strong> ★ Install the <code>dagitty</code> R package and use <code>adjustmentSets()</code> to check your answers to C1, C2 and C3, and your own project DAG.</p>
+</section>
+<section id="part-g-reflection" class="level1">
+<h1>Part G: Reflection</h1>
+<p><strong>G1.</strong> Find a news story or a published study that says something like “after controlling for…” or “among people who…”. In a short paragraph:</p>
+<ul>
+<li>What did they control for, or select on?</li>
+<li>Draw the DAG you think they had in mind. Is the variable a fork, a pipe or a collider?</li>
+<li>Was controlling for it a good idea? What would you want to know before trusting the result?</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/theopen-institute\.github\.io\/openstats\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
