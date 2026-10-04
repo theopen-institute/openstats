@@ -85,12 +85,12 @@ $c-ink-head: #0b2545;
   margin-left: 0;
 }
 
-.reveal .slides ul li {
+.reveal .slides ul > li {
   position: relative;
   padding-left: 1.45em;
 }
 
-.reveal .slides ul li::before {
+.reveal .slides ul > li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -102,7 +102,7 @@ $c-ink-head: #0b2545;
 }
 
 /* nested bullets get a lighter, hollow marker */
-.reveal .slides ul ul li::before {
+.reveal .slides ul ul > li::before {
   background: transparent;
   border: 2px solid rgba($c-brand, 0.6);
 }

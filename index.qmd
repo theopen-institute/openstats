@@ -32,16 +32,26 @@ Each week is a slide deck. Most weeks have a concepts part and an applied part.
 
 [A Bayesian Workflow](workflow.qmd) is a full worked example that pulls the course
 together. It asks whether a university's admissions process discriminates by sex, and
-goes through eight steps:
+goes through ten steps in three parts:
 
-1. Define the estimand.
+**Scientific model**
+
+1. Ask the question.
 2. Draw the causal model (DAG).
-3. Simulate the population.
-4. Write the formal model.
-5. Write the Stan code.
-6. Test on simulated data.
-7. Fit and validate the model.
-8. Compute the estimand and test its robustness.
+3. Define the estimand.
+4. Simulate the population.
+
+**Statistical model**
+
+5. Write the formal model.
+6. Write the Stan code.
+7. Test on simulated data.
+
+**Analysis**
+
+8. Fit and validate the model.
+9. Compute the estimate.
+10. Test its robustness.
 
 Along the way it shows Simpson's paradox: a large overall gap in admission rates that
 disappears once we compare applicants to the same department.

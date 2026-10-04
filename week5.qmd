@@ -65,10 +65,13 @@ Reading a finding, asking a question
 - Part 1: Evaluating someone else's finding
   - Seven questions to ask of any claim
   - Worked case: bicycles for girls in Bihar
-- Part 2: Asking your own question
+- Part 2: What's missing from the model?
+  - Reading the DAG a study never drew
+  - Missing common causes, mediators, and which way they bias the result
+- Part 3: Asking your own question
   - From a decision to an estimand
   - The target trial: the experiment you wish you could run
-- Part 3: Applied
+- Part 4: Applied
   - Critique a study, design an estimand, revisit your project
 
 
@@ -219,6 +222,10 @@ The phrase **"after controlling for..."** is the most important sentence in the
 methods section. Check every variable in that list against your DAG. _(Week 4)_
 :::
 
+::: {.fragment}
+This question gets **all of Part 2**.
+:::
+
 
 # 5. Who is it about?
 
@@ -341,7 +348,272 @@ Vote again: would you fund it in Madhesh? What would you need to know first?
 :::
 
 
-# Part 2: Asking your own question {.center}
+# Part 2: What's missing from the model? {.center}
+
+The critique you can make without any statistics
+
+
+## The problem is upstream
+
+::: {.nonincremental}
+1. **Question**: what do we want to know?
+2. **Causal model**: what causes what? (the DAG)
+3. **Statistical model**: the regression, the priors, the code
+4. **Estimate**: the numbers in the table
+:::
+
+- Methods sections and peer review spend almost all their time on steps 3 and 4.
+- Step 2 is usually **never written down**. The list of controls stands in for it.
+- A mistake in step 2 can't be fixed later. A bigger sample just gives you a more
+  precise wrong answer.
+- So you can challenge a finding without checking a single calculation: **what did
+  their causal model leave out?**
+
+
+## Their model implies a DAG
+
+> _"Countries where more girls attend secondary school have fewer births per woman,
+> after controlling for GDP per capita and contraceptive use."_
+
+::: {.columns}
+::: {.column}
+```{r implied-dag, fig.width = 7, fig.height = 5}
+dag_plot(
+  c("G -> S", "G -> B", "S -> B", "C -> B"),
+  list(S = c(0, 0), B = c(3, 0), G = c(1.5, 1.3), C = c(1.5, -1.3)),
+  labels = c(
+    S = "Schooling", B = "Births",
+    G = "GDP per capita", C = "Contraceptive use"
+  ),
+  above = "G",
+  left = "S",
+  right = "B",
+  exposure = "S",
+  outcome = "B"
+)
+```
+:::
+
+::: {.column}
+- Each control is a variable they thought mattered.
+- Each **missing arrow** is a claim too: _"nothing else causes both schooling and
+  births."_
+- Leaving an arrow out is a stronger claim than drawing one, and it's never stated
+  out loud.
+:::
+:::
+
+
+## Four questions for every arrow
+
+For the exposure X and the outcome Y, ask:
+
+1. **Common causes**: what could cause *both* X and Y? Is it in the model? [→ an
+   unclosed **fork**]{.blue}
+2. **Mediators**: *how* would X affect Y? Is that channel in the control list? [→ a
+   blocked **pipe**]{.blue}
+3. **Common effects**: was the sample chosen by something X and Y both affect? [→ an
+   opened **collider**]{.blue}
+4. **Reverse arrows**: could Y cause X? [→ the arrow points the wrong way]{.blue}
+
+::: {.fragment}
+Then repeat for each control variable. Why is it in the model? Is it a fork, a pipe or
+a collider?
+:::
+
+
+## The usual suspects
+
+In development data, the same few common causes come up again and again.
+
+| Suspect | Examples |
+|---|---|
+| **Wealth / SES** | income, assets, GDP. Nearly everything follows it. _(Week 4)_ |
+| **Geography** | urban vs. rural, terrain, climate, distance to markets |
+| **Institutions** | state capacity, corruption, colonial history, conflict |
+| **Culture and norms** | religion, gender norms, caste, language |
+| **Time** | everything has trended together since 1990 |
+| **Selection** | who chose X? motivation, ability, need |
+| **Data quality** | richer, better-run places measure and report more |
+: {.nonincremental}
+
+- Go down the list for every claim. Ask whether each one plausibly points into **both**
+  X and Y.
+
+
+## Missing common causes
+
+::: {.columns}
+::: {.column}
+```{r missing-forks, fig.width = 7, fig.height = 5.5}
+dag_plot(
+  c("G -> S", "G -> B", "S -> B", "U -> S", "U -> B", "N -> S", "N -> B"),
+  list(
+    S = c(0, 0), B = c(4, 0), G = c(2, 1.3),
+    U = c(0.4, -1.6), N = c(3.6, -1.6)
+  ),
+  labels = c(
+    S = "Schooling", B = "Births",
+    G = "GDP", U = "Urbanization", N = "Gender norms"
+  ),
+  above = "G",
+  left = "S",
+  right = "B",
+  exposure = "S",
+  outcome = "B",
+  unobserved = c("U", "N"),
+  highlight = c("U -> S", "U -> B", "N -> S", "N -> B")
+)
+```
+:::
+
+::: {.column}
+- **Urbanization**: cities have more secondary schools *and* make children more
+  expensive to raise.
+- **Gender norms**: where girls are expected to marry early, they leave school *and*
+  start having children sooner.
+- Also: family-planning programs, child mortality, religion, conflict...
+- None of these is GDP. Controlling for GDP leaves these back doors open.
+:::
+:::
+
+
+## Which way would they push?
+
+You can often tell the **direction** of the bias without any data.
+
+| Arrow into X | Arrow into Y | The missing confounder adds... |
+|:-:|:-:|---|
+| \+ | \+ | a false **positive** association |
+| − | − | a false **positive** association |
+| \+ | − | a false **negative** association |
+| − | \+ | a false **negative** association |
+: {.nonincremental}
+
+::: {.fragment}
+- Urbanization: **+** schooling, **−** births → a false negative association.
+- Gender norms (early marriage): **−** schooling, **+** births → also false negative.
+- Both push the same way as the reported effect, so the real effect of schooling is
+  probably **smaller** than reported. Probably not zero, but smaller.
+:::
+
+
+## Mediators: direct and indirect effects
+
+::: {.columns}
+::: {.column}
+```{r mediators, fig.width = 7, fig.height = 5}
+dag_plot(
+  c("S -> M", "M -> B", "S -> C", "C -> B", "S -> B"),
+  list(S = c(0, 0), B = c(3, 0), M = c(1.5, 1.3), C = c(1.5, -1.3)),
+  labels = c(
+    S = "Schooling", B = "Births",
+    M = "Age at marriage", C = "Contraceptive use"
+  ),
+  above = "M",
+  left = "S",
+  right = "B",
+  exposure = "S",
+  outcome = "B",
+  highlight = c("S -> M", "M -> B", "S -> C", "C -> B")
+)
+```
+:::
+
+::: {.column}
+- Schooling can lower fertility **through** later marriage and more contraceptive use.
+  These are **indirect effects**.
+- Whatever is left over is the **direct effect**.
+- **Total effect** = direct + all indirect paths.
+- They controlled for contraceptive use, so they removed one of the channels. Their
+  coefficient is _"the effect of schooling, not counting its effect through
+  contraception."_
+:::
+:::
+
+
+## Which effect answers the question?
+
+- **Funding girls' schooling?** You want the **total** effect. Every channel counts,
+  so don't control for mediators.
+- **Understanding the mechanism?** Direct and indirect effects matter. *Does* schooling
+  work through contraception? If so, maybe fund clinics instead.
+- Papers often add controls "to be safe." If a control is a mediator, it quietly
+  changes the question being answered.
+
+::: {.fragment .callout-warning .nonincremental title="Controlling for a mediator can also open a collider"}
+Anything that causes both contraceptive use and births (e.g. access to health services)
+now makes a new back door: schooling → **contraception** ← health access → births.
+Controlling for a mediator only gives the direct effect if nothing else causes both the
+mediator and the outcome. _(Week 4)_
+:::
+
+
+## Writing the critique
+
+A response you can give without re-running any analysis:
+
+::: {.callout-tip .nonincremental title="Template"}
+The authors' model assumes nothing causes both **[X]** and **[Y]** except **[their
+controls]**. Plausible common causes it leaves out include **[U₁, U₂]**. These would
+probably make the estimate **[too large / too small]**.
+
+**[M]** is in the control list, but it's a channel through which X affects Y. So the
+estimate is the effect of X *not through M*, which is not the same as **[the policy
+question]**.
+:::
+
+- Name specific variables, and say **which way** each one would push.
+- "There may be omitted variables" isn't a critique. It's true of every study.
+
+
+## Your turn
+
+For each claim: name two missing common causes, any mediators in the controls, and the
+direction each would push.
+
+1. Households with a toilet have healthier children, after controlling for income.
+2. Countries with more women in parliament have lower maternal mortality, after
+   controlling for GDP and health spending.
+3. Districts with more microfinance lenders have more women in paid work, after
+   controlling for population.
+4. Households receiving remittances spend more on schooling, after controlling for
+   household size and caste.
+
+
+## Possible answers
+
+1. **Forks**: mother's education, clean water source, urban location. Most of them
+   raise both toilet ownership and child health, which makes toilets look **more**
+   effective than they are.
+2. **Mediator**: health spending. Women legislators may lower maternal mortality *by*
+   raising it, so controlling for it hides part of the effect. **Forks**: democracy,
+   gender norms, women's education.
+3. **Forks**: roads and markets. **Selection**: if lenders target poorer districts, the
+   effect looks **smaller**.
+4. **Forks**: migrant households were already better off and better connected.
+   **Mediator** to watch: if they had controlled for income, they'd block the main
+   channel.
+
+::: {.fragment}
+None of these needed a single number. They needed a DAG.
+:::
+
+
+# Part 2: Summary
+
+- Most findings never state their causal model. **Draw it for them** from the control
+  list.
+- For X → Y and each control, look for **common causes**, **mediators**, **common
+  effects**, and **reverse arrows**.
+- Go through **the usual suspects**: wealth, geography, institutions, norms, time,
+  selection, data quality.
+- **Sign the bias**: say which way each missing variable would push.
+- Ask whether the question needs the **total** or the **direct** effect, and whether
+  the controls match that.
+
+
+# Part 3: Asking your own question {.center}
 
 Start from the decision, not the data
 
@@ -417,7 +689,7 @@ if **[intervention]** compared to **[alternative]**?
 <!-- TODO: simple "decision threshold" diagram: posterior vs. the cost-effectiveness line -->
 
 
-# Part 2: Summary
+# Part 3: Summary
 
 - Start from the **decision**. If no answer would change it, stop.
 - Write the **estimand**: population, outcome, intervention, comparison, time, summary.
@@ -425,7 +697,7 @@ if **[intervention]** compared to **[alternative]**?
 - The DAG says what to measure. The decision says how precise it needs to be.
 
 
-# Part 3: Applied {.center}
+# Part 4: Applied {.center}
 
 
 ## Round 1: Critique
@@ -433,6 +705,9 @@ if **[intervention]** compared to **[alternative]**?
 <!-- TODO: 3-4 one-page study summaries, one per group -->
 
 In groups, take one study summary and answer the seven questions.
+
+- Draw the DAG their control list implies. Add the **missing common causes** and
+  **mediators**, and say which way each would push the estimate.
 
 - Which question was hardest to answer from what they reported?
 - What's the **one thing** you'd need to know before acting?
@@ -453,6 +728,9 @@ Each group gets a decision. Write:
 ## Your project
 
 - Rewrite your project's question using the **estimand template**.
+- Critique your own DAG as if a stranger wrote it: which **common causes** of your
+  exposure and outcome aren't in it? Which way would each bias your estimate?
+- Are any of your controls **mediators**? Do you want the total or the direct effect?
 - What is your **target trial**? How far is World Bank 2022 data from it?
 - List your **scope limits**:
   - One year, cross-sectional
@@ -466,6 +744,8 @@ Each group gets a decision. Write:
 **A one-page critique memo** on a real report or finding from your own work.
 
 - Organized by the seven questions.
+- Includes the DAG their model implies, the common causes and mediators it leaves out,
+  and the direction of each bias.
 - Ends with: **"What I'd need to see before acting on this."**
 
 <!-- TODO: homework/week5.qmd with a worked example memo -->

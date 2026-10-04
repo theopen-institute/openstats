@@ -14,20 +14,36 @@ result we can defend.
 Imagine you're in charge of admissions at a large university. You want to know if your
 admissions process is fair. You've got data from thousands of individual applicants. What now?
 
-The workflow has eight steps:
+The workflow has ten steps in three parts.
 
-1. **Define the estimand.** State exactly what you want to know before you touch the data.
+**Scientific model:** what we believe about the world, before any statistics.
+
+1. **Ask the question.** Say in plain words what you want to know, and picture what the answer would look like.
 2. **Draw the causal model (DAG).** Write down what you assume causes what, based on what you know about the domain.
-3. **Simulate the population.** Write a simulation that could produce data like yours.
-4. **Write the formal model.** Derive the statistical model from the DAG, in math notation.
-5. **Write the Stan code.** Translate the formal model into a program.
-6. **Test on simulated data.** Check that the priors imply plausible data and that the model recovers parameters we already know.
-7. **Fit and validate the model.** Run the sampler, check its diagnostics, and run posterior predictive checks. Can we trust the model?
-8. **Compute the estimand and test its robustness.** What is the result, and how much does it depend on our assumptions?
+3. **Define the estimand.** Use the DAG to turn your question into one exact number, before you touch the data.
+4. **Simulate the population.** Write a simulation that could produce data like yours.
+
+**Statistical model:** the machinery that turns data into an estimate, tested where we already know the truth.
+
+5. **Write the formal model.** Derive the statistical model from the DAG, in math notation.
+6. **Write the Stan code.** Translate the formal model into a program.
+7. **Test on simulated data.** Check that the priors imply plausible data and that the model recovers parameters we already know.
+
+**Analysis:** the real data, the estimate, and how far to trust it.
+
+8. **Fit and validate the model.** Run the sampler, check its diagnostics, and run posterior predictive checks. Can we trust the model?
+9. **Compute the estimate.** Use the fitted model to estimate the estimand from step 3.
+10. **Test its robustness.** How much does the estimate depend on our assumptions?
+
+None of steps 1–7 fit the model to the real data. In principle, you could do all of them
+before collecting any. (Here, the simulation borrows realistic numbers from the data,
+but it doesn't have to.)
 
 The steps are numbered, but the workflow is a loop. If the model can't recover known
-parameters in step 6, or can't reproduce the data in step 7, go back and fix the model,
-the simulation, or the DAG. Each of those failures teaches us something.
+parameters in step 7, or can't reproduce the data in step 8, go back and fix the
+statistical model. If the result in step 10 depends on an assumption you can't defend,
+go back further, to the scientific model: the DAG or the simulation. Each of those
+failures teaches us something.
 
 ```{r setup, message=FALSE, results="hide"}
 # libraries
@@ -51,31 +67,23 @@ df <- read.csv("datasets/berkeley.csv") |>
   )
 ```
 
-# Step 1: Define the estimand
+# Scientific model
 
-The estimand is the precise quantity we want to learn. "Is admissions fair?" is too vague
-to estimate. Before we write any code, we need to turn it into a number.
+## Step 1: Ask the question
 
-Suppose we find that women are admitted at a lower rate overall. That gap could come from
-two places:
+Start with the question as you'd say it out loud: *is our admissions process unfair to
+women?* You don't need technical terms yet. You do need a clear picture of what the
+answer would look like.
 
-- A **direct** effect: departments treat women differently from men who apply to the same department.
-- An **indirect** effect: women apply to different departments, and those departments admit fewer people.
+A good way to get one is a thought experiment. Take a single applicant and change only
+the sex on their form. Keep their grades, their letters and the department they applied
+to the same. Would their chance of getting in change? If it would, the process treats
+people differently because of their sex. That's what we mean by unfair.
 
-Both are worth knowing about, but they call for different fixes. As the admissions
-office, we control the decisions departments make, so we'll focus on the direct effect:
+We can't run this experiment on real applicants, but it tells us what we're looking for.
+We'll come back to it in Step 4, where we run it on a simulated population.
 
-> **Estimand:** the average difference in admission probability between women and men
-> who apply to the *same* department, averaged across departments in proportion to how many
-> people apply to each.
-
-We'll measure it as a difference in admission rates. For example, a result of −0.05
-would mean women are admitted 5 percentage points less often than men who apply to the
-same department.
-Settling this first tells us what the model has to include and what we'll compute from it
-at the end.
-
-# Step 2: Draw the causal model (DAG)
+## Step 2: Draw the causal model (DAG)
 
 A causal model contains no numbers. It's a picture of the variables and of which ones
 cause which. You'll hear it called a DAG (Directed Acyclic Graph), which is a complicated
@@ -97,77 +105,119 @@ Sex -> Department
 DAGitty.setup()
 </script>
 
-How do you pick these variables? You use what you know about the domain. We include sex
-because sex-based discrimination is a major social issue. We include department because
-some departments are much harder to get into than others.
+How do you pick these variables? You use what you already know about the subject. Here,
+we include sex because sex-based discrimination is a major social issue. We include
+department because some departments are much harder to get into than others.
 
-Each arrow is an assumption. Each missing arrow is an assumption too, and usually a
-stronger one. The arrow $\text{Sex} \to \text{Admitted}$ is the direct effect. The path
-$\text{Sex} \to \text{Department} \to \text{Admitted}$ is the indirect effect. The DAG
-tells us that to estimate the direct effect we need to **condition on department**, so
-department has to go into the model.
+These are **theoretical choices, not empirical ones**. The data can't tell us which
+variables we should put in the graph or which way the arrows should point. We make these 
+decisions on the basis of our past experience, previous research, and the consensus of the field. Very different DAGs can fit
+the same data equally well. The DAG comes from our understanding of how admissions work,
+and we have to commit to it before the data can say anything.
 
-The DAG also leaves things out. Many other factors affect admission, like an applicant's
-qualifications. Leaving them off the graph is fine as long as they aren't related to sex.
-In other words, we're assuming that the men and women who apply are equally qualified on
-average. That's a strong assumption, and we'll come back to it in Step 8.
+The choices also decide the answer. Every arrow is an assumption, and every missing arrow
+is an assumption too, usually a stronger one. Together they determine which variables the
+model includes, which comparison we make, and what the final number means. Suppose we had
+left department out. The DAG would then say to compare overall admission rates for men and
+women, and that comparison gives a very different answer from the one we'll get here.
+Change the DAG and you will almost certainly change the result.
 
-# Step 3: Simulate the population
+The DAG also leaves things out. Many other factors affect admission. The most obvious is
+an applicant's qualifications: their undergraduate grades, test scores, letters of
+recommendation and research experience. Others include how well their interests match a
+faculty member's, whether they need funding, and how they come across in an interview.
+Leaving a factor off the graph is safe only if two things are true: it isn't related to
+sex, and it doesn't affect both where people apply and whether they're admitted.
+Qualifications can easily fail the second test. Strong applicants may apply to more
+selective departments, and they're also more likely to get in. Because we compare men and
+women *within* departments, a factor like that can create a gap between them even when
+there's no discrimination. So we're assuming that, within each department, the men and
+women who apply are equally qualified. That's a strong assumption, and the data can't
+check it for us. In Step 10 we'll see how much the result moves if it's wrong.
+
+This DAG is not the final word, and no DAG ever will be. There is no "right" model waiting
+to be found at the end of the process. Every DAG is a simplification. Each one brings some
+parts of the problem into focus and leaves others out. This one helps us see how
+department choice can hide or create a gap between men and women. It says nothing about
+what happens before anyone applies: who is encouraged to apply, who can afford to, and
+who expects to be welcome. A different DAG would bring those questions into view and push
+others out.
+
+That doesn't mean every DAG is as good as any other. Some fit what we know far better,
+and the data can rule some out. But the value of this workflow comes from going around the
+loop: drawing a DAG, seeing what it implies, finding where it fails, and drawing a better
+one. Each pass shows us something about the problem that we couldn't see before. We
+never finish. We just understand more each time.
+
+## Step 3: Define the estimand
+
+The DAG shows that our plain-language question has more than one meaning. Sex reaches
+admission along two paths:
+
+- A **direct** path, $\text{Sex} \to \text{Admitted}$: departments treat women differently
+  from men who apply to the same department.
+- An **indirect** path, $\text{Sex} \to \text{Department} \to \text{Admitted}$: women apply
+  to different departments, and those departments admit fewer people.
+
+Suppose women are admitted at a lower rate overall. That gap could come from either path,
+and each one calls for a different fix. So "is admissions unfair?" is still too vague to
+estimate. We have to choose which path we're asking about.
+
+We choose based on what we're responsible for, not on what's easiest to estimate. As the
+admissions office, we control the decisions departments make, so we'll focus on the
+direct path. This is the thought experiment from Step 1: change the applicant's sex and
+keep their department the same. Written as a number to estimate, it's the **estimand**:
+
+> **Estimand:** the average difference in admission probability between women and men
+> who apply to the *same* department, averaged across departments in proportion to how many
+> people apply to each.
+
+We'll measure it as a difference in admission rates. For example, a result of −0.05
+would mean women are admitted 5 percentage points less often than men who apply to the
+same department.
+
+Comparing applicants to the same department means we have to **condition on department**,
+so department has to go into the model. Settling the estimand before we write any code
+tells us what the model has to include and what we'll compute from it at the end.
+
+## Step 4: Simulate the population
 
 Before writing a statistical model, we write a *generative* one: a simulation that follows
 the DAG and produces fake applicants. This makes us state precisely how we think the data
 come about. Later, it gives us data where we know the right answer.
 
 ```{r simulation}
-depts <- levels(df$dept)
-
-# how selective each department is (baseline admission rates)
-dept_rates <- c(A = 0.65, B = 0.60, C = 0.35, D = 0.33, E = 0.25, F = 0.07)
-
-# where men and women tend to apply (Sex -> Department)
-male_pref <- c(0.30, 0.20, 0.12, 0.15, 0.07, 0.14)
-female_pref <- c(0.06, 0.02, 0.32, 0.20, 0.21, 0.19)
-
+# Each assumption is an argument, with a default based on the real data. Change them to
+# simulate a different world. admit_rate, male_pref and female_pref give one value per
+# department, in the order of depts, or a single value for all of them: admit_rate = 0.4
+# means every department admits 40%.
 simulate_admissions <- function(
   n = 4500,
-  discrimination = 0, # direct effect of being female, in log-odds (Sex -> Admitted)
-  u_on_admit = 0, # how much qualifications matter for admission (not in the DAG)
-  female_selection = 0 # how much more qualified female applicants are, in SDs (for Step 8)
+  discrimination = 0, # Sex -> Admitted: effect of being female, in log-odds
+  depts = c("A", "B", "C", "D", "E", "F"),
+  admit_rate = c(0.65, 0.60, 0.35, 0.33, 0.25, 0.07), # Department -> Admitted
+  male_pref = c(0.31, 0.21, 0.12, 0.15, 0.07, 0.14), # Sex -> Department
+  female_pref = c(0.06, 0.02, 0.32, 0.20, 0.21, 0.19) # Sex -> Department
 ) {
-  tibble(
-    sex = sample(c("male", "female"), n, replace = TRUE, prob = c(0.6, 0.4))
-  ) |>
-    mutate(
-      u = rnorm(n, mean = female_selection * (sex == "female")),
-      dept = if_else(
-        sex == "female",
-        sample(depts, n, replace = TRUE, prob = female_pref),
-        sample(depts, n, replace = TRUE, prob = male_pref)
-      ),
-      p = plogis(
-        qlogis(dept_rates[dept]) +
-          discrimination * (sex == "female") +
-          u_on_admit * u
-      ),
-      admitted = rbinom(n, 1, p),
-      sex = factor(sex, levels = c("male", "female")),
-      dept = factor(dept, levels = depts)
-    ) |>
-    select(dept, sex, u, admitted)
-}
+  # one row per department (single values are recycled to every department)
+  departments <- tibble(dept = fct(depts), admit_rate, male_pref, female_pref)
 
-# the true value of the estimand in a simulated population: switch each applicant's sex,
-# holding their department and qualifications fixed
-true_direct_effect <- function(sim, discrimination, u_on_admit = 0) {
-  sim |>
-    mutate(
-      base = qlogis(dept_rates[as.character(dept)]) + u_on_admit * u,
-      diff = plogis(base + discrimination) - plogis(base)
-    ) |>
-    group_by(dept) |>
-    summarise(n = n(), diff = mean(diff)) |>
-    summarise(sum(n / sum(n) * diff)) |>
-    pull()
+  # Sex: 60% men, as in the real data
+  sex <- sample(fct(c("male", "female")), n, replace = TRUE, prob = c(0.6, 0.4))
+
+  # Sex -> Department
+  dept <- if_else(
+    sex == "female",
+    sample(departments$dept, n, replace = TRUE, prob = departments$female_pref),
+    sample(departments$dept, n, replace = TRUE, prob = departments$male_pref)
+  )
+
+  # Department, Sex -> Admitted
+  dept_rate <- departments$admit_rate[match(dept, departments$dept)]
+  log_odds <- qlogis(dept_rate) + discrimination * (sex == "female")
+  admitted <- rbinom(n, 1, plogis(log_odds))
+
+  tibble(dept, sex, dept_rate, admitted)
 }
 ```
 
@@ -189,7 +239,36 @@ discrimination. The whole gap comes from the indirect path through department. T
 is why the estimand has to be defined within departments, and why department belongs in
 the model. If we compared overall rates, we'd find a gap that isn't there.
 
-# Step 4: Write the formal model
+### Exploring other worlds
+
+Every assumption in the simulation is an argument we can change. That lets us ask "what
+if?" questions about how the gap arises. Here we keep discrimination at zero and change
+one assumption at a time:
+
+```{r simulation_worlds, message=FALSE}
+worlds <- list(
+  "Our assumptions" = sim_fair,
+  "Everyone applies evenly to every department" = simulate_admissions(male_pref = 1, female_pref = 1),
+  "Every department admits 40%" = simulate_admissions(admit_rate = 0.4)
+)
+
+# overall admission rates by sex in each world
+worlds |>
+  bind_rows(.id = "world") |>
+  group_by(world, sex) |>
+  summarise(admit_rate = mean(admitted)) |>
+  pivot_wider(names_from = sex, values_from = admit_rate)
+```
+
+The overall gap disappears in both new worlds. It needs two things at once: men and women
+applying to different departments, *and* departments that differ in how selective they
+are. Remove either one and the gap goes away. Try other values yourself. What happens if
+women prefer the *least* selective departments? What if one department admits almost
+everyone?
+
+# Statistical model
+
+## Step 5: Write the formal model
 
 Next, we turn the DAG into a statistical model:
 
@@ -219,14 +298,14 @@ It looks complicated, but it has four parts:
    overall average and every other term is a deviation from it.
 
 Each term in the model matches a piece of the DAG. Sex and department both point into
-admission, so both appear in the linear predictor. The estimand from Step 1 comes from
+admission, so both appear in the linear predictor. The estimand from Step 3 comes from
 $\beta$, the term that lets women's and men's chances differ within a department.
 
 The model also makes a simplifying assumption: the sex effect $\beta$ is the same in
-every department. That keeps the model small. We'll find out in Step 7 whether the data
+every department. That keeps the model small. We'll find out in Step 8 whether the data
 go along with it.
 
-# Step 5: Write the Stan code
+## Step 6: Write the Stan code
 
 Now we translate the formal model into a program the computer can run:
 
@@ -258,7 +337,7 @@ fit_model <- function(data, prior_only = 0, model = berkeley) {
     model$sample(seed = 2026, refresh = 0, show_messages = FALSE)
 }
 
-# the estimand from Step 1, computed for every posterior draw
+# the estimand from Step 3, computed for every posterior draw
 direct_effect <- function(fit, data = df) {
   weights <- data |>
     count(dept) |>
@@ -275,7 +354,7 @@ direct_effect <- function(fit, data = df) {
 }
 ```
 
-# Step 6: Test on simulated data
+## Step 7: Test on simulated data
 
 We test the model on data where we already know the answer before we trust it on data
 where we don't. There are two checks.
@@ -318,7 +397,7 @@ happens because three Normal priors add up on the log-odds scale, and a log-odds
 already 5% or 95%. These priors are looser than our actual knowledge: we don't believe
 departments admit nearly everyone or nearly no one. This is a judgment call. We could
 tighten $\alpha$ and $\gamma$ now. With thousands of applicants, we expect the data to
-outweigh the priors, so we'll keep them and check that expectation directly in Step 8.
+outweigh the priors, so we'll keep them and check that expectation directly in Step 10.
 
 ### Parameter recovery
 
@@ -328,6 +407,14 @@ log-odds scale, and one where they're penalized by 1. We fit the model to each a
 whether the posterior covers the true value of the estimand.
 
 ```{r recovery, message=FALSE, results="hide"}
+# the true value of the estimand: switch each applicant's sex, keep everything else the
+# same, and average the change in their chance of admission
+true_direct_effect <- function(sim, discrimination) {
+  log_odds_male <- qlogis(sim$dept_rate)
+  log_odds_female <- log_odds_male + discrimination
+  mean(plogis(log_odds_female) - plogis(log_odds_male))
+}
+
 recovery <- tibble(discrimination = c(0, -0.5, -1)) |>
   mutate(
     sim = map(discrimination, \(b) simulate_admissions(discrimination = b)),
@@ -364,7 +451,9 @@ or an identification problem, and we'd fix it here, where we know the right answ
 single simulated dataset is noisy, so a more thorough version of this check repeats it
 many times with random true values. That's called *simulation-based calibration*.
 
-# Step 7: Fit and validate the model
+# Analysis
+
+## Step 8: Fit and validate the model
 
 Now we fit the model to the real data.
 
@@ -436,16 +525,16 @@ fit |>
 
 For most departments, the observed rates (×) fall inside the predicted intervals.
 Department A is the exception. Women there are admitted 82% of the time, well above
-anything the model predicts. The model can't capture this because in Step 4 we assumed the
+anything the model predicts. The model can't capture this because in Step 5 we assumed the
 sex effect is the same in every department, and department A breaks that pattern.
 
 This is the posterior predictive check doing its job. It tells us exactly where the model
-is too simple. In a full analysis, we'd go back to Step 4 and let the sex effect vary by
+is too simple. In a full analysis, we'd go back to Step 5 and let the sex effect vary by
 department (an *interaction*). For this demonstration we'll keep the simpler model, but
 we'll keep the misfit in mind: our estimate is an average over departments that don't all
 behave alike.
 
-# Step 8: Compute the estimand and test its robustness
+## Step 9: Compute the estimate
 
 Now we can answer the question from Step 1. We compute the direct effect for every
 posterior draw:
@@ -477,8 +566,10 @@ often than men. The best estimate is that they're admitted about 2 percentage po
 *more* often. The 90% interval runs from about −1 to +4 points, so the data are
 consistent with a small advantage for women or no difference at all. The large overall
 gap comes from *where* women
-apply, not from how departments treat them. That's the pattern our Step 3 simulation
+apply, not from how departments treat them. That's the pattern our Step 4 simulation
 produced in a world with no discrimination.
+
+## Step 10: Test its robustness
 
 A result is only as good as the assumptions behind it, so we test how much it depends on
 them.
@@ -529,7 +620,7 @@ prior_sensitivity |>
 ```
 
 The three posteriors are almost identical. Even a prior that strongly insists sex
-doesn't matter barely moves the estimate. This confirms what we expected in Step 6: with
+doesn't matter barely moves the estimate. This confirms what we expected in Step 7: with
 thousands of applicants, the data outweigh the overly wide priors. With a small sample,
 this check would matter much more.
 
@@ -541,22 +632,70 @@ to sex: men and women who apply are equally qualified. Suppose that's wrong. Sup
 department, the women are more qualified than the men. Comparing within departments would
 make women look favored even if departments discriminate against them.
 
-We can see how much this matters by going back to the Step 3 simulation. We build in real
-discrimination (−0.5 log-odds), make qualifications matter for admission, and vary how
-much more qualified the female applicants are:
+We can test how much this matters by going back to the Step 4 simulation and adding the
+variable our DAG leaves out: qualifications, `u`. Everything else stays the same. The new
+lines are marked.
+
+```{r simulation_u}
+simulate_admissions_u <- function(
+  n = 4500,
+  discrimination = 0, # Sex -> Admitted: effect of being female, in log-odds
+  depts = c("A", "B", "C", "D", "E", "F"),
+  admit_rate = c(0.65, 0.60, 0.35, 0.33, 0.25, 0.07), # Department -> Admitted
+  male_pref = c(0.31, 0.21, 0.12, 0.15, 0.07, 0.14), # Sex -> Department
+  female_pref = c(0.06, 0.02, 0.32, 0.20, 0.21, 0.19), # Sex -> Department
+  u_on_admit = 0, # new: how much qualifications matter for admission
+  female_selection = 0 # new: how much more qualified female applicants are, in SDs
+) {
+  # one row per department (single values are recycled to every department)
+  departments <- tibble(dept = fct(depts), admit_rate, male_pref, female_pref)
+
+  # Sex: 60% men, as in the real data
+  sex <- sample(fct(c("male", "female")), n, replace = TRUE, prob = c(0.6, 0.4))
+
+  # new: qualifications, shifted up for women when female_selection > 0
+  u <- rnorm(n, mean = female_selection * (sex == "female"))
+
+  # Sex -> Department
+  dept <- if_else(
+    sex == "female",
+    sample(departments$dept, n, replace = TRUE, prob = departments$female_pref),
+    sample(departments$dept, n, replace = TRUE, prob = departments$male_pref)
+  )
+
+  # Department, Sex, Qualifications -> Admitted
+  dept_rate <- departments$admit_rate[match(dept, departments$dept)]
+  log_odds <- qlogis(dept_rate) +
+    discrimination * (sex == "female") +
+    u_on_admit * u # new
+  admitted <- rbinom(n, 1, plogis(log_odds))
+
+  tibble(dept, sex, dept_rate, u, admitted)
+}
+
+# the true direct effect now holds each applicant's qualifications fixed too
+true_direct_effect_u <- function(sim, discrimination, u_on_admit) {
+  log_odds_male <- qlogis(sim$dept_rate) + u_on_admit * sim$u # new
+  log_odds_female <- log_odds_male + discrimination
+  mean(plogis(log_odds_female) - plogis(log_odds_male))
+}
+```
+
+Now we build in real discrimination (−0.5 log-odds), make qualifications matter for
+admission, and vary how much more qualified the female applicants are:
 
 ```{r sensitivity_confounding, message=FALSE, results="hide"}
 confounding <- tibble(female_selection = c(0, 0.5, 1)) |>
   mutate(
     sim = map(female_selection, \(k) {
-      simulate_admissions(
+      simulate_admissions_u(
         discrimination = -0.5,
         u_on_admit = 1,
         female_selection = k
       )
     }),
     truth = map_dbl(sim, \(s) {
-      true_direct_effect(s, discrimination = -0.5, u_on_admit = 1)
+      true_direct_effect_u(s, discrimination = -0.5, u_on_admit = 1)
     }),
     estimate = map(sim, \(s) direct_effect(fit_model(s), data = s))
   )
@@ -592,8 +731,8 @@ confounding |>
 
 In every one of these simulations, departments discriminate against women (red ×). When
 applicants are equally qualified, the model finds the discrimination. If women applicants
-are half a standard deviation more qualified, the estimate shrinks to less than half the
-true effect. At a full standard deviation, women look clearly *favored*, by even more than
+are half a standard deviation more qualified, the model misses most of the
+discrimination: the estimate shrinks toward zero. At a full standard deviation, women look clearly *favored*, by even more than
 our real-data estimate (dotted line).
 
 So our real-data result, "no direct disadvantage for women", is credible only to the
@@ -601,7 +740,7 @@ extent that we believe male and female applicants are similarly qualified. The m
 can't settle that question. It's an argument about the world, and settling it would take
 more data, such as measures of applicant qualifications.
 
-### The result
+# The result
 
 Within departments, we find no evidence that women are disadvantaged. If anything, they're
 admitted about 2 percentage points more often. The conclusion holds up across a wide range

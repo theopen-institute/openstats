@@ -73,6 +73,7 @@ replace_indexes <- function(tbl, data, ...) {
 #   pos:        list(S = c(0, 0), H = c(1, 1), W = c(2, 0))
 #   labels:     full names drawn beside each node, e.g. c(S = "Sex")
 #   above:      nodes whose label goes above the circle instead of below
+#   left, right: nodes whose label goes beside the circle instead
 #   highlight:  edges to draw in red (e.g. one path); the rest fade to gray
 #   exposure, outcome, unobserved: node names to style
 dag_plot <- function(
@@ -80,6 +81,8 @@ dag_plot <- function(
   pos,
   labels = NULL,
   above = NULL,
+  left = NULL,
+  right = NULL,
   highlight = NULL,
   exposure = NULL,
   outcome = NULL,
@@ -108,6 +111,17 @@ dag_plot <- function(
   nodes$label[is.na(nodes$label)] <- ""
   nodes$label_y <- ifelse(nodes$name %in% above, nodes$y + r + 0.12, nodes$y - r - 0.12)
   nodes$vjust <- ifelse(nodes$name %in% above, 0, 1)
+  nodes$label_x <- nodes$x
+  nodes$hjust <- 0.5
+  side <- nodes$name %in% left
+  nodes$label_x[side] <- nodes$x[side] - r - 0.12
+  nodes$hjust[side] <- 1
+  side <- nodes$name %in% right
+  nodes$label_x[side] <- nodes$x[side] + r + 0.12
+  nodes$hjust[side] <- 0
+  side <- nodes$name %in% c(left, right)
+  nodes$label_y[side] <- nodes$y[side]
+  nodes$vjust[side] <- 0.5
 
   circles <- do.call(rbind, lapply(seq_len(nrow(nodes)), function(i) {
     t <- seq(0, 2 * pi, length.out = 61)
@@ -163,12 +177,17 @@ dag_plot <- function(
     ) +
     ggplot2::geom_text(
       data = nodes,
-      ggplot2::aes(x, label_y, label = label, vjust = vjust),
+      ggplot2::aes(label_x, label_y, label = label, hjust = hjust, vjust = vjust),
       color = ink,
       size = text_size * 0.75
     ) +
     ggplot2::coord_equal(clip = "off") +
-    ggplot2::scale_x_continuous(expand = ggplot2::expansion(add = 0.6)) +
+    ggplot2::scale_x_continuous(
+      expand = ggplot2::expansion(add = c(
+        if (is.null(left)) 0.6 else 1.8,
+        if (is.null(right)) 0.6 else 1.8
+      ))
+    ) +
     ggplot2::scale_y_continuous(expand = ggplot2::expansion(add = 0.6)) +
     ggplot2::theme_void()
 }

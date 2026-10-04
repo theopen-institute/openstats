@@ -353,16 +353,21 @@ In simple terms:
 
 # Practical Work: Election polling
 
-## The Bayesian workflow
+## The Bayesian workflow {.smaller}
 
-- **Define the estimand**: state precisely what you want to know before touching data.
-- **Draw the causal model (DAG)**: your assumptions about what causes what, from domain knowledge.
-- **Simulate the population**: write a generative simulation that could produce data like yours.
-- **Write the formal model**: derive the statistical model from the DAG, in mathematical notation.
-- **Write the Stan code**: translate the formal model into a program.
-- **Test on simulated data**: check that the model recovers known parameters, and that the priors imply plausible data.
-- **Fit and validate the model**: run the sampler, check diagnostics (R-hat, ESS, trace plots, divergences), and run posterior predictive checks. *Is the model trustworthy?*
-- **Compute the estimand and test its robustness**: poststratify to get the vote share, then run sensitivity analyses on turnout, poststratification targets, priors, and unmodeled non-response. *What is the result, and how much does it depend on our assumptions?*
+- **Scientific model**: what we believe about the world, before any statistics.
+  1. **Ask the question**: say in plain words what you want to know.
+  2. **Draw the causal model (DAG)**: your assumptions about what causes what, from domain knowledge.
+  3. **Define the estimand**: state precisely what you want to know before touching data.
+  4. **Simulate the population**: write a generative simulation that could produce data like yours.
+- **Statistical model**: the machinery that turns data into an estimate, tested where we already know the truth.
+  5. **Write the formal model**: derive the statistical model from the DAG, in mathematical notation.
+  6. **Write the Stan code**: translate the formal model into a program.
+  7. **Test on simulated data**: check that the model recovers known parameters, and that the priors imply plausible data.
+- **Analysis**: the real data, the estimate, and how far to trust it.
+  8. **Fit and validate the model**: run the sampler, check diagnostics (R-hat, ESS, trace plots, divergences), and run posterior predictive checks. *Is the model trustworthy?*
+  9. **Compute the estimate**: poststratify to get the vote share, with its uncertainty.
+  10. **Test its robustness**: run sensitivity analyses on turnout, poststratification targets, priors, and unmodeled non-response. *How much does the estimate depend on our assumptions?*
 
 # Demonstration: Will the mayor win? {notes="notes/week1_notes.md#poll-demo"}
 

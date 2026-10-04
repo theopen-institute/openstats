@@ -76,6 +76,7 @@ Talking about numbers differently
   - Regression: our first coefficient (one parameter only)
 - Part 2: Applied
   - What makes a house expensive?
+  - Spurious correlations: when patterns mislead
 
 
 # Randomness has patterns
@@ -1063,6 +1064,180 @@ houses |>
 - But among medium and large houses of **similar size**, more bedrooms go with a
   *lower* price.
 - How can both be true?
+
+
+# Spurious correlations
+
+A **spurious correlation** is a real pattern in the data that does *not* mean one
+variable affects the other. There are two common ways to get one:
+
+::: {.columns}
+::: {.column}
+::: {.fragment .callout-important .nonincremental}
+## 1. Confounding
+A **third variable** drives both. The pattern is real and will show up again in new
+data, but it isn't about the two variables themselves.
+:::
+:::
+
+::: {.column}
+::: {.fragment .callout-warning .nonincremental}
+## 2. Chance
+**Random noise** happens to line up. The pattern is a fluke of this particular sample
+and will disappear in new data.
+:::
+:::
+:::
+
+
+## Kind 1: Does ice cream cause drowning?
+
+```{r icecream-sim}
+# Simulated beach town: hot days bring both ice cream sales and swimmers
+set.seed(11)
+beach <- tibble(day = 1:365) |>
+  mutate(
+    temp = 18 + 8 * sin(2 * pi * (day - 100) / 365) + rnorm(n(), 0, 2.5),
+    ice_cream = 40 * temp + rnorm(n(), 0, 120),
+    drownings = rpois(n(), exp(-3 + 0.13 * temp))
+  )
+r_ice <- cor(beach$ice_cream, beach$drownings)
+```
+
+::: {.columns}
+::: {.column width="55%"}
+```{r icecream-scatter, fig.width = 7, fig.height = 6}
+ggplot(beach, aes(ice_cream, drownings)) +
+  geom_jitter(color = BLUE, alpha = 0.6, size = 2.5, width = 0, height = 0.15) +
+  geom_smooth(method = "lm", se = FALSE, color = RED, linewidth = 1.5) +
+  labs(x = "Ice cream sales (cones per day)", y = "Drownings per day")
+```
+:::
+
+::: {.column width="45%"}
+- One year of (simulated) daily data from a beach town.
+- *r* = `r fmt(r_ice, 2)`: days with more ice cream sales have more drownings.
+- Should the town ban ice cream?
+:::
+:::
+
+
+## The confounder: temperature
+
+```{r icecream-strata, fig.height = 5}
+beach_bands <- beach |>
+  mutate(
+    band = cut(
+      temp,
+      c(-Inf, 14, 22, Inf),
+      labels = c("Cool days (< 14°C)", "Mild days (14–22°C)", "Hot days (> 22°C)")
+    )
+  ) |>
+  group_by(band) |>
+  mutate(band = paste0(band, ":  r = ", fmt(cor(ice_cream, drownings), 2))) |>
+  ungroup() |>
+  arrange(temp) |>
+  mutate(band = fct_inorder(band))
+
+ggplot(beach_bands, aes(ice_cream, drownings)) +
+  geom_jitter(color = BLUE, alpha = 0.6, size = 2, width = 0, height = 0.15) +
+  geom_smooth(method = "lm", se = FALSE, color = RED, linewidth = 1.5) +
+  facet_wrap(~band, scales = "free_x") +
+  labs(x = "Ice cream sales", y = "Drownings") +
+  theme(strip.text = element_text(size = 18, face = "bold"))
+```
+
+- [ice cream]{.blue} ← **temperature** → [drownings]{.blue}
+- Compare days with **similar temperatures**, and the relationship mostly disappears.
+- More data would not help: a million days would show the same strong *r*.
+
+
+## We've already met a confounder
+
+- The **bedrooms puzzle**: across all houses, more bedrooms go with higher prices.
+- But [bedrooms]{.blue} ← **living area** → [price]{.blue}. Big houses have more
+  bedrooms *and* sell for more.
+- Compare houses of **similar size**, and extra bedrooms go with a *lower* price
+  (less space per room).
+- A confounder can hide a relationship, invent one, or even flip its sign.
+
+
+## Kind 2: Correlations from pure noise
+
+```{r noise-sim}
+# 50 made-up "indicators" for 20 made-up "countries", all pure random noise
+set.seed(3)
+n_vars <- 50
+noise_small <- matrix(rnorm(20 * n_vars), nrow = 20)
+r_small <- cor(noise_small)
+r_small[lower.tri(r_small, diag = TRUE)] <- NA
+best <- which(abs(r_small) == max(abs(r_small), na.rm = TRUE), arr.ind = TRUE)
+r_best <- r_small[best]
+```
+
+::: {.columns}
+::: {.column width="55%"}
+```{r noise-best, fig.width = 7, fig.height = 6}
+tibble(x = noise_small[, best[1]], y = noise_small[, best[2]]) |>
+  ggplot(aes(x, y)) +
+  geom_point(color = BLUE, size = 4) +
+  geom_smooth(method = "lm", se = FALSE, color = RED, linewidth = 1.5) +
+  labs(x = paste("Variable", best[1]), y = paste("Variable", best[2]))
+```
+:::
+
+::: {.column width="45%"}
+- I made up `r n_vars` variables for 20 "countries". Every value is drawn at
+  random with `rnorm()`: nothing is related to anything.
+- That's `r choose(n_vars, 2)` possible pairs.
+- The strongest pair: *r* = `r fmt(r_best, 2)`.
+- Give these two variables names, and it would make a convincing headline.
+:::
+:::
+
+
+## Small samples and many comparisons
+
+```{r noise-dist, fig.height = 5}
+set.seed(4)
+noise_big <- matrix(rnorm(500 * n_vars), nrow = 500)
+r_big <- cor(noise_big)
+
+null_rs <- bind_rows(
+  tibble(r = r_small[upper.tri(r_small)], n = "20 cases"),
+  tibble(r = r_big[upper.tri(r_big)], n = "500 cases")
+)
+
+ggplot(null_rs, aes(r, fill = n)) +
+  geom_histogram(binwidth = 0.025, color = "white", position = "identity", alpha = 0.8) +
+  geom_vline(xintercept = 0, color = INK, linetype = "dashed") +
+  scale_fill_manual(values = c(RED, BLUE), name = NULL) +
+  coord_cartesian(xlim = c(-0.8, 0.8)) +
+  labs(x = paste("r for all", choose(n_vars, 2), "pairs of unrelated variables"), y = NULL) +
+  theme(legend.position = "top", axis.text.y = element_blank())
+```
+
+- The true correlation is **0** for every pair. With [20 cases]{.red}, chance alone
+  produces *r* values of ±0.5 and beyond. With [500 cases]{.blue}, they stay close to 0.
+- Search through enough pairs and you're guaranteed to find something "interesting".
+
+
+## Telling the two apart
+
+| | Confounding | Chance |
+|-|-------------|--------|
+| What's going on? | A third variable drives both | Noise happened to line up |
+| Shows up in new data? | Yes | No |
+| Does more data help? | **No** | **Yes** |
+| What helps? | Thinking about causes; comparing like with like | Bigger samples; deciding what to test *before* looking; replication |
+: {.nonincremental}
+
+::: {.fragment}
+- The posterior for β already protects us a little against chance: with 20 adults it
+  was wide, saying "I'm not sure."
+- Nothing in the data alone protects us against confounding. For that we need a
+  **causal model**.
+:::
 
 
 # Next week

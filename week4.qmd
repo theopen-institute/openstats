@@ -289,6 +289,34 @@ ggplot(phones, aes(phones, fertility, color = income)) +
   **Wealth** drives both phones and smaller families.
 
 
+## In development data, wealth is the fork behind everything
+
+```{r fork-wealth, fig.width = 12, fig.height = 4.2}
+dag_plot(
+  c("W -> P", "W -> S", "W -> B", "W -> H", "W -> C", "S -> B"),
+  list(
+    W = c(2.6, 1.4), P = c(0, 0), S = c(1.3, 0), B = c(2.6, 0), H = c(3.9, 0), C = c(5.2, 0)
+  ),
+  labels = c(
+    W = "Wealth / SES", P = "Phones", S = "Schooling", B = "Births",
+    H = "Health", C = "Clean water"
+  ),
+  above = "W",
+  exposure = "S",
+  outcome = "B",
+  highlight = c("W -> S", "W -> B")
+)
+```
+
+- Your claim is **A → B**. Fine. But nearly always, **money → A** and **money → B** as well.
+- Schooling, health, sanitation, phones, democracy, fertility, life expectancy: richer
+  countries and households have more of the good ones and less of the bad ones.
+- So any two development indicators will be correlated, whether or not one causes the
+  other. **Assume wealth is a confounder until you've argued it isn't.**
+- It's hard to control for completely. GDP and income group are rough
+  [proxies](#descendants) for wealth, so some of the fork usually stays open.
+
+
 ## You've already met forks
 
 ::: {.columns}
