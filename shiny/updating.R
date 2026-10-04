@@ -217,6 +217,11 @@ ui <- page_sidebar(
 )
 
 server <- function(input, output, session) {
+  # webR/shinylive starts every session with the same fixed RNG seed, so the
+  # first sample() would otherwise be deterministic. Seed from sub-second wall
+  # clock to get fresh randomness per page load.
+  set.seed(as.integer((as.numeric(Sys.time()) * 1000) %% .Machine$integer.max))
+
   bag_blue <- reactiveVal(NULL)
   draws <- reactiveVal(character())
 

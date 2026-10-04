@@ -67,3 +67,108 @@ replace_indexes <- function(tbl, data, ...) {
 
   out
 }
+
+# Draw a DAG as a ggplot: a circle per variable, an arrow per direct cause.
+#   edges:      c("S -> H", "H -> W")
+#   pos:        list(S = c(0, 0), H = c(1, 1), W = c(2, 0))
+#   labels:     full names drawn beside each node, e.g. c(S = "Sex")
+#   above:      nodes whose label goes above the circle instead of below
+#   highlight:  edges to draw in red (e.g. one path); the rest fade to gray
+#   exposure, outcome, unobserved: node names to style
+dag_plot <- function(
+  edges,
+  pos,
+  labels = NULL,
+  above = NULL,
+  highlight = NULL,
+  exposure = NULL,
+  outcome = NULL,
+  unobserved = NULL,
+  r = 0.3,
+  text_size = 9
+) {
+  ink <- "#16314d"
+  blue <- "#1b91ff"
+  red <- "#ff2c2d"
+  gray <- "#999999"
+
+  nodes <- tibble::tibble(
+    name = names(pos),
+    x = vapply(pos, `[`, numeric(1), 1),
+    y = vapply(pos, `[`, numeric(1), 2)
+  )
+  nodes$fill <- ifelse(
+    nodes$name %in% exposure,
+    blue,
+    ifelse(nodes$name %in% outcome, ink, "white")
+  )
+  nodes$text <- ifelse(nodes$fill == "white", ink, "white")
+  nodes$linetype <- ifelse(nodes$name %in% unobserved, "dashed", "solid")
+  nodes$label <- if (is.null(labels)) "" else unname(labels[nodes$name])
+  nodes$label[is.na(nodes$label)] <- ""
+  nodes$label_y <- ifelse(nodes$name %in% above, nodes$y + r + 0.12, nodes$y - r - 0.12)
+  nodes$vjust <- ifelse(nodes$name %in% above, 0, 1)
+
+  circles <- do.call(rbind, lapply(seq_len(nrow(nodes)), function(i) {
+    t <- seq(0, 2 * pi, length.out = 61)
+    data.frame(
+      name = nodes$name[i],
+      x = nodes$x[i] + r * cos(t),
+      y = nodes$y[i] + r * sin(t),
+      fill = nodes$fill[i],
+      linetype = nodes$linetype[i]
+    )
+  }))
+
+  # Arrows run between circle edges, not centers
+  ends <- strsplit(gsub("\\s", "", edges), "->")
+  from <- vapply(ends, `[`, character(1), 1)
+  to <- vapply(ends, `[`, character(1), 2)
+  x0 <- nodes$x[match(from, nodes$name)]
+  y0 <- nodes$y[match(from, nodes$name)]
+  x1 <- nodes$x[match(to, nodes$name)]
+  y1 <- nodes$y[match(to, nodes$name)]
+  len <- sqrt((x1 - x0)^2 + (y1 - y0)^2)
+  gap <- r + 0.04
+  arrows <- data.frame(
+    x = x0 + (x1 - x0) * gap / len,
+    y = y0 + (y1 - y0) * gap / len,
+    xend = x1 - (x1 - x0) * gap / len,
+    yend = y1 - (y1 - y0) * gap / len,
+    color = if (is.null(highlight)) {
+      ink
+    } else {
+      ifelse(paste0(from, "->", to) %in% gsub("\\s", "", highlight), red, gray)
+    }
+  )
+
+  ggplot2::ggplot() +
+    ggplot2::geom_segment(
+      data = arrows,
+      ggplot2::aes(x, y, xend = xend, yend = yend, color = I(color)),
+      linewidth = 1.6,
+      arrow = ggplot2::arrow(length = ggplot2::unit(0.18, "inches"), type = "closed")
+    ) +
+    ggplot2::geom_polygon(
+      data = circles,
+      ggplot2::aes(x, y, group = name, fill = I(fill), linetype = I(linetype)),
+      color = ink,
+      linewidth = 1.2
+    ) +
+    ggplot2::geom_text(
+      data = nodes,
+      ggplot2::aes(x, y, label = name, color = I(text)),
+      size = text_size,
+      fontface = "bold"
+    ) +
+    ggplot2::geom_text(
+      data = nodes,
+      ggplot2::aes(x, label_y, label = label, vjust = vjust),
+      color = ink,
+      size = text_size * 0.75
+    ) +
+    ggplot2::coord_equal(clip = "off") +
+    ggplot2::scale_x_continuous(expand = ggplot2::expansion(add = 0.6)) +
+    ggplot2::scale_y_continuous(expand = ggplot2::expansion(add = 0.6)) +
+    ggplot2::theme_void()
+}

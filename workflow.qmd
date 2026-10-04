@@ -1,167 +1,605 @@
 ---
-title: Workflow Illustration
+title: A Bayesian Workflow
 format:
-  html: 
+  html:
     df-print: paged
     include-in-header:
       - text: |
           <script src="js/dagitty.js"></script>
 ---
 
-This document describes a standard workflow for exploratory modeling.
+This document walks through a complete Bayesian workflow, from the first question to a
+result we can defend.
 
-Imagine you're in charge of admissions at a large university. You want to know if your admissions process is fair. You've got data from thousands of individual applicants. What now?
+Imagine you're in charge of admissions at a large university. You want to know if your
+admissions process is fair. You've got data from thousands of individual applicants. What now?
 
+The workflow has eight steps:
 
-# Step 1: Causal Model
-This first step is to define your causal model. A causal model includes no numbers, just a visual representation of the different variables you want to include and the relationships between them. You'll hear people call this kind of visualization a DAG (Directed Acyclic Graph), but that's a complicated name for a simple idea.
+1. **Define the estimand.** State exactly what you want to know before you touch the data.
+2. **Draw the causal model (DAG).** Write down what you assume causes what, based on what you know about the domain.
+3. **Simulate the population.** Write a simulation that could produce data like yours.
+4. **Write the formal model.** Derive the statistical model from the DAG, in math notation.
+5. **Write the Stan code.** Translate the formal model into a program.
+6. **Test on simulated data.** Check that the priors imply plausible data and that the model recovers parameters we already know.
+7. **Fit and validate the model.** Run the sampler, check its diagnostics, and run posterior predictive checks. Can we trust the model?
+8. **Compute the estimand and test its robustness.** What is the result, and how much does it depend on our assumptions?
 
-<div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
-dag {
-Admitted [outcome,pos=\"-0.619,0.077\"]
-Department [exposure,pos=\"-0.858,0.192\"]
-Sex [exposure,pos=\"-1.059,-0.272\"]
-UNKNOWN [latent,pos=\"-0.414,0.077\"]
-Department -> Admitted
-Sex -> Admitted
-Sex -> Department
-UNKNOWN -> Admitted
-}
+The steps are numbered, but the workflow is a loop. If the model can't recover known
+parameters in step 6, or can't reproduce the data in step 7, go back and fix the model,
+the simulation, or the DAG. Each of those failures teaches us something.
 
-</div>
-
-How should you pick these variables? You need to use your intuitions. 
-
-This is a process of exploration. There's no right answer, only better and better representations of the story you want to understand. If your model doesn't work, don't worry: you'll know soon enough, and you'll find another that will.
-
-Here, we're choosing sex as a variable because we know that sex-based discrimination is a major social issue. We'll also look at department because we know that some departments are harder to get into others.
-
-Based on that, we might wonder: if women are admitted to the college at a lower rate, is that a _direct_ effect of discrimination or is it an _indirect_ effect of the departments they're chosing to apply to. Both represent forms of discrimination, but they require different interventions to fix. Statistics can help us understand the dynamic at play.
-
-Visually, we might represent this question as the graph above.
-
-<script>
-DAGitty.setup()
-</script>
-
-# Step 2: Formal Model
-
-The next step is to give our model a formal definition. 
-
-$$
-\begin{align}
-admitted_i &\sim \mathrm{Bernoulli}(p_i) \\
-\mathrm{logit}(p_i)
-&= \alpha
-+ \beta_{\mathrm{sex}[i]}
-+ \gamma_{\mathrm{dept}[i]}
-+ \delta_{\mathrm{sex}[i],\,\mathrm{dept}[i]} \\
-\alpha &\sim \mathrm{Normal}(0, 1.5) \\
-\beta_{\mathrm{sex}} &\sim \mathrm{Normal}(0, 1) \\
-\gamma_{\mathrm{dept}} &\sim \mathrm{Normal}(0, 1) \\
-\delta_{\mathrm{sex},\,\mathrm{dept}} &\sim \mathrm{Normal}(0, 0.5)
-\end{align}
-$$
-
-We need to make a few choices here. First, we need to have a clear sense of what we're trying to understand by now (our estimand), because we'll need to define parameters to get us there. We'll also need to set our prior beliefs.
-
-The result looks complicated, but it's really just a few parts:
-
-1) A likelihood function (1st line), explaining our randomness
-2) A linear predictor (2nd line), explaining how our outcome is predicted
-3) Prior estimates (Lines 3-6), explaining what we currently believe
-
-
-# Step 3: Computational Model
-
-The next step requires us to get a bit technical. We're going to turn our formal model into something that computers can use.
-
-```{.stan include="models/berkeley.stan" filename="models/berkeley.stan" code-line-numbers="true"}
-```
-
-One nice feature of Bayesian modeling is that we can use exactly the same definitions for our generative models and for our statistical models. 
-
-We can also load both our observed data and our stan model into R at this point:
 ```{r setup, message=FALSE, results="hide"}
 # libraries
 library(tidyverse)
 library(cmdstanr)
 library(tidybayes)
 library(posterior)
+library(bayesplot)
 
 {{< include r/rlib.R >}}
 
 # print formatting
 options(scipen = 999)
+set.seed(1)
 
 # data import
 df <- read.csv("datasets/berkeley.csv") |>
   mutate(
-    sex = as_factor(sex),
-    dept = as_factor(dept)
+    sex = factor(sex, levels = c("male", "female")),
+    dept = factor(dept)
+  )
+```
+
+# Step 1: Define the estimand
+
+The estimand is the precise quantity we want to learn. "Is admissions fair?" is too vague
+to estimate. Before we write any code, we need to turn it into a number.
+
+Suppose we find that women are admitted at a lower rate overall. That gap could come from
+two places:
+
+- A **direct** effect: departments treat women differently from men who apply to the same department.
+- An **indirect** effect: women apply to different departments, and those departments admit fewer people.
+
+Both are worth knowing about, but they call for different fixes. As the admissions
+office, we control the decisions departments make, so we'll focus on the direct effect:
+
+> **Estimand:** the average difference in admission probability between women and men
+> who apply to the *same* department, averaged across departments in proportion to how many
+> people apply to each.
+
+We'll measure it as a difference in admission rates. For example, a result of −0.05
+would mean women are admitted 5 percentage points less often than men who apply to the
+same department.
+Settling this first tells us what the model has to include and what we'll compute from it
+at the end.
+
+# Step 2: Draw the causal model (DAG)
+
+A causal model contains no numbers. It's a picture of the variables and of which ones
+cause which. You'll hear it called a DAG (Directed Acyclic Graph), which is a complicated
+name for a simple idea.
+
+<div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
+dag {
+Admitted [outcome,pos=\"-0.619,0.077\"]
+Department [exposure,pos=\"-0.858,0.192\"]
+Sex [exposure,pos=\"-1.059,-0.272\"]
+Department -> Admitted
+Sex -> Admitted
+Sex -> Department
+}
+
+</div>
+
+<script>
+DAGitty.setup()
+</script>
+
+How do you pick these variables? You use what you know about the domain. We include sex
+because sex-based discrimination is a major social issue. We include department because
+some departments are much harder to get into than others.
+
+Each arrow is an assumption. Each missing arrow is an assumption too, and usually a
+stronger one. The arrow $\text{Sex} \to \text{Admitted}$ is the direct effect. The path
+$\text{Sex} \to \text{Department} \to \text{Admitted}$ is the indirect effect. The DAG
+tells us that to estimate the direct effect we need to **condition on department**, so
+department has to go into the model.
+
+The DAG also leaves things out. Many other factors affect admission, like an applicant's
+qualifications. Leaving them off the graph is fine as long as they aren't related to sex.
+In other words, we're assuming that the men and women who apply are equally qualified on
+average. That's a strong assumption, and we'll come back to it in Step 8.
+
+# Step 3: Simulate the population
+
+Before writing a statistical model, we write a *generative* one: a simulation that follows
+the DAG and produces fake applicants. This makes us state precisely how we think the data
+come about. Later, it gives us data where we know the right answer.
+
+```{r simulation}
+depts <- levels(df$dept)
+
+# how selective each department is (baseline admission rates)
+dept_rates <- c(A = 0.65, B = 0.60, C = 0.35, D = 0.33, E = 0.25, F = 0.07)
+
+# where men and women tend to apply (Sex -> Department)
+male_pref <- c(0.30, 0.20, 0.12, 0.15, 0.07, 0.14)
+female_pref <- c(0.06, 0.02, 0.32, 0.20, 0.21, 0.19)
+
+simulate_admissions <- function(
+  n = 4500,
+  discrimination = 0, # direct effect of being female, in log-odds (Sex -> Admitted)
+  u_on_admit = 0, # how much qualifications matter for admission (not in the DAG)
+  female_selection = 0 # how much more qualified female applicants are, in SDs (for Step 8)
+) {
+  tibble(
+    sex = sample(c("male", "female"), n, replace = TRUE, prob = c(0.6, 0.4))
+  ) |>
+    mutate(
+      u = rnorm(n, mean = female_selection * (sex == "female")),
+      dept = if_else(
+        sex == "female",
+        sample(depts, n, replace = TRUE, prob = female_pref),
+        sample(depts, n, replace = TRUE, prob = male_pref)
+      ),
+      p = plogis(
+        qlogis(dept_rates[dept]) +
+          discrimination * (sex == "female") +
+          u_on_admit * u
+      ),
+      admitted = rbinom(n, 1, p),
+      sex = factor(sex, levels = c("male", "female")),
+      dept = factor(dept, levels = depts)
+    ) |>
+    select(dept, sex, u, admitted)
+}
+
+# the true value of the estimand in a simulated population: switch each applicant's sex,
+# holding their department and qualifications fixed
+true_direct_effect <- function(sim, discrimination, u_on_admit = 0) {
+  sim |>
+    mutate(
+      base = qlogis(dept_rates[as.character(dept)]) + u_on_admit * u,
+      diff = plogis(base + discrimination) - plogis(base)
+    ) |>
+    group_by(dept) |>
+    summarise(n = n(), diff = mean(diff)) |>
+    summarise(sum(n / sum(n) * diff)) |>
+    pull()
+}
+```
+
+Let's simulate a world with **no discrimination at all**: within every department, men
+and women are admitted at the same rate. Women just tend to apply to more selective
+departments.
+
+```{r simulation_demo}
+sim_fair <- simulate_admissions(discrimination = 0)
+
+# overall admission rates by sex
+sim_fair |>
+  group_by(sex) |>
+  summarise(applicants = n(), admit_rate = mean(admitted))
+```
+
+Women are admitted much less often overall, even though the simulation contains no
+discrimination. The whole gap comes from the indirect path through department. This
+is why the estimand has to be defined within departments, and why department belongs in
+the model. If we compared overall rates, we'd find a gap that isn't there.
+
+# Step 4: Write the formal model
+
+Next, we turn the DAG into a statistical model:
+
+$$
+\begin{align}
+\text{admitted}_i &\sim \mathrm{Bernoulli}(p_i) \\
+\mathrm{logit}(p_i)
+&= \alpha
++ \beta_{\mathrm{sex}[i]}
++ \gamma_{\mathrm{dept}[i]} \\
+\alpha &\sim \mathrm{Normal}(0, 1.5) \\
+\beta_{\mathrm{sex}} &\sim \mathrm{Normal}(0, 1) \\
+\gamma_{\mathrm{dept}} &\sim \mathrm{Normal}(0, 1) \\
+0 &= \textstyle\sum_{\mathrm{sex}} \beta = \sum_{\mathrm{dept}} \gamma
+\end{align}
+$$
+
+It looks complicated, but it has four parts:
+
+1. A **likelihood** (line 1): how randomness enters. Each applicant is admitted or not.
+2. A **linear predictor** (line 2): how the arrows in the DAG combine. There's a baseline
+   $\alpha$, a sex effect $\beta$, and a department effect $\gamma$.
+3. **Priors** (lines 3–5): what we believe before we see the data.
+4. **Constraints** (line 6): each set of effects adds up to zero. Without this, the
+   model couldn't tell its parts apart. Adding 1 to $\alpha$ and subtracting 1 from every
+   $\gamma$ would give exactly the same predictions. With the constraint, $\alpha$ is the
+   overall average and every other term is a deviation from it.
+
+Each term in the model matches a piece of the DAG. Sex and department both point into
+admission, so both appear in the linear predictor. The estimand from Step 1 comes from
+$\beta$, the term that lets women's and men's chances differ within a department.
+
+The model also makes a simplifying assumption: the sex effect $\beta$ is the same in
+every department. That keeps the model small. We'll find out in Step 7 whether the data
+go along with it.
+
+# Step 5: Write the Stan code
+
+Now we translate the formal model into a program the computer can run:
+
+```{.stan include="models/berkeley.stan" filename="models/berkeley.stan" code-line-numbers="true"}
+```
+
+A few details:
+
+- The priors live in the model. Their default scales are set in `transformed data`. The
+  `override_priors` switch lets us replace them from R without editing the model, which we
+  use to test sensitivity to priors in Step 8.
+- Stan enforces the constraints with `sum_to_zero_vector`. Forcing
+  effects to sum to zero shrinks their spread, so the code widens each prior's scale to
+  compensate. That way, each effect's prior matches the formal model.
+- The `prior_only` switch skips the likelihood. With it on, the model samples from the
+  priors alone, which is what we need for prior predictive checks.
+- `generated quantities` reports the admission probability for every sex × department
+  cell. We'll compute the estimand from these.
+
+We compile the model and write a small helper so every fit in this document uses the same
+settings:
+
+```{r compile, message=FALSE, results="hide"}
+model <- cmdstan_model("models/berkeley.stan", dir = ".stancache")
+
+# prior_sd: NULL uses the model's default priors, or c(alpha, beta, gamma) overrides them
+fit_model <- function(data, prior_only = 0, prior_sd = NULL) {
+  data |>
+    select(dept, sex, admitted) |>
+    compose_data() |>
+    c(list(
+      prior_only = prior_only,
+      override_priors = as.integer(!is.null(prior_sd)),
+      prior_sd = if (is.null(prior_sd)) numeric(0) else prior_sd
+    )) |>
+    model$sample(seed = 2026, refresh = 0, show_messages = FALSE)
+}
+
+# the estimand from Step 1, computed for every posterior draw
+direct_effect <- function(fit, data = df) {
+  weights <- data |>
+    count(dept) |>
+    mutate(w = n / sum(n)) |>
+    pull(w)
+
+  fit |>
+    spread_draws(p[sex, dept]) |>
+    mutate(sex = levels(data$sex)[sex]) |>
+    pivot_wider(names_from = sex, values_from = p) |>
+    mutate(w = weights[dept]) |>
+    group_by(.draw) |>
+    summarise(direct_effect = sum(w * (female - male)))
+}
+```
+
+# Step 6: Test on simulated data
+
+We test the model on data where we already know the answer before we trust it on data
+where we don't. There are two checks.
+
+### Prior predictive check
+
+First, do the priors imply plausible data? We run the model with `prior_only = 1` and
+look at the admission rates it expects before seeing any data.
+
+```{r prior_predictive, message=FALSE, results="hide"}
+fit_prior <- fit_model(df, prior_only = 1)
+```
+
+```{r prior_predictive_plot}
+fit_prior |>
+  spread_draws(p[sex, dept]) |>
+  ggplot(aes(x = p)) +
+  geom_histogram(bins = 40, fill = "#1b91ff", color = "white") +
+  labs(
+    x = "Admission probability for a sex × department cell",
+    y = "Prior draws",
+    title = "What the priors imply about admission rates"
   )
 
-# compile model
-model <- cmdstan_model("models/berkeley.stan", dir = ".stancache")
+direct_effect(fit_prior) |>
+  ggplot(aes(x = direct_effect)) +
+  stat_halfeye(fill = "#1b91ff") +
+  labs(
+    x = "Direct effect (female − male)",
+    y = NULL,
+    title = "Prior on the estimand"
+  )
 ```
 
+The prior on the direct effect is centered on zero, so it doesn't assume discrimination
+in either direction. It's also wide: gaps of 50 percentage points or more either way are allowed.
 
-# Step 4: Simulation
+The admission rates show a problem. The priors pile up near 0% and 100%. That
+happens because three Normal priors add up on the log-odds scale, and a log-odds of ±3 is
+already 5% or 95%. These priors are looser than our actual knowledge: we don't believe
+departments admit nearly everyone or nearly no one. This is a judgment call. We could
+tighten $\alpha$ and $\gamma$ now. With thousands of applicants, we expect the data to
+outweigh the priors, so we'll keep them and check that expectation directly in Step 8.
 
-Now, we're going to use our model to generate simulated data. The results don't tell us anything about the world, but this is nevertheless an important step because it allows us to test the assumptions of our model to see if the outputs we get are coherent.
+### Parameter recovery
 
-Mechanically, the key difference between this step and the next one is that here we'll tell our model to skip the likelihood calculations. The predictions we make here are based purely on our prior estimates. In the next step, we'll use likelihoods to make predictions on the basis of our posterior estimates.
+Second, can the model find an effect we put there ourselves? We simulate three
+populations: one with no discrimination, one where women are penalized by 0.5 on the
+log-odds scale, and one where they're penalized by 1. We fit the model to each and check
+whether the posterior covers the true value of the estimand.
 
-```{r simulation_draw, message=FALSE, results="hide"}
-# fit the data
-fit <- df |>
-  compose_data() |>
-  list_assign("prior_only" = 1) |>
-  model$sample()
+```{r recovery, message=FALSE, results="hide"}
+recovery <- tibble(discrimination = c(0, -0.5, -1)) |>
+  mutate(
+    sim = map(discrimination, \(b) simulate_admissions(discrimination = b)),
+    truth = map2_dbl(sim, discrimination, true_direct_effect),
+    estimate = map(sim, \(s) direct_effect(fit_model(s), data = s))
+  )
 ```
 
-
-```{r simulation_analysis}
-# pick a random single draw to interpret
-one_draw <- fit$draws() |>
-  subset_draws(chain = sample(1:4, 1), iteration = sample(1:1000, 1))
-
-# summarize parameters
-one_draw |>
-  subset_draws(variable = c("alpha", "beta", "gamma", "delta")) |>
-  summarise_draws() |>
-  replace_indexes(df, beta[sex], gamma[dept], delta[sex, dept]) |>
-  select(-c(rhat, ess_bulk, ess_tail, median, sd, mad, q5, q95)) |>
-  print(n = Inf, width = Inf)
+```{r recovery_plot}
+recovery |>
+  select(discrimination, truth, estimate) |>
+  unnest(estimate) |>
+  ggplot(aes(x = direct_effect, y = factor(discrimination))) +
+  stat_halfeye(fill = "#1b91ff") +
+  geom_point(
+    data = distinct(recovery, discrimination, truth),
+    aes(x = truth),
+    color = "red",
+    shape = 4,
+    size = 4,
+    stroke = 1.5
+  ) +
+  labs(
+    x = "Direct effect (female − male)",
+    y = "Discrimination built into the simulation (log-odds)",
+    title = "Can the model recover a known effect?",
+    subtitle = "Red ×: the true value of the estimand"
+  )
 ```
 
-(More details soon...)
+In each case, the true value falls inside the posterior. The model and the estimand code
+work, at least in a world that matches our assumptions. If they didn't, we'd have a bug
+or an identification problem, and we'd fix it here, where we know the right answer. Any
+single simulated dataset is noisy, so a more thorough version of this check repeats it
+many times with random true values. That's called *simulation-based calibration*.
 
-# Step 5: Fitting
+# Step 7: Fit and validate the model
 
-We did it! These are our results, at least in raw form. This time, we'll tell our model to apply our likelihood function to the data we actually observed. Through this, we are able to update our prior beliefs to posterior distributions, which can hopefully be transformed to tell us something about the world.
+Now we fit the model to the real data.
 
-```{r fitting_draw, message=FALSE, results="hide"}
-fit <- df |>
-  compose_data() |>
-  list_assign("prior_only" = 0) |>
-  model$sample()
+```{r fitting, message=FALSE, results="hide"}
+fit <- fit_model(df)
 ```
 
-```{r fitting_analysis}
-# summarize parameters
+### Sampler diagnostics
+
+Before we look at any results, we check whether the sampler worked. Divergent transitions
+mean the sampler hit geometry it couldn't explore. $\hat{R}$ should be very close to 1,
+which means the chains agree with each other. Effective sample size (ESS) should be in
+the hundreds or more.
+
+```{r diagnostics}
+fit$diagnostic_summary()
+
 fit$draws() |>
-  subset_draws(variable = c("alpha", "beta", "gamma", "delta")) |>
+  subset_draws(variable = c("alpha", "beta", "gamma")) |>
   summarise_draws() |>
-  replace_indexes(df, beta[sex], gamma[dept], delta[sex, dept]) |>
-  select(-c(ess_bulk, ess_tail)) |>
+  replace_indexes(df, beta[sex], gamma[dept]) |>
   print(n = Inf, width = Inf)
+
+mcmc_trace(fit$draws(c("alpha", "beta", "gamma")))
 ```
 
-(More details soon...)
+The trace plots should look like "fuzzy caterpillars": chains that overlap and wander
+around the same region with no trends.
 
-# Step 6: Interpretation
+### Posterior predictive check
 
-This is where we can get really creative again. We've fitted our model, so now what? We've got updated posterior distributions for all of our parameters, and we can do a lot. The parameters by themselves can be useful, but more interesting even is the way we can use these parameters to estimate more complex phenomena, simulate counterfactual data, and test potential interventions.
+Can the fitted model reproduce the data it was fit to? For each posterior draw, we
+simulate a new set of admissions for every sex × department cell and compare the result
+to what we actually observed.
 
-Once we've got the mechanics in place, this is where I hope we can spend most of our time together.
+```{r ppc}
+cells <- df |>
+  group_by(sex, dept) |>
+  summarise(applicants = n(), observed = mean(admitted), .groups = "drop")
+
+fit |>
+  spread_draws(p[sex, dept]) |>
+  mutate(
+    sex = factor(levels(df$sex)[sex], levels = levels(df$sex)),
+    dept = factor(levels(df$dept)[dept], levels = levels(df$dept))
+  ) |>
+  left_join(cells, by = c("sex", "dept")) |>
+  mutate(predicted = rbinom(n(), applicants, p) / applicants) |>
+  ggplot(aes(x = dept, y = predicted, color = sex)) +
+  stat_pointinterval(
+    position = position_dodge(width = 0.5),
+    .width = c(0.5, 0.9)
+  ) +
+  geom_point(
+    data = cells,
+    aes(y = observed),
+    shape = 4,
+    size = 3,
+    stroke = 1.2,
+    position = position_dodge(width = 0.5)
+  ) +
+  labs(
+    x = "Department",
+    y = "Admission rate",
+    title = "Posterior predictive check",
+    subtitle = "Intervals: model predictions. ×: observed rates."
+  )
+```
+
+For most departments, the observed rates (×) fall inside the predicted intervals.
+Department A is the exception. Women there are admitted 82% of the time, well above
+anything the model predicts. The model can't capture this because in Step 4 we assumed the
+sex effect is the same in every department, and department A breaks that pattern.
+
+This is the posterior predictive check doing its job. It tells us exactly where the model
+is too simple. In a full analysis, we'd go back to Step 4 and let the sex effect vary by
+department (an *interaction*). For this demonstration we'll keep the simpler model, but
+we'll keep the misfit in mind: our estimate is an average over departments that don't all
+behave alike.
+
+# Step 8: Compute the estimand and test its robustness
+
+Now we can answer the question from Step 1. We compute the direct effect for every
+posterior draw:
+
+```{r estimand}
+de <- direct_effect(fit)
+
+de |>
+  ggplot(aes(x = direct_effect)) +
+  stat_halfeye(fill = "#1b91ff") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(
+    x = "Direct effect (female − male)",
+    y = NULL,
+    title = "Posterior for the estimand"
+  )
+
+de |>
+  summarise(
+    median = median(direct_effect),
+    lower_90 = quantile(direct_effect, 0.05),
+    upper_90 = quantile(direct_effect, 0.95),
+    prob_women_disadvantaged = mean(direct_effect < 0)
+  )
+```
+
+Among applicants to the same department, there's no sign that women are admitted less
+often than men. The best estimate is that they're admitted about 2 percentage points
+*more* often. The 90% interval runs from about −1 to +4 points, so the data are
+consistent with a small advantage for women or no difference at all. The large overall
+gap comes from *where* women
+apply, not from how departments treat them. That's the pattern our Step 3 simulation
+produced in a world with no discrimination.
+
+A result is only as good as the assumptions behind it, so we test how much it depends on
+them.
+
+### Sensitivity to priors
+
+We refit with a much tighter and a much looser prior on the sex effect:
+
+```{r sensitivity_priors, message=FALSE, results="hide"}
+# prior scales for (alpha, beta, gamma); NULL keeps the model's defaults
+prior_scenarios <- list(
+  "Tight (beta_sd = 0.1)" = c(1.5, 0.1, 1),
+  "Default (beta_sd = 1)" = NULL,
+  "Loose (beta_sd = 2.5)" = c(1.5, 2.5, 1)
+)
+
+prior_sensitivity <- prior_scenarios |>
+  imap(\(prior_sd, name) {
+    direct_effect(fit_model(df, prior_sd = prior_sd)) |> mutate(scenario = name)
+  }) |>
+  list_rbind()
+```
+
+```{r sensitivity_priors_plot}
+prior_sensitivity |>
+  ggplot(aes(x = direct_effect, y = scenario)) +
+  stat_halfeye(fill = "#1b91ff") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(
+    x = "Direct effect (female − male)",
+    y = NULL,
+    title = "Sensitivity to priors"
+  )
+```
+
+The three posteriors are almost identical. Even a prior that strongly insists sex
+doesn't matter barely moves the estimate. This confirms what we expected in Step 6: with
+thousands of applicants, the data outweigh the overly wide priors. With a small sample,
+this check would matter much more.
+
+### Sensitivity to the DAG: an unobserved confounder
+
+The strongest assumption we made is that the factors left out of the DAG aren't related
+to sex: men and women who apply are equally qualified. Suppose that's wrong. Suppose women face barriers
+*before* they apply, so only the most qualified women apply at all. Then, within any
+department, the women are more qualified than the men. Comparing within departments would
+make women look favored even if departments discriminate against them.
+
+We can see how much this matters by going back to the Step 3 simulation. We build in real
+discrimination (−0.5 log-odds), make qualifications matter for admission, and vary how
+much more qualified the female applicants are:
+
+```{r sensitivity_confounding, message=FALSE, results="hide"}
+confounding <- tibble(female_selection = c(0, 0.5, 1)) |>
+  mutate(
+    sim = map(female_selection, \(k) {
+      simulate_admissions(
+        discrimination = -0.5,
+        u_on_admit = 1,
+        female_selection = k
+      )
+    }),
+    truth = map_dbl(sim, \(s) {
+      true_direct_effect(s, discrimination = -0.5, u_on_admit = 1)
+    }),
+    estimate = map(sim, \(s) direct_effect(fit_model(s), data = s))
+  )
+```
+
+```{r sensitivity_confounding_plot}
+confounding |>
+  select(female_selection, truth, estimate) |>
+  unnest(estimate) |>
+  ggplot(aes(x = direct_effect, y = factor(female_selection))) +
+  stat_halfeye(fill = "#1b91ff") +
+  geom_point(
+    data = distinct(confounding, female_selection, truth),
+    aes(x = truth),
+    color = "red",
+    shape = 4,
+    size = 4,
+    stroke = 1.5
+  ) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_vline(
+    xintercept = median(de$direct_effect),
+    color = "#1b91ff",
+    linetype = "dotted"
+  ) +
+  labs(
+    x = "Estimated direct effect (female − male)",
+    y = "How much more qualified female applicants are (SD)",
+    title = "Real discrimination, hidden by an unobserved confounder",
+    subtitle = "Red ×: true effect. Dotted line: our estimate from the real data."
+  )
+```
+
+In every one of these simulations, departments discriminate against women (red ×). When
+applicants are equally qualified, the model finds the discrimination. If women applicants
+are half a standard deviation more qualified, the estimate shrinks to less than half the
+true effect. At a full standard deviation, women look clearly *favored*, by even more than
+our real-data estimate (dotted line).
+
+So our real-data result, "no direct disadvantage for women", is credible only to the
+extent that we believe male and female applicants are similarly qualified. The model
+can't settle that question. It's an argument about the world, and settling it would take
+more data, such as measures of applicant qualifications.
+
+### The result
+
+Within departments, we find no evidence that women are disadvantaged. If anything, they're
+admitted about 2 percentage points more often. The conclusion holds up across a wide range
+of priors. It comes with two caveats. First, the model averages over departments, and
+department A doesn't fit that average well. Second, it rests on an assumption we can't test with this data: that male and
+female applicants are similarly qualified. The
+overall gap is real. It runs through department choice, so the place to look is why
+women apply to more selective departments.

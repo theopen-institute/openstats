@@ -15,7 +15,7 @@ format:
   revealjs:
     theme: [simple, css/deck.scss]
     logo: 'images/logo_compact_blue.svg'
-    background-image: "images/background.png"
+    background-image: "images/background.svg"
     background-size: "cover"
     include-after-body: _build/_reveal.html
     margin: 0.05

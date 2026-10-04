@@ -1,0 +1,240 @@
+---
+title: "Week 1 Homework"
+subtitle: "Probability, base rates, and Bayesian updating"
+engine: knitr
+format:
+  html:
+    toc: true
+---
+
+These exercises go with the Week 1 lecture. Part A checks your understanding of the
+ideas. Parts B–D are problems to work through. Part E is an optional R challenge.
+
+A few ground rules:
+
+- **Show your work.** A correct number with no reasoning is worth less than a wrong
+  number with clear reasoning. Drawing a table of counts (like we did for the HIV
+  example) is almost always the easiest way to do these problems.
+- **Write in plain language.** If you can't explain it to a friend who missed the
+  lecture, you haven't finished understanding it yet.
+- Problems marked ★ are harder. Give them a real try, but don't get stuck on them.
+
+# Part A: Concepts
+
+**A1.** In one or two sentences, explain what *probability* means in this course. Then
+explain how a Bayesian and a frequentist would each understand the sentence *"The
+shop near my house is probably open right now."*
+
+**A2.** Write each of these sentences in probability notation, `P( event | condition )`:
+
+a. Of people who smoke, 15% develop lung cancer.
+b. Of people with lung cancer, 85% were smokers.
+c. When Nepal leads at halftime, they win 70% of the time.
+d. 40% of students at this university are from Kathmandu.
+
+Statements (a) and (b) are about the same two things, but the numbers are very
+different. Explain how both can be true at once.
+
+**A3.** A classmate gets a result with p = 0.03 and says: *"So there's only a 3% chance
+my hypothesis is wrong."*
+
+a. Write what a p-value measures in `P( … | … )` notation.
+b. Write what your classmate *thinks* it measures in `P( … | … )` notation.
+c. Explain the mistake in your own words.
+
+**A4.** Match each phrase to its probability statement. (HIV+ means the person has HIV.)
+
+| Term                                | Statement                 |
+|-------------------------------------|---------------------------|
+| Sensitivity                         | P( test– \| HIV+ )        |
+| Specificity                         | P( test+ \| HIV– )        |
+| Type I error (false positive)       | P( test+ \| HIV+ )        |
+| Type II error (false negative)      | P( test– \| HIV– )        |
+
+Then name the probability that a *patient* who just tested positive actually cares
+about. Is it one of the four above?
+
+**A5.** Ioannidis argued that most published research findings are false, and he did it
+without re-running a single study. In 4–6 sentences, explain how that is possible.
+Use the words *base rate*, *power*, and *false positive* in your answer.
+
+**A6.** True or false? Give a one-sentence reason for each.
+
+a. A test with 99% sensitivity and 99% specificity gives a correct result 99% of the
+   time for someone who tests positive.
+b. If P(A) = P(B), then P(A | B) = P(B | A).
+c. If your prior probability for a hypothesis is exactly 0, no amount of data can
+   change your mind.
+d. If everything else stays the same, lowering α from 0.05 to 0.005 increases the share
+   of significant results that are true.
+e. If most published findings are false, science doesn't work.
+
+**A7.** Find the **prior**, the **likelihood** (the observation), and the **posterior**
+in each story:
+
+a. A doctor thinks a patient's cough is probably a cold. A chest X-ray shows a shadow
+   on the lung, and now the doctor thinks pneumonia is more likely.
+b. You expect the bus to Patan to take about 30 minutes. Three days in a row it takes
+   50 minutes, so you now leave home earlier.
+c. In lecture: *"I think about 60% of Kathmandu will vote for the current mayor… a
+   survey says 30%… I now think about 45%."* Why is the posterior *between* 60% and
+   30%, and not exactly 30%? What would push it closer to 30%?
+
+# Part B: Probability calculations
+
+**B1.** In 2025, Kathmandu saw rain on 179 of 365 days. In April it rained on 13 of 30
+days, and in July on all 31 days.
+
+a. What is P( no rain )?
+b. What is P( April | rain )? That is, if you pick a rainy day at random from 2025,
+   how likely is it that the day is in April?
+c. Compare P( rain | April ) with P( April | rain ). Why are they so different?
+d. ★ What is P( July | rain )? Why is it nowhere near 1, even though P( rain | July ) = 1?
+
+**B2.** Use the table of students from the lecture:
+
+|            | Sociology | Economics | Total |
+|------------|-----------|-----------|-------|
+| **Urban**  | 240       | 300       | 540   |
+| **Rural**  | 80        | 20        | 100   |
+| **Total**  | 320       | 320       | 640   |
+
+Calculate:
+
+a. P( Urban )
+b. P( Economics | Urban )
+c. P( Urban | Economics )
+d. P( Rural )
+e. ★ Using **Bayes' theorem** (not the table), compute P( Sociology | Rural ) from
+   P( Rural | Sociology ) = 0.25, P( Sociology ), and P( Rural ). Check that you get the
+   0.80 from lecture.
+
+**B3.** Make your own 2×2 table from something in your life or work: your village,
+your office, your cricket team, your WhatsApp groups. Use real counts if you have them,
+or a reasonable guess if you don't. Then write one pair of conditional probabilities,
+P(A | B) and P(B | A), that come out *very* different, and explain why.
+
+# Part C: Base rates
+
+For every problem in this part, build a table of counts for a large population (for
+example 100,000 people), like the one in lecture.
+
+**C1.** *The HIV test, revisited.* Sensitivity is 99%, specificity is 97%, and
+prevalence is 0.1%.
+
+a. Rebuild the lecture table and confirm that P( HIV+ | test+ ) ≈ 3.2%.
+b. Now the same test is used in a clinic where 5% of patients have HIV. What is
+   P( HIV+ | test+ ) now?
+c. Go back to 0.1% prevalence, but improve the specificity to 99.9%. What is
+   P( HIV+ | test+ )?
+d. In (b) and (c), which change helped more, and why?
+e. What is P( HIV– | test– ) at 0.1% prevalence? Should someone who tests negative
+   worry?
+
+**C2.** ★ *Testing twice.* At 0.1% prevalence, a person tests positive. They take a
+second, independent test (same sensitivity and specificity) and it also comes back
+positive. What is the probability they have HIV now? *Hint: what is the "prior" for the
+second test?*
+
+**C3.** *AI detectors.* A university buys a tool that flags essays as written by AI. It
+correctly flags 95% of AI-written essays, and wrongly flags 2% of essays that students
+wrote themselves.
+
+a. If 10% of submitted essays are AI-written, what share of flagged essays are actually
+   AI-written?
+b. What if only 2% of essays are AI-written?
+c. A teacher says, "The detector is 95% accurate, so if it flags you, you cheated." Write
+   a short reply (3–4 sentences) using what you learned this week.
+
+**C4.** *Ioannidis's table.* In lecture we assumed 1% of tested hypotheses are true,
+80% power, and α = 5%. That gave P( true | significant ) ≈ 14%. Using 10,000 tested
+hypotheses, recompute P( true | significant ) for each case:
+
+| Case | Base rate | Power | α    |
+|------|-----------|-------|------|
+| a    | 1%        | 50%   | 0.05 |
+| b    | 10%       | 80%   | 0.05 |
+| c    | 1%        | 80%   | 0.20 (p-hacking) |
+| d    | 1%        | 80%   | 0.005 |
+
+Which change makes the biggest difference? What does that suggest a research field
+could do to publish fewer false findings?
+
+**C5.** ★ With 80% power and α = 0.05, what base rate would you need for exactly half of
+significant findings to be true? Set up an equation and solve it.
+
+# Part D: Bayesian updating
+
+These problems use the bag of stones from the lecture app. The bag holds **9 stones**,
+each blue (🔵) or black (⚫️). There are 10 possible bags (0 blue, 1 blue, …, 9 blue),
+and before drawing we think each one is **equally likely**. We draw one stone at a time,
+note its color, and **put it back**.
+
+**D1.** Before we draw anything:
+
+a. What is the prior probability of each of the 10 possible bags?
+b. We draw 🔵. Which bag(s) can we now rule out completely? Why?
+c. We draw ⚫️ next. Which bag(s) can we now rule out?
+
+**D2.** *Counting by hand.* Our three draws are 🔵 ⚫️ 🔵.
+
+a. For a bag with *k* blue stones, the chance of drawing blue is *k*/9. Write an
+   expression for the likelihood of 🔵 ⚫️ 🔵 for a bag with *k* blue stones.
+b. Fill in this table. (Tip: the "ways" column is the number of ways to produce the
+   sequence, *k* × (9 − *k*) × *k*. Then divide each row by the total.)
+
+| Blue stones (*k*) | Prior | Ways to get 🔵⚫️🔵 | Posterior |
+|---|---|---|---|
+| 0 | 0.1 |   |   |
+| 1 | 0.1 |   |   |
+| … | … |   |   |
+| 9 | 0.1 |   |   |
+
+c. Which bag is now most plausible? How plausible is it? Why aren't we more certain?
+
+**D3.** Would the posterior be different if the draws came in the order ⚫️ 🔵 🔵? Explain
+why or why not.
+
+**D4.** *Today's posterior is tomorrow's prior.* Start from your posterior in D2 and draw
+one more stone: 🔵.
+
+a. Update using your D2 posterior as the new prior. Which bag is most plausible now?
+b. Now start from scratch with an equal prior and update on all four draws at once
+   (🔵 ⚫️ 🔵 🔵). Do you get the same answer? Why does this matter?
+
+**D5.** *A different prior.* A friend who packed the bag tells you it holds either 3 blue
+stones or 6 blue stones, with equal chances. You draw 🔵 🔵 ⚫️. What is the
+probability the bag has 6 blue stones?
+
+**D6.** *Using the app.* Open the Bayesian Updating slide and set the bag to **Hidden**.
+
+a. Draw 5 stones. Write down the most plausible bag and its probability.
+b. Keep going to 20 draws, then 50 (hold **Shift** to draw 10 at a time). Record the
+   same two numbers each time.
+c. Reveal the bag. Were you right? Describe in 2–3 sentences how the shape of the
+   distribution changed as you collected more data.
+d. Reset and do it again with a new hidden bag. Did the second bag ever *look* like a
+   different bag along the way? What does that tell you about drawing conclusions from
+   a small sample?
+
+# Part E: R challenge (optional)
+
+**E1.** Write an R function `p_true_given_sig(base_rate, power, alpha)` that returns
+P( true | significant ). Use it to check your answers to C4. Then make a plot with
+base rate (0.001 to 0.5) on the x-axis and P( true | significant ) on the y-axis, with
+one line for 50% power and one for 80% power.
+
+**E2.** ★ Do D2 and D4 in R. Make a vector `k <- 0:9`, a prior `rep(1/10, 10)`, and
+compute the posterior using `prior * likelihood / sum(prior * likelihood)`. Write a loop
+that updates the posterior one draw at a time for any sequence of draws, such as
+`c("blue", "black", "blue", "blue")`.
+
+# Part F: Reflection
+
+**F1.** Find a news story that says "a new study shows…" about health, education, or
+the economy. In a short paragraph:
+
+- What was the claim?
+- Was this a surprising, novel idea (low base rate) or something many people already
+  expected (higher base rate)?
+- Using what you learned this week, how much should one study change your beliefs?

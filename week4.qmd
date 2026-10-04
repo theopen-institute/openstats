@@ -1,472 +1,841 @@
 ---
-format: 
+format:
   revealjs: default
 ---
 
-# Data Lunch: Week 4 {.center notes="notes/week1_notes.md#title"}
-
-Confounding
-
-::: {.footer}
-The Open Institute For Social Science
-:::
-
-```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+```{r setup, include=FALSE}
 library(tidyverse)
+source("r/rlib.R")
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 12,
+  fig.height = 6.5,
+  dpi = 150,
+  dev.args = list(bg = "transparent")
+)
+
+BLUE <- "#1b91ff"
+RED <- "#ff2c2d"
+GRAY <- "#999999"
+INK <- "#16314d"
+
+theme_set(
+  theme_minimal(base_size = 22) +
+    theme(
+      panel.grid.minor = element_blank(),
+      plot.title = element_text(face = "bold", color = INK),
+      legend.position = "top"
+    )
+)
+
+fmt <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = ",")
+pct <- function(x) paste0(round(100 * x), "%")
+
+# The three building blocks, drawn the same way everywhere
+fork_dag <- function(x = "X", z = "Z", y = "Y", labels = NULL, direct = FALSE, ...) {
+  dag_plot(
+    c(paste(z, "->", x), paste(z, "->", y), if (direct) paste(x, "->", y)),
+    setNames(list(c(0, 0), c(1, 1.1), c(2, 0)), c(x, z, y)),
+    labels = labels, above = z, exposure = x, outcome = y, ...
+  )
+}
+pipe_dag <- function(x = "X", z = "Z", y = "Y", labels = NULL, ...) {
+  dag_plot(
+    c(paste(x, "->", z), paste(z, "->", y)),
+    setNames(list(c(0, 0), c(1, 1.1), c(2, 0)), c(x, z, y)),
+    labels = labels, above = z, exposure = x, outcome = y, ...
+  )
+}
+collider_dag <- function(x = "X", z = "Z", y = "Y", labels = NULL, ...) {
+  dag_plot(
+    c(paste(x, "->", z), paste(y, "->", z)),
+    setNames(list(c(0, 1.1), c(1, 0), c(2, 1.1)), c(x, z, y)),
+    labels = labels, above = c(x, y), exposure = x, outcome = y, ...
+  )
+}
 ```
 
 
-# Confounds
+# Data Lunch: Week 4 {.center}
 
-- Forks
-- Pipes
-- Colliders
-- Descendant
+Confounders and paradoxes
 
 
+# Last week → this week
 
-# Fork
+- The variables we put in a model can change, or even reverse, the answer.
+- That's because effects **flow along paths** through the DAG.
+- This week: the rules.
+  - Which paths are **open**?
+  - Which variables should we **hold fixed**, and which should we leave alone?
 
-```{r fork_data, echo=FALSE, warning=FALSE, message=FALSE}
-#| code-summary: "Show data generator code"
-# A = age at marriage
-# H = happiness
-# G = geography
+
+# Goals this week
+
+- Part 1: Concepts
+  - The three building blocks of every DAG: **fork**, **pipe**, **collider**
+  - The paradoxes each one creates
+  - "Should I control for this?"
+- Part 2: Applied
+  - Spot the confound
+  - Check your own project's DAG
+
+
+# Three building blocks
+
+::: {.columns}
+::: {.column width="33%"}
+**Fork**: a common cause
+
+```{r blocks-fork, fig.width = 5, fig.height = 3.6}
+fork_dag()
+```
+:::
+
+::: {.column width="33%"}
+**Pipe**: a mediator
+
+```{r blocks-pipe, fig.width = 5, fig.height = 3.6}
+pipe_dag()
+```
+:::
+
+::: {.column width="33%"}
+**Collider**: a common effect
+
+```{r blocks-collider, fig.width = 5, fig.height = 3.6}
+collider_dag()
+```
+:::
+:::
+
+- Every path in every DAG is built from these three pieces.
+- For each, we ask two questions:
+  - Does association flow between X and Y through Z?
+  - What happens when we **hold Z fixed**?
+
+
+## What "holding Z fixed" means
+
+People say it many ways. They all mean the same thing:
+
+::: {.nonincremental}
+- "controlling for Z"
+- "adjusting for Z"
+- "conditioning on Z"
+- "stratifying by Z"
+:::
+
+In practice, any of these:
+
+- **Adding Z to a regression** (as we did with height last week).
+- **Splitting the data into groups** of Z and comparing within each group.
+- **Selecting your sample** by Z: only hospital patients, only published studies, only
+  people with jobs.
+
+::: {.fragment}
+That last one is easy to miss. Often the data was "controlled" before you ever saw it.
+:::
+
+
+# The fork: a common cause {.center}
+
+X ← Z → Y
+
+
+## Does marrying later make you happier?
+
+```{r fork-data}
+# Made-up world: urban people marry later and are happier,
+# but age at marriage has no effect on happiness
 set.seed(116)
 n <- 500
-df <- tibble(
-  G = rbinom(n, 1, 0.5),
-  A = rnorm(n, 2 * G - 1),
-  H = rnorm(n, 2 * G - 1)
+marriage <- tibble(
+  urban = rbinom(n, 1, 0.5),
+  age = 25 + 3 * rnorm(n, 2 * urban - 1),
+  happiness = 5 + 1.5 * rnorm(n, 2 * urban - 1),
+  place = if_else(urban == 1, "Urban", "Rural")
 )
 ```
 
-
-## Happiness ~ Age at Marriage
-
-::: {.r-stack}
-
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  H ~ A,
-  data = df,
-  col = "#555",
-  lwd = 2,
-  xlab = "Age at Marriage",
-  ylab = "Happiness"
-)
+::: {.columns}
+::: {.column}
+```{r fork-all, fig.width = 7, fig.height = 5.5}
+ggplot(marriage, aes(age, happiness)) +
+  geom_point(color = GRAY, alpha = 0.6, size = 2) +
+  geom_smooth(method = "lm", se = FALSE, color = INK, linewidth = 1.5) +
+  labs(x = "Age at marriage", y = "Happiness", title = "Everyone")
 ```
-
 :::
 
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  H ~ A,
-  data = df,
-  col = "#555",
-  lwd = 2,
-  xlab = "Age at Marriage",
-  ylab = "Happiness"
-)
-abline(lm(H ~ A, data = df), lwd = 3)
+::: {.column}
+::: {.fragment}
+```{r fork-split, fig.width = 7, fig.height = 5.5}
+ggplot(marriage, aes(age, happiness, color = place)) +
+  geom_point(alpha = 0.6, size = 2) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1.5) +
+  scale_color_manual(values = c(Rural = RED, Urban = BLUE), name = NULL) +
+  labs(x = "Age at marriage", y = "Happiness", title = "Split by geography")
 ```
-
+:::
+:::
 :::
 
+- Overall: people who marry later are happier. Within rural *or* urban areas: no
+  relationship at all.
 
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  H ~ A,
-  data = df,
-  col = c("coral2", "cornflowerblue")[G + 1],
-  lwd = 2,
-  xlab = "Age at Marriage",
-  ylab = "Happiness"
-)
-abline(lm(H ~ A, data = df), lwd = 3)
-# abline(lm(H[G == 0] ~ A[G == 0], data = df), col = "coral2", lwd = 3)
-# abline(lm(H[G == 1] ~ A[G == 1], data = df), col = "cornflowerblue", lwd = 3)
-legend(
-  "bottomright",
-  legend = c("Rural", "Urban"),
-  col = c("coral2", "cornflowerblue"),
-  lwd = 2
+
+## The fork: what happened?
+
+::: {.columns}
+::: {.column width="45%"}
+```{r fork-dag, fig.width = 6, fig.height = 4.5}
+fork_dag(
+  "A", "G", "H",
+  labels = c(A = "Age at marriage", G = "Geography", H = "Happiness"),
+  highlight = c("G -> A", "G -> H")
 )
 ```
-
 :::
 
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  H ~ A,
-  data = df,
-  col = c("coral2", "cornflowerblue")[G + 1],
-  lwd = 2,
-  xlab = "Age at Marriage",
-  ylab = "Happiness"
-)
-abline(lm(H ~ A, data = df), lwd = 3)
-abline(lm(H[G == 0] ~ A[G == 0], data = df), col = "coral2", lwd = 3)
-abline(lm(H[G == 1] ~ A[G == 1], data = df), col = "cornflowerblue", lwd = 3)
-legend(
-  "bottomright",
-  legend = c("Rural", "Urban"),
-  col = c("coral2", "cornflowerblue"),
-  lwd = 2
-)
-```
-
+::: {.column width="55%"}
+- Urban people marry later **and** (in this made-up world) are happier.
+- Geography is a **confounder**: a common cause of X and Y.
+- The path A ← G → H is **open**: it creates a correlation with no causal effect behind
+  it.
+- Holding geography fixed **closes** the path.
+:::
 :::
 
+::: {.callout-tip .nonincremental title="Fork rule"}
+Association flows through a fork. **Control for the common cause** to close the path.
 :::
 
 
-## Fork Graph
+## Do mobile phones lower birth rates?
 
-```{=html}
-<iframe
-  id="dag-frame-1"
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="https://dagitty.net/dags.html"
-></iframe>
+```{r phones-data}
+wb_raw <- read_csv(
+  "datasets/wb2022.csv",
+  na = c("", ".."),
+  col_types = cols(.default = "c"),
+  locale = locale(encoding = "latin1")
+) |>
+  select(code = `Country Code`, series = `Series Code`, value = `2022 [YR2022]`) |>
+  filter(series %in% c("IT.CEL.SETS.P2", "SP.DYN.TFRT.IN")) |>
+  distinct(code, series, .keep_all = TRUE) |>
+  mutate(value = as.numeric(value)) |>
+  pivot_wider(names_from = series, values_from = value)
+
+phones <- read_csv("datasets/wb_country.csv") |>
+  select(code = Code, income = `Income group`) |>
+  inner_join(wb_raw, by = "code") |>
+  transmute(
+    phones = IT.CEL.SETS.P2,
+    fertility = SP.DYN.TFRT.IN,
+    income = factor(
+      income,
+      levels = c("Low income", "Lower middle income", "Upper middle income", "High income")
+    )
+  ) |>
+  drop_na()
+
+r_phones <- cor(phones$phones, phones$fertility)
+r_within <- phones |>
+  group_by(income) |>
+  summarise(r = cor(phones, fertility))
 ```
 
+::: {.columns}
+::: {.column}
+```{r phones-all, fig.width = 7, fig.height = 5.5}
+ggplot(phones, aes(phones, fertility)) +
+  geom_point(color = GRAY, alpha = 0.7, size = 2.5) +
+  geom_smooth(method = "lm", se = FALSE, color = INK, linewidth = 1.5) +
+  labs(
+    x = "Mobile subscriptions per 100 people",
+    y = "Births per woman",
+    title = paste0("All countries: r = ", fmt(r_phones, 2))
+  )
+```
+:::
+
+::: {.column}
+::: {.fragment}
+```{r phones-split, fig.width = 7, fig.height = 5.5}
+income_colors <- c("#ff2c2d", "#e69f00", "#009e73", "#1b91ff")
+
+ggplot(phones, aes(phones, fertility, color = income)) +
+  geom_point(alpha = 0.7, size = 2.5) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1.5) +
+  scale_color_manual(values = income_colors, name = NULL) +
+  guides(color = guide_legend(nrow = 2)) +
+  labs(
+    x = "Mobile subscriptions per 100 people",
+    y = "Births per woman",
+    title = "Within income groups"
+  ) +
+  theme(legend.text = element_text(size = 14))
+```
+:::
+:::
+:::
+
+- Real World Bank data, 2022. Within income groups the correlation mostly fades
+  (*r* between `r fmt(min(r_within$r), 2)` and `r fmt(max(r_within$r), 2)`).
+  **Wealth** drives both phones and smaller families.
 
 
+## You've already met forks
+
+::: {.columns}
+::: {.column}
+```{r fork-houses, fig.width = 6, fig.height = 4.2}
+fork_dag(
+  "B", "A", "P",
+  labels = c(B = "Bedrooms", A = "Living area", P = "Price"),
+  direct = TRUE,
+  highlight = c("A -> B", "A -> P")
+)
+```
+
+**Week 2:** more bedrooms looked valuable, because bigger houses have more of them.
+:::
+
+::: {.column}
+```{r fork-surgeon, fig.width = 6, fig.height = 4.2}
+fork_dag(
+  "S", "C", "O",
+  labels = c(S = "Surgeon", C = "Case difficulty", O = "Outcome"),
+  direct = TRUE,
+  highlight = c("C -> S", "C -> O")
+)
+```
+
+**Week 3:** the famous surgeon looked worse, because he got the hardest cases.
+:::
+:::
+
+- The classic **Simpson's paradox**, where a trend reverses when you split the data,
+  is usually a fork.
 
 
+## More forks
 
-# Pipes
+What's the hidden common cause?
 
-```{r pipe_data, echo=FALSE, warning=FALSE, message=FALSE}
-#| code-summary: "Show data generator code"
+- Ice cream sales ↔ drownings [→ hot weather]{.fragment .blue}
+- Children's shoe size ↔ reading ability [→ age]{.fragment .blue}
+- Firefighters at a fire ↔ damage done [→ size of the fire]{.fragment .blue}
+- Carrying a lighter ↔ lung cancer [→ smoking]{.fragment .blue}
+- Hospital visits ↔ dying [→ being ill]{.fragment .blue}
 
-# G = gender
-# T = time spent studying
-# R = exam results
+
+# The pipe: a mediator {.center}
+
+X → Z → Y
+
+
+## Is there a gender gap in exam results?
+
+```{r pipe-data}
+# Made-up world: one group studies more, and studying improves results.
+# Gender has no effect on results except through study time.
 set.seed(100)
 n <- 500
-df <- tibble(
-  G = rbinom(n, 1, 0.5),
-  T = rnorm(n, ifelse(G == 0, 2, -2), 2),
-  R = rnorm(n, T, 3)
+exams <- tibble(
+  male = rbinom(n, 1, 0.5),
+  study = pmax(0, rnorm(n, if_else(male == 0, 13, 7), 3)),
+  result = pmin(100, rnorm(n, 45 + 2 * study, 8)),
+  gender = if_else(male == 1, "Male", "Female")
 )
 ```
 
-## Exam Results ~ Gender
+::: {.columns}
+::: {.column}
+```{r pipe-density, fig.width = 7, fig.height = 5.5}
+ggplot(exams, aes(result, fill = gender)) +
+  geom_density(alpha = 0.6, color = NA) +
+  scale_fill_manual(values = c(Female = RED, Male = BLUE), name = NULL) +
+  labs(x = "Exam result", y = NULL, title = "Results by gender") +
+  theme(axis.text.y = element_blank())
+```
+:::
 
-::: {.r-stack}
+::: {.column}
+::: {.fragment}
+```{r pipe-split, fig.width = 7, fig.height = 5.5}
+ggplot(exams, aes(study, result, color = gender)) +
+  geom_point(alpha = 0.6, size = 2) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1.5) +
+  scale_color_manual(values = c(Female = RED, Male = BLUE), name = NULL) +
+  labs(x = "Hours studied per week", y = "Exam result", title = "Holding study time fixed")
+```
+:::
+:::
+:::
 
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  density(df$R),
-  xlab = "Exam results",
-  ylim = c(0, max(density(df$R)$y) * 1.5),
-  main = "Exam Results Density Plot"
+- A clear gap between groups. But at the same study time, the two lines sit on top of
+  each other: the gap disappears.
+
+
+## The pipe: what happened?
+
+::: {.columns}
+::: {.column width="45%"}
+```{r pipe-dag, fig.width = 6, fig.height = 4.5}
+pipe_dag(
+  "G", "T", "R",
+  labels = c(G = "Gender", T = "Study time", R = "Exam result"),
+  highlight = c("G -> T", "T -> R")
 )
-# lines(density(df$R[df$G == 0]), col = "blue")
-# lines(density(df$R[df$G == 1]), col = "red")
-legend(
-  "topright",
-  legend = c("Male", "Female"),
-  col = c("blue", "red"),
-  lwd = 2
+```
+:::
+
+::: {.column width="55%"}
+- In this made-up world, gender affects results **only through** study time.
+- The path G → T → R is **open**, and it is a real causal effect.
+- Holding study time fixed **closes** the path, so the effect vanishes.
+- Does gender matter? Yes, **through** study time.
+:::
+:::
+
+::: {.callout-tip .nonincremental title="Pipe rule"}
+Association flows through a pipe. Holding the mediator fixed **blocks the effect**. Only
+do it if you want the *direct* effect.
+:::
+
+
+## Does the anti-fungal treatment work?
+
+```{r fungus-data}
+# After McElreath, Statistical Rethinking ch. 6: treatment prevents fungus,
+# fungus slows growth. The treatment works, entirely through the fungus.
+set.seed(71)
+n <- 400
+plants <- tibble(
+  treated = rep(c("Untreated", "Treated"), each = n / 2),
+  fungus = rbinom(n, 1, if_else(treated == "Treated", 0.1, 0.5)),
+  growth = rnorm(n, 5 - 3 * fungus, 1)
+)
+
+growth_all <- plants |>
+  group_by(treated) |>
+  summarise(growth = mean(growth)) |>
+  mutate(group = "All plants")
+
+growth_split <- plants |>
+  mutate(group = if_else(fungus == 1, "With fungus", "No fungus")) |>
+  group_by(group, treated) |>
+  summarise(growth = mean(growth), .groups = "drop")
+```
+
+::: {.columns}
+::: {.column width="55%"}
+```{r fungus-plot, fig.width = 7.5, fig.height = 5.5}
+bind_rows(growth_all, growth_split) |>
+  mutate(
+    group = factor(group, levels = c("All plants", "No fungus", "With fungus")),
+    treated = factor(treated, levels = c("Untreated", "Treated"))
+  ) |>
+  ggplot(aes(treated, growth, fill = treated)) +
+  geom_col(width = 0.7) +
+  facet_wrap(~group) +
+  scale_fill_manual(values = c(Untreated = GRAY, Treated = BLUE), guide = "none") +
+  labs(x = NULL, y = "Average growth (cm)") +
+  theme(strip.text = element_text(size = 16, face = "bold"), axis.text.x = element_text(size = 14))
+```
+:::
+
+::: {.column width="45%"}
+```{r fungus-dag, fig.width = 6, fig.height = 3.8}
+pipe_dag(
+  "T", "F", "G",
+  labels = c(T = "Treatment", F = "Fungus", G = "Growth"),
+  highlight = c("T -> F", "F -> G")
 )
 ```
 
+- Overall, treated plants grow more.
+- Compare plants with the **same fungus status** and the treatment looks useless.
+:::
 :::
 
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  density(df$R),
-  xlab = "Exam results",
-  ylim = c(0, max(density(df$R)$y) * 1.5),
-  main = "Exam Results Density Plot"
-)
-lines(density(df$R[df$G == 0]), col = "blue")
-lines(density(df$R[df$G == 1]), col = "red")
-legend(
-  "topright",
-  legend = c("Male", "Female"),
-  col = c("blue", "red"),
-  lwd = 2
-)
+- **Post-treatment bias**: never hold fixed something the treatment itself changes, unless
+  that's the question.
+
+
+## A real paradox: Berkeley admissions, 1973
+
+```{r berkeley}
+berkeley <- read_csv("datasets/berkeley.csv")
+
+berk_overall <- berkeley |>
+  group_by(sex) |>
+  summarise(rate = mean(admitted), applicants = n())
+
+berk_dept <- berkeley |>
+  group_by(dept, sex) |>
+  summarise(rate = mean(admitted), applicants = n(), .groups = "drop")
+
+women_higher <- berk_dept |>
+  select(dept, sex, rate) |>
+  pivot_wider(names_from = sex, values_from = rate) |>
+  summarise(n = sum(female > male)) |>
+  pull(n)
 ```
 
-:::
-
-
-:::
-
-## Exam Results ~ Time Studying
-
-::: {.r-stack}
-
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  R ~ T,
-  xlab = "Time Spent Studying",
-  ylab = "Exam Results",
-  data = df,
-  # col = c(4, 2)[G + 1],
-  lwd = 2
-)
-# legend(
-#   "bottomright",
-#   legend = c("Male", "Female"),
-#   col = c("blue", "red"),
-#   lwd = 2
-# )
-# abline(lm(R ~ T, data = df), lwd = 2)
-# abline(lm(R[G == 0] ~ T[G == 0], data = df), col = 4, lwd = 2)
-# abline(lm(R[G == 1] ~ T[G == 1], data = df), col = 2, lwd = 2)
+::: {.columns}
+::: {.column width="55%"}
+```{r berkeley-plot, fig.width = 7.5, fig.height = 6}
+bind_rows(
+  berk_overall |> mutate(dept = "All"),
+  berk_dept
+) |>
+  mutate(dept = fct_relevel(factor(dept), "All")) |>
+  ggplot(aes(rate, fct_rev(dept), color = sex)) +
+  geom_line(aes(group = dept), color = GRAY, linewidth = 1) +
+  geom_point(aes(size = applicants), alpha = 0.9) +
+  scale_color_manual(values = c(female = RED, male = BLUE), name = NULL) +
+  scale_size_area(max_size = 10, guide = "none") +
+  scale_x_continuous(labels = scales::label_percent()) +
+  labs(x = "Admission rate", y = "Department")
 ```
-
 :::
 
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  R ~ T,
-  xlab = "Time Spent Studying",
-  ylab = "Exam Results",
-  data = df,
-  # col = c(4, 2)[G + 1],
-  lwd = 2
+::: {.column width="45%"}
+- Overall: **`r pct(berk_overall$rate[berk_overall$sex == "male"])`** of men admitted,
+  **`r pct(berk_overall$rate[berk_overall$sex == "female"])`** of women.
+- But in `r women_higher` of 6 departments, women were admitted at a **higher** rate.
+- Women mostly applied to the departments that were **hardest to get into**.
+- Dot size: number of applicants.
+:::
+:::
+
+
+## Berkeley: which answer is right?
+
+::: {.columns}
+::: {.column width="45%"}
+```{r berkeley-dag, fig.width = 6, fig.height = 4.5}
+dag_plot(
+  c("S -> D", "D -> A", "S -> A"),
+  list(S = c(0, 0), D = c(1, 1.1), A = c(2, 0)),
+  labels = c(S = "Sex", D = "Department", A = "Admitted"),
+  above = "D",
+  exposure = "S",
+  outcome = "A",
+  highlight = c("S -> D", "D -> A")
 )
-# legend(
-#   "bottomright",
-#   legend = c("Male", "Female"),
-#   col = c("blue", "red"),
-#   lwd = 2
-# )
-abline(lm(R ~ T, data = df), lwd = 2)
-# abline(lm(R[G == 0] ~ T[G == 0], data = df), col = 4, lwd = 2)
-# abline(lm(R[G == 1] ~ T[G == 1], data = df), col = 2, lwd = 2)
 ```
-
 :::
 
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  R ~ T,
-  xlab = "Time Spent Studying",
-  ylab = "Exam Results",
-  data = df,
-  col = c(4, 2)[G + 1],
-  lwd = 2
-)
-legend(
-  "bottomright",
-  legend = c("Male", "Female"),
-  col = c("blue", "red"),
-  lwd = 2
-)
-abline(lm(R ~ T, data = df), lwd = 2)
-# abline(lm(R[G == 0] ~ T[G == 0], data = df), col = 4, lwd = 2)
-# abline(lm(R[G == 1] ~ T[G == 1], data = df), col = 2, lwd = 2)
-```
-
+::: {.column width="55%"}
+- Department is a **pipe**: sex affects which department you apply to, and departments
+  differ in how hard they are to get into.
+- "Do admissions committees treat women differently?" → hold department **fixed**
+  (the direct path S → A).
+- "Are women less likely to get in overall?" → **don't** (the total effect). Then ask
+  why women ended up applying to the most competitive departments.
+:::
 :::
 
 
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  R ~ T,
-  xlab = "Time Spent Studying",
-  ylab = "Exam Results",
-  data = df,
-  col = c(4, 2)[G + 1],
-  lwd = 2
-)
-legend(
-  "bottomright",
-  legend = c("Male", "Female"),
-  col = c("blue", "red"),
-  lwd = 2
-)
-abline(lm(R ~ T, data = df), lwd = 2)
-abline(lm(R[G == 0] ~ T[G == 0], data = df), col = 4, lwd = 2)
-abline(lm(R[G == 1] ~ T[G == 1], data = df), col = 2, lwd = 2)
-```
+# The collider: a common effect {.center}
 
-:::
+X → Z ← Y
 
 
+## Are rich kids lazy?
 
-
-:::
-
-## Pipe Graph
-
-```{=html}
-<iframe
-  id="dag-frame-1"
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="https://dagitty.net/dags.html"
-></iframe>
-```
-
-
-
-# Colliders
-
-```{r collider_data, echo=FALSE, warning=FALSE, message=FALSE}
-#| code-summary: "Show data generator code"
-# F = family wealth
-# H = hardwork
-# J = prestigeous job
-
+```{r collider-data}
+# Made-up world: family wealth and hard work are unrelated,
+# and either can get you a prestigious job
+set.seed(7)
 n <- 500
-df <- tibble(
-  F = rnorm(n),
-  H = rnorm(n),
-  R = rnorm(n, 0, 0.3),
-  J = ifelse(F + H + R > 0.5, TRUE, FALSE)
+jobs <- tibble(
+  wealth = rnorm(n),
+  work = rnorm(n),
+  job = wealth + work + rnorm(n, 0, 0.3) > 0.5,
+  status = if_else(job, "Prestigious job", "No prestigious job")
 )
 ```
 
-
-## Hardwork ~ Family Wealth
-
-:::{.r-stack}
-
-
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  H ~ F,
-  data = df,
-  lwd = 2,
-  col = ifelse(J, "royalblue", "transparent"),
-  xlab = "Family Wealth",
-  ylab = "Hardwork"
-)
-abline(lm(H[J == TRUE] ~ F[J == TRUE], data = df), lwd = 3, col = "royalblue")
+::: {.columns}
+::: {.column}
+```{r collider-selected, fig.width = 7, fig.height = 5.5}
+jobs |>
+  filter(job) |>
+  ggplot(aes(wealth, work)) +
+  geom_point(color = BLUE, alpha = 0.7, size = 2) +
+  geom_smooth(method = "lm", se = FALSE, color = BLUE, linewidth = 1.5) +
+  coord_cartesian(xlim = range(jobs$wealth), ylim = range(jobs$work)) +
+  labs(x = "Family wealth", y = "Hard work", title = "People with prestigious jobs")
 ```
-
 :::
 
+::: {.column}
+::: {.fragment}
+```{r collider-all, fig.width = 7, fig.height = 5.5}
+ggplot(jobs, aes(wealth, work)) +
+  geom_point(aes(color = status), alpha = 0.6, size = 2) +
+  geom_smooth(method = "lm", se = FALSE, color = INK, linewidth = 1.5) +
+  scale_color_manual(
+    values = c("Prestigious job" = BLUE, "No prestigious job" = GRAY),
+    name = NULL
+  ) +
+  labs(x = "Family wealth", y = "Hard work", title = "Everyone")
+```
+:::
+:::
+:::
 
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  H ~ F,
-  data = df,
-  lwd = 2,
-  col = ifelse(J, "royalblue", "darkgray"),
-  xlab = "Family Wealth",
-  ylab = "Hardwork"
-)
-abline(lm(H[J] ~ F[J], data = df), lwd = 3, col = "royalblue")
-abline(lm(H[!J] ~ F[!J], data = df), lwd = 3, col = "darkgray")
-# abline(lm(H ~ F, data = df), lwd = 3, col = "black")
-legend(
-  "topright",
-  legend = c("Job", "No Job"),
-  col = c("blue", "darkgray"),
-  lwd = 2
+- Among people with prestigious jobs, the richer ones seem to work less.
+- But in the whole population (right), wealth and hard work are **unrelated**.
+
+
+## The collider: what happened?
+
+::: {.columns}
+::: {.column width="45%"}
+```{r collider-dag, fig.width = 6, fig.height = 4.5}
+collider_dag(
+  "W", "J", "H",
+  labels = c(W = "Family wealth", J = "Prestigious job", H = "Hard work"),
+  highlight = c("W -> J", "H -> J")
 )
 ```
+:::
 
+::: {.column width="55%"}
+- Wealth **or** hard work can get you the job.
+- If someone has the job but isn't rich, they probably worked hard. If they didn't work
+  hard, they're probably rich.
+- The path W → J ← H is **closed** by default: no association.
+- Holding J fixed, including by **only looking at people with jobs**, **opens** it.
+:::
+:::
+
+::: {.callout-important .nonincremental title="Collider rule"}
+No association flows through a collider, until you hold it fixed. **Don't control for
+a common effect**, and beware of samples selected on one.
 :::
 
 
-:::{.fragment}
-```{r}
-#| fig-width: 14
-#| fig-height: 8
-#| out-width: 100%
-plot(
-  H ~ F,
-  data = df,
-  lwd = 2,
-  col = ifelse(J, "royalblue", "darkgray"),
-  xlab = "Family Wealth",
-  ylab = "Hardwork"
+## Why is published science so often wrong?
+
+```{r grants}
+# After McElreath, Statistical Rethinking ch. 6
+set.seed(1914)
+n <- 200
+grants <- tibble(
+  newsworthy = rnorm(n),
+  trustworthy = rnorm(n),
+  score = newsworthy + trustworthy,
+  funded = score >= quantile(score, 0.9)
 )
-abline(lm(H[J] ~ F[J], data = df), lwd = 3, col = "royalblue")
-abline(lm(H[!J] ~ F[!J], data = df), lwd = 3, col = "darkgray")
-abline(lm(H ~ F, data = df), lwd = 3, col = "black")
-legend(
-  "topright",
-  legend = c("Job", "No Job"),
-  col = c("blue", "darkgray"),
-  lwd = 2
+r_funded <- with(filter(grants, funded), cor(newsworthy, trustworthy))
+```
+
+::: {.columns}
+::: {.column width="55%"}
+```{r grants-plot, fig.width = 7, fig.height = 6}
+ggplot(grants, aes(newsworthy, trustworthy, color = funded)) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(
+    data = filter(grants, funded),
+    method = "lm", se = FALSE, color = BLUE, linewidth = 1.5
+  ) +
+  scale_color_manual(values = c(`TRUE` = BLUE, `FALSE` = GRAY), guide = "none") +
+  labs(x = "Newsworthiness", y = "Trustworthiness")
+```
+:::
+
+::: {.column width="45%"}
+- 200 grant proposals. Newsworthiness and trustworthiness are **unrelated**.
+- Reviewers fund the top 10% on *both combined*.
+- Among [funded]{.blue} studies: *r* = **`r fmt(r_funded, 2)`**.
+- The most exciting published findings are the least trustworthy, with no bad intent
+  from anyone.
+- Remember Week 1: *most published research findings are false*.
+:::
+:::
+
+
+## More colliders
+
+What has been selected on?
+
+- Restaurants in bad locations serve better food [→ only the good ones survive]{.fragment .blue}
+- Among professional basketball players, height barely predicts success [→ short players had to be exceptional to make it]{.fragment .blue}
+- Among hospital patients, two unrelated diseases look negatively related [→ either one can put you in hospital (Berkson's paradox)]{.fragment .blue}
+- Among low-birth-weight babies, those of smoking mothers die *less* often [→ birth weight is caused by smoking *and* by other, more dangerous problems]{.fragment .blue}
+- Early COVID studies found fewer smokers among hospitalized patients [→ hospital testing and admission were the collider (Griffith et al., 2020)]{.fragment .blue}
+
+
+# The descendant {.center}
+
+A variable caused by Z acts like a weaker copy of Z.
+
+
+## Descendants
+
+::: {.columns}
+::: {.column}
+```{r desc-fork, fig.width = 7, fig.height = 4.5}
+dag_plot(
+  c("Z -> X", "Z -> Y", "Z -> D"),
+  list(X = c(0, 0), Z = c(1, 1.1), Y = c(2, 0), D = c(1, -0.4)),
+  labels = c(X = "Phones", Z = "Wealth", Y = "Births", D = "Income group"),
+  above = "Z",
+  exposure = "X",
+  outcome = "Y",
+  unobserved = "Z",
+  highlight = "Z -> D"
 )
 ```
 
+**A proxy for a confounder.** We can't measure wealth exactly, so we used income group.
+It closes the fork *partly*, which is why some correlation was left over.
+:::
+
+::: {.column}
+```{r desc-collider, fig.width = 7, fig.height = 4.5}
+dag_plot(
+  c("X -> Z", "Y -> Z", "Z -> D"),
+  list(X = c(0, 1.1), Z = c(1, 0.3), Y = c(2, 1.1), D = c(2, -0.6)),
+  labels = c(X = "Wealth", Z = "Job", Y = "Hard work", D = "Salary"),
+  above = c("X", "Y"),
+  exposure = "X",
+  outcome = "Y",
+  highlight = "Z -> D"
+)
+```
+
+**A consequence of a collider.** Studying only high earners partly selects on having
+the job, so it partly opens the collider.
+:::
 :::
 
 
+# Should I control for it?
+
+| Structure | Through Z, by default | If you hold Z fixed | Advice |
+|-----------|-----------------------|---------------------|--------|
+| **Fork** X ← Z → Y | open | closed | Control for it |
+| **Pipe** X → Z → Y | open | closed | Only for the *direct* effect |
+| **Collider** X → Z ← Y | closed | **open** | Don't |
+| **Descendant** of Z | like Z, weaker | like Z, weaker | Same as Z |
+: {.nonincremental}
+
+
+## The back-door rule
+
+To estimate the effect of X on Y:
+
+1. List every path between X and Y.
+2. **Close** every path that starts with an arrow *into* X (a "back door").
+3. **Don't** hold fixed anything that X causes (if you want the total effect).
+4. **Don't** hold fixed a collider, unless you also close the path it opens.
+
+::: {.fragment}
+Last week's examples follow this rule. Height was caused by sex, so we left it out
+(rule 3). Living area was a back door into bedrooms, so we held it fixed (rule 2).
 :::
 
-## Collider Graph
+
+## A paradox inside a paradox
+
+::: {.columns}
+::: {.column width="45%"}
+```{r berkeley-u, fig.width = 6, fig.height = 4.8}
+dag_plot(
+  c("S -> D", "D -> A", "S -> A", "U -> D", "U -> A"),
+  list(S = c(0, 0), D = c(1, 1.1), A = c(2, 0), U = c(2, 1.1)),
+  labels = c(S = "Sex", D = "Department", A = "Admitted", U = "Ability"),
+  above = c("D", "U"),
+  exposure = "S",
+  outcome = "A",
+  unobserved = "U",
+  highlight = c("S -> D", "U -> D", "U -> A")
+)
+```
+:::
+
+::: {.column width="55%"}
+- Back to Berkeley. What if applicants' **ability** affects both which department they
+  apply to and whether they get in?
+- Now department is a pipe **and** a collider (S → D ← U).
+- Holding department fixed opens S → D ← U → A, so even the "direct effect" is biased.
+- No statistical trick fixes this. We need **better data** (a measure of ability) or
+  **more science**.
+:::
+:::
+
+
+# Part 1: Summary
+
+- **Fork** (common cause): creates false associations. Control for it.
+- **Pipe** (mediator): carries real effects. Controlling for it hides them.
+- **Collider** (common effect): closed until you control for it, or select on it.
+- **Descendants** act like weaker copies of their parents.
+- Every paradox this week came from holding the wrong thing fixed, or failing to hold
+  the right thing fixed.
+
+
+# Part 2: Spot the confound {.center}
+
+
+## Your turn
+
+For each claim: draw the DAG, name the structure, and decide what to control for.
+
+1. Students who attend tuition classes score *lower* on the SEE.
+2. After adjusting for blood pressure, a new drug doesn't reduce heart attacks.
+3. Among startups that got funding, those with weaker founders had better ideas.
+4. Countries with more doctors per person have more cancer.
+5. People who own more books live longer.
+6. Among people admitted to hospital with COVID, smokers seemed to do better.
+
+
+## Possible answers
+
+1. **Fork**: students who are already struggling are the ones sent to tuition.
+   Control for earlier results.
+2. **Pipe**: the drug works *by* lowering blood pressure. Don't adjust if you want the
+   total effect.
+3. **Collider**: funding needs a strong founder *or* a strong idea. Don't trust patterns
+   within a selected sample.
+4. **Fork** (and a pipe): wealth → more doctors, and wealth → longer lives → more
+   cancer. More doctors also *detect* more cancer.
+5. **Fork**: education and income cause both.
+6. **Collider**: hospitalization. Smoking and severe COVID can each put you there.
+
+::: {.fragment}
+There is often more than one defensible DAG. Arguing about which one is right is the
+science.
+:::
+
+
+## Your project
+
+- Open your project's `dag` in [dagitty.net](https://dagitty.net/dags.html) (next slide).
+- Mark your **exposure** and **outcome**.
+- List every path between them. Label each fork, pipe and collider.
+- DAGitty's **"Causal effect identification"** panel lists the *adjustment sets*: the
+  variables that close every back door without opening any collider.
+- Do your model's variables match? If not, which DAG are you really assuming?
+
+
+## DAGitty {.no-title}
 
 ```{=html}
 <iframe
-  id="dag-frame-1"
   data-external="1"
   style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
   src="https://dagitty.net/dags.html"
 ></iframe>
 ```
-
-
-# Summary
-
-| **Collider Type** | **Should you control?** |
-|-------------------|------------------------:|
-| Fork              |                Probably |
-| Pipe              |              It depends |
-| Collider          |            Probably Not |
-| Descender         |         Depends on Type |
-
-

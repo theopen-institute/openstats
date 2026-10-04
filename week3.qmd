@@ -1,32 +1,150 @@
 ---
-format: 
-  revealjs: default
+format:
+  revealjs:
+    include-in-header:
+      - text: |
+          <style>
+            .workflow {
+              display: flex;
+              gap: 14px;
+              align-items: stretch;
+              margin: 30px 0;
+            }
+            .workflow .step {
+              flex: 1 1 0;
+              border: 2px solid #16314d;
+              border-radius: 10px;
+              padding: 18px 12px;
+              text-align: center;
+              font-weight: 700;
+              font-size: 0.8em;
+              background: white;
+            }
+            .workflow .step small {
+              display: block;
+              font-weight: 400;
+              font-size: 0.7em;
+              margin-top: 8px;
+              color: #16314d;
+            }
+            .workflow .arrow {
+              align-self: center;
+              font-size: 1.4em;
+              color: #999;
+            }
+            .workflow .step.science {
+              background: #e8f3ff;
+            }
+          </style>
 ---
 
-<!-- TODO: This whole unit needs to be fundamentally reimagined. Start with the problem, then find the solution. -->
-
-# Data Lunch: Week 3 {.center notes="notes/week1_notes.md#title"}
-
-Models
-
-::: {.footer}
-The Open Institute For Social Science
-:::
-
-```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+```{r setup, include=FALSE}
 library(tidyverse)
-library(tidybayes)
-library(bayesplot)
 library(cmdstanr)
-options(mc.cores = parallel::detectCores())
-
-# {{< include r/rlib.R >}}
+library(tidybayes)
 source("r/rlib.R")
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 12,
+  fig.height = 6.5,
+  dpi = 150,
+  dev.args = list(bg = "transparent")
+)
+
+BLUE <- "#1b91ff"
+RED <- "#ff2c2d"
+GRAY <- "#999999"
+INK <- "#16314d"
+
+theme_set(
+  theme_minimal(base_size = 22) +
+    theme(
+      panel.grid.minor = element_blank(),
+      plot.title = element_text(face = "bold", color = INK)
+    )
+)
+
+fmt <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = ",")
+
+# Fit a Stan model quietly
+fit_stan <- function(file, data) {
+  cmdstan_model(file, dir = ".stancache")$sample(
+    data = data,
+    seed = 1,
+    refresh = 0,
+    show_messages = FALSE,
+    show_exceptions = FALSE
+  )
+}
+
+# Posterior of (male - female) from a model with alpha[sex]
+sex_difference <- function(fit) {
+  fit$draws("alpha", format = "df") |>
+    as_tibble() |>
+    transmute(difference = `alpha[2]` - `alpha[1]`)
+}
+
+# Plot posteriors of one quantity under several models, one row per model
+plot_posteriors <- function(draws, x, xlab, colors = c(RED, BLUE)) {
+  ggplot(draws, aes(x = {{ x }}, y = model, fill = model)) +
+    geom_vline(xintercept = 0, color = GRAY, linetype = "dashed") +
+    stat_halfeye(.width = 0.89, point_size = 4, slab_alpha = 0.8, normalize = "groups") +
+    scale_fill_manual(values = colors, guide = "none") +
+    labs(x = xlab, y = NULL)
+}
+
+# !Kung San adults (Howell), from Week 2
+howell <- read_csv("datasets/kungsan.csv") |>
+  select(-1) |>
+  filter(age >= 18) |>
+  mutate(
+    sex = factor(if_else(male == 1, "male", "female"), levels = c("female", "male")),
+    height_std = (height - mean(height)) / sd(height)
+  )
+
+# Ames, Iowa house sales, from Week 2
+houses <- read_csv("datasets/ames.csv") |>
+  mutate(
+    z_price = (price - mean(price)) / sd(price),
+    z_bedrooms = (bedrooms - mean(bedrooms)) / sd(bedrooms),
+    z_area = (area_m2 - mean(area_m2)) / sd(area_m2)
+  )
+
+# World Bank 2022: fertility, women's college enrollment, infant mortality
+countries <- read_csv(
+  "datasets/wb2022.csv",
+  na = c("", ".."),
+  col_types = cols(.default = "c")
+) |>
+  select(code = `Country Code`, series = `Series Code`, value = `2022 [YR2022]`) |>
+  filter(series %in% c("SP.DYN.TFRT.IN", "SE.TER.ENRR.FE", "SP.DYN.IMRT.IN")) |>
+  distinct(code, series, .keep_all = TRUE) |>
+  mutate(value = as.numeric(value)) |>
+  pivot_wider(names_from = series, values_from = value) |>
+  transmute(
+    code,
+    fertility_rate = SP.DYN.TFRT.IN,
+    college = SE.TER.ENRR.FE,
+    mortality = SP.DYN.IMRT.IN
+  ) |>
+  drop_na() |>
+  mutate(
+    women_in_college = (college - mean(college)) / sd(college),
+    infant_mortality = (mortality - mean(mortality)) / sd(mortality)
+  )
 ```
 
 
-# Simpson's paradox
-<!-- TODO: set this up as a table -->
+
+# Data Lunch: Week 3 {.center}
+
+Causal models
+
+
+# The doctor paradox
 
 ## {auto-animate=true}
 Two surgeons, one normal and one famous, have different success rates for a procedure. How should we interpret this?
@@ -85,472 +203,674 @@ How about now?
 </table>
 :::
 
-# Models impose order on randomness
 
-```{=html}
-<iframe
-  id="dag-frame-1"
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="https://dagitty.net/dags.html"
-></iframe>
-<!-- <iframe
-  id="dag-frame-1"
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="js/dag-embed.html"></iframe> -->
-
-<!-- <script>
-(() => {
-  const dag = `dag {
-    Admitted [outcome,pos="-0.619,0.077"]
-    Department [exposure,pos="-0.858,0.192"]
-    Sex [exposure,pos="-1.059,-0.272"]
-    UNKNOWN [latent,pos="-0.414,0.077"]
-    Department -> Admitted  
-    Sex -> Admitted
-    Sex -> Department
-    UNKNOWN -> Admitted
-  }`;
-
-  const frame = document.getElementById("dag-frame-1");
-
-  function send() {
-    if (!frame?.contentWindow) return;
-    frame.contentWindow.postMessage({ type: "dagitty", dag }, "*");
-  }
-
-  frame.addEventListener("load", send);
-
-  // Optional: re-send when returning to the slide (Reveal may not exist in non-reveal contexts)
-  window.addEventListener("load", () => {
-    if (window.Reveal?.on) {
-      Reveal.on("ready", send);
-      Reveal.on("slidechanged", (e) => {
-        if (e.currentSlide?.querySelector("#dag-frame-1")) send();
-      });
-    }
-  });
-})();
-</script> -->
-```
-
-
-
-# What have we done so far?
-- We chose a parameter.
-- We stated our *prior* belief.
-- We made observations.
-- We calculated the *likelihood* of the things we observed.
-- We combined our prior and likelihood to produce an updated *posterior* belief.
-
-# Goals for this week
-- Concept: models
-- Model definition language
-- Explore two types of models:
-  - Parameter estimates
-  - Regressions
-
-
-# What is a model?
-
-- Our **data** is the observation we made [(# of Surveys, # of Votes)]{.fragment .green}
-- Our **model** is a theoretical description of how this data was generated, combining:
-  - Our *prior* belief about our parameter(s) [(Popularity)]{.fragment .blue}
-  - A method of calculating our *likelihood* from data
-
-<!-- # What is "fitting"?
-
-- We "fit" our model to our data using Bayes' Theorem.
-- This updates our prior -> posterior.
-- We can use different techniques for this process:
-  - Stones in a bag: we counted all possibilities
-  - Election polling: we used "grid approximation" to estimate the parameter every 5%
-  - Going forward: we'll use software (Markov Chain Montey Carlo, or MCMC)
- -->
-
-
-# Writing Priors
-We need a way to *describe* our prior belief for all values of our parameter (Popularity)
+## What changed?
 
 ::: {.columns}
+::: {.column width="50%"}
+```{r surgeon-dag, fig.width = 7, fig.height = 5.5}
+dag_plot(
+  c("C -> S", "C -> O", "S -> O"),
+  pos = list(C = c(1, 1.2), S = c(0, 0), O = c(2, 0)),
+  labels = c(C = "Case difficulty", S = "Surgeon", O = "Outcome"),
+  above = "C",
+  exposure = "S",
+  outcome = "O"
+)
+```
+:::
 
-::: {.column width="33%"}
-::: {.fragment}
+::: {.column width="50%"}
+- The famous surgeon gets the **hardest cases**.
+- Hard cases fail more often, whoever operates.
+- Case difficulty **interferes**: it affects *who operates* and *whether the operation
+  succeeds*.
+- Adding one variable to the comparison **reversed** the finding.
+:::
+:::
 
-```{r prior1, echo=FALSE, warning=FALSE, message=FALSE}
-x <- seq(0, 100, length.out = 1001)
-y <- dunif(x, min = 0, max = 100)
 
-plot(
-  x,
-  y,
-  type = "l",
-  lwd = 2,
-  col = "red",
-  xlim = c(0, 100),
-  xlab = "Votes",
-  ylab = "Density",
-  main = "Popularity ~ Uniform(0,100)",
-  cex.main = 3
+## Which number is right?
+
+- Both tables are calculated correctly from the same records.
+- They answer **different questions**:
+  - "Whose patients did better last year?" → [the normal surgeon]{.green}
+  - "For *my* operation, who gives me the better chance?" → [the famous surgeon]{.green}
+- The data alone can't tell us which comparison to make.
+- We need a story about **how the data was made**. That story is a **causal model**.
+
+
+# Goals this week
+
+- Part 1: Concepts
+  - DAGs: drawing what causes what
+  - What "cause" means in statistics
+  - The workflow: estimand → generative model → statistical model → data → estimate
+  - Worked example: does sex affect weight?
+- Part 2: Applied
+  - Designing DAGs for your own questions
+
+
+# What is a DAG?
+
+::: {.columns}
+::: {.column width="55%"}
+- **D**irected: arrows point one way, from cause to effect.
+- **A**cyclic: no loops. Nothing causes itself.
+- **G**raph: variables (circles) joined by arrows.
+- An arrow means "**directly causes**".
+- A **missing** arrow is a claim too: "no direct effect".
+- A DAG shows *what depends on what*, not *how much*.
+- It's a picture of our **assumptions**, drawn from what we know about the world, not a
+  result we get from data.
+:::
+
+::: {.column width="45%"}
+```{r dag-anatomy, fig.width = 6, fig.height = 4.5}
+dag_plot(
+  c("C -> S", "C -> O", "S -> O"),
+  pos = list(C = c(1, 1.2), S = c(0, 0), O = c(2, 0)),
+  labels = c(C = "Case difficulty", S = "Surgeon", O = "Outcome"),
+  above = "C",
+  exposure = "S",
+  outcome = "O"
 )
 ```
 
+[**Exposure**]{.blue}: the cause we're asking about. **Outcome**: the effect we
+care about.
+:::
 :::
 
-::: {.fragment}
 
-```{r prior2, echo=FALSE, warning=FALSE, message=FALSE}
-x <- seq(0, 100, length.out = 1001)
-y <- dunif(x, min = 20, max = 80)
 
-plot(
-  x,
-  y,
-  type = "l",
-  lwd = 2,
-  col = "red",
-  xlim = c(0, 100),
-  xlab = "Votes",
-  ylab = "Density",
-  main = "Popularity ~ Uniform(20,80)",
-  cex.main = 3
-)
+# What is a "cause"?
+
+- In statistics, X **causes** Y if *intervening* to change X would change Y, on average.
+  - "If this patient were switched to the famous surgeon, would their chance of
+    success change?"
+- Causes are **probabilistic**: smoking causes lung cancer, even though most smokers
+  never get it.
+- Causes are **many**: almost every outcome has lots of causes acting at once.
+- A causal claim is always a **simplification** of a messy world. In social science we
+  usually think of causes as places where we could *intervene*: a policy, a treatment,
+  a decision.
+
+
+## Seeing vs. doing
+
+::: {.columns}
+::: {.column}
+::: {.callout-note .nonincremental title="Seeing"}
+P( success | famous surgeon )
+
+Among patients who *happened* to get the famous surgeon, how many recovered?
+
+Includes all his hard cases.
+:::
+:::
+
+::: {.column}
+::: {.callout-tip .nonincremental title="Doing"}
+P( success | do(famous surgeon) )
+
+If we *assigned* patients to the famous surgeon, how many would recover?
+
+This is the causal question.
+:::
+:::
+:::
+
+- Data gives us **seeing**. Most of our questions are about **doing**.
+- A causal model is the bridge between them.
+
+
+# The workflow
+
+```{=html}
+<div class="workflow">
+  <div class="step science">Estimand<small>What exactly do we want to know?</small></div>
+  <div class="arrow">→</div>
+  <div class="step science">Generative model<small>How do we think the data was made?</small></div>
+  <div class="arrow">→</div>
+  <div class="step">Statistical model<small>What should we fit?</small></div>
+  <div class="arrow">→</div>
+  <div class="step">Data<small>What did we observe?</small></div>
+  <div class="arrow">→</div>
+  <div class="step">Estimate<small>Which values are most plausible?</small></div>
+</div>
 ```
 
-:::
-:::
+- **Estimand**: the question, stated precisely enough that a number could answer it.
+- **Generative model**: our causal story (a DAG, plus a simulation of it).
+- **Statistical model**: derived *from* the generative model, not picked from a menu.
+- **Estimate**: the posterior. *Given what we've seen, which values of the estimand are
+  most plausible?*
+- The [shaded]{.blue} steps are science. They come first, before we touch the data.
 
-::: {.column width="33%"}
-::: {.fragment}
 
-```{r prior3, echo=FALSE, warning=FALSE, message=FALSE}
-x <- seq(0, 100, length.out = 1001)
-y <- dnorm(x, mean = 50, sd = 20)
+# Worked example: does sex affect weight?
 
-plot(
-  x,
-  y,
-  type = "l",
-  lwd = 2,
-  col = "red",
-  xlim = c(0, 100),
-  xlab = "Votes",
-  ylab = "Density",
-  main = "Popularity ~ Normal(50,20)",
-  cex.main = 3
-)
+```{r howell-scatter, fig.height = 5.5}
+ggplot(howell, aes(height, weight, color = sex)) +
+  geom_point(alpha = 0.7, size = 2.5) +
+  scale_color_manual(values = c(female = RED, male = BLUE), name = NULL) +
+  labs(x = "Height (cm)", y = "Weight (kg)") +
+  theme(legend.position = "top")
 ```
 
+- The !Kung San adults from Week 2. Men are taller *and* heavier.
+
+
+## Step 1: The estimand
+
+- "Does sex affect weight?" is too vague to answer.
+- More precisely:
+
+::: {.callout-tip .nonincremental title="Estimand"}
+How much heavier, on average, would an adult be if they were male rather than female?
 :::
 
-::: {.fragment}
+- The answer is a number, in kg: the **effect of sex on weight**.
 
-```{r prior4, echo=FALSE, warning=FALSE, message=FALSE}
-x <- seq(0, 100, length.out = 1001)
-y <- dnorm(x, mean = 40, sd = 5)
 
-plot(
-  x,
-  y,
-  type = "l",
-  lwd = 2,
-  col = "red",
-  xlim = c(0, 100),
-  xlab = "Votes",
-  ylab = "Density",
-  main = "Popularity ~ Normal(40,5)",
-  cex.main = 3
+## Step 2: The generative model
+
+::: {.columns}
+::: {.column width="50%"}
+```{r howell-dag, fig.width = 7, fig.height = 4.2}
+howell_edges <- c("S -> H", "S -> W", "H -> W", "A -> H", "A -> W")
+howell_pos <- list(S = c(0, 1), H = c(1, 0), W = c(2, 1), A = c(3, 0))
+howell_labels <- c(S = "Sex", H = "Height", W = "Weight", A = "Age")
+
+dag_plot(
+  howell_edges,
+  howell_pos,
+  labels = howell_labels,
+  above = c("S", "W"),
+  exposure = "S",
+  outcome = "W"
 )
 ```
+:::
 
+::: {.column width="50%"}
+- Sex affects height (S → H).
+- Height affects weight (H → W).
+- Sex might also affect weight directly, e.g. through muscle mass (S → W).
+- Age affects height and weight (A → H, A → W).
+- Nothing in this picture causes sex.
 :::
 :::
 
-::: {.column width="33%"}
-::: {.fragment}
 
-```{r prior5, echo=FALSE, warning=FALSE, message=FALSE}
-x <- seq(0, 100, length.out = 1001)
-y <- dnorm(x, mean = 60, sd = 15)
-plot(
-  x,
-  y,
-  type = "l",
-  lwd = 2,
-  col = "red",
-  xlim = c(0, 100),
-  xlab = "Votes",
-  ylab = "Density",
-  main = "Popularity ~ Normal(60,15)",
-  cex.main = 3
-)
+## Step 2: Simulate the world we drew
+
+::: {.columns}
+::: {.column width="50%"}
+```{r simulate, echo = TRUE}
+simulate_people <- function(n) {
+  tibble(
+    sex = sample(c("female", "male"), n, TRUE),
+    male = sex == "male",
+    # S -> H: men 10 cm taller
+    height = rnorm(n, 150 + 10 * male, 6),
+    # H -> W: 0.6 kg per cm
+    # S -> W: men 2 kg heavier at the
+    #         same height
+    weight = rnorm(
+      n,
+      -45 + 0.6 * height + 2 * male,
+      4
+    )
+  )
+}
 ```
-
 :::
 
-::: {.fragment}
+::: {.column width="50%"}
+```{r sim-plot, fig.width = 7, fig.height = 5}
+set.seed(4)
+sim <- simulate_people(1000) |>
+  mutate(
+    sex = factor(sex, levels = c("female", "male")),
+    height_std = (height - mean(height)) / sd(height)
+  )
 
-```{r prior6, echo=FALSE, warning=FALSE, message=FALSE}
-x <- seq(0, 100, length.out = 1001)
-y <- dnorm(x, mean = 80, sd = 3)
-
-plot(
-  x,
-  y,
-  type = "l",
-  lwd = 2,
-  col = "red",
-  xlim = c(0, 100),
-  xlab = "Votes",
-  ylab = "Density",
-  main = "Popularity ~ Normal(80,3)",
-  cex.main = 3
-)
+ggplot(sim, aes(height, weight, color = sex)) +
+  geom_point(alpha = 0.5, size = 2) +
+  scale_color_manual(values = c(female = RED, male = BLUE), name = NULL) +
+  labs(x = "Height (cm)", y = "Weight (kg)") +
+  theme(legend.position = "top")
 ```
-
 :::
 :::
 
-:::
-
-# Distributions Demo {.no-title}
-
-```{shinylive-r}
-#| standalone: true
-{{< include shiny/distributions.R >}}
-``` 
+- In this made-up world we **know** the answers:
+  - Through the direct path alone: **2 kg**.
+  - Through both paths: 2 + 0.6 × 10 = **8 kg**.
 
 
-# Writing likelihood functions
-
-We need a way to describe how our data got made, linking our parameter (Popularity) to our observed data (Surveys and Votes)
-
-$$
-{\color{green}{Votes}} \sim \mathrm{Binomial}({\color{green}{Surveys}}, {\color{blue}{Popularity}})
-$$
-
-[Observed Data]{.green}
-
-[Parameter(s)]{.blue}
-
-# Writing complete models
-
-$$
-\begin{align}
-\color{green}{Votes} &\sim \color{green}{\mathrm{Binomial}(Surveys, Popularity)} \\
-\color{red}{Popularity} &\sim \color{red}{\mathrm{Normal}(60\%, 15\%)}
-\end{align}
-$$
-
-[Likelihood function]{.green}
-
-[Prior Belief]{.red}
-
-<!-- # Two major types of models:
-
-- Understanding the distribution of variables (parameter estimation)
-  - Based on limited survey data, who do we think will win an election?
-  - Based on social network analysis, how many Nepali citizens currently live abroad?
-
-- Understanding relationships between variables (regression)
-  - Does yoga lead to longer, healthier lives?
-  - Does education make people happy?
-  - What interventions can change national birth rates? -->
-
-
-<!-- # Cause is super weird
-- it's always a theoretical attribution, simplifying arbitrary complexity
-- in the social science, we tend to think about cause as sites of intervention -->
-
-# Generative Model Demo {.no-title}
+## Generative Model Demo {.no-title}
 
 ```{shinylive-r}
 #| standalone: true
 {{< include shiny/regression.R >}}
-``` 
-
-# Modeling individual weight
-
-```{r weight, echo=FALSE, warning=FALSE, message=FALSE}
-df_weight <- read_csv("datasets/kungsan.csv") |>
-  filter(age >= 18) |>
-  mutate(
-    height_std = scale(height) |> as.numeric(),
-    age_std = scale(age) |> as.numeric(),
-    sex = ifelse((male == 0), "female", "male") |> as_factor()
-  )
-
-ggplot(df_weight, aes(x=weight)) +
-  geom_histogram(bins=32, color="gray") + 
-  geom_vline(
-    xintercept = mean(df_weight$weight),
-    color = "red",
-    linetype = "dashed"
-  )
 ```
 
 
+## Step 3: Two statistical models
 
-# Model definition (Weight)
+::: {.columns}
+::: {.column}
+**Model A**: weight ~ sex
 
 $$
 \begin{align}
-\text{weight}_i &\sim \text{Normal}(\mu, \sigma) \\
-\mu &\sim \text{Normal}(50, 10) \\
-\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
-\end{align}
-$$
-
-```{r model_weight1, message=FALSE, results="hide"}
-model_weight1 <- cmdstan_model("models/weight1.stan", dir=".stancache")
-fit_weight1 <- df_weight |>
-  compose_data() |>
-  model_weight1$sample()
-```
-```{r summary_weight1}
-fit_weight1$summary()
-```
-
-
-# Vertical plot 
-```{r weight_vert, echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(df_weight) +
-  geom_jitter(
-    data = df_weight,
-    aes(x = 0, y = weight, color=sex),
-    shape = "cross",
-    color = "purple"
-  ) +
-  geom_hline(
-    yintercept = mean(df_weight$weight),
-    color = "red",
-    linetype = "dashed"
-  ) +
-  xlim(-2, 2)
-```
-
-# Vertical plot (sex differentiated)
-
-```{r weight_sex, echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(df_weight) +
-  geom_jitter(
-    data = df_weight,
-    aes(x = ifelse(sex == "male", -1, 1), y = weight, color=sex),
-    shape = "cross",
-  ) +
-  geom_hline(
-    yintercept = mean((df_weight |> filter(sex == "male"))$weight),
-    color = "red",
-    linetype = "dashed"
-  ) +
-  geom_hline(
-    yintercept = mean((df_weight |> filter(sex == "female"))$weight),
-    color = "blue",
-    linetype = "dashed"
-  ) +
-  xlim(-2, 2)
-```
-
-
-# Model (Weight ~ Sex)
-$$
-\begin{align}
-\text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha_{\text{sex}[i]} \\
+W_i &\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha_{S[i]} \\
 \alpha_j &\sim \text{Normal}(50, 10) \\
-\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
+\sigma &\sim \text{Normal}^+(0, 10)
 \end{align}
 $$
-
-```{r model_weight2, message=FALSE, results="hide"}
-model_weight2 <- cmdstan_model("models/weight2.stan", dir=".stancache")
-fit_weight2 <- df_weight |>
-  compose_data() |>
-  model_weight2$sample()
-```
-
-```{r summary_weight2}
-fit_weight2$summary() |>
-  replace_indexes(df_weight, alpha[sex])
-```
-
-
-# Scatter plot (with height)
-
-:::{.r-stack width="1605"}
-:::{.fragment width="1605"}
-```{r weight_height1, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-df_weight |>
-  ggplot(aes(x = height, y = weight)) +
-  geom_point(color = "purple", shape = "plus") +
-  labs(x = "Height (cm)", y = "Weight (kg)")
-
-```
 :::
 
-:::{.fragment width="1605"}
-```{r weight_height2, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-df_weight |>
-  ggplot(aes(x = height, y = weight)) +
-  geom_point(color = "purple", shape = "plus") +
-  geom_smooth(method="lm", se=FALSE) +
-  labs(x = "Height (cm)", y = "Weight (kg)")
-
-```
-:::
-
-:::{.fragment width="1605"}
-```{r weight_height3, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-df_weight |>
-  ggplot(aes(x = height / 2.56, y = weight)) +
-  geom_point(color = "purple", shape = "plus") +
-  geom_smooth(method="lm", se=FALSE) +
-  labs(x = "Height (inches)", y = "Weight (kg)")
-
-```
-:::
-
-:::{.fragment width="1605"}
-```{r weight_height4, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-df_weight |>
-  ggplot(aes(x = scale(height), y = weight)) +
-  geom_point(color = "purple", shape = "plus") +
-  geom_smooth(method="lm", se=FALSE) +
-  labs(x = "Height (standardized)", y = "Weight (kg)")
-
-```
-:::
-
-:::
-
-# Model (Weight ~ Height)
+::: {.column}
+**Model B**: weight ~ sex + height
 
 $$
 \begin{align}
-\text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta\times \text{height}_i \\
-\alpha &\sim \text{Normal}(50, 10) \\
-\beta &\sim \text{Normal}(0, 10) \\
-\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
+W_i &\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha_{S[i]} + \beta H_i \\
+\alpha_j &\sim \text{Normal}(50, 10) \\
+\beta &\sim \text{Normal}(0, 2) \\
+\sigma &\sim \text{Normal}^+(0, 10)
 \end{align}
 $$
+:::
+:::
 
-```{r model_weight3, message=FALSE, results="hide"}
-model_weight3 <- cmdstan_model("models/weight3.stan", dir=".stancache")
-fit_weight3 <- df_weight |>
-  compose_data() |>
-  model_weight3$sample()
-```
-```{r summary_weight3}
-fit_weight3$summary()
+- In both, our estimate is the difference: α~male~ − α~female~.
+
+
+## Step 3: Test the models on simulated data
+
+```{r sim-fits, results = "hide"}
+sim_a <- fit_stan("models/weight2.stan", compose_data(select(sim, weight, sex)))
+sim_b <- fit_stan(
+  "models/weight4.stan",
+  compose_data(select(sim, weight, height_std, sex))
+)
+
+sim_draws <- bind_rows(
+  sex_difference(sim_a) |> mutate(model = "A: weight ~ sex"),
+  sex_difference(sim_b) |> mutate(model = "B: weight ~ sex + height")
+)
 ```
 
-# Models tell stories
+```{r sim-posteriors, fig.height = 5}
+plot_posteriors(sim_draws, difference, "Men − women (kg)") +
+  geom_vline(xintercept = c(2, 8), color = INK, linewidth = 1) +
+  annotate("text", x = 8, y = 2.6, label = "both paths: 8 kg", hjust = 1.05, size = 7) +
+  annotate("text", x = 2, y = 2.6, label = "direct: 2 kg", hjust = -0.05, size = 7)
+```
+
+- Model A lands near **8 kg**. Model B lands near **2 kg**.
+- Each model correctly recovers a *different* true number. Which one we want depends
+  on the estimand.
+
+
+## Steps 4 & 5: Real data, real estimates
+
+```{r howell-fits, results = "hide"}
+fit_a <- fit_stan("models/weight2.stan", compose_data(select(howell, weight, sex)))
+fit_b <- fit_stan(
+  "models/weight4.stan",
+  compose_data(select(howell, weight, height_std, sex))
+)
+
+howell_draws <- bind_rows(
+  sex_difference(fit_a) |> mutate(model = "A: weight ~ sex"),
+  sex_difference(fit_b) |> mutate(model = "B: weight ~ sex + height")
+)
+howell_summary <- howell_draws |>
+  group_by(model) |>
+  median_qi(difference, .width = 0.89)
+```
+
+```{r howell-posteriors, fig.height = 5}
+plot_posteriors(howell_draws, difference, "Men − women (kg)")
+```
+
+- Model A: men are about **`r fmt(howell_summary$difference[1])` kg** heavier.
+- Model B: at the same height, men are about **`r fmt(howell_summary$difference[2])` kg**
+  heavier. In other words, no difference.
+
+
+## Effects flow through paths
+
+::: {.columns}
+::: {.column}
+```{r flow-total, fig.width = 7, fig.height = 4}
+dag_plot(
+  howell_edges,
+  howell_pos,
+  labels = howell_labels,
+  above = c("S", "W"),
+  highlight = c("S -> W", "S -> H", "H -> W"),
+  exposure = "S",
+  outcome = "W"
+)
+```
+
+**Model A** lets the effect flow through **both** paths: the **total effect**.
+:::
+
+::: {.column}
+```{r flow-direct, fig.width = 7, fig.height = 4}
+dag_plot(
+  howell_edges,
+  howell_pos,
+  labels = howell_labels,
+  above = c("S", "W"),
+  highlight = "S -> W",
+  exposure = "S",
+  outcome = "W"
+)
+```
+
+**Model B** holds height fixed, which **blocks** the path through height: only the
+**direct effect** is left.
+:::
+:::
+
+- Sex affects weight almost entirely *through height*.
+- Our estimand asked for the total effect, so **Model A** answers it. Adding height
+  would hide the very effect we're asking about.
+
+
+## What about age?
+
+```{r age-check}
+direct_with_age <- coef(lm(weight ~ sex + height + age, data = howell))[["sexmale"]]
+direct_without_age <- coef(lm(weight ~ sex + height, data = howell))[["sexmale"]]
+```
+
+::: {.columns}
+::: {.column width="50%"}
+```{r age-dag, fig.width = 7, fig.height = 4.2}
+dag_plot(
+  howell_edges,
+  howell_pos,
+  labels = howell_labels,
+  above = c("S", "W"),
+  highlight = c("A -> H", "A -> W"),
+  exposure = "S",
+  outcome = "W"
+)
+```
+:::
+
+::: {.column width="50%"}
+- Age is in the DAG, but nothing points from age **into sex**, so age opens no extra
+  path from sex to weight.
+- So for this estimand we can leave age out.
+- Quick check: adding age to the model shifts the sex difference by only
+  `r fmt(abs(direct_with_age - direct_without_age), 2)` kg.
+:::
+:::
+
+- **Not every variable in the DAG belongs in the model.** The DAG tells us which ones do.
+
+
+# Remember the bedrooms?
+
+::: {.columns}
+::: {.column width="45%"}
+```{r house-dag, fig.width = 6, fig.height = 5}
+house_edges <- c("A -> B", "A -> P", "B -> P")
+house_pos <- list(A = c(1, 1.2), B = c(0, 0), P = c(2, 0))
+house_labels <- c(A = "Living area", B = "Bedrooms", P = "Price")
+
+dag_plot(
+  house_edges,
+  house_pos,
+  labels = house_labels,
+  above = "A",
+  highlight = c("A -> B", "A -> P"),
+  exposure = "B",
+  outcome = "P"
+)
+```
+:::
+
+::: {.column width="55%"}
+- Last week: more bedrooms go with a *higher* price, but among houses of similar size,
+  more bedrooms go with a *lower* price.
+- Bigger houses have more bedrooms **and** sell for more.
+- So the bedroom–price correlation also flows along [B ← A → P]{.red}: a path that
+  isn't an effect of bedrooms at all.
+:::
+:::
+
+
+## Bedrooms: two models
+
+```{r house-fits, results = "hide"}
+house_fit <- function(predictors) {
+  fit_stan(
+    "models/linear.stan",
+    list(
+      n = nrow(houses),
+      k = length(predictors),
+      X = as.matrix(houses[predictors]),
+      y = houses$z_price
+    )
+  )
+}
+
+house_1 <- house_fit("z_bedrooms")
+house_2 <- house_fit(c("z_bedrooms", "z_area"))
+
+house_draws <- bind_rows(
+  house_1$draws("beta[1]", format = "df") |> mutate(model = "price ~ bedrooms"),
+  house_2$draws("beta[1]", format = "df") |> mutate(model = "price ~ bedrooms + area")
+) |>
+  as_tibble() |>
+  rename(beta_bedrooms = `beta[1]`)
+```
+
+```{r house-posteriors, fig.height = 4.5}
+plot_posteriors(house_draws, beta_bedrooms, "β for bedrooms (SD of price per SD of bedrooms)")
+```
+
+- Holding area fixed **reverses the sign**. An extra bedroom in the same space means
+  smaller rooms.
+- Here we *should* hold area fixed: the path through area isn't the effect we want.
+  With height, we *shouldn't*. Same move, opposite advice. **The DAG decides.**
+
+
+# Part 1: The punchline
+
+- The variables we put in a model can change, or even reverse, the answer.
+- That's because effects **flow along paths** through the DAG, and each variable we add
+  can block some of them.
+- So choosing variables is a **causal** decision, not a statistical one.
+- The DAG comes first. The model follows from it.
+
+
+# Part 2: Designing DAGs {.center}
+
+The science has to come first.
+
+
+## The data can't draw the DAG for you
+
+- Many different DAGs fit the same data equally well.
+- The arrows come from what you know: theory, earlier research, fieldwork, experience,
+  common sense.
+- If this feels **arbitrary**: good. You've noticed that every conclusion rests on
+  assumptions.
+- The job isn't to avoid assumptions. It's to make them **explicit**, so other people can
+  argue with them.
+
+
+## A recipe
+
+1. **Name the estimand**: "the effect of X on Y".
+2. List the things that **cause Y**.
+3. List the things that **cause X**.
+4. Draw an arrow only where you believe there's a **direct** cause. Every missing arrow is
+   a claim.
+5. Include things you **can't measure**, too (dashed circles).
+6. Trace every **path** between X and Y. Which carry the effect you want? Which don't?
+
+
+## Worked example: education and birth rates
+
+::: {.columns}
+::: {.column width="55%"}
+```{r fertility-scatter, fig.width = 7, fig.height = 5.5}
+ggplot(countries, aes(college, fertility_rate)) +
+  geom_point(color = BLUE, alpha = 0.7, size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = INK) +
+  labs(
+    x = "Women's college enrollment (% gross)",
+    y = "Births per woman"
+  )
+```
+:::
+
+::: {.column width="45%"}
+- World Bank, 2022: `r nrow(countries)` countries.
+- **Estimand**: the effect of women's college enrollment on the birth rate.
+- Countries where more women go to college have fewer births per woman.
+- But what else is going on?
+:::
+:::
+
+
+## Two defensible DAGs
+
+```{r fertility-dags}
+fert_labels <- c(
+  C = "Women in college",
+  M = "Infant mortality",
+  F = "Births per woman",
+  D = "Development"
+)
+```
+
+::: {.columns}
+::: {.column}
+**DAG 1: development first**
+
+```{r fertility-dag1, fig.width = 7, fig.height = 4.5}
+dag_plot(
+  c("D -> C", "D -> M", "C -> F", "M -> F"),
+  pos = list(D = c(0.4, 1.4), C = c(0, 0), M = c(2.6, 1.4), F = c(3, 0)),
+  labels = fert_labels,
+  above = c("D", "M"),
+  highlight = c("D -> C", "D -> M", "M -> F"),
+  exposure = "C",
+  outcome = "F",
+  unobserved = "D"
+)
+```
+
+Richer countries have more women in college *and* fewer infant deaths. The red path
+isn't an effect of education. **Hold infant mortality fixed.**
+:::
+
+::: {.column}
+**DAG 2: education first**
+
+```{r fertility-dag2, fig.width = 7, fig.height = 4.5}
+dag_plot(
+  c("C -> M", "C -> F", "M -> F"),
+  pos = list(C = c(0, 0), M = c(1.5, 1.2), F = c(3, 0)),
+  labels = fert_labels,
+  above = "M",
+  highlight = c("C -> M", "M -> F"),
+  exposure = "C",
+  outcome = "F"
+)
+```
+
+Educated mothers have healthier babies, so families need fewer births. The red path
+*is* part of education's effect. **Don't hold infant mortality fixed.**
+:::
+:::
+
+
+## Same data, different science, different answer
+
+```{r fertility-fits, results = "hide"}
+fert_1 <- fit_stan(
+  "models/fertility1a.stan",
+  compose_data(select(countries, fertility_rate, women_in_college))
+)
+fert_2 <- fit_stan(
+  "models/fertility2.stan",
+  compose_data(select(countries, fertility_rate, women_in_college, infant_mortality))
+)
+
+fert_draws <- bind_rows(
+  fert_1$draws("beta", format = "df") |>
+    rename(beta_college = beta) |>
+    mutate(model = "DAG 2: births ~ college"),
+  fert_2$draws("beta_college", format = "df") |>
+    mutate(model = "DAG 1: births ~ college + mortality")
+) |>
+  as_tibble()
+
+fert_summary <- fert_draws |>
+  group_by(model) |>
+  median_qi(beta_college, .width = 0.89)
+```
+
+```{r fertility-posteriors, fig.height = 4.5}
+plot_posteriors(fert_draws, beta_college, "β for college (births per woman, per SD of enrollment)")
+```
+
+- If you believe **DAG 1**, education has a small effect
+  (`r fmt(fert_summary$beta_college[fert_summary$model == "DAG 1: births ~ college + mortality"], 2)`).
+- If you believe **DAG 2**, a large one
+  (`r fmt(fert_summary$beta_college[fert_summary$model == "DAG 2: births ~ college"], 2)`).
+- Which do you believe, and **why**? What would convince someone who believes the other?
+
+
+## Your turn: draw your project's DAG
+
+::: {.columns}
+::: {.column width="55%"}
+1. What are your **X** and **Y**?
+2. Draw it at [dagitty.net](https://dagitty.net/dags.html) (next slide).
+3. Which arrow are you **least** sure about?
+4. What would a skeptic **add**?
+5. Is anything important **unmeasured**?
+6. Trace the paths from X to Y. Which should your model **block**?
+:::
+
+::: {.column width="45%"}
+Your project file already has a `dag`. It's the same drawing, written as text:
+
+```
+dag {
+  College -> Fertility
+  Mortality -> Fertility
+  Development -> College
+  Development -> Mortality
+}
+```
+:::
+:::
+
+
+## DAGitty {.no-title}
 
 ```{=html}
 <iframe
-  id="dag-frame-1"
   data-external="1"
   style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
   src="https://dagitty.net/dags.html"
@@ -558,263 +878,13 @@ fit_weight3$summary()
 ```
 
 
-# Model (Weight ~ Sex + Height)
+# Summary
 
-$$
-\begin{align}
-\text{weight}_i &\sim \text{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha_{\text{sex}[i]} + \beta\times \text{height}_i \\
-\alpha_j &\sim \text{Normal}(50, 10) \\
-\beta &\sim \text{Normal}(0, 10) \\
-\sigma &\sim \text{Normal}(0, 10), \quad \sigma > 0
-\end{align}
-$$
-
-```{r model_weight4, message=FALSE, results="hide"}
-model_weight4 <- cmdstan_model("models/weight4.stan", dir=".stancache")
-fit_weight4 <- df_weight |>
-  compose_data() |>
-  model_weight4$sample()
-```
-```{r summary_weight4}
-fit_weight4$summary() |>
-  replace_indexes(df_weight, alpha[sex])
-```
-
-
-
-# Understanding global birth rates
-
-```{r wb_setup, echo=FALSE, warning=FALSE, message=FALSE}
-filename <- "datasets/wb2022.csv"
-
-# build a variable label vector for better labelling of df
-label_vec <- read_csv(filename) |>
-  distinct(`Series Code`, `Series Name`) |>
-  filter(!is.na(`Series Code`), !is.na(`Series Name`)) |>
-  group_by(`Series Code`) |> # in case of duplicates
-  summarise(label = first(`Series Name`), .groups = "drop") |>
-  with(setNames(label, `Series Code`))
-
-# compose dataframe
-df <- read_csv(filename) |>
-  select(-c(`Series Name`)) |>
-  slice(1:(n() - 5)) |>
-  pivot_longer(
-    cols = matches("^\\d{4} \\[YR\\d{4}\\]$"),
-    names_to = "year",
-    values_to = "value",
-    names_transform = list(year = ~ str_extract(.x, "^\\d{4}"))
-  ) |>
-  pivot_wider(names_from = `Series Code`, values_from = value) |>
-  mutate(across(
-    any_of(names(label_vec)),
-    ~ {
-      attr(.x, "label") <- unname(label_vec[cur_column()])
-      .x
-    }
-  )) |>
-  left_join(
-    read_csv("datasets/wb_country.csv"),
-    join_by(`Country Code` == Code)
-  )
-
-# build variable summary showing only eligible variables
-label_df <- df |>
-  summarise(across(everything(), ~ sum(is.na(.x)))) |>
-  pivot_longer(everything(), names_to = "column", values_to = "n_NA") |>
-  # filter(n_NA < 50) |>
-  rowwise() |>
-  filter(
-    !any(is.na(df[df$`Country Name` == "Nepal", .data$column, drop = TRUE]))
-  ) |>
-  ungroup() |>
-  transmute(
-    `Series Code` = column,
-    label = unname(label_vec[column])
-  ) |>
-  filter(!is.na(label))
-```
-
-:::{.r-stack }
-
-:::{.fragment width="1605"}
-```{r wb_fertility1, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-ggplot(df, aes(x = SP.DYN.TFRT.IN)) +
-  geom_histogram(bins = 11, colour = "darkgray") +
-  scale_fill_discrete(
-    labels = scales::label_wrap(20)
-  ) +
-  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
-```
-
-
-
-:::
-
-:::{.fragment width="1605"}
-```{r wb_fertility2, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-ggplot(df, aes(x = SP.DYN.TFRT.IN, fill = Region)) +
-  geom_histogram(bins = 11, colour = "darkgray", position = "stack") +
-  scale_fill_discrete(
-    labels = scales::label_wrap(20)
-  ) +
-  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
-```
-:::
-
-
-:::
-
-
-# Birthrate ~ Women's College Enrollment
-
-```{r wb_college, echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(df, aes(x = SE.TER.ENRR.FE, y = SP.DYN.TFRT.IN)) +
-  geom_point(aes(color = Region)) +
-  stat_smooth(method = "lm") +
-  scale_color_discrete(
-    labels = scales::label_wrap(20)
-  ) +
-  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
-```
-
-
-# Birthrate ~ Infant Mortality
-
-:::{.r-stack}
-
-:::{.fragment width="1605"}
-```{r wb_infant1, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-ggplot(df, aes(x = SP.DYN.IMRT.IN, y = SP.DYN.TFRT.IN)) +
-  geom_point(aes(color = Region)) +
-  stat_smooth(method = "lm") +
-  scale_color_discrete(
-    labels = scales::label_wrap(20)
-  ) +
-  scale_x_continuous(limits = c(0, 100)) +
-  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
-
-```
-
-:::
-
-:::{.fragment width="100%"}
-
-```{r wb_infant2, echo=FALSE, warning=FALSE, message=FALSE, out.width="1605"}
-ggplot(df, aes(x = log(SP.DYN.IMRT.IN), y = SP.DYN.TFRT.IN)) +
-  geom_point(aes(color = Region)) +
-  stat_smooth(method = "lm") +
-  scale_color_discrete(
-    labels = scales::label_wrap(20)
-  ) +
-  # scale_x_continuous(limits=c(0,100)) +
-  theme(legend.key.spacing.y = unit(0.2, 'cm'), legend.key = element_blank())
-
-```
-
-:::
-:::
-
-# Data: no meaning without a story
-
-```{=html}
-<iframe
-  id="dag-frame-1"
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="https://dagitty.net/dags.html"
-></iframe>
-```
-
-
-
-# Model (Fertility ~ Women in College)
-```{r model1a, message=FALSE, results="hide"}
-model1a <- cmdstan_model("models/fertility1a.stan", dir=".stancache")
-fit1a <- df |>
-  transmute(
-    fertility_rate = SP.DYN.TFRT.IN,
-    women_in_college = scale(SE.TER.ENRR.FE) |> as.numeric()
-  ) |>
-  drop_na() |>
-  compose_data() |>
-  model1a$sample()
-```
-
-```{r model1a_output}
-fit1a |>
-  spread_draws(alpha, beta, sigma) |>
-  ggplot(aes(x = beta)) +
-  stat_halfeye()
-
-fit1a$summary()
-```
-
-
-# Model (Fertility ~ Infant Mortality)
-```{r model1b, message=FALSE, results="hide"}
-model1b <- cmdstan_model("models/fertility1b.stan", dir=".stancache")
-fit1b <- df |>
-  transmute(
-    fertility_rate = SP.DYN.TFRT.IN,
-    infant_mortality = scale(SP.DYN.IMRT.IN) |> as.numeric()
-  ) |>
-  drop_na() |>
-  compose_data() |>
-  model1b$sample(chains=1)
-```
-
-```{r model1b_output}
-fit1b |>
-  spread_draws(alpha, beta, sigma) |>
-  ggplot(aes(x = beta)) +
-  stat_halfeye()
-
-fit1b$summary()
-```
-
-
-# Model (Fertility ~ Women in College + Infant Mortality)
-```{r model2, message=FALSE, results="hide"}
-model2 <- cmdstan_model("models/fertility2.stan", dir=".stancache")
-fit2 <- df |>
-  transmute(
-    fertility_rate = SP.DYN.TFRT.IN,
-    women_in_college = scale(SE.TER.ENRR.FE) |> as.numeric(),
-    infant_mortality = scale(SP.DYN.IMRT.IN) |> as.numeric()
-  ) |>
-  drop_na() |>
-  compose_data() |>
-  model2$sample(chains=1)
-
-```
-
-:::{.columns}
-:::{.column}
-
-```{r model2_output1, message=FALSE, results="hide"}
-fit2 |>
-  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
-  ggplot() +
-  stat_halfeye(aes(x = beta_college))
-```
-
-
-:::
-:::{.column}
-
-```{r model2_output2, message=FALSE, results="hide"}
-fit2 |>
-  spread_draws(alpha, beta_college, beta_mortality, sigma) |>
-  ggplot() +
-  stat_halfeye(aes(x = beta_mortality))
-```
-
-:::
-:::
-
-
-```{r model2_output3}
-fit2$summary()
-```
+- A **DAG** is a drawing of our causal assumptions: arrows for direct causes.
+- **Cause** means "changing X would change Y". Data shows us *seeing*; we usually want
+  *doing*.
+- **Workflow**: estimand → generative model → statistical model → data → estimate.
+- The variables we include can change, even reverse, our answers, because effects flow
+  along different paths.
+- The science comes first. Next week: the building blocks of DAGs, and rules for which
+  paths to block.
