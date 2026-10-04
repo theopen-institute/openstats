@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-e4f167b555b79ba4d2d81742b8dc2dd7.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4f1ced9ef2b26612c7d5dcc3fdcf68a8.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -232,6 +232,7 @@
 <li class="fragment">Part 2: Applied
 <ul>
 <li class="fragment">What makes a house expensive?</li>
+<li class="fragment">Spurious correlations: when patterns mislead</li>
 </ul></li>
 </ul>
 </section>
@@ -1918,6 +1919,159 @@ z_{\text{price}} = \beta \times z_{\text{area}}
 <li class="fragment">But among medium and large houses of <strong>similar size</strong>, more bedrooms go with a <em>lower</em> price.</li>
 <li class="fragment">How can both be true?</li>
 </ul>
+</section></section>
+<section>
+<section id="spurious-correlations" class="title-slide slide level1 center">
+<h1>Spurious correlations</h1>
+<p>A <strong>spurious correlation</strong> is a real pattern in the data that does <em>not</em> mean one variable affects the other. There are two common ways to get one:</p>
+<div class="columns">
+<div class="column">
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>1. Confounding</strong></p>
+</div>
+<div class="callout-content">
+<p>A <strong>third variable</strong> drives both. The pattern is real and will show up again in new data, but it isn’t about the two variables themselves.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="fragment">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>2. Chance</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Random noise</strong> happens to line up. The pattern is a fluke of this particular sample and will disappear in new data.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="kind-1-does-ice-cream-cause-drowning" class="slide level2">
+<h2>Kind 1: Does ice cream cause drowning?</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/icecream-scatter-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<ul>
+<li class="fragment">One year of (simulated) daily data from a beach town.</li>
+<li class="fragment"><em>r</em> = 0.43: days with more ice cream sales have more drownings.</li>
+<li class="fragment">Should the town ban ice cream?</li>
+</ul>
+</div></div>
+</section>
+<section id="the-confounder-temperature" class="slide level2">
+<h2>The confounder: temperature</h2>
+
+<img data-src="week2_files/figure-revealjs/icecream-strata-1.png" width="1800" class="r-stretch"><ul>
+<li class="fragment"><span class="blue">ice cream</span> ← <strong>temperature</strong> → <span class="blue">drownings</span></li>
+<li class="fragment">Compare days with <strong>similar temperatures</strong>, and the relationship mostly disappears.</li>
+<li class="fragment">More data would not help: a million days would show the same strong <em>r</em>.</li>
+</ul>
+</section>
+<section id="weve-already-met-a-confounder" class="slide level2">
+<h2>We’ve already met a confounder</h2>
+<ul>
+<li class="fragment">The <strong>bedrooms puzzle</strong>: across all houses, more bedrooms go with higher prices.</li>
+<li class="fragment">But <span class="blue">bedrooms</span> ← <strong>living area</strong> → <span class="blue">price</span>. Big houses have more bedrooms <em>and</em> sell for more.</li>
+<li class="fragment">Compare houses of <strong>similar size</strong>, and extra bedrooms go with a <em>lower</em> price (less space per room).</li>
+<li class="fragment">A confounder can hide a relationship, invent one, or even flip its sign.</li>
+</ul>
+</section>
+<section id="kind-2-correlations-from-pure-noise" class="slide level2">
+<h2>Kind 2: Correlations from pure noise</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/noise-best-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<ul>
+<li class="fragment">I made up 50 variables for 20 “countries”. Every value is drawn at random with <code>rnorm()</code>: nothing is related to anything.</li>
+<li class="fragment">That’s 1225 possible pairs.</li>
+<li class="fragment">The strongest pair: <em>r</em> = 0.70.</li>
+<li class="fragment">Give these two variables names, and it would make a convincing headline.</li>
+</ul>
+</div></div>
+</section>
+<section id="small-samples-and-many-comparisons" class="slide level2">
+<h2>Small samples and many comparisons</h2>
+
+<img data-src="week2_files/figure-revealjs/noise-dist-1.png" width="1800" class="r-stretch"><ul>
+<li class="fragment">The true correlation is <strong>0</strong> for every pair. With <span class="red">20 cases</span>, chance alone produces <em>r</em> values of ±0.5 and beyond. With <span class="blue">500 cases</span>, they stay close to 0.</li>
+<li class="fragment">Search through enough pairs and you’re guaranteed to find something “interesting”.</li>
+</ul>
+</section>
+<section id="telling-the-two-apart" class="slide level2">
+<h2>Telling the two apart</h2>
+<table class="nonincremental caption-top">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 59%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Confounding</th>
+<th>Chance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>What’s going on?</td>
+<td>A third variable drives both</td>
+<td>Noise happened to line up</td>
+</tr>
+<tr class="even">
+<td>Shows up in new data?</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>Does more data help?</td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr class="even">
+<td>What helps?</td>
+<td>Thinking about causes; comparing like with like</td>
+<td>Bigger samples; deciding what to test <em>before</em> looking; replication</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li class="fragment">The posterior for β already protects us a little against chance: with 20 adults it was wide, saying “I’m not sure.”</li>
+<li class="fragment">Nothing in the data alone protects us against confounding. For that we need a <strong>causal model</strong>.</li>
+</ul>
+</div>
 </section></section>
 <section id="next-week" class="title-slide slide level1 center">
 <h1>Next week</h1>

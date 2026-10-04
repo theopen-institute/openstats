@@ -34,7 +34,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-e4f167b555b79ba4d2d81742b8dc2dd7.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4f1ced9ef2b26612c7d5dcc3fdcf68a8.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -170,12 +170,17 @@
 <li class="fragment">Seven questions to ask of any claim</li>
 <li class="fragment">Worked case: bicycles for girls in Bihar</li>
 </ul></li>
-<li class="fragment">Part 2: Asking your own question
+<li class="fragment">Part 2: What’s missing from the model?
+<ul>
+<li class="fragment">Reading the DAG a study never drew</li>
+<li class="fragment">Missing common causes, mediators, and which way they bias the result</li>
+</ul></li>
+<li class="fragment">Part 3: Asking your own question
 <ul>
 <li class="fragment">From a decision to an estimand</li>
 <li class="fragment">The target trial: the experiment you wish you could run</li>
 </ul></li>
-<li class="fragment">Part 3: Applied
+<li class="fragment">Part 4: Applied
 <ul>
 <li class="fragment">Critique a study, design an estimand, revisit your project</li>
 </ul></li>
@@ -334,6 +339,9 @@ schools and they improved" (before/after with no comparison group) -->
 </ul>
 <div class="fragment">
 <p>The phrase <strong>“after controlling for…”</strong> is the most important sentence in the methods section. Check every variable in that list against your DAG. <em>(Week 4)</em></p>
+</div>
+<div class="fragment">
+<p>This question gets <strong>all of Part 2</strong>.</p>
 </div>
 </section>
 
@@ -521,8 +529,280 @@ schools and they improved" (before/after with no comparison group) -->
 </section>
 
 <section>
-<section id="part-2-asking-your-own-question" class="title-slide slide level1 center">
-<h1>Part 2: Asking your own question</h1>
+<section id="part-2-whats-missing-from-the-model" class="title-slide slide level1 center">
+<h1>Part 2: What’s missing from the model?</h1>
+<p>The critique you can make without any statistics</p>
+</section>
+<section id="the-problem-is-upstream" class="slide level2">
+<h2>The problem is upstream</h2>
+<ol type="1">
+<li><strong>Question</strong>: what do we want to know?</li>
+<li><strong>Causal model</strong>: what causes what? (the DAG)</li>
+<li><strong>Statistical model</strong>: the regression, the priors, the code</li>
+<li><strong>Estimate</strong>: the numbers in the table</li>
+</ol>
+<ul>
+<li class="fragment">Methods sections and peer review spend almost all their time on steps 3 and 4.</li>
+<li class="fragment">Step 2 is usually <strong>never written down</strong>. The list of controls stands in for it.</li>
+<li class="fragment">A mistake in step 2 can’t be fixed later. A bigger sample just gives you a more precise wrong answer.</li>
+<li class="fragment">So you can challenge a finding without checking a single calculation: <strong>what did their causal model leave out?</strong></li>
+</ul>
+</section>
+<section id="their-model-implies-a-dag" class="slide level2">
+<h2>Their model implies a DAG</h2>
+<blockquote>
+<p><em>“Countries where more girls attend secondary school have fewer births per woman, after controlling for GDP per capita and contraceptive use.”</em></p>
+</blockquote>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week5_files/figure-revealjs/implied-dag-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<ul>
+<li class="fragment">Each control is a variable they thought mattered.</li>
+<li class="fragment">Each <strong>missing arrow</strong> is a claim too: <em>“nothing else causes both schooling and births.”</em></li>
+<li class="fragment">Leaving an arrow out is a stronger claim than drawing one, and it’s never stated out loud.</li>
+</ul>
+</div></div>
+</section>
+<section id="four-questions-for-every-arrow" class="slide level2">
+<h2>Four questions for every arrow</h2>
+<p>For the exposure X and the outcome Y, ask:</p>
+<ol type="1">
+<li class="fragment"><strong>Common causes</strong>: what could cause <em>both</em> X and Y? Is it in the model? <span class="blue">→ an unclosed <strong>fork</strong></span></li>
+<li class="fragment"><strong>Mediators</strong>: <em>how</em> would X affect Y? Is that channel in the control list? <span class="blue">→ a blocked <strong>pipe</strong></span></li>
+<li class="fragment"><strong>Common effects</strong>: was the sample chosen by something X and Y both affect? <span class="blue">→ an opened <strong>collider</strong></span></li>
+<li class="fragment"><strong>Reverse arrows</strong>: could Y cause X? <span class="blue">→ the arrow points the wrong way</span></li>
+</ol>
+<div class="fragment">
+<p>Then repeat for each control variable. Why is it in the model? Is it a fork, a pipe or a collider?</p>
+</div>
+</section>
+<section id="the-usual-suspects" class="slide level2">
+<h2>The usual suspects</h2>
+<p>In development data, the same few common causes come up again and again.</p>
+<table class="nonincremental caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Suspect</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Wealth / SES</strong></td>
+<td>income, assets, GDP. Nearly everything follows it. <em>(Week 4)</em></td>
+</tr>
+<tr class="even">
+<td><strong>Geography</strong></td>
+<td>urban vs.&nbsp;rural, terrain, climate, distance to markets</td>
+</tr>
+<tr class="odd">
+<td><strong>Institutions</strong></td>
+<td>state capacity, corruption, colonial history, conflict</td>
+</tr>
+<tr class="even">
+<td><strong>Culture and norms</strong></td>
+<td>religion, gender norms, caste, language</td>
+</tr>
+<tr class="odd">
+<td><strong>Time</strong></td>
+<td>everything has trended together since 1990</td>
+</tr>
+<tr class="even">
+<td><strong>Selection</strong></td>
+<td>who chose X? motivation, ability, need</td>
+</tr>
+<tr class="odd">
+<td><strong>Data quality</strong></td>
+<td>richer, better-run places measure and report more</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li class="fragment">Go down the list for every claim. Ask whether each one plausibly points into <strong>both</strong> X and Y.</li>
+</ul>
+</section>
+<section id="missing-common-causes" class="slide level2">
+<h2>Missing common causes</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week5_files/figure-revealjs/missing-forks-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<ul>
+<li class="fragment"><strong>Urbanization</strong>: cities have more secondary schools <em>and</em> make children more expensive to raise.</li>
+<li class="fragment"><strong>Gender norms</strong>: where girls are expected to marry early, they leave school <em>and</em> start having children sooner.</li>
+<li class="fragment">Also: family-planning programs, child mortality, religion, conflict…</li>
+<li class="fragment">None of these is GDP. Controlling for GDP leaves these back doors open.</li>
+</ul>
+</div></div>
+</section>
+<section id="which-way-would-they-push" class="slide level2">
+<h2>Which way would they push?</h2>
+<p>You can often tell the <strong>direction</strong> of the bias without any data.</p>
+<table class="nonincremental caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Arrow into X</th>
+<th style="text-align: center;">Arrow into Y</th>
+<th>The missing confounder adds…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">+</td>
+<td style="text-align: center;">+</td>
+<td>a false <strong>positive</strong> association</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">−</td>
+<td style="text-align: center;">−</td>
+<td>a false <strong>positive</strong> association</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">+</td>
+<td style="text-align: center;">−</td>
+<td>a false <strong>negative</strong> association</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">−</td>
+<td style="text-align: center;">+</td>
+<td>a false <strong>negative</strong> association</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li class="fragment">Urbanization: <strong>+</strong> schooling, <strong>−</strong> births → a false negative association.</li>
+<li class="fragment">Gender norms (early marriage): <strong>−</strong> schooling, <strong>+</strong> births → also false negative.</li>
+<li class="fragment">Both push the same way as the reported effect, so the real effect of schooling is probably <strong>smaller</strong> than reported. Probably not zero, but smaller.</li>
+</ul>
+</div>
+</section>
+<section id="mediators-direct-and-indirect-effects" class="slide level2">
+<h2>Mediators: direct and indirect effects</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week5_files/figure-revealjs/mediators-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<ul>
+<li class="fragment">Schooling can lower fertility <strong>through</strong> later marriage and more contraceptive use. These are <strong>indirect effects</strong>.</li>
+<li class="fragment">Whatever is left over is the <strong>direct effect</strong>.</li>
+<li class="fragment"><strong>Total effect</strong> = direct + all indirect paths.</li>
+<li class="fragment">They controlled for contraceptive use, so they removed one of the channels. Their coefficient is <em>“the effect of schooling, not counting its effect through contraception.”</em></li>
+</ul>
+</div></div>
+</section>
+<section id="which-effect-answers-the-question" class="slide level2">
+<h2>Which effect answers the question?</h2>
+<ul>
+<li class="fragment"><strong>Funding girls’ schooling?</strong> You want the <strong>total</strong> effect. Every channel counts, so don’t control for mediators.</li>
+<li class="fragment"><strong>Understanding the mechanism?</strong> Direct and indirect effects matter. <em>Does</em> schooling work through contraception? If so, maybe fund clinics instead.</li>
+<li class="fragment">Papers often add controls “to be safe.” If a control is a mediator, it quietly changes the question being answered.</li>
+</ul>
+<div class="fragment" title="Controlling for a mediator can also open a collider">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Controlling for a mediator can also open a collider</strong></p>
+</div>
+<div class="callout-content">
+<p>Anything that causes both contraceptive use and births (e.g.&nbsp;access to health services) now makes a new back door: schooling → <strong>contraception</strong> ← health access → births. Controlling for a mediator only gives the direct effect if nothing else causes both the mediator and the outcome. <em>(Week 4)</em></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="writing-the-critique" class="slide level2">
+<h2>Writing the critique</h2>
+<p>A response you can give without re-running any analysis:</p>
+<div title="Template">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Template</strong></p>
+</div>
+<div class="callout-content">
+<p>The authors’ model assumes nothing causes both <strong>[X]</strong> and <strong>[Y]</strong> except <strong>[their controls]</strong>. Plausible common causes it leaves out include <strong>[U₁, U₂]</strong>. These would probably make the estimate <strong>[too large / too small]</strong>.</p>
+<p><strong>[M]</strong> is in the control list, but it’s a channel through which X affects Y. So the estimate is the effect of X <em>not through M</em>, which is not the same as <strong>[the policy question]</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">Name specific variables, and say <strong>which way</strong> each one would push.</li>
+<li class="fragment">“There may be omitted variables” isn’t a critique. It’s true of every study.</li>
+</ul>
+</section>
+<section id="your-turn" class="slide level2">
+<h2>Your turn</h2>
+<p>For each claim: name two missing common causes, any mediators in the controls, and the direction each would push.</p>
+<ol type="1">
+<li class="fragment">Households with a toilet have healthier children, after controlling for income.</li>
+<li class="fragment">Countries with more women in parliament have lower maternal mortality, after controlling for GDP and health spending.</li>
+<li class="fragment">Districts with more microfinance lenders have more women in paid work, after controlling for population.</li>
+<li class="fragment">Households receiving remittances spend more on schooling, after controlling for household size and caste.</li>
+</ol>
+</section>
+<section id="possible-answers" class="slide level2">
+<h2>Possible answers</h2>
+<ol type="1">
+<li class="fragment"><strong>Forks</strong>: mother’s education, clean water source, urban location. Most of them raise both toilet ownership and child health, which makes toilets look <strong>more</strong> effective than they are.</li>
+<li class="fragment"><strong>Mediator</strong>: health spending. Women legislators may lower maternal mortality <em>by</em> raising it, so controlling for it hides part of the effect. <strong>Forks</strong>: democracy, gender norms, women’s education.</li>
+<li class="fragment"><strong>Forks</strong>: roads and markets. <strong>Selection</strong>: if lenders target poorer districts, the effect looks <strong>smaller</strong>.</li>
+<li class="fragment"><strong>Forks</strong>: migrant households were already better off and better connected. <strong>Mediator</strong> to watch: if they had controlled for income, they’d block the main channel.</li>
+</ol>
+<div class="fragment">
+<p>None of these needed a single number. They needed a DAG.</p>
+</div>
+</section></section>
+<section id="part-2-summary" class="title-slide slide level1 center">
+<h1>Part 2: Summary</h1>
+<ul>
+<li class="fragment">Most findings never state their causal model. <strong>Draw it for them</strong> from the control list.</li>
+<li class="fragment">For X → Y and each control, look for <strong>common causes</strong>, <strong>mediators</strong>, <strong>common effects</strong>, and <strong>reverse arrows</strong>.</li>
+<li class="fragment">Go through <strong>the usual suspects</strong>: wealth, geography, institutions, norms, time, selection, data quality.</li>
+<li class="fragment"><strong>Sign the bias</strong>: say which way each missing variable would push.</li>
+<li class="fragment">Ask whether the question needs the <strong>total</strong> or the <strong>direct</strong> effect, and whether the controls match that.</li>
+</ul>
+</section>
+
+<section>
+<section id="part-3-asking-your-own-question" class="title-slide slide level1 center">
+<h1>Part 3: Asking your own question</h1>
 <p>Start from the decision, not the data</p>
 </section>
 <section id="start-with-the-decision" class="slide level2">
@@ -642,8 +922,8 @@ schools and they improved" (before/after with no comparison group) -->
 </ul>
 <!-- TODO: simple "decision threshold" diagram: posterior vs. the cost-effectiveness line -->
 </section></section>
-<section id="part-2-summary" class="title-slide slide level1 center">
-<h1>Part 2: Summary</h1>
+<section id="part-3-summary" class="title-slide slide level1 center">
+<h1>Part 3: Summary</h1>
 <ul>
 <li class="fragment">Start from the <strong>decision</strong>. If no answer would change it, stop.</li>
 <li class="fragment">Write the <strong>estimand</strong>: population, outcome, intervention, comparison, time, summary.</li>
@@ -653,8 +933,8 @@ schools and they improved" (before/after with no comparison group) -->
 </section>
 
 <section>
-<section id="part-3-applied" class="title-slide slide level1 center">
-<h1>Part 3: Applied</h1>
+<section id="part-4-applied" class="title-slide slide level1 center">
+<h1>Part 4: Applied</h1>
 
 </section>
 <section id="round-1-critique" class="slide level2">
@@ -662,8 +942,9 @@ schools and they improved" (before/after with no comparison group) -->
 <!-- TODO: 3-4 one-page study summaries, one per group -->
 <p>In groups, take one study summary and answer the seven questions.</p>
 <ul>
-<li class="fragment">Which question was hardest to answer from what they reported?</li>
-<li class="fragment">What’s the <strong>one thing</strong> you’d need to know before acting?</li>
+<li class="fragment"><p>Draw the DAG their control list implies. Add the <strong>missing common causes</strong> and <strong>mediators</strong>, and say which way each would push the estimate.</p></li>
+<li class="fragment"><p>Which question was hardest to answer from what they reported?</p></li>
+<li class="fragment"><p>What’s the <strong>one thing</strong> you’d need to know before acting?</p></li>
 </ul>
 </section>
 <section id="round-2-design" class="slide level2">
@@ -681,6 +962,8 @@ schools and they improved" (before/after with no comparison group) -->
 <h2>Your project</h2>
 <ul>
 <li class="fragment">Rewrite your project’s question using the <strong>estimand template</strong>.</li>
+<li class="fragment">Critique your own DAG as if a stranger wrote it: which <strong>common causes</strong> of your exposure and outcome aren’t in it? Which way would each bias your estimate?</li>
+<li class="fragment">Are any of your controls <strong>mediators</strong>? Do you want the total or the direct effect?</li>
 <li class="fragment">What is your <strong>target trial</strong>? How far is World Bank 2022 data from it?</li>
 <li class="fragment">List your <strong>scope limits</strong>:
 <ul>
@@ -696,6 +979,7 @@ schools and they improved" (before/after with no comparison group) -->
 <p><strong>A one-page critique memo</strong> on a real report or finding from your own work.</p>
 <ul>
 <li class="fragment">Organized by the seven questions.</li>
+<li class="fragment">Includes the DAG their model implies, the common causes and mediators it leaves out, and the direction of each bias.</li>
 <li class="fragment">Ends with: <strong>“What I’d need to see before acting on this.”</strong></li>
 </ul>
 <!-- TODO: homework/week5.qmd with a worked example memo -->

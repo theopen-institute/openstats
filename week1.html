@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-e4f167b555b79ba4d2d81742b8dc2dd7.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4f1ced9ef2b26612c7d5dcc3fdcf68a8.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -1948,17 +1948,28 @@ less, and less, and less, and less, and less wrong.</p>
 <h1>Practical Work: Election polling</h1>
 
 </section>
-<section id="the-bayesian-workflow" class="slide level2">
+<section id="the-bayesian-workflow" class="slide level2 smaller">
 <h2>The Bayesian workflow</h2>
 <ul>
-<li class="fragment"><strong>Define the estimand</strong>: state precisely what you want to know before touching data.</li>
+<li class="fragment"><strong>Scientific model</strong>: what we believe about the world, before any statistics.
+<ol type="1">
+<li class="fragment"><strong>Ask the question</strong>: say in plain words what you want to know.</li>
 <li class="fragment"><strong>Draw the causal model (DAG)</strong>: your assumptions about what causes what, from domain knowledge.</li>
+<li class="fragment"><strong>Define the estimand</strong>: state precisely what you want to know before touching data.</li>
 <li class="fragment"><strong>Simulate the population</strong>: write a generative simulation that could produce data like yours.</li>
+</ol></li>
+<li class="fragment"><strong>Statistical model</strong>: the machinery that turns data into an estimate, tested where we already know the truth.
+<ol start="5" type="1">
 <li class="fragment"><strong>Write the formal model</strong>: derive the statistical model from the DAG, in mathematical notation.</li>
 <li class="fragment"><strong>Write the Stan code</strong>: translate the formal model into a program.</li>
 <li class="fragment"><strong>Test on simulated data</strong>: check that the model recovers known parameters, and that the priors imply plausible data.</li>
+</ol></li>
+<li class="fragment"><strong>Analysis</strong>: the real data, the estimate, and how far to trust it.
+<ol start="8" type="1">
 <li class="fragment"><strong>Fit and validate the model</strong>: run the sampler, check diagnostics (R-hat, ESS, trace plots, divergences), and run posterior predictive checks. <em>Is the model trustworthy?</em></li>
-<li class="fragment"><strong>Compute the estimand and test its robustness</strong>: poststratify to get the vote share, then run sensitivity analyses on turnout, poststratification targets, priors, and unmodeled non-response. <em>What is the result, and how much does it depend on our assumptions?</em></li>
+<li class="fragment"><strong>Compute the estimate</strong>: poststratify to get the vote share, with its uncertainty.</li>
+<li class="fragment"><strong>Test its robustness</strong>: run sensitivity analyses on turnout, poststratification targets, priors, and unmodeled non-response. <em>How much does the estimate depend on our assumptions?</em></li>
+</ol></li>
 </ul>
 </section></section>
 <section>
