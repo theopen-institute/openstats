@@ -52,6 +52,11 @@ export class LineGraphWidget {
 
     window.addEventListener("resize", this._onResize);
 
+    // Container size can change without a window resize (e.g. flex siblings
+    // filling in), so watch it directly to keep the bitmap in sync.
+    this._resizeObserver = new ResizeObserver(this._onResize);
+    this._resizeObserver.observe(container);
+
     this._resizeToContainer();
     requestAnimationFrame(this._raf);
   }
@@ -63,6 +68,7 @@ export class LineGraphWidget {
     this.canvas.removeEventListener("pointercancel", this._onPointerUp);
     this.canvas.removeEventListener("pointerleave", this._onPointerLeave);
     window.removeEventListener("resize", this._onResize);
+    this._resizeObserver.disconnect();
     this.canvas.remove();
   }
 
@@ -182,9 +188,11 @@ export class LineGraphWidget {
   }
 
   _eventToCanvas(e) {
+    // Map via the actual bitmap/display ratio rather than dpr, so this stays
+    // correct under Reveal's slide scaling or any CSS stretching.
     const rect = this.canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left) * this.dpr;
-    const y = (e.clientY - rect.top) * this.dpr;
+    const x = (e.clientX - rect.left) * (this.canvas.width / rect.width);
+    const y = (e.clientY - rect.top) * (this.canvas.height / rect.height);
     return { x, y };
   }
 

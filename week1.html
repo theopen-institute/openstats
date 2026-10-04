@@ -6,13 +6,13 @@
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <meta name="shinylive:serviceworker_dir" content=".">
-<script src="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/load-shinylive-sw.js" type="module"></script>
-<script src="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/run-python-blocks.js" type="module"></script>
-<link href="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/shinylive.css" rel="stylesheet">
+<script src="site_libs/quarto-contrib/shinylive-0.10.12/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="site_libs/quarto-contrib/shinylive-0.10.12/shinylive/run-python-blocks.js" type="module"></script>
+<link href="site_libs/quarto-contrib/shinylive-0.10.12/shinylive/shinylive.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.37">
+  <meta name="generator" content="quarto-1.10.18">
 
   <title>week1</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,10 +24,13 @@
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
     */
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -102,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-21df7c93d9a2240b9669271deb90c24e.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-e4f167b555b79ba4d2d81742b8dc2dd7.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -196,6 +199,10 @@
       margin-right: 0; 
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/jsuites@5/dist/jsuites.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsuites@5/dist/jsuites.css">
+  <script src="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@5/dist/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@5/dist/jspreadsheet.css">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -345,32 +352,12 @@ unintuitive.</li>
       }</style></aside>
 </section>
 
+<section>
 <section id="probability" class="title-slide slide level1 center">
 <h1>Probability</h1>
 <p>So what is probability? <span class="fragment">It’s just a way of talking about uncertainty.</span></p>
 <div class="fragment">
-<p>Two conventions:</p>
-</div>
-<ul>
-<li class="fragment"><em>We measure probability as a number between 0 and 1 (0% to 100%).</em></li>
-<li class="fragment"><em>We write statements about probability as P( event ) or P( event | condition ).</em></li>
-</ul>
-<div class="fragment">
-<p>In 2025, Kathmandu saw rain on 179 days:</p>
-</div>
-<ul>
-<li class="fragment">P( rain ) = 179 / 365 = 0.49 (49%)</li>
-</ul>
-<div class="fragment">
-<p>We can do better with <em>conditional probabilities</em>:</p>
-</div>
-<div class="fragment">
-<ul>
-<li>P( rain | Apr) = 13/30 (0.43)</li>
-<li>P( rain | Dec) = 0/31 (0.00)</li>
-<li>P( rain | Jul ) = 31/31 (1.00)</li>
-<li>P( rain | Feb ) = 2/28 (0.07)</li>
-</ul>
+<p>There are two conventions worth knowing.</p>
 </div>
 <aside class="notes">
 <ul>
@@ -394,9 +381,33 @@ concepts.</li>
           display:block!important;
       }</style></aside>
 </section>
-
-<section id="probability-examples" class="title-slide slide level1 center">
-<h1>Probability Examples</h1>
+<section id="probability-1" class="slide level2 no-title">
+<h2>Probability</h2>
+<p><em>First convention: we measure probability as a number between 0 and 1 (0% to 100%).</em></p>
+<div class="fragment">
+<p>In 2025, Kathmandu saw rain on 179 days:</p>
+</div>
+<ul>
+<li class="fragment">P( rain ) = 179 / 365 = 0.49 (49%)</li>
+</ul>
+</section>
+<section id="probability-2" class="slide level2 no-title">
+<h2>Probability</h2>
+<p><em>Second convention: we write statements about probability as P( event ) or P( event | condition ).</em></p>
+<div class="fragment">
+<p>We can do better with <em>conditional probabilities</em>:</p>
+</div>
+<div class="fragment">
+<ul>
+<li>P( rain | Apr) = 13/30 (0.43)</li>
+<li>P( rain | Dec) = 0/31 (0.00)</li>
+<li>P( rain | Jul ) = 31/31 (1.00)</li>
+<li>P( rain | Feb ) = 2/28 (0.07)</li>
+</ul>
+</div>
+</section>
+<section id="probability-examples" class="slide level2">
+<h2>Probability Examples</h2>
 <div class="fragment">
 <ul>
 <li>P( bachelors degree )</li>
@@ -410,8 +421,7 @@ concepts.</li>
 <li class="fragment">P( rain today | rained yesterday )</li>
 <li class="fragment">P( survival | attacked by bear )</li>
 </ul>
-</section>
-
+</section></section>
 <section>
 <section id="applied-probability" class="title-slide slide level1 center">
 <h1>Applied probability</h1>
@@ -461,7 +471,7 @@ clearance.</p>
 <li>Specificity P( test– | HIV– ): 97%</li>
 </ul>
 <div class="fragment" data-fragment-index="1">
-<p>What about P( HIV+ | test+): <span class="fragment red" data-fragment-index="2">3.2%</span></p>
+<p>What about P( HIV+ | test+)? <span class="fragment red" data-fragment-index="2">3.2%</span></p>
 </div>
 <div class="fragment" data-fragment-index="3">
 <table class="caption-top">
@@ -539,329 +549,329 @@ unintuitive.</p></li>
 </section></section>
 <section id="base-rate-paradox" class="title-slide slide level1 no-title center">
 <h1>Base Rate Paradox</h1>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>#| '!! shinylive warning !!': |</span>
-<span id="cb1-2"><a></a>#|   shinylive does not work in self-contained HTML documents.</span>
-<span id="cb1-3"><a></a>#|   Please set `embed-resources: false` in your metadata.</span>
-<span id="cb1-4"><a></a>#| standalone: true</span>
-<span id="cb1-5"><a></a># app.R</span>
-<span id="cb1-6"><a></a>library(shiny)</span>
-<span id="cb1-7"><a></a>library(bslib)</span>
-<span id="cb1-8"><a></a>library(networkD3)</span>
-<span id="cb1-9"><a></a>library(tibble)</span>
-<span id="cb1-10"><a></a>library(munsell) # https://github.com/r-wasm/webr/issues/537</span>
-<span id="cb1-11"><a></a></span>
-<span id="cb1-12"><a></a>sankeyHeight &lt;- 600</span>
-<span id="cb1-13"><a></a>sankeyWidth &lt;- 1000</span>
-<span id="cb1-14"><a></a></span>
-<span id="cb1-15"><a></a>ui &lt;- page_sidebar(</span>
-<span id="cb1-16"><a></a>  tags$style(HTML(</span>
-<span id="cb1-17"><a></a>    "</span>
-<span id="cb1-18"><a></a>      p, ul { font-size: 90%; }</span>
-<span id="cb1-19"><a></a>      #sankeyWrap svg,</span>
-<span id="cb1-20"><a></a>      #sankeyWrap svg * {</span>
-<span id="cb1-21"><a></a>        filter: none !important;</span>
-<span id="cb1-22"><a></a>        box-shadow: none !important;</span>
-<span id="cb1-23"><a></a>      }</span>
-<span id="cb1-24"><a></a>      .sankey-tooltip {</span>
-<span id="cb1-25"><a></a>        position: absolute;</span>
-<span id="cb1-26"><a></a>        pointer-events: none;</span>
-<span id="cb1-27"><a></a>        z-index: 99999;</span>
-<span id="cb1-28"><a></a>        opacity: 0;</span>
-<span id="cb1-29"><a></a>        transition: opacity 80ms linear;</span>
-<span id="cb1-30"><a></a>        padding: 8px 10px;</span>
-<span id="cb1-31"><a></a>        border-radius: 6px;</span>
-<span id="cb1-32"><a></a>        background: rgba(20, 20, 20, 0.92);</span>
-<span id="cb1-33"><a></a>        color: #fff;</span>
-<span id="cb1-34"><a></a>        font-size: 12px;</span>
-<span id="cb1-35"><a></a>        line-height: 1.25;</span>
-<span id="cb1-36"><a></a>        box-shadow: 0 8px 24px rgba(0,0,0,0.25);</span>
-<span id="cb1-37"><a></a>        max-width: 280px;</span>
-<span id="cb1-38"><a></a>      }</span>
-<span id="cb1-39"><a></a>      .sankey-tooltip .label {</span>
-<span id="cb1-40"><a></a>        font-weight: 600;</span>
-<span id="cb1-41"><a></a>        margin-bottom: 2px;</span>
-<span id="cb1-42"><a></a>      }</span>
-<span id="cb1-43"><a></a>      .sankey-tooltip .value {</span>
-<span id="cb1-44"><a></a>        opacity: 0.9;</span>
-<span id="cb1-45"><a></a>      }</span>
-<span id="cb1-46"><a></a>    "</span>
-<span id="cb1-47"><a></a>  )),</span>
-<span id="cb1-48"><a></a>  sidebar = sidebar(</span>
-<span id="cb1-49"><a></a>    open = "always",</span>
-<span id="cb1-50"><a></a>    width = 400,</span>
-<span id="cb1-51"><a></a>    tags$h2("The Base Rate Paradox"),</span>
-<span id="cb1-52"><a></a>    p(</span>
-<span id="cb1-53"><a></a>      "Statistical tests help us evaluate the accuracy of prediction models. We often use tests to identify individuals with certain conditions or characteristics prevalent in our population."</span>
-<span id="cb1-54"><a></a>    ),</span>
-<span id="cb1-55"><a></a>    tags$div(</span>
-<span id="cb1-56"><a></a>      tags$div(</span>
-<span id="cb1-57"><a></a>        "Rate of Prevalence: P( condition+ )",</span>
-<span id="cb1-58"><a></a>        style = "font-weight: bold;"</span>
-<span id="cb1-59"><a></a>      ),</span>
-<span id="cb1-60"><a></a>      tags$p(</span>
-<span id="cb1-61"><a></a>        "Probability that a randomly selected individual has the condition.",</span>
-<span id="cb1-62"><a></a>        style = "font-style: italic;"</span>
-<span id="cb1-63"><a></a>      ),</span>
-<span id="cb1-64"><a></a>      sliderInput(</span>
-<span id="cb1-65"><a></a>        inputId = "prevalence_pct",</span>
-<span id="cb1-66"><a></a>        label = NULL,</span>
-<span id="cb1-67"><a></a>        min = 0,</span>
-<span id="cb1-68"><a></a>        max = 10,</span>
-<span id="cb1-69"><a></a>        value = 0.1,</span>
-<span id="cb1-70"><a></a>        step = 0.1,</span>
-<span id="cb1-71"><a></a>        post = "%"</span>
-<span id="cb1-72"><a></a>      )</span>
-<span id="cb1-73"><a></a>    ),</span>
-<span id="cb1-74"><a></a>    tags$hr(style = "margin: 1px 0"),</span>
-<span id="cb1-75"><a></a>    tags$div(</span>
-<span id="cb1-76"><a></a>      tags$p(</span>
-<span id="cb1-77"><a></a>        "Statistical tests are always imperfect. Their accuracy is usually summarized by two conditional rates:"</span>
-<span id="cb1-78"><a></a>      ),</span>
-<span id="cb1-79"><a></a>      tags$div(</span>
-<span id="cb1-80"><a></a>        "Sensitivity: P( test+ | condition+ )",</span>
-<span id="cb1-81"><a></a>        style = "font-weight: bold;"</span>
-<span id="cb1-82"><a></a>      ),</span>
-<span id="cb1-83"><a></a>      tags$p(</span>
-<span id="cb1-84"><a></a>        "Probability of a positive test among those with the condition (true positive rate)",</span>
-<span id="cb1-85"><a></a>        style = "font-style: italic;"</span>
-<span id="cb1-86"><a></a>      ),</span>
-<span id="cb1-87"><a></a>      sliderInput(</span>
-<span id="cb1-88"><a></a>        inputId = "sensitivity_pct",</span>
-<span id="cb1-89"><a></a>        label = NULL,</span>
-<span id="cb1-90"><a></a>        min = 0,</span>
-<span id="cb1-91"><a></a>        max = 100,</span>
-<span id="cb1-92"><a></a>        value = 99,</span>
-<span id="cb1-93"><a></a>        step = 1,</span>
-<span id="cb1-94"><a></a>        post = "%"</span>
-<span id="cb1-95"><a></a>      ),</span>
-<span id="cb1-96"><a></a>      tags$div(</span>
-<span id="cb1-97"><a></a>        "Specificity: P( test– | condition– )",</span>
-<span id="cb1-98"><a></a>        style = "font-weight: bold;"</span>
-<span id="cb1-99"><a></a>      ),</span>
-<span id="cb1-100"><a></a>      tags$p(</span>
-<span id="cb1-101"><a></a>        "Probability of a negative test among those without the condition (true negative rate)",</span>
-<span id="cb1-102"><a></a>        style = "font-style: italic;"</span>
-<span id="cb1-103"><a></a>      ),</span>
-<span id="cb1-104"><a></a>      sliderInput(</span>
-<span id="cb1-105"><a></a>        inputId = "specificity_pct",</span>
-<span id="cb1-106"><a></a>        label = NULL,</span>
-<span id="cb1-107"><a></a>        min = 0,</span>
-<span id="cb1-108"><a></a>        max = 100,</span>
-<span id="cb1-109"><a></a>        value = 97,</span>
-<span id="cb1-110"><a></a>        step = 1,</span>
-<span id="cb1-111"><a></a>        post = "%"</span>
-<span id="cb1-112"><a></a>      )</span>
-<span id="cb1-113"><a></a>    )</span>
-<span id="cb1-114"><a></a>  ),</span>
-<span id="cb1-115"><a></a>  mainPanel(</span>
-<span id="cb1-116"><a></a>    width = 12,</span>
-<span id="cb1-117"><a></a>    tags$p(</span>
-<span id="cb1-118"><a></a>      "Sensitivity and specificity are important, but they can be misleading. They don't tell the whole story.",</span>
-<span id="cb1-119"><a></a>      tags$br(),</span>
-<span id="cb1-120"><a></a>      "Often, the kind of accuracy we are actually interested in understanding has the opposite conditional dependency."</span>
-<span id="cb1-121"><a></a>    ),</span>
-<span id="cb1-122"><a></a>    tags$div(</span>
-<span id="cb1-123"><a></a>      tags$div(</span>
-<span id="cb1-124"><a></a>        tags$div(</span>
-<span id="cb1-125"><a></a>          "Positive Predictive Value: P( condition+ | test+ )",</span>
-<span id="cb1-126"><a></a>          style = "font-weight: bold;"</span>
-<span id="cb1-127"><a></a>        ),</span>
-<span id="cb1-128"><a></a>        tags$p(</span>
-<span id="cb1-129"><a></a>          "Probability of a condition among those with a positive test",</span>
-<span id="cb1-130"><a></a>          style = "font-style: italic; margin-bottom: 0;"</span>
-<span id="cb1-131"><a></a>        )</span>
-<span id="cb1-132"><a></a>      ),</span>
-<span id="cb1-133"><a></a>      tags$div(</span>
-<span id="cb1-134"><a></a>        textOutput("ppv_text"),</span>
-<span id="cb1-135"><a></a>        style = "font-size: 200%; font-weight: bold;"</span>
-<span id="cb1-136"><a></a>      ),</span>
-<span id="cb1-137"><a></a>      style = "display: flex; gap: 40px; align-items: end;"</span>
-<span id="cb1-138"><a></a>    ),</span>
-<span id="cb1-139"><a></a>    tags$hr(),</span>
-<span id="cb1-140"><a></a>    sankeyNetworkOutput(</span>
-<span id="cb1-141"><a></a>      "sankey",</span>
-<span id="cb1-142"><a></a>      width = paste0(sankeyWidth, "px"),</span>
-<span id="cb1-143"><a></a>      height = paste0(sankeyHeight, "px")</span>
-<span id="cb1-144"><a></a>    )</span>
-<span id="cb1-145"><a></a>  )</span>
-<span id="cb1-146"><a></a>)</span>
-<span id="cb1-147"><a></a></span>
-<span id="cb1-148"><a></a>server &lt;- function(input, output, session) {</span>
-<span id="cb1-149"><a></a>  ppv_reactive &lt;- reactive({</span>
-<span id="cb1-150"><a></a>    prevalence &lt;- input$prevalence_pct / 100</span>
-<span id="cb1-151"><a></a>    sensitivity &lt;- input$sensitivity_pct / 100</span>
-<span id="cb1-152"><a></a>    specificity &lt;- input$specificity_pct / 100</span>
-<span id="cb1-153"><a></a></span>
-<span id="cb1-154"><a></a>    tp &lt;- prevalence * sensitivity</span>
-<span id="cb1-155"><a></a>    fp &lt;- (1 - prevalence) * (1 - specificity)</span>
-<span id="cb1-156"><a></a></span>
-<span id="cb1-157"><a></a>    if ((tp + fp) == 0) NA_real_ else tp / (tp + fp)</span>
-<span id="cb1-158"><a></a>  })</span>
-<span id="cb1-159"><a></a></span>
-<span id="cb1-160"><a></a>  nodes_reactive &lt;- reactive({</span>
-<span id="cb1-161"><a></a>    tibble(</span>
-<span id="cb1-162"><a></a>      id = 0:6,</span>
-<span id="cb1-163"><a></a>      name = c(</span>
-<span id="cb1-164"><a></a>        "Population",</span>
-<span id="cb1-165"><a></a>        "Condition Present",</span>
-<span id="cb1-166"><a></a>        "Condition Absent",</span>
-<span id="cb1-167"><a></a>        "True Positive",</span>
-<span id="cb1-168"><a></a>        "False Positive",</span>
-<span id="cb1-169"><a></a>        "True Negative",</span>
-<span id="cb1-170"><a></a>        "False Negative"</span>
-<span id="cb1-171"><a></a>      ),</span>
-<span id="cb1-172"><a></a>      group = c(</span>
-<span id="cb1-173"><a></a>        "population",</span>
-<span id="cb1-174"><a></a>        "present",</span>
-<span id="cb1-175"><a></a>        "absent",</span>
-<span id="cb1-176"><a></a>        "true",</span>
-<span id="cb1-177"><a></a>        "false",</span>
-<span id="cb1-178"><a></a>        "true",</span>
-<span id="cb1-179"><a></a>        "false"</span>
-<span id="cb1-180"><a></a>      )</span>
-<span id="cb1-181"><a></a>    ) |&gt;</span>
-<span id="cb1-182"><a></a>      as.data.frame()</span>
-<span id="cb1-183"><a></a>  })</span>
-<span id="cb1-184"><a></a></span>
-<span id="cb1-185"><a></a>  links_reactive &lt;- reactive({</span>
-<span id="cb1-186"><a></a>    population &lt;- 100000</span>
-<span id="cb1-187"><a></a>    prevalence &lt;- as.numeric(input$prevalence_pct) / 100</span>
-<span id="cb1-188"><a></a>    sensitivity &lt;- as.numeric(input$sensitivity_pct) / 100</span>
-<span id="cb1-189"><a></a>    specificity &lt;- as.numeric(input$specificity_pct) / 100</span>
-<span id="cb1-190"><a></a></span>
-<span id="cb1-191"><a></a>    links &lt;- tribble(</span>
-<span id="cb1-192"><a></a>      ~source , ~target , ~value                                            , ~title              ,</span>
-<span id="cb1-193"><a></a>            0 ,       1 , population * prevalence                           , "Condition Present" ,</span>
-<span id="cb1-194"><a></a>            0 ,       2 , population * (1 - prevalence)                     , "Condition Absent"  ,</span>
-<span id="cb1-195"><a></a>            2 ,       5 , population * (1 - prevalence) * specificity       , "True Negative"     ,</span>
-<span id="cb1-196"><a></a>            1 ,       6 , population * prevalence * (1 - sensitivity)       , "False Negative"    ,</span>
-<span id="cb1-197"><a></a>            1 ,       3 , population * prevalence * sensitivity             , "True Positive"     ,</span>
-<span id="cb1-198"><a></a>            2 ,       4 , population * (1 - prevalence) * (1 - specificity) , "False Positive"</span>
-<span id="cb1-199"><a></a>    ) |&gt;</span>
-<span id="cb1-200"><a></a>      as.data.frame()</span>
-<span id="cb1-201"><a></a></span>
-<span id="cb1-202"><a></a>    # LinkGroup: inherit the source node's group -&gt; links match/blend with node colors</span>
-<span id="cb1-203"><a></a>    node_groups &lt;- nodes_reactive()$group</span>
-<span id="cb1-204"><a></a>    links$group &lt;- node_groups[links$source + 1]</span>
-<span id="cb1-205"><a></a></span>
-<span id="cb1-206"><a></a>    links</span>
-<span id="cb1-207"><a></a>  })</span>
-<span id="cb1-208"><a></a></span>
-<span id="cb1-209"><a></a>  output$ppv_text &lt;- renderText({</span>
-<span id="cb1-210"><a></a>    ppv &lt;- ppv_reactive()</span>
-<span id="cb1-211"><a></a>    if (is.na(ppv)) "Undefined" else sprintf("%.2f%%", 100 * ppv)</span>
-<span id="cb1-212"><a></a>  })</span>
-<span id="cb1-213"><a></a></span>
-<span id="cb1-214"><a></a>  output$sankey &lt;- renderSankeyNetwork({</span>
-<span id="cb1-215"><a></a>    sankeyNetwork(</span>
-<span id="cb1-216"><a></a>      Links = links_reactive(),</span>
-<span id="cb1-217"><a></a>      Nodes = nodes_reactive(),</span>
-<span id="cb1-218"><a></a>      Source = "source",</span>
-<span id="cb1-219"><a></a>      Target = "target",</span>
-<span id="cb1-220"><a></a>      Value = "value",</span>
-<span id="cb1-221"><a></a>      NodeID = "name",</span>
-<span id="cb1-222"><a></a>      NodeGroup = "group",</span>
-<span id="cb1-223"><a></a></span>
-<span id="cb1-224"><a></a>      # ---- link colors: CRAN networkD3 supports LinkGroup (not linkColourMode) ----</span>
-<span id="cb1-225"><a></a>      LinkGroup = "group",</span>
-<span id="cb1-226"><a></a></span>
-<span id="cb1-227"><a></a>      fontSize = 14,</span>
-<span id="cb1-228"><a></a>      nodeWidth = 30,</span>
-<span id="cb1-229"><a></a>      iterations = 0,</span>
-<span id="cb1-230"><a></a>      margin = list(top = 5, right = 0, bottom = 5, left = 5),</span>
-<span id="cb1-231"><a></a>      sinksRight = TRUE,</span>
-<span id="cb1-232"><a></a></span>
-<span id="cb1-233"><a></a>      # Use semi-transparent RGBA so links blend nicely with nodes</span>
-<span id="cb1-234"><a></a>      # (Nodes remain effectively opaque because they're solid rect fills)</span>
-<span id="cb1-235"><a></a>      colourScale = JS(</span>
-<span id="cb1-236"><a></a>        'd3.scaleOrdinal()</span>
-<span id="cb1-237"><a></a>          .domain(["population", "absent", "present", "true", "false"])</span>
-<span id="cb1-238"><a></a>          .range([</span>
-<span id="cb1-239"><a></a>            "#2f6088ff",  // population</span>
-<span id="cb1-240"><a></a>            "#a5c5e2ff",  // absent</span>
-<span id="cb1-241"><a></a>            "#468ec9ff",   // present (slightly stronger)</span>
-<span id="cb1-242"><a></a>            "#3E5915",  // true</span>
-<span id="cb1-243"><a></a>            "#A60F37"   // false</span>
-<span id="cb1-244"><a></a>          ])'</span>
-<span id="cb1-245"><a></a>      ),</span>
-<span id="cb1-246"><a></a></span>
-<span id="cb1-247"><a></a>      height = sankeyHeight,</span>
-<span id="cb1-248"><a></a>      width = sankeyWidth</span>
-<span id="cb1-249"><a></a>    ) |&gt;</span>
-<span id="cb1-250"><a></a>      htmlwidgets::onRender(</span>
-<span id="cb1-251"><a></a>        "</span>
-<span id="cb1-252"><a></a>function(el) {</span>
-<span id="cb1-253"><a></a>  // remove native SVG tooltips</span>
-<span id="cb1-254"><a></a>  d3.select(el).selectAll('title').remove();</span>
-<span id="cb1-255"><a></a></span>
-<span id="cb1-256"><a></a>  var fmt = d3.format(',.0f');</span>
-<span id="cb1-257"><a></a></span>
-<span id="cb1-258"><a></a>  // tooltip div (one per widget)</span>
-<span id="cb1-259"><a></a>  var tipId = 'sankey-tooltip-' + el.id;</span>
-<span id="cb1-260"><a></a>  d3.select('body').select('#' + tipId).remove();</span>
-<span id="cb1-261"><a></a></span>
-<span id="cb1-262"><a></a>  var tip = d3.select('body')</span>
-<span id="cb1-263"><a></a>    .append('div')</span>
-<span id="cb1-264"><a></a>    .attr('id', tipId)</span>
-<span id="cb1-265"><a></a>    .attr('class', 'sankey-tooltip')</span>
-<span id="cb1-266"><a></a>    .style('position', 'absolute')</span>
-<span id="cb1-267"><a></a>    .style('pointer-events', 'none')</span>
-<span id="cb1-268"><a></a>    .style('z-index', 99999)</span>
-<span id="cb1-269"><a></a>    .style('opacity', 0)</span>
-<span id="cb1-270"><a></a>    .style('padding', '8px 10px')</span>
-<span id="cb1-271"><a></a>    .style('border-radius', '6px')</span>
-<span id="cb1-272"><a></a>    .style('background', 'rgba(20,20,20,0.92)')</span>
-<span id="cb1-273"><a></a>    .style('color', '#fff')</span>
-<span id="cb1-274"><a></a>    .style('font-size', '12px')</span>
-<span id="cb1-275"><a></a>    .style('line-height', '1.25')</span>
-<span id="cb1-276"><a></a>    .style('box-shadow', '0 8px 24px rgba(0,0,0,0.25)');</span>
-<span id="cb1-277"><a></a></span>
-<span id="cb1-278"><a></a>  function moveTip() {</span>
-<span id="cb1-279"><a></a>    var e = d3.event;</span>
-<span id="cb1-280"><a></a>    tip.style('left', (e.pageX + 12) + 'px')</span>
-<span id="cb1-281"><a></a>       .style('top',  (e.pageY + 12) + 'px');</span>
-<span id="cb1-282"><a></a>  }</span>
-<span id="cb1-283"><a></a></span>
-<span id="cb1-284"><a></a>  function showTip(label, value) {</span>
-<span id="cb1-285"><a></a>    tip.html(</span>
-<span id="cb1-286"><a></a>      '&lt;div style=\"font-weight:600;\"&gt;' + label + '&lt;/div&gt;' +</span>
-<span id="cb1-287"><a></a>      '&lt;div&gt;' + fmt(value) + '&lt;/div&gt;'</span>
-<span id="cb1-288"><a></a>    ).style('opacity', 1);</span>
-<span id="cb1-289"><a></a>    moveTip();</span>
-<span id="cb1-290"><a></a>  }</span>
-<span id="cb1-291"><a></a></span>
-<span id="cb1-292"><a></a>  function hideTip() {</span>
-<span id="cb1-293"><a></a>    tip.style('opacity', 0);</span>
-<span id="cb1-294"><a></a>  }</span>
-<span id="cb1-295"><a></a></span>
-<span id="cb1-296"><a></a>  // LINKS: Source -&gt; Target + value</span>
-<span id="cb1-297"><a></a>  d3.select(el).selectAll('path.link')</span>
-<span id="cb1-298"><a></a>    .style('stroke-opacity', 0.55)  // optional: strengthen link visibility</span>
-<span id="cb1-299"><a></a>    .on('mouseover.tooltip', function(d) {</span>
-<span id="cb1-300"><a></a>      showTip(d.source.name + ' \\u2192 ' + d.target.name, d.value);</span>
-<span id="cb1-301"><a></a>    })</span>
-<span id="cb1-302"><a></a>    .on('mousemove.tooltip', moveTip)</span>
-<span id="cb1-303"><a></a>    .on('mouseout.tooltip', hideTip);</span>
-<span id="cb1-304"><a></a></span>
-<span id="cb1-305"><a></a>  // NODES: Name + value</span>
-<span id="cb1-306"><a></a>  d3.select(el).selectAll('.node rect')</span>
-<span id="cb1-307"><a></a>    .on('mouseover.tooltip', function(d) {</span>
-<span id="cb1-308"><a></a>      showTip(d.name, d.value);</span>
-<span id="cb1-309"><a></a>    })</span>
-<span id="cb1-310"><a></a>    .on('mousemove.tooltip', moveTip)</span>
-<span id="cb1-311"><a></a>    .on('mouseout.tooltip', hideTip);</span>
-<span id="cb1-312"><a></a>}</span>
-<span id="cb1-313"><a></a>"</span>
-<span id="cb1-314"><a></a>      )</span>
-<span id="cb1-315"><a></a>  })</span>
-<span id="cb1-316"><a></a>}</span>
-<span id="cb1-317"><a></a></span>
-<span id="cb1-318"><a></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a aria-label="1"></a>#| '!! shinylive warning !!': |</span>
+<span id="cb1-2"><a aria-label="2"></a>#|   shinylive does not work in self-contained HTML documents.</span>
+<span id="cb1-3"><a aria-label="3"></a>#|   Please set `embed-resources: false` in your metadata.</span>
+<span id="cb1-4"><a aria-label="4"></a>#| standalone: true</span>
+<span id="cb1-5"><a aria-label="5"></a># app.R</span>
+<span id="cb1-6"><a aria-label="6"></a>library(shiny)</span>
+<span id="cb1-7"><a aria-label="7"></a>library(bslib)</span>
+<span id="cb1-8"><a aria-label="8"></a>library(networkD3)</span>
+<span id="cb1-9"><a aria-label="9"></a>library(tibble)</span>
+<span id="cb1-10"><a aria-label="10"></a>library(munsell) # https://github.com/r-wasm/webr/issues/537</span>
+<span id="cb1-11"><a aria-label="11"></a></span>
+<span id="cb1-12"><a aria-label="12"></a>sankeyHeight &lt;- 600</span>
+<span id="cb1-13"><a aria-label="13"></a>sankeyWidth &lt;- 1000</span>
+<span id="cb1-14"><a aria-label="14"></a></span>
+<span id="cb1-15"><a aria-label="15"></a>ui &lt;- page_sidebar(</span>
+<span id="cb1-16"><a aria-label="16"></a>  tags$style(HTML(</span>
+<span id="cb1-17"><a aria-label="17"></a>    "</span>
+<span id="cb1-18"><a aria-label="18"></a>      p, ul { font-size: 90%; }</span>
+<span id="cb1-19"><a aria-label="19"></a>      #sankeyWrap svg,</span>
+<span id="cb1-20"><a aria-label="20"></a>      #sankeyWrap svg * {</span>
+<span id="cb1-21"><a aria-label="21"></a>        filter: none !important;</span>
+<span id="cb1-22"><a aria-label="22"></a>        box-shadow: none !important;</span>
+<span id="cb1-23"><a aria-label="23"></a>      }</span>
+<span id="cb1-24"><a aria-label="24"></a>      .sankey-tooltip {</span>
+<span id="cb1-25"><a aria-label="25"></a>        position: absolute;</span>
+<span id="cb1-26"><a aria-label="26"></a>        pointer-events: none;</span>
+<span id="cb1-27"><a aria-label="27"></a>        z-index: 99999;</span>
+<span id="cb1-28"><a aria-label="28"></a>        opacity: 0;</span>
+<span id="cb1-29"><a aria-label="29"></a>        transition: opacity 80ms linear;</span>
+<span id="cb1-30"><a aria-label="30"></a>        padding: 8px 10px;</span>
+<span id="cb1-31"><a aria-label="31"></a>        border-radius: 6px;</span>
+<span id="cb1-32"><a aria-label="32"></a>        background: rgba(20, 20, 20, 0.92);</span>
+<span id="cb1-33"><a aria-label="33"></a>        color: #fff;</span>
+<span id="cb1-34"><a aria-label="34"></a>        font-size: 12px;</span>
+<span id="cb1-35"><a aria-label="35"></a>        line-height: 1.25;</span>
+<span id="cb1-36"><a aria-label="36"></a>        box-shadow: 0 8px 24px rgba(0,0,0,0.25);</span>
+<span id="cb1-37"><a aria-label="37"></a>        max-width: 280px;</span>
+<span id="cb1-38"><a aria-label="38"></a>      }</span>
+<span id="cb1-39"><a aria-label="39"></a>      .sankey-tooltip .label {</span>
+<span id="cb1-40"><a aria-label="40"></a>        font-weight: 600;</span>
+<span id="cb1-41"><a aria-label="41"></a>        margin-bottom: 2px;</span>
+<span id="cb1-42"><a aria-label="42"></a>      }</span>
+<span id="cb1-43"><a aria-label="43"></a>      .sankey-tooltip .value {</span>
+<span id="cb1-44"><a aria-label="44"></a>        opacity: 0.9;</span>
+<span id="cb1-45"><a aria-label="45"></a>      }</span>
+<span id="cb1-46"><a aria-label="46"></a>    "</span>
+<span id="cb1-47"><a aria-label="47"></a>  )),</span>
+<span id="cb1-48"><a aria-label="48"></a>  sidebar = sidebar(</span>
+<span id="cb1-49"><a aria-label="49"></a>    open = "always",</span>
+<span id="cb1-50"><a aria-label="50"></a>    width = 400,</span>
+<span id="cb1-51"><a aria-label="51"></a>    tags$h2("The Base Rate Paradox"),</span>
+<span id="cb1-52"><a aria-label="52"></a>    p(</span>
+<span id="cb1-53"><a aria-label="53"></a>      "Statistical tests help us evaluate the accuracy of prediction models. We often use tests to identify individuals with certain conditions or characteristics prevalent in our population."</span>
+<span id="cb1-54"><a aria-label="54"></a>    ),</span>
+<span id="cb1-55"><a aria-label="55"></a>    tags$div(</span>
+<span id="cb1-56"><a aria-label="56"></a>      tags$div(</span>
+<span id="cb1-57"><a aria-label="57"></a>        "Rate of Prevalence: P( condition+ )",</span>
+<span id="cb1-58"><a aria-label="58"></a>        style = "font-weight: bold;"</span>
+<span id="cb1-59"><a aria-label="59"></a>      ),</span>
+<span id="cb1-60"><a aria-label="60"></a>      tags$p(</span>
+<span id="cb1-61"><a aria-label="61"></a>        "Probability that a randomly selected individual has the condition.",</span>
+<span id="cb1-62"><a aria-label="62"></a>        style = "font-style: italic;"</span>
+<span id="cb1-63"><a aria-label="63"></a>      ),</span>
+<span id="cb1-64"><a aria-label="64"></a>      sliderInput(</span>
+<span id="cb1-65"><a aria-label="65"></a>        inputId = "prevalence_pct",</span>
+<span id="cb1-66"><a aria-label="66"></a>        label = NULL,</span>
+<span id="cb1-67"><a aria-label="67"></a>        min = 0,</span>
+<span id="cb1-68"><a aria-label="68"></a>        max = 10,</span>
+<span id="cb1-69"><a aria-label="69"></a>        value = 0.1,</span>
+<span id="cb1-70"><a aria-label="70"></a>        step = 0.1,</span>
+<span id="cb1-71"><a aria-label="71"></a>        post = "%"</span>
+<span id="cb1-72"><a aria-label="72"></a>      )</span>
+<span id="cb1-73"><a aria-label="73"></a>    ),</span>
+<span id="cb1-74"><a aria-label="74"></a>    tags$hr(style = "margin: 1px 0"),</span>
+<span id="cb1-75"><a aria-label="75"></a>    tags$div(</span>
+<span id="cb1-76"><a aria-label="76"></a>      tags$p(</span>
+<span id="cb1-77"><a aria-label="77"></a>        "Statistical tests are always imperfect. Their accuracy is usually summarized by two conditional rates:"</span>
+<span id="cb1-78"><a aria-label="78"></a>      ),</span>
+<span id="cb1-79"><a aria-label="79"></a>      tags$div(</span>
+<span id="cb1-80"><a aria-label="80"></a>        "Sensitivity: P( test+ | condition+ )",</span>
+<span id="cb1-81"><a aria-label="81"></a>        style = "font-weight: bold;"</span>
+<span id="cb1-82"><a aria-label="82"></a>      ),</span>
+<span id="cb1-83"><a aria-label="83"></a>      tags$p(</span>
+<span id="cb1-84"><a aria-label="84"></a>        "Probability of a positive test among those with the condition (true positive rate)",</span>
+<span id="cb1-85"><a aria-label="85"></a>        style = "font-style: italic;"</span>
+<span id="cb1-86"><a aria-label="86"></a>      ),</span>
+<span id="cb1-87"><a aria-label="87"></a>      sliderInput(</span>
+<span id="cb1-88"><a aria-label="88"></a>        inputId = "sensitivity_pct",</span>
+<span id="cb1-89"><a aria-label="89"></a>        label = NULL,</span>
+<span id="cb1-90"><a aria-label="90"></a>        min = 0,</span>
+<span id="cb1-91"><a aria-label="91"></a>        max = 100,</span>
+<span id="cb1-92"><a aria-label="92"></a>        value = 99,</span>
+<span id="cb1-93"><a aria-label="93"></a>        step = 1,</span>
+<span id="cb1-94"><a aria-label="94"></a>        post = "%"</span>
+<span id="cb1-95"><a aria-label="95"></a>      ),</span>
+<span id="cb1-96"><a aria-label="96"></a>      tags$div(</span>
+<span id="cb1-97"><a aria-label="97"></a>        "Specificity: P( test– | condition– )",</span>
+<span id="cb1-98"><a aria-label="98"></a>        style = "font-weight: bold;"</span>
+<span id="cb1-99"><a aria-label="99"></a>      ),</span>
+<span id="cb1-100"><a aria-label="100"></a>      tags$p(</span>
+<span id="cb1-101"><a aria-label="101"></a>        "Probability of a negative test among those without the condition (true negative rate)",</span>
+<span id="cb1-102"><a aria-label="102"></a>        style = "font-style: italic;"</span>
+<span id="cb1-103"><a aria-label="103"></a>      ),</span>
+<span id="cb1-104"><a aria-label="104"></a>      sliderInput(</span>
+<span id="cb1-105"><a aria-label="105"></a>        inputId = "specificity_pct",</span>
+<span id="cb1-106"><a aria-label="106"></a>        label = NULL,</span>
+<span id="cb1-107"><a aria-label="107"></a>        min = 0,</span>
+<span id="cb1-108"><a aria-label="108"></a>        max = 100,</span>
+<span id="cb1-109"><a aria-label="109"></a>        value = 97,</span>
+<span id="cb1-110"><a aria-label="110"></a>        step = 1,</span>
+<span id="cb1-111"><a aria-label="111"></a>        post = "%"</span>
+<span id="cb1-112"><a aria-label="112"></a>      )</span>
+<span id="cb1-113"><a aria-label="113"></a>    )</span>
+<span id="cb1-114"><a aria-label="114"></a>  ),</span>
+<span id="cb1-115"><a aria-label="115"></a>  mainPanel(</span>
+<span id="cb1-116"><a aria-label="116"></a>    width = 12,</span>
+<span id="cb1-117"><a aria-label="117"></a>    tags$p(</span>
+<span id="cb1-118"><a aria-label="118"></a>      "Sensitivity and specificity are important, but they can be misleading. They don't tell the whole story.",</span>
+<span id="cb1-119"><a aria-label="119"></a>      tags$br(),</span>
+<span id="cb1-120"><a aria-label="120"></a>      "Often, the kind of accuracy we are actually interested in understanding has the opposite conditional dependency."</span>
+<span id="cb1-121"><a aria-label="121"></a>    ),</span>
+<span id="cb1-122"><a aria-label="122"></a>    tags$div(</span>
+<span id="cb1-123"><a aria-label="123"></a>      tags$div(</span>
+<span id="cb1-124"><a aria-label="124"></a>        tags$div(</span>
+<span id="cb1-125"><a aria-label="125"></a>          "Positive Predictive Value: P( condition+ | test+ )",</span>
+<span id="cb1-126"><a aria-label="126"></a>          style = "font-weight: bold;"</span>
+<span id="cb1-127"><a aria-label="127"></a>        ),</span>
+<span id="cb1-128"><a aria-label="128"></a>        tags$p(</span>
+<span id="cb1-129"><a aria-label="129"></a>          "Probability of a condition among those with a positive test",</span>
+<span id="cb1-130"><a aria-label="130"></a>          style = "font-style: italic; margin-bottom: 0;"</span>
+<span id="cb1-131"><a aria-label="131"></a>        )</span>
+<span id="cb1-132"><a aria-label="132"></a>      ),</span>
+<span id="cb1-133"><a aria-label="133"></a>      tags$div(</span>
+<span id="cb1-134"><a aria-label="134"></a>        textOutput("ppv_text"),</span>
+<span id="cb1-135"><a aria-label="135"></a>        style = "font-size: 200%; font-weight: bold;"</span>
+<span id="cb1-136"><a aria-label="136"></a>      ),</span>
+<span id="cb1-137"><a aria-label="137"></a>      style = "display: flex; gap: 40px; align-items: end;"</span>
+<span id="cb1-138"><a aria-label="138"></a>    ),</span>
+<span id="cb1-139"><a aria-label="139"></a>    tags$hr(),</span>
+<span id="cb1-140"><a aria-label="140"></a>    sankeyNetworkOutput(</span>
+<span id="cb1-141"><a aria-label="141"></a>      "sankey",</span>
+<span id="cb1-142"><a aria-label="142"></a>      width = paste0(sankeyWidth, "px"),</span>
+<span id="cb1-143"><a aria-label="143"></a>      height = paste0(sankeyHeight, "px")</span>
+<span id="cb1-144"><a aria-label="144"></a>    )</span>
+<span id="cb1-145"><a aria-label="145"></a>  )</span>
+<span id="cb1-146"><a aria-label="146"></a>)</span>
+<span id="cb1-147"><a aria-label="147"></a></span>
+<span id="cb1-148"><a aria-label="148"></a>server &lt;- function(input, output, session) {</span>
+<span id="cb1-149"><a aria-label="149"></a>  ppv_reactive &lt;- reactive({</span>
+<span id="cb1-150"><a aria-label="150"></a>    prevalence &lt;- input$prevalence_pct / 100</span>
+<span id="cb1-151"><a aria-label="151"></a>    sensitivity &lt;- input$sensitivity_pct / 100</span>
+<span id="cb1-152"><a aria-label="152"></a>    specificity &lt;- input$specificity_pct / 100</span>
+<span id="cb1-153"><a aria-label="153"></a></span>
+<span id="cb1-154"><a aria-label="154"></a>    tp &lt;- prevalence * sensitivity</span>
+<span id="cb1-155"><a aria-label="155"></a>    fp &lt;- (1 - prevalence) * (1 - specificity)</span>
+<span id="cb1-156"><a aria-label="156"></a></span>
+<span id="cb1-157"><a aria-label="157"></a>    if ((tp + fp) == 0) NA_real_ else tp / (tp + fp)</span>
+<span id="cb1-158"><a aria-label="158"></a>  })</span>
+<span id="cb1-159"><a aria-label="159"></a></span>
+<span id="cb1-160"><a aria-label="160"></a>  nodes_reactive &lt;- reactive({</span>
+<span id="cb1-161"><a aria-label="161"></a>    tibble(</span>
+<span id="cb1-162"><a aria-label="162"></a>      id = 0:6,</span>
+<span id="cb1-163"><a aria-label="163"></a>      name = c(</span>
+<span id="cb1-164"><a aria-label="164"></a>        "Population",</span>
+<span id="cb1-165"><a aria-label="165"></a>        "Condition Present",</span>
+<span id="cb1-166"><a aria-label="166"></a>        "Condition Absent",</span>
+<span id="cb1-167"><a aria-label="167"></a>        "True Positive",</span>
+<span id="cb1-168"><a aria-label="168"></a>        "False Positive",</span>
+<span id="cb1-169"><a aria-label="169"></a>        "True Negative",</span>
+<span id="cb1-170"><a aria-label="170"></a>        "False Negative"</span>
+<span id="cb1-171"><a aria-label="171"></a>      ),</span>
+<span id="cb1-172"><a aria-label="172"></a>      group = c(</span>
+<span id="cb1-173"><a aria-label="173"></a>        "population",</span>
+<span id="cb1-174"><a aria-label="174"></a>        "present",</span>
+<span id="cb1-175"><a aria-label="175"></a>        "absent",</span>
+<span id="cb1-176"><a aria-label="176"></a>        "true",</span>
+<span id="cb1-177"><a aria-label="177"></a>        "false",</span>
+<span id="cb1-178"><a aria-label="178"></a>        "true",</span>
+<span id="cb1-179"><a aria-label="179"></a>        "false"</span>
+<span id="cb1-180"><a aria-label="180"></a>      )</span>
+<span id="cb1-181"><a aria-label="181"></a>    ) |&gt;</span>
+<span id="cb1-182"><a aria-label="182"></a>      as.data.frame()</span>
+<span id="cb1-183"><a aria-label="183"></a>  })</span>
+<span id="cb1-184"><a aria-label="184"></a></span>
+<span id="cb1-185"><a aria-label="185"></a>  links_reactive &lt;- reactive({</span>
+<span id="cb1-186"><a aria-label="186"></a>    population &lt;- 100000</span>
+<span id="cb1-187"><a aria-label="187"></a>    prevalence &lt;- as.numeric(input$prevalence_pct) / 100</span>
+<span id="cb1-188"><a aria-label="188"></a>    sensitivity &lt;- as.numeric(input$sensitivity_pct) / 100</span>
+<span id="cb1-189"><a aria-label="189"></a>    specificity &lt;- as.numeric(input$specificity_pct) / 100</span>
+<span id="cb1-190"><a aria-label="190"></a></span>
+<span id="cb1-191"><a aria-label="191"></a>    links &lt;- tribble(</span>
+<span id="cb1-192"><a aria-label="192"></a>      ~source , ~target , ~value                                            , ~title              ,</span>
+<span id="cb1-193"><a aria-label="193"></a>            0 ,       1 , population * prevalence                           , "Condition Present" ,</span>
+<span id="cb1-194"><a aria-label="194"></a>            0 ,       2 , population * (1 - prevalence)                     , "Condition Absent"  ,</span>
+<span id="cb1-195"><a aria-label="195"></a>            2 ,       5 , population * (1 - prevalence) * specificity       , "True Negative"     ,</span>
+<span id="cb1-196"><a aria-label="196"></a>            1 ,       6 , population * prevalence * (1 - sensitivity)       , "False Negative"    ,</span>
+<span id="cb1-197"><a aria-label="197"></a>            1 ,       3 , population * prevalence * sensitivity             , "True Positive"     ,</span>
+<span id="cb1-198"><a aria-label="198"></a>            2 ,       4 , population * (1 - prevalence) * (1 - specificity) , "False Positive"</span>
+<span id="cb1-199"><a aria-label="199"></a>    ) |&gt;</span>
+<span id="cb1-200"><a aria-label="200"></a>      as.data.frame()</span>
+<span id="cb1-201"><a aria-label="201"></a></span>
+<span id="cb1-202"><a aria-label="202"></a>    # LinkGroup: inherit the source node's group -&gt; links match/blend with node colors</span>
+<span id="cb1-203"><a aria-label="203"></a>    node_groups &lt;- nodes_reactive()$group</span>
+<span id="cb1-204"><a aria-label="204"></a>    links$group &lt;- node_groups[links$source + 1]</span>
+<span id="cb1-205"><a aria-label="205"></a></span>
+<span id="cb1-206"><a aria-label="206"></a>    links</span>
+<span id="cb1-207"><a aria-label="207"></a>  })</span>
+<span id="cb1-208"><a aria-label="208"></a></span>
+<span id="cb1-209"><a aria-label="209"></a>  output$ppv_text &lt;- renderText({</span>
+<span id="cb1-210"><a aria-label="210"></a>    ppv &lt;- ppv_reactive()</span>
+<span id="cb1-211"><a aria-label="211"></a>    if (is.na(ppv)) "Undefined" else sprintf("%.2f%%", 100 * ppv)</span>
+<span id="cb1-212"><a aria-label="212"></a>  })</span>
+<span id="cb1-213"><a aria-label="213"></a></span>
+<span id="cb1-214"><a aria-label="214"></a>  output$sankey &lt;- renderSankeyNetwork({</span>
+<span id="cb1-215"><a aria-label="215"></a>    sankeyNetwork(</span>
+<span id="cb1-216"><a aria-label="216"></a>      Links = links_reactive(),</span>
+<span id="cb1-217"><a aria-label="217"></a>      Nodes = nodes_reactive(),</span>
+<span id="cb1-218"><a aria-label="218"></a>      Source = "source",</span>
+<span id="cb1-219"><a aria-label="219"></a>      Target = "target",</span>
+<span id="cb1-220"><a aria-label="220"></a>      Value = "value",</span>
+<span id="cb1-221"><a aria-label="221"></a>      NodeID = "name",</span>
+<span id="cb1-222"><a aria-label="222"></a>      NodeGroup = "group",</span>
+<span id="cb1-223"><a aria-label="223"></a></span>
+<span id="cb1-224"><a aria-label="224"></a>      # ---- link colors: CRAN networkD3 supports LinkGroup (not linkColourMode) ----</span>
+<span id="cb1-225"><a aria-label="225"></a>      LinkGroup = "group",</span>
+<span id="cb1-226"><a aria-label="226"></a></span>
+<span id="cb1-227"><a aria-label="227"></a>      fontSize = 14,</span>
+<span id="cb1-228"><a aria-label="228"></a>      nodeWidth = 30,</span>
+<span id="cb1-229"><a aria-label="229"></a>      iterations = 0,</span>
+<span id="cb1-230"><a aria-label="230"></a>      margin = list(top = 5, right = 0, bottom = 5, left = 5),</span>
+<span id="cb1-231"><a aria-label="231"></a>      sinksRight = TRUE,</span>
+<span id="cb1-232"><a aria-label="232"></a></span>
+<span id="cb1-233"><a aria-label="233"></a>      # Use semi-transparent RGBA so links blend nicely with nodes</span>
+<span id="cb1-234"><a aria-label="234"></a>      # (Nodes remain effectively opaque because they're solid rect fills)</span>
+<span id="cb1-235"><a aria-label="235"></a>      colourScale = JS(</span>
+<span id="cb1-236"><a aria-label="236"></a>        'd3.scaleOrdinal()</span>
+<span id="cb1-237"><a aria-label="237"></a>          .domain(["population", "absent", "present", "true", "false"])</span>
+<span id="cb1-238"><a aria-label="238"></a>          .range([</span>
+<span id="cb1-239"><a aria-label="239"></a>            "#2f6088ff",  // population</span>
+<span id="cb1-240"><a aria-label="240"></a>            "#a5c5e2ff",  // absent</span>
+<span id="cb1-241"><a aria-label="241"></a>            "#468ec9ff",   // present (slightly stronger)</span>
+<span id="cb1-242"><a aria-label="242"></a>            "#3E5915",  // true</span>
+<span id="cb1-243"><a aria-label="243"></a>            "#A60F37"   // false</span>
+<span id="cb1-244"><a aria-label="244"></a>          ])'</span>
+<span id="cb1-245"><a aria-label="245"></a>      ),</span>
+<span id="cb1-246"><a aria-label="246"></a></span>
+<span id="cb1-247"><a aria-label="247"></a>      height = sankeyHeight,</span>
+<span id="cb1-248"><a aria-label="248"></a>      width = sankeyWidth</span>
+<span id="cb1-249"><a aria-label="249"></a>    ) |&gt;</span>
+<span id="cb1-250"><a aria-label="250"></a>      htmlwidgets::onRender(</span>
+<span id="cb1-251"><a aria-label="251"></a>        "</span>
+<span id="cb1-252"><a aria-label="252"></a>function(el) {</span>
+<span id="cb1-253"><a aria-label="253"></a>  // remove native SVG tooltips</span>
+<span id="cb1-254"><a aria-label="254"></a>  d3.select(el).selectAll('title').remove();</span>
+<span id="cb1-255"><a aria-label="255"></a></span>
+<span id="cb1-256"><a aria-label="256"></a>  var fmt = d3.format(',.0f');</span>
+<span id="cb1-257"><a aria-label="257"></a></span>
+<span id="cb1-258"><a aria-label="258"></a>  // tooltip div (one per widget)</span>
+<span id="cb1-259"><a aria-label="259"></a>  var tipId = 'sankey-tooltip-' + el.id;</span>
+<span id="cb1-260"><a aria-label="260"></a>  d3.select('body').select('#' + tipId).remove();</span>
+<span id="cb1-261"><a aria-label="261"></a></span>
+<span id="cb1-262"><a aria-label="262"></a>  var tip = d3.select('body')</span>
+<span id="cb1-263"><a aria-label="263"></a>    .append('div')</span>
+<span id="cb1-264"><a aria-label="264"></a>    .attr('id', tipId)</span>
+<span id="cb1-265"><a aria-label="265"></a>    .attr('class', 'sankey-tooltip')</span>
+<span id="cb1-266"><a aria-label="266"></a>    .style('position', 'absolute')</span>
+<span id="cb1-267"><a aria-label="267"></a>    .style('pointer-events', 'none')</span>
+<span id="cb1-268"><a aria-label="268"></a>    .style('z-index', 99999)</span>
+<span id="cb1-269"><a aria-label="269"></a>    .style('opacity', 0)</span>
+<span id="cb1-270"><a aria-label="270"></a>    .style('padding', '8px 10px')</span>
+<span id="cb1-271"><a aria-label="271"></a>    .style('border-radius', '6px')</span>
+<span id="cb1-272"><a aria-label="272"></a>    .style('background', 'rgba(20,20,20,0.92)')</span>
+<span id="cb1-273"><a aria-label="273"></a>    .style('color', '#fff')</span>
+<span id="cb1-274"><a aria-label="274"></a>    .style('font-size', '12px')</span>
+<span id="cb1-275"><a aria-label="275"></a>    .style('line-height', '1.25')</span>
+<span id="cb1-276"><a aria-label="276"></a>    .style('box-shadow', '0 8px 24px rgba(0,0,0,0.25)');</span>
+<span id="cb1-277"><a aria-label="277"></a></span>
+<span id="cb1-278"><a aria-label="278"></a>  function moveTip() {</span>
+<span id="cb1-279"><a aria-label="279"></a>    var e = d3.event;</span>
+<span id="cb1-280"><a aria-label="280"></a>    tip.style('left', (e.pageX + 12) + 'px')</span>
+<span id="cb1-281"><a aria-label="281"></a>       .style('top',  (e.pageY + 12) + 'px');</span>
+<span id="cb1-282"><a aria-label="282"></a>  }</span>
+<span id="cb1-283"><a aria-label="283"></a></span>
+<span id="cb1-284"><a aria-label="284"></a>  function showTip(label, value) {</span>
+<span id="cb1-285"><a aria-label="285"></a>    tip.html(</span>
+<span id="cb1-286"><a aria-label="286"></a>      '&lt;div style=\"font-weight:600;\"&gt;' + label + '&lt;/div&gt;' +</span>
+<span id="cb1-287"><a aria-label="287"></a>      '&lt;div&gt;' + fmt(value) + '&lt;/div&gt;'</span>
+<span id="cb1-288"><a aria-label="288"></a>    ).style('opacity', 1);</span>
+<span id="cb1-289"><a aria-label="289"></a>    moveTip();</span>
+<span id="cb1-290"><a aria-label="290"></a>  }</span>
+<span id="cb1-291"><a aria-label="291"></a></span>
+<span id="cb1-292"><a aria-label="292"></a>  function hideTip() {</span>
+<span id="cb1-293"><a aria-label="293"></a>    tip.style('opacity', 0);</span>
+<span id="cb1-294"><a aria-label="294"></a>  }</span>
+<span id="cb1-295"><a aria-label="295"></a></span>
+<span id="cb1-296"><a aria-label="296"></a>  // LINKS: Source -&gt; Target + value</span>
+<span id="cb1-297"><a aria-label="297"></a>  d3.select(el).selectAll('path.link')</span>
+<span id="cb1-298"><a aria-label="298"></a>    .style('stroke-opacity', 0.55)  // optional: strengthen link visibility</span>
+<span id="cb1-299"><a aria-label="299"></a>    .on('mouseover.tooltip', function(d) {</span>
+<span id="cb1-300"><a aria-label="300"></a>      showTip(d.source.name + ' \\u2192 ' + d.target.name, d.value);</span>
+<span id="cb1-301"><a aria-label="301"></a>    })</span>
+<span id="cb1-302"><a aria-label="302"></a>    .on('mousemove.tooltip', moveTip)</span>
+<span id="cb1-303"><a aria-label="303"></a>    .on('mouseout.tooltip', hideTip);</span>
+<span id="cb1-304"><a aria-label="304"></a></span>
+<span id="cb1-305"><a aria-label="305"></a>  // NODES: Name + value</span>
+<span id="cb1-306"><a aria-label="306"></a>  d3.select(el).selectAll('.node rect')</span>
+<span id="cb1-307"><a aria-label="307"></a>    .on('mouseover.tooltip', function(d) {</span>
+<span id="cb1-308"><a aria-label="308"></a>      showTip(d.name, d.value);</span>
+<span id="cb1-309"><a aria-label="309"></a>    })</span>
+<span id="cb1-310"><a aria-label="310"></a>    .on('mousemove.tooltip', moveTip)</span>
+<span id="cb1-311"><a aria-label="311"></a>    .on('mouseout.tooltip', hideTip);</span>
+<span id="cb1-312"><a aria-label="312"></a>}</span>
+<span id="cb1-313"><a aria-label="313"></a>"</span>
+<span id="cb1-314"><a aria-label="314"></a>      )</span>
+<span id="cb1-315"><a aria-label="315"></a>  })</span>
+<span id="cb1-316"><a aria-label="316"></a>}</span>
+<span id="cb1-317"><a aria-label="317"></a></span>
+<span id="cb1-318"><a aria-label="318"></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 
 <section id="direction-of-conditions" class="title-slide slide level1 center">
 <h1>Direction of conditions</h1>
-<p><em>Paradox: P(A|B) is not the same as P(B|A)</em></p>
+<p><em>P(A|B) is not the same as P(B|A)</em></p>
 <div style="margin: 120px">
 <table class="caption-top">
 <thead>
@@ -909,7 +919,7 @@ unintuitive.</p></li>
 </div>
 <ul>
 <li class="fragment red" data-fragment-index="2">
-“assuming the…hypothesis is true”
+“assuming the null hypothesis is true”
 </li>
 <li class="fragment blue" data-fragment-index="3">
 “the probability of…data…”
@@ -922,9 +932,9 @@ unintuitive.</p></li>
 </ul>
 </div>
 <div class="fragment">
-<p>What we usually actually want:</p>
+<p>Not the same as (what we usually actually want):</p>
 <ul>
-<li>P( hypothesis | data )</li>
+<li>P( <span class="red">hypothesis</span> | <span class="blue">data</span> )</li>
 </ul>
 </div>
 <aside class="notes">
@@ -979,16 +989,115 @@ making a serious mistake.</p>
       }</style></aside>
 </section>
 
+<section>
 <section id="so-why-is-most-published-research-wrong" class="title-slide slide level1 center">
 <h1>So why is most published research wrong?</h1>
-<!-- TODO: add more explanation. It's a base rate problem. Given that true, interesting hypotheses are rare, we should expect more false positives than true positives. -->
+<div class="fragment">
+<p>It’s the same <strong>base rate problem</strong> as the HIV test:.</p>
+</div>
+<div class="fragment">
+<ul>
+<li>A positive test → a <span class="red">significant result</span> (p &lt; 0.05)</li>
+<li>Having the disease → the <span class="blue">hypothesis is actually true</span></li>
+<li>Interesting hypotheses are <strong>rare</strong>, the same way HIV is rare.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>So most “significant” findings can be false positives, exactly as most positive HIV tests were.</p>
+</div>
+<aside class="notes">
+<ul>
+<li>Now we can close the loop on Ioannidis. His argument is the HIV
+example in disguise.</li>
+<li>Swap the labels: “has the disease” becomes “the hypothesis is
+actually true,” and “tests positive” becomes “gets a significant result
+(p &lt; 0.05).”</li>
+<li>The base rate matters just as much here. Genuinely novel,
+interesting hypotheses are rare — most of the things researchers test
+are not true. That’s the “disease is rare” part.</li>
+<li>With a 1% base rate, 80% power, and the usual 5% false positive
+rate, only about 14% of significant results point to a true hypothesis.
+The other 86% are false positives, exactly like the false-positive HIV
+tests.</li>
+<li>And 14% was generous. Real studies are often underpowered (closer to
+50% power), researchers run many comparisons, and p-hacking inflates the
+effective false positive rate well past 5%. Push those and the
+true-discovery rate drops further.</li>
+<li>So the punchline isn’t that scientists are dishonest or bad at math.
+The math is fine. It’s that significance testing answers P(data |
+hypothesis) when the base rate makes P(hypothesis | data) the thing that
+actually matters — and the two can be wildly different.</li>
+<li>This is why it’s okay. Once you expect most single findings to be
+noise, you stop treating one p &lt; 0.05 as truth and start thinking
+like a Bayesian: accumulating evidence and updating.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-same-table-relabeled" class="slide level2 no-title">
+<h2>The same table, relabeled</h2>
+<p><em><span class="blue">1%</span> of tested hypotheses are true · <span class="blue">80%</span> power · α = <span class="blue">5%</span></em></p>
+<div class="fragment">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>10,000 tested</th>
+<th><span class="red">Significant</span></th>
+<th>Not significant</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>True</strong> <span class="blue">(100)</span></td>
+<td><strong>80</strong><br><span class="gray">true positive (80%)</span></td>
+<td>20<br><span class="gray">false negative</span></td>
+</tr>
+<tr class="even">
+<td><strong>False</strong> <span class="blue">(9,900)</span></td>
+<td><strong>495</strong><br><span class="gray">false positive (5%)</span></td>
+<td>9,405<br><span class="gray">true negative</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>P( <span class="blue">true</span> | <span class="red">significant</span> ) = 80 / (80 + 495) ≈ <span class="red"><strong>14%</strong></span></p>
+<p>About <strong>86 of every 100</strong> “discoveries” are false.</p>
+</div>
+</section>
+<section id="so-why-is-most-published-research-wrong-1" class="slide level2 no-title">
+<h2>So why is most published research wrong?</h2>
+<p>That 14% was the <em>optimistic</em> case. It gets worse when:</p>
+<ul>
+<li>the base rate is even lower (genuinely novel ideas are rarer than 1%),</li>
+<li>studies are <strong>underpowered</strong> (real power is often much lower, even 20%),</li>
+<li>many comparisons are run, or results are <span class="red">p-hacked</span> (effective α &gt;&gt; 5%).</li>
+</ul>
+</section>
+<section id="the-problem" class="slide level2">
+<h2>The problem?</h2>
+<div class="fragment">
 <ul>
 <li class="fragment">Statistical significance goes against our natural intuitions about uncertainty.</li>
 <li class="fragment">If statistics has ever made you feel dumb or intimidated, it’s not you…</li>
 <li class="fragment">p-value is just a really weird concept.</li>
 </ul>
-</section>
-
+</div>
+</section></section>
 <section>
 <section id="bayesian-updating" class="title-slide slide level1 center">
 <h1>Bayesian Updating</h1>
@@ -1003,7 +1112,7 @@ making a serious mistake.</p>
 <p>Instead of tests, we have Bayesian Updating:</p>
 <ul>
 <li class="fragment">We have a <strong>prior</strong> belief about the world (specifically, about a parameter or “estimand”).<br><span class="fragment blue"><em>I think that about 60% of Kathmandu will vote for the current mayor in the next election.</em></span></li>
-<li class="fragment">Then, we observe something, and we estimate the <strong>likelihood</strong> of what we saw.<br><span class="fragment blue"><em>I just took a survey, and only 30% of people said they will vote for the current mayor. This doesn’t really fit with what I expected.</em></span></li>
+<li class="fragment">Then, we observe something, and we estimate the <strong>likelihood</strong> of what we saw given our prior belief.<br><span class="fragment blue"><em>I just took a survey, and only 30% of people said they will vote for the current mayor. This doesn’t really fit with what I expected.</em></span></li>
 <li class="fragment">This new observation changes our prior belief (challenging it or making it stronger), to become our <strong>posterior</strong>.<br><span class="fragment blue"><em>I now think that about 45% of Kathmandu will vote for the current mayor in the next election.</em></span></li>
 </ul>
 <aside class="notes">
@@ -1029,713 +1138,718 @@ just one simple idea:</p>
 </section></section>
 <section id="bayesian-updating-example" class="title-slide slide level1 no-title center">
 <h1>Bayesian Updating Example</h1>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a>#| '!! shinylive warning !!': |</span>
-<span id="cb2-2"><a></a>#|   shinylive does not work in self-contained HTML documents.</span>
-<span id="cb2-3"><a></a>#|   Please set `embed-resources: false` in your metadata.</span>
-<span id="cb2-4"><a></a>#| standalone: true</span>
-<span id="cb2-5"><a></a>library(shiny)</span>
-<span id="cb2-6"><a></a>library(bslib)</span>
-<span id="cb2-7"><a></a>library(shinyjs)</span>
-<span id="cb2-8"><a></a>library(ggplot2)</span>
-<span id="cb2-9"><a></a>library(ggiraph)</span>
-<span id="cb2-10"><a></a>library(htmlwidgets)</span>
-<span id="cb2-11"><a></a>library(uuid)</span>
-<span id="cb2-12"><a></a>library(munsell) # https://github.com/r-wasm/webr/issues/537</span>
-<span id="cb2-13"><a></a></span>
-<span id="cb2-14"><a></a>TOTAL_STONES &lt;- 9L</span>
-<span id="cb2-15"><a></a></span>
-<span id="cb2-16"><a></a>CONJECTURE &lt;- vapply(</span>
-<span id="cb2-17"><a></a>  0:TOTAL_STONES,</span>
-<span id="cb2-18"><a></a>  function(x) paste0(strrep("🔵", x), strrep("⚫️", TOTAL_STONES - x)),</span>
-<span id="cb2-19"><a></a>  character(1)</span>
-<span id="cb2-20"><a></a>)</span>
-<span id="cb2-21"><a></a></span>
-<span id="cb2-22"><a></a>SHIFT_HANDLER &lt;- HTML(</span>
-<span id="cb2-23"><a></a>  "</span>
-<span id="cb2-24"><a></a>    document.addEventListener('keydown', function(e) {</span>
-<span id="cb2-25"><a></a>      if (e.key === 'Shift') {</span>
-<span id="cb2-26"><a></a>        const btn = document.getElementById('drawRandom');</span>
-<span id="cb2-27"><a></a>        if (btn) btn.innerText = 'Random × 10';</span>
-<span id="cb2-28"><a></a>      }</span>
-<span id="cb2-29"><a></a>    });</span>
-<span id="cb2-30"><a></a></span>
-<span id="cb2-31"><a></a>    document.addEventListener('keyup', function(e) {</span>
-<span id="cb2-32"><a></a>      if (e.key === 'Shift') {</span>
-<span id="cb2-33"><a></a>        const btn = document.getElementById('drawRandom');</span>
-<span id="cb2-34"><a></a>        if (btn) btn.innerText = 'Random';</span>
-<span id="cb2-35"><a></a>      }</span>
-<span id="cb2-36"><a></a>    });</span>
-<span id="cb2-37"><a></a>  "</span>
-<span id="cb2-38"><a></a>)</span>
-<span id="cb2-39"><a></a></span>
-<span id="cb2-40"><a></a>STYLE &lt;- HTML(</span>
-<span id="cb2-41"><a></a>  "</span>
-<span id="cb2-42"><a></a>  h1 { margin-bottom: 0; }</span>
-<span id="cb2-43"><a></a>  p { font-size: 90%; }</span>
-<span id="cb2-44"><a></a></span>
-<span id="cb2-45"><a></a>  /* Prevent table from graying out during recalculation */</span>
-<span id="cb2-46"><a></a>  #resultTable.recalculating { opacity: 1 !important; }</span>
-<span id="cb2-47"><a></a>  #resultTable.shiny-output-error,</span>
-<span id="cb2-48"><a></a>  #resultTable.shiny-output-error-validation { color: inherit; }</span>
-<span id="cb2-49"><a></a>  /* Shiny adds .shiny-recalculating to the output element while updating */</span>
-<span id="cb2-50"><a></a>  #resultTable.shiny-recalculating { opacity: 1 !important; }</span>
-<span id="cb2-51"><a></a>  #resultTable.shiny-recalculating:before { display: none !important; }</span>
-<span id="cb2-52"><a></a></span>
-<span id="cb2-53"><a></a>  #resultTable table {</span>
-<span id="cb2-54"><a></a>    width: 100%;</span>
-<span id="cb2-55"><a></a>    table-layout: fixed;</span>
-<span id="cb2-56"><a></a>  }</span>
-<span id="cb2-57"><a></a></span>
-<span id="cb2-58"><a></a>  #resultTable th:nth-child(1),</span>
-<span id="cb2-59"><a></a>  #resultTable td:nth-child(1) { width: 220px; }</span>
-<span id="cb2-60"><a></a></span>
-<span id="cb2-61"><a></a>  #resultTable th:nth-child(3),</span>
-<span id="cb2-62"><a></a>  #resultTable td:nth-child(3) { width: 160px; direction: rtl }</span>
-<span id="cb2-63"><a></a></span>
-<span id="cb2-64"><a></a>  #resultTable th:nth-child(4),</span>
-<span id="cb2-65"><a></a>  #resultTable td:nth-child(4) { width: 80px; }</span>
-<span id="cb2-66"><a></a></span>
-<span id="cb2-67"><a></a>  /* --- Stop Shiny from dimming the table while recalculating --- */</span>
-<span id="cb2-68"><a></a>  /* Shiny uses .recalculating (not always .shiny-recalculating) */</span>
-<span id="cb2-69"><a></a>  #resultTable.recalculating,</span>
-<span id="cb2-70"><a></a>  #resultTable.shiny-recalculating {</span>
-<span id="cb2-71"><a></a>    opacity: 1 !important;</span>
-<span id="cb2-72"><a></a>  }</span>
-<span id="cb2-73"><a></a></span>
-<span id="cb2-74"><a></a>  /* If opacity is applied in a way that affects children, force children too */</span>
-<span id="cb2-75"><a></a>  #resultTable.recalculating *,</span>
-<span id="cb2-76"><a></a>  #resultTable.shiny-recalculating * {</span>
-<span id="cb2-77"><a></a>    opacity: 1 !important;</span>
-<span id="cb2-78"><a></a>  }s</span>
-<span id="cb2-79"><a></a></span>
-<span id="cb2-80"><a></a>  /* Shiny adds a spinner/overlay via pseudo-elements */</span>
-<span id="cb2-81"><a></a>  #resultTable.recalculating:before,</span>
-<span id="cb2-82"><a></a>  #resultTable.recalculating:after,</span>
-<span id="cb2-83"><a></a>  #resultTable.shiny-recalculating:before,</span>
-<span id="cb2-84"><a></a>  #resultTable.shiny-recalculating:after {</span>
-<span id="cb2-85"><a></a>    display: none !important;</span>
-<span id="cb2-86"><a></a>    content: none !important;</span>
-<span id="cb2-87"><a></a>  }</span>
-<span id="cb2-88"><a></a></span>
-<span id="cb2-89"><a></a>  /* ---- full-height main panel + plot fills remaining space ---- */</span>
-<span id="cb2-90"><a></a>  html, body { height: 100%; }</span>
-<span id="cb2-91"><a></a>  .bslib-page-sidebar { height: 100vh; }</span>
-<span id="cb2-92"><a></a></span>
-<span id="cb2-93"><a></a>  .bslib-page-sidebar .main {</span>
-<span id="cb2-94"><a></a>    height: 100%;</span>
-<span id="cb2-95"><a></a>    display: flex;</span>
-<span id="cb2-96"><a></a>    flex-direction: column;</span>
-<span id="cb2-97"><a></a>    min-height: 0;</span>
-<span id="cb2-98"><a></a>  }</span>
-<span id="cb2-99"><a></a></span>
-<span id="cb2-100"><a></a>  #probabilityPlot_wrap {</span>
-<span id="cb2-101"><a></a>    flex: 1 1 auto;</span>
-<span id="cb2-102"><a></a>    min-height: 0;</span>
-<span id="cb2-103"><a></a>    width: 100%;</span>
-<span id="cb2-104"><a></a>  }</span>
-<span id="cb2-105"><a></a></span>
-<span id="cb2-106"><a></a>  /* Ensure the htmlwidget + ggiraph wrappers and SVG fill the wrapper */</span>
-<span id="cb2-107"><a></a>  #probabilityPlot_wrap .html-widget,</span>
-<span id="cb2-108"><a></a>  #probabilityPlot_wrap .girafe_container,</span>
-<span id="cb2-109"><a></a>  #probabilityPlot_wrap svg {</span>
-<span id="cb2-110"><a></a>    width: 100% !important;</span>
-<span id="cb2-111"><a></a>    height: 100% !important;</span>
-<span id="cb2-112"><a></a>  }</span>
-<span id="cb2-113"><a></a>"</span>
-<span id="cb2-114"><a></a>)</span>
-<span id="cb2-115"><a></a></span>
-<span id="cb2-116"><a></a>format2 &lt;- function(x, max_digits = 40L) {</span>
-<span id="cb2-117"><a></a>  x_chr_fixed &lt;- format(</span>
-<span id="cb2-118"><a></a>    x,</span>
-<span id="cb2-119"><a></a>    scientific = FALSE,</span>
-<span id="cb2-120"><a></a>    trim = TRUE,</span>
-<span id="cb2-121"><a></a>    digits = 22</span>
-<span id="cb2-122"><a></a>  )</span>
-<span id="cb2-123"><a></a>  digit_count &lt;- nchar(gsub("[^0-9]", "", x_chr_fixed))</span>
-<span id="cb2-124"><a></a>  ifelse(</span>
-<span id="cb2-125"><a></a>    is.na(x),</span>
-<span id="cb2-126"><a></a>    NA_character_,</span>
-<span id="cb2-127"><a></a>    ifelse(</span>
-<span id="cb2-128"><a></a>      digit_count &gt; max_digits,</span>
-<span id="cb2-129"><a></a>      format(x, scientific = TRUE, trim = TRUE),</span>
-<span id="cb2-130"><a></a>      x_chr_fixed</span>
-<span id="cb2-131"><a></a>    )</span>
-<span id="cb2-132"><a></a>  )</span>
-<span id="cb2-133"><a></a>}</span>
-<span id="cb2-134"><a></a></span>
-<span id="cb2-135"><a></a>format_probability &lt;- function(x) {</span>
-<span id="cb2-136"><a></a>  if (is.na(x) || !is.finite(x)) {</span>
-<span id="cb2-137"><a></a>    return("")</span>
-<span id="cb2-138"><a></a>  }</span>
-<span id="cb2-139"><a></a>  if (x &gt; 0 &amp;&amp; x &lt; 0.01) {</span>
-<span id="cb2-140"><a></a>    return("&lt;0.01")</span>
-<span id="cb2-141"><a></a>  }</span>
-<span id="cb2-142"><a></a>  if (x &lt; 1 &amp;&amp; x &gt; 0.995) {</span>
-<span id="cb2-143"><a></a>    return("&gt;0.99")</span>
-<span id="cb2-144"><a></a>  }</span>
-<span id="cb2-145"><a></a>  sprintf("%.2f", x)</span>
-<span id="cb2-146"><a></a>}</span>
-<span id="cb2-147"><a></a></span>
-<span id="cb2-148"><a></a>ui &lt;- page_sidebar(</span>
-<span id="cb2-149"><a></a>  tags$script(SHIFT_HANDLER),</span>
-<span id="cb2-150"><a></a>  tags$style(STYLE),</span>
-<span id="cb2-151"><a></a>  shinyjs::useShinyjs(),</span>
-<span id="cb2-152"><a></a></span>
-<span id="cb2-153"><a></a>  sidebar = sidebar(</span>
-<span id="cb2-154"><a></a>    open = "always",</span>
-<span id="cb2-155"><a></a>    width = 400,</span>
-<span id="cb2-156"><a></a></span>
-<span id="cb2-157"><a></a>    h2("Bayesian Updating"),</span>
-<span id="cb2-158"><a></a>    p(</span>
-<span id="cb2-159"><a></a>      "Imagine you have a bag of 9 stones. Each stone is either blue or black, but you don't know how many of each color you have."</span>
-<span id="cb2-160"><a></a>    ),</span>
-<span id="cb2-161"><a></a>    p(</span>
-<span id="cb2-162"><a></a>      "You can draw stones from the bag one at a time, noting down its color and then placing it back in the bag. The more you repeat this process, the more you can infer about the contents of the bag."</span>
-<span id="cb2-163"><a></a>    ),</span>
-<span id="cb2-164"><a></a>    p(</span>
-<span id="cb2-165"><a></a>      "This graph represents a",</span>
-<span id="cb2-166"><a></a>      tags$b("probability distribution", .noWS = c("after")),</span>
-<span id="cb2-167"><a></a>      ". From limited observations, we can never be absolutely certain of the contents of the bag, but we can say that some possibilities are more likely than others."</span>
-<span id="cb2-168"><a></a>    ),</span>
-<span id="cb2-169"><a></a></span>
-<span id="cb2-170"><a></a>    div(</span>
-<span id="cb2-171"><a></a>      id = "bagContents_wrap",</span>
-<span id="cb2-172"><a></a>      selectizeInput(</span>
-<span id="cb2-173"><a></a>        "bagContents",</span>
-<span id="cb2-174"><a></a>        "Contents of the bag:",</span>
-<span id="cb2-175"><a></a>        choices = c(</span>
-<span id="cb2-176"><a></a>          "Hidden" = "hidden",</span>
-<span id="cb2-177"><a></a>          "⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 0,</span>
-<span id="cb2-178"><a></a>          "🔵⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 1,</span>
-<span id="cb2-179"><a></a>          "🔵🔵⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 2,</span>
-<span id="cb2-180"><a></a>          "🔵🔵🔵⚫️⚫️⚫️⚫️⚫️⚫️" = 3,</span>
-<span id="cb2-181"><a></a>          "🔵🔵🔵🔵⚫️⚫️⚫️⚫️⚫️" = 4,</span>
-<span id="cb2-182"><a></a>          "🔵🔵🔵🔵🔵⚫️⚫️⚫️⚫️" = 5,</span>
-<span id="cb2-183"><a></a>          "🔵🔵🔵🔵🔵🔵⚫️⚫️⚫️" = 6,</span>
-<span id="cb2-184"><a></a>          "🔵🔵🔵🔵🔵🔵🔵⚫️⚫️" = 7,</span>
-<span id="cb2-185"><a></a>          "🔵🔵🔵🔵🔵🔵🔵🔵⚫️" = 8,</span>
-<span id="cb2-186"><a></a>          "🔵🔵🔵🔵🔵🔵🔵🔵🔵" = 9</span>
-<span id="cb2-187"><a></a>        )</span>
-<span id="cb2-188"><a></a>      )</span>
-<span id="cb2-189"><a></a>    ),</span>
-<span id="cb2-190"><a></a></span>
-<span id="cb2-191"><a></a>    div("Draw a stone:"),</span>
-<span id="cb2-192"><a></a>    div(</span>
-<span id="cb2-193"><a></a>      style = "display: flex; gap: 10px;",</span>
-<span id="cb2-194"><a></a>      actionButton("drawWhite", "⚫️"),</span>
-<span id="cb2-195"><a></a>      actionButton("drawBlue", "🔵"),</span>
-<span id="cb2-196"><a></a>      actionButton(</span>
-<span id="cb2-197"><a></a>        "drawRandom",</span>
-<span id="cb2-198"><a></a>        "Random",</span>
-<span id="cb2-199"><a></a>        style = "flex: 1;",</span>
-<span id="cb2-200"><a></a>        onclick = "</span>
-<span id="cb2-201"><a></a>          Shiny.setInputValue(</span>
-<span id="cb2-202"><a></a>            'drawRandom_n',</span>
-<span id="cb2-203"><a></a>            event.shiftKey ? 10 : 1,</span>
-<span id="cb2-204"><a></a>            {priority: 'event'}</span>
-<span id="cb2-205"><a></a>          );</span>
-<span id="cb2-206"><a></a>        "</span>
-<span id="cb2-207"><a></a>      )</span>
-<span id="cb2-208"><a></a>    ),</span>
-<span id="cb2-209"><a></a>    actionButton("reset", "Reset", class = "btn-danger")</span>
-<span id="cb2-210"><a></a>  ),</span>
-<span id="cb2-211"><a></a></span>
-<span id="cb2-212"><a></a>  mainPanel(</span>
-<span id="cb2-213"><a></a>    width = 12,</span>
-<span id="cb2-214"><a></a>    uiOutput("dynamicHeader"),</span>
-<span id="cb2-215"><a></a>    tableOutput("resultTable"),</span>
-<span id="cb2-216"><a></a>    div(</span>
-<span id="cb2-217"><a></a>      id = "probabilityPlot_wrap",</span>
-<span id="cb2-218"><a></a>      ggiraph::girafeOutput("probabilityPlot")</span>
-<span id="cb2-219"><a></a>    )</span>
-<span id="cb2-220"><a></a>  )</span>
-<span id="cb2-221"><a></a>)</span>
-<span id="cb2-222"><a></a></span>
-<span id="cb2-223"><a></a>server &lt;- function(input, output, session) {</span>
-<span id="cb2-224"><a></a>  bag_blue &lt;- reactiveVal(NULL)</span>
-<span id="cb2-225"><a></a>  draws &lt;- reactiveVal(character())</span>
-<span id="cb2-226"><a></a></span>
-<span id="cb2-227"><a></a>  lik_hist &lt;- reactiveVal(list())</span>
-<span id="cb2-228"><a></a>  max_hist &lt;- 10L</span>
-<span id="cb2-229"><a></a></span>
-<span id="cb2-230"><a></a>  observeEvent(</span>
-<span id="cb2-231"><a></a>    input$bagContents,</span>
-<span id="cb2-232"><a></a>    {</span>
-<span id="cb2-233"><a></a>      if (input$bagContents == "hidden") {</span>
-<span id="cb2-234"><a></a>        bag_blue(sample(0:TOTAL_STONES, 1))</span>
-<span id="cb2-235"><a></a>      } else {</span>
-<span id="cb2-236"><a></a>        bag_blue(as.integer(input$bagContents))</span>
-<span id="cb2-237"><a></a>      }</span>
-<span id="cb2-238"><a></a>    },</span>
-<span id="cb2-239"><a></a>    ignoreInit = FALSE</span>
-<span id="cb2-240"><a></a>  )</span>
-<span id="cb2-241"><a></a></span>
-<span id="cb2-242"><a></a>  observeEvent(input$drawBlue, draws(c(draws(), "🔵")))</span>
-<span id="cb2-243"><a></a>  observeEvent(input$drawWhite, draws(c(draws(), "⚫️")))</span>
-<span id="cb2-244"><a></a></span>
-<span id="cb2-245"><a></a>  observeEvent(</span>
-<span id="cb2-246"><a></a>    input$drawRandom_n,</span>
-<span id="cb2-247"><a></a>    {</span>
-<span id="cb2-248"><a></a>      req(!is.null(bag_blue()))</span>
-<span id="cb2-249"><a></a>      n_draws &lt;- as.integer(input$drawRandom_n)</span>
-<span id="cb2-250"><a></a>      pool &lt;- c(rep("🔵", bag_blue()), rep("⚫️", TOTAL_STONES - bag_blue()))</span>
-<span id="cb2-251"><a></a>      draws(c(draws(), sample(pool, n_draws, replace = TRUE)))</span>
-<span id="cb2-252"><a></a>    },</span>
-<span id="cb2-253"><a></a>    ignoreInit = TRUE</span>
-<span id="cb2-254"><a></a>  )</span>
-<span id="cb2-255"><a></a></span>
-<span id="cb2-256"><a></a>  observeEvent(input$reset, {</span>
-<span id="cb2-257"><a></a>    draws(character())</span>
-<span id="cb2-258"><a></a>    lik_hist(list())</span>
-<span id="cb2-259"><a></a>    # bag_blue(sample(0:TOTAL_STONES, 1))</span>
-<span id="cb2-260"><a></a>    updateSelectizeInput(session, "bagContents", selected = "hidden")</span>
-<span id="cb2-261"><a></a>  })</span>
-<span id="cb2-262"><a></a></span>
-<span id="cb2-263"><a></a>  observe({</span>
-<span id="cb2-264"><a></a>    has_draws &lt;- length(draws()) &gt; 0</span>
-<span id="cb2-265"><a></a>    if (has_draws) {</span>
-<span id="cb2-266"><a></a>      shinyjs::disable("bagContents")</span>
-<span id="cb2-267"><a></a>      shinyjs::enable("reset")</span>
-<span id="cb2-268"><a></a>    } else {</span>
-<span id="cb2-269"><a></a>      shinyjs::enable("bagContents")</span>
-<span id="cb2-270"><a></a>      shinyjs::disable("reset")</span>
-<span id="cb2-271"><a></a>    }</span>
-<span id="cb2-272"><a></a>  })</span>
-<span id="cb2-273"><a></a></span>
-<span id="cb2-274"><a></a>  observe({</span>
-<span id="cb2-275"><a></a>    req(!is.null(bag_blue()))</span>
-<span id="cb2-276"><a></a>    tip &lt;- sprintf("blue stones = %d (out of %d)", bag_blue(), TOTAL_STONES)</span>
-<span id="cb2-277"><a></a>    shinyjs::runjs(sprintf(</span>
-<span id="cb2-278"><a></a>      "$('#bagContents_wrap .selectize-control').attr('title', %s);",</span>
-<span id="cb2-279"><a></a>      shQuote(tip)</span>
-<span id="cb2-280"><a></a>    ))</span>
-<span id="cb2-281"><a></a>  })</span>
-<span id="cb2-282"><a></a></span>
-<span id="cb2-283"><a></a>  table_state &lt;- reactive({</span>
-<span id="cb2-284"><a></a>    d &lt;- draws()</span>
-<span id="cb2-285"><a></a>    n &lt;- length(d)</span>
-<span id="cb2-286"><a></a></span>
-<span id="cb2-287"><a></a>    header &lt;- if (n == 0) {</span>
-<span id="cb2-288"><a></a>      "Draw Results"</span>
-<span id="cb2-289"><a></a>    } else if (n &lt;= 20) {</span>
-<span id="cb2-290"><a></a>      paste(d, collapse = "\u00A0")</span>
-<span id="cb2-291"><a></a>    } else {</span>
-<span id="cb2-292"><a></a>      tbl &lt;- sort(table(d), decreasing = TRUE)</span>
-<span id="cb2-293"><a></a>      labels &lt;- paste(names(tbl), "×", as.integer(tbl))</span>
-<span id="cb2-294"><a></a>      paste(labels, collapse = ", ")</span>
-<span id="cb2-295"><a></a>    }</span>
-<span id="cb2-296"><a></a></span>
-<span id="cb2-297"><a></a>    if (n == 0) {</span>
-<span id="cb2-298"><a></a>      df &lt;- data.frame(</span>
-<span id="cb2-299"><a></a>        conjecture = CONJECTURE,</span>
-<span id="cb2-300"><a></a>        possibilities = "-",</span>
-<span id="cb2-301"><a></a>        total = "-",</span>
-<span id="cb2-302"><a></a>        probability = rep(1 / (TOTAL_STONES + 1), TOTAL_STONES + 1),</span>
-<span id="cb2-303"><a></a>        stringsAsFactors = FALSE</span>
-<span id="cb2-304"><a></a>      )</span>
-<span id="cb2-305"><a></a>      return(list(df = df, header = header))</span>
-<span id="cb2-306"><a></a>    }</span>
-<span id="cb2-307"><a></a></span>
-<span id="cb2-308"><a></a>    factors &lt;- lapply(</span>
-<span id="cb2-309"><a></a>      0:TOTAL_STONES,</span>
-<span id="cb2-310"><a></a>      function(bx) ifelse(d == "🔵", bx, TOTAL_STONES - bx)</span>
-<span id="cb2-311"><a></a>    )</span>
-<span id="cb2-312"><a></a></span>
-<span id="cb2-313"><a></a>    formula &lt;- vapply(</span>
-<span id="cb2-314"><a></a>      factors,</span>
-<span id="cb2-315"><a></a>      function(f) {</span>
-<span id="cb2-316"><a></a>        if (n &lt;= 20) {</span>
-<span id="cb2-317"><a></a>          paste0(f, collapse = " × ")</span>
-<span id="cb2-318"><a></a>        } else {</span>
-<span id="cb2-319"><a></a>          tbl &lt;- sort(table(f), decreasing = TRUE)</span>
-<span id="cb2-320"><a></a>          labels &lt;- paste0(names(tbl), "&lt;sup&gt;", as.integer(tbl), "&lt;/sup&gt;")</span>
-<span id="cb2-321"><a></a>          paste(labels, collapse = " × ")</span>
-<span id="cb2-322"><a></a>        }</span>
-<span id="cb2-323"><a></a>      },</span>
-<span id="cb2-324"><a></a>      character(1)</span>
-<span id="cb2-325"><a></a>    )</span>
-<span id="cb2-326"><a></a></span>
-<span id="cb2-327"><a></a>    log_paths &lt;- vapply(factors, function(f) sum(log(f)), numeric(1))</span>
-<span id="cb2-328"><a></a></span>
-<span id="cb2-329"><a></a>    m &lt;- max(log_paths)</span>
-<span id="cb2-330"><a></a>    paths_scaled &lt;- exp(log_paths - m)</span>
-<span id="cb2-331"><a></a>    probability &lt;- paths_scaled / sum(paths_scaled)</span>
-<span id="cb2-332"><a></a></span>
-<span id="cb2-333"><a></a>    paths &lt;- vapply(factors, prod, numeric(1))</span>
-<span id="cb2-334"><a></a></span>
-<span id="cb2-335"><a></a>    df &lt;- data.frame(</span>
-<span id="cb2-336"><a></a>      conjecture = CONJECTURE,</span>
-<span id="cb2-337"><a></a>      possibilities = formula,</span>
-<span id="cb2-338"><a></a>      total = format2(round(paths, 0)),</span>
-<span id="cb2-339"><a></a>      probability = probability,</span>
-<span id="cb2-340"><a></a>      stringsAsFactors = FALSE</span>
-<span id="cb2-341"><a></a>    )</span>
-<span id="cb2-342"><a></a></span>
-<span id="cb2-343"><a></a>    list(df = df, header = header)</span>
-<span id="cb2-344"><a></a>  })</span>
-<span id="cb2-345"><a></a></span>
-<span id="cb2-346"><a></a>  output$dynamicHeader &lt;- renderUI({</span>
-<span id="cb2-347"><a></a>    h4(HTML(sprintf(</span>
-<span id="cb2-348"><a></a>      "&lt;span style='letter-spacing:0.15em;'&gt;%s&lt;/span&gt;",</span>
-<span id="cb2-349"><a></a>      table_state()$header</span>
-<span id="cb2-350"><a></a>    )))</span>
-<span id="cb2-351"><a></a>  })</span>
-<span id="cb2-352"><a></a></span>
-<span id="cb2-353"><a></a>  output$resultTable &lt;- renderTable(</span>
-<span id="cb2-354"><a></a>    {</span>
-<span id="cb2-355"><a></a>      df &lt;- table_state()$df</span>
-<span id="cb2-356"><a></a>      df$probability &lt;- vapply(df$probability, format_probability, character(1))</span>
-<span id="cb2-357"><a></a>      df</span>
-<span id="cb2-358"><a></a>    },</span>
-<span id="cb2-359"><a></a>    striped = TRUE,</span>
-<span id="cb2-360"><a></a>    hover = TRUE,</span>
-<span id="cb2-361"><a></a>    bordered = FALSE,</span>
-<span id="cb2-362"><a></a>    spacing = "s",</span>
-<span id="cb2-363"><a></a>    rownames = FALSE,</span>
-<span id="cb2-364"><a></a>    width = "100%",</span>
-<span id="cb2-365"><a></a>    align = "llrr",</span>
-<span id="cb2-366"><a></a>    sanitize.text.function = function(x) x</span>
-<span id="cb2-367"><a></a>  )</span>
-<span id="cb2-368"><a></a></span>
-<span id="cb2-369"><a></a>  probability_vector &lt;- reactive(table_state()$df$probability)</span>
-<span id="cb2-370"><a></a></span>
-<span id="cb2-371"><a></a>  observeEvent(</span>
-<span id="cb2-372"><a></a>    probability_vector(),</span>
-<span id="cb2-373"><a></a>    {</span>
-<span id="cb2-374"><a></a>      y &lt;- probability_vector()</span>
-<span id="cb2-375"><a></a>      h &lt;- lik_hist()</span>
-<span id="cb2-376"><a></a></span>
-<span id="cb2-377"><a></a>      if (length(h) == 0 || !isTRUE(all.equal(h[[length(h)]], y))) {</span>
-<span id="cb2-378"><a></a>        h &lt;- c(h, list(y))</span>
-<span id="cb2-379"><a></a>        if (length(h) &gt; max_hist) {</span>
-<span id="cb2-380"><a></a>          h &lt;- tail(h, max_hist)</span>
-<span id="cb2-381"><a></a>        }</span>
-<span id="cb2-382"><a></a>        lik_hist(h)</span>
-<span id="cb2-383"><a></a>      }</span>
-<span id="cb2-384"><a></a>    },</span>
-<span id="cb2-385"><a></a>    ignoreInit = TRUE</span>
-<span id="cb2-386"><a></a>  )</span>
-<span id="cb2-387"><a></a></span>
-<span id="cb2-388"><a></a>  make_plot_data &lt;- function(df, h) {</span>
-<span id="cb2-389"><a></a>    x &lt;- 0:TOTAL_STONES</span>
-<span id="cb2-390"><a></a></span>
-<span id="cb2-391"><a></a>    cur &lt;- data.frame(</span>
-<span id="cb2-392"><a></a>      x = x,</span>
-<span id="cb2-393"><a></a>      y = df$probability,</span>
-<span id="cb2-394"><a></a>      conjecture = df$conjecture,</span>
-<span id="cb2-395"><a></a>      stringsAsFactors = FALSE</span>
-<span id="cb2-396"><a></a>    )</span>
-<span id="cb2-397"><a></a></span>
-<span id="cb2-398"><a></a>    ghost_df &lt;- NULL</span>
-<span id="cb2-399"><a></a>    if (length(h) &gt; 1) {</span>
-<span id="cb2-400"><a></a>      ghosts &lt;- h[-length(h)]</span>
-<span id="cb2-401"><a></a>      n_ghosts &lt;- length(ghosts)</span>
-<span id="cb2-402"><a></a></span>
-<span id="cb2-403"><a></a>      gray_vals_full &lt;- as.integer(round(seq(240, 120, length.out = max_hist)))</span>
-<span id="cb2-404"><a></a>      gray_vals &lt;- tail(gray_vals_full, n_ghosts)</span>
-<span id="cb2-405"><a></a>      ghost_cols &lt;- rgb(gray_vals, gray_vals, gray_vals, maxColorValue = 255)</span>
-<span id="cb2-406"><a></a></span>
-<span id="cb2-407"><a></a>      ghost_df &lt;- do.call(</span>
-<span id="cb2-408"><a></a>        rbind,</span>
-<span id="cb2-409"><a></a>        lapply(seq_along(ghosts), function(i) {</span>
-<span id="cb2-410"><a></a>          data.frame(</span>
-<span id="cb2-411"><a></a>            step = i,</span>
-<span id="cb2-412"><a></a>            x = x,</span>
-<span id="cb2-413"><a></a>            y = ghosts[[i]],</span>
-<span id="cb2-414"><a></a>            col = ghost_cols[i],</span>
-<span id="cb2-415"><a></a>            stringsAsFactors = FALSE</span>
-<span id="cb2-416"><a></a>          )</span>
-<span id="cb2-417"><a></a>        })</span>
-<span id="cb2-418"><a></a>      )</span>
-<span id="cb2-419"><a></a>    }</span>
-<span id="cb2-420"><a></a></span>
-<span id="cb2-421"><a></a>    list(cur = cur, ghost = ghost_df)</span>
-<span id="cb2-422"><a></a>  }</span>
-<span id="cb2-423"><a></a></span>
-<span id="cb2-424"><a></a>  output$probabilityPlot &lt;- ggiraph::renderGirafe({</span>
-<span id="cb2-425"><a></a>    df &lt;- table_state()$df</span>
-<span id="cb2-426"><a></a>    h &lt;- lik_hist()</span>
-<span id="cb2-427"><a></a></span>
-<span id="cb2-428"><a></a>    pd &lt;- make_plot_data(df, h)</span>
-<span id="cb2-429"><a></a>    cur &lt;- pd$cur</span>
-<span id="cb2-430"><a></a>    ghost &lt;- pd$ghost</span>
-<span id="cb2-431"><a></a></span>
-<span id="cb2-432"><a></a>    cur$point_id &lt;- paste0("curpt-", cur$x)</span>
-<span id="cb2-433"><a></a></span>
-<span id="cb2-434"><a></a>    # Tooltip changes:</span>
-<span id="cb2-435"><a></a>    # - emoji line first (conjecture)</span>
-<span id="cb2-436"><a></a>    # - probability formatted like the table</span>
-<span id="cb2-437"><a></a>    cur$tooltip &lt;- sprintf(</span>
-<span id="cb2-438"><a></a>      "%s\nBlue stones: %d\nprobability: %s",</span>
-<span id="cb2-439"><a></a>      cur$conjecture,</span>
-<span id="cb2-440"><a></a>      cur$x,</span>
-<span id="cb2-441"><a></a>      vapply(cur$y, format_probability, character(1))</span>
-<span id="cb2-442"><a></a>    )</span>
-<span id="cb2-443"><a></a></span>
-<span id="cb2-444"><a></a>    p &lt;- ggplot()</span>
-<span id="cb2-445"><a></a></span>
-<span id="cb2-446"><a></a>    # ghosts</span>
-<span id="cb2-447"><a></a>    if (!is.null(ghost) &amp;&amp; nrow(ghost) &gt; 0) {</span>
-<span id="cb2-448"><a></a>      p &lt;- p +</span>
-<span id="cb2-449"><a></a>        geom_line(</span>
-<span id="cb2-450"><a></a>          data = ghost,</span>
-<span id="cb2-451"><a></a>          aes(x = x, y = y, group = step, color = col),</span>
-<span id="cb2-452"><a></a>          linewidth = 0.7</span>
-<span id="cb2-453"><a></a>        ) +</span>
-<span id="cb2-454"><a></a>        scale_color_identity()</span>
-<span id="cb2-455"><a></a>    }</span>
-<span id="cb2-456"><a></a></span>
-<span id="cb2-457"><a></a>    # current: points only (line is drawn + animated in JS)</span>
-<span id="cb2-458"><a></a>    p &lt;- p +</span>
-<span id="cb2-459"><a></a>      ggiraph::geom_point_interactive(</span>
-<span id="cb2-460"><a></a>        data = cur,</span>
-<span id="cb2-461"><a></a>        aes(x = x, y = y, tooltip = tooltip, data_id = point_id),</span>
-<span id="cb2-462"><a></a>        size = 2.6,</span>
-<span id="cb2-463"><a></a>        color = "black"</span>
-<span id="cb2-464"><a></a>      ) +</span>
-<span id="cb2-465"><a></a>      scale_x_continuous(breaks = 0:TOTAL_STONES, limits = c(0, TOTAL_STONES)) +</span>
-<span id="cb2-466"><a></a>      scale_y_continuous(</span>
-<span id="cb2-467"><a></a>        limits = c(-0.05, 1.05),</span>
-<span id="cb2-468"><a></a>        expand = expansion(mult = c(0, 0.02))</span>
-<span id="cb2-469"><a></a>      ) +</span>
-<span id="cb2-470"><a></a>      labs(x = "Number of blue stones", y = "probability") +</span>
-<span id="cb2-471"><a></a>      theme_minimal(base_size = 13) +</span>
-<span id="cb2-472"><a></a>      theme(panel.grid.minor = element_blank(), legend.position = "none")</span>
-<span id="cb2-473"><a></a></span>
-<span id="cb2-474"><a></a>    g &lt;- ggiraph::girafe(</span>
-<span id="cb2-475"><a></a>      ggobj = p,</span>
-<span id="cb2-476"><a></a>      width_svg = 12,</span>
-<span id="cb2-477"><a></a>      height_svg = 4,</span>
-<span id="cb2-478"><a></a>      options = list(</span>
-<span id="cb2-479"><a></a>        ggiraph::opts_sizing(rescale = FALSE),</span>
-<span id="cb2-480"><a></a>        ggiraph::opts_hover(css = "fill:black; r:5px;"),</span>
-<span id="cb2-481"><a></a>        ggiraph::opts_tooltip(</span>
-<span id="cb2-482"><a></a>          css = "background-color: white; border: 1px solid #999; padding: 6px; border-radius: 4px;"</span>
-<span id="cb2-483"><a></a>        )</span>
-<span id="cb2-484"><a></a>      )</span>
-<span id="cb2-485"><a></a>    )</span>
-<span id="cb2-486"><a></a></span>
-<span id="cb2-487"><a></a>    g$x$step &lt;- length(draws())</span>
-<span id="cb2-488"><a></a></span>
-<span id="cb2-489"><a></a>    htmlwidgets::onRender(</span>
-<span id="cb2-490"><a></a>      g,</span>
-<span id="cb2-491"><a></a>      "</span>
-<span id="cb2-492"><a></a>function(el, x) {</span>
-<span id="cb2-493"><a></a>  var svg = el.querySelector('svg');</span>
-<span id="cb2-494"><a></a>  if (!svg) return;</span>
-<span id="cb2-495"><a></a></span>
-<span id="cb2-496"><a></a>  // Let SVG stretch to match the available rectangle</span>
-<span id="cb2-497"><a></a>  svg.setAttribute('preserveAspectRatio', 'none');</span>
-<span id="cb2-498"><a></a>  svg.setAttribute('width', '100%');</span>
-<span id="cb2-499"><a></a>  svg.setAttribute('height', '100%');</span>
-<span id="cb2-500"><a></a></span>
-<span id="cb2-501"><a></a>  // Hide immediately to prevent flash of new final coordinates</span>
-<span id="cb2-502"><a></a>  svg.style.visibility = 'hidden';</span>
-<span id="cb2-503"><a></a></span>
-<span id="cb2-504"><a></a>  var step = x.step;</span>
-<span id="cb2-505"><a></a></span>
-<span id="cb2-506"><a></a>  function getPoints() {</span>
-<span id="cb2-507"><a></a>    var pts = Array.prototype.slice.call(svg.querySelectorAll('[data-id^=\"curpt-\"]'));</span>
-<span id="cb2-508"><a></a>    var arr = pts.map(function(pt) {</span>
-<span id="cb2-509"><a></a>      var id = pt.getAttribute('data-id');</span>
-<span id="cb2-510"><a></a>      var idx = parseInt(id.replace('curpt-', ''), 10);</span>
-<span id="cb2-511"><a></a>      return {</span>
-<span id="cb2-512"><a></a>        id: id,</span>
-<span id="cb2-513"><a></a>        idx: idx,</span>
-<span id="cb2-514"><a></a>        el: pt,</span>
-<span id="cb2-515"><a></a>        cx: parseFloat(pt.getAttribute('cx')),</span>
-<span id="cb2-516"><a></a>        cy: parseFloat(pt.getAttribute('cy'))</span>
-<span id="cb2-517"><a></a>      };</span>
-<span id="cb2-518"><a></a>    }).filter(function(d) {</span>
-<span id="cb2-519"><a></a>      return isFinite(d.idx) &amp;&amp; isFinite(d.cx) &amp;&amp; isFinite(d.cy);</span>
-<span id="cb2-520"><a></a>    });</span>
-<span id="cb2-521"><a></a>    arr.sort(function(a,b){ return a.idx - b.idx; });</span>
-<span id="cb2-522"><a></a>    return arr;</span>
-<span id="cb2-523"><a></a>  }</span>
-<span id="cb2-524"><a></a></span>
-<span id="cb2-525"><a></a>  function ensureLine() {</span>
-<span id="cb2-526"><a></a>    var line = svg.querySelector('#curline-js');</span>
-<span id="cb2-527"><a></a>    if (!line) {</span>
-<span id="cb2-528"><a></a>      line = document.createElementNS('http://www.w3.org/2000/svg', 'path');</span>
-<span id="cb2-529"><a></a>      line.setAttribute('id', 'curline-js');</span>
-<span id="cb2-530"><a></a>      line.setAttribute('fill', 'none');</span>
-<span id="cb2-531"><a></a>      line.setAttribute('stroke', 'black');</span>
-<span id="cb2-532"><a></a>      line.setAttribute('stroke-width', '2.2');</span>
-<span id="cb2-533"><a></a>      line.setAttribute('stroke-linecap', 'round');</span>
-<span id="cb2-534"><a></a>      line.setAttribute('stroke-linejoin', 'round');</span>
-<span id="cb2-535"><a></a>      svg.appendChild(line);</span>
-<span id="cb2-536"><a></a>    }</span>
-<span id="cb2-537"><a></a>    return line;</span>
-<span id="cb2-538"><a></a>  }</span>
-<span id="cb2-539"><a></a></span>
-<span id="cb2-540"><a></a>  function pathFromXY(xy) {</span>
-<span id="cb2-541"><a></a>    if (!xy || xy.length === 0) return '';</span>
-<span id="cb2-542"><a></a>    var d = 'M ' + xy[0].cx + ' ' + xy[0].cy;</span>
-<span id="cb2-543"><a></a>    for (var i=1; i&lt;xy.length; i++) d += ' L ' + xy[i].cx + ' ' + xy[i].cy;</span>
-<span id="cb2-544"><a></a>    return d;</span>
-<span id="cb2-545"><a></a>  }</span>
-<span id="cb2-546"><a></a></span>
-<span id="cb2-547"><a></a>  function ease(u) {</span>
-<span id="cb2-548"><a></a>    return u &lt; 0.5 ? 4*u*u*u : 1 - Math.pow(-2*u + 2, 3)/2;</span>
-<span id="cb2-549"><a></a>  }</span>
-<span id="cb2-550"><a></a></span>
-<span id="cb2-551"><a></a>  function setToPts(ptsArr, pts, line) {</span>
-<span id="cb2-552"><a></a>    for (var i=0; i&lt;ptsArr.length; i++) {</span>
-<span id="cb2-553"><a></a>      ptsArr[i].el.setAttribute('cx', pts[i].cx);</span>
-<span id="cb2-554"><a></a>      ptsArr[i].el.setAttribute('cy', pts[i].cy);</span>
-<span id="cb2-555"><a></a>      ptsArr[i].el.removeAttribute('transform');</span>
-<span id="cb2-556"><a></a>    }</span>
-<span id="cb2-557"><a></a>    line.setAttribute('d', pathFromXY(pts));</span>
-<span id="cb2-558"><a></a>  }</span>
-<span id="cb2-559"><a></a></span>
-<span id="cb2-560"><a></a>  // More responsive feel:</span>
-<span id="cb2-561"><a></a>  // - shorter debounce before starting animation</span>
-<span id="cb2-562"><a></a>  // - slightly shorter duration</span>
-<span id="cb2-563"><a></a>  var DEBOUNCE_MS = 55;  // was 100</span>
-<span id="cb2-564"><a></a>  var DURATION_MS = 360; // was 450</span>
-<span id="cb2-565"><a></a></span>
-<span id="cb2-566"><a></a>  function animateFromTo(ptsArr, startPts, endPts, line, durationMs, onDone) {</span>
-<span id="cb2-567"><a></a>    if (el.__animCancel) el.__animCancel();</span>
-<span id="cb2-568"><a></a></span>
-<span id="cb2-569"><a></a>    var t0 = null;</span>
-<span id="cb2-570"><a></a>    var cancelled = false;</span>
-<span id="cb2-571"><a></a>    el.__animCancel = function(){ cancelled = true; };</span>
-<span id="cb2-572"><a></a></span>
-<span id="cb2-573"><a></a>    el.__animating = true;</span>
-<span id="cb2-574"><a></a>    el.__animTargetPts = endPts;</span>
-<span id="cb2-575"><a></a></span>
-<span id="cb2-576"><a></a>    // Put at start before showing</span>
-<span id="cb2-577"><a></a>    setToPts(ptsArr, startPts, line);</span>
-<span id="cb2-578"><a></a></span>
-<span id="cb2-579"><a></a>    // Show once start state is in place</span>
-<span id="cb2-580"><a></a>    svg.style.visibility = 'visible';</span>
-<span id="cb2-581"><a></a></span>
-<span id="cb2-582"><a></a>    ptsArr.forEach(function(d){ d.el.style.pointerEvents = 'none'; });</span>
-<span id="cb2-583"><a></a></span>
-<span id="cb2-584"><a></a>    function frame(ts) {</span>
-<span id="cb2-585"><a></a>      if (cancelled) return;</span>
-<span id="cb2-586"><a></a>      if (t0 === null) t0 = ts;</span>
-<span id="cb2-587"><a></a></span>
-<span id="cb2-588"><a></a>      var u = Math.min(1, (ts - t0) / durationMs);</span>
-<span id="cb2-589"><a></a>      var e = ease(u);</span>
-<span id="cb2-590"><a></a></span>
-<span id="cb2-591"><a></a>      var interp = new Array(endPts.length);</span>
-<span id="cb2-592"><a></a>      for (var i=0; i&lt;endPts.length; i++) {</span>
-<span id="cb2-593"><a></a>        var a = startPts[i], b = endPts[i];</span>
-<span id="cb2-594"><a></a>        interp[i] = {</span>
-<span id="cb2-595"><a></a>          cx: a.cx + (b.cx - a.cx) * e,</span>
-<span id="cb2-596"><a></a>          cy: a.cy + (b.cy - a.cy) * e</span>
-<span id="cb2-597"><a></a>        };</span>
-<span id="cb2-598"><a></a>      }</span>
-<span id="cb2-599"><a></a></span>
-<span id="cb2-600"><a></a>      el.__curLinePts = interp;</span>
-<span id="cb2-601"><a></a></span>
-<span id="cb2-602"><a></a>      for (var j=0; j&lt;ptsArr.length; j++) {</span>
-<span id="cb2-603"><a></a>        ptsArr[j].el.setAttribute('cx', interp[j].cx);</span>
-<span id="cb2-604"><a></a>        ptsArr[j].el.setAttribute('cy', interp[j].cy);</span>
-<span id="cb2-605"><a></a>      }</span>
-<span id="cb2-606"><a></a>      line.setAttribute('d', pathFromXY(interp));</span>
-<span id="cb2-607"><a></a></span>
-<span id="cb2-608"><a></a>      if (u &lt; 1) {</span>
-<span id="cb2-609"><a></a>        requestAnimationFrame(frame);</span>
-<span id="cb2-610"><a></a>      } else {</span>
-<span id="cb2-611"><a></a>        setToPts(ptsArr, endPts, line);</span>
-<span id="cb2-612"><a></a>        ptsArr.forEach(function(d){ d.el.style.pointerEvents = ''; });</span>
-<span id="cb2-613"><a></a></span>
-<span id="cb2-614"><a></a>        el.__animating = false;</span>
-<span id="cb2-615"><a></a>        el.__animCancel = null;</span>
-<span id="cb2-616"><a></a>        el.__curLinePts = endPts;</span>
-<span id="cb2-617"><a></a></span>
-<span id="cb2-618"><a></a>        if (typeof onDone === 'function') onDone();</span>
-<span id="cb2-619"><a></a>      }</span>
-<span id="cb2-620"><a></a>    }</span>
-<span id="cb2-621"><a></a></span>
-<span id="cb2-622"><a></a>    requestAnimationFrame(frame);</span>
-<span id="cb2-623"><a></a>  }</span>
-<span id="cb2-624"><a></a></span>
-<span id="cb2-625"><a></a>  function finishAnimationNow(ptsArr, line) {</span>
-<span id="cb2-626"><a></a>    if (el.__animating &amp;&amp; el.__animTargetPts &amp;&amp; el.__prevLinePts) {</span>
-<span id="cb2-627"><a></a>      if (el.__animCancel) el.__animCancel();</span>
-<span id="cb2-628"><a></a>      setToPts(ptsArr, el.__animTargetPts, line);</span>
-<span id="cb2-629"><a></a>      ptsArr.forEach(function(d){ d.el.style.pointerEvents = ''; });</span>
-<span id="cb2-630"><a></a></span>
-<span id="cb2-631"><a></a>      el.__animating = false;</span>
-<span id="cb2-632"><a></a>      el.__animCancel = null;</span>
-<span id="cb2-633"><a></a></span>
-<span id="cb2-634"><a></a>      el.__prevLinePts = el.__animTargetPts;</span>
-<span id="cb2-635"><a></a>      el.__curLinePts = el.__animTargetPts;</span>
-<span id="cb2-636"><a></a>    }</span>
-<span id="cb2-637"><a></a>  }</span>
-<span id="cb2-638"><a></a></span>
-<span id="cb2-639"><a></a>  // Read new rendered final positions (but hidden)</span>
-<span id="cb2-640"><a></a>  var ptsArr = getPoints();</span>
-<span id="cb2-641"><a></a>  var nextPts = ptsArr.map(function(d){ return { cx: d.cx, cy: d.cy }; });</span>
-<span id="cb2-642"><a></a>  var line = ensureLine();</span>
-<span id="cb2-643"><a></a></span>
-<span id="cb2-644"><a></a>  // First render: snap and show</span>
-<span id="cb2-645"><a></a>  if (el.__lastStep === undefined || el.__prevLinePts === undefined) {</span>
-<span id="cb2-646"><a></a>    el.__lastStep = step;</span>
-<span id="cb2-647"><a></a>    el.__prevLinePts = nextPts;</span>
-<span id="cb2-648"><a></a>    el.__curLinePts = nextPts;</span>
-<span id="cb2-649"><a></a>    setToPts(ptsArr, nextPts, line);</span>
-<span id="cb2-650"><a></a>    svg.style.visibility = 'visible';</span>
-<span id="cb2-651"><a></a>    return;</span>
-<span id="cb2-652"><a></a>  }</span>
-<span id="cb2-653"><a></a></span>
-<span id="cb2-654"><a></a>  // No new draw: keep synced and show</span>
-<span id="cb2-655"><a></a>  if (step === el.__lastStep) {</span>
-<span id="cb2-656"><a></a>    el.__prevLinePts = nextPts;</span>
-<span id="cb2-657"><a></a>    el.__curLinePts = nextPts;</span>
-<span id="cb2-658"><a></a>    setToPts(ptsArr, nextPts, line);</span>
-<span id="cb2-659"><a></a>    svg.style.visibility = 'visible';</span>
-<span id="cb2-660"><a></a>    return;</span>
-<span id="cb2-661"><a></a>  }</span>
-<span id="cb2-662"><a></a></span>
-<span id="cb2-663"><a></a>  // Defensive: mismatch =&gt; snap and show</span>
-<span id="cb2-664"><a></a>  if (el.__prevLinePts.length !== nextPts.length || nextPts.length === 0) {</span>
-<span id="cb2-665"><a></a>    el.__lastStep = step;</span>
-<span id="cb2-666"><a></a>    el.__prevLinePts = nextPts;</span>
-<span id="cb2-667"><a></a>    el.__curLinePts = nextPts;</span>
-<span id="cb2-668"><a></a>    setToPts(ptsArr, nextPts, line);</span>
-<span id="cb2-669"><a></a>    svg.style.visibility = 'visible';</span>
-<span id="cb2-670"><a></a>    return;</span>
-<span id="cb2-671"><a></a>  }</span>
-<span id="cb2-672"><a></a></span>
-<span id="cb2-673"><a></a>  // Coalesce rapid updates</span>
-<span id="cb2-674"><a></a>  finishAnimationNow(ptsArr, line);</span>
-<span id="cb2-675"><a></a></span>
-<span id="cb2-676"><a></a>  el.__pendingStep = step;</span>
-<span id="cb2-677"><a></a>  el.__pendingNextPts = nextPts;</span>
-<span id="cb2-678"><a></a></span>
-<span id="cb2-679"><a></a>  if (el.__debounceTimer) clearTimeout(el.__debounceTimer);</span>
-<span id="cb2-680"><a></a>  el.__debounceTimer = setTimeout(function() {</span>
-<span id="cb2-681"><a></a>    if (!el.__pendingNextPts) return;</span>
-<span id="cb2-682"><a></a></span>
-<span id="cb2-683"><a></a>    var targetPts = el.__pendingNextPts;</span>
-<span id="cb2-684"><a></a>    var targetStep = el.__pendingStep;</span>
-<span id="cb2-685"><a></a></span>
-<span id="cb2-686"><a></a>    el.__pendingNextPts = null;</span>
-<span id="cb2-687"><a></a>    el.__pendingStep = null;</span>
-<span id="cb2-688"><a></a></span>
-<span id="cb2-689"><a></a>    var startPts = el.__prevLinePts;</span>
-<span id="cb2-690"><a></a></span>
-<span id="cb2-691"><a></a>    animateFromTo(ptsArr, startPts, targetPts, line, DURATION_MS, function() {</span>
-<span id="cb2-692"><a></a>      el.__lastStep = targetStep;</span>
-<span id="cb2-693"><a></a>      el.__prevLinePts = targetPts;</span>
-<span id="cb2-694"><a></a>      el.__curLinePts = targetPts;</span>
-<span id="cb2-695"><a></a>    });</span>
-<span id="cb2-696"><a></a>  }, DEBOUNCE_MS);</span>
-<span id="cb2-697"><a></a></span>
-<span id="cb2-698"><a></a>  // While we wait for debounce, show the baseline (current) state, not the new final state</span>
-<span id="cb2-699"><a></a>  setToPts(ptsArr, el.__prevLinePts, line);</span>
-<span id="cb2-700"><a></a>  svg.style.visibility = 'visible';</span>
-<span id="cb2-701"><a></a>}</span>
-<span id="cb2-702"><a></a>"</span>
-<span id="cb2-703"><a></a>    )</span>
-<span id="cb2-704"><a></a>  })</span>
-<span id="cb2-705"><a></a>}</span>
-<span id="cb2-706"><a></a></span>
-<span id="cb2-707"><a></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a aria-label="1"></a>#| '!! shinylive warning !!': |</span>
+<span id="cb2-2"><a aria-label="2"></a>#|   shinylive does not work in self-contained HTML documents.</span>
+<span id="cb2-3"><a aria-label="3"></a>#|   Please set `embed-resources: false` in your metadata.</span>
+<span id="cb2-4"><a aria-label="4"></a>#| standalone: true</span>
+<span id="cb2-5"><a aria-label="5"></a>library(shiny)</span>
+<span id="cb2-6"><a aria-label="6"></a>library(bslib)</span>
+<span id="cb2-7"><a aria-label="7"></a>library(shinyjs)</span>
+<span id="cb2-8"><a aria-label="8"></a>library(ggplot2)</span>
+<span id="cb2-9"><a aria-label="9"></a>library(ggiraph)</span>
+<span id="cb2-10"><a aria-label="10"></a>library(htmlwidgets)</span>
+<span id="cb2-11"><a aria-label="11"></a>library(uuid)</span>
+<span id="cb2-12"><a aria-label="12"></a>library(munsell) # https://github.com/r-wasm/webr/issues/537</span>
+<span id="cb2-13"><a aria-label="13"></a></span>
+<span id="cb2-14"><a aria-label="14"></a>TOTAL_STONES &lt;- 9L</span>
+<span id="cb2-15"><a aria-label="15"></a></span>
+<span id="cb2-16"><a aria-label="16"></a>CONJECTURE &lt;- vapply(</span>
+<span id="cb2-17"><a aria-label="17"></a>  0:TOTAL_STONES,</span>
+<span id="cb2-18"><a aria-label="18"></a>  function(x) paste0(strrep("🔵", x), strrep("⚫️", TOTAL_STONES - x)),</span>
+<span id="cb2-19"><a aria-label="19"></a>  character(1)</span>
+<span id="cb2-20"><a aria-label="20"></a>)</span>
+<span id="cb2-21"><a aria-label="21"></a></span>
+<span id="cb2-22"><a aria-label="22"></a>SHIFT_HANDLER &lt;- HTML(</span>
+<span id="cb2-23"><a aria-label="23"></a>  "</span>
+<span id="cb2-24"><a aria-label="24"></a>    document.addEventListener('keydown', function(e) {</span>
+<span id="cb2-25"><a aria-label="25"></a>      if (e.key === 'Shift') {</span>
+<span id="cb2-26"><a aria-label="26"></a>        const btn = document.getElementById('drawRandom');</span>
+<span id="cb2-27"><a aria-label="27"></a>        if (btn) btn.innerText = 'Random × 10';</span>
+<span id="cb2-28"><a aria-label="28"></a>      }</span>
+<span id="cb2-29"><a aria-label="29"></a>    });</span>
+<span id="cb2-30"><a aria-label="30"></a></span>
+<span id="cb2-31"><a aria-label="31"></a>    document.addEventListener('keyup', function(e) {</span>
+<span id="cb2-32"><a aria-label="32"></a>      if (e.key === 'Shift') {</span>
+<span id="cb2-33"><a aria-label="33"></a>        const btn = document.getElementById('drawRandom');</span>
+<span id="cb2-34"><a aria-label="34"></a>        if (btn) btn.innerText = 'Random';</span>
+<span id="cb2-35"><a aria-label="35"></a>      }</span>
+<span id="cb2-36"><a aria-label="36"></a>    });</span>
+<span id="cb2-37"><a aria-label="37"></a>  "</span>
+<span id="cb2-38"><a aria-label="38"></a>)</span>
+<span id="cb2-39"><a aria-label="39"></a></span>
+<span id="cb2-40"><a aria-label="40"></a>STYLE &lt;- HTML(</span>
+<span id="cb2-41"><a aria-label="41"></a>  "</span>
+<span id="cb2-42"><a aria-label="42"></a>  h1 { margin-bottom: 0; }</span>
+<span id="cb2-43"><a aria-label="43"></a>  p { font-size: 90%; }</span>
+<span id="cb2-44"><a aria-label="44"></a></span>
+<span id="cb2-45"><a aria-label="45"></a>  /* Prevent table from graying out during recalculation */</span>
+<span id="cb2-46"><a aria-label="46"></a>  #resultTable.recalculating { opacity: 1 !important; }</span>
+<span id="cb2-47"><a aria-label="47"></a>  #resultTable.shiny-output-error,</span>
+<span id="cb2-48"><a aria-label="48"></a>  #resultTable.shiny-output-error-validation { color: inherit; }</span>
+<span id="cb2-49"><a aria-label="49"></a>  /* Shiny adds .shiny-recalculating to the output element while updating */</span>
+<span id="cb2-50"><a aria-label="50"></a>  #resultTable.shiny-recalculating { opacity: 1 !important; }</span>
+<span id="cb2-51"><a aria-label="51"></a>  #resultTable.shiny-recalculating:before { display: none !important; }</span>
+<span id="cb2-52"><a aria-label="52"></a></span>
+<span id="cb2-53"><a aria-label="53"></a>  #resultTable table {</span>
+<span id="cb2-54"><a aria-label="54"></a>    width: 100%;</span>
+<span id="cb2-55"><a aria-label="55"></a>    table-layout: fixed;</span>
+<span id="cb2-56"><a aria-label="56"></a>  }</span>
+<span id="cb2-57"><a aria-label="57"></a></span>
+<span id="cb2-58"><a aria-label="58"></a>  #resultTable th:nth-child(1),</span>
+<span id="cb2-59"><a aria-label="59"></a>  #resultTable td:nth-child(1) { width: 220px; }</span>
+<span id="cb2-60"><a aria-label="60"></a></span>
+<span id="cb2-61"><a aria-label="61"></a>  #resultTable th:nth-child(3),</span>
+<span id="cb2-62"><a aria-label="62"></a>  #resultTable td:nth-child(3) { width: 160px; direction: rtl }</span>
+<span id="cb2-63"><a aria-label="63"></a></span>
+<span id="cb2-64"><a aria-label="64"></a>  #resultTable th:nth-child(4),</span>
+<span id="cb2-65"><a aria-label="65"></a>  #resultTable td:nth-child(4) { width: 80px; }</span>
+<span id="cb2-66"><a aria-label="66"></a></span>
+<span id="cb2-67"><a aria-label="67"></a>  /* --- Stop Shiny from dimming the table while recalculating --- */</span>
+<span id="cb2-68"><a aria-label="68"></a>  /* Shiny uses .recalculating (not always .shiny-recalculating) */</span>
+<span id="cb2-69"><a aria-label="69"></a>  #resultTable.recalculating,</span>
+<span id="cb2-70"><a aria-label="70"></a>  #resultTable.shiny-recalculating {</span>
+<span id="cb2-71"><a aria-label="71"></a>    opacity: 1 !important;</span>
+<span id="cb2-72"><a aria-label="72"></a>  }</span>
+<span id="cb2-73"><a aria-label="73"></a></span>
+<span id="cb2-74"><a aria-label="74"></a>  /* If opacity is applied in a way that affects children, force children too */</span>
+<span id="cb2-75"><a aria-label="75"></a>  #resultTable.recalculating *,</span>
+<span id="cb2-76"><a aria-label="76"></a>  #resultTable.shiny-recalculating * {</span>
+<span id="cb2-77"><a aria-label="77"></a>    opacity: 1 !important;</span>
+<span id="cb2-78"><a aria-label="78"></a>  }s</span>
+<span id="cb2-79"><a aria-label="79"></a></span>
+<span id="cb2-80"><a aria-label="80"></a>  /* Shiny adds a spinner/overlay via pseudo-elements */</span>
+<span id="cb2-81"><a aria-label="81"></a>  #resultTable.recalculating:before,</span>
+<span id="cb2-82"><a aria-label="82"></a>  #resultTable.recalculating:after,</span>
+<span id="cb2-83"><a aria-label="83"></a>  #resultTable.shiny-recalculating:before,</span>
+<span id="cb2-84"><a aria-label="84"></a>  #resultTable.shiny-recalculating:after {</span>
+<span id="cb2-85"><a aria-label="85"></a>    display: none !important;</span>
+<span id="cb2-86"><a aria-label="86"></a>    content: none !important;</span>
+<span id="cb2-87"><a aria-label="87"></a>  }</span>
+<span id="cb2-88"><a aria-label="88"></a></span>
+<span id="cb2-89"><a aria-label="89"></a>  /* ---- full-height main panel + plot fills remaining space ---- */</span>
+<span id="cb2-90"><a aria-label="90"></a>  html, body { height: 100%; }</span>
+<span id="cb2-91"><a aria-label="91"></a>  .bslib-page-sidebar { height: 100vh; }</span>
+<span id="cb2-92"><a aria-label="92"></a></span>
+<span id="cb2-93"><a aria-label="93"></a>  .bslib-page-sidebar .main {</span>
+<span id="cb2-94"><a aria-label="94"></a>    height: 100%;</span>
+<span id="cb2-95"><a aria-label="95"></a>    display: flex;</span>
+<span id="cb2-96"><a aria-label="96"></a>    flex-direction: column;</span>
+<span id="cb2-97"><a aria-label="97"></a>    min-height: 0;</span>
+<span id="cb2-98"><a aria-label="98"></a>  }</span>
+<span id="cb2-99"><a aria-label="99"></a></span>
+<span id="cb2-100"><a aria-label="100"></a>  #probabilityPlot_wrap {</span>
+<span id="cb2-101"><a aria-label="101"></a>    flex: 1 1 auto;</span>
+<span id="cb2-102"><a aria-label="102"></a>    min-height: 0;</span>
+<span id="cb2-103"><a aria-label="103"></a>    width: 100%;</span>
+<span id="cb2-104"><a aria-label="104"></a>  }</span>
+<span id="cb2-105"><a aria-label="105"></a></span>
+<span id="cb2-106"><a aria-label="106"></a>  /* Ensure the htmlwidget + ggiraph wrappers and SVG fill the wrapper */</span>
+<span id="cb2-107"><a aria-label="107"></a>  #probabilityPlot_wrap .html-widget,</span>
+<span id="cb2-108"><a aria-label="108"></a>  #probabilityPlot_wrap .girafe_container,</span>
+<span id="cb2-109"><a aria-label="109"></a>  #probabilityPlot_wrap svg {</span>
+<span id="cb2-110"><a aria-label="110"></a>    width: 100% !important;</span>
+<span id="cb2-111"><a aria-label="111"></a>    height: 100% !important;</span>
+<span id="cb2-112"><a aria-label="112"></a>  }</span>
+<span id="cb2-113"><a aria-label="113"></a>"</span>
+<span id="cb2-114"><a aria-label="114"></a>)</span>
+<span id="cb2-115"><a aria-label="115"></a></span>
+<span id="cb2-116"><a aria-label="116"></a>format2 &lt;- function(x, max_digits = 40L) {</span>
+<span id="cb2-117"><a aria-label="117"></a>  x_chr_fixed &lt;- format(</span>
+<span id="cb2-118"><a aria-label="118"></a>    x,</span>
+<span id="cb2-119"><a aria-label="119"></a>    scientific = FALSE,</span>
+<span id="cb2-120"><a aria-label="120"></a>    trim = TRUE,</span>
+<span id="cb2-121"><a aria-label="121"></a>    digits = 22</span>
+<span id="cb2-122"><a aria-label="122"></a>  )</span>
+<span id="cb2-123"><a aria-label="123"></a>  digit_count &lt;- nchar(gsub("[^0-9]", "", x_chr_fixed))</span>
+<span id="cb2-124"><a aria-label="124"></a>  ifelse(</span>
+<span id="cb2-125"><a aria-label="125"></a>    is.na(x),</span>
+<span id="cb2-126"><a aria-label="126"></a>    NA_character_,</span>
+<span id="cb2-127"><a aria-label="127"></a>    ifelse(</span>
+<span id="cb2-128"><a aria-label="128"></a>      digit_count &gt; max_digits,</span>
+<span id="cb2-129"><a aria-label="129"></a>      format(x, scientific = TRUE, trim = TRUE),</span>
+<span id="cb2-130"><a aria-label="130"></a>      x_chr_fixed</span>
+<span id="cb2-131"><a aria-label="131"></a>    )</span>
+<span id="cb2-132"><a aria-label="132"></a>  )</span>
+<span id="cb2-133"><a aria-label="133"></a>}</span>
+<span id="cb2-134"><a aria-label="134"></a></span>
+<span id="cb2-135"><a aria-label="135"></a>format_probability &lt;- function(x) {</span>
+<span id="cb2-136"><a aria-label="136"></a>  if (is.na(x) || !is.finite(x)) {</span>
+<span id="cb2-137"><a aria-label="137"></a>    return("")</span>
+<span id="cb2-138"><a aria-label="138"></a>  }</span>
+<span id="cb2-139"><a aria-label="139"></a>  if (x &gt; 0 &amp;&amp; x &lt; 0.01) {</span>
+<span id="cb2-140"><a aria-label="140"></a>    return("&lt;0.01")</span>
+<span id="cb2-141"><a aria-label="141"></a>  }</span>
+<span id="cb2-142"><a aria-label="142"></a>  if (x &lt; 1 &amp;&amp; x &gt; 0.995) {</span>
+<span id="cb2-143"><a aria-label="143"></a>    return("&gt;0.99")</span>
+<span id="cb2-144"><a aria-label="144"></a>  }</span>
+<span id="cb2-145"><a aria-label="145"></a>  sprintf("%.2f", x)</span>
+<span id="cb2-146"><a aria-label="146"></a>}</span>
+<span id="cb2-147"><a aria-label="147"></a></span>
+<span id="cb2-148"><a aria-label="148"></a>ui &lt;- page_sidebar(</span>
+<span id="cb2-149"><a aria-label="149"></a>  tags$script(SHIFT_HANDLER),</span>
+<span id="cb2-150"><a aria-label="150"></a>  tags$style(STYLE),</span>
+<span id="cb2-151"><a aria-label="151"></a>  shinyjs::useShinyjs(),</span>
+<span id="cb2-152"><a aria-label="152"></a></span>
+<span id="cb2-153"><a aria-label="153"></a>  sidebar = sidebar(</span>
+<span id="cb2-154"><a aria-label="154"></a>    open = "always",</span>
+<span id="cb2-155"><a aria-label="155"></a>    width = 400,</span>
+<span id="cb2-156"><a aria-label="156"></a></span>
+<span id="cb2-157"><a aria-label="157"></a>    h2("Bayesian Updating"),</span>
+<span id="cb2-158"><a aria-label="158"></a>    p(</span>
+<span id="cb2-159"><a aria-label="159"></a>      "Imagine you have a bag of 9 stones. Each stone is either blue or black, but you don't know how many of each color you have."</span>
+<span id="cb2-160"><a aria-label="160"></a>    ),</span>
+<span id="cb2-161"><a aria-label="161"></a>    p(</span>
+<span id="cb2-162"><a aria-label="162"></a>      "You can draw stones from the bag one at a time, noting down its color and then placing it back in the bag. The more you repeat this process, the more you can infer about the contents of the bag."</span>
+<span id="cb2-163"><a aria-label="163"></a>    ),</span>
+<span id="cb2-164"><a aria-label="164"></a>    p(</span>
+<span id="cb2-165"><a aria-label="165"></a>      "This graph represents a",</span>
+<span id="cb2-166"><a aria-label="166"></a>      tags$b("probability distribution", .noWS = c("after")),</span>
+<span id="cb2-167"><a aria-label="167"></a>      ". From limited observations, we can never be absolutely certain of the contents of the bag, but we can say that some possibilities are more likely than others."</span>
+<span id="cb2-168"><a aria-label="168"></a>    ),</span>
+<span id="cb2-169"><a aria-label="169"></a></span>
+<span id="cb2-170"><a aria-label="170"></a>    div(</span>
+<span id="cb2-171"><a aria-label="171"></a>      id = "bagContents_wrap",</span>
+<span id="cb2-172"><a aria-label="172"></a>      selectizeInput(</span>
+<span id="cb2-173"><a aria-label="173"></a>        "bagContents",</span>
+<span id="cb2-174"><a aria-label="174"></a>        "Contents of the bag:",</span>
+<span id="cb2-175"><a aria-label="175"></a>        choices = c(</span>
+<span id="cb2-176"><a aria-label="176"></a>          "Hidden" = "hidden",</span>
+<span id="cb2-177"><a aria-label="177"></a>          "⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 0,</span>
+<span id="cb2-178"><a aria-label="178"></a>          "🔵⚫️⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 1,</span>
+<span id="cb2-179"><a aria-label="179"></a>          "🔵🔵⚫️⚫️⚫️⚫️⚫️⚫️⚫️" = 2,</span>
+<span id="cb2-180"><a aria-label="180"></a>          "🔵🔵🔵⚫️⚫️⚫️⚫️⚫️⚫️" = 3,</span>
+<span id="cb2-181"><a aria-label="181"></a>          "🔵🔵🔵🔵⚫️⚫️⚫️⚫️⚫️" = 4,</span>
+<span id="cb2-182"><a aria-label="182"></a>          "🔵🔵🔵🔵🔵⚫️⚫️⚫️⚫️" = 5,</span>
+<span id="cb2-183"><a aria-label="183"></a>          "🔵🔵🔵🔵🔵🔵⚫️⚫️⚫️" = 6,</span>
+<span id="cb2-184"><a aria-label="184"></a>          "🔵🔵🔵🔵🔵🔵🔵⚫️⚫️" = 7,</span>
+<span id="cb2-185"><a aria-label="185"></a>          "🔵🔵🔵🔵🔵🔵🔵🔵⚫️" = 8,</span>
+<span id="cb2-186"><a aria-label="186"></a>          "🔵🔵🔵🔵🔵🔵🔵🔵🔵" = 9</span>
+<span id="cb2-187"><a aria-label="187"></a>        )</span>
+<span id="cb2-188"><a aria-label="188"></a>      )</span>
+<span id="cb2-189"><a aria-label="189"></a>    ),</span>
+<span id="cb2-190"><a aria-label="190"></a></span>
+<span id="cb2-191"><a aria-label="191"></a>    div("Draw a stone:"),</span>
+<span id="cb2-192"><a aria-label="192"></a>    div(</span>
+<span id="cb2-193"><a aria-label="193"></a>      style = "display: flex; gap: 10px;",</span>
+<span id="cb2-194"><a aria-label="194"></a>      actionButton("drawWhite", "⚫️"),</span>
+<span id="cb2-195"><a aria-label="195"></a>      actionButton("drawBlue", "🔵"),</span>
+<span id="cb2-196"><a aria-label="196"></a>      actionButton(</span>
+<span id="cb2-197"><a aria-label="197"></a>        "drawRandom",</span>
+<span id="cb2-198"><a aria-label="198"></a>        "Random",</span>
+<span id="cb2-199"><a aria-label="199"></a>        style = "flex: 1;",</span>
+<span id="cb2-200"><a aria-label="200"></a>        onclick = "</span>
+<span id="cb2-201"><a aria-label="201"></a>          Shiny.setInputValue(</span>
+<span id="cb2-202"><a aria-label="202"></a>            'drawRandom_n',</span>
+<span id="cb2-203"><a aria-label="203"></a>            event.shiftKey ? 10 : 1,</span>
+<span id="cb2-204"><a aria-label="204"></a>            {priority: 'event'}</span>
+<span id="cb2-205"><a aria-label="205"></a>          );</span>
+<span id="cb2-206"><a aria-label="206"></a>        "</span>
+<span id="cb2-207"><a aria-label="207"></a>      )</span>
+<span id="cb2-208"><a aria-label="208"></a>    ),</span>
+<span id="cb2-209"><a aria-label="209"></a>    actionButton("reset", "Reset", class = "btn-danger")</span>
+<span id="cb2-210"><a aria-label="210"></a>  ),</span>
+<span id="cb2-211"><a aria-label="211"></a></span>
+<span id="cb2-212"><a aria-label="212"></a>  mainPanel(</span>
+<span id="cb2-213"><a aria-label="213"></a>    width = 12,</span>
+<span id="cb2-214"><a aria-label="214"></a>    uiOutput("dynamicHeader"),</span>
+<span id="cb2-215"><a aria-label="215"></a>    tableOutput("resultTable"),</span>
+<span id="cb2-216"><a aria-label="216"></a>    div(</span>
+<span id="cb2-217"><a aria-label="217"></a>      id = "probabilityPlot_wrap",</span>
+<span id="cb2-218"><a aria-label="218"></a>      ggiraph::girafeOutput("probabilityPlot")</span>
+<span id="cb2-219"><a aria-label="219"></a>    )</span>
+<span id="cb2-220"><a aria-label="220"></a>  )</span>
+<span id="cb2-221"><a aria-label="221"></a>)</span>
+<span id="cb2-222"><a aria-label="222"></a></span>
+<span id="cb2-223"><a aria-label="223"></a>server &lt;- function(input, output, session) {</span>
+<span id="cb2-224"><a aria-label="224"></a>  # webR/shinylive starts every session with the same fixed RNG seed, so the</span>
+<span id="cb2-225"><a aria-label="225"></a>  # first sample() would otherwise be deterministic. Seed from sub-second wall</span>
+<span id="cb2-226"><a aria-label="226"></a>  # clock to get fresh randomness per page load.</span>
+<span id="cb2-227"><a aria-label="227"></a>  set.seed(as.integer((as.numeric(Sys.time()) * 1000) %% .Machine$integer.max))</span>
+<span id="cb2-228"><a aria-label="228"></a></span>
+<span id="cb2-229"><a aria-label="229"></a>  bag_blue &lt;- reactiveVal(NULL)</span>
+<span id="cb2-230"><a aria-label="230"></a>  draws &lt;- reactiveVal(character())</span>
+<span id="cb2-231"><a aria-label="231"></a></span>
+<span id="cb2-232"><a aria-label="232"></a>  lik_hist &lt;- reactiveVal(list())</span>
+<span id="cb2-233"><a aria-label="233"></a>  max_hist &lt;- 10L</span>
+<span id="cb2-234"><a aria-label="234"></a></span>
+<span id="cb2-235"><a aria-label="235"></a>  observeEvent(</span>
+<span id="cb2-236"><a aria-label="236"></a>    input$bagContents,</span>
+<span id="cb2-237"><a aria-label="237"></a>    {</span>
+<span id="cb2-238"><a aria-label="238"></a>      if (input$bagContents == "hidden") {</span>
+<span id="cb2-239"><a aria-label="239"></a>        bag_blue(sample(0:TOTAL_STONES, 1))</span>
+<span id="cb2-240"><a aria-label="240"></a>      } else {</span>
+<span id="cb2-241"><a aria-label="241"></a>        bag_blue(as.integer(input$bagContents))</span>
+<span id="cb2-242"><a aria-label="242"></a>      }</span>
+<span id="cb2-243"><a aria-label="243"></a>    },</span>
+<span id="cb2-244"><a aria-label="244"></a>    ignoreInit = FALSE</span>
+<span id="cb2-245"><a aria-label="245"></a>  )</span>
+<span id="cb2-246"><a aria-label="246"></a></span>
+<span id="cb2-247"><a aria-label="247"></a>  observeEvent(input$drawBlue, draws(c(draws(), "🔵")))</span>
+<span id="cb2-248"><a aria-label="248"></a>  observeEvent(input$drawWhite, draws(c(draws(), "⚫️")))</span>
+<span id="cb2-249"><a aria-label="249"></a></span>
+<span id="cb2-250"><a aria-label="250"></a>  observeEvent(</span>
+<span id="cb2-251"><a aria-label="251"></a>    input$drawRandom_n,</span>
+<span id="cb2-252"><a aria-label="252"></a>    {</span>
+<span id="cb2-253"><a aria-label="253"></a>      req(!is.null(bag_blue()))</span>
+<span id="cb2-254"><a aria-label="254"></a>      n_draws &lt;- as.integer(input$drawRandom_n)</span>
+<span id="cb2-255"><a aria-label="255"></a>      pool &lt;- c(rep("🔵", bag_blue()), rep("⚫️", TOTAL_STONES - bag_blue()))</span>
+<span id="cb2-256"><a aria-label="256"></a>      draws(c(draws(), sample(pool, n_draws, replace = TRUE)))</span>
+<span id="cb2-257"><a aria-label="257"></a>    },</span>
+<span id="cb2-258"><a aria-label="258"></a>    ignoreInit = TRUE</span>
+<span id="cb2-259"><a aria-label="259"></a>  )</span>
+<span id="cb2-260"><a aria-label="260"></a></span>
+<span id="cb2-261"><a aria-label="261"></a>  observeEvent(input$reset, {</span>
+<span id="cb2-262"><a aria-label="262"></a>    draws(character())</span>
+<span id="cb2-263"><a aria-label="263"></a>    lik_hist(list())</span>
+<span id="cb2-264"><a aria-label="264"></a>    # bag_blue(sample(0:TOTAL_STONES, 1))</span>
+<span id="cb2-265"><a aria-label="265"></a>    updateSelectizeInput(session, "bagContents", selected = "hidden")</span>
+<span id="cb2-266"><a aria-label="266"></a>  })</span>
+<span id="cb2-267"><a aria-label="267"></a></span>
+<span id="cb2-268"><a aria-label="268"></a>  observe({</span>
+<span id="cb2-269"><a aria-label="269"></a>    has_draws &lt;- length(draws()) &gt; 0</span>
+<span id="cb2-270"><a aria-label="270"></a>    if (has_draws) {</span>
+<span id="cb2-271"><a aria-label="271"></a>      shinyjs::disable("bagContents")</span>
+<span id="cb2-272"><a aria-label="272"></a>      shinyjs::enable("reset")</span>
+<span id="cb2-273"><a aria-label="273"></a>    } else {</span>
+<span id="cb2-274"><a aria-label="274"></a>      shinyjs::enable("bagContents")</span>
+<span id="cb2-275"><a aria-label="275"></a>      shinyjs::disable("reset")</span>
+<span id="cb2-276"><a aria-label="276"></a>    }</span>
+<span id="cb2-277"><a aria-label="277"></a>  })</span>
+<span id="cb2-278"><a aria-label="278"></a></span>
+<span id="cb2-279"><a aria-label="279"></a>  observe({</span>
+<span id="cb2-280"><a aria-label="280"></a>    req(!is.null(bag_blue()))</span>
+<span id="cb2-281"><a aria-label="281"></a>    tip &lt;- sprintf("blue stones = %d (out of %d)", bag_blue(), TOTAL_STONES)</span>
+<span id="cb2-282"><a aria-label="282"></a>    shinyjs::runjs(sprintf(</span>
+<span id="cb2-283"><a aria-label="283"></a>      "$('#bagContents_wrap .selectize-control').attr('title', %s);",</span>
+<span id="cb2-284"><a aria-label="284"></a>      shQuote(tip)</span>
+<span id="cb2-285"><a aria-label="285"></a>    ))</span>
+<span id="cb2-286"><a aria-label="286"></a>  })</span>
+<span id="cb2-287"><a aria-label="287"></a></span>
+<span id="cb2-288"><a aria-label="288"></a>  table_state &lt;- reactive({</span>
+<span id="cb2-289"><a aria-label="289"></a>    d &lt;- draws()</span>
+<span id="cb2-290"><a aria-label="290"></a>    n &lt;- length(d)</span>
+<span id="cb2-291"><a aria-label="291"></a></span>
+<span id="cb2-292"><a aria-label="292"></a>    header &lt;- if (n == 0) {</span>
+<span id="cb2-293"><a aria-label="293"></a>      "Draw Results"</span>
+<span id="cb2-294"><a aria-label="294"></a>    } else if (n &lt;= 20) {</span>
+<span id="cb2-295"><a aria-label="295"></a>      paste(d, collapse = "\u00A0")</span>
+<span id="cb2-296"><a aria-label="296"></a>    } else {</span>
+<span id="cb2-297"><a aria-label="297"></a>      tbl &lt;- sort(table(d), decreasing = TRUE)</span>
+<span id="cb2-298"><a aria-label="298"></a>      labels &lt;- paste(names(tbl), "×", as.integer(tbl))</span>
+<span id="cb2-299"><a aria-label="299"></a>      paste(labels, collapse = ", ")</span>
+<span id="cb2-300"><a aria-label="300"></a>    }</span>
+<span id="cb2-301"><a aria-label="301"></a></span>
+<span id="cb2-302"><a aria-label="302"></a>    if (n == 0) {</span>
+<span id="cb2-303"><a aria-label="303"></a>      df &lt;- data.frame(</span>
+<span id="cb2-304"><a aria-label="304"></a>        conjecture = CONJECTURE,</span>
+<span id="cb2-305"><a aria-label="305"></a>        possibilities = "-",</span>
+<span id="cb2-306"><a aria-label="306"></a>        total = "-",</span>
+<span id="cb2-307"><a aria-label="307"></a>        probability = rep(1 / (TOTAL_STONES + 1), TOTAL_STONES + 1),</span>
+<span id="cb2-308"><a aria-label="308"></a>        stringsAsFactors = FALSE</span>
+<span id="cb2-309"><a aria-label="309"></a>      )</span>
+<span id="cb2-310"><a aria-label="310"></a>      return(list(df = df, header = header))</span>
+<span id="cb2-311"><a aria-label="311"></a>    }</span>
+<span id="cb2-312"><a aria-label="312"></a></span>
+<span id="cb2-313"><a aria-label="313"></a>    factors &lt;- lapply(</span>
+<span id="cb2-314"><a aria-label="314"></a>      0:TOTAL_STONES,</span>
+<span id="cb2-315"><a aria-label="315"></a>      function(bx) ifelse(d == "🔵", bx, TOTAL_STONES - bx)</span>
+<span id="cb2-316"><a aria-label="316"></a>    )</span>
+<span id="cb2-317"><a aria-label="317"></a></span>
+<span id="cb2-318"><a aria-label="318"></a>    formula &lt;- vapply(</span>
+<span id="cb2-319"><a aria-label="319"></a>      factors,</span>
+<span id="cb2-320"><a aria-label="320"></a>      function(f) {</span>
+<span id="cb2-321"><a aria-label="321"></a>        if (n &lt;= 20) {</span>
+<span id="cb2-322"><a aria-label="322"></a>          paste0(f, collapse = " × ")</span>
+<span id="cb2-323"><a aria-label="323"></a>        } else {</span>
+<span id="cb2-324"><a aria-label="324"></a>          tbl &lt;- sort(table(f), decreasing = TRUE)</span>
+<span id="cb2-325"><a aria-label="325"></a>          labels &lt;- paste0(names(tbl), "&lt;sup&gt;", as.integer(tbl), "&lt;/sup&gt;")</span>
+<span id="cb2-326"><a aria-label="326"></a>          paste(labels, collapse = " × ")</span>
+<span id="cb2-327"><a aria-label="327"></a>        }</span>
+<span id="cb2-328"><a aria-label="328"></a>      },</span>
+<span id="cb2-329"><a aria-label="329"></a>      character(1)</span>
+<span id="cb2-330"><a aria-label="330"></a>    )</span>
+<span id="cb2-331"><a aria-label="331"></a></span>
+<span id="cb2-332"><a aria-label="332"></a>    log_paths &lt;- vapply(factors, function(f) sum(log(f)), numeric(1))</span>
+<span id="cb2-333"><a aria-label="333"></a></span>
+<span id="cb2-334"><a aria-label="334"></a>    m &lt;- max(log_paths)</span>
+<span id="cb2-335"><a aria-label="335"></a>    paths_scaled &lt;- exp(log_paths - m)</span>
+<span id="cb2-336"><a aria-label="336"></a>    probability &lt;- paths_scaled / sum(paths_scaled)</span>
+<span id="cb2-337"><a aria-label="337"></a></span>
+<span id="cb2-338"><a aria-label="338"></a>    paths &lt;- vapply(factors, prod, numeric(1))</span>
+<span id="cb2-339"><a aria-label="339"></a></span>
+<span id="cb2-340"><a aria-label="340"></a>    df &lt;- data.frame(</span>
+<span id="cb2-341"><a aria-label="341"></a>      conjecture = CONJECTURE,</span>
+<span id="cb2-342"><a aria-label="342"></a>      possibilities = formula,</span>
+<span id="cb2-343"><a aria-label="343"></a>      total = format2(round(paths, 0)),</span>
+<span id="cb2-344"><a aria-label="344"></a>      probability = probability,</span>
+<span id="cb2-345"><a aria-label="345"></a>      stringsAsFactors = FALSE</span>
+<span id="cb2-346"><a aria-label="346"></a>    )</span>
+<span id="cb2-347"><a aria-label="347"></a></span>
+<span id="cb2-348"><a aria-label="348"></a>    list(df = df, header = header)</span>
+<span id="cb2-349"><a aria-label="349"></a>  })</span>
+<span id="cb2-350"><a aria-label="350"></a></span>
+<span id="cb2-351"><a aria-label="351"></a>  output$dynamicHeader &lt;- renderUI({</span>
+<span id="cb2-352"><a aria-label="352"></a>    h4(HTML(sprintf(</span>
+<span id="cb2-353"><a aria-label="353"></a>      "&lt;span style='letter-spacing:0.15em;'&gt;%s&lt;/span&gt;",</span>
+<span id="cb2-354"><a aria-label="354"></a>      table_state()$header</span>
+<span id="cb2-355"><a aria-label="355"></a>    )))</span>
+<span id="cb2-356"><a aria-label="356"></a>  })</span>
+<span id="cb2-357"><a aria-label="357"></a></span>
+<span id="cb2-358"><a aria-label="358"></a>  output$resultTable &lt;- renderTable(</span>
+<span id="cb2-359"><a aria-label="359"></a>    {</span>
+<span id="cb2-360"><a aria-label="360"></a>      df &lt;- table_state()$df</span>
+<span id="cb2-361"><a aria-label="361"></a>      df$probability &lt;- vapply(df$probability, format_probability, character(1))</span>
+<span id="cb2-362"><a aria-label="362"></a>      df</span>
+<span id="cb2-363"><a aria-label="363"></a>    },</span>
+<span id="cb2-364"><a aria-label="364"></a>    striped = TRUE,</span>
+<span id="cb2-365"><a aria-label="365"></a>    hover = TRUE,</span>
+<span id="cb2-366"><a aria-label="366"></a>    bordered = FALSE,</span>
+<span id="cb2-367"><a aria-label="367"></a>    spacing = "s",</span>
+<span id="cb2-368"><a aria-label="368"></a>    rownames = FALSE,</span>
+<span id="cb2-369"><a aria-label="369"></a>    width = "100%",</span>
+<span id="cb2-370"><a aria-label="370"></a>    align = "llrr",</span>
+<span id="cb2-371"><a aria-label="371"></a>    sanitize.text.function = function(x) x</span>
+<span id="cb2-372"><a aria-label="372"></a>  )</span>
+<span id="cb2-373"><a aria-label="373"></a></span>
+<span id="cb2-374"><a aria-label="374"></a>  probability_vector &lt;- reactive(table_state()$df$probability)</span>
+<span id="cb2-375"><a aria-label="375"></a></span>
+<span id="cb2-376"><a aria-label="376"></a>  observeEvent(</span>
+<span id="cb2-377"><a aria-label="377"></a>    probability_vector(),</span>
+<span id="cb2-378"><a aria-label="378"></a>    {</span>
+<span id="cb2-379"><a aria-label="379"></a>      y &lt;- probability_vector()</span>
+<span id="cb2-380"><a aria-label="380"></a>      h &lt;- lik_hist()</span>
+<span id="cb2-381"><a aria-label="381"></a></span>
+<span id="cb2-382"><a aria-label="382"></a>      if (length(h) == 0 || !isTRUE(all.equal(h[[length(h)]], y))) {</span>
+<span id="cb2-383"><a aria-label="383"></a>        h &lt;- c(h, list(y))</span>
+<span id="cb2-384"><a aria-label="384"></a>        if (length(h) &gt; max_hist) {</span>
+<span id="cb2-385"><a aria-label="385"></a>          h &lt;- tail(h, max_hist)</span>
+<span id="cb2-386"><a aria-label="386"></a>        }</span>
+<span id="cb2-387"><a aria-label="387"></a>        lik_hist(h)</span>
+<span id="cb2-388"><a aria-label="388"></a>      }</span>
+<span id="cb2-389"><a aria-label="389"></a>    },</span>
+<span id="cb2-390"><a aria-label="390"></a>    ignoreInit = TRUE</span>
+<span id="cb2-391"><a aria-label="391"></a>  )</span>
+<span id="cb2-392"><a aria-label="392"></a></span>
+<span id="cb2-393"><a aria-label="393"></a>  make_plot_data &lt;- function(df, h) {</span>
+<span id="cb2-394"><a aria-label="394"></a>    x &lt;- 0:TOTAL_STONES</span>
+<span id="cb2-395"><a aria-label="395"></a></span>
+<span id="cb2-396"><a aria-label="396"></a>    cur &lt;- data.frame(</span>
+<span id="cb2-397"><a aria-label="397"></a>      x = x,</span>
+<span id="cb2-398"><a aria-label="398"></a>      y = df$probability,</span>
+<span id="cb2-399"><a aria-label="399"></a>      conjecture = df$conjecture,</span>
+<span id="cb2-400"><a aria-label="400"></a>      stringsAsFactors = FALSE</span>
+<span id="cb2-401"><a aria-label="401"></a>    )</span>
+<span id="cb2-402"><a aria-label="402"></a></span>
+<span id="cb2-403"><a aria-label="403"></a>    ghost_df &lt;- NULL</span>
+<span id="cb2-404"><a aria-label="404"></a>    if (length(h) &gt; 1) {</span>
+<span id="cb2-405"><a aria-label="405"></a>      ghosts &lt;- h[-length(h)]</span>
+<span id="cb2-406"><a aria-label="406"></a>      n_ghosts &lt;- length(ghosts)</span>
+<span id="cb2-407"><a aria-label="407"></a></span>
+<span id="cb2-408"><a aria-label="408"></a>      gray_vals_full &lt;- as.integer(round(seq(240, 120, length.out = max_hist)))</span>
+<span id="cb2-409"><a aria-label="409"></a>      gray_vals &lt;- tail(gray_vals_full, n_ghosts)</span>
+<span id="cb2-410"><a aria-label="410"></a>      ghost_cols &lt;- rgb(gray_vals, gray_vals, gray_vals, maxColorValue = 255)</span>
+<span id="cb2-411"><a aria-label="411"></a></span>
+<span id="cb2-412"><a aria-label="412"></a>      ghost_df &lt;- do.call(</span>
+<span id="cb2-413"><a aria-label="413"></a>        rbind,</span>
+<span id="cb2-414"><a aria-label="414"></a>        lapply(seq_along(ghosts), function(i) {</span>
+<span id="cb2-415"><a aria-label="415"></a>          data.frame(</span>
+<span id="cb2-416"><a aria-label="416"></a>            step = i,</span>
+<span id="cb2-417"><a aria-label="417"></a>            x = x,</span>
+<span id="cb2-418"><a aria-label="418"></a>            y = ghosts[[i]],</span>
+<span id="cb2-419"><a aria-label="419"></a>            col = ghost_cols[i],</span>
+<span id="cb2-420"><a aria-label="420"></a>            stringsAsFactors = FALSE</span>
+<span id="cb2-421"><a aria-label="421"></a>          )</span>
+<span id="cb2-422"><a aria-label="422"></a>        })</span>
+<span id="cb2-423"><a aria-label="423"></a>      )</span>
+<span id="cb2-424"><a aria-label="424"></a>    }</span>
+<span id="cb2-425"><a aria-label="425"></a></span>
+<span id="cb2-426"><a aria-label="426"></a>    list(cur = cur, ghost = ghost_df)</span>
+<span id="cb2-427"><a aria-label="427"></a>  }</span>
+<span id="cb2-428"><a aria-label="428"></a></span>
+<span id="cb2-429"><a aria-label="429"></a>  output$probabilityPlot &lt;- ggiraph::renderGirafe({</span>
+<span id="cb2-430"><a aria-label="430"></a>    df &lt;- table_state()$df</span>
+<span id="cb2-431"><a aria-label="431"></a>    h &lt;- lik_hist()</span>
+<span id="cb2-432"><a aria-label="432"></a></span>
+<span id="cb2-433"><a aria-label="433"></a>    pd &lt;- make_plot_data(df, h)</span>
+<span id="cb2-434"><a aria-label="434"></a>    cur &lt;- pd$cur</span>
+<span id="cb2-435"><a aria-label="435"></a>    ghost &lt;- pd$ghost</span>
+<span id="cb2-436"><a aria-label="436"></a></span>
+<span id="cb2-437"><a aria-label="437"></a>    cur$point_id &lt;- paste0("curpt-", cur$x)</span>
+<span id="cb2-438"><a aria-label="438"></a></span>
+<span id="cb2-439"><a aria-label="439"></a>    # Tooltip changes:</span>
+<span id="cb2-440"><a aria-label="440"></a>    # - emoji line first (conjecture)</span>
+<span id="cb2-441"><a aria-label="441"></a>    # - probability formatted like the table</span>
+<span id="cb2-442"><a aria-label="442"></a>    cur$tooltip &lt;- sprintf(</span>
+<span id="cb2-443"><a aria-label="443"></a>      "%s\nBlue stones: %d\nprobability: %s",</span>
+<span id="cb2-444"><a aria-label="444"></a>      cur$conjecture,</span>
+<span id="cb2-445"><a aria-label="445"></a>      cur$x,</span>
+<span id="cb2-446"><a aria-label="446"></a>      vapply(cur$y, format_probability, character(1))</span>
+<span id="cb2-447"><a aria-label="447"></a>    )</span>
+<span id="cb2-448"><a aria-label="448"></a></span>
+<span id="cb2-449"><a aria-label="449"></a>    p &lt;- ggplot()</span>
+<span id="cb2-450"><a aria-label="450"></a></span>
+<span id="cb2-451"><a aria-label="451"></a>    # ghosts</span>
+<span id="cb2-452"><a aria-label="452"></a>    if (!is.null(ghost) &amp;&amp; nrow(ghost) &gt; 0) {</span>
+<span id="cb2-453"><a aria-label="453"></a>      p &lt;- p +</span>
+<span id="cb2-454"><a aria-label="454"></a>        geom_line(</span>
+<span id="cb2-455"><a aria-label="455"></a>          data = ghost,</span>
+<span id="cb2-456"><a aria-label="456"></a>          aes(x = x, y = y, group = step, color = col),</span>
+<span id="cb2-457"><a aria-label="457"></a>          linewidth = 0.7</span>
+<span id="cb2-458"><a aria-label="458"></a>        ) +</span>
+<span id="cb2-459"><a aria-label="459"></a>        scale_color_identity()</span>
+<span id="cb2-460"><a aria-label="460"></a>    }</span>
+<span id="cb2-461"><a aria-label="461"></a></span>
+<span id="cb2-462"><a aria-label="462"></a>    # current: points only (line is drawn + animated in JS)</span>
+<span id="cb2-463"><a aria-label="463"></a>    p &lt;- p +</span>
+<span id="cb2-464"><a aria-label="464"></a>      ggiraph::geom_point_interactive(</span>
+<span id="cb2-465"><a aria-label="465"></a>        data = cur,</span>
+<span id="cb2-466"><a aria-label="466"></a>        aes(x = x, y = y, tooltip = tooltip, data_id = point_id),</span>
+<span id="cb2-467"><a aria-label="467"></a>        size = 2.6,</span>
+<span id="cb2-468"><a aria-label="468"></a>        color = "black"</span>
+<span id="cb2-469"><a aria-label="469"></a>      ) +</span>
+<span id="cb2-470"><a aria-label="470"></a>      scale_x_continuous(breaks = 0:TOTAL_STONES, limits = c(0, TOTAL_STONES)) +</span>
+<span id="cb2-471"><a aria-label="471"></a>      scale_y_continuous(</span>
+<span id="cb2-472"><a aria-label="472"></a>        limits = c(-0.05, 1.05),</span>
+<span id="cb2-473"><a aria-label="473"></a>        expand = expansion(mult = c(0, 0.02))</span>
+<span id="cb2-474"><a aria-label="474"></a>      ) +</span>
+<span id="cb2-475"><a aria-label="475"></a>      labs(x = "Number of blue stones", y = "probability") +</span>
+<span id="cb2-476"><a aria-label="476"></a>      theme_minimal(base_size = 13) +</span>
+<span id="cb2-477"><a aria-label="477"></a>      theme(panel.grid.minor = element_blank(), legend.position = "none")</span>
+<span id="cb2-478"><a aria-label="478"></a></span>
+<span id="cb2-479"><a aria-label="479"></a>    g &lt;- ggiraph::girafe(</span>
+<span id="cb2-480"><a aria-label="480"></a>      ggobj = p,</span>
+<span id="cb2-481"><a aria-label="481"></a>      width_svg = 12,</span>
+<span id="cb2-482"><a aria-label="482"></a>      height_svg = 4,</span>
+<span id="cb2-483"><a aria-label="483"></a>      options = list(</span>
+<span id="cb2-484"><a aria-label="484"></a>        ggiraph::opts_sizing(rescale = FALSE),</span>
+<span id="cb2-485"><a aria-label="485"></a>        ggiraph::opts_hover(css = "fill:black; r:5px;"),</span>
+<span id="cb2-486"><a aria-label="486"></a>        ggiraph::opts_tooltip(</span>
+<span id="cb2-487"><a aria-label="487"></a>          css = "background-color: white; border: 1px solid #999; padding: 6px; border-radius: 4px;"</span>
+<span id="cb2-488"><a aria-label="488"></a>        )</span>
+<span id="cb2-489"><a aria-label="489"></a>      )</span>
+<span id="cb2-490"><a aria-label="490"></a>    )</span>
+<span id="cb2-491"><a aria-label="491"></a></span>
+<span id="cb2-492"><a aria-label="492"></a>    g$x$step &lt;- length(draws())</span>
+<span id="cb2-493"><a aria-label="493"></a></span>
+<span id="cb2-494"><a aria-label="494"></a>    htmlwidgets::onRender(</span>
+<span id="cb2-495"><a aria-label="495"></a>      g,</span>
+<span id="cb2-496"><a aria-label="496"></a>      "</span>
+<span id="cb2-497"><a aria-label="497"></a>function(el, x) {</span>
+<span id="cb2-498"><a aria-label="498"></a>  var svg = el.querySelector('svg');</span>
+<span id="cb2-499"><a aria-label="499"></a>  if (!svg) return;</span>
+<span id="cb2-500"><a aria-label="500"></a></span>
+<span id="cb2-501"><a aria-label="501"></a>  // Let SVG stretch to match the available rectangle</span>
+<span id="cb2-502"><a aria-label="502"></a>  svg.setAttribute('preserveAspectRatio', 'none');</span>
+<span id="cb2-503"><a aria-label="503"></a>  svg.setAttribute('width', '100%');</span>
+<span id="cb2-504"><a aria-label="504"></a>  svg.setAttribute('height', '100%');</span>
+<span id="cb2-505"><a aria-label="505"></a></span>
+<span id="cb2-506"><a aria-label="506"></a>  // Hide immediately to prevent flash of new final coordinates</span>
+<span id="cb2-507"><a aria-label="507"></a>  svg.style.visibility = 'hidden';</span>
+<span id="cb2-508"><a aria-label="508"></a></span>
+<span id="cb2-509"><a aria-label="509"></a>  var step = x.step;</span>
+<span id="cb2-510"><a aria-label="510"></a></span>
+<span id="cb2-511"><a aria-label="511"></a>  function getPoints() {</span>
+<span id="cb2-512"><a aria-label="512"></a>    var pts = Array.prototype.slice.call(svg.querySelectorAll('[data-id^=\"curpt-\"]'));</span>
+<span id="cb2-513"><a aria-label="513"></a>    var arr = pts.map(function(pt) {</span>
+<span id="cb2-514"><a aria-label="514"></a>      var id = pt.getAttribute('data-id');</span>
+<span id="cb2-515"><a aria-label="515"></a>      var idx = parseInt(id.replace('curpt-', ''), 10);</span>
+<span id="cb2-516"><a aria-label="516"></a>      return {</span>
+<span id="cb2-517"><a aria-label="517"></a>        id: id,</span>
+<span id="cb2-518"><a aria-label="518"></a>        idx: idx,</span>
+<span id="cb2-519"><a aria-label="519"></a>        el: pt,</span>
+<span id="cb2-520"><a aria-label="520"></a>        cx: parseFloat(pt.getAttribute('cx')),</span>
+<span id="cb2-521"><a aria-label="521"></a>        cy: parseFloat(pt.getAttribute('cy'))</span>
+<span id="cb2-522"><a aria-label="522"></a>      };</span>
+<span id="cb2-523"><a aria-label="523"></a>    }).filter(function(d) {</span>
+<span id="cb2-524"><a aria-label="524"></a>      return isFinite(d.idx) &amp;&amp; isFinite(d.cx) &amp;&amp; isFinite(d.cy);</span>
+<span id="cb2-525"><a aria-label="525"></a>    });</span>
+<span id="cb2-526"><a aria-label="526"></a>    arr.sort(function(a,b){ return a.idx - b.idx; });</span>
+<span id="cb2-527"><a aria-label="527"></a>    return arr;</span>
+<span id="cb2-528"><a aria-label="528"></a>  }</span>
+<span id="cb2-529"><a aria-label="529"></a></span>
+<span id="cb2-530"><a aria-label="530"></a>  function ensureLine() {</span>
+<span id="cb2-531"><a aria-label="531"></a>    var line = svg.querySelector('#curline-js');</span>
+<span id="cb2-532"><a aria-label="532"></a>    if (!line) {</span>
+<span id="cb2-533"><a aria-label="533"></a>      line = document.createElementNS('http://www.w3.org/2000/svg', 'path');</span>
+<span id="cb2-534"><a aria-label="534"></a>      line.setAttribute('id', 'curline-js');</span>
+<span id="cb2-535"><a aria-label="535"></a>      line.setAttribute('fill', 'none');</span>
+<span id="cb2-536"><a aria-label="536"></a>      line.setAttribute('stroke', 'black');</span>
+<span id="cb2-537"><a aria-label="537"></a>      line.setAttribute('stroke-width', '2.2');</span>
+<span id="cb2-538"><a aria-label="538"></a>      line.setAttribute('stroke-linecap', 'round');</span>
+<span id="cb2-539"><a aria-label="539"></a>      line.setAttribute('stroke-linejoin', 'round');</span>
+<span id="cb2-540"><a aria-label="540"></a>      svg.appendChild(line);</span>
+<span id="cb2-541"><a aria-label="541"></a>    }</span>
+<span id="cb2-542"><a aria-label="542"></a>    return line;</span>
+<span id="cb2-543"><a aria-label="543"></a>  }</span>
+<span id="cb2-544"><a aria-label="544"></a></span>
+<span id="cb2-545"><a aria-label="545"></a>  function pathFromXY(xy) {</span>
+<span id="cb2-546"><a aria-label="546"></a>    if (!xy || xy.length === 0) return '';</span>
+<span id="cb2-547"><a aria-label="547"></a>    var d = 'M ' + xy[0].cx + ' ' + xy[0].cy;</span>
+<span id="cb2-548"><a aria-label="548"></a>    for (var i=1; i&lt;xy.length; i++) d += ' L ' + xy[i].cx + ' ' + xy[i].cy;</span>
+<span id="cb2-549"><a aria-label="549"></a>    return d;</span>
+<span id="cb2-550"><a aria-label="550"></a>  }</span>
+<span id="cb2-551"><a aria-label="551"></a></span>
+<span id="cb2-552"><a aria-label="552"></a>  function ease(u) {</span>
+<span id="cb2-553"><a aria-label="553"></a>    return u &lt; 0.5 ? 4*u*u*u : 1 - Math.pow(-2*u + 2, 3)/2;</span>
+<span id="cb2-554"><a aria-label="554"></a>  }</span>
+<span id="cb2-555"><a aria-label="555"></a></span>
+<span id="cb2-556"><a aria-label="556"></a>  function setToPts(ptsArr, pts, line) {</span>
+<span id="cb2-557"><a aria-label="557"></a>    for (var i=0; i&lt;ptsArr.length; i++) {</span>
+<span id="cb2-558"><a aria-label="558"></a>      ptsArr[i].el.setAttribute('cx', pts[i].cx);</span>
+<span id="cb2-559"><a aria-label="559"></a>      ptsArr[i].el.setAttribute('cy', pts[i].cy);</span>
+<span id="cb2-560"><a aria-label="560"></a>      ptsArr[i].el.removeAttribute('transform');</span>
+<span id="cb2-561"><a aria-label="561"></a>    }</span>
+<span id="cb2-562"><a aria-label="562"></a>    line.setAttribute('d', pathFromXY(pts));</span>
+<span id="cb2-563"><a aria-label="563"></a>  }</span>
+<span id="cb2-564"><a aria-label="564"></a></span>
+<span id="cb2-565"><a aria-label="565"></a>  // More responsive feel:</span>
+<span id="cb2-566"><a aria-label="566"></a>  // - shorter debounce before starting animation</span>
+<span id="cb2-567"><a aria-label="567"></a>  // - slightly shorter duration</span>
+<span id="cb2-568"><a aria-label="568"></a>  var DEBOUNCE_MS = 55;  // was 100</span>
+<span id="cb2-569"><a aria-label="569"></a>  var DURATION_MS = 360; // was 450</span>
+<span id="cb2-570"><a aria-label="570"></a></span>
+<span id="cb2-571"><a aria-label="571"></a>  function animateFromTo(ptsArr, startPts, endPts, line, durationMs, onDone) {</span>
+<span id="cb2-572"><a aria-label="572"></a>    if (el.__animCancel) el.__animCancel();</span>
+<span id="cb2-573"><a aria-label="573"></a></span>
+<span id="cb2-574"><a aria-label="574"></a>    var t0 = null;</span>
+<span id="cb2-575"><a aria-label="575"></a>    var cancelled = false;</span>
+<span id="cb2-576"><a aria-label="576"></a>    el.__animCancel = function(){ cancelled = true; };</span>
+<span id="cb2-577"><a aria-label="577"></a></span>
+<span id="cb2-578"><a aria-label="578"></a>    el.__animating = true;</span>
+<span id="cb2-579"><a aria-label="579"></a>    el.__animTargetPts = endPts;</span>
+<span id="cb2-580"><a aria-label="580"></a></span>
+<span id="cb2-581"><a aria-label="581"></a>    // Put at start before showing</span>
+<span id="cb2-582"><a aria-label="582"></a>    setToPts(ptsArr, startPts, line);</span>
+<span id="cb2-583"><a aria-label="583"></a></span>
+<span id="cb2-584"><a aria-label="584"></a>    // Show once start state is in place</span>
+<span id="cb2-585"><a aria-label="585"></a>    svg.style.visibility = 'visible';</span>
+<span id="cb2-586"><a aria-label="586"></a></span>
+<span id="cb2-587"><a aria-label="587"></a>    ptsArr.forEach(function(d){ d.el.style.pointerEvents = 'none'; });</span>
+<span id="cb2-588"><a aria-label="588"></a></span>
+<span id="cb2-589"><a aria-label="589"></a>    function frame(ts) {</span>
+<span id="cb2-590"><a aria-label="590"></a>      if (cancelled) return;</span>
+<span id="cb2-591"><a aria-label="591"></a>      if (t0 === null) t0 = ts;</span>
+<span id="cb2-592"><a aria-label="592"></a></span>
+<span id="cb2-593"><a aria-label="593"></a>      var u = Math.min(1, (ts - t0) / durationMs);</span>
+<span id="cb2-594"><a aria-label="594"></a>      var e = ease(u);</span>
+<span id="cb2-595"><a aria-label="595"></a></span>
+<span id="cb2-596"><a aria-label="596"></a>      var interp = new Array(endPts.length);</span>
+<span id="cb2-597"><a aria-label="597"></a>      for (var i=0; i&lt;endPts.length; i++) {</span>
+<span id="cb2-598"><a aria-label="598"></a>        var a = startPts[i], b = endPts[i];</span>
+<span id="cb2-599"><a aria-label="599"></a>        interp[i] = {</span>
+<span id="cb2-600"><a aria-label="600"></a>          cx: a.cx + (b.cx - a.cx) * e,</span>
+<span id="cb2-601"><a aria-label="601"></a>          cy: a.cy + (b.cy - a.cy) * e</span>
+<span id="cb2-602"><a aria-label="602"></a>        };</span>
+<span id="cb2-603"><a aria-label="603"></a>      }</span>
+<span id="cb2-604"><a aria-label="604"></a></span>
+<span id="cb2-605"><a aria-label="605"></a>      el.__curLinePts = interp;</span>
+<span id="cb2-606"><a aria-label="606"></a></span>
+<span id="cb2-607"><a aria-label="607"></a>      for (var j=0; j&lt;ptsArr.length; j++) {</span>
+<span id="cb2-608"><a aria-label="608"></a>        ptsArr[j].el.setAttribute('cx', interp[j].cx);</span>
+<span id="cb2-609"><a aria-label="609"></a>        ptsArr[j].el.setAttribute('cy', interp[j].cy);</span>
+<span id="cb2-610"><a aria-label="610"></a>      }</span>
+<span id="cb2-611"><a aria-label="611"></a>      line.setAttribute('d', pathFromXY(interp));</span>
+<span id="cb2-612"><a aria-label="612"></a></span>
+<span id="cb2-613"><a aria-label="613"></a>      if (u &lt; 1) {</span>
+<span id="cb2-614"><a aria-label="614"></a>        requestAnimationFrame(frame);</span>
+<span id="cb2-615"><a aria-label="615"></a>      } else {</span>
+<span id="cb2-616"><a aria-label="616"></a>        setToPts(ptsArr, endPts, line);</span>
+<span id="cb2-617"><a aria-label="617"></a>        ptsArr.forEach(function(d){ d.el.style.pointerEvents = ''; });</span>
+<span id="cb2-618"><a aria-label="618"></a></span>
+<span id="cb2-619"><a aria-label="619"></a>        el.__animating = false;</span>
+<span id="cb2-620"><a aria-label="620"></a>        el.__animCancel = null;</span>
+<span id="cb2-621"><a aria-label="621"></a>        el.__curLinePts = endPts;</span>
+<span id="cb2-622"><a aria-label="622"></a></span>
+<span id="cb2-623"><a aria-label="623"></a>        if (typeof onDone === 'function') onDone();</span>
+<span id="cb2-624"><a aria-label="624"></a>      }</span>
+<span id="cb2-625"><a aria-label="625"></a>    }</span>
+<span id="cb2-626"><a aria-label="626"></a></span>
+<span id="cb2-627"><a aria-label="627"></a>    requestAnimationFrame(frame);</span>
+<span id="cb2-628"><a aria-label="628"></a>  }</span>
+<span id="cb2-629"><a aria-label="629"></a></span>
+<span id="cb2-630"><a aria-label="630"></a>  function finishAnimationNow(ptsArr, line) {</span>
+<span id="cb2-631"><a aria-label="631"></a>    if (el.__animating &amp;&amp; el.__animTargetPts &amp;&amp; el.__prevLinePts) {</span>
+<span id="cb2-632"><a aria-label="632"></a>      if (el.__animCancel) el.__animCancel();</span>
+<span id="cb2-633"><a aria-label="633"></a>      setToPts(ptsArr, el.__animTargetPts, line);</span>
+<span id="cb2-634"><a aria-label="634"></a>      ptsArr.forEach(function(d){ d.el.style.pointerEvents = ''; });</span>
+<span id="cb2-635"><a aria-label="635"></a></span>
+<span id="cb2-636"><a aria-label="636"></a>      el.__animating = false;</span>
+<span id="cb2-637"><a aria-label="637"></a>      el.__animCancel = null;</span>
+<span id="cb2-638"><a aria-label="638"></a></span>
+<span id="cb2-639"><a aria-label="639"></a>      el.__prevLinePts = el.__animTargetPts;</span>
+<span id="cb2-640"><a aria-label="640"></a>      el.__curLinePts = el.__animTargetPts;</span>
+<span id="cb2-641"><a aria-label="641"></a>    }</span>
+<span id="cb2-642"><a aria-label="642"></a>  }</span>
+<span id="cb2-643"><a aria-label="643"></a></span>
+<span id="cb2-644"><a aria-label="644"></a>  // Read new rendered final positions (but hidden)</span>
+<span id="cb2-645"><a aria-label="645"></a>  var ptsArr = getPoints();</span>
+<span id="cb2-646"><a aria-label="646"></a>  var nextPts = ptsArr.map(function(d){ return { cx: d.cx, cy: d.cy }; });</span>
+<span id="cb2-647"><a aria-label="647"></a>  var line = ensureLine();</span>
+<span id="cb2-648"><a aria-label="648"></a></span>
+<span id="cb2-649"><a aria-label="649"></a>  // First render: snap and show</span>
+<span id="cb2-650"><a aria-label="650"></a>  if (el.__lastStep === undefined || el.__prevLinePts === undefined) {</span>
+<span id="cb2-651"><a aria-label="651"></a>    el.__lastStep = step;</span>
+<span id="cb2-652"><a aria-label="652"></a>    el.__prevLinePts = nextPts;</span>
+<span id="cb2-653"><a aria-label="653"></a>    el.__curLinePts = nextPts;</span>
+<span id="cb2-654"><a aria-label="654"></a>    setToPts(ptsArr, nextPts, line);</span>
+<span id="cb2-655"><a aria-label="655"></a>    svg.style.visibility = 'visible';</span>
+<span id="cb2-656"><a aria-label="656"></a>    return;</span>
+<span id="cb2-657"><a aria-label="657"></a>  }</span>
+<span id="cb2-658"><a aria-label="658"></a></span>
+<span id="cb2-659"><a aria-label="659"></a>  // No new draw: keep synced and show</span>
+<span id="cb2-660"><a aria-label="660"></a>  if (step === el.__lastStep) {</span>
+<span id="cb2-661"><a aria-label="661"></a>    el.__prevLinePts = nextPts;</span>
+<span id="cb2-662"><a aria-label="662"></a>    el.__curLinePts = nextPts;</span>
+<span id="cb2-663"><a aria-label="663"></a>    setToPts(ptsArr, nextPts, line);</span>
+<span id="cb2-664"><a aria-label="664"></a>    svg.style.visibility = 'visible';</span>
+<span id="cb2-665"><a aria-label="665"></a>    return;</span>
+<span id="cb2-666"><a aria-label="666"></a>  }</span>
+<span id="cb2-667"><a aria-label="667"></a></span>
+<span id="cb2-668"><a aria-label="668"></a>  // Defensive: mismatch =&gt; snap and show</span>
+<span id="cb2-669"><a aria-label="669"></a>  if (el.__prevLinePts.length !== nextPts.length || nextPts.length === 0) {</span>
+<span id="cb2-670"><a aria-label="670"></a>    el.__lastStep = step;</span>
+<span id="cb2-671"><a aria-label="671"></a>    el.__prevLinePts = nextPts;</span>
+<span id="cb2-672"><a aria-label="672"></a>    el.__curLinePts = nextPts;</span>
+<span id="cb2-673"><a aria-label="673"></a>    setToPts(ptsArr, nextPts, line);</span>
+<span id="cb2-674"><a aria-label="674"></a>    svg.style.visibility = 'visible';</span>
+<span id="cb2-675"><a aria-label="675"></a>    return;</span>
+<span id="cb2-676"><a aria-label="676"></a>  }</span>
+<span id="cb2-677"><a aria-label="677"></a></span>
+<span id="cb2-678"><a aria-label="678"></a>  // Coalesce rapid updates</span>
+<span id="cb2-679"><a aria-label="679"></a>  finishAnimationNow(ptsArr, line);</span>
+<span id="cb2-680"><a aria-label="680"></a></span>
+<span id="cb2-681"><a aria-label="681"></a>  el.__pendingStep = step;</span>
+<span id="cb2-682"><a aria-label="682"></a>  el.__pendingNextPts = nextPts;</span>
+<span id="cb2-683"><a aria-label="683"></a></span>
+<span id="cb2-684"><a aria-label="684"></a>  if (el.__debounceTimer) clearTimeout(el.__debounceTimer);</span>
+<span id="cb2-685"><a aria-label="685"></a>  el.__debounceTimer = setTimeout(function() {</span>
+<span id="cb2-686"><a aria-label="686"></a>    if (!el.__pendingNextPts) return;</span>
+<span id="cb2-687"><a aria-label="687"></a></span>
+<span id="cb2-688"><a aria-label="688"></a>    var targetPts = el.__pendingNextPts;</span>
+<span id="cb2-689"><a aria-label="689"></a>    var targetStep = el.__pendingStep;</span>
+<span id="cb2-690"><a aria-label="690"></a></span>
+<span id="cb2-691"><a aria-label="691"></a>    el.__pendingNextPts = null;</span>
+<span id="cb2-692"><a aria-label="692"></a>    el.__pendingStep = null;</span>
+<span id="cb2-693"><a aria-label="693"></a></span>
+<span id="cb2-694"><a aria-label="694"></a>    var startPts = el.__prevLinePts;</span>
+<span id="cb2-695"><a aria-label="695"></a></span>
+<span id="cb2-696"><a aria-label="696"></a>    animateFromTo(ptsArr, startPts, targetPts, line, DURATION_MS, function() {</span>
+<span id="cb2-697"><a aria-label="697"></a>      el.__lastStep = targetStep;</span>
+<span id="cb2-698"><a aria-label="698"></a>      el.__prevLinePts = targetPts;</span>
+<span id="cb2-699"><a aria-label="699"></a>      el.__curLinePts = targetPts;</span>
+<span id="cb2-700"><a aria-label="700"></a>    });</span>
+<span id="cb2-701"><a aria-label="701"></a>  }, DEBOUNCE_MS);</span>
+<span id="cb2-702"><a aria-label="702"></a></span>
+<span id="cb2-703"><a aria-label="703"></a>  // While we wait for debounce, show the baseline (current) state, not the new final state</span>
+<span id="cb2-704"><a aria-label="704"></a>  setToPts(ptsArr, el.__prevLinePts, line);</span>
+<span id="cb2-705"><a aria-label="705"></a>  svg.style.visibility = 'visible';</span>
+<span id="cb2-706"><a aria-label="706"></a>}</span>
+<span id="cb2-707"><a aria-label="707"></a>"</span>
+<span id="cb2-708"><a aria-label="708"></a>    )</span>
+<span id="cb2-709"><a aria-label="709"></a>  })</span>
+<span id="cb2-710"><a aria-label="710"></a>}</span>
+<span id="cb2-711"><a aria-label="711"></a></span>
+<span id="cb2-712"><a aria-label="712"></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 
 <section id="bayes-theorem" class="title-slide slide level1 center">
@@ -1827,9 +1941,684 @@ less, and less, and less, and less, and less wrong.</p>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section>
 
+<section>
+<section id="practical-work-election-polling" class="title-slide slide level1 center">
+<h1>Practical Work: Election polling</h1>
 
 </section>
+<section id="the-bayesian-workflow" class="slide level2">
+<h2>The Bayesian workflow</h2>
+<ul>
+<li class="fragment"><strong>Define the estimand</strong>: state precisely what you want to know before touching data.</li>
+<li class="fragment"><strong>Draw the causal model (DAG)</strong>: your assumptions about what causes what, from domain knowledge.</li>
+<li class="fragment"><strong>Simulate the population</strong>: write a generative simulation that could produce data like yours.</li>
+<li class="fragment"><strong>Write the formal model</strong>: derive the statistical model from the DAG, in mathematical notation.</li>
+<li class="fragment"><strong>Write the Stan code</strong>: translate the formal model into a program.</li>
+<li class="fragment"><strong>Test on simulated data</strong>: check that the model recovers known parameters, and that the priors imply plausible data.</li>
+<li class="fragment"><strong>Fit and validate the model</strong>: run the sampler, check diagnostics (R-hat, ESS, trace plots, divergences), and run posterior predictive checks. <em>Is the model trustworthy?</em></li>
+<li class="fragment"><strong>Compute the estimand and test its robustness</strong>: poststratify to get the vote share, then run sensitivity analyses on turnout, poststratification targets, priors, and unmodeled non-response. <em>What is the result, and how much does it depend on our assumptions?</em></li>
+</ul>
+</section></section>
+<section>
+<section id="demonstration-will-the-mayor-win" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#poll-demo">
+<h1>Demonstration: Will the mayor win?</h1>
+<aside class="notes">
+<ul>
+<li>We’re going to run the whole prior → likelihood → posterior loop on
+one concrete question: what share of voters will choose the current
+mayor?</li>
+<li>Be upfront that this model is too simple for a real poll. Real
+surveys aren’t random samples: some groups answer more than others, and
+not everyone votes. Post-stratification and turnout models fix that, and
+we’ll build them later. Today the point is the logic of updating.</li>
+<li>The formal model is two lines. The first line is the likelihood (how
+data are generated given θ), and the second is the prior (what we
+believe about θ before data).</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p>Let’s walk through the simplest possible version of this workflow.</p>
+<ul>
+<li><strong>Estimand</strong>: θ, the share of Kathmandu voters who will vote for the current mayor.</li>
+<li><strong>Background</strong>: in the last election, the mayor got 60% of the vote.</li>
+<li><strong>Data</strong>: we survey <em>n</em> voters at random, and <em>k</em> of them say they will vote for the mayor.</li>
+</ul>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>A deliberately simple model</strong></p>
+</div>
+<div class="callout-content">
+<p>Each respondent is like a coin flip that comes up “mayor” with probability θ. No weighting, no turnout, no non-response, no post-stratification. We’ll add those later.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><span class="math display">\[
+\begin{aligned}
+k &amp;\sim \text{Binomial}(n,\ \theta) &amp;&amp; \color{#1b91ff}{\text{likelihood}} \\
+\theta &amp;\sim \text{your prior} &amp;&amp; \color{#ff2c2d}{\text{prior}}
+\end{aligned}
+\]</span></p>
+</div>
+</section>
+<section id="step-1-the-prior" class="slide level2" data-notes="notes/week1_notes.md#poll-prior">
+<h2>Step 1: The prior</h2>
+<aside class="notes">
+<ul>
+<li>Ask the room to draw their own prior. Someone who remembers the 60%
+result from last election might pile weight around 60%. Someone with no
+opinion might leave it flat.</li>
+<li>The “Score” column is just the height you drew. “Probability”
+rescales the scores so they add up to 1. Only the <em>shape</em>
+matters.</li>
+<li>This prior carries over to the posterior slide, so whatever is drawn
+here is what gets updated.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Before seeing any survey, what do you believe about θ? Drag the points.</em></p>
+<style>
+  .prior-layout{
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    width: 100%;
+  }
+  #poll-prior-graph{
+    flex: 0 0 70%;
+    aspect-ratio: 3/2;
+  }
+  #poll-prior-sheet{
+    flex: 1 1 auto;
+    min-width: 260px;
+    font-size: 16pt;
+  }
+  .sheet-controls{
+    margin-top: 8px;
+    text-align: right;
+  }
+  #poll-prior-reset{
+    font-size: 12pt;
+    padding: 6px 10px;
+  }
+  .jss_about {
+    display: none;
+  }
+  .jss_textarea{
+    position: absolute !important;
+    left: -10000px !important;
+    top: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+</style>
+<div class="prior-layout">
+  <div id="poll-prior-graph"></div>
+  <div>
+    <div id="poll-prior-sheet"></div>
+    <div class="sheet-controls">
+      <button id="poll-prior-reset" type="button">Reset</button>
+    </div>
+  </div>
+</div>
+<script type="module">
+  import { LineGraphWidget } from './js/graph.js';
+
+  const graphEl = document.getElementById('poll-prior-graph');
+  const sheetEl = document.getElementById('poll-prior-sheet');
+  const resetBtn = document.getElementById('poll-prior-reset');
+  // Shared with the posterior slide, which reads the prior from here
+  const STORAGE_KEY = 'week1-poll-prior-v1';
+
+  if (!graphEl || !sheetEl) {
+    console.warn('Poll prior: missing graph or sheet container.');
+  } else if (!graphEl.dataset.initialized) {
+    graphEl.dataset.initialized = 'true';
+
+    let widget = null;
+    let ws = null;
+
+    function loadStoredValues() {
+      if (Array.isArray(window.__pollPrior)) return window.__pollPrior.slice();
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return null;
+        return parsed.map((v) => Number(v));
+      } catch {
+        return null;
+      }
+    }
+
+    function saveStoredValues(values) {
+      window.__pollPrior = values.slice();
+      window.dispatchEvent(new CustomEvent('poll-prior:change', { detail: values.slice() }));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+      } catch {
+        // ignore storage errors
+      }
+    }
+
+    function pointsToTable(points) {
+      const ys = points.map(p => Number(p.y) || 0);
+      const sum = ys.reduce((a, b) => a + b, 0);
+      return ys.map((v,i) => [i*0.05, v, sum > 0 ? v / sum : 0]);
+    }
+
+    function getWorksheetHandle(obj) {
+      if (!obj) return null;
+
+      if (typeof obj.setData === 'function' ||
+          typeof obj.loadData === 'function' ||
+          typeof obj.setValueFromCoords === 'function' ||
+          typeof obj.setValue === 'function') {
+        return obj;
+      }
+
+      if (Array.isArray(obj)) return getWorksheetHandle(obj[0]);
+      if (Array.isArray(obj.worksheets)) return getWorksheetHandle(obj.worksheets[0]);
+      if (typeof obj.getWorksheet === 'function') return getWorksheetHandle(obj.getWorksheet(0));
+
+      return null;
+    }
+
+    function updateSheet(points) {
+      if (!ws) return;
+      const data = pointsToTable(points);
+
+      if (typeof ws.setData === 'function') {
+        ws.setData(data);
+        return;
+      }
+      if (typeof ws.loadData === 'function') {
+        ws.loadData(data, true);
+        return;
+      }
+      if (typeof ws.setValueFromCoords === 'function') {
+        for (let r = 0; r < 21; r++) {
+          ws.setValueFromCoords(0, r, data[r][0], true);
+          ws.setValueFromCoords(1, r, data[r][1], true);
+        }
+        return;
+      }
+      if (typeof ws.setValue === 'function') {
+        for (let r = 0; r < 21; r++) {
+          ws.setValue(`A${r + 1}`, data[r][0], true);
+          ws.setValue(`B${r + 1}`, data[r][1], true);
+        }
+      }
+    }
+
+    function ensureReadyThenInit() {
+      const rect = graphEl.getBoundingClientRect();
+      const visible = rect.width > 0 && rect.height > 0;
+      if (!visible) return false;
+
+      if (window.Reveal?.getCurrentSlide) {
+        const cur = window.Reveal.getCurrentSlide();
+        if (!cur?.querySelector('#poll-prior-graph')) return false;
+      }
+
+      if (!widget) {
+        graphEl.innerHTML = '';
+        sheetEl.innerHTML = '';
+
+        const stored = loadStoredValues();
+        const initialValues = Array.isArray(stored) && stored.length === 21
+          ? stored
+          : Array.from({ length: 21 }, () => 50);
+
+        widget = new LineGraphWidget({
+          container: graphEl,
+          yValues: initialValues,
+          onChange: (points) => {
+            updateSheet(points);
+            saveStoredValues(points.map((p) => p.y));
+          },
+        });
+
+        const initData = pointsToTable(widget.getPoints());
+        const created = window.jspreadsheet(sheetEl, {
+          tabs: false,
+          worksheets: [{
+            data: initData,
+            editable: false,
+            minDimensions: [2, 21],
+            rowHeaders: (rowIndex) => (rowIndex * 0.05).toFixed(2),
+            allowInsertRow: false,
+            allowDeleteRow: false,
+            allowInsertColumn: false,
+            allowDeleteColumn: false,
+            columnSorting: false,
+            columns: [
+              { type: 'numeric', title: 'Voters', width: 90, mask: '0%' },
+              { type: 'numeric', title: 'Score', width: 90, mask:'0.00' },
+              { type: 'numeric', title: 'Probability', width: 120, mask: '0.0000' },
+            ],
+            selectionCopy: true,
+            selection: true,
+          }],
+        });
+
+        Promise.resolve(created).then((spreadsheet) => {
+          ws = getWorksheetHandle(spreadsheet);
+          if (!ws) {
+            console.log('jspreadsheet return value:', spreadsheet);
+            throw new Error('Could not find a worksheet handle. See console log for returned object.');
+          }
+          updateSheet(widget.getPoints());
+        });
+
+        if (resetBtn) {
+          resetBtn.addEventListener('click', () => {
+            widget.setYValues(Array.from({ length: 21 }, () => 50));
+          });
+        }
+
+        // The posterior slide can hand its posterior back as a new prior
+        window.addEventListener('poll-prior:set', (e) => {
+          if (Array.isArray(e.detail)) widget.setYValues(e.detail);
+        });
+      }
+
+      return true;
+    }
+
+    const observer = new ResizeObserver(() => {
+      if (ensureReadyThenInit()) observer.disconnect();
+    });
+    observer.observe(graphEl);
+
+    const runWhenReady = () => {
+      if (!ensureReadyThenInit()) requestAnimationFrame(runWhenReady);
+    };
+
+    if (window.Reveal?.on) {
+      Reveal.on('ready', runWhenReady);
+      Reveal.on('slidechanged', runWhenReady);
+    } else {
+      window.addEventListener('load', runWhenReady);
+      runWhenReady();
+    }
+  }
+</script>
+</section>
+<section id="step-2-the-likelihood" class="slide level2" data-notes="notes/week1_notes.md#poll-likelihood">
+<h2>Step 2: The likelihood</h2>
+<aside class="notes">
+<ul>
+<li>Same question we asked about the HIV test, turned around: for each
+possible θ, how likely is the data we saw?</li>
+<li>6 of 20 is very plausible if θ is 30%, plausible-ish at 50%,
+unlikely at 60%, and almost impossible at 80%.</li>
+<li>Point out that the likelihood curve is not a probability
+distribution over θ. It’s a set of answers to “P(data | θ)” for many
+θs.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>We survey 20 voters. 6 of them (30%) say they will vote for the mayor.</em></p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week1_files/figure-revealjs/unnamed-chunk-1-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<p>How consistent is “6 of 20” with each possible value of θ?</p>
+<ul>
+<li>If θ = 30%: P( 6 of 20 ) = 0.192</li>
+<li>If θ = 50%: P( 6 of 20 ) = 0.037</li>
+<li>If θ = 60%: P( 6 of 20 ) = 0.005</li>
+<li>If θ = 80%: P( 6 of 20 ) = 0.0000017</li>
+</ul>
+<div class="fragment">
+<p>The likelihood is <strong>not</strong> a belief. It’s what the coin-flip process in the world says about our data, one candidate value of θ at a time.</p>
+</div>
+</div></div>
+</section>
+<section id="step-3-prior-likelihood-posterior" class="slide level2" data-notes="notes/week1_notes.md#poll-posterior">
+<h2>Step 3: Prior × likelihood → posterior</h2>
+<aside class="notes">
+<ul>
+<li>At each value of θ, multiply the prior’s height by the likelihood’s
+height, then rescale so the total is 1. That’s the posterior. Nothing
+else is going on.</li>
+<li>Start at 20 people and 30%. With a flat prior, the green curve sits
+right on the dashed blue one. With a 60% prior, it lands in
+between.</li>
+<li>Drag the survey size up to a few hundred. The likelihood narrows,
+and the prior matters less and less.</li>
+<li>“P( mayor wins )” is the share of the posterior above 50%. That’s
+the answer people actually want, and it’s the P(hypothesis | data) we
+couldn’t get from a significance test.</li>
+<li>“Make this posterior my new prior” copies the posterior back onto
+the 21 draggable points and clears the survey. Then run a “second poll”.
+It’s coarse, since 21 points can’t capture a very narrow curve, but it
+shows the idea.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<style>
+  .poll-layout{
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    width: 100%;
+  }
+  #poll-post-graph{
+    flex: 0 0 64%;
+    aspect-ratio: 3/2;
+  }
+  .poll-side{
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 18pt;
+  }
+  .poll-side input[type="range"]{
+    width: 100%;
+  }
+  .poll-side table.poll-stats{
+    font-size: 16pt;
+    width: 100%;
+    margin-top: 16px;
+  }
+  .poll-side table.poll-stats td,
+  .poll-side table.poll-stats th{
+    padding: 4px 8px;
+  }
+  #poll-msg{
+    font-size: 14pt;
+    color: #ff2c2d;
+    min-height: 1.2em;
+  }
+  #poll-carry{
+    font-size: 12pt;
+    padding: 6px 10px;
+    align-self: flex-end;
+  }
+</style>
+<div class="poll-layout">
+  <div id="poll-post-graph"></div>
+  <div class="poll-side">
+    <label for="poll-n">People surveyed: <b id="poll-n-out"></b></label>
+    <input type="range" id="poll-n" min="0" max="500" step="1" value="20">
+    <label for="poll-share">Said "mayor": <b id="poll-share-out"></b></label>
+    <input type="range" id="poll-share" min="0" max="100" step="1" value="30">
+    
+<table class="poll-stats caption-top">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th class="red" data-quarto-table-cell-role="th">Prior</th>
+<th class="green" data-quarto-table-cell-role="th">Posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Best guess</td>
+<td id="poll-prior-mean"></td>
+<td id="poll-post-mean"></td>
+</tr>
+<tr class="even">
+<td>90% range</td>
+<td id="poll-prior-range"></td>
+<td id="poll-post-range"></td>
+</tr>
+<tr class="odd">
+<td>P( mayor wins )</td>
+<td id="poll-prior-win"></td>
+<td id="poll-post-win"></td>
+</tr>
+</tbody>
+</table>
+
+    <div id="poll-msg"></div>
+    <button id="poll-carry" type="button">Make this posterior my new prior</button>
+  </div>
+</div>
+<script type="module">
+  import { PosteriorPlot } from './js/posterior.js';
+
+  const STORAGE_KEY = 'week1-poll-prior-v1';
+  const COLORS = { prior: '#ff2c2d', likelihood: '#1b91ff', posterior: 'green' };
+
+  // Fine grid over θ; the 21 prior points are interpolated onto it
+  const G = 201;
+  const xs = Array.from({ length: G }, (_, i) => i / (G - 1));
+  const dx = 1 / (G - 1);
+
+  const $ = (id) => document.getElementById(id);
+  const graphEl = $('poll-post-graph');
+
+  if (graphEl && !graphEl.dataset.initialized) {
+    graphEl.dataset.initialized = 'true';
+
+    const plot = new PosteriorPlot({ container: graphEl });
+    const nInput = $('poll-n');
+    const shareInput = $('poll-share');
+    let priorPoints = loadPrior();
+
+    function loadPrior() {
+      if (Array.isArray(window.__pollPrior)) return window.__pollPrior.slice();
+      try {
+        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (Array.isArray(parsed) && parsed.length === 21) return parsed.map(Number);
+      } catch {
+        // ignore storage errors
+      }
+      return Array.from({ length: 21 }, () => 50);
+    }
+
+    function interpolate(points) {
+      return xs.map((x) => {
+        const p = x / 0.05;
+        const i = Math.min(19, Math.floor(p));
+        const t = p - i;
+        return points[i] * (1 - t) + points[i + 1] * t;
+      });
+    }
+
+    // Probability mass on each grid point (sums to 1), or null if all zero
+    function toMass(v) {
+      const s = v.reduce((a, b) => a + b, 0);
+      return s > 0 ? v.map((a) => a / s) : null;
+    }
+
+    // Binomial likelihood up to a constant, computed on the log scale so
+    // large surveys don't underflow
+    function likelihood(k, n) {
+      const ll = xs.map((x) => {
+        let l = 0;
+        if (k > 0) l += k * Math.log(x);
+        if (n - k > 0) l += (n - k) * Math.log(1 - x);
+        return l;
+      });
+      const m = Math.max(...ll.filter(Number.isFinite));
+      return ll.map((l) => (Number.isFinite(l) ? Math.exp(l - m) : 0));
+    }
+
+    function summarize(mass) {
+      const mean = mass.reduce((a, w, i) => a + w * xs[i], 0);
+      const quantile = (q) => {
+        let cum = 0;
+        for (let i = 0; i < G; i++) {
+          cum += mass[i];
+          if (cum >= q) return xs[i];
+        }
+        return 1;
+      };
+      let win = 0;
+      for (let i = 0; i < G; i++) {
+        if (xs[i] > 0.5) win += mass[i];
+        else if (xs[i] === 0.5) win += mass[i] / 2;
+      }
+      return { mean, lo: quantile(0.05), hi: quantile(0.95), win };
+    }
+
+    const pct = (x) => `${Math.round(x * 100)}%`;
+    const prob = (x) => (x < 0.01 ? '< 1%' : x > 0.99 ? '> 99%' : pct(x));
+
+    function showStats(prefix, s) {
+      $(`poll-${prefix}-mean`).textContent = s ? pct(s.mean) : '—';
+      $(`poll-${prefix}-range`).textContent = s ? `${pct(s.lo)} – ${pct(s.hi)}` : '—';
+      $(`poll-${prefix}-win`).textContent = s ? prob(s.win) : '—';
+    }
+
+    let posteriorMass = null;
+
+    function update() {
+      const n = Number(nInput.value);
+      const k = Math.round((n * Number(shareInput.value)) / 100);
+      $('poll-n-out').textContent = n;
+      $('poll-share-out').textContent = `${k} of ${n} (${n > 0 ? pct(k / n) : '—'})`;
+
+      const prior = toMass(interpolate(priorPoints));
+      const lik = toMass(likelihood(k, n));
+      const post = prior ? toMass(prior.map((p, i) => p * lik[i])) : null;
+      posteriorMass = post;
+
+      showStats('prior', prior && summarize(prior));
+      showStats('post', post && summarize(post));
+      $('poll-msg').textContent = !prior
+        ? 'Your prior rules out every value of θ.'
+        : !post
+          ? 'Your prior rules out everything the data allow.'
+          : '';
+      $('poll-carry').disabled = !post;
+
+      const density = (m) => (m ? m.map((w) => w / dx) : xs.map(() => 0));
+      plot.setSeries([
+        { label: 'Prior', color: COLORS.prior, xs, ys: density(prior) },
+        { label: 'Likelihood', color: COLORS.likelihood, xs, ys: density(lik), dash: [8, 6] },
+        { label: 'Posterior', color: COLORS.posterior, xs, ys: density(post), fill: 'rgba(0,128,0,0.12)' },
+      ]);
+    }
+
+    nInput.addEventListener('input', update);
+    shareInput.addEventListener('input', update);
+
+    window.addEventListener('poll-prior:change', (e) => {
+      if (Array.isArray(e.detail)) {
+        priorPoints = e.detail.slice();
+        update();
+      }
+    });
+
+    // Today's posterior is tomorrow's prior: sample it back onto the 21
+    // draggable points, then clear the survey so the data isn't counted twice
+    $('poll-carry').addEventListener('click', () => {
+      if (!posteriorMass) return;
+      const coarse = Array.from({ length: 21 }, (_, i) => posteriorMass[i * 10]);
+      const max = Math.max(...coarse);
+      if (!(max > 0)) return;
+      const values = coarse.map((v) => (v / max) * 100);
+
+      priorPoints = values;
+      window.__pollPrior = values.slice();
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+      } catch {
+        // ignore storage errors
+      }
+      window.dispatchEvent(new CustomEvent('poll-prior:set', { detail: values.slice() }));
+      nInput.value = 0;
+      update();
+    });
+
+    update();
+  }
+</script>
+</section>
+<section id="what-to-try" class="slide level2" data-notes="notes/week1_notes.md#poll-try">
+<h2>What to try</h2>
+<aside class="notes">
+<ul>
+<li>Let students drive. Good pairs to compare: flat vs.&nbsp;strong prior at
+n = 20, then the same two at n = 500.</li>
+<li>Close by tying this back to the workflow slide: even this toy model
+raises the question of how much the answer depends on our assumptions
+(here, the prior). Answering that honestly is the habit we’re
+building.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<ul>
+<li><strong>Flat prior vs.&nbsp;strong prior.</strong> Draw a flat prior, then a narrow one around 60% (last election). With the same survey, how far apart are the posteriors?</li>
+<li><strong>More data.</strong> Keep the survey at 30%, but raise <em>n</em> from 20 to 500. What happens to the prior’s influence?</li>
+<li><strong>Updating in sequence.</strong> Make the posterior your new prior, then run a second survey. Yesterday’s posterior is today’s prior.</li>
+<li><strong>Answering the real question.</strong> P( mayor wins ) is a direct statement about the hypothesis given the data: <span class="green">P( hypothesis | data )</span>, not a p-value.</li>
+</ul>
+<div class="fragment">
+<p><em>What is the result, and how much does it depend on our assumptions?</em> This is that question, in miniature.</p>
+</div>
+
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="images/logo_compact_blue.svg" class="slide-logo"></p>
@@ -2012,7 +2801,7 @@ less, and less, and less, and less, and less wrong.</p>
         mobileViewDistance: 2,
 
        // Parallax background image
-       parallaxBackgroundImage: 'images/background.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+       parallaxBackgroundImage: 'images/background.svg', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

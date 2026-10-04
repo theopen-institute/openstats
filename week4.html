@@ -6,8 +6,8 @@
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.37">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
 
   <title>week4</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -19,10 +19,13 @@
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
     */
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -31,7 +34,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-21df7c93d9a2240b9669271deb90c24e.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-e4f167b555b79ba4d2d81742b8dc2dd7.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -131,263 +134,669 @@
     <div class="slides">
 
 
-<section id="data-lunch-week-4" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#title">
+<section id="data-lunch-week-4" class="title-slide slide level1 center">
 <h1>Data Lunch: Week 4</h1>
-<aside class="notes">
-<ul>
-<li>Statistical backgrounds?</li>
-<li>Goal: ask questions and observe the world</li>
-<li>There is technical material, but it’s easy to forget that the
-technical material is not the point.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p>Confounding</p>
-<div class="footer">
-<p>The Open Institute For Social Science</p>
-</div>
+<p>Confounders and paradoxes</p>
 </section>
 
-<section id="confounds" class="title-slide slide level1 center">
-<h1>Confounds</h1>
+<section id="last-week-this-week" class="title-slide slide level1 center">
+<h1>Last week → this week</h1>
 <ul>
-<li class="fragment">Forks</li>
-<li class="fragment">Pipes</li>
-<li class="fragment">Colliders</li>
-<li class="fragment">Descendant</li>
+<li class="fragment">The variables we put in a model can change, or even reverse, the answer.</li>
+<li class="fragment">That’s because effects <strong>flow along paths</strong> through the DAG.</li>
+<li class="fragment">This week: the rules.
+<ul>
+<li class="fragment">Which paths are <strong>open</strong>?</li>
+<li class="fragment">Which variables should we <strong>hold fixed</strong>, and which should we leave alone?</li>
+</ul></li>
 </ul>
 </section>
 
-<section>
-<section id="fork" class="title-slide slide level1 center">
-<h1>Fork</h1>
+<section id="goals-this-week" class="title-slide slide level1 center">
+<h1>Goals this week</h1>
+<ul>
+<li class="fragment">Part 1: Concepts
+<ul>
+<li class="fragment">The three building blocks of every DAG: <strong>fork</strong>, <strong>pipe</strong>, <strong>collider</strong></li>
+<li class="fragment">The paradoxes each one creates</li>
+<li class="fragment">“Should I control for this?”</li>
+</ul></li>
+<li class="fragment">Part 2: Applied
+<ul>
+<li class="fragment">Spot the confound</li>
+<li class="fragment">Check your own project’s DAG</li>
+</ul></li>
+</ul>
+</section>
 
+<section>
+<section id="three-building-blocks" class="title-slide slide level1 center">
+<h1>Three building blocks</h1>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>Fork</strong>: a common cause</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/blocks-fork-1.png" width="750"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:33%;">
+<p><strong>Pipe</strong>: a mediator</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/blocks-pipe-1.png" width="750"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:33%;">
+<p><strong>Collider</strong>: a common effect</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/blocks-collider-1.png" width="750"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<ul>
+<li class="fragment">Every path in every DAG is built from these three pieces.</li>
+<li class="fragment">For each, we ask two questions:
+<ul>
+<li class="fragment">Does association flow between X and Y through Z?</li>
+<li class="fragment">What happens when we <strong>hold Z fixed</strong>?</li>
+</ul></li>
+</ul>
 </section>
-<section id="happiness-age-at-marriage" class="slide level2">
-<h2>Happiness ~ Age at Marriage</h2>
-<div class="r-stack">
+<section id="what-holding-z-fixed-means" class="slide level2">
+<h2>What “holding Z fixed” means</h2>
+<p>People say it many ways. They all mean the same thing:</p>
+<ul>
+<li>“controlling for Z”</li>
+<li>“adjusting for Z”</li>
+<li>“conditioning on Z”</li>
+<li>“stratifying by Z”</li>
+</ul>
+<p>In practice, any of these:</p>
+<ul>
+<li class="fragment"><strong>Adding Z to a regression</strong> (as we did with height last week).</li>
+<li class="fragment"><strong>Splitting the data into groups</strong> of Z and comparing within each group.</li>
+<li class="fragment"><strong>Selecting your sample</strong> by Z: only hospital patients, only published studies, only people with jobs.</li>
+</ul>
 <div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-1-1.png" style="width:100.0%"></p>
-</figure>
+<p>That last one is easy to miss. Often the data was “controlled” before you ever saw it.</p>
 </div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-2-1.png" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-3-1.png" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-4-1.png" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="fork-graph" class="slide level2">
-<h2>Fork Graph</h2>
-<iframe id="dag-frame-1" data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
 </section></section>
 <section>
-<section id="pipes" class="title-slide slide level1 center">
-<h1>Pipes</h1>
-
+<section id="the-fork-a-common-cause" class="title-slide slide level1 center">
+<h1>The fork: a common cause</h1>
+<p>X ← Z → Y</p>
 </section>
-<section id="exam-results-gender" class="slide level2">
-<h2>Exam Results ~ Gender</h2>
-<div class="r-stack">
+<section id="does-marrying-later-make-you-happier" class="slide level2">
+<h2>Does marrying later make you happier?</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/fork-all-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-5-1.png" style="width:100.0%"></p>
+<p><img data-src="week4_files/figure-revealjs/fork-split-1.png" width="1050"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-6-1.png" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
+</div></div>
+<ul>
+<li class="fragment">Overall: people who marry later are happier. Within rural <em>or</em> urban areas: no relationship at all.</li>
+</ul>
 </section>
-<section id="exam-results-time-studying" class="slide level2">
-<h2>Exam Results ~ Time Studying</h2>
-<div class="r-stack">
-<div class="fragment">
+<section id="the-fork-what-happened" class="slide level2">
+<h2>The fork: what happened?</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-7-1.png" style="width:100.0%"></p>
+<p><img data-src="week4_files/figure-revealjs/fork-dag-1.png" width="900"></p>
 </figure>
 </div>
 </div>
 </div>
+</div><div class="column" style="width:55%;">
+<ul>
+<li class="fragment">Urban people marry later <strong>and</strong> (in this made-up world) are happier.</li>
+<li class="fragment">Geography is a <strong>confounder</strong>: a common cause of X and Y.</li>
+<li class="fragment">The path A ← G → H is <strong>open</strong>: it creates a correlation with no causal effect behind it.</li>
+<li class="fragment">Holding geography fixed <strong>closes</strong> the path.</li>
+</ul>
+</div></div>
+<div title="Fork rule">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-8-1.png" style="width:100.0%"></p>
-</figure>
+<p><strong>Fork rule</strong></p>
 </div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-9-1.png" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-10-1.png" style="width:100.0%"></p>
-</figure>
-</div>
+<div class="callout-content">
+<p>Association flows through a fork. <strong>Control for the common cause</strong> to close the path.</p>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="pipe-graph" class="slide level2">
-<h2>Pipe Graph</h2>
-<iframe id="dag-frame-1" data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
+<section id="do-mobile-phones-lower-birth-rates" class="slide level2">
+<h2>Do mobile phones lower birth rates?</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/phones-all-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/phones-split-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+<ul>
+<li class="fragment">Real World Bank data, 2022. Within income groups the correlation mostly fades (<em>r</em> between -0.31 and -0.06). <strong>Wealth</strong> drives both phones and smaller families.</li>
+</ul>
+</section>
+<section id="youve-already-met-forks" class="slide level2">
+<h2>You’ve already met forks</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/fork-houses-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Week 2:</strong> more bedrooms looked valuable, because bigger houses have more of them.</p>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/fork-surgeon-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Week 3:</strong> the famous surgeon looked worse, because he got the hardest cases.</p>
+</div></div>
+<ul>
+<li class="fragment">The classic <strong>Simpson’s paradox</strong>, where a trend reverses when you split the data, is usually a fork.</li>
+</ul>
+</section>
+<section id="more-forks" class="slide level2">
+<h2>More forks</h2>
+<p>What’s the hidden common cause?</p>
+<ul>
+<li class="fragment">Ice cream sales ↔︎ drownings <span class="fragment blue">→ hot weather</span></li>
+<li class="fragment">Children’s shoe size ↔︎ reading ability <span class="fragment blue">→ age</span></li>
+<li class="fragment">Firefighters at a fire ↔︎ damage done <span class="fragment blue">→ size of the fire</span></li>
+<li class="fragment">Carrying a lighter ↔︎ lung cancer <span class="fragment blue">→ smoking</span></li>
+<li class="fragment">Hospital visits ↔︎ dying <span class="fragment blue">→ being ill</span></li>
+</ul>
 </section></section>
 <section>
-<section id="colliders" class="title-slide slide level1 center">
-<h1>Colliders</h1>
-
+<section id="the-pipe-a-mediator" class="title-slide slide level1 center">
+<h1>The pipe: a mediator</h1>
+<p>X → Z → Y</p>
 </section>
-<section id="hardwork-family-wealth" class="slide level2">
-<h2>Hardwork ~ Family Wealth</h2>
-<div class="r-stack">
+<section id="is-there-a-gender-gap-in-exam-results" class="slide level2">
+<h2>Is there a gender gap in exam results?</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/pipe-density-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-11-1.png" style="width:100.0%"></p>
+<p><img data-src="week4_files/figure-revealjs/pipe-split-1.png" width="1050"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div class="fragment">
+</div></div>
+<ul>
+<li class="fragment">A clear gap between groups. But at the same study time, the two lines sit on top of each other: the gap disappears.</li>
+</ul>
+</section>
+<section id="the-pipe-what-happened" class="slide level2">
+<h2>The pipe: what happened?</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-12-1.png" style="width:100.0%"></p>
+<p><img data-src="week4_files/figure-revealjs/pipe-dag-1.png" width="900"></p>
 </figure>
 </div>
 </div>
 </div>
+</div><div class="column" style="width:55%;">
+<ul>
+<li class="fragment">In this made-up world, gender affects results <strong>only through</strong> study time.</li>
+<li class="fragment">The path G → T → R is <strong>open</strong>, and it is a real causal effect.</li>
+<li class="fragment">Holding study time fixed <strong>closes</strong> the path, so the effect vanishes.</li>
+<li class="fragment">Does gender matter? Yes, <strong>through</strong> study time.</li>
+</ul>
+</div></div>
+<div title="Pipe rule">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week4_files/figure-revealjs/unnamed-chunk-13-1.png" style="width:100.0%"></p>
-</figure>
+<p><strong>Pipe rule</strong></p>
 </div>
+<div class="callout-content">
+<p>Association flows through a pipe. Holding the mediator fixed <strong>blocks the effect</strong>. Only do it if you want the <em>direct</em> effect.</p>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="collider-graph" class="slide level2">
-<h2>Collider Graph</h2>
-<iframe id="dag-frame-1" data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
+<section id="does-the-anti-fungal-treatment-work" class="slide level2">
+<h2>Does the anti-fungal treatment work?</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/fungus-plot-1.png" width="1125"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/fungus-dag-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">Overall, treated plants grow more.</li>
+<li class="fragment">Compare plants with the <strong>same fungus status</strong> and the treatment looks useless.</li>
+</ul>
+</div></div>
+<ul>
+<li class="fragment"><strong>Post-treatment bias</strong>: never hold fixed something the treatment itself changes, unless that’s the question.</li>
+</ul>
+</section>
+<section id="a-real-paradox-berkeley-admissions-1973" class="slide level2">
+<h2>A real paradox: Berkeley admissions, 1973</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/berkeley-plot-1.png" width="1125"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<ul>
+<li class="fragment">Overall: <strong>45%</strong> of men admitted, <strong>30%</strong> of women.</li>
+<li class="fragment">But in 4 of 6 departments, women were admitted at a <strong>higher</strong> rate.</li>
+<li class="fragment">Women mostly applied to the departments that were <strong>hardest to get into</strong>.</li>
+<li class="fragment">Dot size: number of applicants.</li>
+</ul>
+</div></div>
+</section>
+<section id="berkeley-which-answer-is-right" class="slide level2">
+<h2>Berkeley: which answer is right?</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/berkeley-dag-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:55%;">
+<ul>
+<li class="fragment">Department is a <strong>pipe</strong>: sex affects which department you apply to, and departments differ in how hard they are to get into.</li>
+<li class="fragment">“Do admissions committees treat women differently?” → hold department <strong>fixed</strong> (the direct path S → A).</li>
+<li class="fragment">“Are women less likely to get in overall?” → <strong>don’t</strong> (the total effect). Then ask why women ended up applying to the most competitive departments.</li>
+</ul>
+</div></div>
 </section></section>
-<section id="summary" class="title-slide slide level1 center">
-<h1>Summary</h1>
-<table class="caption-top">
+<section>
+<section id="the-collider-a-common-effect" class="title-slide slide level1 center">
+<h1>The collider: a common effect</h1>
+<p>X → Z ← Y</p>
+</section>
+<section id="are-rich-kids-lazy" class="slide level2">
+<h2>Are rich kids lazy?</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/collider-selected-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/collider-all-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+<ul>
+<li class="fragment">Among people with prestigious jobs, the richer ones seem to work less.</li>
+<li class="fragment">But in the whole population (right), wealth and hard work are <strong>unrelated</strong>.</li>
+</ul>
+</section>
+<section id="the-collider-what-happened" class="slide level2">
+<h2>The collider: what happened?</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/collider-dag-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:55%;">
+<ul>
+<li class="fragment">Wealth <strong>or</strong> hard work can get you the job.</li>
+<li class="fragment">If someone has the job but isn’t rich, they probably worked hard. If they didn’t work hard, they’re probably rich.</li>
+<li class="fragment">The path W → J ← H is <strong>closed</strong> by default: no association.</li>
+<li class="fragment">Holding J fixed, including by <strong>only looking at people with jobs</strong>, <strong>opens</strong> it.</li>
+</ul>
+</div></div>
+<div title="Collider rule">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Collider rule</strong></p>
+</div>
+<div class="callout-content">
+<p>No association flows through a collider, until you hold it fixed. <strong>Don’t control for a common effect</strong>, and beware of samples selected on one.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="why-is-published-science-so-often-wrong" class="slide level2">
+<h2>Why is published science so often wrong?</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/grants-plot-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<ul>
+<li class="fragment">200 grant proposals. Newsworthiness and trustworthiness are <strong>unrelated</strong>.</li>
+<li class="fragment">Reviewers fund the top 10% on <em>both combined</em>.</li>
+<li class="fragment">Among <span class="blue">funded</span> studies: <em>r</em> = <strong>-0.77</strong>.</li>
+<li class="fragment">The most exciting published findings are the least trustworthy, with no bad intent from anyone.</li>
+<li class="fragment">Remember Week 1: <em>most published research findings are false</em>.</li>
+</ul>
+</div></div>
+</section>
+<section id="more-colliders" class="slide level2">
+<h2>More colliders</h2>
+<p>What has been selected on?</p>
+<ul>
+<li class="fragment">Restaurants in bad locations serve better food <span class="fragment blue">→ only the good ones survive</span></li>
+<li class="fragment">Among professional basketball players, height barely predicts success <span class="fragment blue">→ short players had to be exceptional to make it</span></li>
+<li class="fragment">Among hospital patients, two unrelated diseases look negatively related <span class="fragment blue">→ either one can put you in hospital (Berkson’s paradox)</span></li>
+<li class="fragment">Among low-birth-weight babies, those of smoking mothers die <em>less</em> often <span class="fragment blue">→ birth weight is caused by smoking <em>and</em> by other, more dangerous problems</span></li>
+<li class="fragment">Early COVID studies found fewer smokers among hospitalized patients <span class="fragment blue">→ hospital testing and admission were the collider (Griffith et al., 2020)</span></li>
+</ul>
+</section></section>
+<section>
+<section id="the-descendant" class="title-slide slide level1 center">
+<h1>The descendant</h1>
+<p>A variable caused by Z acts like a weaker copy of Z.</p>
+</section>
+<section id="descendants" class="slide level2">
+<h2>Descendants</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/desc-fork-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>A proxy for a confounder.</strong> We can’t measure wealth exactly, so we used income group. It closes the fork <em>partly</em>, which is why some correlation was left over.</p>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/desc-collider-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>A consequence of a collider.</strong> Studying only high earners partly selects on having the job, so it partly opens the collider.</p>
+</div></div>
+</section></section>
+<section>
+<section id="should-i-control-for-it" class="title-slide slide level1 center">
+<h1>Should I control for it?</h1>
+<table class="nonincremental caption-top">
 <thead>
 <tr class="header">
-<th><strong>Collider Type</strong></th>
-<th style="text-align: right;"><strong>Should you control?</strong></th>
+<th>Structure</th>
+<th>Through Z, by default</th>
+<th>If you hold Z fixed</th>
+<th>Advice</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Fork</td>
-<td style="text-align: right;">Probably</td>
+<td><strong>Fork</strong> X ← Z → Y</td>
+<td>open</td>
+<td>closed</td>
+<td>Control for it</td>
 </tr>
 <tr class="even">
-<td>Pipe</td>
-<td style="text-align: right;">It depends</td>
+<td><strong>Pipe</strong> X → Z → Y</td>
+<td>open</td>
+<td>closed</td>
+<td>Only for the <em>direct</em> effect</td>
 </tr>
 <tr class="odd">
-<td>Collider</td>
-<td style="text-align: right;">Probably Not</td>
+<td><strong>Collider</strong> X → Z ← Y</td>
+<td>closed</td>
+<td><strong>open</strong></td>
+<td>Don’t</td>
 </tr>
 <tr class="even">
-<td>Descender</td>
-<td style="text-align: right;">Depends on Type</td>
+<td><strong>Descendant</strong> of Z</td>
+<td>like Z, weaker</td>
+<td>like Z, weaker</td>
+<td>Same as Z</td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="the-back-door-rule" class="slide level2">
+<h2>The back-door rule</h2>
+<p>To estimate the effect of X on Y:</p>
+<ol type="1">
+<li class="fragment">List every path between X and Y.</li>
+<li class="fragment"><strong>Close</strong> every path that starts with an arrow <em>into</em> X (a “back door”).</li>
+<li class="fragment"><strong>Don’t</strong> hold fixed anything that X causes (if you want the total effect).</li>
+<li class="fragment"><strong>Don’t</strong> hold fixed a collider, unless you also close the path it opens.</li>
+</ol>
+<div class="fragment">
+<p>Last week’s examples follow this rule. Height was caused by sex, so we left it out (rule 3). Living area was a back door into bedrooms, so we held it fixed (rule 2).</p>
+</div>
+</section>
+<section id="a-paradox-inside-a-paradox" class="slide level2">
+<h2>A paradox inside a paradox</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week4_files/figure-revealjs/berkeley-u-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:55%;">
+<ul>
+<li class="fragment">Back to Berkeley. What if applicants’ <strong>ability</strong> affects both which department they apply to and whether they get in?</li>
+<li class="fragment">Now department is a pipe <strong>and</strong> a collider (S → D ← U).</li>
+<li class="fragment">Holding department fixed opens S → D ← U → A, so even the “direct effect” is biased.</li>
+<li class="fragment">No statistical trick fixes this. We need <strong>better data</strong> (a measure of ability) or <strong>more science</strong>.</li>
+</ul>
+</div></div>
+</section></section>
+<section id="part-1-summary" class="title-slide slide level1 center">
+<h1>Part 1: Summary</h1>
+<ul>
+<li class="fragment"><strong>Fork</strong> (common cause): creates false associations. Control for it.</li>
+<li class="fragment"><strong>Pipe</strong> (mediator): carries real effects. Controlling for it hides them.</li>
+<li class="fragment"><strong>Collider</strong> (common effect): closed until you control for it, or select on it.</li>
+<li class="fragment"><strong>Descendants</strong> act like weaker copies of their parents.</li>
+<li class="fragment">Every paradox this week came from holding the wrong thing fixed, or failing to hold the right thing fixed.</li>
+</ul>
+</section>
 
+<section>
+<section id="part-2-spot-the-confound" class="title-slide slide level1 center">
+<h1>Part 2: Spot the confound</h1>
 
 </section>
+<section id="your-turn" class="slide level2">
+<h2>Your turn</h2>
+<p>For each claim: draw the DAG, name the structure, and decide what to control for.</p>
+<ol type="1">
+<li class="fragment">Students who attend tuition classes score <em>lower</em> on the SEE.</li>
+<li class="fragment">After adjusting for blood pressure, a new drug doesn’t reduce heart attacks.</li>
+<li class="fragment">Among startups that got funding, those with weaker founders had better ideas.</li>
+<li class="fragment">Countries with more doctors per person have more cancer.</li>
+<li class="fragment">People who own more books live longer.</li>
+<li class="fragment">Among people admitted to hospital with COVID, smokers seemed to do better.</li>
+</ol>
+</section>
+<section id="possible-answers" class="slide level2">
+<h2>Possible answers</h2>
+<ol type="1">
+<li class="fragment"><strong>Fork</strong>: students who are already struggling are the ones sent to tuition. Control for earlier results.</li>
+<li class="fragment"><strong>Pipe</strong>: the drug works <em>by</em> lowering blood pressure. Don’t adjust if you want the total effect.</li>
+<li class="fragment"><strong>Collider</strong>: funding needs a strong founder <em>or</em> a strong idea. Don’t trust patterns within a selected sample.</li>
+<li class="fragment"><strong>Fork</strong> (and a pipe): wealth → more doctors, and wealth → longer lives → more cancer. More doctors also <em>detect</em> more cancer.</li>
+<li class="fragment"><strong>Fork</strong>: education and income cause both.</li>
+<li class="fragment"><strong>Collider</strong>: hospitalization. Smoking and severe COVID can each put you there.</li>
+</ol>
+<div class="fragment">
+<p>There is often more than one defensible DAG. Arguing about which one is right is the science.</p>
+</div>
+</section>
+<section id="your-project" class="slide level2">
+<h2>Your project</h2>
+<ul>
+<li class="fragment">Open your project’s <code>dag</code> in <a href="https://dagitty.net/dags.html">dagitty.net</a> (next slide).</li>
+<li class="fragment">Mark your <strong>exposure</strong> and <strong>outcome</strong>.</li>
+<li class="fragment">List every path between them. Label each fork, pipe and collider.</li>
+<li class="fragment">DAGitty’s <strong>“Causal effect identification”</strong> panel lists the <em>adjustment sets</em>: the variables that close every back door without opening any collider.</li>
+<li class="fragment">Do your model’s variables match? If not, which DAG are you really assuming?</li>
+</ul>
+</section>
+<section id="dagitty" class="slide level2 no-title">
+<h2>DAGitty</h2>
+<iframe data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
+
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="images/logo_compact_blue.svg" class="slide-logo"></p>
@@ -570,7 +979,7 @@ technical material is not the point.</li>
         mobileViewDistance: 2,
 
        // Parallax background image
-       parallaxBackgroundImage: 'images/background.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+       parallaxBackgroundImage: 'images/background.svg', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

@@ -1,4 +1,197 @@
+/*-- scss:defaults --*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+// Brand palette (anchored on the logo blue)
+$brand:        #1b91ff;
+$brand-dark:   #0a6fd0;
+$ink:          #16314d; // softened near-black for body text
+$ink-head:     #0b2545; // deep navy for headings
+
+// Typography
+$mainFont:            'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
+$headingFont:         'Space Grotesk', 'Inter', system-ui, sans-serif;
+$mainColor:           $ink;
+$headingColor:        $ink-head;
+$headingFontWeight:   700;
+$headingTextTransform: none;
+$headingLetterSpacing: -0.02em;
+$headingTextShadow:    none;
+
+// Links & selection
+$linkColor:                 $brand;
+$linkColorHover:            $brand-dark;
+$selectionBackgroundColor:  rgba($brand, 0.28);
+$selectionColor:            $ink-head;
+
 /*-- scss:rules --*/
+// Local aliases so rules can reference the brand palette
+$c-brand: #1b91ff;
+$c-brand-dark: #0a6fd0;
+$c-ink: #16314d;
+$c-ink-head: #0b2545;
+
+/* ------------------------------------------------------------------ */
+/* Background scrim — lifts text contrast in the central band where    */
+/* content lives, while fading toward the top and bottom edges so the  */
+/* dynamic backdrop motifs (scatter + distributions) can breathe.      */
+/* ------------------------------------------------------------------ */
+/* Ensure the backdrop fills the viewport edge-to-edge and never tiles */
+.reveal .slide-background-content {
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center center !important;
+}
+
+.reveal .slide-background-content::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.70) 19%,
+    rgba(255, 255, 255, 0.74) 50%,
+    rgba(255, 255, 255, 0.70) 81%,
+    rgba(255, 255, 255, 0.25) 100%
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Headings — accent underline beneath slide titles                    */
+/* ------------------------------------------------------------------ */
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  line-height: 1.1;
+}
+
+.reveal .slides section > h1:first-child::after,
+.reveal .slides section > h2:first-child::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 5px;
+  margin-top: 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, $c-brand 0%, lighten($c-brand, 18%) 100%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Lists — custom accent markers                                       */
+/* ------------------------------------------------------------------ */
+.reveal .slides ul {
+  list-style: none;
+  margin-left: 0;
+}
+
+.reveal .slides ul li {
+  position: relative;
+  padding-left: 1.45em;
+}
+
+.reveal .slides ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.52em;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 3px;
+  background: $c-brand;
+}
+
+/* nested bullets get a lighter, hollow marker */
+.reveal .slides ul ul li::before {
+  background: transparent;
+  border: 2px solid rgba($c-brand, 0.6);
+}
+
+/* ------------------------------------------------------------------ */
+/* Blockquotes — modern pull-quote card                                */
+/* ------------------------------------------------------------------ */
+.reveal blockquote {
+  background: rgba(255, 255, 255, 0.72);
+  border: none;
+  border-left: 6px solid $c-brand;
+  border-radius: 0 14px 14px 0;
+  padding: 1.1rem 1.6rem;
+  margin: 0.8rem 0;
+  box-shadow: 0 10px 30px rgba($c-ink-head, 0.1);
+  font-style: normal;
+  color: $c-ink;
+  backdrop-filter: blur(3px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Tables — frosted card with an accent header                         */
+/* ------------------------------------------------------------------ */
+.reveal .slides table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: none;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 30px rgba($c-ink-head, 0.1);
+  backdrop-filter: blur(3px);
+}
+
+.reveal .slides table th,
+.reveal .slides table td {
+  border: none;
+  border-bottom: 1px solid rgba($c-ink-head, 0.08);
+  padding: 0.55em 0.9em;
+}
+
+.reveal .slides table thead th {
+  background: rgba($c-brand, 0.12);
+  color: $c-ink-head;
+  font-family: $headingFont;
+  font-weight: 600;
+  border-bottom: 2px solid rgba($c-brand, 0.4);
+}
+
+.reveal .slides table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.reveal .slides table tbody tr:hover td {
+  background: rgba($c-brand, 0.05);
+}
+
+/* ------------------------------------------------------------------ */
+/* Links                                                               */
+/* ------------------------------------------------------------------ */
+.reveal a {
+  text-decoration: underline;
+  text-decoration-color: rgba($c-brand, 0.35);
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.reveal a:hover {
+  text-decoration-color: $c-brand;
+}
+
+/* ------------------------------------------------------------------ */
+/* UI chrome — accent the reveal controls, progress bar and footer     */
+/* ------------------------------------------------------------------ */
+.reveal .progress {
+  color: $c-brand;
+  height: 4px;
+}
+
+.reveal .controls {
+  color: $c-brand;
+}
+
+.reveal .footer {
+  color: rgba($c-ink, 0.55);
+  font-size: 0.72em;
+  letter-spacing: 0.02em;
+}
+
 /* custom classes */
 .no-title h1 {
   display: none;
