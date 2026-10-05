@@ -11,7 +11,9 @@ project:
     - www/
     - notes/
 engine: knitr
-format: 
+execute:
+  freeze: auto
+format:
   revealjs:
     theme: [simple, css/deck.scss]
     logo: 'images/logo_compact_blue.svg'
