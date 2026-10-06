@@ -48,9 +48,13 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
-/.quarto/
+# build caches: symlinks to *.nosync dirs locally (see _build/nosync.sh), real dirs on CI
+/.quarto
 /_extensions/
-/.output/
+/.output
+/.stancache
+*.nosync
 
 **/*.quarto_ipynb
-/.stancache/
+
+/.quarto/

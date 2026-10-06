@@ -44,6 +44,10 @@ it depends on an uncommitted package or extension.
   header). R code chunks run at render time.
 - **Output dir is `.output/`** — gitignored, never edit by hand. So are `.quarto/`,
   `_extensions/`, and `.stancache/`.
+- **The repo lives in iCloud Drive.** Locally, `.output`, `.quarto` and `.stancache` are
+  symlinks to `*.nosync` directories so iCloud doesn't sync build churn
+  (`sh _build/nosync.sh` sets this up; run it once per Mac). `_freeze/` is committed
+  and syncs normally.
 - **Quarto extensions are NOT committed** (`_extensions/` is gitignored). CI runs
   `quarto add quarto-ext/shinylive` and `quarto add quarto-ext/include-code-files`.
   Locally they must already be installed or renders of Shiny/embedded-code slides fail.

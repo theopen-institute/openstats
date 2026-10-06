@@ -248,7 +248,10 @@ one assumption at a time:
 ```{r simulation_worlds, message=FALSE}
 worlds <- list(
   "Our assumptions" = sim_fair,
-  "Everyone applies evenly to every department" = simulate_admissions(male_pref = 1, female_pref = 1),
+  "Everyone applies evenly to every department" = simulate_admissions(
+    male_pref = 1,
+    female_pref = 1
+  ),
   "Every department admits 40%" = simulate_admissions(admit_rate = 0.4)
 )
 
