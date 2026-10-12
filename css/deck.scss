@@ -107,6 +107,11 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
     rgba(255, 255, 255, 0.75);
 }
 
+/* untitled slides have no heading row for the tag to sit beside */
+.reveal .slides section.mechanics.no-title {
+  padding-top: 1.6em;
+}
+
 .reveal .slides section.mechanics > h1:first-child::after,
 .reveal .slides section.mechanics > h2:first-child::after {
   background: radial-gradient(circle, $c-mech 2px, transparent 2.5px) 0 50% / 10px 5px repeat-x;
@@ -228,7 +233,8 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
 }
 
 /* custom classes */
-.no-title h1 {
+.no-title h1,
+.no-title h2 {
   display: none;
 }
 

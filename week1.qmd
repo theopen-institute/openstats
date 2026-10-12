@@ -37,9 +37,13 @@ The Open Institute For Social Science
 
 :::{.nonincremental}
 - Unpack the key concepts underlying Ioannidis's claim.
-  - Statistical significance 
+  - Probability: it's just counting
+  - Statistical significance
   - The base rate paradox
-- Start rebuilding statistics from the ground up.
+- Start rebuilding statistics from the ground up: Bayesian updating, one rule.
+- Question a common assumption: "ethnography is subjective, statistics is hard data."
+- See why it's okay that most research is wrong: statistics is observation, not answers.
+- Appendix: a worked example (election polling), with the TA in our second class.
 :::
 
 # Statistical significance
@@ -75,12 +79,155 @@ The Open Institute For Social Science
 So what is probability? [It's just a way of talking about uncertainty.]{.fragment}
 
 ::: {.fragment}
-There are two conventions worth knowing.
+And underneath, it's just [**counting**]{.blue}.
 :::
 
 ::: {notes="notes/week1_notes.md#probability"}
 :::
 
+## Probability is counting {notes="notes/week1_notes.md#counting"}
+
+_Count everything that could happen. Count the ones you care about. Compare._
+
+::: {.fragment .nonincremental}
+- **A die**: 6 sides could land face up. 1 of them is a six.<br>
+  [→ **1 out of 6**]{.blue}
+:::
+
+::: {.fragment .nonincremental}
+- **A raffle**: 500 tickets sold. You bought 10.<br>
+  [→ **10 out of 500**]{.blue}, or 1 out of 50
+:::
+
+::: {.fragment .nonincremental}
+- **This class**: 25 of you are here. 15 of you came by bus.<br>
+  [→ **15 out of 25**]{.blue}. Pick someone at random: they probably came by bus.
+:::
+
+::: {.fragment}
+No formulas. Every probability in this lecture, from rain to HIV tests to published
+research, is a count like these.
+:::
+
+## Counting ways {notes="notes/week1_notes.md#counting-ways"}
+
+_Flip two coins. How likely is exactly one head?_
+
+::: {.columns}
+::: {.column width="40%"}
+::: {.fragment}
+
+| First | Second | Heads |
+|:-:|:-:|:-:|
+| H | H | 2 |
+| H | T | [**1**]{.blue} |
+| T | H | [**1**]{.blue} |
+| T | T | 0 |
+: {.nonincremental}
+:::
+:::
+
+::: {.column width="60%"}
+::: {.fragment .nonincremental}
+List every way it could go, then count:
+
+- Two heads: **1** way out of 4
+- Exactly one head: [**2** ways out of 4]{.blue}
+- At least one head: **3** ways out of 4
+:::
+
+::: {.fragment}
+[Many people guess 1 in 3 for exactly one head, because they count "one head" as a
+single outcome. So did the mathematician d'Alembert, in 1754.]{.gray style="font-size: 70%;"}
+:::
+:::
+:::
+
+::: {.fragment}
+When you're unsure, [list the ways the world could be, and count them]{.blue}. That's
+also the whole idea behind Bayesian statistics, as we'll see later today.
+:::
+
+## Let's count {notes="notes/week1_notes.md#lets-count"}
+
+_Hands up if you had tea this morning._
+
+<style>
+  #count-demo .count-inputs{
+    display: flex;
+    gap: 40px;
+    margin: 20px 0;
+  }
+  #count-demo input{
+    width: 4.5em;
+    font: inherit;
+    text-align: right;
+    padding: 2px 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  #count-demo #count-k{
+    border: 2px solid #1b91ff;
+  }
+  #count-dots{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 1300px;
+    margin: 20px 0;
+  }
+  #count-dots span{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ddd;
+  }
+  #count-dots span.on{
+    background: #1b91ff;
+  }
+  #count-result{
+    font-size: 130%;
+    font-weight: 600;
+  }
+</style>
+
+```{=html}
+<div id="count-demo">
+  <div class="count-inputs">
+    <label>People here: <input type="number" min="0" max="200" step="1" value="25" id="count-n"></label>
+    <label>Hands up: <input type="number" min="0" max="200" step="1" value="0" id="count-k"></label>
+  </div>
+  <div id="count-dots"></div>
+  <p id="count-result"></p>
+</div>
+```
+
+<script>
+  (() => {
+    const $ = (id) => document.getElementById(id);
+    const nIn = $('count-n');
+    const kIn = $('count-k');
+
+    function update() {
+      const n = Math.min(200, Math.max(0, Math.round(Number(nIn.value) || 0)));
+      const k = Math.min(n, Math.max(0, Math.round(Number(kIn.value) || 0)));
+      $('count-dots').innerHTML = Array.from({ length: n }, (_, i) =>
+        `<span class="${i < k ? 'on' : ''}"></span>`
+      ).join('');
+      $('count-result').innerHTML = n > 0
+        ? `<span class="blue">${k} out of ${n}</span> had tea this morning.`
+        : '';
+    }
+
+    [nIn, kIn].forEach((el) => el.addEventListener('input', update));
+    update();
+  })();
+</script>
+
+::: {.fragment}
+That's a probability. We just counted. Two conventions turn counts like this into the
+language of probability.
+:::
 
 ## Probability {.no-title}
 
@@ -93,7 +240,6 @@ Kathmandu sees rain (≥ 1 mm) on about 121 days a year:
 - P( rain ) = 121 / 365 = 0.33 (33%)
 
 [Kathmandu Airport weather station, NOAA GHCN-Daily (NP000444540), 2015–2025, complete months only.]{.gray style="font-size: 60%;"}
-
 
 ## Probability {.no-title}
 
@@ -113,7 +259,6 @@ We can do better with _conditional probabilities_:
 ::: {notes="notes/week1_notes.md#rain"}
 :::
 
-
 ## Probability Examples
 
 ::: {.fragment .nonincremental}
@@ -126,7 +271,6 @@ We can do better with _conditional probabilities_:
 - P( disease | family history )
 - P( rain today | rained yesterday )
 - P( survival | attacked by bear )
-
 
 # Applied probability
 
@@ -181,13 +325,13 @@ _Paradox: P(A|B) is not the same as P(B|A)_
 ::: {notes="notes/week1_notes.md#base-rate"}
 :::
 
-# Base Rate Paradox {.no-title}
+## Base Rate Paradox {.no-title}
 ```{shinylive-r}
 #| standalone: true
 {{< include shiny/baserate.R >}}
 ```
 
-# Direction of conditions
+## Direction of conditions
 
 _P(A|B) is not the same as P(B|A)_
 
@@ -289,8 +433,6 @@ _P(A|B) is not the same as P(B|A)_
   })();
 </script>
 
-
-
 # Statistical significance (revisited)
 
 Let's look at that quote again:
@@ -322,17 +464,50 @@ Not the same as (what we usually actually want):
 ::: {notes="notes/week1_notes.md#statistical-significance-revisited"}
 :::
 
+## The problem with p-values {notes="notes/week1_notes.md#pvalue-direction"}
+
+If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}. The p-value
+runs in a [weird direction]{.red}.
+
+::: {.fragment}
+
+|  | Starts from | Asks |
+|---|---|---|
+| **How we observe** | what we [saw]{.blue} | _"What does this tell me about the [world]{.green}?"_ |
+| **A p-value** | an [imagined world]{.red} with nothing going on | _"How surprising would my [data]{.blue} be there?"_ |
+: {.nonincremental}
+:::
+
+::: {.fragment .nonincremental}
+- No ethnographer asks _"if nothing were going on, how surprising would this interview
+  be?"_ They ask what the interview tells them about the world.
+- A p-value never tells you how likely your hypothesis is. Reading it that way is the
+  HIV mistake again: P( A | B ) ≠ P( B | A ).
+:::
+
+::: {.fragment}
+We want statistics that runs the way observation does: from [data]{.blue} to
+[beliefs about the world]{.green}.
+:::
 
 # So why is most published research wrong?
 
 ::: {.fragment}
-It's the same **base rate problem** as the HIV test:.
+It's the same **base rate problem** as the HIV test:
 :::
 
 ::: {.fragment .nonincremental}
 - A positive test &rarr; a [significant result]{.red} (p &lt; 0.05)
 - Having the disease &rarr; the [hypothesis is actually true]{.blue}
 - Interesting hypotheses are **rare**, the same way HIV is rare.
+:::
+
+::: {.fragment .nonincremental}
+Two terms you'll see, both borrowed from the test:
+
+- **Power** = the study's sensitivity: P( [significant]{.red} | [true]{.blue} ). How often it
+  catches a real effect.
+- **α** = the study's false-positive rate: P( [significant]{.red} | [false]{.blue} ). Usually 5%.
 :::
 
 ::: {.fragment}
@@ -360,7 +535,7 @@ P( [true]{.blue} | [significant]{.red} ) = 80 / (80 + 495) ≈ [**14%**]{.red}
 About **86 of every 100** "discoveries" are false.
 :::
 
-## So why is most published research wrong? {.no-title .smaller notes="notes/week1_notes.md#scenarios-grid"}
+## So why is most published research wrong? {.no-title .smaller .mechanics notes="notes/week1_notes.md#scenarios-grid"}
 
 How bad it gets depends on the field. A [1%]{.blue} base rate is low, but not unusual for
 exploratory research. And [80%]{.blue} power is generous: many fields run closer to [20%]{.blue}. (α = 5%)
@@ -381,7 +556,7 @@ Power matters, but the [base rate]{.blue} matters more. Going from 80% to 20% po
 a lot; going from 50% to 1% true costs almost everything.
 :::
 
-## Add some flexibility {.no-title .smaller notes="notes/week1_notes.md#scenarios-phacking"}
+## Add some flexibility {.no-title .smaller .mechanics notes="notes/week1_notes.md#scenarios-phacking"}
 
 _Same table, but researchers try a few outcomes, a few subgroups, a few ways to clean the data…_
 
@@ -403,7 +578,7 @@ At 20% power and α = 20%, a "significant" result is [no more likely to be true]
 than the hypothesis was before the study. The study taught us nothing.
 :::
 
-## Some scenarios {.smaller notes="notes/week1_notes.md#scenarios-named"}
+## Some scenarios {.smaller .mechanics notes="notes/week1_notes.md#scenarios-named"}
 
 | Scenario | Base rate | Power | α | P( [true]{.blue} \| [significant]{.red} ) |
 |---|---|---|---|---|
@@ -413,7 +588,7 @@ than the hypothesis was before the study. The study taught us nothing.
 | Exploratory study, many outcomes tested | 1% | 20% | 20% | [**1%**]{.red} |
 | Scanning thousands of variables for "a link" | 0.1% | 80% | 5% | [**2%**]{.red} |
 
-## Two surprises {.smaller notes="notes/week1_notes.md#scenarios-surprises"}
+## Two surprises {.smaller .mechanics notes="notes/week1_notes.md#scenarios-surprises"}
 
 | Scenario | Base rate | Power | α | P( [true]{.blue} \| [significant]{.red} ) |
 |---|---|---|---|---|
@@ -449,7 +624,224 @@ No single study told us much. [The sequence did.]{.green}
 biases don't add up this way.]{.gray style="font-size: 60%;"}
 :::
 
-## Is that a problem? {notes="notes/week1_notes.md#is-that-a-problem"}
+::: {.fragment}
+Each row started from the row before it. That's [Bayesian updating]{.blue}, and it's
+where we're going next.
+:::
+
+# Bayesian Updating
+
+## Bayesian Updating: What it is not
+![*Statistical Rethinking*, p.2 (Richard McElreath, 2020)](images/week1/mcelreath-2.png){fig-align="center" width="100%"}
+
+## Bayesian Updating: What it is
+
+Instead of a flowchart of tests, [**one rule for all of statistics**]{.blue}:
+
+- [**Prior**]{.red}: what we believe about the world _before_ seeing the new data.<br>[_I think that about 60% of Kathmandu will vote for the current mayor, because that's what he got last time._]{.fragment .blue}
+- [**Likelihood**]{.blue}: how likely the data we saw would be, under _each_ possible answer.<br>[_In my survey, only 30% said they'll vote for the mayor. That's quite likely if true support is around 30%, and unlikely if it's 60%._]{.fragment .blue}
+- [**Posterior**]{.green}: what we believe _after_ combining the two. It challenges the prior, or makes it stronger.<br>[_I now think that about 45% of Kathmandu will vote for the current mayor._]{.fragment .blue}
+
+::: {.fragment}
+That's it. A poll, a regression, a causal model: everything in this course is this
+[one rule]{.blue}, applied again and again.
+:::
+
+::: {notes="notes/week1_notes.md#bayesian-updating"}
+:::
+
+## You've already done this {.smaller notes="notes/week1_notes.md#prior-likelihood-posterior"}
+
+|  | [Prior]{.red} | [Likelihood]{.blue} | [Posterior]{.green} |
+|---|---|---|---|
+| **Means** | What I believed before | How likely what I saw is, under each possibility | What I believe now |
+| **Asks** | _"What did I think?"_ | _"If this were true, how likely is what I saw?"_ | _"What do I think now?"_ |
+| **Written** | P( belief ) | P( data \| belief ) | P( belief \| data ) |
+| **HIV test** | 0.1% of people have HIV | A positive test: 99% likely if HIV+, 3% if HIV– | After a positive test: **3.2%** |
+| **Published research** | 1% of tested hypotheses are true | Significant: 80% likely if true, 5% if false | After a significant result: **14%** |
+| **Mayor poll** | About 60%, from the last election | 6 of 20 for the mayor: likely if support is ~30%, unlikely if 60% | About **45%** |
+: {.nonincremental}
+
+::: {.fragment}
+The likelihood alone runs the same direction as a p-value: P( data \| belief ). Bayes
+doesn't stop there. It combines the likelihood with the prior to answer the question
+we actually care about: P( belief \| data ).
+:::
+
+## From two possibilities to many {notes="notes/week1_notes.md#two-to-many"}
+
+_The HIV test and published research had **two** possibilities: true or false._
+
+::: {.fragment .nonincremental}
+Most questions have many:
+
+- How many of 9 stones in a bag are blue? **10** possibilities, 0 to 9.
+- What share of voters support the mayor? **Every** value from 0% to 100%.
+:::
+
+::: {.fragment .nonincremental}
+Same rule, done once for each possibility:
+
+- [**Prior**]{.red}: how plausible was each possibility before?
+- [**Likelihood**]{.blue}: if this possibility were true, how likely is what we saw? For the
+  bag, just count the ways it could happen. _(Counting ways)_
+- [**Posterior**]{.green}: multiply the two, and compare across possibilities.
+:::
+
+::: {.fragment}
+The answer is a **distribution**: a plausibility for every possible answer, not a single
+yes or no. Let's try it with the bag.
+:::
+
+## Bayesian Updating Example {.no-title}
+```{shinylive-r}
+#| standalone: true
+{{< include shiny/updating.R >}}
+```
+
+## Bayesian Updating: Why one rule helps {.mechanics}
+
+- **One rule for everything.** Prior × likelihood → posterior. No flowchart of tests to choose from.
+- **No fixed sample size.** Look at the data whenever you like and stop when you've learned enough. The posterior means the same thing either way.<br>[_A p-value depends on the stopping rule you planned in advance. Unplanned peeking breaks it._]{.fragment .blue}
+- **Today's posterior is tomorrow's prior.** Updating survey by survey gives the same answer as analyzing all the surveys at once.
+- **You build the model to fit your data.** Counts, proportions, skewed incomes: describe the data as they are, instead of picking whichever test's assumptions come closest.
+- **Small samples are still valid.** No large-sample approximations. Less data means more uncertainty, and the prior carries more of the weight.
+- **It answers the question we actually ask:** P( [hypothesis]{.red} \| [data]{.blue} ).
+
+::: {notes="notes/week1_notes.md#bayesian-updating-how"}
+:::
+
+## Bayes Theorem {.mechanics}
+::: {notes="notes/week1_notes.md#bayes-theorem"}
+:::
+
+$$
+P(A|B) = \frac{P(B|A)\,P(A)}{P(B)}
+$$
+
+or
+
+$$
+\color{green}{P(\text{belief} \mid \text{data})}
+=
+\frac{
+\color{#1b91ff}{P(\text{data} \mid \text{belief})}
+\;\color{#ff2c2d}{P(\text{belief})}
+}{
+\color{#999}{P(\text{data})}
+}
+$$
+
+- [**P(data | belief)**]{.blue}: likelihood
+- [**P(belief)**]{.red}: prior probability
+- [**P(belief | data)**]{.green}: posterior probability
+- [**P(data)**]{.gray}: marginal likelihood (not interesting)
+
+
+::: {.fragment .nonincremental}
+In simple terms:
+
+- prior × likelihood => posterior
+:::
+
+## Isn't the prior subjective? {notes="notes/week1_notes.md#prior-subjective"}
+
+_Yes. That's a feature, not a bug._
+
+::: {.nonincremental}
+- Every analysis makes assumptions. A p-value hides them: which test, which controls,
+  when to stop collecting data.
+- A prior puts an assumption **on the table**, written down where anyone can see it and
+  argue with it.
+- With enough data, people who start from different reasonable priors end up in nearly
+  the same place.
+- When they don't, the data is weak. That's worth knowing too.
+:::
+
+::: {.fragment}
+Subjective doesn't mean arbitrary. It means someone made a choice, and has to
+[defend it]{.blue}.
+:::
+
+# Hard data? {notes="notes/week1_notes.md#hard-data"}
+
+> _"Ethnography is subjective. Statistics is objective. It's hard data."_
+
+You've probably heard this. Maybe you've said it.
+
+::: {.fragment}
+Let's test it against what we've seen today.
+:::
+
+## What's true about it {notes="notes/week1_notes.md#hard-data-true"}
+
+::: {.nonincremental}
+- **The arithmetic is objective.** Same data, same model: same number, every time, for
+  anyone.
+- **Numbers are easy to share and check.** Anyone can recompute them.
+- **Large samples average out some kinds of noise.** Not all of them.
+:::
+
+::: {.fragment}
+But the arithmetic is the [smallest part of the work]{.red}.
+:::
+
+## Every number today rested on a choice {.smaller notes="notes/week1_notes.md#hard-data-choices"}
+
+| The number | The choice behind it |
+|---|---|
+| P( rain ) = 33% | Which station, which years, and what counts as "rain" (≥ 1 mm) |
+| P( HIV+ \| test+ ) = 3.2% | Who gets tested. Among people who come to a clinic with symptoms, it's very different. |
+| p &lt; 0.05 | Why 5%? A convention. Plus which test, which controls, when to stop collecting data. |
+| 14% of "discoveries" are true | A base rate that nobody can measure directly |
+| The mayor at about 45% | Who we surveyed, who answered, and the prior we drew |
+: {.nonincremental}
+
+::: {.fragment}
+Once the choices are made, the number is objective. [The choices aren't.]{.red}
+:::
+
+## Objective and subjective
+
+_Statistics and ethnography have the same structure._
+
+::: {.fragment}
+
+|                 | Observation                    | Interesting inferences assume…                     |
+|-----------------|--------------------------------|----------------------------------------------------|
+| **Ethnography** | interviews, field notes        | what people meant; whose voices stand for others   |
+| **Statistics**  | surveys, measurements, records | what causes what; how the data were generated      |
+
+:::
+
+::: {.fragment}
+Call the observation "objective" if you like. But interesting inferences rest on [strong assumptions]{.red}, and choosing assumptions is [subjective]{.red}, in both.
+:::
+
+::: {notes="notes/week1_notes.md#statistics-is-observation"}
+:::
+
+## The same standard for both {notes="notes/week1_notes.md#hard-data-standard"}
+
+::: {.nonincremental}
+- Both have an **observational** part and an **inferential** part. Neither is "hard" or
+  "soft" by nature.
+- Trust is **earned** the same way in both: show how the observation was made, state
+  your assumptions, let others challenge them, and look again.
+- Ethnographers have long practice at this: reflexivity, positionality, thick
+  description. Statistics can learn from it.
+:::
+
+::: {.fragment}
+"Hard data" isn't a property of numbers. It's a claim about how much to trust them.
+:::
+
+::: {.fragment}
+[Treating it as a property of the numbers is how so much published research ends up
+wrong while looking right.]{.red}
+:::
+
+# Is that a problem? {notes="notes/week1_notes.md#is-that-a-problem"}
 
 _Most studies are wrong._ [...and that's okay.]{.fragment .blue}
 
@@ -485,6 +877,62 @@ The science always comes first.
 </div>
 :::
 
+## Observations add up
+
+_Back to where we started: a study is one observation._
+
+- Bayesian updating is how observations add up: each one moves what we believe, a little or a lot.
+- That's what happened when we looked again and again: 1% → 14% → 72% → 98%.
+- Ethnography works the same way. Understanding comes from many observations, debated over time.
+
+## Doing science {notes="notes/week1_notes.md#doing-science"}
+
+_So what does it mean to put the science first?_
+
+::: {.fragment .nonincremental}
+- [**Question every observation.**]{.blue} How was it made? Who's missing? What else could
+  have produced it? A positive test, a significant result and an interview can all
+  mislead.
+:::
+
+::: {.fragment .nonincremental}
+- [**Look from different perspectives.**]{.blue} Other methods, other places, other
+  people's readings. Surveys, experiments, ethnography and history each see what the
+  others miss. When they agree, believe more. When they disagree, look closer.
+:::
+
+::: {.fragment .nonincremental}
+- [**Think in likelihood, not proof.**]{.blue} Nothing is ever proved. Ask: _how likely is
+  what I saw if this were true, compared with if it weren't?_ Beliefs move by degrees
+  (1% → 14% → 72% → 98%), and never quite reach 100%.
+:::
+
+::: {.fragment}
+Statistics doesn't replace any of this. At its best, it's a careful way of doing the
+third one. That question is the [likelihood]{.blue}, and updating is how we use it.
+:::
+
+## Summary {notes="notes/week1_notes.md#summary"}
+
+::: {.nonincremental}
+1. [**Probability is counting.**]{.blue} Count the ways the world could be.
+2. [**Direction matters.**]{.blue} P( A | B ) ≠ P( B | A ). A p-value asks about the data in a
+   world where nothing is going on. When true hypotheses are rare, most significant
+   findings are false.
+3. [**That's okay.**]{.blue} A study is one observation, not an answer. The field gets
+   things right by looking again: 1% → 14% → 72% → 98%.
+4. [**Bayesian updating is one rule**]{.blue} for learning from observation:
+   prior × likelihood → posterior.
+5. [**Numbers aren't "hard data."**]{.blue} Statistics rests on choices, just like
+   ethnography. Trust comes from stating them, not from the numbers.
+:::
+
+::: {.fragment}
+<div style="font-size: 150%; font-weight: bold; margin-top: 1em;">
+The science always comes first.
+</div>
+:::
+
 ## What's ahead {notes="notes/week1_notes.md#whats-ahead"}
 
 That's what we're going to do here: [put the science first]{.blue}.
@@ -501,108 +949,11 @@ Every week starts with the question and what we believe about the world.
 [The statistics come after.]{.gray}
 :::
 
-## The problem?
-::: {.fragment}
-- Statistical significance goes against our natural intuitions about uncertainty.
-- If statistics has ever made you feel dumb or intimidated, it's not you...
-- p-value is just a really weird concept.
-:::
+# Practical Work: Election polling {.center}
 
-# Bayesian Updating
+_Appendix: we'll work through this together with the TA in our second class._
 
-## Bayesian Updating: What it is not
-![*Statistical Rethinking*, p.2 (Richard McElreath, 2020)](images/week1/mcelreath-2.png){fig-align="center" width="100%"}
-
-
-## Bayesian Updating: What it is
-
-Instead of tests, we have Bayesian Updating:
-
-- We have a **prior** belief about the world (specifically, about a parameter or "estimand").<br>[_I think that about 60% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
-- Then, we observe something, and we ask how **likely** what we saw would be under each possible value of the parameter (the **likelihood**).<br>[_I just took a survey, and only 30% of people said they will vote for the current mayor. That result would be quite likely if true support were around 30%, and unlikely if it were 60%._]{.fragment .blue}
-- This new observation changes our prior belief (challenging it or making it stronger), to become our **posterior**.<br>[_I now think that about 45% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
-
-::: {notes="notes/week1_notes.md#bayesian-updating"}
-:::
-
-## Bayesian Updating: How does it work
-
-- **One rule for everything.** Prior × likelihood → posterior. No flowchart of tests to choose from.
-- **No fixed sample size.** Look at the data whenever you like and stop when you've learned enough. The posterior means the same thing either way.<br>[_A p-value depends on the stopping rule you planned in advance. Unplanned peeking breaks it._]{.fragment .blue}
-- **Today's posterior is tomorrow's prior.** Updating survey by survey gives the same answer as analyzing all the surveys at once.
-- **You build the model to fit your data.** Counts, proportions, skewed incomes: describe the data as they are, instead of picking whichever test's assumptions come closest.
-- **Small samples are still valid.** No large-sample approximations. Less data means more uncertainty, and the prior carries more of the weight.
-- **It answers the question we actually ask:** P( [hypothesis]{.red} \| [data]{.blue} ).
-
-::: {notes="notes/week1_notes.md#bayesian-updating-how"}
-:::
-
-# Bayesian Updating Example {.no-title}
-```{shinylive-r}
-#| standalone: true
-{{< include shiny/updating.R >}}
-```
-
-# Bayes Theorem {.mechanics}
-::: {notes="notes/week1_notes.md#bayes-theorem"}
-:::
-
-$$
-P(A|B) = \frac{P(B|A)\,P(A)}{P(B)}
-$$
-
-or
-
-$$
-\color{green}{P(\text{belief} \mid \text{data})}
-=
-\frac{
-\color{#1b91ff}{P(\text{data} \mid \text{belief})}
-\;\color{#ff2c2d}{P(\text{belief})}
-}{
-\color{#999}{P(\text{data})}
-}
-$$
-
-- [**P(data | belief)**]{.blue}: likelihood
-- [**P(belief)**]{.red}: prior probability
-- [**P(belief | data)**]{.green}: posterior probability
-- [**P(data)**]{.gray}: marginal likelihood (not interesting)
-
-
-::: {.fragment .nonincremental}
-In simple terms:
-
-- prior × likelihood => posterior
-:::
-
-# Statistics is observation
-
-_Back to where we started: a study is one observation._
-
-- Bayesian updating is how observations add up: each one moves what we believe, a little or a lot.
-- That's what happened when we looked again and again: 1% → 14% → 72% → 98%.
-- Ethnography works the same way. Understanding comes from many observations, debated over time.
-
-::: {.fragment}
-
-|                 | Observation                    | Interesting inferences assume…                     |
-|-----------------|--------------------------------|----------------------------------------------------|
-| **Ethnography** | interviews, field notes        | what people meant; whose voices stand for others   |
-| **Statistics**  | surveys, measurements, records | what causes what; how the data were generated      |
-
-:::
-
-::: {.fragment}
-Call the observation "objective" if you like. But interesting inferences rest on [strong assumptions]{.red}, and choosing assumptions is [subjective]{.red}, in both.
-:::
-
-::: {notes="notes/week1_notes.md#statistics-is-observation"}
-:::
-
-# Practical Work: Election polling
-
-## The Bayesian workflow {.smaller}
+## The Bayesian workflow {.smaller .mechanics}
 
 - **Scientific model**: what we believe about the world, before any statistics.
   1. **Ask the question**: say in plain words what you want to know.
@@ -634,14 +985,18 @@ Each respondent is like a coin flip that comes up "mayor" with probability θ. N
 no turnout, no non-response, no post-stratification. We'll add those later.
 :::
 
-::: {.fragment}
+## The model, written formally {.mechanics notes="notes/week1_notes.md#poll-model"}
+
 $$
 \begin{aligned}
 k &\sim \text{Binomial}(n,\ \theta) && \color{#1b91ff}{\text{likelihood}} \\
 \theta &\sim \text{your prior} && \color{#ff2c2d}{\text{prior}}
 \end{aligned}
 $$
-:::
+
+- The first line is the **likelihood**: how the data are generated, given θ.
+- The second line is the **prior**: what we believe about θ before any data.
+- From Week 3 on, we'll build models like this from a DAG.
 
 ## Step 1: The prior {notes="notes/week1_notes.md#poll-prior"}
 
