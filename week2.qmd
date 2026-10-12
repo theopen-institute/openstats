@@ -574,7 +574,7 @@ howell |>
 ```
 
 
-## Correlation is average agreement
+## Correlation is average agreement {.mechanics}
 
 ::: {.columns}
 ::: {.column width="55%"}
@@ -728,7 +728,7 @@ howell |>
 :::
 
 
-## Reading the coefficient
+## Reading the coefficient {.mechanics}
 
 ```{r slope-units}
 slope_kg_cm <- r_hw * w_sd / h_sd
@@ -991,7 +991,7 @@ houses |>
 - Because *r* has no units, we can compare m², cars, years, and rooms on one scale.
 
 
-## Step 5: One coefficient
+## Step 5: One coefficient {.mechanics}
 
 ```{r price-slope}
 slope_usd_m2 <- r_pa * sd(houses$price) / sd(houses$area_m2)

@@ -11,16 +11,16 @@
 - purely theoretical argument, based on some very mathy arguments
 - Argues that the majority of claims made in published scientific articles are wrong.
 
-- He doesn't state a specific number, but he does say more than half and probably a lot more than half of all findings are false. 
-- Others have attempted to test this claim empirically, and sure enough in many fields findings were reproducible as little as 10-20% of the time.
+- He doesn't give a single number. He models a range of scenarios, and in most realistic ones, fewer than half of claimed findings are true.
+- Others have since tested this empirically with large replication projects. Landmark preclinical drug and cancer studies replicated as little as 11-25% of the time (Amgen, Bayer), psychology about 36% (Open Science Collaboration 2015), experimental economics about 61% (Camerer et al. 2016). A failed replication isn't proof a finding is false, but the pattern fits his argument.
 
-- This was a shocking and controversial claim when it was published in 2006, but today I think there's a consensus that Ioannidis is right.
+- This was a shocking and controversial claim when it was published in 2005. Today his core argument is widely accepted, though how bad the problem is varies a lot by field and is still debated.
 
-- But how can he make this argument, purely theoretically? And what do we do with that? In medicine, sociology, economics, psychology, engineering, as much as 80-90 percent of our hard, statistical findings are just wrong.
+- But how can he make this argument, purely theoretically? And what do we do with that? In medicine, psychology, economics, sociology, a large share of our hard, statistical findings, in some fields most of them, are just wrong.
 
 - I'm here to tell you, it's both true and okay. Most science is wrong, and that's okay. 
 
-- Published research findings may be wrong 80-90% of the time, but science still works. It works really, really well.
+- In some fields, published research findings may be wrong most of the time, but science still works. It works really, really well.
 
 - Thats a paradox. 
 
@@ -30,7 +30,7 @@
 
 ## This week's goals {#goals}
 
-- This approach goes by a number of different names: frequentist statistics, null hypothesis significance testing, classical statistics, p-value statistics, or just "statistics"
+- This approach is null hypothesis significance testing, the most familiar part of frequentist (or "classical") statistics. Most people just call it "statistics".
 - There's nothing wrong with frequentist approaches. They are valid, capable, convenient and useful.
 - The math is 100% valid.
 - But it's a terrible way to learn statistics
@@ -43,11 +43,17 @@
 - To frequentists, it's a way of talking about the long run outcome of repeated measurements. Strange.
 - We're going to build statistics using a more intuitive set of concepts.
 
+# Probability: rain {#rain}
+
+- These numbers come from the past: about ten years of daily records from the Kathmandu Airport weather station. We're using history as a guide to what's likely in a given month.
+- That doesn't make them exactly right for this year. They're a reasonable basis for a probability, not a precise forecast.
+- In fact, the climate is definitely changing, and we could model those changes (trends over time, monsoon timing, and so on). For now, we'll just treat historical data as our basis for prediction.
+
 # Applied Probability {#applied-probability}
 
 One common use of statistics is to evaluate the accuracy of predictive tests.
 
-I want to illustrate a very famous example involving HIV testing. This is relevant because, until relatively recently, everybody who traveled to the US from Nepal had to take an HIV test for medical clearance.
+I want to illustrate a very famous example involving HIV testing. This is relevant because, until 2010, anyone from Nepal applying for an immigrant visa to the US had to take an HIV test as part of the required medical exam.
 
 # Applied Probability (continued) {#base-rate}
 
@@ -57,14 +63,16 @@ I want to illustrate a very famous example involving HIV testing. This is releva
 
 - Sensitivity and Specificity describe a situation where we already know somebody's HIV status. Why test if we already know? What we usually really want a different thing
 
--Think about that. If you pick a person at random, give them an HIV test and it comes back positive, there is a 3% chance that they actually have HIV. 97% of them are getting a positive test (and, likely, quite a scare) erroneously.
+-Think about that. If you pick a person at random, give them an HIV test and it comes back positive, there is only about a 3% chance that they actually have HIV. 97% of them are getting a positive test (and, likely, quite a scare) erroneously.
 
 - This goes against most people's expectations. Why this happens actually isn't that hard to understand. Of people with HIV, 99% will get a positive test result.
 - Of people who don't have HIV, only 3% will get a positive test result.
 
 - But, the important fact is that HIV is actually quite rare. 3% of a big population is bigger than 99% of a very small population.
 
-- So, this test is 99% accurate at detecting HIV among people who have it, but for a random person getting a test, a positive test result is only accurate 3.4% percent of the time.
+- So, this test is 99% accurate at detecting HIV among people who have it, but for a random person getting a test, a positive test result is only accurate 3.2% of the time.
+
+- These are historical numbers, from older screening tests. Modern tests are much better (around 99.8% specificity), but even then only about 1 in 3 positive screens is a true positive at 0.1% prevalence: 99 true positives vs. about 200 false positives per 100,000. That's why a positive screen is always followed by a confirmatory test before anyone is diagnosed.
 
 - My point here is not that these tests are worthless. Rather what I want to point out is that probability is often unpredictable and unintuitive.
 
@@ -101,9 +109,70 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - Swap the labels: "has the disease" becomes "the hypothesis is actually true," and "tests positive" becomes "gets a significant result (p < 0.05)."
 - The base rate matters just as much here. Genuinely novel, interesting hypotheses are rare — most of the things researchers test are not true. That's the "disease is rare" part.
 - With a 1% base rate, 80% power, and the usual 5% false positive rate, only about 14% of significant results point to a true hypothesis. The other 86% are false positives, exactly like the false-positive HIV tests.
-- And 14% was generous. Real studies are often underpowered (closer to 50% power), researchers run many comparisons, and p-hacking inflates the effective false positive rate well past 5%. Push those and the true-discovery rate drops further.
+- The 1% base rate is one scenario, not a universal figure. It's low, but realistic for exploratory work. Confirmatory research (e.g. a well-designed trial of a plausible treatment) can have base rates closer to 50%, and then most significant results are true. The variation across fields is the point.
+- 80% power, on the other hand, is generous. Median power is around 20% in fields like neuroscience (Button et al. 2013) and economics (Ioannidis, Stanley & Doucouliagos 2017). At 1% base rate and 20% power, only about 4% of significant results are true.
+- On top of that, researchers run many comparisons, and p-hacking inflates the effective false positive rate well past 5%. Push those and the true-discovery rate drops further.
 - So the punchline isn't that scientists are dishonest or bad at math. The math is fine. It's that significance testing answers P(data | hypothesis) when the base rate makes P(hypothesis | data) the thing that actually matters — and the two can be wildly different.
 - This is why it's okay. Once you expect most single findings to be noise, you stop treating one p < 0.05 as truth and start thinking like a Bayesian: accumulating evidence and updating.
+
+# Scenarios: base rate × power {#scenarios-grid}
+
+- Every cell is the same calculation as the HIV table: true positives / (true positives + false positives) = (base rate × power) / (base rate × power + (1 − base rate) × α).
+- Read across a row first: lower power hurts, but not catastrophically when the base rate is high. At 50% true, even 20% power gives 80%.
+- Then read down a column: the base rate is what really drives it. At 80% power, going from 50% true to 1% true drops us from 94% to 14%.
+- The 0.1% row is for fields that scan huge numbers of candidates, e.g. testing thousands of genes, or every variable in a big survey, for "a link." Almost nothing you could test is true, so almost every hit is false.
+- Ask the room: which row does your own field live in? Most people don't know, and that's part of the point.
+
+# Scenarios: flexibility {#scenarios-phacking}
+
+- α = 5% assumes you ran exactly one pre-planned test. Real analyses have forks: which outcome, which subgroup, which controls, drop the outliers or not. Each fork is another chance at p < 0.05.
+- Nobody has to be dishonest for this to happen. It's usually a sincere search for "the right analysis," which happens to stop when something works.
+- 20% is an illustrative effective α, not a measured figure. Simmons, Nelson & Simonsohn (2011) showed that a handful of common choices can push the false positive rate past 60%.
+- Point out the 20% power column: when power equals α, a significant result is exactly as likely under a true hypothesis as a false one. The posterior equals the prior. The study is pure noise dressed up as a finding.
+
+# Scenarios: named cases {#scenarios-named}
+
+- These numbers are illustrative, in the spirit of Ioannidis's own table of scenarios, not estimates for any specific field.
+- The pre-registered trial is the best case: plausible hypothesis, big sample, analysis fixed in advance. Most of its significant results are true.
+- Notice the pilot trial: low power, but a plausible hypothesis keeps it above 50%. The exploratory study has everything against it.
+
+# Scenarios: two surprises {#scenarios-surprises}
+
+- The perfect study: even with 100% power, a 1% base rate gives only 17%. You cannot fix a low base rate with a better study. The false positives come from the 99% of false hypotheses, and power does nothing about them.
+- The stricter threshold (p < 0.005, proposed by Benjamin et al. 2018) helps a lot: from 14% to 62%. But 62% is still far from certain, and it needs much bigger samples to keep 80% power.
+- The takeaway: no single study design rescues an unlikely hypothesis. That's the setup for the next slide.
+
+# Scenarios: replication {#scenarios-replication}
+
+- This is the HIV confirmatory test again. A positive screen at 3% isn't a diagnosis, so you test again. Same here.
+- Each row uses the previous row's answer as the new base rate. That's Bayesian updating, before we've even named it. Today's posterior is tomorrow's prior.
+- At 80% power: 1% → 14% → 72% → 98%. Three independent significant results and we can be fairly confident.
+- At 20% power it takes longer, but it still gets there: 1% → 4% → 14% → 39% → 72%.
+- The caveat matters. This only works if replications are independent. If every lab uses the same flawed measure, or only successful replications get published, the evidence doesn't really add up. That's why the scientific process includes critique, not just repetition.
+
+# Is that a problem? {#is-that-a-problem}
+
+- Back to the capybara: most published research is wrong, and that's okay.
+- It's okay because nobody (should) read a study as a verdict. A study is a contribution to an ongoing conversation.
+- The process around the study is what does the work: other labs try it again, critics poke holes, someone proposes a better explanation, theory says whether it even makes sense.
+- The replication table showed this with numbers. One study: 14%. A field that keeps looking: 98%.
+- Science works really well. It just doesn't work one study at a time.
+
+# Statistics is observation, not answers {#observation-not-answers}
+
+- So where do the problems come from? Not from statistics being wrong. The math is fine.
+- They come from expecting too much of it. We treat a p-value as an answer to "is this true?" It isn't. It's an observation.
+- Go back through today: the person terrified by one positive HIV screen, the 86% of "discoveries" that are false, the analyst trying forks until p < 0.05. Every one of those is someone believing statistics is more powerful than it is.
+- Ethnographers already know how to handle this. Nobody writes an ethnography from one interview, or treats one informant as the truth. One interview is an observation. You weigh it against others, think about context, argue about what it means.
+- We just need to do the same thing with statistics. A regression, a survey, a significant result: one observation, to be weighed and argued about.
+- The science always comes first. The question, the theory, the knowledge of the context. Statistics serves that. It never replaces it.
+
+# What's ahead {#whats-ahead}
+
+- Keep this quick, about 30 seconds. It's a map, not a lesson.
+- The order is the point. We learn to describe data (week 2), then spend two whole weeks on causal thinking (weeks 3 and 4) before we lean on any model, then practice using all of it on real studies and their own questions (week 5).
+- Most stats courses go tests first, science later. We're doing it the other way round.
+- Then back to today: we still need a better tool than the p-value, which is where Bayesian updating comes in.
 
 # Bayesian Updating: What it is {#bayesian-updating}
 
@@ -114,7 +183,22 @@ A million tests. We have one process, called Bayesian updating. Everything we bu
 For those interested in math, I definitely encourage you to where the theorem comes from and how it's derived, but for our purposes, we need just one simple idea:
 
 
+# Bayesian Updating: How does it work {#bayesian-updating-how}
+
+The nice thing about having one process is that a lot of the rules you may have learned for tests simply go away.
+
+Tests need a stopping rule fixed in advance: if you peek at the data and stop when p dips below 0.05, your false positive rate quietly balloons. (Sequential designs can plan for interim looks, but the looks have to be planned and paid for.) Bayesian updating doesn't care when you stop. The posterior is just what you believe given what you've seen so far.
+
+Updating is also cumulative. Last week's posterior becomes this week's prior, and you end up in the same place as if you'd analyzed everything at once.
+
+We still make assumptions, but we choose them to fit the data and we write them down, instead of inheriting them from whichever test we picked. (This is really a contrast between picking tests and building models; frequentist GLMs build models too.) And small samples don't break anything; they leave us more uncertain, and the prior matters more, so it deserves more scrutiny.
+
+Most importantly, it answers the question we actually care about: how plausible is the hypothesis, given the data?
+
+
 # Bayes Theorem {#bayes-theorem}
+
+- First "Mechanics" slide: point out the tag in the corner. It means this is the machinery under the hood. Nice to follow, not necessary for the big picture. If you only remember "prior × likelihood → posterior", you're fine.
 
 That's all statistics is.
 
@@ -142,6 +226,8 @@ It's why it's okay that most published research is false.
 Observation is messy. We love the mess. We live in the mess. Observation doesn't give us simple answers, but it continuously challenges and reshapes our assumptions.
 
 Science is not the experiments we do. Rather, it's the debates we have about the experiments we do. Over time, we can become less, and less, and less, and less, and less, and less wrong.
+
+This is why I'm always confused when people say statistics is "objective" or "more concrete", and ethnography is "subjective". I don't know what that means. Both have an observational part and an inferential part. We can call the observation part "objective" if we want: the survey responses are what they are, just like the interview transcript is what it is. Inference isn't necessarily subjective. Some inferences are almost mechanical. But the interesting ones, the ones that say something about causes, about people we didn't observe, about what would happen if, are always built on strong assumptions. What causes what, how the data were generated, which priors are reasonable: those assumptions are subjective, just like the ethnographer's assumptions about what people meant are subjective. The difference isn't between objective and subjective fields. The job in both is to state our assumptions openly so others can challenge them.
 
 # Demonstration: Will the mayor win? {#poll-demo}
 

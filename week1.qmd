@@ -87,10 +87,12 @@ There are two conventions worth knowing.
 _First convention: we measure probability as a number between 0 and 1 (0% to 100%)._
 
 ::: {.fragment}
-In 2025, Kathmandu saw rain on 179 days:
+Kathmandu sees rain (≥ 1 mm) on about 121 days a year:
 :::
 
-- P( rain ) = 179 / 365 = 0.49 (49%)
+- P( rain ) = 121 / 365 = 0.33 (33%)
+
+[Kathmandu Airport weather station, NOAA GHCN-Daily (NP000444540), 2015–2025, complete months only.]{.gray style="font-size: 60%;"}
 
 
 ## Probability {.no-title}
@@ -102,10 +104,13 @@ We can do better with _conditional probabilities_:
 :::
 
 ::: {.fragment .nonincremental}
-- P( rain | Apr) = 13/30 (0.43)
-- P( rain | Dec) = 0/31 (0.00)
-- P( rain | Jul ) = 31/31 (1.00)
-- P( rain | Feb ) = 2/28 (0.07)
+- P( rain | Apr ) = 39/90 (0.43)
+- P( rain | Dec ) = 3/124 (0.02)
+- P( rain | Jul ) = 168/217 (0.77)
+- P( rain | Feb ) = 19/198 (0.10)
+:::
+
+::: {notes="notes/week1_notes.md#rain"}
 :::
 
 
@@ -143,6 +148,8 @@ We can write these using our probability language:
 
 - Sensitivity: P( test+ | HIV+ ) = 0.99 (99%)
 - Specificity: P( test– | HIV– ) = 0.97 (97%)
+
+[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.]{.gray style="font-size: 60%;"}
 :::
 
 ::: {notes="notes/week1_notes.md#applied-probability"}
@@ -184,19 +191,103 @@ _Paradox: P(A|B) is not the same as P(B|A)_
 
 _P(A|B) is not the same as P(B|A)_
 
-<div style="margin: 120px">
+<style>
+  #cond-table{
+    margin: 60px 120px 40px;
+  }
+  #cond-table input{
+    width: 4.5em;
+    font: inherit;
+    text-align: right;
+    padding: 2px 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  #cond-table td.cond-key input{
+    border: 2px solid #1b91ff;
+  }
+  #cond-table .cond-total{
+    color: #888;
+    font-style: italic;
+    text-align: right;
+  }
+  .cond-results p{
+    margin: 0.3em 0;
+  }
+  /* positioned out of flow so the button doesn't widen the totals column */
+  #cond-table th.cond-reset-cell{
+    position: relative;
+  }
+  #cond-reset{
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12pt;
+    padding: 4px 8px;
+  }
+</style>
 
-|             | Sociology | Economics |                |
-|-------------|-----------|-----------|----------------|
-| **Urban**   |       240 |       300 | [_540_]{.gray} |
-| **Rural**   |        80 |        20 | [_100_]{.gray} |
-|             | [_320_]{.gray} | [_320_]{.gray} |      |
+```{=html}
+<table id="cond-table">
+  <thead>
+    <tr><th></th><th>Sociology</th><th>Economics</th><th class="cond-reset-cell"><button id="cond-reset" type="button">Reset</button></th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>Urban</b></td>
+      <td><input type="number" min="0" step="1" value="240" data-default="240" id="cond-us"></td>
+      <td><input type="number" min="0" step="1" value="300" data-default="300" id="cond-ue"></td>
+      <td class="cond-total" id="cond-urban"></td>
+    </tr>
+    <tr>
+      <td><b>Rural</b></td>
+      <td class="cond-key"><input type="number" min="0" step="1" value="80" data-default="80" id="cond-rs"></td>
+      <td><input type="number" min="0" step="1" value="20" data-default="20" id="cond-re"></td>
+      <td class="cond-total" id="cond-rural"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="cond-total" id="cond-soc"></td>
+      <td class="cond-total" id="cond-econ"></td>
+      <td class="cond-total" id="cond-all"></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="cond-results">
+  <p><span class="red">P( Sociology | Rural )</span> = <span id="cond-p1"></span></p>
+  <p><span class="blue">P( Rural | Sociology )</span> = <span id="cond-p2"></span></p>
 </div>
+```
 
+<script>
+  (() => {
+    const $ = (id) => document.getElementById(id);
+    const cells = ['cond-us', 'cond-ue', 'cond-rs', 'cond-re'].map($);
+    const fmt = (n) => n.toLocaleString();
+    const ratio = (num, den) =>
+      `${fmt(num)} / ${fmt(den)} = ${den > 0 ? (num / den).toFixed(2) : '—'}`;
 
-[P( Sociology | Rural )]{.red} = 80 / 100 = 0.80
+    function update() {
+      const [us, ue, rs, re] = cells.map((el) => Math.max(0, Number(el.value) || 0));
+      $('cond-urban').textContent = fmt(us + ue);
+      $('cond-rural').textContent = fmt(rs + re);
+      $('cond-soc').textContent = fmt(us + rs);
+      $('cond-econ').textContent = fmt(ue + re);
+      $('cond-all').textContent = fmt(us + ue + rs + re);
+      $('cond-p1').textContent = ratio(rs, rs + re);
+      $('cond-p2').textContent = ratio(rs, us + rs);
+    }
 
-[P( Rural | Sociology )]{.blue} = 80 / 320 = 0.25
+    cells.forEach((el) => el.addEventListener('input', update));
+    $('cond-reset').addEventListener('click', () => {
+      cells.forEach((el) => (el.value = el.dataset.default));
+      update();
+    });
+    update();
+  })();
+</script>
 
 
 
@@ -218,7 +309,7 @@ Two key phrases:
 ::: {.fragment .nonincremental}
 This frames _statistical significance_ as:
 
-- P( [data]{.blue} | [hypothesis]{.red} )
+- P( [data]{.blue} | [hypothesis]{.red} ) [(schematically; formally, P( data at least this extreme | H₀ ))]{.gray style="font-size: 60%;"}
 :::
 
 ::: {.fragment .nonincremental}
@@ -245,7 +336,7 @@ It's the same **base rate problem** as the HIV test:.
 :::
 
 ::: {.fragment}
-So most "significant" findings can be false positives, exactly as most positive HIV tests were.
+So most "significant" findings can be false positives, exactly as most positives were in our HIV example.
 :::
 
 ::: {notes="notes/week1_notes.md#why-research-wrong"}
@@ -269,14 +360,145 @@ P( [true]{.blue} | [significant]{.red} ) = 80 / (80 + 495) ≈ [**14%**]{.red}
 About **86 of every 100** "discoveries" are false.
 :::
 
-## So why is most published research wrong? {.no-title}
+## So why is most published research wrong? {.no-title .smaller notes="notes/week1_notes.md#scenarios-grid"}
 
-That 14% was the _optimistic_ case. It gets worse when:
+How bad it gets depends on the field. A [1%]{.blue} base rate is low, but not unusual for
+exploratory research. And [80%]{.blue} power is generous: many fields run closer to [20%]{.blue}. (α = 5%)
+
+::: {.fragment}
+
+| P( [true]{.blue} \| [significant]{.red} ) | 80% power | 50% power | 20% power |
+|---|---|---|---|
+| **50%** true [(confirmatory trials)]{.gray} | 94% | 91% | 80% |
+| **25%** true | 84% | 77% | 57% |
+| **10%** true | 64% | 53% | [31%]{.red} |
+| **1%** true [(exploratory research)]{.gray} | [14%]{.red} | [9%]{.red} | [4%]{.red} |
+| **0.1%** true [(scanning for "a link")]{.gray} | [2%]{.red} | [1%]{.red} | [0.4%]{.red} |
+:::
+
+::: {.fragment}
+Power matters, but the [base rate]{.blue} matters more. Going from 80% to 20% power costs
+a lot; going from 50% to 1% true costs almost everything.
+:::
+
+## Add some flexibility {.no-title .smaller notes="notes/week1_notes.md#scenarios-phacking"}
+
+_Same table, but researchers try a few outcomes, a few subgroups, a few ways to clean the data…_
+
+_…so the [effective α]{.red} is closer to [20%]{.red} than 5%._
+
+::: {.fragment}
+
+| P( [true]{.blue} \| [significant]{.red} ) | 80% power | 50% power | 20% power |
+|---|---|---|---|
+| **50%** true | 80% | 71% | 50% |
+| **25%** true | 57% | 45% | [25%]{.red} |
+| **10%** true | [31%]{.red} | [22%]{.red} | [10%]{.red} |
+| **1%** true | [4%]{.red} | [2.5%]{.red} | [1%]{.red} |
+| **0.1%** true | [0.4%]{.red} | [0.2%]{.red} | [0.1%]{.red} |
+:::
+
+::: {.fragment}
+At 20% power and α = 20%, a "significant" result is [no more likely to be true]{.red}
+than the hypothesis was before the study. The study taught us nothing.
+:::
+
+## Some scenarios {.smaller notes="notes/week1_notes.md#scenarios-named"}
+
+| Scenario | Base rate | Power | α | P( [true]{.blue} \| [significant]{.red} ) |
+|---|---|---|---|---|
+| Large, pre-registered trial of a plausible treatment | 50% | 80% | 5% | **94%** |
+| Small pilot trial of a plausible treatment | 25% | 20% | 5% | **57%** |
+| Typical survey study, some analytic flexibility | 10% | 50% | 20% | [**22%**]{.red} |
+| Exploratory study, many outcomes tested | 1% | 20% | 20% | [**1%**]{.red} |
+| Scanning thousands of variables for "a link" | 0.1% | 80% | 5% | [**2%**]{.red} |
+
+## Two surprises {.smaller notes="notes/week1_notes.md#scenarios-surprises"}
+
+| Scenario | Base rate | Power | α | P( [true]{.blue} \| [significant]{.red} ) |
+|---|---|---|---|---|
+| A [perfect]{.blue} study (never misses a true effect) | 1% | 100% | 5% | [**17%**]{.red} |
+| A stricter threshold (p &lt; 0.005) | 1% | 80% | 0.5% | **62%** |
+
+::: {.fragment}
+Even a perfect study can't rescue an unlikely hypothesis. [One study is not enough.]{.red}
+:::
+
+## What if we look again? {notes="notes/week1_notes.md#scenarios-replication"}
+
+_The same hypothesis, tested again and again by independent studies. Each "significant"
+result updates what we believe before the next one. (α = 5%)_
+
+::: {.fragment}
+
+| After… | 80% power | 20% power |
+|---|---|---|
+| Before any study (base rate) | 1% | 1% |
+| 1 significant result | [14%]{.red} | [4%]{.red} |
+| 2 significant results | 72% | [14%]{.red} |
+| 3 significant results | **98%** | 39% |
+| 4 significant results | **99.8%** | 72% |
+:::
+
+::: {.fragment}
+No single study told us much. [The sequence did.]{.green}
+:::
+
+::: {.fragment}
+[Assumes the replications are independent and honest. Replications that share the same
+biases don't add up this way.]{.gray style="font-size: 60%;"}
+:::
+
+## Is that a problem? {notes="notes/week1_notes.md#is-that-a-problem"}
+
+_Most studies are wrong._ [...and that's okay.]{.fragment .blue}
+
+::: {.fragment .nonincremental}
+- A study was never supposed to be the answer.
+- We interpret each study as part of a **larger scientific process**: replication, critique,
+  competing explanations, theory, more data.
+- That process is what gets things right. Not any single study.
+:::
+
+::: {.fragment}
+Science doesn't work because individual studies are right. It works because
+the field [keeps looking]{.green}.
+:::
+
+## Statistics is observation, not answers {notes="notes/week1_notes.md#observation-not-answers"}
+
+::: {.fragment .nonincremental}
+- The real problem isn't that studies are wrong. It's that we [expect them to be right]{.red}.
+- The HIV scare, the false discoveries, p-hacking: they all come from believing
+  statistics is [more powerful than it is]{.red}.
+:::
+
+::: {.fragment .nonincremental}
+- In ethnography, everyone knows **one interview isn't the answer**. It's one observation,
+  weighed against others and argued over.
+- We just need to treat a statistical result the same way.
+:::
+
+::: {.fragment}
+<div style="font-size: 150%; font-weight: bold; margin-top: 1em;">
+The science always comes first.
+</div>
+:::
+
+## What's ahead {notes="notes/week1_notes.md#whats-ahead"}
+
+That's what we're going to do here: [put the science first]{.blue}.
 
 ::: {.nonincremental}
-- the base rate is even lower (genuinely novel ideas are rarer than 1%),
-- studies are **underpowered** (real power is often much lower, even 20%),
-- many comparisons are run, or results are [p-hacked]{.red} (effective α &gt;&gt; 5%).
+- **Week 2**: describe the world. Distributions, correlation, a first regression.
+- **Week 3**: draw our science. Causal diagrams (DAGs) before any model.
+- **Week 4**: forks, pipes and colliders. What to control for, and what not to.
+- **Week 5**: what did they leave out? Unobserved forks, pipes and colliders.
+:::
+
+::: {.fragment}
+Every week starts with the question and what we believe about the world.
+[The statistics come after.]{.gray}
 :::
 
 ## The problem?
@@ -297,10 +519,22 @@ That 14% was the _optimistic_ case. It gets worse when:
 Instead of tests, we have Bayesian Updating:
 
 - We have a **prior** belief about the world (specifically, about a parameter or "estimand").<br>[_I think that about 60% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
-- Then, we observe something, and we estimate the **likelihood** of what we saw given our prior belief.<br>[_I just took a survey, and only 30% of people said they will vote for the current mayor. This doesn't really fit with what I expected._]{.fragment .blue}
+- Then, we observe something, and we ask how **likely** what we saw would be under each possible value of the parameter (the **likelihood**).<br>[_I just took a survey, and only 30% of people said they will vote for the current mayor. That result would be quite likely if true support were around 30%, and unlikely if it were 60%._]{.fragment .blue}
 - This new observation changes our prior belief (challenging it or making it stronger), to become our **posterior**.<br>[_I now think that about 45% of Kathmandu will vote for the current mayor in the next election._]{.fragment .blue}
 
 ::: {notes="notes/week1_notes.md#bayesian-updating"}
+:::
+
+## Bayesian Updating: How does it work
+
+- **One rule for everything.** Prior × likelihood → posterior. No flowchart of tests to choose from.
+- **No fixed sample size.** Look at the data whenever you like and stop when you've learned enough. The posterior means the same thing either way.<br>[_A p-value depends on the stopping rule you planned in advance. Unplanned peeking breaks it._]{.fragment .blue}
+- **Today's posterior is tomorrow's prior.** Updating survey by survey gives the same answer as analyzing all the surveys at once.
+- **You build the model to fit your data.** Counts, proportions, skewed incomes: describe the data as they are, instead of picking whichever test's assumptions come closest.
+- **Small samples are still valid.** No large-sample approximations. Less data means more uncertainty, and the prior carries more of the weight.
+- **It answers the question we actually ask:** P( [hypothesis]{.red} \| [data]{.blue} ).
+
+::: {notes="notes/week1_notes.md#bayesian-updating-how"}
 :::
 
 # Bayesian Updating Example {.no-title}
@@ -309,7 +543,7 @@ Instead of tests, we have Bayesian Updating:
 {{< include shiny/updating.R >}}
 ```
 
-# Bayes Theorem
+# Bayes Theorem {.mechanics}
 ::: {notes="notes/week1_notes.md#bayes-theorem"}
 :::
 
@@ -344,9 +578,24 @@ In simple terms:
 
 # Statistics is observation
 
-- When we do ethnography, we _expect_ our data to be messy.
-- We build knowledge not from one observation but from a process of theory building based on many observations.
-- We need to start thinking about statistics in the same way.
+_Back to where we started: a study is one observation._
+
+- Bayesian updating is how observations add up: each one moves what we believe, a little or a lot.
+- That's what happened when we looked again and again: 1% → 14% → 72% → 98%.
+- Ethnography works the same way. Understanding comes from many observations, debated over time.
+
+::: {.fragment}
+
+|                 | Observation                    | Interesting inferences assume…                     |
+|-----------------|--------------------------------|----------------------------------------------------|
+| **Ethnography** | interviews, field notes        | what people meant; whose voices stand for others   |
+| **Statistics**  | surveys, measurements, records | what causes what; how the data were generated      |
+
+:::
+
+::: {.fragment}
+Call the observation "objective" if you like. But interesting inferences rest on [strong assumptions]{.red}, and choosing assumptions is [subjective]{.red}, in both.
+:::
 
 ::: {notes="notes/week1_notes.md#statistics-is-observation"}
 :::

@@ -38,7 +38,7 @@ pct <- function(x) paste0(round(100 * x), "%")
 
 # Data Lunch: Week 5 {.center}
 
-Reading a finding, asking a question
+What did they leave out?
 
 
 # Should we act on this?
@@ -57,17 +57,20 @@ Reading a finding, asking a question
 - **Week 2**: Describe numbers by distributions. Coefficients have units.
 - **Week 3**: Seeing ≠ doing. The DAG decides which number answers your question.
 - **Week 4**: Forks, pipes, colliders. Holding the wrong thing fixed creates paradoxes.
-- This week: put it together, from **both sides** of an analysis.
+- This week: the most important question to ask of any finding. **What's in the world
+  that isn't in their model?** Unobserved forks, pipes and colliders.
 
 
 # Goals this week
 
 - Part 1: Evaluating someone else's finding
-  - Seven questions to ask of any claim
+  - Seven questions to ask of any claim, and the one that matters most
   - Worked case: bicycles for girls in Bihar
-- Part 2: What's missing from the model?
-  - Reading the DAG a study never drew
-  - Missing common causes, mediators, and which way they bias the result
+- Part 2: [What they didn't measure]{.blue}, the heart of this week
+  - Why it's the most important critique, and why more data can't fix it
+  - Unobserved **forks**: common causes nobody measured
+  - Hidden **pipes**: channels buried in the control list
+  - Unobserved **colliders**: selection in how the data was made
 - Part 3: Asking your own question
   - From a decision to an estimand
   - The target trial: the experiment you wish you could run
@@ -86,14 +89,14 @@ Seven questions
 1. **What exactly is the claim?**
 2. **What did they actually measure?**
 3. **How was the data made?**
-4. **What's in their DAG, and what's in their model?**
+4. [**What did they leave out?**]{.blue} [← the one that matters most]{.gray}
 5. **Who is it about?**
 6. **How big, and how sure?**
 7. **How plausible was it before?**
 :::
 
 ::: {.fragment}
-Every one of these comes from a week you've already done, except one or two new pieces.
+Every one of these comes from a week you've already done. Number 4 gets all of Part 2.
 :::
 
 
@@ -180,8 +183,9 @@ dag_plot(
 )
 ```
 
-**Randomized**: a coin flip chose X. Every arrow into X is **deleted**. This is
-`do(X)` done physically.
+**Randomized**: a coin flip chose X. Every arrow into X is **deleted**, including
+forks [nobody thought of]{.blue}. This is `do(X)` done physically. (It can't fix pipes
+in the controls or colliders in who stays in the study.)
 :::
 :::
 :::
@@ -206,15 +210,16 @@ doors.
 schools and they improved" (before/after with no comparison group) -->
 
 
-# 4. What's in their DAG, and what's in their model?
+# 4. What did they leave out?
 
 Most reports never draw a DAG. Draw it for them.
 
 ::: {.nonincremental}
-- Which **forks** did they control for? Which did they miss?
-- Did they control for a **mediator**, hiding the effect? ("after adjusting for...")
-- Did they select on a **collider**? ("among patients," "among graduates,"
-  "among funded firms")
+- What could cause both X and Y that isn't in their model? [→ an unobserved
+  **fork**]{.blue}
+- Is anything in "after adjusting for..." caused by X? [→ a hidden **pipe**]{.blue}
+- Who made it into the data, and could X and Y both affect that? ("among patients,"
+  "among graduates," "among funded firms") [→ an unobserved **collider**]{.blue}
 :::
 
 ::: {.fragment}
@@ -341,16 +346,16 @@ Vote again: would you fund it in Madhesh? What would you need to know first?
 1. **Claim**: descriptive, predictive or causal? Seeing or doing?
 2. **Measure**: does the variable mean what the headline says?
 3. **Design**: what decided who got X?
-4. **DAG**: what did they control for, and should they have?
+4. [**Left out**: unobserved forks, pipes and colliders.]{.blue}
 5. **Who**: whose data, and whose decision?
 6. **Size & certainty**: in decision units, as a range.
 7. **Prior**: how surprising, and how many tries?
 :::
 
 
-# Part 2: What's missing from the model? {.center}
+# Part 2: What they didn't measure {.center}
 
-The critique you can make without any statistics
+Unobserved forks, pipes and colliders: the critique that needs no statistics
 
 
 ## The problem is upstream
@@ -368,6 +373,126 @@ The critique you can make without any statistics
   precise wrong answer.
 - So you can challenge a finding without checking a single calculation: **what did
   their causal model leave out?**
+
+
+## Why this is the big one
+
+- Most other problems have a technical fix: a bigger sample, a better measure, a better
+  model.
+- Unobserved structure has none. [**No test can detect it.**]{.red} The same data fit a
+  fork, a pipe or a collider. _(Week 3: the data can't draw the DAG for you.)_
+- **Unobserved** means not in their model: never measured, or measured but never
+  thought about (a control that's really a pipe, a sample that's really a collider).
+- The only way to find one is to **know the world**: how people choose, how places
+  differ, what history did.
+- That's science, not math. A field researcher, an ethnographer or a district officer
+  will often spot it before the statistician does.
+
+::: {.fragment}
+Back to Week 1: [the science comes first]{.blue}. This is where it pays off.
+:::
+
+
+## More data won't save you
+
+_A made-up world: norms around early marriage drive both girls' schooling and births.
+Schooling itself has [**no effect**]{.red} on births._
+
+```{r more-data, fig.width = 13, fig.height = 5.5}
+set.seed(5)
+
+fit_row <- function(fit, model, n) {
+  ci <- confint(fit)["x", ]
+  tibble(model = model, n = n, est = coef(fit)[["x"]], lo = ci[[1]], hi = ci[[2]])
+}
+
+sizes <- c(50, 200, 1000, 5000, 20000)
+
+more_data <- map_dfr(sizes, function(n) {
+  u <- rnorm(n) # early-marriage norms: nobody measured these
+  x <- -0.6 * u + rnorm(n) # schooling
+  y <- 0.6 * u + rnorm(n) # births; schooling has no effect
+  bind_rows(
+    fit_row(lm(y ~ x), "What they ran: births ~ schooling", n),
+    fit_row(lm(y ~ x + u), "If norms had been measured", n)
+  )
+})
+
+more_data$model <- fct_inorder(more_data$model)
+
+ggplot(more_data, aes(n, est, color = model)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = INK) +
+  annotate("text", x = 2200, y = 0.04, label = "true effect", vjust = 0,
+           color = INK, size = 6) +
+  geom_pointrange(aes(ymin = lo, ymax = hi), linewidth = 1.2, size = 0.9,
+                  position = position_dodge(width = 0.15)) +
+  scale_x_log10(breaks = sizes, labels = fmt(sizes, 0)) +
+  scale_color_manual(values = c(RED, GRAY), name = NULL) +
+  labs(x = "Sample size", y = "Estimated effect\nof schooling")
+```
+
+::: {.fragment}
+Bigger samples give a [narrower interval around the wrong answer]{.red}. Nothing in the
+red estimates warns you. Only the gray one gets it right, and it needs data nobody has.
+:::
+
+
+## Three things nobody drew
+
+::: {.columns}
+::: {.column width="33%"}
+```{r unobs-fork, fig.width = 5, fig.height = 4}
+dag_plot(
+  c("U -> X", "U -> Y", "X -> Y"),
+  list(X = c(0, 0), U = c(1, 1.1), Y = c(2, 0)),
+  above = "U",
+  highlight = c("U -> X", "U -> Y"),
+  exposure = "X",
+  outcome = "Y",
+  unobserved = "U"
+)
+```
+
+**Unobserved fork**
+
+Something nobody measured causes both X and Y. _It's not in the data._
+:::
+
+::: {.column width="33%"}
+```{r unobs-pipe, fig.width = 5, fig.height = 4}
+dag_plot(
+  c("X -> M", "M -> Y", "X -> Y"),
+  list(X = c(0, 0), M = c(1, 1.1), Y = c(2, 0)),
+  above = "M",
+  highlight = c("X -> M", "M -> Y"),
+  exposure = "X",
+  outcome = "Y",
+  unobserved = "M"
+)
+```
+
+**Hidden pipe**
+
+A control is really a channel X works through. _It's in the data, in the wrong role._
+:::
+
+::: {.column width="33%"}
+```{r unobs-collider, fig.width = 5, fig.height = 4}
+dag_plot(
+  c("X -> S", "Y -> S", "X -> Y"),
+  list(X = c(0, 0), S = c(1, -1.1), Y = c(2, 0)),
+  highlight = c("X -> S", "Y -> S"),
+  exposure = "X",
+  outcome = "Y",
+  unobserved = "S"
+)
+```
+
+**Unobserved collider**
+
+X and Y both decide who ends up in the data. _It's in how the data was made._
+:::
+:::
 
 
 ## Their model implies a DAG
@@ -422,7 +547,7 @@ a collider?
 :::
 
 
-## The usual suspects
+## Unobserved forks: the usual suspects
 
 In development data, the same few common causes come up again and again.
 
@@ -441,7 +566,7 @@ In development data, the same few common causes come up again and again.
   X and Y.
 
 
-## Missing common causes
+## Unobserved forks: schooling and births
 
 ::: {.columns}
 ::: {.column}
@@ -478,7 +603,7 @@ dag_plot(
 :::
 
 
-## Which way would they push?
+## Forks: which way would they push?
 
 You can often tell the **direction** of the bias without any data.
 
@@ -498,7 +623,23 @@ You can often tell the **direction** of the bias without any data.
 :::
 
 
-## Mediators: direct and indirect effects
+## Forks: how strong would it have to be?
+
+- "There may be confounders" is true of every study. The useful question is **how
+  strong** one would need to be to explain the result away.
+- Compare it with what they _did_ measure. If the result survives controlling for GDP,
+  would gender norms have to matter **more than GDP** to erase it? Is that plausible?
+- Some findings are **fragile**: a modest confounder would erase them. Some are
+  **robust**: it would take something stronger than anything we know about.
+- You answer this by knowing the world, not by running more code.
+
+::: {.fragment}
+[Formal versions exist: sensitivity analysis, E-values (VanderWeele & Ding 2017),
+benchmarking against measured variables (Cinelli & Hazlett 2020).]{.gray style="font-size: 60%;"}
+:::
+
+
+## Hidden pipes {.smaller}
 
 ::: {.columns}
 ::: {.column}
@@ -521,6 +662,8 @@ dag_plot(
 :::
 
 ::: {.column}
+- Their DAG drew contraceptive use as a separate cause of births. It never drew
+  [schooling → contraception]{.blue}. That one missing arrow turns a control into a pipe.
 - Schooling can lower fertility **through** later marriage and more contraceptive use.
   These are **indirect effects**.
 - Whatever is left over is the **direct effect**.
@@ -532,7 +675,7 @@ dag_plot(
 :::
 
 
-## Which effect answers the question?
+## Pipes: which effect answers the question?
 
 - **Funding girls' schooling?** You want the **total** effect. Every channel counts,
   so don't control for mediators.
@@ -549,6 +692,75 @@ mediator and the outcome. _(Week 4)_
 :::
 
 
+## Pipes: spotting them in the control list
+
+For every variable after "controlling for...", ask: [**could X have caused this?**]{.blue}
+
+- **Timing**: was it measured _after_ X started? Then X may have changed it.
+- **The program's own goals**: a cash transfer study that controls for household income
+  has controlled away the transfer.
+- **The usual pipes**: income, health, beliefs, occupation, marriage. Many things that
+  look like background are really outcomes of X.
+
+::: {.fragment}
+Pipes also hide in **interpretation**. "Schooling works through contraception" is a
+claim about a pipe. Did they rule out the channels they never drew?
+:::
+
+
+## Unobserved colliders
+
+::: {.columns}
+::: {.column}
+```{r clinic-collider, fig.width = 7, fig.height = 5}
+dag_plot(
+  c("S -> V", "B -> V", "S -> B"),
+  list(S = c(0, 0), B = c(3, 0), V = c(1.5, -1.3)),
+  labels = c(S = "Schooling", B = "Births", V = "Surveyed at a clinic"),
+  left = "S",
+  right = "B",
+  exposure = "S",
+  outcome = "B",
+  unobserved = "V",
+  highlight = c("S -> V", "B -> V")
+)
+```
+:::
+
+::: {.column}
+- A study surveys women at health clinics.
+- Educated women are more likely to visit. So are women with more children.
+- Among visitors, a woman with little schooling is probably there **because** she has
+  many children. Schooling and births look negatively linked, even with no effect.
+- The collider isn't in the control list. It's [**the reason anyone is in the
+  data**]{.blue}. _(Question 3)_
+:::
+:::
+
+
+## Colliders: where they hide {.smaller}
+
+| Who's in the data | What selected them |
+|---|---|
+| Survey respondents | who answered, who was home |
+| Clinic, school or court records | who showed up |
+| Firms, villages, programs | who survived long enough to be counted |
+| Migrants and returnees | who left, and who came back |
+| Published findings | what got published _(Week 1)_ |
+| "Among graduates / patients / borrowers" | the phrase itself |
+: {.nonincremental}
+
+::: {.fragment .nonincremental}
+- If X and Y both make it **more** likely to be in the data → a false **negative**
+  association.
+- If one makes it more likely and the other less → a false **positive** association.
+:::
+
+::: {.fragment}
+Ask: **who is missing, and why?**
+:::
+
+
 ## Writing the critique
 
 A response you can give without re-running any analysis:
@@ -561,16 +773,20 @@ probably make the estimate **[too large / too small]**.
 **[M]** is in the control list, but it's a channel through which X affects Y. So the
 estimate is the effect of X *not through M*, which is not the same as **[the policy
 question]**.
+
+The sample only includes **[who]**, and both X and Y affect who gets in. This would
+probably make the estimate **[too large / too small]**.
 :::
 
-- Name specific variables, and say **which way** each one would push.
+- Name specific variables, say **which way** each one would push, and how **strong**
+  it would need to be.
 - "There may be omitted variables" isn't a critique. It's true of every study.
 
 
 ## Your turn
 
-For each claim: name two missing common causes, any mediators in the controls, and the
-direction each would push.
+For each claim: find an unobserved **fork**, a hidden **pipe** or an unobserved
+**collider**, and say which way each would push.
 
 1. Households with a toilet have healthier children, after controlling for income.
 2. Countries with more women in parliament have lower maternal mortality, after
@@ -579,6 +795,8 @@ direction each would push.
    controlling for population.
 4. Households receiving remittances spend more on schooling, after controlling for
    household size and caste.
+5. Among students who passed the SEE, those from private schools did no better at
+   university.
 
 
 ## Possible answers
@@ -592,25 +810,27 @@ direction each would push.
 3. **Forks**: roads and markets. **Selection**: if lenders target poorer districts, the
    effect looks **smaller**.
 4. **Forks**: migrant households were already better off and better connected.
-   **Mediator** to watch: if they had controlled for income, they'd block the main
+   **Pipe** to watch: if they had controlled for income, they'd block the main
    channel.
+5. **Collider**: passing the SEE. Private schooling and ability both help students
+   pass, so the public-school students who passed had to be more able. Comparing only
+   passers hides the private-school advantage, pushing it toward **zero**.
 
 ::: {.fragment}
-None of these needed a single number. They needed a DAG.
+None of these needed a single number. They needed a DAG, and knowledge of the world.
 :::
 
 
 # Part 2: Summary
 
-- Most findings never state their causal model. **Draw it for them** from the control
-  list.
-- For X → Y and each control, look for **common causes**, **mediators**, **common
-  effects**, and **reverse arrows**.
-- Go through **the usual suspects**: wealth, geography, institutions, norms, time,
-  selection, data quality.
-- **Sign the bias**: say which way each missing variable would push.
-- Ask whether the question needs the **total** or the **direct** effect, and whether
-  the controls match that.
+- The most important question for any observational finding: [**what's in the world
+  that isn't in their model?**]{.blue}
+- No test detects it and more data doesn't fix it. Only **knowing the world** finds it.
+- **Unobserved forks**: draw their DAG from the control list, go through the usual
+  suspects, sign the bias, and ask how strong it would need to be.
+- **Hidden pipes**: for each control, could X have caused it? Does the question need the
+  **total** or the **direct** effect?
+- **Unobserved colliders**: who's in the data, and could X and Y both affect that?
 
 
 # Part 3: Asking your own question {.center}
@@ -673,10 +893,12 @@ if **[intervention]** compared to **[alternative]**?
 ## From estimand to data
 
 1. **Draw the DAG** for your estimand. _(Weeks 3–4)_
-2. Which variables must you measure to close the back doors?
-3. Can you measure them? If not, which **design** gets around them? _(Question 3)_
-4. Who needs to be in the sample for the answer to apply to **your** decision?
-   _(Question 5)_
+2. Which forks must you measure to close the back doors? Which pipes must you leave
+   alone?
+3. Which forks **can't** you measure? That's your biggest limitation. Which **design**
+   gets around them? _(Question 3)_
+4. Who needs to be in the sample for the answer to apply to **your** decision? Could
+   getting into the sample be a **collider**? _(Question 5)_
 5. How precise does the answer need to be to change the decision?
 
 
@@ -706,8 +928,8 @@ if **[intervention]** compared to **[alternative]**?
 
 In groups, take one study summary and answer the seven questions.
 
-- Draw the DAG their control list implies. Add the **missing common causes** and
-  **mediators**, and say which way each would push the estimate.
+- Draw the DAG their control list implies. Add the unobserved **forks**, hidden
+  **pipes** and unobserved **colliders**, and say which way each would push the estimate.
 
 - Which question was hardest to answer from what they reported?
 - What's the **one thing** you'd need to know before acting?
@@ -727,10 +949,13 @@ Each group gets a decision. Write:
 
 ## Your project
 
+- Critique your own DAG as if a stranger wrote it:
+  - **Forks**: which common causes aren't in it, or aren't in World Bank data?
+  - **Pipes**: are any of your controls caused by your exposure?
+  - **Colliders**: which countries are missing from the data, and why?
+  - Which way would each bias your estimate?
 - Rewrite your project's question using the **estimand template**.
-- Critique your own DAG as if a stranger wrote it: which **common causes** of your
-  exposure and outcome aren't in it? Which way would each bias your estimate?
-- Are any of your controls **mediators**? Do you want the total or the direct effect?
+- Do you want the total or the direct effect?
 - What is your **target trial**? How far is World Bank 2022 data from it?
 - List your **scope limits**:
   - One year, cross-sectional
@@ -743,9 +968,9 @@ Each group gets a decision. Write:
 
 **A one-page critique memo** on a real report or finding from your own work.
 
-- Organized by the seven questions.
-- Includes the DAG their model implies, the common causes and mediators it leaves out,
-  and the direction of each bias.
+- Organized by the seven questions, with most of the page on **question 4**.
+- Includes the DAG their model implies, the unobserved forks, pipes and colliders it
+  leaves out, and the direction of each bias.
 - Ends with: **"What I'd need to see before acting on this."**
 
 <!-- TODO: homework/week5.qmd with a worked example memo -->

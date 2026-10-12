@@ -118,6 +118,11 @@ Single SCSS theme layered on reveal's `simple` theme. Defines the brand palette
 (blue `#1b91ff`), Inter/Space Grotesk fonts, and semantic inline color spans used
 throughout the slides as `[text]{.red}`, `.blue`, `.green`, `.gray`.
 
+Slides that go deeper into the math than the big picture needs (formulas, derivations,
+unit conversions, formal model notation) are marked `## Title {.mechanics}`. This adds a
+small "Mechanics" tag in the top-right corner and a dotted title underline. The class only
+works on a slide heading, not on a heading inside a callout or other div.
+
 ### `r/rlib.R`
 Shared R helpers sourced by decks (e.g. `week3.qmd`). `replace_indexes()` relabels Stan
 indexed parameter names like `alpha[2]` with factor levels (`alpha[female]`) for readable

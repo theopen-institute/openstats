@@ -459,7 +459,7 @@ ggplot(sim, aes(height, weight, color = sex)) +
 ```
 
 
-## Step 3: Two statistical models
+## Step 3: Two statistical models {.mechanics}
 
 ::: {.columns}
 ::: {.column}
