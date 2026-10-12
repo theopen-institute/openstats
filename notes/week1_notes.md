@@ -43,6 +43,26 @@
 - To frequentists, it's a way of talking about the long run outcome of repeated measurements. Strange.
 - We're going to build statistics using a more intuitive set of concepts.
 
+# Probability is counting {#counting}
+
+- Before any notation: probability is counting. Count everything that could happen, count the ones you care about, compare the two.
+- Take the examples slowly. Students already know all of these. The point is that they already understand probability; they just haven't been told that's what it is.
+- The class example is made up. Swap in real numbers from the room if you know them.
+- Flag the promise: every probability in this lecture is a count. The HIV table counts 100,000 people. The published-research table counts 10,000 hypotheses. If they ever get lost, they can go back to counting.
+
+# Counting ways {#counting-ways}
+
+- When outcomes are equally likely, list every way things could go and count. Two coins have four ways, not three: HT and TH are different ways to get one head.
+- d'Alembert famously argued the answer was 1 in 3. It's a nice reminder that counting carefully is a real skill, even for experts.
+- Foreshadow the bag-of-stones demo. Bayesian updating is the same move: for each possible bag, count the ways it could have produced the stones we drew. More ways means more plausible. (This is how McElreath introduces it in *Statistical Rethinking*, ch. 2.)
+
+# Let's count {#lets-count}
+
+- Actually do it. Count the room, type it into "People here," ask for hands, type the count into "Hands up." The dots fill in live.
+- Swap the question for anything quick: came by bus, has a sibling abroad, slept less than six hours.
+- Ask: if I picked one of you at random, what's the chance they had tea? They'll answer without thinking. That's a probability, and they got it by counting.
+- Bridge: the next two slides are just conventions for writing these counts down.
+
 # Probability: rain {#rain}
 
 - These numbers come from the past: about ten years of daily records from the Kathmandu Airport weather station. We're using history as a guide to what's likely in a given month.
@@ -103,6 +123,14 @@ For Bayesians, it's simple. It means that she doesn't know for sure. But, not kn
 
 For Frequentists, it's a bit more complicated. "Probably" here would refer to the long run frequency of different outcomes over repeated observations. If we visited the store in a million parallel universes governed by rules similar to this one, the store would be open in most of them. This is a valid way to think about things, but I want to suggest that it's a bit unintuitive. If you've ever heard somebody say that p-value is the probability that an hypothesis is true, they are making a serious mistake.
 
+# The problem with p-values {#pvalue-direction}
+
+- Reassure people first. Lots of smart people find p-values confusing, and the reason is structural, not personal.
+- Observation runs from data to the world. You see something and ask what it tells you. That's how we reason in daily life, and how ethnographers reason about an interview.
+- A p-value runs the other way. It starts from a world we usually don't believe in (the null: nothing is going on), and asks how surprising our data would be there. It's a statement about the data, given an imagined world.
+- So it can't tell you how likely your hypothesis is. Treating p < 0.05 as "95% likely true" is the same mistake as treating a 97%-specific test as a 97% diagnosis. We just saw how wrong that can be.
+- Bayesian updating is the fix: it runs in the direction we actually observe.
+
 # So why is most published research wrong? {#why-research-wrong}
 
 - Now we can close the loop on Ioannidis. His argument is the HIV example in disguise.
@@ -150,30 +178,6 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - At 20% power it takes longer, but it still gets there: 1% → 4% → 14% → 39% → 72%.
 - The caveat matters. This only works if replications are independent. If every lab uses the same flawed measure, or only successful replications get published, the evidence doesn't really add up. That's why the scientific process includes critique, not just repetition.
 
-# Is that a problem? {#is-that-a-problem}
-
-- Back to the capybara: most published research is wrong, and that's okay.
-- It's okay because nobody (should) read a study as a verdict. A study is a contribution to an ongoing conversation.
-- The process around the study is what does the work: other labs try it again, critics poke holes, someone proposes a better explanation, theory says whether it even makes sense.
-- The replication table showed this with numbers. One study: 14%. A field that keeps looking: 98%.
-- Science works really well. It just doesn't work one study at a time.
-
-# Statistics is observation, not answers {#observation-not-answers}
-
-- So where do the problems come from? Not from statistics being wrong. The math is fine.
-- They come from expecting too much of it. We treat a p-value as an answer to "is this true?" It isn't. It's an observation.
-- Go back through today: the person terrified by one positive HIV screen, the 86% of "discoveries" that are false, the analyst trying forks until p < 0.05. Every one of those is someone believing statistics is more powerful than it is.
-- Ethnographers already know how to handle this. Nobody writes an ethnography from one interview, or treats one informant as the truth. One interview is an observation. You weigh it against others, think about context, argue about what it means.
-- We just need to do the same thing with statistics. A regression, a survey, a significant result: one observation, to be weighed and argued about.
-- The science always comes first. The question, the theory, the knowledge of the context. Statistics serves that. It never replaces it.
-
-# What's ahead {#whats-ahead}
-
-- Keep this quick, about 30 seconds. It's a map, not a lesson.
-- The order is the point. We learn to describe data (week 2), then spend two whole weeks on causal thinking (weeks 3 and 4) before we lean on any model, then practice using all of it on real studies and their own questions (week 5).
-- Most stats courses go tests first, science later. We're doing it the other way round.
-- Then back to today: we still need a better tool than the p-value, which is where Bayesian updating comes in.
-
 # Bayesian Updating: What it is {#bayesian-updating}
 
 So I said that we were going to derive our entire statistics from first principles, and I meant it. Instead of a million pre-built tests, we have one process: Bayesian updating
@@ -182,8 +186,22 @@ A million tests. We have one process, called Bayesian updating. Everything we bu
 
 For those interested in math, I definitely encourage you to where the theorem comes from and how it's derived, but for our purposes, we need just one simple idea:
 
+# You've already done this {#prior-likelihood-posterior}
 
-# Bayesian Updating: How does it work {#bayesian-updating-how}
+- Read the definitions row first, then go down the examples. The point: the HIV test and the published-research table were Bayesian updates all along. We just didn't use the names.
+- In the HIV row, the prior is prevalence, the likelihood is sensitivity and the false-positive rate, and the posterior is P(HIV+ | test+).
+- In the research row, the prior is the base rate, the likelihood is power and α, and the posterior is P(true | significant).
+- The mayor poll is the same thing with many possible answers (every vote share from 0 to 100%) instead of two. We'll do it live in the demonstration.
+- Address the obvious question head on: "Isn't the likelihood backwards too, like a p-value?" Yes. On its own, it's P(data | belief). A p-value stops there, and only for one imagined world. Bayes computes it for every possibility and combines it with the prior, which turns it around into P(belief | data).
+
+# From two possibilities to many {#two-to-many}
+
+- This is the bridge from the HIV and research examples to real models. Those had two possibilities. Most questions have many.
+- Nothing about the rule changes. We just do it once for each possibility and compare.
+- For the bag of stones, the likelihood is literally counting: for a bag with 3 blue stones, how many ways could we draw blue, black, blue? Compare with a bag with 6 blue. This is the "Counting ways" slide again.
+- The output is a distribution, which is why the bag app shows a bar chart rather than a single number. Everything from Week 2 on is about distributions like this.
+
+# Bayesian Updating: Why one rule helps {#bayesian-updating-how}
 
 The nice thing about having one process is that a lot of the rules you may have learned for tests simply go away.
 
@@ -194,7 +212,6 @@ Updating is also cumulative. Last week's posterior becomes this week's prior, an
 We still make assumptions, but we choose them to fit the data and we write them down, instead of inheriting them from whichever test we picked. (This is really a contrast between picking tests and building models; frequentist GLMs build models too.) And small samples don't break anything; they leave us more uncertain, and the prior matters more, so it deserves more scrutiny.
 
 Most importantly, it answers the question we actually care about: how plausible is the hypothesis, given the data?
-
 
 # Bayes Theorem {#bayes-theorem}
 
@@ -215,7 +232,36 @@ believe something (prior), observe something (likelihood), update beliefs (poste
 With this simple process, we're going to do some very cool things.
 instead, we have updating
 
-# Statistics is Observation {#statistics-is-observation}
+# Isn't the prior subjective? {#prior-subjective}
+
+- Someone will ask. Better to raise it ourselves.
+- Yes, priors are a choice. But every method makes choices: which test, which variables to control for, when to stop collecting data, which outcome to report. Frequentist methods make those choices too; they're just less visible.
+- A prior is visible. It's written down, so it can be criticized, and we can check how much the answer depends on it (sensitivity analysis, later in the course).
+- With plenty of data, reasonable priors converge. With little data, the prior matters, and that is honest: the data alone can't tell us much.
+- Lead into the next slide: this isn't special to statistics. Every field that learns from observation makes assumptions.
+
+# Hard data? {#hard-data}
+
+- Put the claim up plainly, and don't mock it. Many students have heard it from supervisors, reviewers or funders, and some believe it.
+- Ask for a show of hands: who has heard this? Who has said it? It's a fair question to test, and we now have the tools to test it.
+
+# What's true about it {#hard-data-true}
+
+- Be fair to the claim first. The arithmetic really is objective: give two people the same data and the same model, and they get the same number.
+- Numbers are also easy to share and recompute, which is a real strength.
+- The catch: the arithmetic is the last and smallest step. Everything before it (what to measure, who to ask, which model) involves judgment.
+
+# Every number today rested on a choice {#hard-data-choices}
+
+- Walk down the table. Every number came from earlier in today's lecture, and each one moved when a choice changed.
+- Rain: a different station, a different decade or a 0.1 mm threshold gives a different number.
+- HIV: the 3.2% is for a random person from the general population. For people tested at a clinic because they have symptoms, the base rate is far higher, and so is the answer.
+- p < 0.05: the 5% is a convention from the 1920s, not a law of nature. Choosing the test, the controls and the stopping point are all researcher decisions.
+- 14%: depends on a base rate nobody can observe.
+- The mayor: depends on who we reached, who answered and what prior we drew.
+- None of these choices is wrong. The point is that they are choices, made by people, just like an ethnographer's choices about whom to interview and how to read what they said.
+
+# Objective and subjective {#statistics-is-observation}
 
 Updating is the foundation of our statistics: We believed something, we saw something, and we now believe something slightliy or significantly different from what we believed before.
 
@@ -229,11 +275,59 @@ Science is not the experiments we do. Rather, it's the debates we have about the
 
 This is why I'm always confused when people say statistics is "objective" or "more concrete", and ethnography is "subjective". I don't know what that means. Both have an observational part and an inferential part. We can call the observation part "objective" if we want: the survey responses are what they are, just like the interview transcript is what it is. Inference isn't necessarily subjective. Some inferences are almost mechanical. But the interesting ones, the ones that say something about causes, about people we didn't observe, about what would happen if, are always built on strong assumptions. What causes what, how the data were generated, which priors are reasonable: those assumptions are subjective, just like the ethnographer's assumptions about what people meant are subjective. The difference isn't between objective and subjective fields. The job in both is to state our assumptions openly so others can challenge them.
 
+# The same standard for both {#hard-data-standard}
+
+- The useful distinction isn't objective vs. subjective fields. It's transparent vs. hidden choices.
+- Ethnography has spent decades building habits for this: reflexivity (how did I shape what I saw?), positionality (who am I to the people I studied?), thick description (show enough that readers can judge for themselves). Statistics talks less about these habits, and is worse for it.
+- Tie it back to Ioannidis: "hard data" is exactly the belief that lets a single significant result pass as truth. Drop the belief, and the problem of most research being wrong becomes manageable. That's the next section.
+
+# Is that a problem? {#is-that-a-problem}
+
+- Back to the capybara: most published research is wrong, and that's okay.
+- It's okay because nobody (should) read a study as a verdict. A study is a contribution to an ongoing conversation.
+- The process around the study is what does the work: other labs try it again, critics poke holes, someone proposes a better explanation, theory says whether it even makes sense.
+- The replication table showed this with numbers. One study: 14%. A field that keeps looking: 98%.
+- Science works really well. It just doesn't work one study at a time.
+
+# Statistics is observation, not answers {#observation-not-answers}
+
+- So where do the problems come from? Not from statistics being wrong. The math is fine.
+- They come from expecting too much of it. We treat a p-value as an answer to "is this true?" It isn't. It's an observation.
+- Go back through today: the person terrified by one positive HIV screen, the 86% of "discoveries" that are false, the analyst trying forks until p < 0.05. Every one of those is someone believing statistics is more powerful than it is.
+- Ethnographers already know how to handle this. Nobody writes an ethnography from one interview, or treats one informant as the truth. One interview is an observation. You weigh it against others, think about context, argue about what it means.
+- We just need to do the same thing with statistics. A regression, a survey, a significant result: one observation, to be weighed and argued about.
+- The science always comes first. The question, the theory, the knowledge of the context. Statistics serves that. It never replaces it.
+
+# Doing science {#doing-science}
+
+- "Science first" can sound like a slogan. Make it concrete: these are three habits, and none of them needs math.
+- Question every observation. We've already done this today: a positive HIV test turned out to be wrong most of the time, and so did a significant result. Ask how the observation was made and what else could explain it. That's what an ethnographer does with an interview, too.
+- Look from different perspectives. No method sees everything. A survey sees breadth, an interview sees meaning, an experiment sees cause in one place, history sees change over time. Agreement across perspectives is strong evidence; disagreement tells you where to look next.
+- Think in likelihood, not proof. Science never proves anything for good. We hold beliefs with more or less confidence and move them as evidence comes in. The replication table is the picture to keep in mind: 1% → 14% → 72% → 98%.
+- That last habit is exactly what Bayesian updating formalizes, which is where we're heading.
+
+# Summary {#summary}
+
+- Four ideas, one per part of the lecture. Read them out slowly.
+- If students remember one line, it's the last one: the science always comes first.
+- Check for questions here, before the course preview and the appendix.
+
+# What's ahead {#whats-ahead}
+
+- Keep this quick, about 30 seconds. It's a map, not a lesson.
+- The order is the point. We learn to describe data (week 2), then spend two whole weeks on causal thinking (weeks 3 and 4) before we lean on any model, then practice using all of it on real studies and their own questions (week 5).
+- Most stats courses go tests first, science later. We're doing it the other way round.
+- That's the end of the main lecture. What follows is the appendix: the mayor poll, which they'll work through with the TA in the second class.
+
 # Demonstration: Will the mayor win? {#poll-demo}
 
 - We're going to run the whole prior → likelihood → posterior loop on one concrete question: what share of voters will choose the current mayor?
 - Be upfront that this model is too simple for a real poll. Real surveys aren't random samples: some groups answer more than others, and not everyone votes. Post-stratification and turnout models fix that, and we'll build them later. Today the point is the logic of updating.
-- The formal model is two lines. The first line is the likelihood (how data are generated given θ), and the second is the prior (what we believe about θ before data).
+
+# The model, written formally {#poll-model}
+
+- Mechanics slide. The formal model is two lines. The first line is the likelihood (how data are generated given θ), and the second is the prior (what we believe about θ before data).
+- Nobody needs to read Binomial notation fluently yet. The point is that the whole model is just a likelihood and a prior.
 
 # Step 1: The prior {#poll-prior}
 
