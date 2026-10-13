@@ -78,6 +78,46 @@ $c-ink-head: #0b2545;
 }
 
 /* ------------------------------------------------------------------ */
+/* Mechanics slides — technical exposition students can skim.         */
+/* Mark with {.mechanics}: adds a small corner tag and swaps the      */
+/* title underline for a muted dotted rule. Content is left alone.    */
+/* ------------------------------------------------------------------ */
+$c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
+
+.reveal .slides section.mechanics::before {
+  content: "Mechanics";
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  padding: 0.3em 0.9em 0.3em 2.1em;
+  font-family: $headingFont;
+  font-size: 0.5em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $c-mech;
+  border: 1.5px solid rgba($c-mech, 0.45);
+  border-radius: 999px;
+  background:
+    // three short bars, like an equalizer/slider: "under the hood"
+    linear-gradient($c-mech, $c-mech) 0.85em 0.62em / 0.75em 2px no-repeat,
+    linear-gradient($c-mech, $c-mech) 0.85em 0.92em / 0.45em 2px no-repeat,
+    linear-gradient($c-mech, $c-mech) 0.85em 1.22em / 0.6em 2px no-repeat,
+    rgba(255, 255, 255, 0.75);
+}
+
+/* untitled slides have no heading row for the tag to sit beside */
+.reveal .slides section.mechanics.no-title {
+  padding-top: 1.6em;
+}
+
+.reveal .slides section.mechanics > h1:first-child::after,
+.reveal .slides section.mechanics > h2:first-child::after {
+  background: radial-gradient(circle, $c-mech 2px, transparent 2.5px) 0 50% / 10px 5px repeat-x;
+}
+
+/* ------------------------------------------------------------------ */
 /* Lists — custom accent markers                                       */
 /* ------------------------------------------------------------------ */
 .reveal .slides ul {
@@ -193,7 +233,8 @@ $c-ink-head: #0b2545;
 }
 
 /* custom classes */
-.no-title h1 {
+.no-title h1,
+.no-title h2 {
   display: none;
 }
 

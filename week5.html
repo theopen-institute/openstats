@@ -6,8 +6,8 @@
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.10.18">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <title>week5</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,7 +34,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4f1ced9ef2b26612c7d5dcc3fdcf68a8.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-25fcfa154846157abc25f459b9c2b267.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -136,7 +136,7 @@
 
 <section id="data-lunch-week-5" class="title-slide slide level1 center">
 <h1>Data Lunch: Week 5</h1>
-<p>Reading a finding, asking a question</p>
+<p>What did they leave out?</p>
 </section>
 
 <section id="should-we-act-on-this" class="title-slide slide level1 center">
@@ -158,7 +158,7 @@
 <li class="fragment"><strong>Week 2</strong>: Describe numbers by distributions. Coefficients have units.</li>
 <li class="fragment"><strong>Week 3</strong>: Seeing ≠ doing. The DAG decides which number answers your question.</li>
 <li class="fragment"><strong>Week 4</strong>: Forks, pipes, colliders. Holding the wrong thing fixed creates paradoxes.</li>
-<li class="fragment">This week: put it together, from <strong>both sides</strong> of an analysis.</li>
+<li class="fragment">This week: the most important question to ask of any finding. <strong>What’s in the world that isn’t in their model?</strong> Unobserved forks, pipes and colliders.</li>
 </ul>
 </section>
 
@@ -167,13 +167,15 @@
 <ul>
 <li class="fragment">Part 1: Evaluating someone else’s finding
 <ul>
-<li class="fragment">Seven questions to ask of any claim</li>
+<li class="fragment">Seven questions to ask of any claim, and the one that matters most</li>
 <li class="fragment">Worked case: bicycles for girls in Bihar</li>
 </ul></li>
-<li class="fragment">Part 2: What’s missing from the model?
+<li class="fragment">Part 2: <span class="blue">What they didn’t measure</span>, the heart of this week
 <ul>
-<li class="fragment">Reading the DAG a study never drew</li>
-<li class="fragment">Missing common causes, mediators, and which way they bias the result</li>
+<li class="fragment">Why it’s the most important critique, and why more data can’t fix it</li>
+<li class="fragment">Unobserved <strong>forks</strong>: common causes nobody measured</li>
+<li class="fragment">Hidden <strong>pipes</strong>: channels buried in the control list</li>
+<li class="fragment">Unobserved <strong>colliders</strong>: selection in how the data was made</li>
 </ul></li>
 <li class="fragment">Part 3: Asking your own question
 <ul>
@@ -198,13 +200,13 @@
 <li><strong>What exactly is the claim?</strong></li>
 <li><strong>What did they actually measure?</strong></li>
 <li><strong>How was the data made?</strong></li>
-<li><strong>What’s in their DAG, and what’s in their model?</strong></li>
+<li><span class="blue"><strong>What did they leave out?</strong></span> <span class="gray">← the one that matters most</span></li>
 <li><strong>Who is it about?</strong></li>
 <li><strong>How big, and how sure?</strong></li>
 <li><strong>How plausible was it before?</strong></li>
 </ol>
 <div class="fragment">
-<p>Every one of these comes from a week you’ve already done, except one or two new pieces.</p>
+<p>Every one of these comes from a week you’ve already done. Number 4 gets all of Part 2.</p>
 </div>
 </section></section>
 <section id="what-exactly-is-the-claim" class="title-slide slide level1 center">
@@ -311,7 +313,7 @@
 </div>
 </div>
 </div>
-<p><strong>Randomized</strong>: a coin flip chose X. Every arrow into X is <strong>deleted</strong>. This is <code>do(X)</code> done physically.</p>
+<p><strong>Randomized</strong>: a coin flip chose X. Every arrow into X is <strong>deleted</strong>, including forks <span class="blue">nobody thought of</span>. This is <code>do(X)</code> done physically. (It can’t fix pipes in the controls or colliders in who stays in the study.)</p>
 </div>
 </div></div>
 </section>
@@ -329,13 +331,13 @@
 <!-- TODO: regression to the mean slide here, or in Week 2: "we intervened on the worst
 schools and they improved" (before/after with no comparison group) -->
 </section></section>
-<section id="whats-in-their-dag-and-whats-in-their-model" class="title-slide slide level1 center">
-<h1>4. What’s in their DAG, and what’s in their model?</h1>
+<section id="what-did-they-leave-out" class="title-slide slide level1 center">
+<h1>4. What did they leave out?</h1>
 <p>Most reports never draw a DAG. Draw it for them.</p>
 <ul>
-<li>Which <strong>forks</strong> did they control for? Which did they miss?</li>
-<li>Did they control for a <strong>mediator</strong>, hiding the effect? (“after adjusting for…”)</li>
-<li>Did they select on a <strong>collider</strong>? (“among patients,” “among graduates,” “among funded firms”)</li>
+<li>What could cause both X and Y that isn’t in their model? <span class="blue">→ an unobserved <strong>fork</strong></span></li>
+<li>Is anything in “after adjusting for…” caused by X? <span class="blue">→ a hidden <strong>pipe</strong></span></li>
+<li>Who made it into the data, and could X and Y both affect that? (“among patients,” “among graduates,” “among funded firms”) <span class="blue">→ an unobserved <strong>collider</strong></span></li>
 </ul>
 <div class="fragment">
 <p>The phrase <strong>“after controlling for…”</strong> is the most important sentence in the methods section. Check every variable in that list against your DAG. <em>(Week 4)</em></p>
@@ -521,7 +523,7 @@ schools and they improved" (before/after with no comparison group) -->
 <li><strong>Claim</strong>: descriptive, predictive or causal? Seeing or doing?</li>
 <li><strong>Measure</strong>: does the variable mean what the headline says?</li>
 <li><strong>Design</strong>: what decided who got X?</li>
-<li><strong>DAG</strong>: what did they control for, and should they have?</li>
+<li><span class="blue"><strong>Left out</strong>: unobserved forks, pipes and colliders.</span></li>
 <li><strong>Who</strong>: whose data, and whose decision?</li>
 <li><strong>Size &amp; certainty</strong>: in decision units, as a range.</li>
 <li><strong>Prior</strong>: how surprising, and how many tries?</li>
@@ -529,9 +531,9 @@ schools and they improved" (before/after with no comparison group) -->
 </section>
 
 <section>
-<section id="part-2-whats-missing-from-the-model" class="title-slide slide level1 center">
-<h1>Part 2: What’s missing from the model?</h1>
-<p>The critique you can make without any statistics</p>
+<section id="part-2-what-they-didnt-measure" class="title-slide slide level1 center">
+<h1>Part 2: What they didn’t measure</h1>
+<p>Unobserved forks, pipes and colliders: the critique that needs no statistics</p>
 </section>
 <section id="the-problem-is-upstream" class="slide level2">
 <h2>The problem is upstream</h2>
@@ -547,6 +549,68 @@ schools and they improved" (before/after with no comparison group) -->
 <li class="fragment">A mistake in step 2 can’t be fixed later. A bigger sample just gives you a more precise wrong answer.</li>
 <li class="fragment">So you can challenge a finding without checking a single calculation: <strong>what did their causal model leave out?</strong></li>
 </ul>
+</section>
+<section id="why-this-is-the-big-one" class="slide level2">
+<h2>Why this is the big one</h2>
+<ul>
+<li class="fragment">Most other problems have a technical fix: a bigger sample, a better measure, a better model.</li>
+<li class="fragment">Unobserved structure has none. <span class="red"><strong>No test can detect it.</strong></span> The same data fit a fork, a pipe or a collider. <em>(Week 3: the data can’t draw the DAG for you.)</em></li>
+<li class="fragment"><strong>Unobserved</strong> means not in their model: never measured, or measured but never thought about (a control that’s really a pipe, a sample that’s really a collider).</li>
+<li class="fragment">The only way to find one is to <strong>know the world</strong>: how people choose, how places differ, what history did.</li>
+<li class="fragment">That’s science, not math. A field researcher, an ethnographer or a district officer will often spot it before the statistician does.</li>
+</ul>
+<div class="fragment">
+<p>Back to Week 1: <span class="blue">the science comes first</span>. This is where it pays off.</p>
+</div>
+</section>
+<section id="more-data-wont-save-you" class="slide level2">
+<h2>More data won’t save you</h2>
+<p><em>A made-up world: norms around early marriage drive both girls’ schooling and births. Schooling itself has <span class="red"><strong>no effect</strong></span> on births.</em></p>
+
+<img data-src="week5_files/figure-revealjs/more-data-1.png" width="1950" class="r-stretch"><div class="fragment">
+<p>Bigger samples give a <span class="red">narrower interval around the wrong answer</span>. Nothing in the red estimates warns you. Only the gray one gets it right, and it needs data nobody has.</p>
+</div>
+</section>
+<section id="three-things-nobody-drew" class="slide level2">
+<h2>Three things nobody drew</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week5_files/figure-revealjs/unobs-fork-1.png" width="750"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Unobserved fork</strong></p>
+<p>Something nobody measured causes both X and Y. <em>It’s not in the data.</em></p>
+</div><div class="column" style="width:33%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week5_files/figure-revealjs/unobs-pipe-1.png" width="750"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Hidden pipe</strong></p>
+<p>A control is really a channel X works through. <em>It’s in the data, in the wrong role.</em></p>
+</div><div class="column" style="width:33%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week5_files/figure-revealjs/unobs-collider-1.png" width="750"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Unobserved collider</strong></p>
+<p>X and Y both decide who ends up in the data. <em>It’s in how the data was made.</em></p>
+</div></div>
 </section>
 <section id="their-model-implies-a-dag" class="slide level2">
 <h2>Their model implies a DAG</h2>
@@ -585,8 +649,8 @@ schools and they improved" (before/after with no comparison group) -->
 <p>Then repeat for each control variable. Why is it in the model? Is it a fork, a pipe or a collider?</p>
 </div>
 </section>
-<section id="the-usual-suspects" class="slide level2">
-<h2>The usual suspects</h2>
+<section id="unobserved-forks-the-usual-suspects" class="slide level2">
+<h2>Unobserved forks: the usual suspects</h2>
 <p>In development data, the same few common causes come up again and again.</p>
 <table class="nonincremental caption-top">
 <colgroup>
@@ -634,8 +698,8 @@ schools and they improved" (before/after with no comparison group) -->
 <li class="fragment">Go down the list for every claim. Ask whether each one plausibly points into <strong>both</strong> X and Y.</li>
 </ul>
 </section>
-<section id="missing-common-causes" class="slide level2">
-<h2>Missing common causes</h2>
+<section id="unobserved-forks-schooling-and-births" class="slide level2">
+<h2>Unobserved forks: schooling and births</h2>
 <div class="columns">
 <div class="column">
 <div class="cell">
@@ -656,8 +720,8 @@ schools and they improved" (before/after with no comparison group) -->
 </ul>
 </div></div>
 </section>
-<section id="which-way-would-they-push" class="slide level2">
-<h2>Which way would they push?</h2>
+<section id="forks-which-way-would-they-push" class="slide level2">
+<h2>Forks: which way would they push?</h2>
 <p>You can often tell the <strong>direction</strong> of the bias without any data.</p>
 <table class="nonincremental caption-top">
 <thead>
@@ -698,8 +762,20 @@ schools and they improved" (before/after with no comparison group) -->
 </ul>
 </div>
 </section>
-<section id="mediators-direct-and-indirect-effects" class="slide level2">
-<h2>Mediators: direct and indirect effects</h2>
+<section id="forks-how-strong-would-it-have-to-be" class="slide level2">
+<h2>Forks: how strong would it have to be?</h2>
+<ul>
+<li class="fragment">“There may be confounders” is true of every study. The useful question is <strong>how strong</strong> one would need to be to explain the result away.</li>
+<li class="fragment">Compare it with what they <em>did</em> measure. If the result survives controlling for GDP, would gender norms have to matter <strong>more than GDP</strong> to erase it? Is that plausible?</li>
+<li class="fragment">Some findings are <strong>fragile</strong>: a modest confounder would erase them. Some are <strong>robust</strong>: it would take something stronger than anything we know about.</li>
+<li class="fragment">You answer this by knowing the world, not by running more code.</li>
+</ul>
+<div class="fragment">
+<p><span class="gray" style="font-size: 60%;">Formal versions exist: sensitivity analysis, E-values (VanderWeele &amp; Ding 2017), benchmarking against measured variables (Cinelli &amp; Hazlett 2020).</span></p>
+</div>
+</section>
+<section id="hidden-pipes" class="slide level2 smaller">
+<h2>Hidden pipes</h2>
 <div class="columns">
 <div class="column">
 <div class="cell">
@@ -713,6 +789,7 @@ schools and they improved" (before/after with no comparison group) -->
 </div>
 </div><div class="column">
 <ul>
+<li class="fragment">Their DAG drew contraceptive use as a separate cause of births. It never drew <span class="blue">schooling → contraception</span>. That one missing arrow turns a control into a pipe.</li>
 <li class="fragment">Schooling can lower fertility <strong>through</strong> later marriage and more contraceptive use. These are <strong>indirect effects</strong>.</li>
 <li class="fragment">Whatever is left over is the <strong>direct effect</strong>.</li>
 <li class="fragment"><strong>Total effect</strong> = direct + all indirect paths.</li>
@@ -720,8 +797,8 @@ schools and they improved" (before/after with no comparison group) -->
 </ul>
 </div></div>
 </section>
-<section id="which-effect-answers-the-question" class="slide level2">
-<h2>Which effect answers the question?</h2>
+<section id="pipes-which-effect-answers-the-question" class="slide level2">
+<h2>Pipes: which effect answers the question?</h2>
 <ul>
 <li class="fragment"><strong>Funding girls’ schooling?</strong> You want the <strong>total</strong> effect. Every channel counts, so don’t control for mediators.</li>
 <li class="fragment"><strong>Understanding the mechanism?</strong> Direct and indirect effects matter. <em>Does</em> schooling work through contraception? If so, maybe fund clinics instead.</li>
@@ -743,6 +820,86 @@ schools and they improved" (before/after with no comparison group) -->
 </div>
 </div>
 </section>
+<section id="pipes-spotting-them-in-the-control-list" class="slide level2">
+<h2>Pipes: spotting them in the control list</h2>
+<p>For every variable after “controlling for…”, ask: <span class="blue"><strong>could X have caused this?</strong></span></p>
+<ul>
+<li class="fragment"><strong>Timing</strong>: was it measured <em>after</em> X started? Then X may have changed it.</li>
+<li class="fragment"><strong>The program’s own goals</strong>: a cash transfer study that controls for household income has controlled away the transfer.</li>
+<li class="fragment"><strong>The usual pipes</strong>: income, health, beliefs, occupation, marriage. Many things that look like background are really outcomes of X.</li>
+</ul>
+<div class="fragment">
+<p>Pipes also hide in <strong>interpretation</strong>. “Schooling works through contraception” is a claim about a pipe. Did they rule out the channels they never drew?</p>
+</div>
+</section>
+<section id="unobserved-colliders" class="slide level2">
+<h2>Unobserved colliders</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week5_files/figure-revealjs/clinic-collider-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<ul>
+<li class="fragment">A study surveys women at health clinics.</li>
+<li class="fragment">Educated women are more likely to visit. So are women with more children.</li>
+<li class="fragment">Among visitors, a woman with little schooling is probably there <strong>because</strong> she has many children. Schooling and births look negatively linked, even with no effect.</li>
+<li class="fragment">The collider isn’t in the control list. It’s <span class="blue"><strong>the reason anyone is in the data</strong></span>. <em>(Question 3)</em></li>
+</ul>
+</div></div>
+</section>
+<section id="colliders-where-they-hide" class="slide level2 smaller">
+<h2>Colliders: where they hide</h2>
+<table class="nonincremental caption-top">
+<thead>
+<tr class="header">
+<th>Who’s in the data</th>
+<th>What selected them</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Survey respondents</td>
+<td>who answered, who was home</td>
+</tr>
+<tr class="even">
+<td>Clinic, school or court records</td>
+<td>who showed up</td>
+</tr>
+<tr class="odd">
+<td>Firms, villages, programs</td>
+<td>who survived long enough to be counted</td>
+</tr>
+<tr class="even">
+<td>Migrants and returnees</td>
+<td>who left, and who came back</td>
+</tr>
+<tr class="odd">
+<td>Published findings</td>
+<td>what got published <em>(Week 1)</em></td>
+</tr>
+<tr class="even">
+<td>“Among graduates / patients / borrowers”</td>
+<td>the phrase itself</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>If X and Y both make it <strong>more</strong> likely to be in the data → a false <strong>negative</strong> association.</li>
+<li>If one makes it more likely and the other less → a false <strong>positive</strong> association.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Ask: <strong>who is missing, and why?</strong></p>
+</div>
+</section>
 <section id="writing-the-critique" class="slide level2">
 <h2>Writing the critique</h2>
 <p>A response you can give without re-running any analysis:</p>
@@ -758,23 +915,25 @@ schools and they improved" (before/after with no comparison group) -->
 <div class="callout-content">
 <p>The authors’ model assumes nothing causes both <strong>[X]</strong> and <strong>[Y]</strong> except <strong>[their controls]</strong>. Plausible common causes it leaves out include <strong>[U₁, U₂]</strong>. These would probably make the estimate <strong>[too large / too small]</strong>.</p>
 <p><strong>[M]</strong> is in the control list, but it’s a channel through which X affects Y. So the estimate is the effect of X <em>not through M</em>, which is not the same as <strong>[the policy question]</strong>.</p>
+<p>The sample only includes <strong>[who]</strong>, and both X and Y affect who gets in. This would probably make the estimate <strong>[too large / too small]</strong>.</p>
 </div>
 </div>
 </div>
 </div>
 <ul>
-<li class="fragment">Name specific variables, and say <strong>which way</strong> each one would push.</li>
+<li class="fragment">Name specific variables, say <strong>which way</strong> each one would push, and how <strong>strong</strong> it would need to be.</li>
 <li class="fragment">“There may be omitted variables” isn’t a critique. It’s true of every study.</li>
 </ul>
 </section>
 <section id="your-turn" class="slide level2">
 <h2>Your turn</h2>
-<p>For each claim: name two missing common causes, any mediators in the controls, and the direction each would push.</p>
+<p>For each claim: find an unobserved <strong>fork</strong>, a hidden <strong>pipe</strong> or an unobserved <strong>collider</strong>, and say which way each would push.</p>
 <ol type="1">
 <li class="fragment">Households with a toilet have healthier children, after controlling for income.</li>
 <li class="fragment">Countries with more women in parliament have lower maternal mortality, after controlling for GDP and health spending.</li>
 <li class="fragment">Districts with more microfinance lenders have more women in paid work, after controlling for population.</li>
 <li class="fragment">Households receiving remittances spend more on schooling, after controlling for household size and caste.</li>
+<li class="fragment">Among students who passed the SEE, those from private schools did no better at university.</li>
 </ol>
 </section>
 <section id="possible-answers" class="slide level2">
@@ -783,20 +942,21 @@ schools and they improved" (before/after with no comparison group) -->
 <li class="fragment"><strong>Forks</strong>: mother’s education, clean water source, urban location. Most of them raise both toilet ownership and child health, which makes toilets look <strong>more</strong> effective than they are.</li>
 <li class="fragment"><strong>Mediator</strong>: health spending. Women legislators may lower maternal mortality <em>by</em> raising it, so controlling for it hides part of the effect. <strong>Forks</strong>: democracy, gender norms, women’s education.</li>
 <li class="fragment"><strong>Forks</strong>: roads and markets. <strong>Selection</strong>: if lenders target poorer districts, the effect looks <strong>smaller</strong>.</li>
-<li class="fragment"><strong>Forks</strong>: migrant households were already better off and better connected. <strong>Mediator</strong> to watch: if they had controlled for income, they’d block the main channel.</li>
+<li class="fragment"><strong>Forks</strong>: migrant households were already better off and better connected. <strong>Pipe</strong> to watch: if they had controlled for income, they’d block the main channel.</li>
+<li class="fragment"><strong>Collider</strong>: passing the SEE. Private schooling and ability both help students pass, so the public-school students who passed had to be more able. Comparing only passers hides the private-school advantage, pushing it toward <strong>zero</strong>.</li>
 </ol>
 <div class="fragment">
-<p>None of these needed a single number. They needed a DAG.</p>
+<p>None of these needed a single number. They needed a DAG, and knowledge of the world.</p>
 </div>
 </section></section>
 <section id="part-2-summary" class="title-slide slide level1 center">
 <h1>Part 2: Summary</h1>
 <ul>
-<li class="fragment">Most findings never state their causal model. <strong>Draw it for them</strong> from the control list.</li>
-<li class="fragment">For X → Y and each control, look for <strong>common causes</strong>, <strong>mediators</strong>, <strong>common effects</strong>, and <strong>reverse arrows</strong>.</li>
-<li class="fragment">Go through <strong>the usual suspects</strong>: wealth, geography, institutions, norms, time, selection, data quality.</li>
-<li class="fragment"><strong>Sign the bias</strong>: say which way each missing variable would push.</li>
-<li class="fragment">Ask whether the question needs the <strong>total</strong> or the <strong>direct</strong> effect, and whether the controls match that.</li>
+<li class="fragment">The most important question for any observational finding: <span class="blue"><strong>what’s in the world that isn’t in their model?</strong></span></li>
+<li class="fragment">No test detects it and more data doesn’t fix it. Only <strong>knowing the world</strong> finds it.</li>
+<li class="fragment"><strong>Unobserved forks</strong>: draw their DAG from the control list, go through the usual suspects, sign the bias, and ask how strong it would need to be.</li>
+<li class="fragment"><strong>Hidden pipes</strong>: for each control, could X have caused it? Does the question need the <strong>total</strong> or the <strong>direct</strong> effect?</li>
+<li class="fragment"><strong>Unobserved colliders</strong>: who’s in the data, and could X and Y both affect that?</li>
 </ul>
 </section>
 
@@ -907,9 +1067,9 @@ schools and they improved" (before/after with no comparison group) -->
 <h2>From estimand to data</h2>
 <ol type="1">
 <li class="fragment"><strong>Draw the DAG</strong> for your estimand. <em>(Weeks 3–4)</em></li>
-<li class="fragment">Which variables must you measure to close the back doors?</li>
-<li class="fragment">Can you measure them? If not, which <strong>design</strong> gets around them? <em>(Question 3)</em></li>
-<li class="fragment">Who needs to be in the sample for the answer to apply to <strong>your</strong> decision? <em>(Question 5)</em></li>
+<li class="fragment">Which forks must you measure to close the back doors? Which pipes must you leave alone?</li>
+<li class="fragment">Which forks <strong>can’t</strong> you measure? That’s your biggest limitation. Which <strong>design</strong> gets around them? <em>(Question 3)</em></li>
+<li class="fragment">Who needs to be in the sample for the answer to apply to <strong>your</strong> decision? Could getting into the sample be a <strong>collider</strong>? <em>(Question 5)</em></li>
 <li class="fragment">How precise does the answer need to be to change the decision?</li>
 </ol>
 </section>
@@ -942,7 +1102,7 @@ schools and they improved" (before/after with no comparison group) -->
 <!-- TODO: 3-4 one-page study summaries, one per group -->
 <p>In groups, take one study summary and answer the seven questions.</p>
 <ul>
-<li class="fragment"><p>Draw the DAG their control list implies. Add the <strong>missing common causes</strong> and <strong>mediators</strong>, and say which way each would push the estimate.</p></li>
+<li class="fragment"><p>Draw the DAG their control list implies. Add the unobserved <strong>forks</strong>, hidden <strong>pipes</strong> and unobserved <strong>colliders</strong>, and say which way each would push the estimate.</p></li>
 <li class="fragment"><p>Which question was hardest to answer from what they reported?</p></li>
 <li class="fragment"><p>What’s the <strong>one thing</strong> you’d need to know before acting?</p></li>
 </ul>
@@ -961,9 +1121,15 @@ schools and they improved" (before/after with no comparison group) -->
 <section id="your-project" class="slide level2">
 <h2>Your project</h2>
 <ul>
+<li class="fragment">Critique your own DAG as if a stranger wrote it:
+<ul>
+<li class="fragment"><strong>Forks</strong>: which common causes aren’t in it, or aren’t in World Bank data?</li>
+<li class="fragment"><strong>Pipes</strong>: are any of your controls caused by your exposure?</li>
+<li class="fragment"><strong>Colliders</strong>: which countries are missing from the data, and why?</li>
+<li class="fragment">Which way would each bias your estimate?</li>
+</ul></li>
 <li class="fragment">Rewrite your project’s question using the <strong>estimand template</strong>.</li>
-<li class="fragment">Critique your own DAG as if a stranger wrote it: which <strong>common causes</strong> of your exposure and outcome aren’t in it? Which way would each bias your estimate?</li>
-<li class="fragment">Are any of your controls <strong>mediators</strong>? Do you want the total or the direct effect?</li>
+<li class="fragment">Do you want the total or the direct effect?</li>
 <li class="fragment">What is your <strong>target trial</strong>? How far is World Bank 2022 data from it?</li>
 <li class="fragment">List your <strong>scope limits</strong>:
 <ul>
@@ -978,8 +1144,8 @@ schools and they improved" (before/after with no comparison group) -->
 <h1>Homework</h1>
 <p><strong>A one-page critique memo</strong> on a real report or finding from your own work.</p>
 <ul>
-<li class="fragment">Organized by the seven questions.</li>
-<li class="fragment">Includes the DAG their model implies, the common causes and mediators it leaves out, and the direction of each bias.</li>
+<li class="fragment">Organized by the seven questions, with most of the page on <strong>question 4</strong>.</li>
+<li class="fragment">Includes the DAG their model implies, the unobserved forks, pipes and colliders it leaves out, and the direction of each bias.</li>
 <li class="fragment">Ends with: <strong>“What I’d need to see before acting on this.”</strong></li>
 </ul>
 <!-- TODO: homework/week5.qmd with a worked example memo -->
