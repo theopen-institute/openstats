@@ -60,7 +60,9 @@
 
 - Actually do it. Count the room, type it into "People here," ask for hands, type the count into "Hands up." The dots fill in live.
 - Swap the question for anything quick: came by bus, has a sibling abroad, slept less than six hours.
-- Ask: if I picked one of you at random, what's the chance they had tea? They'll answer without thinking. That's a probability, and they got it by counting.
+- Make the distinction explicit. "9 out of 25 had tea" is a count, a fact about the room. Nothing about it is uncertain.
+- It becomes a probability when we use it to say something we don't know. Ask: if I picked one of you at random, without looking, what's the chance they had tea? They'll answer without thinking. That answer is a probability, and they built it from the count.
+- This distinction matters later. Data are counts and measurements. Probabilities are statements about what we don't know: the next person, the whole population, next year's rain, whether a hypothesis is true.
 - Bridge: the next two slides are just conventions for writing these counts down.
 
 # Probability: rain {#rain}
@@ -68,6 +70,14 @@
 - These numbers come from the past: about ten years of daily records from the Kathmandu Airport weather station. We're using history as a guide to what's likely in a given month.
 - That doesn't make them exactly right for this year. They're a reasonable basis for a probability, not a precise forecast.
 - In fact, the climate is definitely changing, and we could model those changes (trends over time, monsoon timing, and so on). For now, we'll just treat historical data as our basis for prediction.
+
+# Conditional risk {#conditional-risk}
+
+- Give people a moment to read it. Let the laugh happen.
+- The joke is about conditioning. "One in 7,000,000" is P(killed by lightning) for an average American over a year. Almost none of those people were standing outside in a thunderstorm at the time.
+- The two people in the comic aren't average. They're outside, in a storm, right now. The number that matters for them is P(killed by lightning | outside in a storm), which is far higher.
+- The "one in six" in the caption is a joke, not a statistic. Don't defend the number; the point is the conditioning.
+- Takeaway: an unconditional probability can be correct and still be the wrong number for your situation. Always ask: conditional on what? This sets up the HIV example, where the condition is a positive test.
 
 # Applied Probability {#applied-probability}
 
