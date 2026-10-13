@@ -10,9 +10,9 @@ format:
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@5/dist/jspreadsheet.css">
 ---
 
-# Data Lunch: Week 1 {.center notes="notes/week1_notes.md#title"}
+# Data for Decision Making {.center notes="notes/week1_notes.md#title"}
 
-A Fresh Start
+Week 1: A Fresh Start
 
 ::: {.footer}
 The Open Institute For Social Science
@@ -37,13 +37,13 @@ The Open Institute For Social Science
 
 :::{.nonincremental}
 - Unpack the key concepts underlying Ioannidis's claim.
-  - Probability: it's just counting
-  - Statistical significance
+  - Probability (spoiler: it's just counting)
   - The base rate paradox
-- Start rebuilding statistics from the ground up: Bayesian updating, one rule.
-- Question a common assumption: "ethnography is subjective, statistics is hard data."
-- See why it's okay that most research is wrong: statistics is observation, not answers.
-- Appendix: a worked example (election polling), with the TA in our second class.
+  - Statistical significance
+- Question a common assumption: objectivity in research
+- Learn all of statistics in just one formula (Bayesian updating)
+- Feel okay about the fact that most research is wrong
+- Appendix: election polling (a worked example) 
 :::
 
 # Statistical significance
@@ -217,6 +217,8 @@ _Hands up if you had tea this morning._
       $('count-result').innerHTML = n > 0
         ? `<span class="blue">${k} out of ${n}</span> had tea this morning.`
         : '';
+      document.querySelectorAll('.count-k-out').forEach((el) => (el.textContent = k));
+      document.querySelectorAll('.count-n-out').forEach((el) => (el.textContent = n));
     }
 
     [nIn, kIn].forEach((el) => el.addEventListener('input', update));
@@ -225,28 +227,40 @@ _Hands up if you had tea this morning._
 </script>
 
 ::: {.fragment}
-That's a probability. We just counted. Two conventions turn counts like this into the
-language of probability.
+That's not a probability yet. It's a **count**: a fact about this room.
 :::
 
-## Probability {.no-title}
+::: {.fragment}
+It becomes a **probability** when we use it to say something we _don't_ know:
+_"If I pick one of you at random, how likely is it they had tea?"_
+[About <span class="count-k-out"></span> in <span class="count-n-out"></span>.]{.blue}
+:::
 
-_First convention: we measure probability as a number between 0 and 1 (0% to 100%)._
+::: {.fragment}
+Counting is how we get there. Two conventions give us a language for statements like
+this.
+:::
+
+## Probability: Convention 1
+
+_We measure probability as a percentage or as a number between 0 and 1._
 
 ::: {.fragment}
 Kathmandu sees rain (≥ 1 mm) on about 121 days a year:
 :::
 
-- P( rain ) = 121 / 365 = 0.33 (33%)
+- 121 days with rain / 365 days total = 0.33 (33%)
 
 [Kathmandu Airport weather station, NOAA GHCN-Daily (NP000444540), 2015–2025, complete months only.]{.gray style="font-size: 60%;"}
 
-## Probability {.no-title}
+## Probability: Convention 2
 
-_Second convention: we write statements about probability as P( event ) or P( event | condition )._
+_We write statements about probability as P( event ) or P( event | condition )._
+
+- P( rain ) = 121 / 365 = 0.33 (33%)
 
 ::: {.fragment}
-We can do better with _conditional probabilities_:
+But we can do better with _conditional probabilities_:
 :::
 
 ::: {.fragment .nonincremental}
@@ -259,6 +273,7 @@ We can do better with _conditional probabilities_:
 ::: {notes="notes/week1_notes.md#rain"}
 :::
 
+
 ## Probability Examples
 
 ::: {.fragment .nonincremental}
@@ -267,12 +282,23 @@ We can do better with _conditional probabilities_:
 - P( bachelors degree | rural )
 :::
 
-- P( win | leading at halftime)
+- P( football team wins | leading at halftime)
 - P( disease | family history )
 - P( rain today | rained yesterday )
 - P( survival | attacked by bear )
 
-# Applied probability
+## Conditional risk {notes="notes/week1_notes.md#conditional-risk"}
+
+![](images/week1/conditional_risk.png){fig-align="center" height="620px"}
+
+[xkcd 795, "Conditional Risk," by Randall Munroe (CC BY-NC 2.5)]{.gray style="font-size: 50%;"}
+
+::: {.fragment}
+P( killed by lightning ) is tiny. P( killed by lightning | outside in a storm ) is not.
+[The condition you're in decides which number applies.]{.blue}
+:::
+
+# Probability for Decision Making
 
 ::: {.fragment}
 In Nepal, HIV has a prevalence of about 0.1%. We can write that as:
@@ -284,22 +310,15 @@ In Nepal, HIV has a prevalence of about 0.1%. We can write that as:
 With statistical tests and predictions, we talk about two kinds of "accuracy":
 :::
 
-- **Sensitivity**: probability of a positive result testing a person who has HIV
-- **Specificity**: probability of a negative test result testing a person who doesn't have HIV
-
-::: {.fragment .nonincremental}
-We can write these using our probability language:
-
-- Sensitivity: P( test+ | HIV+ ) = 0.99 (99%)
-- Specificity: P( test– | HIV– ) = 0.97 (97%)
-
-[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.]{.gray style="font-size: 60%;"}
-:::
+- **Sensitivity**: of the people who **have** HIV, the share who test positive.
+  - P( test+ | HIV+ ) = **0.99** (true positive)
+- **Specificity**: of the people who **don't have** HIV, the share who test negative.
+  - P( test– | HIV– ) = **0.97** (true negative)
 
 ::: {notes="notes/week1_notes.md#applied-probability"}
 :::
 
-## Applied Probability (continued)
+## Probability for Decision Making (continued)
 
 ::: {.nonincremental}
 - Sensitivity P( test+ | HIV+ ): 99%
@@ -321,6 +340,11 @@ What about P( HIV+ | test+)? [3.2%]{.fragment fragment-index=2 .red}
 ::: {.fragment}
 _Paradox: P(A|B) is not the same as P(B|A)_
 :::
+
+::: {.fragment}
+[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.]{.gray style="font-size: 60%;"}
+:::
+
 
 ::: {notes="notes/week1_notes.md#base-rate"}
 :::
@@ -505,9 +529,9 @@ It's the same **base rate problem** as the HIV test:
 ::: {.fragment .nonincremental}
 Two terms you'll see, both borrowed from the test:
 
-- **Power** = the study's sensitivity: P( [significant]{.red} | [true]{.blue} ). How often it
+- **Power** = the study's sensitivity: P( [statistical significance]{.red} | [true]{.blue} ). How often it
   catches a real effect.
-- **α** = the study's false-positive rate: P( [significant]{.red} | [false]{.blue} ). Usually 5%.
+- **α** = the study's false-positive rate: P( [statistical significance]{.red} | [false]{.blue} ). Usually 5%.
 :::
 
 ::: {.fragment}
@@ -627,6 +651,85 @@ biases don't add up this way.]{.gray style="font-size: 60%;"}
 ::: {.fragment}
 Each row started from the row before it. That's [Bayesian updating]{.blue}, and it's
 where we're going next.
+:::
+
+
+# Hard data? {notes="notes/week1_notes.md#hard-data"}
+
+> _"Ethnography is subjective. Statistics is objective. It's hard data."_
+
+You've probably heard this. Maybe you've said it.
+
+::: {.fragment}
+Let's test it against what we've seen today.
+:::
+
+## What's true about it {notes="notes/week1_notes.md#hard-data-true"}
+
+::: {.nonincremental}
+- **The arithmetic is objective.** Same data, same model: same number, every time, for
+  anyone.
+- **Numbers are easy to share and check.** Anyone can recompute them.
+- **Large samples average out some kinds of noise.** Not all of them.
+:::
+
+::: {.fragment}
+But the arithmetic is the [smallest part of the work]{.red}.
+:::
+
+## Every number today rested on a choice {.smaller notes="notes/week1_notes.md#hard-data-choices"}
+
+| The number | The choice behind it |
+|---|---|
+| P( rain ) = 33% | Which station, which years, and what counts as "rain" (≥ 1 mm) |
+| P( HIV+ \| test+ ) = 3.2% | Who gets tested. Among people who come to a clinic with symptoms, it's very different. |
+| p &lt; 0.05 | Why 5%? A convention. Plus which test, which controls, when to stop collecting data. |
+| 14% of "discoveries" are true | A base rate that nobody can measure directly |
+| The mayor at about 45% | Who we surveyed, who answered, and the prior we drew |
+: {.nonincremental}
+
+::: {.fragment}
+Once the choices are made, the number is objective. [The choices aren't.]{.red}
+:::
+
+## Objective and subjective
+
+_Statistics and ethnography have the same structure._
+
+::: {.fragment}
+
+|                 | Observation                    | Interesting inferences assume…                     |
+|-----------------|--------------------------------|----------------------------------------------------|
+| **Ethnography** | interviews, field notes        | what people meant; whose voices stand for others   |
+| **Statistics**  | surveys, measurements, records | what causes what; how the data were generated      |
+
+:::
+
+::: {.fragment}
+Call the observation "objective" if you like. But interesting inferences rest on [strong assumptions]{.red}, and choosing assumptions is [subjective]{.red}, in both.
+:::
+
+::: {notes="notes/week1_notes.md#statistics-is-observation"}
+:::
+
+## The same standard for both {notes="notes/week1_notes.md#hard-data-standard"}
+
+::: {.nonincremental}
+- Both have an **observational** part and an **inferential** part. Neither is "hard" or
+  "soft" by nature.
+- Trust is **earned** the same way in both: show how the observation was made, state
+  your assumptions, let others challenge them, and look again.
+- Ethnographers have long practice at this: reflexivity, positionality, thick
+  description. Statistics can learn from it.
+:::
+
+::: {.fragment}
+"Hard data" isn't a property of numbers. It's a claim about how much to trust them.
+:::
+
+::: {.fragment}
+[Treating it as a property of the numbers is how so much published research ends up
+wrong while looking right.]{.red}
 :::
 
 # Bayesian Updating
@@ -763,85 +866,7 @@ Subjective doesn't mean arbitrary. It means someone made a choice, and has to
 [defend it]{.blue}.
 :::
 
-# Hard data? {notes="notes/week1_notes.md#hard-data"}
-
-> _"Ethnography is subjective. Statistics is objective. It's hard data."_
-
-You've probably heard this. Maybe you've said it.
-
-::: {.fragment}
-Let's test it against what we've seen today.
-:::
-
-## What's true about it {notes="notes/week1_notes.md#hard-data-true"}
-
-::: {.nonincremental}
-- **The arithmetic is objective.** Same data, same model: same number, every time, for
-  anyone.
-- **Numbers are easy to share and check.** Anyone can recompute them.
-- **Large samples average out some kinds of noise.** Not all of them.
-:::
-
-::: {.fragment}
-But the arithmetic is the [smallest part of the work]{.red}.
-:::
-
-## Every number today rested on a choice {.smaller notes="notes/week1_notes.md#hard-data-choices"}
-
-| The number | The choice behind it |
-|---|---|
-| P( rain ) = 33% | Which station, which years, and what counts as "rain" (≥ 1 mm) |
-| P( HIV+ \| test+ ) = 3.2% | Who gets tested. Among people who come to a clinic with symptoms, it's very different. |
-| p &lt; 0.05 | Why 5%? A convention. Plus which test, which controls, when to stop collecting data. |
-| 14% of "discoveries" are true | A base rate that nobody can measure directly |
-| The mayor at about 45% | Who we surveyed, who answered, and the prior we drew |
-: {.nonincremental}
-
-::: {.fragment}
-Once the choices are made, the number is objective. [The choices aren't.]{.red}
-:::
-
-## Objective and subjective
-
-_Statistics and ethnography have the same structure._
-
-::: {.fragment}
-
-|                 | Observation                    | Interesting inferences assume…                     |
-|-----------------|--------------------------------|----------------------------------------------------|
-| **Ethnography** | interviews, field notes        | what people meant; whose voices stand for others   |
-| **Statistics**  | surveys, measurements, records | what causes what; how the data were generated      |
-
-:::
-
-::: {.fragment}
-Call the observation "objective" if you like. But interesting inferences rest on [strong assumptions]{.red}, and choosing assumptions is [subjective]{.red}, in both.
-:::
-
-::: {notes="notes/week1_notes.md#statistics-is-observation"}
-:::
-
-## The same standard for both {notes="notes/week1_notes.md#hard-data-standard"}
-
-::: {.nonincremental}
-- Both have an **observational** part and an **inferential** part. Neither is "hard" or
-  "soft" by nature.
-- Trust is **earned** the same way in both: show how the observation was made, state
-  your assumptions, let others challenge them, and look again.
-- Ethnographers have long practice at this: reflexivity, positionality, thick
-  description. Statistics can learn from it.
-:::
-
-::: {.fragment}
-"Hard data" isn't a property of numbers. It's a claim about how much to trust them.
-:::
-
-::: {.fragment}
-[Treating it as a property of the numbers is how so much published research ends up
-wrong while looking right.]{.red}
-:::
-
-# Is that a problem? {notes="notes/week1_notes.md#is-that-a-problem"}
+# Most studies are wrong. Is that a problem? {notes="notes/week1_notes.md#is-that-a-problem"}
 
 _Most studies are wrong._ [...and that's okay.]{.fragment .blue}
 
