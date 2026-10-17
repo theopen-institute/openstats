@@ -1,10 +1,7 @@
 ---
 title: "Week 2 Homework"
 subtitle: "Distributions, z-scores, correlation, and our first regression coefficient"
-engine: knitr
-format:
-  html:
-    toc: true
+format: html
 ---
 
 These exercises go with the Week 2 lecture. Part A checks your understanding of the

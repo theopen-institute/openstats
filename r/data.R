@@ -7,6 +7,11 @@ load_howell <- function() {
     filter(age >= 18)
 }
 
+# UC Berkeley graduate admissions, 1973: one row per applicant (dept, sex, admitted)
+load_berkeley <- function() {
+  read_csv("datasets/berkeley.csv")
+}
+
 # Ames, Iowa house sales 2006-2010 (De Cock 2011, via modeldata::ames)
 load_houses <- function() {
   read_csv("datasets/ames.csv")

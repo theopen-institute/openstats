@@ -1,10 +1,7 @@
 ---
 title: "Week 4 Homework"
 subtitle: "Forks, pipes, colliders, and the paradoxes they create"
-engine: knitr
-format:
-  html:
-    toc: true
+format: html
 ---
 
 These exercises go with the Week 4 lecture. Part A checks your understanding of the

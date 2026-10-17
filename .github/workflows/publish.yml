@@ -15,8 +15,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      # Pinned versions: bump these deliberately, together with your local install.
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.10.18
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
@@ -42,31 +45,28 @@ jobs:
             bayesplot
           cache-version: 1
 
-      # System toolchain required for CmdStan
-      - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y build-essential gfortran
-
-      # Cache CmdStan between runs
+      # CmdStan is cached by version and only built when the cache misses.
+      # (ubuntu-latest already has the C++ toolchain CmdStan needs.)
       - name: Cache CmdStan
         uses: actions/cache@v4
         with:
           path: ~/.cmdstan
-          key: ${{ runner.os }}-cmdstan
+          key: ${{ runner.os }}-cmdstan-2.37.0
 
       - name: Install CmdStan
-        run: Rscript -e "cmdstanr::install_cmdstan(cores = 2, overwrite = TRUE)"
+        run: |
+          Rscript -e 'if (!dir.exists("~/.cmdstan/cmdstan-2.37.0")) cmdstanr::install_cmdstan(version = "2.37.0", cores = 2)'
 
       # Install Quarto extensions at runtime (not committed to repo)
       - name: Install Quarto shinylive extension
-        run: quarto add quarto-ext/shinylive --no-prompt
+        run: quarto add quarto-ext/shinylive@v0.2.0 --no-prompt
 
+      # include-code-files has no tagged releases, so it can't be pinned
       - name: Install Quarto code embed extension
         run: quarto add quarto-ext/include-code-files --no-prompt
 
-      - name: Ensure cache directories exists
-        run: |
-          mkdir -p .stancache
-          mkdir -p .output
+      - name: Create the Stan model cache directory
+        run: mkdir -p .stancache
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
@@ -74,30 +74,3 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build speaker bundle (artifact only)
-        run: |
-          rm -rf speaker-bundle
-          mkdir -p speaker-bundle
-
-          # Copy the deployed site/deck output
-          rsync -a .output/ speaker-bundle/
-
-          # Copy speaker files into the same relative paths in the bundle
-          find . -name '*-speaker.html' \
-            -not -path './.output/*' \
-            -not -path './speaker-bundle/*' \
-            -print0 | while IFS= read -r -d '' f; do
-              rel="${f#./}"
-              mkdir -p "speaker-bundle/$(dirname "$rel")"
-              cp "$f" "speaker-bundle/$rel"
-            done
-
-      - name: Upload speaker bundle artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: speaker-bundle
-          path: speaker-bundle
-          if-no-files-found: error
-          retention-days: 7
-

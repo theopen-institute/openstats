@@ -1,10 +1,7 @@
 ---
 title: "Week 5 Homework"
 subtitle: "Reading a finding, asking a question: the seven questions, estimands, and the target trial"
-engine: knitr
-format:
-  html:
-    toc: true
+format: html
 ---
 
 These exercises go with the Week 5 lecture. Part A checks your understanding of the

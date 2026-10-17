@@ -52,8 +52,11 @@
 
 # Counting ways {#counting-ways}
 
-- When outcomes are equally likely, list every way things could go and count. Two coins have four ways, not three: HT and TH are different ways to get one head.
-- d'Alembert famously argued the answer was 1 in 3. It's a nice reminder that counting carefully is a real skill, even for experts.
+- This diagram is a "garden of forking paths" (McElreath's phrase, borrowed from Borges). Start at the dot. Each flip, every path splits in two: heads or tails. After four flips there are 2 × 2 × 2 × 2 = 16 paths, and each one is a different way the four flips could go.
+- Trace one path with your finger, e.g. H, T, T, H. Read the number at its tip: the heads on that path.
+- The blue paths are the ones that end with exactly two heads. Count them together: 6. So exactly two heads is 6 ways out of 16, a bit over a third.
+- Ask the room first: what would you guess? A common answer is 1 in 5, because there are five possible head counts (0 to 4). But those five aren't equally likely: there's only one way to get 0 heads and six ways to get 2. Count paths, not outcomes. d'Alembert made the same mistake with two coins in 1754, arguing that one head out of two flips was 1 in 3.
+- The row of counts (1, 4, 6, 4, 1) is worth pausing on. It's the shape of a distribution, and it comes back in Week 2.
 - Foreshadow the bag-of-stones demo. Bayesian updating is the same move: for each possible bag, count the ways it could have produced the stones we drew. More ways means more plausible. (This is how McElreath introduces it in *Statistical Rethinking*, ch. 2.)
 
 # Let's count {#lets-count}
@@ -65,9 +68,31 @@
 - This distinction matters later. Data are counts and measurements. Probabilities are statements about what we don't know: the next person, the whole population, next year's rain, whether a hypothesis is true.
 - Bridge: the next two slides are just conventions for writing these counts down.
 
-# Probability: rain {#rain}
+# Probability: Convention 1 {#convention-1}
 
-- These numbers come from the past: about ten years of daily records from the Kathmandu Airport weather station. We're using history as a guide to what's likely in a given month.
+- The format part is quick: 0 is impossible, 1 is certain, and percentages are the same numbers times 100.
+- Spend the time on the nuance. Ask: what does "a 31% chance of rain tomorrow" actually mean? Is the weather random?
+- Most people will say no, or not really. Tomorrow's weather is decided by physics: wind, pressure, moisture, the monsoon. If we knew everything, there'd be nothing random about it.
+- So the randomness isn't in the sky. It's in us. "31%" describes how uncertain we are about a day when all we know is that it's a day in Kathmandu. It's as if we picked a date from the calendar without looking.
+- This is the Bayesian way of thinking about probability, and it's the one we'll use all course: probability describes our knowledge, not a property of the world. A coin flip is the same: a perfect physicist could predict it. We call it 50% because we can't.
+- Connect back to "Let's count": the count (about 113 rainy days a year) is a fact. The probability (0.31) is what we say about a day we don't know.
+
+# Probability: Convention 2 {#convention-2}
+
+- Pure notation. P( something ) is read "the probability of something."
+- The examples are deliberately ones they've already worked out: rain, coins, the die and the raffle from "Probability is counting."
+- Emphasize that whatever goes inside the brackets is the thing we're unsure about. That habit matters later, when the thing inside is a hypothesis.
+
+# Probability: Convention 3 {#rain}
+
+- The bar is read "given." P( rain | July ) is "the probability of rain, given that it's July."
+- A condition narrows down which cases we count. P( rain ) counts all days. P( rain | July ) counts only July days.
+- Adding information changes the probability, sometimes a lot: from 31% overall to 81% in July and 3% in December. Same city, same sky.
+- This is also the Convention 1 point again: the more we know about a day, the less uncertain we are.
+
+- These numbers come from the past: the last five years (2021–2025) of daily records from the Kathmandu Airport weather station. We're using history as a guide to what's likely in a given month. Say the assumption out loud: next year will be like the average of the last five.
+- The record has gaps; each month has 58–97% of its days. We fill the missing days at that month's average rate, so every month is "out of" five full years: 150 days for 30-day months, 155 for 31-day months, 140 for February. That's why the denominators differ.
+- April is a good example of how much the choice of years matters: using 2019–2021 instead, April came out at 43%; 2021–2025 gives 23%. A small reminder that every number rests on choices about which data to use.
 - That doesn't make them exactly right for this year. They're a reasonable basis for a probability, not a precise forecast.
 - In fact, the climate is definitely changing, and we could model those changes (trends over time, monsoon timing, and so on). For now, we'll just treat historical data as our basis for prediction.
 
@@ -153,39 +178,23 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - So the punchline isn't that scientists are dishonest or bad at math. The math is fine. It's that significance testing answers P(data | hypothesis) when the base rate makes P(hypothesis | data) the thing that actually matters — and the two can be wildly different.
 - This is why it's okay. Once you expect most single findings to be noise, you stop treating one p < 0.05 as truth and start thinking like a Bayesian: accumulating evidence and updating.
 
-# Scenarios: base rate × power {#scenarios-grid}
+# How bad does it get? {#scenarios-grid}
 
-- Every cell is the same calculation as the HIV table: true positives / (true positives + false positives) = (base rate × power) / (base rate × power + (1 − base rate) × α).
-- Read across a row first: lower power hurts, but not catastrophically when the base rate is high. At 50% true, even 20% power gives 80%.
-- Then read down a column: the base rate is what really drives it. At 80% power, going from 50% true to 1% true drops us from 94% to 14%.
-- The 0.1% row is for fields that scan huge numbers of candidates, e.g. testing thousands of genes, or every variable in a big survey, for "a link." Almost nothing you could test is true, so almost every hit is false.
-- Ask the room: which row does your own field live in? Most people don't know, and that's part of the point.
-
-# Scenarios: flexibility {#scenarios-phacking}
-
-- α = 5% assumes you ran exactly one pre-planned test. Real analyses have forks: which outcome, which subgroup, which controls, drop the outliers or not. Each fork is another chance at p < 0.05.
-- Nobody has to be dishonest for this to happen. It's usually a sincere search for "the right analysis," which happens to stop when something works.
-- 20% is an illustrative effective α, not a measured figure. Simmons, Nelson & Simonsohn (2011) showed that a handful of common choices can push the false positive rate past 60%.
-- Point out the 20% power column: when power equals α, a significant result is exactly as likely under a true hypothesis as a false one. The posterior equals the prior. The study is pure noise dressed up as a finding.
-
-# Scenarios: named cases {#scenarios-named}
-
-- These numbers are illustrative, in the spirit of Ioannidis's own table of scenarios, not estimates for any specific field.
-- The pre-registered trial is the best case: plausible hypothesis, big sample, analysis fixed in advance. Most of its significant results are true.
-- Notice the pilot trial: low power, but a plausible hypothesis keeps it above 50%. The exploratory study has everything against it.
-
-# Scenarios: two surprises {#scenarios-surprises}
-
-- The perfect study: even with 100% power, a 1% base rate gives only 17%. You cannot fix a low base rate with a better study. The false positives come from the 99% of false hypotheses, and power does nothing about them.
-- The stricter threshold (p < 0.005, proposed by Benjamin et al. 2018) helps a lot: from 14% to 62%. But 62% is still far from certain, and it needs much bigger samples to keep 80% power.
-- The takeaway: no single study design rescues an unlikely hypothesis. That's the setup for the next slide.
+- Mechanics slide. Every cell is the same calculation as the HIV table: (base rate × power) / (base rate × power + (1 − base rate) × α).
+- Read across a row: lower power hurts, but not catastrophically when the base rate is high. At 50% true, even 20% power gives 80%.
+- Read down a column: the base rate is what really drives it. At 80% power, going from 50% true to 1% true drops us from 94% to 14%.
+- The perfect study: even with 100% power, a 1% base rate gives only 17%. The false positives come from the 99% of false hypotheses, and power does nothing about them. No study design rescues an unlikely hypothesis.
+- The last column is p-hacking. α = 5% assumes exactly one pre-planned test. Real analyses have forks: which outcome, which subgroup, which controls. Nobody has to be dishonest; it's usually a sincere search for "the right analysis" that stops when something works. 20% is illustrative; Simmons, Nelson & Simonsohn (2011) showed a handful of common choices can push the false-positive rate past 60%.
+- In that column, power equals α, so a significant result is equally likely whether the hypothesis is true or false. The posterior equals the prior: each cell is just the base rate. The study taught us nothing.
+- If asked about fixes: a stricter threshold (p < 0.005, Benjamin et al. 2018) lifts the 1% row from 14% to 62% at 80% power, but needs much bigger samples. Replication works better, which is the next slide.
+- Ask the room: which row does your own field live in?
 
 # Scenarios: replication {#scenarios-replication}
 
 - This is the HIV confirmatory test again. A positive screen at 3% isn't a diagnosis, so you test again. Same here.
 - Each row uses the previous row's answer as the new base rate. That's Bayesian updating, before we've even named it. Today's posterior is tomorrow's prior.
 - At 80% power: 1% → 14% → 72% → 98%. Three independent significant results and we can be fairly confident.
-- At 20% power it takes longer, but it still gets there: 1% → 4% → 14% → 39% → 72%.
+- At 20% power it takes longer, but it still gets there: 1% → 4% → 14% → 39% → 72% after four results. (Not on the slide; mention it if someone asks about weak studies.)
 - The caveat matters. This only works if replications are independent. If every lab uses the same flawed measure, or only successful replications get published, the evidence doesn't really add up. That's why the scientific process includes critique, not just repetition.
 
 # Bayesian Updating: What it is {#bayesian-updating}

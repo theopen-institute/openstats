@@ -4,7 +4,6 @@ library(shinyjs)
 library(ggplot2)
 library(ggiraph)
 library(htmlwidgets)
-library(uuid)
 library(munsell) # https://github.com/r-wasm/webr/issues/537
 
 TOTAL_STONES <- 9L
@@ -38,13 +37,8 @@ STYLE <- HTML(
   h1 { margin-bottom: 0; }
   p { font-size: 90%; }
 
-  /* Prevent table from graying out during recalculation */
-  #resultTable.recalculating { opacity: 1 !important; }
   #resultTable.shiny-output-error,
   #resultTable.shiny-output-error-validation { color: inherit; }
-  /* Shiny adds .shiny-recalculating to the output element while updating */
-  #resultTable.shiny-recalculating { opacity: 1 !important; }
-  #resultTable.shiny-recalculating:before { display: none !important; }
 
   #resultTable table {
     width: 100%;
@@ -71,7 +65,7 @@ STYLE <- HTML(
   #resultTable.recalculating *,
   #resultTable.shiny-recalculating * {
     opacity: 1 !important;
-  }s
+  }
 
   /* Shiny adds a spinner/overlay via pseudo-elements */
   #resultTable.recalculating:before,

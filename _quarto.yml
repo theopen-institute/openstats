@@ -1,15 +1,18 @@
 project:
   type: website
-  output-dir: .output
+  # Ends in ".nosync" so iCloud Drive doesn't sync it. (A symlink here doesn't last:
+  # a full render deletes the output dir and recreates it as a real directory.)
+  output-dir: .output.nosync
   render:
     - "**/*.qmd"
     - "!notes/**"
+  # Copied as-is into the site. Anchored with a leading "/" so they only match at
+  # the project root, not inside .output.nosync, which Quarto would otherwise copy
+  # into itself on every render. (css/deck.scss is compiled into the theme and
+  # notes/ is read at render time, so neither is copied.)
   resources:
-    - images/
-    - css/
-    - js/
-    - www/
-    - notes/
+    - /images/
+    - /js/
 engine: knitr
 execute:
   freeze: auto
@@ -20,13 +23,16 @@ format:
     background-image: "images/background.svg"
     background-size: "cover"
     include-after-body: _build/_reveal.html
+    template-partials:
+      - _build/title-slide.html
+    title-footer: "The Open Institute For Social Science"
     margin: 0.05
     width: 1605
     height: 1050
     chalkboard: true
     multiplex: false
     transition: slide
-    fragments: false
+    fragments: true
     incremental: true
   html:
     code-fold: true
@@ -35,7 +41,7 @@ format:
     toc-location: left
     toc-title: "Contents"
     toc-expand: true
-filters: 
+filters:
   - shinylive
   - include-code-files
   - _build/notes.lua

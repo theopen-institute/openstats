@@ -1,10 +1,7 @@
 ---
 title: "Week 1 Homework"
 subtitle: "Probability, base rates, and Bayesian updating"
-engine: knitr
-format:
-  html:
-    toc: true
+format: html
 ---
 
 These exercises go with the Week 1 lecture. Part A checks your understanding of the

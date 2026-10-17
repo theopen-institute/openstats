@@ -1,112 +1,24 @@
 ---
+title: "Data Lunch: Week 3"
+subtitle: "Causal models"
 format:
-  revealjs:
-    include-in-header:
-      - text: |
-          <style>
-            .workflow {
-              display: flex;
-              gap: 14px;
-              align-items: stretch;
-              margin: 30px 0;
-            }
-            .workflow .step {
-              flex: 1 1 0;
-              border: 2px solid #16314d;
-              border-radius: 10px;
-              padding: 18px 12px;
-              text-align: center;
-              font-weight: 700;
-              font-size: 0.8em;
-              background: white;
-            }
-            .workflow .step small {
-              display: block;
-              font-weight: 400;
-              font-size: 0.7em;
-              margin-top: 8px;
-              color: #16314d;
-            }
-            .workflow .arrow {
-              align-self: center;
-              font-size: 1.4em;
-              color: #999;
-            }
-            .workflow .step.science {
-              background: #e8f3ff;
-            }
-          </style>
+  revealjs: default
 ---
 
 ```{r setup, include=FALSE}
-library(tidyverse)
-library(cmdstanr)
-library(tidybayes)
-source("r/rlib.R")
-
-knitr::opts_chunk$set(
-  echo = FALSE,
-  warning = FALSE,
-  message = FALSE,
-  fig.width = 12,
-  fig.height = 6.5,
-  dpi = 150,
-  dev.args = list(bg = "transparent")
-)
-
-BLUE <- "#1b91ff"
-RED <- "#ff2c2d"
-GRAY <- "#999999"
-INK <- "#16314d"
-
-theme_set(
-  theme_minimal(base_size = 22) +
-    theme(
-      panel.grid.minor = element_blank(),
-      plot.title = element_text(face = "bold", color = INK)
-    )
-)
-
-fmt <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = ",")
-
-# Fit a Stan model quietly
-fit_stan <- function(file, data) {
-  cmdstan_model(file, dir = ".stancache")$sample(
-    data = data,
-    seed = 1,
-    refresh = 0,
-    show_messages = FALSE,
-    show_exceptions = FALSE
-  )
-}
-
-# Posterior of (male - female) from a model with alpha[sex]
-sex_difference <- function(fit) {
-  fit$draws("alpha", format = "df") |>
-    as_tibble() |>
-    transmute(difference = `alpha[2]` - `alpha[1]`)
-}
-
-# Plot posteriors of one quantity under several models, one row per model
-plot_posteriors <- function(draws, x, xlab, colors = c(RED, BLUE)) {
-  ggplot(draws, aes(x = {{ x }}, y = model, fill = model)) +
-    geom_vline(xintercept = 0, color = GRAY, linetype = "dashed") +
-    stat_halfeye(.width = 0.89, point_size = 4, slab_alpha = 0.8, normalize = "groups") +
-    scale_fill_manual(values = colors, guide = "none") +
-    labs(x = xlab, y = NULL)
-}
+source("r/deck-setup.R")
+source("r/stan.R")
+source("r/week3.R")
 
 # !Kung San adults (Howell), from Week 2
-howell <- read_csv("datasets/kungsan.csv") |>
-  select(-1) |>
-  filter(age >= 18) |>
+howell <- load_howell() |>
   mutate(
     sex = factor(if_else(male == 1, "male", "female"), levels = c("female", "male")),
     height_std = (height - mean(height)) / sd(height)
   )
 
 # Ames, Iowa house sales, from Week 2
-houses <- read_csv("datasets/ames.csv") |>
+houses <- load_houses() |>
   mutate(
     z_price = (price - mean(price)) / sd(price),
     z_bedrooms = (bedrooms - mean(bedrooms)) / sd(bedrooms),
@@ -114,16 +26,7 @@ houses <- read_csv("datasets/ames.csv") |>
   )
 
 # World Bank 2022: fertility, women's college enrollment, infant mortality
-countries <- read_csv(
-  "datasets/wb2022.csv",
-  na = c("", ".."),
-  col_types = cols(.default = "c")
-) |>
-  select(code = `Country Code`, series = `Series Code`, value = `2022 [YR2022]`) |>
-  filter(series %in% c("SP.DYN.TFRT.IN", "SE.TER.ENRR.FE", "SP.DYN.IMRT.IN")) |>
-  distinct(code, series, .keep_all = TRUE) |>
-  mutate(value = as.numeric(value)) |>
-  pivot_wider(names_from = series, values_from = value) |>
+countries <- load_wb(c("SP.DYN.TFRT.IN", "SE.TER.ENRR.FE", "SP.DYN.IMRT.IN")) |>
   transmute(
     code,
     fertility_rate = SP.DYN.TFRT.IN,
@@ -136,13 +39,6 @@ countries <- read_csv(
     infant_mortality = (mortality - mean(mortality)) / sd(mortality)
   )
 ```
-
-
-
-# Data Lunch: Week 3 {.center}
-
-Causal models
-
 
 # The doctor paradox
 
@@ -164,7 +60,7 @@ Two surgeons, one normal and one famous, have different success rates for a proc
     </tr>
     <tr>
       <td data-id="leftmargin3">Famous&nbsp;Surgeon</td>
-      <td data-id="rightmargin3">[74.9%]{.red  }</td>
+      <td data-id="rightmargin3">[74.9%]{.red}</td>
     </tr>
   </tbody>
 </table>
@@ -181,23 +77,23 @@ How about now?
       <td>Standard</td>
       <td>Complex</td>
       <td>Critical</td>
-      <td  data-id="rightmargin1" style="border-left: 1px solid black;">Total</td>
+      <td data-id="rightmargin1" class="total-col">Total</td>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td data-id="leftmargin2">Normal&nbsp;Surgeon</td>
       <td>[97.3%]{.red}</td>
-      <td>[66.0%]{.red  }</td>
-      <td>[38.0%]{.red  }</td>
-      <td data-id="rightmargin2" style="border-left: 1px solid black;">[89.6%]{.green}</td>
+      <td>[66.0%]{.red}</td>
+      <td>[38.0%]{.red}</td>
+      <td data-id="rightmargin2" class="total-col">[89.6%]{.green}</td>
     </tr>
     <tr>
       <td data-id="leftmargin3">Famous&nbsp;Surgeon</td>
       <td>[99.7%]{.green}</td>
       <td>[75.0%]{.green}</td>
       <td>[50.0%]{.green}</td>
-      <td data-id="rightmargin3" style="border-left: 1px solid black;">[74.9%]{.red  }</td>
+      <td data-id="rightmargin3" class="total-col">[74.9%]{.red}</td>
     </tr>
   </tbody>
 </table>
@@ -208,15 +104,8 @@ How about now?
 
 ::: {.columns}
 ::: {.column width="50%"}
-```{r surgeon-dag, fig.width = 7, fig.height = 5.5}
-dag_plot(
-  c("C -> S", "C -> O", "S -> O"),
-  pos = list(C = c(1, 1.2), S = c(0, 0), O = c(2, 0)),
-  labels = c(C = "Case difficulty", S = "Surgeon", O = "Outcome"),
-  above = "C",
-  exposure = "S",
-  outcome = "O"
-)
+```{r surgeon-dag, opts.label = "half"}
+surgeon_dag()
 ```
 :::
 
@@ -266,15 +155,8 @@ dag_plot(
 :::
 
 ::: {.column width="45%"}
-```{r dag-anatomy, fig.width = 6, fig.height = 4.5}
-dag_plot(
-  c("C -> S", "C -> O", "S -> O"),
-  pos = list(C = c(1, 1.2), S = c(0, 0), O = c(2, 0)),
-  labels = c(C = "Case difficulty", S = "Surgeon", O = "Outcome"),
-  above = "C",
-  exposure = "S",
-  outcome = "O"
-)
+```{r dag-anatomy, opts.label = "dag_side"}
+surgeon_dag()
 ```
 
 [**Exposure**]{.blue}: the cause we're asking about. **Outcome**: the effect we
@@ -327,19 +209,7 @@ This is the causal question.
 
 # The workflow
 
-```{=html}
-<div class="workflow">
-  <div class="step science">Estimand<small>What exactly do we want to know?</small></div>
-  <div class="arrow">→</div>
-  <div class="step science">Generative model<small>How do we think the data was made?</small></div>
-  <div class="arrow">→</div>
-  <div class="step">Statistical model<small>What should we fit?</small></div>
-  <div class="arrow">→</div>
-  <div class="step">Data<small>What did we observe?</small></div>
-  <div class="arrow">→</div>
-  <div class="step">Estimate<small>Which values are most plausible?</small></div>
-</div>
-```
+{{< include _includes/workflow-steps.md >}}
 
 - **Estimand**: the question, stated precisely enough that a number could answer it.
 - **Generative model**: our causal story (a DAG, plus a simulation of it).
@@ -355,8 +225,7 @@ This is the causal question.
 ggplot(howell, aes(height, weight, color = sex)) +
   geom_point(alpha = 0.7, size = 2.5) +
   scale_color_manual(values = c(female = RED, male = BLUE), name = NULL) +
-  labs(x = "Height (cm)", y = "Weight (kg)") +
-  theme(legend.position = "top")
+  labs(x = "Height (cm)", y = "Weight (kg)")
 ```
 
 - The !Kung San adults from Week 2. Men are taller *and* heavier.
@@ -379,18 +248,7 @@ How much heavier, on average, would an adult be if they were male rather than fe
 ::: {.columns}
 ::: {.column width="50%"}
 ```{r howell-dag, fig.width = 7, fig.height = 4.2}
-howell_edges <- c("S -> H", "S -> W", "H -> W", "A -> H", "A -> W")
-howell_pos <- list(S = c(0, 1), H = c(1, 0), W = c(2, 1), A = c(3, 0))
-howell_labels <- c(S = "Sex", H = "Height", W = "Weight", A = "Age")
-
-dag_plot(
-  howell_edges,
-  howell_pos,
-  labels = howell_labels,
-  above = c("S", "W"),
-  exposure = "S",
-  outcome = "W"
-)
+howell_dag()
 ```
 :::
 
@@ -440,8 +298,7 @@ sim <- simulate_people(1000) |>
 ggplot(sim, aes(height, weight, color = sex)) +
   geom_point(alpha = 0.5, size = 2) +
   scale_color_manual(values = c(female = RED, male = BLUE), name = NULL) +
-  labs(x = "Height (cm)", y = "Weight (kg)") +
-  theme(legend.position = "top")
+  labs(x = "Height (cm)", y = "Weight (kg)")
 ```
 :::
 :::
@@ -533,17 +390,19 @@ howell_draws <- bind_rows(
   sex_difference(fit_a) |> mutate(model = "A: weight ~ sex"),
   sex_difference(fit_b) |> mutate(model = "B: weight ~ sex + height")
 )
-howell_summary <- howell_draws |>
+howell_difference <- howell_draws |>
   group_by(model) |>
-  median_qi(difference, .width = 0.89)
+  median_qi(difference, .width = 0.89) |>
+  select(model, difference) |>
+  deframe()
 ```
 
 ```{r howell-posteriors, fig.height = 5}
 plot_posteriors(howell_draws, difference, "Men − women (kg)")
 ```
 
-- Model A: men are about **`r fmt(howell_summary$difference[1])` kg** heavier.
-- Model B: at the same height, men are about **`r fmt(howell_summary$difference[2])` kg**
+- Model A: men are about **`r fmt(howell_difference[["A: weight ~ sex"]])` kg** heavier.
+- Model B: at the same height, men are about **`r fmt(howell_difference[["B: weight ~ sex + height"]])` kg**
   heavier. In other words, no difference.
 
 
@@ -552,15 +411,7 @@ plot_posteriors(howell_draws, difference, "Men − women (kg)")
 ::: {.columns}
 ::: {.column}
 ```{r flow-total, fig.width = 7, fig.height = 4}
-dag_plot(
-  howell_edges,
-  howell_pos,
-  labels = howell_labels,
-  above = c("S", "W"),
-  highlight = c("S -> W", "S -> H", "H -> W"),
-  exposure = "S",
-  outcome = "W"
-)
+howell_dag(highlight = c("S -> W", "S -> H", "H -> W"))
 ```
 
 **Model A** lets the effect flow through **both** paths: the **total effect**.
@@ -568,15 +419,7 @@ dag_plot(
 
 ::: {.column}
 ```{r flow-direct, fig.width = 7, fig.height = 4}
-dag_plot(
-  howell_edges,
-  howell_pos,
-  labels = howell_labels,
-  above = c("S", "W"),
-  highlight = "S -> W",
-  exposure = "S",
-  outcome = "W"
-)
+howell_dag(highlight = "S -> W")
 ```
 
 **Model B** holds height fixed, which **blocks** the path through height: only the
@@ -599,15 +442,7 @@ direct_without_age <- coef(lm(weight ~ sex + height, data = howell))[["sexmale"]
 ::: {.columns}
 ::: {.column width="50%"}
 ```{r age-dag, fig.width = 7, fig.height = 4.2}
-dag_plot(
-  howell_edges,
-  howell_pos,
-  labels = howell_labels,
-  above = c("S", "W"),
-  highlight = c("A -> H", "A -> W"),
-  exposure = "S",
-  outcome = "W"
-)
+howell_dag(highlight = c("A -> H", "A -> W"))
 ```
 :::
 
@@ -628,18 +463,11 @@ dag_plot(
 ::: {.columns}
 ::: {.column width="45%"}
 ```{r house-dag, fig.width = 6, fig.height = 5}
-house_edges <- c("A -> B", "A -> P", "B -> P")
-house_pos <- list(A = c(1, 1.2), B = c(0, 0), P = c(2, 0))
-house_labels <- c(A = "Living area", B = "Bedrooms", P = "Price")
-
-dag_plot(
-  house_edges,
-  house_pos,
-  labels = house_labels,
-  above = "A",
-  highlight = c("A -> B", "A -> P"),
-  exposure = "B",
-  outcome = "P"
+fork_dag(
+  "B", "A", "P",
+  labels = c(B = "Bedrooms", A = "Living area", P = "Price"),
+  direct = TRUE,
+  highlight = c("A -> B", "A -> P")
 )
 ```
 :::
@@ -730,7 +558,7 @@ The science has to come first.
 
 ::: {.columns}
 ::: {.column width="55%"}
-```{r fertility-scatter, fig.width = 7, fig.height = 5.5}
+```{r fertility-scatter, opts.label = "half"}
 ggplot(countries, aes(college, fertility_rate)) +
   geom_point(color = BLUE, alpha = 0.7, size = 3) +
   geom_smooth(method = "lm", se = FALSE, color = INK) +
@@ -765,7 +593,7 @@ fert_labels <- c(
 ::: {.column}
 **DAG 1: development first**
 
-```{r fertility-dag1, fig.width = 7, fig.height = 4.5}
+```{r fertility-dag1, opts.label = "dag_half"}
 dag_plot(
   c("D -> C", "D -> M", "C -> F", "M -> F"),
   pos = list(D = c(0.4, 1.4), C = c(0, 0), M = c(2.6, 1.4), F = c(3, 0)),
@@ -785,7 +613,7 @@ isn't an effect of education. **Hold infant mortality fixed.**
 ::: {.column}
 **DAG 2: education first**
 
-```{r fertility-dag2, fig.width = 7, fig.height = 4.5}
+```{r fertility-dag2, opts.label = "dag_half"}
 dag_plot(
   c("C -> M", "C -> F", "M -> F"),
   pos = list(C = c(0, 0), M = c(1.5, 1.2), F = c(3, 0)),
@@ -824,9 +652,11 @@ fert_draws <- bind_rows(
 ) |>
   as_tibble()
 
-fert_summary <- fert_draws |>
+fert_beta <- fert_draws |>
   group_by(model) |>
-  median_qi(beta_college, .width = 0.89)
+  median_qi(beta_college, .width = 0.89) |>
+  select(model, beta_college) |>
+  deframe()
 ```
 
 ```{r fertility-posteriors, fig.height = 4.5}
@@ -834,9 +664,9 @@ plot_posteriors(fert_draws, beta_college, "β for college (births per woman, per
 ```
 
 - If you believe **DAG 1**, education has a small effect
-  (`r fmt(fert_summary$beta_college[fert_summary$model == "DAG 1: births ~ college + mortality"], 2)`).
+  (`r fmt(fert_beta[["DAG 1: births ~ college + mortality"]], 2)`).
 - If you believe **DAG 2**, a large one
-  (`r fmt(fert_summary$beta_college[fert_summary$model == "DAG 2: births ~ college"], 2)`).
+  (`r fmt(fert_beta[["DAG 2: births ~ college"]], 2)`).
 - Which do you believe, and **why**? What would convince someone who believes the other?
 
 
@@ -867,15 +697,7 @@ dag {
 :::
 
 
-## DAGitty {.no-title}
-
-```{=html}
-<iframe
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="https://dagitty.net/dags.html"
-></iframe>
-```
+{{< include _includes/dagitty-slide.md >}}
 
 
 # Summary

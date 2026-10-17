@@ -1,37 +1,17 @@
 ---
+title: "Data Lunch: Week 2"
+subtitle: "Talking about numbers differently"
+title-notes: "notes/week2_notes.md#title"
 format:
   revealjs: default
 ---
 
 ```{r setup, include=FALSE}
-library(tidyverse)
-
-knitr::opts_chunk$set(
-  echo = FALSE,
-  warning = FALSE,
-  message = FALSE,
-  fig.width = 12,
-  fig.height = 6.5,
-  dpi = 150
-)
-
-BLUE <- "#1b91ff"
-RED <- "#ff2c2d"
-GRAY <- "#999999"
-INK <- "#16314d"
-
-theme_set(
-  theme_minimal(base_size = 22) +
-    theme(
-      panel.grid.minor = element_blank(),
-      plot.title = element_text(face = "bold", color = INK)
-    )
-)
+source("r/deck-setup.R")
+source("r/week2.R")
 
 # !Kung San adults (Howell): our running example
-howell <- read_csv("datasets/kungsan.csv") |>
-  select(-1) |>
-  filter(age >= 18) |>
+howell <- load_howell() |>
   mutate(
     sex = if_else(male == 1, "male", "female"),
     z_height = (height - mean(height)) / sd(height),
@@ -44,18 +24,12 @@ w_mean <- mean(howell$weight)
 w_sd <- sd(howell$weight)
 r_hw <- cor(howell$height, howell$weight)
 
-# Ames, Iowa house sales 2006-2010 (De Cock 2011, via modeldata::ames)
-houses <- read_csv("datasets/ames.csv")
-
-fmt <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = ",")
-dollars <- function(x) {
-  paste0("$", formatC(x, format = "f", digits = 0, big.mark = ","))
-}
+houses <- load_houses() |>
+  mutate(
+    z_price = (price - mean(price)) / sd(price),
+    z_area = (area_m2 - mean(area_m2)) / sd(area_m2)
+  )
 ```
-
-# Data Lunch: Week 2 {.center notes="notes/week2_notes.md#title"}
-
-Talking about numbers differently
 
 # Two headlines {notes="notes/week2_notes.md#headlines"}
 
@@ -129,23 +103,20 @@ How values vary, and how two things move together
 
 Problem: we want to understand how the admissions process works at a university. 
 
-::: {.fragment .callout-note}
-## Population: This isn't about one individual case but rather a group of cases
+::: {.fragment .callout-note title="Population: This isn't about one individual case but rather a group of cases"}
 - "Applications to this university last year"
 - "Applications to this university in the last ten years"
 - "Applications to all state-run universities in this country last year"
 :::
 
-::: {.fragment .callout-tip}
-## Variation: These cases are different from each other in ways that interest us
+::: {.fragment .callout-tip title="Variation: These cases are different from each other in ways that interest us"}
 - "Exam results"
 - "Family wealth"
 - "Gender"
 - "Department"
 :::
 
-::: {.fragment .callout-important}
-## Randomness: Reality is messy, and we'll never predict admission perfectly. But, randomness has patterns. We can describe how it was generated.
+::: {.fragment .callout-important title="Randomness: Reality is messy, and we'll never predict admission perfectly. But, randomness has patterns. We can describe how it was generated."}
 - If I flip a coin 1 time, I can't say what will happen. 
 - If I flip a coin 1000 times, I can say a lot more. 
 - Random individuals → Predictable populations
@@ -162,99 +133,48 @@ Problem: we want to understand how the admissions process works at a university.
 
 ::: {.column width="30%"}
 ::: {.fragment}
-<p style="font-size: 12pt;"><b>Uninformed</b> I have no idea. He could be between 0 and 100 and I don't think any possibility is more likely than any other.</p>
-```{r, fig.width = 6, fig.height = 2.8}
-curve(
-  dunif(x, min = 0, max = 100),
-  from = 0,
-  to = 100,
-  xlab = "Age",
-  ylab = "Density",
-  col = "red",
-  lwd = 2
-)
+::: {.small-caption}
+**Uninformed** I have no idea. He could be between 0 and 100 and I don't think any possibility is more likely than any other.
+:::
+```{r belief-uninformed, fig.width = 6, fig.height = 2.8}
+belief_plot(function(x) dunif(x, 0, 100))
 ```
 
 :::
 
 ::: {.fragment}
-<p style="font-size: 12pt"><b>Weakly informed</b> He seems like he's about 40, but I could be very wrong about that. Anything between 20 and 60 seems plausible and even more extreme values are possible.</p>
-```{r, fig.width = 6, fig.height = 2.8}
-curve(
-  dnorm(x, mean = 40, sd = 15),
-  from = 0,
-  to = 100,
-  ylim = c(0, 0.1),
-  xlab = "Age",
-  ylab = "Density",
-  col = "red",
-  lwd = 2
-)
+::: {.small-caption}
+**Weakly informed** He seems like he's about 40, but I could be very wrong about that. Anything between 20 and 60 seems plausible and even more extreme values are possible.
+:::
+```{r belief-weak, fig.width = 6, fig.height = 2.8}
+belief_plot(function(x) dnorm(x, 40, 15), ymax = 0.1)
 ```
 :::
 :::
 
 ::: {.column width="40%"}
 ::: {.fragment fragment-index=1}
-![Parameter: How old is this person?](images/week2/man.png){height="550px" style="text-align:center;"}
+![Parameter: How old is this person?](images/week2/man.png){height="550px" fig-align="center"}
 :::
 :::
 
 ::: {.column width="30%"}
 ::: {.fragment }
-<p style="font-size: 12pt"><b>Strongly informed</b> I'm quite certain that he's forty or relatively close to it.</p>
-```{r, fig.width = 6, fig.height = 2.8}
-curve(
-  dnorm(x, mean = 40, sd = 1),
-  from = 0,
-  to = 100,
-  xlab = "Age",
-  ylab = "Density",
-  col = "red",
-  lwd = 2
-)
+::: {.small-caption}
+**Strongly informed** I'm quite certain that he's forty or relatively close to it.
+:::
+```{r belief-strong, fig.width = 6, fig.height = 2.8}
+belief_plot(function(x) dnorm(x, 40, 1))
 ```
 :::
 
 ::: {.fragment}
-<p style="font-size: 12pt"><b>Domain-specific distributions</b> I'm relatively certain he's between 30 and 50, but I have really no idea where in that range he lands. Older or younger than that seems unlikely, though.</p>
+::: {.small-caption}
+**Domain-specific distributions** I'm relatively certain he's between 30 and 50, but I have really no idea where in that range he lands. Older or younger than that seems unlikely, though.
+:::
 
-```{r, fig.width = 6, fig.height = 2.8}
-# Steeper sides: shrink the taper width b
-center <- 40
-a <- 20 # plateau width (30 to 50)
-b <- 15 # smaller = steeper sides
-
-w <- function(x) {
-  y <- numeric(length(x))
-
-  L1 <- center - (a / 2 + b)
-  L2 <- center - a / 2
-  i <- x >= L1 & x < L2
-  y[i] <- 0.5 * (1 - cos(pi * (x[i] - L1) / b))
-
-  i <- x >= (center - a / 2) & x <= (center + a / 2)
-  y[i] <- 1
-
-  R1 <- center + a / 2
-  R2 <- center + (a / 2 + b)
-  i <- x > R1 & x <= R2
-  y[i] <- 0.5 * (1 + cos(pi * (x[i] - R1) / b))
-
-  y
-}
-
-A <- integrate(w, 0, 100)$value
-curve(
-  w(x) / A,
-  from = 0,
-  to = 100,
-  ylim = c(0, 0.05),
-  xlab = "Age",
-  ylab = "Density",
-  col = "red",
-  lwd = 2
-)
+```{r belief-domain, fig.width = 6, fig.height = 2.8}
+belief_plot(plateau_density(center = 40, plateau = 20, taper = 15), ymax = 0.05)
 ```
 
 :::
@@ -266,8 +186,7 @@ curve(
 
 ::: {.columns}
 ::: {.column}
-::: {.callout-note .nonincremental}
-## Distributions of data
+::: {.callout-note .nonincremental title="Distributions of data"}
 How a quantity **varies across cases**.
 
 - Heights of the adults in a village
@@ -277,8 +196,7 @@ How a quantity **varies across cases**.
 :::
 
 ::: {.column}
-::: {.callout-tip .nonincremental}
-## Distributions of belief
+::: {.callout-tip .nonincremental title="Distributions of belief"}
 How **plausible** each value of a parameter is.
 
 - The mayor's share of the vote
@@ -295,7 +213,7 @@ with the second.
 
 # A distribution of data: Nepal's population {notes="notes/week2_notes.md#nepal-population"}
 <!-- TODO: Add NLSS age data. Why the bumps? -->
-![Population of Nepal](images/week2/population.svg){width="80%" style="text-align:center;"}
+![Population of Nepal](images/week2/population.svg){width="80%" fig-align="center"}
 
 # Our running example: the !Kung San {notes="notes/week2_notes.md#kung"}
 
@@ -332,32 +250,8 @@ ggplot(howell, aes(height)) +
     alpha = 0.12
   ) +
   geom_histogram(binwidth = 2, fill = GRAY, color = "white") +
-  geom_vline(
-    xintercept = h_mean,
-    color = RED,
-    linewidth = 1.2,
-    linetype = "dashed"
-  ) +
-  annotate(
-    "text",
-    x = h_mean,
-    y = Inf,
-    vjust = 1.5,
-    hjust = -0.05,
-    size = 7,
-    color = RED,
-    label = paste0("mean = ", fmt(h_mean), " cm")
-  ) +
-  annotate(
-    "text",
-    x = h_mean + h_sd,
-    y = Inf,
-    vjust = 4,
-    hjust = -0.05,
-    size = 7,
-    color = BLUE,
-    label = paste0("± 1 SD = ", fmt(h_sd), " cm")
-  ) +
+  value_marker(h_mean, paste0("mean = ", fmt(h_mean), " cm"), RED) +
+  value_marker(h_mean + h_sd, paste0("± 1 SD = ", fmt(h_sd), " cm"), BLUE, vjust = 4, line = FALSE) +
   labs(x = "Height (cm)", y = "Number of adults")
 ```
 
@@ -405,40 +299,7 @@ $$
 # The 68–95–99.7 rule {notes="notes/week2_notes.md#rule-68-95"}
 
 ```{r normal-rule}
-bands <- tibble(
-  k = c(3, 2, 1),
-  fill = c("#d6ebff", "#8cc6ff", BLUE)
-)
-
-p <- ggplot() + xlim(-4, 4)
-for (i in seq_len(nrow(bands))) {
-  p <- p +
-    stat_function(
-      fun = dnorm,
-      geom = "area",
-      xlim = c(-bands$k[i], bands$k[i]),
-      fill = bands$fill[i]
-    )
-}
-p +
-  stat_function(fun = dnorm, linewidth = 1.2, color = INK) +
-  annotate(
-    "text",
-    x = 0,
-    y = 0.18,
-    label = "68%",
-    size = 10,
-    color = "white",
-    fontface = "bold"
-  ) +
-  annotate("text", x = 1.5, y = 0.04, label = "95%", size = 8, color = INK) +
-  annotate("text", x = 2.5, y = 0.015, label = "99.7%", size = 7, color = INK) +
-  scale_x_continuous(
-    breaks = -3:3,
-    labels = c("-3 SD", "-2 SD", "-1 SD", "mean", "+1 SD", "+2 SD", "+3 SD")
-  ) +
-  labs(x = NULL, y = NULL) +
-  theme(axis.text.y = element_blank())
+normal_rule_plot()
 ```
 
 - For a Normal distribution, about **68%** of cases fall within 1 SD of the mean,
@@ -451,7 +312,7 @@ p +
 ```{shinylive-r}
 #| standalone: true
 {{< include shiny/distributions.R >}}
-``` 
+```
 
 # Standardized values (z-scores) {notes="notes/week2_notes.md#z-scores"}
 
@@ -543,7 +404,6 @@ ggplot(howell, aes(z_height)) +
 | ±1     | ordinary                         |
 | ±2     | unusual (about 1 in 20)          |
 | ±3     | rare (about 1 in 370)            |
-: {.nonincremental}
 :::
 
 ::: {.column width="55%"}
@@ -648,10 +508,7 @@ ggplot(gallery, aes(x, y)) +
   facet_wrap(~panel, nrow = 1) +
   coord_equal() +
   labs(x = NULL, y = NULL) +
-  theme(
-    axis.text = element_blank(),
-    strip.text = element_text(size = 22, face = "bold")
-  )
+  theme(axis.text = element_blank())
 ```
 
 - Our height and weight: *r* = `r fmt(r_hw, 2)`. A strong relationship, but far from perfect.
@@ -659,36 +516,13 @@ ggplot(gallery, aes(x, y)) +
 ## What correlation misses {notes="notes/week2_notes.md#cor-misses"}
 
 ```{r cor-misses, fig.height = 5.5}
-set.seed(4)
-x1 <- runif(150, -3, 3)
-x2 <- rnorm(30)
-x3a <- rnorm(75, -1.5, 0.5)
-x3b <- rnorm(75, 1.5, 0.5)
-
-misses <- bind_rows(
-  tibble(panel = "A curve", x = x1, y = x1^2 + rnorm(150, 0, 0.8)),
-  tibble(panel = "One extreme point", x = c(x2, 8), y = c(rnorm(30), 8)),
-  tibble(
-    panel = "Two groups",
-    x = c(x3a, x3b),
-    y = c(
-      -0.8 * x3a - 2 + rnorm(75, 0, 0.4),
-      -0.8 * x3b + 2 + rnorm(75, 0, 0.4)
-    )
-  )
-) |>
-  group_by(panel) |>
-  mutate(panel = paste0(panel, ":  r = ", fmt(cor(x, y), 2))) |>
-  ungroup()
+misses <- correlation_misses_data()
 
 ggplot(misses, aes(x, y)) +
   geom_point(color = BLUE, alpha = 0.6, size = 2) +
   facet_wrap(~panel, scales = "free") +
   labs(x = NULL, y = NULL) +
-  theme(
-    axis.text = element_blank(),
-    strip.text = element_text(size = 20, face = "bold")
-  )
+  theme(axis.text = element_blank())
 ```
 
 - *r* only measures **straight-line** agreement.
@@ -711,10 +545,10 @@ ggplot(howell, aes(z_height, z_weight)) +
     aes(slope = beta, intercept = 0, color = label),
     linewidth = 1.4
   ) +
-  scale_color_manual(values = c("#e69f00", "#009e73", BLUE, RED), name = NULL) +
+  scale_color_manual(values = c(ORANGE, TEAL, BLUE, RED), name = NULL) +
   coord_equal(xlim = c(-3, 3), ylim = c(-3, 3)) +
   labs(x = "Height (z)", y = "Weight (z)") +
-  theme(legend.position = "top", legend.text = element_text(size = 20))
+  theme(legend.text = element_text(size = 20))
 ```
 :::
 
@@ -771,7 +605,7 @@ slope_kg_cm <- r_hw * w_sd / h_sd
 :::
 
 ::: {.column width="55%"}
-```{r slope-plot, fig.width = 7, fig.height = 5.5}
+```{r slope-plot, opts.label = "half"}
 ggplot(howell, aes(height, weight)) +
   geom_point(color = GRAY, alpha = 0.6, size = 2) +
   geom_smooth(method = "lm", se = FALSE, color = BLUE, linewidth = 1.5) +
@@ -787,26 +621,6 @@ coef(lm(weight ~ height, data = howell))
 ## β is a parameter, so it has a distribution {notes="notes/week2_notes.md#beta-posterior"}
 
 ```{r beta-posterior}
-# Grid approximation over (beta, sigma), then sum out sigma
-beta_posterior <- function(d) {
-  grid <- expand_grid(
-    beta = seq(0, 1.5, length.out = 301),
-    sigma = seq(0.2, 1.5, length.out = 131)
-  ) |>
-    mutate(
-      log_post = map2_dbl(beta, sigma, function(b, s) {
-        sum(dnorm(d$z_weight, b * d$z_height, s, log = TRUE))
-      }) +
-        dnorm(beta, 0, 1, log = TRUE) +
-        dexp(sigma, 1, log = TRUE),
-      post = exp(log_post - max(log_post))
-    )
-  grid |>
-    group_by(beta) |>
-    summarise(post = sum(post)) |>
-    mutate(post = post / sum(post) / (beta[2] - beta[1]))
-}
-
 set.seed(7)
 small <- slice_sample(howell, n = 20)
 
@@ -818,7 +632,7 @@ bind_rows(
   geom_line(linewidth = 1.5) +
   scale_color_manual(values = c(RED, BLUE), name = NULL) +
   labs(x = "β (SD of weight per SD of height)", y = "Plausibility") +
-  theme(legend.position = "top", axis.text.y = element_blank())
+  theme(axis.text.y = element_blank())
 ```
 
 ::: {.nonincremental}
@@ -847,16 +661,14 @@ variable affects the other. There are two common ways to get one:
 
 ::: {.columns}
 ::: {.column}
-::: {.fragment .callout-important .nonincremental}
-## 1. Confounding
+::: {.fragment .callout-important .nonincremental title="1. Confounding"}
 A **third variable** drives both. The pattern is real and will show up again in new
 data, but it isn't about the two variables themselves.
 :::
 :::
 
 ::: {.column}
-::: {.fragment .callout-warning .nonincremental}
-## 2. Chance
+::: {.fragment .callout-warning .nonincremental title="2. Chance"}
 **Random noise** happens to line up. The pattern is a fluke of this particular sample
 and will disappear in new data.
 :::
@@ -890,7 +702,11 @@ beach_bands <- beach |>
     band = cut(
       temp,
       c(-Inf, 14, 22, Inf),
-      labels = c("Cool days (< 14°C)", "Mild days (14–22°C)", "Hot days (> 22°C)")
+      labels = c(
+        "Cool days (< 14°C)",
+        "Mild days (14–22°C)",
+        "Hot days (> 22°C)"
+      )
     )
   ) |>
   group_by(band) |>
@@ -904,7 +720,7 @@ ggplot(beach_bands, aes(ice_cream, drownings)) +
   geom_smooth(method = "lm", se = FALSE, color = RED, linewidth = 1.5) +
   facet_wrap(~band, scales = "free_x") +
   labs(x = "Ice cream sales", y = "Drownings") +
-  theme(strip.text = element_text(size = 18, face = "bold"))
+  theme(strip.text = element_text(size = 18))
 ```
 
 - [ice cream]{.blue} ← **temperature** → [drownings]{.blue}
@@ -948,12 +764,20 @@ null_rs <- bind_rows(
 )
 
 ggplot(null_rs, aes(r, fill = n)) +
-  geom_histogram(binwidth = 0.025, color = "white", position = "identity", alpha = 0.8) +
+  geom_histogram(
+    binwidth = 0.025,
+    color = "white",
+    position = "identity",
+    alpha = 0.8
+  ) +
   geom_vline(xintercept = 0, color = INK, linetype = "dashed") +
   scale_fill_manual(values = c(RED, BLUE), name = NULL) +
   coord_cartesian(xlim = c(-0.8, 0.8)) +
-  labs(x = paste("r for all", choose(n_vars, 2), "pairs of unrelated variables"), y = NULL) +
-  theme(legend.position = "top", axis.text.y = element_blank())
+  labs(
+    x = paste("r for all", choose(n_vars, 2), "pairs of unrelated variables"),
+    y = NULL
+  ) +
+  theme(axis.text.y = element_blank())
 ```
 
 - The true correlation is **0** for every pair. With [20 cases]{.red}, chance alone
@@ -970,7 +794,6 @@ ggplot(null_rs, aes(r, fill = n)) +
 | Shows up in new data? | Yes | No |
 | Does more data help? | **No** | **Yes** |
 | What helps? | Thinking about causes; comparing like with like | Bigger samples; deciding what to test *before* looking; replication |
-: {.nonincremental}
 
 ::: {.fragment}
 - The posterior for β already protects us a little against chance: with 20 adults it
@@ -993,7 +816,7 @@ ggplot(null_rs, aes(r, fill = n)) +
 :::
 
 ::: {.fragment}
-<div style="font-size: 150%; font-weight: bold; margin-top: 1em;">
+<div class="big-statement">
 A pattern is a description, not an explanation.
 </div>
 :::
@@ -1031,38 +854,8 @@ p_median <- median(houses$price)
 
 ggplot(houses, aes(price)) +
   geom_histogram(binwidth = 10000, fill = GRAY, color = "white") +
-  geom_vline(
-    xintercept = p_median,
-    color = BLUE,
-    linewidth = 1.2,
-    linetype = "dashed"
-  ) +
-  geom_vline(
-    xintercept = p_mean,
-    color = RED,
-    linewidth = 1.2,
-    linetype = "dashed"
-  ) +
-  annotate(
-    "text",
-    x = p_mean,
-    y = Inf,
-    vjust = 1.5,
-    hjust = -0.05,
-    size = 7,
-    color = RED,
-    label = paste("mean =", dollars(p_mean))
-  ) +
-  annotate(
-    "text",
-    x = p_median,
-    y = Inf,
-    vjust = 3.5,
-    hjust = -0.05,
-    size = 7,
-    color = BLUE,
-    label = paste("median =", dollars(p_median))
-  ) +
+  value_marker(p_mean, paste("mean =", dollars(p_mean)), RED) +
+  value_marker(p_median, paste("median =", dollars(p_median)), BLUE, vjust = 3.5) +
   scale_x_continuous(labels = scales::label_dollar()) +
   labs(x = "Sale price", y = "Number of houses")
 ```
@@ -1073,12 +866,6 @@ ggplot(houses, aes(price)) +
 ## Step 2: How unusual is this house? {notes="notes/week2_notes.md#houses-step2"}
 
 ```{r unusual-houses}
-houses <- houses |>
-  mutate(
-    z_price = (price - mean(price)) / sd(price),
-    z_area = (area_m2 - mean(area_m2)) / sd(area_m2)
-  )
-
 unusual <- bind_rows(
   houses |> slice_max(price, n = 1) |> mutate(house = "A: most expensive"),
   houses |> slice_max(area_m2, n = 1) |> mutate(house = "B: largest")
@@ -1091,7 +878,6 @@ unusual <- bind_rows(
 |-|------|----|
 | Price | `r dollars(mean(houses$price))` | `r dollars(sd(houses$price))` |
 | Living area | `r fmt(mean(houses$area_m2))` m² | `r fmt(sd(houses$area_m2))` m² |
-: {.nonincremental}
 :::
 
 ::: {.column width="55%"}
@@ -1243,8 +1029,7 @@ houses |>
   geom_point(color = BLUE, size = 4) +
   facet_wrap(~size) +
   scale_y_continuous(labels = scales::label_dollar()) +
-  labs(x = "Bedrooms", y = "Median sale price") +
-  theme(strip.text = element_text(size = 20, face = "bold"))
+  labs(x = "Bedrooms", y = "Median sale price")
 ```
 
 - Overall, more bedrooms go with a *higher* price (*r* = `r fmt(cor(houses$bedrooms, houses$price), 2)`).

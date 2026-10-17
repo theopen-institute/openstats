@@ -1,9 +1,7 @@
 ---
 title: Data Lunch
 subtitle: Statistics from the ground up · The Open Institute For Social Science
-format:
-  html:
-    toc: true
+format: html
 ---
 
 Data Lunch is a short course in applied statistics. It starts from a single uncomfortable

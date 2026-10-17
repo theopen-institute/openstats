@@ -8,6 +8,10 @@
 --   ::: {notes="notes/week1_notes.md#published-research"}
 --   :::
 --
+-- Title slide (built from YAML title/subtitle, so there is no heading to attach to):
+--   title-notes: "notes/week1_notes.md#title"
+-- sets `title-notes-html`, which _build/title-slide.html places on the title slide.
+--
 -- Notes source file:
 --   Any heading level with explicit IDs:
 --     # Title {#title}
@@ -160,7 +164,8 @@ local function blocks_to_html(blocks)
   return pandoc.write(pandoc.Pandoc(blocks), "html")
 end
 
-local function make_notes_aside(ref)
+-- Notes content for a "file.md#id" reference, as HTML (without the <aside>).
+local function notes_html(ref)
   local p, frag = split_ref(ref)
   if not p or not frag or p == "" or frag == "" then
     warn('Bad notes value (expected "file.md#id"): ' .. tostring(ref))
@@ -176,10 +181,32 @@ local function make_notes_aside(ref)
     return nil
   end
 
-  local safe_blocks = sanitize_notes(blocks)
-  local html = blocks_to_html(safe_blocks)
+  return blocks_to_html(sanitize_notes(blocks))
+end
 
+local function make_notes_aside(ref)
+  local html = notes_html(ref)
+  if not html then return nil end
   return pandoc.RawBlock("html", "<aside class=\"notes\">\n" .. html .. "\n</aside>")
+end
+
+function Meta(meta)
+  if not FORMAT:match("revealjs") then
+    return nil
+  end
+
+  local ref = meta["title-notes"] and pandoc.utils.stringify(meta["title-notes"])
+  if not ref or ref == "" then
+    return nil
+  end
+
+  local html = notes_html(ref)
+  if not html then
+    return nil
+  end
+
+  meta["title-notes-html"] = pandoc.MetaBlocks({ pandoc.RawBlock("html", html) })
+  return meta
 end
 
 function Header(h)

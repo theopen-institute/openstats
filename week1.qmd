@@ -1,22 +1,18 @@
 ---
-engine: knitr
+title: "Data for Decision Making"
+subtitle: "Week 1: All of Statistics in One Formula"
+title-notes: "notes/week1_notes.md#title"
 format:
   revealjs:
-    include-in-header:
-      - text: |
-          <script src="https://cdn.jsdelivr.net/npm/jsuites@5/dist/jsuites.js"></script>
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsuites@5/dist/jsuites.css">
-          <script src="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@5/dist/index.js"></script>
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@5/dist/jspreadsheet.css">
+    include-in-header: _build/jspreadsheet.html
+    # Most lists here appear all at once; the few that build mark themselves .incremental
+    incremental: false
 ---
 
-# Data for Decision Making {.center notes="notes/week1_notes.md#title"}
-
-Week 1: A Fresh Start
-
-::: {.footer}
-The Open Institute For Social Science
-:::
+```{r setup, include=FALSE}
+source("r/deck-setup.R")
+source("r/week1.R")
+```
 
 # Most published research is false {notes="notes/week1_notes.md#published-research"}
 
@@ -24,29 +20,30 @@ The Open Institute For Social Science
 ![](images/week1/ioannidis.png){width="100%"}
 [https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124)
 
-:::{.fragment}
+::: {.fragment}
 ![](images/week1/capybara.png){.absolute left=900 top=390}
 
-<div style="font-size: 150%; font-weight: bold; position: absolute; left: 900px; top: 780px;">
+::: {.big-statement .absolute left=900 top=780}
 ...and that's okay.
-</div>
+:::
 :::
 :::
 
 # This week's goals
 
-:::{.nonincremental}
-- Unpack the key concepts underlying Ioannidis's claim.
-  - Probability (spoiler: it's just counting)
+::: {.incremental}
+- Explore the key concepts underlying Ioannidis's claim
+  - Probability
   - The base rate paradox
   - Statistical significance
-- Question a common assumption: objectivity in research
-- Learn all of statistics in just one formula (Bayesian updating)
-- Feel okay about the fact that most research is wrong
-- Appendix: election polling (a worked example) 
+- Unpack the notion of objectivity in research
+- Learn all of statistics (in just one formula)
+- Understand why most research is wrong (and why that's okay)
+- Appendix: election polling (a worked example)
 :::
 
-# Statistical significance
+
+# Statistical significance {notes="notes/week1_notes.md#goals"}
 
 ::: {.columns}
 
@@ -71,258 +68,203 @@ The Open Institute For Social Science
 
 
 
-::: {notes="notes/week1_notes.md#goals"}
-:::
+# Probability {notes="notes/week1_notes.md#probability"}
 
-# Probability
+So what is probability? 
 
-So what is probability? [It's just a way of talking about uncertainty.]{.fragment}
+[It's just a way of talking about uncertainty.]{.fragment}
 
 ::: {.fragment}
-And underneath, it's just [**counting**]{.blue}.
-:::
-
-::: {notes="notes/week1_notes.md#probability"}
+Underneath, probability is just [**counting**]{.blue}.
 :::
 
 ## Probability is counting {notes="notes/week1_notes.md#counting"}
 
 _Count everything that could happen. Count the ones you care about. Compare._
 
-::: {.fragment .nonincremental}
-- **A die**: 6 sides could land face up. 1 of them is a six.<br>
+::: {.fragment}
+- **Probability of rolling a six on a die**:<br>
+  6 sides could land face up. Only one of them is a six.<br>
   [→ **1 out of 6**]{.blue}
 :::
 
-::: {.fragment .nonincremental}
-- **A raffle**: 500 tickets sold. You bought 10.<br>
-  [→ **10 out of 500**]{.blue}, or 1 out of 50
-:::
-
-::: {.fragment .nonincremental}
-- **This class**: 25 of you are here. 15 of you came by bus.<br>
-  [→ **15 out of 25**]{.blue}. Pick someone at random: they probably came by bus.
+::: {.fragment}
+- **Probability of winning a raffle**: <br>
+  500 tickets sold. You bought 10.<br>
+  [→ **10 out of 500**]{.blue}
 :::
 
 ::: {.fragment}
-No formulas. Every probability in this lecture, from rain to HIV tests to published
-research, is a count like these.
+- **The probability that a random person in this class came by bus**:<br> 
+  25 of you are here. 15 of you came by bus.<br>
+  [→ **15 out of 25**]{.blue}.
 :::
 
-## Counting ways {notes="notes/week1_notes.md#counting-ways"}
+::: {.fragment}
+Every analysis we do in this course will come down to counting, exactly like this.
+:::
 
-_Flip two coins. How likely is exactly one head?_
+## Counting the ways a thing could happen {notes="notes/week1_notes.md#counting-ways"}
+
+_Flip a coin four times. How likely is exactly two heads?_
 
 ::: {.columns}
-::: {.column width="40%"}
+::: {.column width="58%"}
+```{r garden, fig.width = 9, fig.height = 5.4, out.width = "100%"}
+garden_plot(n = 4, target = 2)
+```
+:::
+
+::: {.column width="42%"}
 ::: {.fragment}
+Four events, two possibilities each:
 
-| First | Second | Heads |
-|:-:|:-:|:-:|
-| H | H | 2 |
-| H | T | [**1**]{.blue} |
-| T | H | [**1**]{.blue} |
-| T | T | 0 |
-: {.nonincremental}
-:::
-:::
-
-::: {.column width="60%"}
-::: {.fragment .nonincremental}
-List every way it could go, then count:
-
-- Two heads: **1** way out of 4
-- Exactly one head: [**2** ways out of 4]{.blue}
-- At least one head: **3** ways out of 4
+- 2 × 2 × 2 × 2 = **16** ways in all
+- Exactly two heads: [**6** out of 16]{.blue}
 :::
 
 ::: {.fragment}
-[Many people guess 1 in 3 for exactly one head, because they count "one head" as a
-single outcome. So did the mathematician d'Alembert, in 1754.]{.gray style="font-size: 70%;"}
+
+| Heads | 0 | 1 | [2]{.blue} | 3 | 4 |
+|---|:-:|:-:|:-:|:-:|:-:|
+| **Ways** | 1 | 4 | [**6**]{.blue} | 4 | 1 |
 :::
 :::
 :::
 
 ::: {.fragment}
-When you're unsure, [list the ways the world could be, and count them]{.blue}. That's
-also the whole idea behind Bayesian statistics, as we'll see later today.
+What we're doing is simple:<br>[We list all the ways the world could be, and count them.]{.blue}
 :::
 
-## Let's count {notes="notes/week1_notes.md#lets-count"}
+## Probability lets us ask questions {notes="notes/week1_notes.md#lets-count"}
 
 _Hands up if you had tea this morning._
 
-<style>
-  #count-demo .count-inputs{
-    display: flex;
-    gap: 40px;
-    margin: 20px 0;
-  }
-  #count-demo input{
-    width: 4.5em;
-    font: inherit;
-    text-align: right;
-    padding: 2px 6px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  #count-demo #count-k{
-    border: 2px solid #1b91ff;
-  }
-  #count-dots{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    max-width: 1300px;
-    margin: 20px 0;
-  }
-  #count-dots span{
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #ddd;
-  }
-  #count-dots span.on{
-    background: #1b91ff;
-  }
-  #count-result{
-    font-size: 130%;
-    font-weight: 600;
-  }
-</style>
+{{< include _includes/week1/count-demo.md >}}
 
-```{=html}
-<div id="count-demo">
-  <div class="count-inputs">
-    <label>People here: <input type="number" min="0" max="200" step="1" value="25" id="count-n"></label>
-    <label>Hands up: <input type="number" min="0" max="200" step="1" value="0" id="count-k"></label>
-  </div>
-  <div id="count-dots"></div>
-  <p id="count-result"></p>
-</div>
-```
 
-<script>
-  (() => {
-    const $ = (id) => document.getElementById(id);
-    const nIn = $('count-n');
-    const kIn = $('count-k');
+::: {.incremental}
+- That's not really a probability yet. It's just a fact about this room.
+- It becomes a **probability** when we use it to say something we _don't_ know:
+  - _"If we pick one student at random, how likely is it they had tea?"_<br>
+  [(Exactly <span class="count-k-out"></span> in <span class="count-n-out"></span>)]{.blue}
+  - _"If we poll a random person on the street, how likely is it that they had tea?"_<br>
+  [(Maybe similar, if we're willing to make a few assumptions.)]{.blue}
+:::
 
-    function update() {
-      const n = Math.min(200, Math.max(0, Math.round(Number(nIn.value) || 0)));
-      const k = Math.min(n, Math.max(0, Math.round(Number(kIn.value) || 0)));
-      $('count-dots').innerHTML = Array.from({ length: n }, (_, i) =>
-        `<span class="${i < k ? 'on' : ''}"></span>`
-      ).join('');
-      $('count-result').innerHTML = n > 0
-        ? `<span class="blue">${k} out of ${n}</span> had tea this morning.`
-        : '';
-      document.querySelectorAll('.count-k-out').forEach((el) => (el.textContent = k));
-      document.querySelectorAll('.count-n-out').forEach((el) => (el.textContent = n));
-    }
+## Probability: Convention 1 {notes="notes/week1_notes.md#convention-1"}
 
-    [nIn, kIn].forEach((el) => el.addEventListener('input', update));
-    update();
-  })();
-</script>
+_Probability is written as a number between 0 and 1, or as a percentage._
 
 ::: {.fragment}
-That's not a probability yet. It's a **count**: a fact about this room.
+- **0** (0%) means impossible. **1** (100%) means certain.
+- A fair coin landing heads: **0.5**, or 50%.
+- Kathmandu sees rain (≥ 1 mm) on about 113 of 365 days: 113 ÷ 365 = **0.31**, or 31%.
 :::
 
 ::: {.fragment}
-It becomes a **probability** when we use it to say something we _don't_ know:
-_"If I pick one of you at random, how likely is it they had tea?"_
-[About <span class="count-k-out"></span> in <span class="count-n-out"></span>.]{.blue}
+But what does _"a 31% chance of rain"_ mean? Tomorrow's weather isn't a lottery. Specific physical factors decide it.
 :::
 
 ::: {.fragment}
-Counting is how we get there. Two conventions give us a language for statements like
-this.
+The day isn't random. [But, _**we**_ are uncertain about it.]{.blue} 31% describes our degree of certainty about an uncertain question.
 :::
 
-## Probability: Convention 1
+[Kathmandu Airport weather station, NOAA GHCN-Daily (NP000444540), 2021–2025. Days missing from the record are filled in at that month's average rate.]{.source}
 
-_We measure probability as a percentage or as a number between 0 and 1._
+## Probability: Convention 2 {notes="notes/week1_notes.md#convention-2"}
+
+_We write the probability of an event as P( event )._
 
 ::: {.fragment}
-Kathmandu sees rain (≥ 1 mm) on about 121 days a year:
+| We write | We say | Value |
+|---|---|---|
+| P( it raining ) | "the probability of rain" | 113 ÷ 365 ≈ 0.31 |
+| P( getting heads ) | "the probability of heads" | 1 ÷ 2 ≈ 0.5 |
+| P( rolling a six ) | "the probability of rolling a six" | 1 ÷ 6 ≈ 0.17 |
+| P( winning the raffle ) | "the probability of winning the raffle" | 10 ÷ 500 = 0.02 |
 :::
-
-- 121 days with rain / 365 days total = 0.33 (33%)
-
-[Kathmandu Airport weather station, NOAA GHCN-Daily (NP000444540), 2015–2025, complete months only.]{.gray style="font-size: 60%;"}
-
-## Probability: Convention 2
-
-_We write statements about probability as P( event ) or P( event | condition )._
-
-- P( rain ) = 121 / 365 = 0.33 (33%)
 
 ::: {.fragment}
-But we can do better with _conditional probabilities_:
+It's just shorthand. Everything inside the brackets is the thing we're unsure about.
 :::
 
-::: {.fragment .nonincremental}
-- P( rain | Apr ) = 39/90 (0.43)
-- P( rain | Dec ) = 3/124 (0.02)
-- P( rain | Jul ) = 168/217 (0.77)
-- P( rain | Feb ) = 19/198 (0.10)
+## Probability: Convention 3 {notes="notes/week1_notes.md#rain"}
+
+_We make a probability more specific by adding a condition: P( event | condition )._
+
+::: {.fragment}
+P( rain | July ) means [_"the probability of rain, given that it's July."_]{.blue}
 :::
 
-::: {notes="notes/week1_notes.md#rain"}
+::: {.fragment}
+| Last 5 years | Rainy days | Days counted | Probability |
+|---|--:|--:|--:|
+| P( rain ) | 565 | 1,825 | **0.31** |
+| P( rain \| Apr ) | 35 | 150 | **0.23** |
+| P( rain \| Dec ) | 5 | 155 | **0.03** |
+| P( rain \| Jul ) | 126 | 155 | **0.81** |
+| P( rain \| Feb ) | 8 | 140 | **0.06** |
+:::
+
+::: {.fragment}
+[To use this as a prediction, we need to assume that this year will be similar to the average of the past five years.]{.blue} Whether or not that's reasonable is not really something statistics can answer.
 :::
 
 
 ## Probability Examples
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 - P( bachelors degree )
 - P( bachelors degree | urban )
 - P( bachelors degree | rural )
 :::
 
+::: {.incremental}
 - P( football team wins | leading at halftime)
 - P( disease | family history )
 - P( rain today | rained yesterday )
 - P( survival | attacked by bear )
+:::
 
 ## Conditional risk {notes="notes/week1_notes.md#conditional-risk"}
 
 ![](images/week1/conditional_risk.png){fig-align="center" height="620px"}
 
-[xkcd 795, "Conditional Risk," by Randall Munroe (CC BY-NC 2.5)]{.gray style="font-size: 50%;"}
+[xkcd 795, "Conditional Risk," by Randall Munroe (CC BY-NC 2.5)]{.source}
 
 ::: {.fragment}
 P( killed by lightning ) is tiny. P( killed by lightning | outside in a storm ) is not.
-[The condition you're in decides which number applies.]{.blue}
 :::
 
-# Probability for Decision Making
+# Probability for Decision Making {notes="notes/week1_notes.md#applied-probability"}
 
 ::: {.fragment}
 In Nepal, HIV has a prevalence of about 0.1%. We can write that as:
 :::
 
+::: {.incremental}
 - P( HIV+ ) = 0.001 (0.1%)
-
-::: {.fragment}
-With statistical tests and predictions, we talk about two kinds of "accuracy":
 :::
 
+::: {.fragment}
+With statistical tests and predictions, we talk about two kinds of accuracy:
+:::
+
+::: {.incremental}
 - **Sensitivity**: of the people who **have** HIV, the share who test positive.
   - P( test+ | HIV+ ) = **0.99** (true positive)
 - **Specificity**: of the people who **don't have** HIV, the share who test negative.
   - P( test– | HIV– ) = **0.97** (true negative)
-
-::: {notes="notes/week1_notes.md#applied-probability"}
 :::
 
-## Probability for Decision Making (continued)
+## Probability for Decision Making (continued) {notes="notes/week1_notes.md#base-rate"}
 
-::: {.nonincremental}
 - Sensitivity P( test+ | HIV+ ): 99%
 - Specificity P( test– | HIV– ): 97%
+
+::: {.fragment fragment-index=0}
+But there's something strange here...
 :::
 
 ::: {.fragment fragment-index=1}
@@ -339,17 +281,12 @@ What about P( HIV+ | test+)? [3.2%]{.fragment fragment-index=2 .red}
 
 ::: {.fragment}
 _Paradox: P(A|B) is not the same as P(B|A)_
+
+[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.]{.source}
 :::
 
-::: {.fragment}
-[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.]{.gray style="font-size: 60%;"}
-:::
 
-
-::: {notes="notes/week1_notes.md#base-rate"}
-:::
-
-## Base Rate Paradox {.no-title}
+# Base Rate Paradox {.no-title}
 ```{shinylive-r}
 #| standalone: true
 {{< include shiny/baserate.R >}}
@@ -359,111 +296,15 @@ _Paradox: P(A|B) is not the same as P(B|A)_
 
 _P(A|B) is not the same as P(B|A)_
 
-<style>
-  #cond-table{
-    margin: 60px 120px 40px;
-  }
-  #cond-table input{
-    width: 4.5em;
-    font: inherit;
-    text-align: right;
-    padding: 2px 6px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  #cond-table td.cond-key input{
-    border: 2px solid #1b91ff;
-  }
-  #cond-table .cond-total{
-    color: #888;
-    font-style: italic;
-    text-align: right;
-  }
-  .cond-results p{
-    margin: 0.3em 0;
-  }
-  /* positioned out of flow so the button doesn't widen the totals column */
-  #cond-table th.cond-reset-cell{
-    position: relative;
-  }
-  #cond-reset{
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 12pt;
-    padding: 4px 8px;
-  }
-</style>
+{{< include _includes/week1/cond-table.md >}}
 
-```{=html}
-<table id="cond-table">
-  <thead>
-    <tr><th></th><th>Sociology</th><th>Economics</th><th class="cond-reset-cell"><button id="cond-reset" type="button">Reset</button></th></tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><b>Urban</b></td>
-      <td><input type="number" min="0" step="1" value="240" data-default="240" id="cond-us"></td>
-      <td><input type="number" min="0" step="1" value="300" data-default="300" id="cond-ue"></td>
-      <td class="cond-total" id="cond-urban"></td>
-    </tr>
-    <tr>
-      <td><b>Rural</b></td>
-      <td class="cond-key"><input type="number" min="0" step="1" value="80" data-default="80" id="cond-rs"></td>
-      <td><input type="number" min="0" step="1" value="20" data-default="20" id="cond-re"></td>
-      <td class="cond-total" id="cond-rural"></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class="cond-total" id="cond-soc"></td>
-      <td class="cond-total" id="cond-econ"></td>
-      <td class="cond-total" id="cond-all"></td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="cond-results">
-  <p><span class="red">P( Sociology | Rural )</span> = <span id="cond-p1"></span></p>
-  <p><span class="blue">P( Rural | Sociology )</span> = <span id="cond-p2"></span></p>
-</div>
-```
-
-<script>
-  (() => {
-    const $ = (id) => document.getElementById(id);
-    const cells = ['cond-us', 'cond-ue', 'cond-rs', 'cond-re'].map($);
-    const fmt = (n) => n.toLocaleString();
-    const ratio = (num, den) =>
-      `${fmt(num)} / ${fmt(den)} = ${den > 0 ? (num / den).toFixed(2) : '—'}`;
-
-    function update() {
-      const [us, ue, rs, re] = cells.map((el) => Math.max(0, Number(el.value) || 0));
-      $('cond-urban').textContent = fmt(us + ue);
-      $('cond-rural').textContent = fmt(rs + re);
-      $('cond-soc').textContent = fmt(us + rs);
-      $('cond-econ').textContent = fmt(ue + re);
-      $('cond-all').textContent = fmt(us + ue + rs + re);
-      $('cond-p1').textContent = ratio(rs, rs + re);
-      $('cond-p2').textContent = ratio(rs, us + rs);
-    }
-
-    cells.forEach((el) => el.addEventListener('input', update));
-    $('cond-reset').addEventListener('click', () => {
-      cells.forEach((el) => (el.value = el.dataset.default));
-      update();
-    });
-    update();
-  })();
-</script>
-
-# Statistical significance (revisited)
+# Statistical significance (revisited) {notes="notes/week1_notes.md#statistical-significance-revisited"}
 
 Let's look at that quote again:
 
 > A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=2 .highlight-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=3 .highlight-blue} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
 
-::: {.fragment .nonincremental fragment-index=1}
+::: {.fragment fragment-index=1}
 Two key phrases: 
 :::
 
@@ -472,21 +313,18 @@ Two key phrases:
   <li class="fragment blue" data-fragment-index=3>"the probability of...data..."</li>
 </ul>
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 This frames _statistical significance_ as:
 
-- P( [data]{.blue} | [hypothesis]{.red} ) [(schematically; formally, P( data at least this extreme | H₀ ))]{.gray style="font-size: 60%;"}
+- P( [data]{.blue} | [hypothesis]{.red} ) [(schematically; formally, P( data at least this extreme | H₀ ))]{.source}
 :::
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 Not the same as (what we usually actually want):
 
 - P( [hypothesis]{.red} | [data]{.blue} )
 :::
 
-
-::: {notes="notes/week1_notes.md#statistical-significance-revisited"}
-:::
 
 ## The problem with p-values {notes="notes/week1_notes.md#pvalue-direction"}
 
@@ -499,10 +337,9 @@ runs in a [weird direction]{.red}.
 |---|---|---|
 | **How we observe** | what we [saw]{.blue} | _"What does this tell me about the [world]{.green}?"_ |
 | **A p-value** | an [imagined world]{.red} with nothing going on | _"How surprising would my [data]{.blue} be there?"_ |
-: {.nonincremental}
 :::
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 - No ethnographer asks _"if nothing were going on, how surprising would this interview
   be?"_ They ask what the interview tells them about the world.
 - A p-value never tells you how likely your hypothesis is. Reading it that way is the
@@ -514,31 +351,23 @@ We want statistics that runs the way observation does: from [data]{.blue} to
 [beliefs about the world]{.green}.
 :::
 
-# So why is most published research wrong?
+# So why is most published research wrong? {notes="notes/week1_notes.md#why-research-wrong"}
+
+It's the HIV test again, relabeled:
 
 ::: {.fragment}
-It's the same **base rate problem** as the HIV test:
-:::
 
-::: {.fragment .nonincremental}
-- A positive test &rarr; a [significant result]{.red} (p &lt; 0.05)
-- Having the disease &rarr; the [hypothesis is actually true]{.blue}
-- Interesting hypotheses are **rare**, the same way HIV is rare.
-:::
-
-::: {.fragment .nonincremental}
-Two terms you'll see, both borrowed from the test:
-
-- **Power** = the study's sensitivity: P( [statistical significance]{.red} | [true]{.blue} ). How often it
-  catches a real effect.
-- **α** = the study's false-positive rate: P( [statistical significance]{.red} | [false]{.blue} ). Usually 5%.
+| HIV test | Research study |
+|---|---|
+| Has HIV | The [hypothesis is true]{.blue} |
+| Tests positive | A [significant result]{.red} (p &lt; 0.05) |
+| Sensitivity: P( test+ \| HIV+ ) | **Power**: P( [significant]{.red} \| [true]{.blue} ) |
+| False-positive rate: P( test+ \| HIV– ) | **α**: P( [significant]{.red} \| [false]{.blue} ), usually 5% |
+| HIV is rare | Interesting hypotheses are rare |
 :::
 
 ::: {.fragment}
-So most "significant" findings can be false positives, exactly as most positives were in our HIV example.
-:::
-
-::: {notes="notes/week1_notes.md#why-research-wrong"}
+So most "significant" findings can be false, like most positive tests.
 :::
 
 ## The same table, relabeled {.no-title}
@@ -559,99 +388,43 @@ P( [true]{.blue} | [significant]{.red} ) = 80 / (80 + 495) ≈ [**14%**]{.red}
 About **86 of every 100** "discoveries" are false.
 :::
 
-## So why is most published research wrong? {.no-title .smaller .mechanics notes="notes/week1_notes.md#scenarios-grid"}
+## How bad does it get? {.mechanics notes="notes/week1_notes.md#scenarios-grid"}
 
-How bad it gets depends on the field. A [1%]{.blue} base rate is low, but not unusual for
-exploratory research. And [80%]{.blue} power is generous: many fields run closer to [20%]{.blue}. (α = 5%)
+P( [true]{.blue} | [significant]{.red} ) under different conditions:
 
-::: {.fragment}
-
-| P( [true]{.blue} \| [significant]{.red} ) | 80% power | 50% power | 20% power |
-|---|---|---|---|
-| **50%** true [(confirmatory trials)]{.gray} | 94% | 91% | 80% |
-| **25%** true | 84% | 77% | 57% |
-| **10%** true | 64% | 53% | [31%]{.red} |
-| **1%** true [(exploratory research)]{.gray} | [14%]{.red} | [9%]{.red} | [4%]{.red} |
-| **0.1%** true [(scanning for "a link")]{.gray} | [2%]{.red} | [1%]{.red} | [0.4%]{.red} |
-:::
+| True hypotheses | 80% power | 20% power | p-hacked |
+|---|:-:|:-:|:-:|
+| **50%** [confirmatory]{.gray} | 94% | 80% | [50%]{.red} |
+| **10%** | 64% | [31%]{.red} | [10%]{.red} |
+| **1%** [exploratory]{.gray} | [14%]{.red} | [4%]{.red} | [1%]{.red} |
 
 ::: {.fragment}
-Power matters, but the [base rate]{.blue} matters more. Going from 80% to 20% power costs
-a lot; going from 50% to 1% true costs almost everything.
-:::
-
-## Add some flexibility {.no-title .smaller .mechanics notes="notes/week1_notes.md#scenarios-phacking"}
-
-_Same table, but researchers try a few outcomes, a few subgroups, a few ways to clean the data…_
-
-_…so the [effective α]{.red} is closer to [20%]{.red} than 5%._
-
-::: {.fragment}
-
-| P( [true]{.blue} \| [significant]{.red} ) | 80% power | 50% power | 20% power |
-|---|---|---|---|
-| **50%** true | 80% | 71% | 50% |
-| **25%** true | 57% | 45% | [25%]{.red} |
-| **10%** true | [31%]{.red} | [22%]{.red} | [10%]{.red} |
-| **1%** true | [4%]{.red} | [2.5%]{.red} | [1%]{.red} |
-| **0.1%** true | [0.4%]{.red} | [0.2%]{.red} | [0.1%]{.red} |
-:::
-
-::: {.fragment}
-At 20% power and α = 20%, a "significant" result is [no more likely to be true]{.red}
-than the hypothesis was before the study. The study taught us nothing.
-:::
-
-## Some scenarios {.smaller .mechanics notes="notes/week1_notes.md#scenarios-named"}
-
-| Scenario | Base rate | Power | α | P( [true]{.blue} \| [significant]{.red} ) |
-|---|---|---|---|---|
-| Large, pre-registered trial of a plausible treatment | 50% | 80% | 5% | **94%** |
-| Small pilot trial of a plausible treatment | 25% | 20% | 5% | **57%** |
-| Typical survey study, some analytic flexibility | 10% | 50% | 20% | [**22%**]{.red} |
-| Exploratory study, many outcomes tested | 1% | 20% | 20% | [**1%**]{.red} |
-| Scanning thousands of variables for "a link" | 0.1% | 80% | 5% | [**2%**]{.red} |
-
-## Two surprises {.smaller .mechanics notes="notes/week1_notes.md#scenarios-surprises"}
-
-| Scenario | Base rate | Power | α | P( [true]{.blue} \| [significant]{.red} ) |
-|---|---|---|---|---|
-| A [perfect]{.blue} study (never misses a true effect) | 1% | 100% | 5% | [**17%**]{.red} |
-| A stricter threshold (p &lt; 0.005) | 1% | 80% | 0.5% | **62%** |
-
-::: {.fragment}
-Even a perfect study can't rescue an unlikely hypothesis. [One study is not enough.]{.red}
+- The [base rate]{.blue} matters more than power. Even a perfect study only reaches 17%
+  at 1%.
+- p-hacked (20% power, α ≈ 20%): a "significant" result tells us nothing new.
 :::
 
 ## What if we look again? {notes="notes/week1_notes.md#scenarios-replication"}
 
-_The same hypothesis, tested again and again by independent studies. Each "significant"
-result updates what we believe before the next one. (α = 5%)_
+_The same hypothesis, tested again by independent studies. 1% are true, 80% power, α = 5%._
 
 ::: {.fragment}
 
-| After… | 80% power | 20% power |
-|---|---|---|
-| Before any study (base rate) | 1% | 1% |
-| 1 significant result | [14%]{.red} | [4%]{.red} |
-| 2 significant results | 72% | [14%]{.red} |
-| 3 significant results | **98%** | 39% |
-| 4 significant results | **99.8%** | 72% |
+| After… | P( [true]{.blue} ) |
+|---|:-:|
+| No studies (the base rate) | 1% |
+| 1 significant result | [14%]{.red} |
+| 2 significant results | 72% |
+| 3 significant results | **98%** |
 :::
 
 ::: {.fragment}
-No single study told us much. [The sequence did.]{.green}
+No single study told us much. [The sequence did.]{.green} Each row starts from the one
+before it: that's [Bayesian updating]{.blue}.
 :::
 
-::: {.fragment}
 [Assumes the replications are independent and honest. Replications that share the same
-biases don't add up this way.]{.gray style="font-size: 60%;"}
-:::
-
-::: {.fragment}
-Each row started from the row before it. That's [Bayesian updating]{.blue}, and it's
-where we're going next.
-:::
+biases don't add up this way.]{.source}
 
 
 # Hard data? {notes="notes/week1_notes.md#hard-data"}
@@ -666,12 +439,10 @@ Let's test it against what we've seen today.
 
 ## What's true about it {notes="notes/week1_notes.md#hard-data-true"}
 
-::: {.nonincremental}
 - **The arithmetic is objective.** Same data, same model: same number, every time, for
   anyone.
 - **Numbers are easy to share and check.** Anyone can recompute them.
 - **Large samples average out some kinds of noise.** Not all of them.
-:::
 
 ::: {.fragment}
 But the arithmetic is the [smallest part of the work]{.red}.
@@ -681,18 +452,17 @@ But the arithmetic is the [smallest part of the work]{.red}.
 
 | The number | The choice behind it |
 |---|---|
-| P( rain ) = 33% | Which station, which years, and what counts as "rain" (≥ 1 mm) |
+| P( rain ) = 31% | Which station, which years, what counts as "rain" (≥ 1 mm), and how to fill gaps in the record |
 | P( HIV+ \| test+ ) = 3.2% | Who gets tested. Among people who come to a clinic with symptoms, it's very different. |
 | p &lt; 0.05 | Why 5%? A convention. Plus which test, which controls, when to stop collecting data. |
 | 14% of "discoveries" are true | A base rate that nobody can measure directly |
 | The mayor at about 45% | Who we surveyed, who answered, and the prior we drew |
-: {.nonincremental}
 
 ::: {.fragment}
 Once the choices are made, the number is objective. [The choices aren't.]{.red}
 :::
 
-## Objective and subjective
+## Objective and subjective {notes="notes/week1_notes.md#statistics-is-observation"}
 
 _Statistics and ethnography have the same structure._
 
@@ -709,19 +479,14 @@ _Statistics and ethnography have the same structure._
 Call the observation "objective" if you like. But interesting inferences rest on [strong assumptions]{.red}, and choosing assumptions is [subjective]{.red}, in both.
 :::
 
-::: {notes="notes/week1_notes.md#statistics-is-observation"}
-:::
-
 ## The same standard for both {notes="notes/week1_notes.md#hard-data-standard"}
 
-::: {.nonincremental}
 - Both have an **observational** part and an **inferential** part. Neither is "hard" or
   "soft" by nature.
 - Trust is **earned** the same way in both: show how the observation was made, state
   your assumptions, let others challenge them, and look again.
 - Ethnographers have long practice at this: reflexivity, positionality, thick
   description. Statistics can learn from it.
-:::
 
 ::: {.fragment}
 "Hard data" isn't a property of numbers. It's a claim about how much to trust them.
@@ -737,20 +502,19 @@ wrong while looking right.]{.red}
 ## Bayesian Updating: What it is not
 ![*Statistical Rethinking*, p.2 (Richard McElreath, 2020)](images/week1/mcelreath-2.png){fig-align="center" width="100%"}
 
-## Bayesian Updating: What it is
+## Bayesian Updating: What it is {notes="notes/week1_notes.md#bayesian-updating"}
 
 Instead of a flowchart of tests, [**one rule for all of statistics**]{.blue}:
 
+::: {.incremental}
 - [**Prior**]{.red}: what we believe about the world _before_ seeing the new data.<br>[_I think that about 60% of Kathmandu will vote for the current mayor, because that's what he got last time._]{.fragment .blue}
 - [**Likelihood**]{.blue}: how likely the data we saw would be, under _each_ possible answer.<br>[_In my survey, only 30% said they'll vote for the mayor. That's quite likely if true support is around 30%, and unlikely if it's 60%._]{.fragment .blue}
 - [**Posterior**]{.green}: what we believe _after_ combining the two. It challenges the prior, or makes it stronger.<br>[_I now think that about 45% of Kathmandu will vote for the current mayor._]{.fragment .blue}
+:::
 
 ::: {.fragment}
 That's it. A poll, a regression, a causal model: everything in this course is this
 [one rule]{.blue}, applied again and again.
-:::
-
-::: {notes="notes/week1_notes.md#bayesian-updating"}
 :::
 
 ## You've already done this {.smaller notes="notes/week1_notes.md#prior-likelihood-posterior"}
@@ -763,7 +527,6 @@ That's it. A poll, a regression, a causal model: everything in this course is th
 | **HIV test** | 0.1% of people have HIV | A positive test: 99% likely if HIV+, 3% if HIV– | After a positive test: **3.2%** |
 | **Published research** | 1% of tested hypotheses are true | Significant: 80% likely if true, 5% if false | After a significant result: **14%** |
 | **Mayor poll** | About 60%, from the last election | 6 of 20 for the mayor: likely if support is ~30%, unlikely if 60% | About **45%** |
-: {.nonincremental}
 
 ::: {.fragment}
 The likelihood alone runs the same direction as a p-value: P( data \| belief ). Bayes
@@ -775,14 +538,14 @@ we actually care about: P( belief \| data ).
 
 _The HIV test and published research had **two** possibilities: true or false._
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 Most questions have many:
 
 - How many of 9 stones in a bag are blue? **10** possibilities, 0 to 9.
 - What share of voters support the mayor? **Every** value from 0% to 100%.
 :::
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 Same rule, done once for each possibility:
 
 - [**Prior**]{.red}: how plausible was each possibility before?
@@ -802,21 +565,18 @@ yes or no. Let's try it with the bag.
 {{< include shiny/updating.R >}}
 ```
 
-## Bayesian Updating: Why one rule helps {.mechanics}
+## Bayesian Updating: Why one rule helps {.mechanics notes="notes/week1_notes.md#bayesian-updating-how"}
 
+::: {.incremental}
 - **One rule for everything.** Prior × likelihood → posterior. No flowchart of tests to choose from.
 - **No fixed sample size.** Look at the data whenever you like and stop when you've learned enough. The posterior means the same thing either way.<br>[_A p-value depends on the stopping rule you planned in advance. Unplanned peeking breaks it._]{.fragment .blue}
 - **Today's posterior is tomorrow's prior.** Updating survey by survey gives the same answer as analyzing all the surveys at once.
 - **You build the model to fit your data.** Counts, proportions, skewed incomes: describe the data as they are, instead of picking whichever test's assumptions come closest.
 - **Small samples are still valid.** No large-sample approximations. Less data means more uncertainty, and the prior carries more of the weight.
 - **It answers the question we actually ask:** P( [hypothesis]{.red} \| [data]{.blue} ).
-
-::: {notes="notes/week1_notes.md#bayesian-updating-how"}
 :::
 
-## Bayes Theorem {.mechanics}
-::: {notes="notes/week1_notes.md#bayes-theorem"}
-:::
+## Bayes Theorem {.mechanics notes="notes/week1_notes.md#bayes-theorem"}
 
 $$
 P(A|B) = \frac{P(B|A)\,P(A)}{P(B)}
@@ -825,23 +585,25 @@ $$
 or
 
 $$
-\color{green}{P(\text{belief} \mid \text{data})}
+\class{green}{P(\text{belief} \mid \text{data})}
 =
 \frac{
-\color{#1b91ff}{P(\text{data} \mid \text{belief})}
-\;\color{#ff2c2d}{P(\text{belief})}
+\class{blue}{P(\text{data} \mid \text{belief})}
+\;\class{red}{P(\text{belief})}
 }{
-\color{#999}{P(\text{data})}
+\class{gray}{P(\text{data})}
 }
 $$
 
+::: {.incremental}
 - [**P(data | belief)**]{.blue}: likelihood
 - [**P(belief)**]{.red}: prior probability
 - [**P(belief | data)**]{.green}: posterior probability
 - [**P(data)**]{.gray}: marginal likelihood (not interesting)
+:::
 
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 In simple terms:
 
 - prior × likelihood => posterior
@@ -851,7 +613,6 @@ In simple terms:
 
 _Yes. That's a feature, not a bug._
 
-::: {.nonincremental}
 - Every analysis makes assumptions. A p-value hides them: which test, which controls,
   when to stop collecting data.
 - A prior puts an assumption **on the table**, written down where anyone can see it and
@@ -859,7 +620,6 @@ _Yes. That's a feature, not a bug._
 - With enough data, people who start from different reasonable priors end up in nearly
   the same place.
 - When they don't, the data is weak. That's worth knowing too.
-:::
 
 ::: {.fragment}
 Subjective doesn't mean arbitrary. It means someone made a choice, and has to
@@ -870,7 +630,7 @@ Subjective doesn't mean arbitrary. It means someone made a choice, and has to
 
 _Most studies are wrong._ [...and that's okay.]{.fragment .blue}
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 - A study was never supposed to be the answer.
 - We interpret each study as part of a **larger scientific process**: replication, critique,
   competing explanations, theory, more data.
@@ -884,49 +644,51 @@ the field [keeps looking]{.green}.
 
 ## Statistics is observation, not answers {notes="notes/week1_notes.md#observation-not-answers"}
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 - The real problem isn't that studies are wrong. It's that we [expect them to be right]{.red}.
 - The HIV scare, the false discoveries, p-hacking: they all come from believing
   statistics is [more powerful than it is]{.red}.
 :::
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 - In ethnography, everyone knows **one interview isn't the answer**. It's one observation,
   weighed against others and argued over.
 - We just need to treat a statistical result the same way.
 :::
 
 ::: {.fragment}
-<div style="font-size: 150%; font-weight: bold; margin-top: 1em;">
+::: {.big-statement}
 The science always comes first.
-</div>
+:::
 :::
 
 ## Observations add up
 
 _Back to where we started: a study is one observation._
 
+::: {.incremental}
 - Bayesian updating is how observations add up: each one moves what we believe, a little or a lot.
 - That's what happened when we looked again and again: 1% → 14% → 72% → 98%.
 - Ethnography works the same way. Understanding comes from many observations, debated over time.
+:::
 
 ## Doing science {notes="notes/week1_notes.md#doing-science"}
 
 _So what does it mean to put the science first?_
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 - [**Question every observation.**]{.blue} How was it made? Who's missing? What else could
   have produced it? A positive test, a significant result and an interview can all
   mislead.
 :::
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 - [**Look from different perspectives.**]{.blue} Other methods, other places, other
   people's readings. Surveys, experiments, ethnography and history each see what the
   others miss. When they agree, believe more. When they disagree, look closer.
 :::
 
-::: {.fragment .nonincremental}
+::: {.fragment}
 - [**Think in likelihood, not proof.**]{.blue} Nothing is ever proved. Ask: _how likely is
   what I saw if this were true, compared with if it weren't?_ Beliefs move by degrees
   (1% → 14% → 72% → 98%), and never quite reach 100%.
@@ -939,7 +701,6 @@ third one. That question is the [likelihood]{.blue}, and updating is how we use 
 
 ## Summary {notes="notes/week1_notes.md#summary"}
 
-::: {.nonincremental}
 1. [**Probability is counting.**]{.blue} Count the ways the world could be.
 2. [**Direction matters.**]{.blue} P( A | B ) ≠ P( B | A ). A p-value asks about the data in a
    world where nothing is going on. When true hypotheses are rare, most significant
@@ -950,24 +711,21 @@ third one. That question is the [likelihood]{.blue}, and updating is how we use 
    prior × likelihood → posterior.
 5. [**Numbers aren't "hard data."**]{.blue} Statistics rests on choices, just like
    ethnography. Trust comes from stating them, not from the numbers.
-:::
 
 ::: {.fragment}
-<div style="font-size: 150%; font-weight: bold; margin-top: 1em;">
+::: {.big-statement}
 The science always comes first.
-</div>
+:::
 :::
 
 ## What's ahead {notes="notes/week1_notes.md#whats-ahead"}
 
 That's what we're going to do here: [put the science first]{.blue}.
 
-::: {.nonincremental}
 - **Week 2**: describe the world. Distributions, correlation, a first regression.
 - **Week 3**: draw our science. Causal diagrams (DAGs) before any model.
 - **Week 4**: forks, pipes and colliders. What to control for, and what not to.
 - **Week 5**: what did they leave out? Unobserved forks, pipes and colliders.
-:::
 
 ::: {.fragment}
 Every week starts with the question and what we believe about the world.
@@ -980,6 +738,7 @@ _Appendix: we'll work through this together with the TA in our second class._
 
 ## The Bayesian workflow {.smaller .mechanics}
 
+::: {.incremental}
 - **Scientific model**: what we believe about the world, before any statistics.
   1. **Ask the question**: say in plain words what you want to know.
   2. **Draw the causal model (DAG)**: your assumptions about what causes what, from domain knowledge.
@@ -993,19 +752,17 @@ _Appendix: we'll work through this together with the TA in our second class._
   8. **Fit and validate the model**: run the sampler, check diagnostics (R-hat, ESS, trace plots, divergences), and run posterior predictive checks. *Is the model trustworthy?*
   9. **Compute the estimate**: poststratify to get the vote share, with its uncertainty.
   10. **Test its robustness**: run sensitivity analyses on turnout, poststratification targets, priors, and unmodeled non-response. *How much does the estimate depend on our assumptions?*
+:::
 
 # Demonstration: Will the mayor win? {notes="notes/week1_notes.md#poll-demo"}
 
 Let's walk through the simplest possible version of this workflow.
 
-::: {.nonincremental}
 - **Estimand**: θ, the share of Kathmandu voters who will vote for the current mayor.
 - **Background**: in the last election, the mayor got 60% of the vote.
 - **Data**: we survey *n* voters at random, and *k* of them say they will vote for the mayor.
-:::
 
-::: {.fragment .callout-note}
-## A deliberately simple model
+::: {.fragment .callout-note title="A deliberately simple model"}
 Each respondent is like a coin flip that comes up "mayor" with probability θ. No weighting,
 no turnout, no non-response, no post-stratification. We'll add those later.
 :::
@@ -1014,252 +771,22 @@ no turnout, no non-response, no post-stratification. We'll add those later.
 
 $$
 \begin{aligned}
-k &\sim \text{Binomial}(n,\ \theta) && \color{#1b91ff}{\text{likelihood}} \\
-\theta &\sim \text{your prior} && \color{#ff2c2d}{\text{prior}}
+k &\sim \text{Binomial}(n,\ \theta) && \class{blue}{\text{likelihood}} \\
+\theta &\sim \text{your prior} && \class{red}{\text{prior}}
 \end{aligned}
 $$
 
+::: {.incremental}
 - The first line is the **likelihood**: how the data are generated, given θ.
 - The second line is the **prior**: what we believe about θ before any data.
 - From Week 3 on, we'll build models like this from a DAG.
+:::
 
 ## Step 1: The prior {notes="notes/week1_notes.md#poll-prior"}
 
 _Before seeing any survey, what do you believe about θ? Drag the points._
 
-<style>
-  .prior-layout{
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    width: 100%;
-  }
-  #poll-prior-graph{
-    flex: 0 0 70%;
-    aspect-ratio: 3/2;
-  }
-  #poll-prior-sheet{
-    flex: 1 1 auto;
-    min-width: 260px;
-    font-size: 16pt;
-  }
-  .sheet-controls{
-    margin-top: 8px;
-    text-align: right;
-  }
-  #poll-prior-reset{
-    font-size: 12pt;
-    padding: 6px 10px;
-  }
-  .jss_about {
-    display: none;
-  }
-  .jss_textarea{
-    position: absolute !important;
-    left: -10000px !important;
-    top: 0 !important;
-    width: 1px !important;
-    height: 1px !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-</style>
-
-```{=html}
-<div class="prior-layout">
-  <div id="poll-prior-graph"></div>
-  <div>
-    <div id="poll-prior-sheet"></div>
-    <div class="sheet-controls">
-      <button id="poll-prior-reset" type="button">Reset</button>
-    </div>
-  </div>
-</div>
-```
-
-<script type="module">
-  import { LineGraphWidget } from './js/graph.js';
-
-  const graphEl = document.getElementById('poll-prior-graph');
-  const sheetEl = document.getElementById('poll-prior-sheet');
-  const resetBtn = document.getElementById('poll-prior-reset');
-  // Shared with the posterior slide, which reads the prior from here
-  const STORAGE_KEY = 'week1-poll-prior-v1';
-
-  if (!graphEl || !sheetEl) {
-    console.warn('Poll prior: missing graph or sheet container.');
-  } else if (!graphEl.dataset.initialized) {
-    graphEl.dataset.initialized = 'true';
-
-    let widget = null;
-    let ws = null;
-
-    function loadStoredValues() {
-      if (Array.isArray(window.__pollPrior)) return window.__pollPrior.slice();
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return null;
-        const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed)) return null;
-        return parsed.map((v) => Number(v));
-      } catch {
-        return null;
-      }
-    }
-
-    function saveStoredValues(values) {
-      window.__pollPrior = values.slice();
-      window.dispatchEvent(new CustomEvent('poll-prior:change', { detail: values.slice() }));
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
-      } catch {
-        // ignore storage errors
-      }
-    }
-
-    function pointsToTable(points) {
-      const ys = points.map(p => Number(p.y) || 0);
-      const sum = ys.reduce((a, b) => a + b, 0);
-      return ys.map((v,i) => [i*0.05, v, sum > 0 ? v / sum : 0]);
-    }
-
-    function getWorksheetHandle(obj) {
-      if (!obj) return null;
-
-      if (typeof obj.setData === 'function' ||
-          typeof obj.loadData === 'function' ||
-          typeof obj.setValueFromCoords === 'function' ||
-          typeof obj.setValue === 'function') {
-        return obj;
-      }
-
-      if (Array.isArray(obj)) return getWorksheetHandle(obj[0]);
-      if (Array.isArray(obj.worksheets)) return getWorksheetHandle(obj.worksheets[0]);
-      if (typeof obj.getWorksheet === 'function') return getWorksheetHandle(obj.getWorksheet(0));
-
-      return null;
-    }
-
-    function updateSheet(points) {
-      if (!ws) return;
-      const data = pointsToTable(points);
-
-      if (typeof ws.setData === 'function') {
-        ws.setData(data);
-        return;
-      }
-      if (typeof ws.loadData === 'function') {
-        ws.loadData(data, true);
-        return;
-      }
-      if (typeof ws.setValueFromCoords === 'function') {
-        for (let r = 0; r < 21; r++) {
-          ws.setValueFromCoords(0, r, data[r][0], true);
-          ws.setValueFromCoords(1, r, data[r][1], true);
-        }
-        return;
-      }
-      if (typeof ws.setValue === 'function') {
-        for (let r = 0; r < 21; r++) {
-          ws.setValue(`A${r + 1}`, data[r][0], true);
-          ws.setValue(`B${r + 1}`, data[r][1], true);
-        }
-      }
-    }
-
-    function ensureReadyThenInit() {
-      const rect = graphEl.getBoundingClientRect();
-      const visible = rect.width > 0 && rect.height > 0;
-      if (!visible) return false;
-
-      if (window.Reveal?.getCurrentSlide) {
-        const cur = window.Reveal.getCurrentSlide();
-        if (!cur?.querySelector('#poll-prior-graph')) return false;
-      }
-
-      if (!widget) {
-        graphEl.innerHTML = '';
-        sheetEl.innerHTML = '';
-
-        const stored = loadStoredValues();
-        const initialValues = Array.isArray(stored) && stored.length === 21
-          ? stored
-          : Array.from({ length: 21 }, () => 50);
-
-        widget = new LineGraphWidget({
-          container: graphEl,
-          yValues: initialValues,
-          onChange: (points) => {
-            updateSheet(points);
-            saveStoredValues(points.map((p) => p.y));
-          },
-        });
-
-        const initData = pointsToTable(widget.getPoints());
-        const created = window.jspreadsheet(sheetEl, {
-          tabs: false,
-          worksheets: [{
-            data: initData,
-            editable: false,
-            minDimensions: [2, 21],
-            rowHeaders: (rowIndex) => (rowIndex * 0.05).toFixed(2),
-            allowInsertRow: false,
-            allowDeleteRow: false,
-            allowInsertColumn: false,
-            allowDeleteColumn: false,
-            columnSorting: false,
-            columns: [
-              { type: 'numeric', title: 'Voters', width: 90, mask: '0%' },
-              { type: 'numeric', title: 'Score', width: 90, mask:'0.00' },
-              { type: 'numeric', title: 'Probability', width: 120, mask: '0.0000' },
-            ],
-            selectionCopy: true,
-            selection: true,
-          }],
-        });
-
-        Promise.resolve(created).then((spreadsheet) => {
-          ws = getWorksheetHandle(spreadsheet);
-          if (!ws) {
-            console.log('jspreadsheet return value:', spreadsheet);
-            throw new Error('Could not find a worksheet handle. See console log for returned object.');
-          }
-          updateSheet(widget.getPoints());
-        });
-
-        if (resetBtn) {
-          resetBtn.addEventListener('click', () => {
-            widget.setYValues(Array.from({ length: 21 }, () => 50));
-          });
-        }
-
-        // The posterior slide can hand its posterior back as a new prior
-        window.addEventListener('poll-prior:set', (e) => {
-          if (Array.isArray(e.detail)) widget.setYValues(e.detail);
-        });
-      }
-
-      return true;
-    }
-
-    const observer = new ResizeObserver(() => {
-      if (ensureReadyThenInit()) observer.disconnect();
-    });
-    observer.observe(graphEl);
-
-    const runWhenReady = () => {
-      if (!ensureReadyThenInit()) requestAnimationFrame(runWhenReady);
-    };
-
-    if (window.Reveal?.on) {
-      Reveal.on('ready', runWhenReady);
-      Reveal.on('slidechanged', runWhenReady);
-    } else {
-      window.addEventListener('load', runWhenReady);
-      runWhenReady();
-    }
-  }
-</script>
+{{< include _includes/week1/poll-prior.md >}}
 
 ## Step 2: The likelihood {notes="notes/week1_notes.md#poll-likelihood"}
 
@@ -1267,38 +794,18 @@ _We survey 20 voters. 6 of them (30%) say they will vote for the mayor._
 
 ::: {.columns}
 ::: {.column width="55%"}
-```{r}
-#| fig-width: 7
-#| fig-height: 5
-#| out-width: "100%"
-n <- 20
-k <- 6
-marks <- c(0.3, 0.5, 0.6, 0.8)
-
-curve(
-  dbinom(k, n, x),
-  from = 0,
-  to = 1,
-  n = 501,
-  xlab = "θ (share voting for the mayor)",
-  ylab = "P( 6 of 20 | θ )",
-  col = "#1b91ff",
-  lwd = 3
-)
-segments(marks, 0, marks, dbinom(k, n, marks), lty = 2, col = "#999")
-points(marks, dbinom(k, n, marks), pch = 19, col = "#1b91ff", cex = 1.4)
+```{r likelihood, fig.width = 7, fig.height = 5, out.width = "100%"}
+likelihood_plot(n = 20, k = 6, marks = c(0.3, 0.5, 0.6, 0.8))
 ```
 :::
 
 ::: {.column width="45%"}
 How consistent is "6 of 20" with each possible value of θ?
 
-::: {.nonincremental}
 - If θ = 30%: P( 6 of 20 ) = `r round(dbinom(6, 20, 0.3), 3)`
 - If θ = 50%: P( 6 of 20 ) = `r round(dbinom(6, 20, 0.5), 3)`
 - If θ = 60%: P( 6 of 20 ) = `r round(dbinom(6, 20, 0.6), 3)`
 - If θ = 80%: P( 6 of 20 ) = `r format(signif(dbinom(6, 20, 0.8), 2), scientific = FALSE)`
-:::
 
 ::: {.fragment}
 The likelihood is **not** a belief. It's what the coin-flip process in the world says about
@@ -1309,228 +816,10 @@ our data, one candidate value of θ at a time.
 
 ## Step 3: Prior × likelihood → posterior {notes="notes/week1_notes.md#poll-posterior"}
 
-<style>
-  .poll-layout{
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
-    width: 100%;
-  }
-  #poll-post-graph{
-    flex: 0 0 64%;
-    aspect-ratio: 3/2;
-  }
-  .poll-side{
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 18pt;
-  }
-  .poll-side input[type="range"]{
-    width: 100%;
-  }
-  .poll-side table.poll-stats{
-    font-size: 16pt;
-    width: 100%;
-    margin-top: 16px;
-  }
-  .poll-side table.poll-stats td,
-  .poll-side table.poll-stats th{
-    padding: 4px 8px;
-  }
-  #poll-msg{
-    font-size: 14pt;
-    color: #ff2c2d;
-    min-height: 1.2em;
-  }
-  #poll-carry{
-    font-size: 12pt;
-    padding: 6px 10px;
-    align-self: flex-end;
-  }
-</style>
-
-```{=html}
-<div class="poll-layout">
-  <div id="poll-post-graph"></div>
-  <div class="poll-side">
-    <label for="poll-n">People surveyed: <b id="poll-n-out"></b></label>
-    <input type="range" id="poll-n" min="0" max="500" step="1" value="20">
-    <label for="poll-share">Said "mayor": <b id="poll-share-out"></b></label>
-    <input type="range" id="poll-share" min="0" max="100" step="1" value="30">
-    <table class="poll-stats">
-      <thead>
-        <tr><th></th><th class="red">Prior</th><th class="green">Posterior</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Best guess</td><td id="poll-prior-mean"></td><td id="poll-post-mean"></td></tr>
-        <tr><td>90% range</td><td id="poll-prior-range"></td><td id="poll-post-range"></td></tr>
-        <tr><td>P( mayor wins )</td><td id="poll-prior-win"></td><td id="poll-post-win"></td></tr>
-      </tbody>
-    </table>
-    <div id="poll-msg"></div>
-    <button id="poll-carry" type="button">Make this posterior my new prior</button>
-  </div>
-</div>
-```
-
-<script type="module">
-  import { PosteriorPlot } from './js/posterior.js';
-
-  const STORAGE_KEY = 'week1-poll-prior-v1';
-  const COLORS = { prior: '#ff2c2d', likelihood: '#1b91ff', posterior: 'green' };
-
-  // Fine grid over θ; the 21 prior points are interpolated onto it
-  const G = 201;
-  const xs = Array.from({ length: G }, (_, i) => i / (G - 1));
-  const dx = 1 / (G - 1);
-
-  const $ = (id) => document.getElementById(id);
-  const graphEl = $('poll-post-graph');
-
-  if (graphEl && !graphEl.dataset.initialized) {
-    graphEl.dataset.initialized = 'true';
-
-    const plot = new PosteriorPlot({ container: graphEl });
-    const nInput = $('poll-n');
-    const shareInput = $('poll-share');
-    let priorPoints = loadPrior();
-
-    function loadPrior() {
-      if (Array.isArray(window.__pollPrior)) return window.__pollPrior.slice();
-      try {
-        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        if (Array.isArray(parsed) && parsed.length === 21) return parsed.map(Number);
-      } catch {
-        // ignore storage errors
-      }
-      return Array.from({ length: 21 }, () => 50);
-    }
-
-    function interpolate(points) {
-      return xs.map((x) => {
-        const p = x / 0.05;
-        const i = Math.min(19, Math.floor(p));
-        const t = p - i;
-        return points[i] * (1 - t) + points[i + 1] * t;
-      });
-    }
-
-    // Probability mass on each grid point (sums to 1), or null if all zero
-    function toMass(v) {
-      const s = v.reduce((a, b) => a + b, 0);
-      return s > 0 ? v.map((a) => a / s) : null;
-    }
-
-    // Binomial likelihood up to a constant, computed on the log scale so
-    // large surveys don't underflow
-    function likelihood(k, n) {
-      const ll = xs.map((x) => {
-        let l = 0;
-        if (k > 0) l += k * Math.log(x);
-        if (n - k > 0) l += (n - k) * Math.log(1 - x);
-        return l;
-      });
-      const m = Math.max(...ll.filter(Number.isFinite));
-      return ll.map((l) => (Number.isFinite(l) ? Math.exp(l - m) : 0));
-    }
-
-    function summarize(mass) {
-      const mean = mass.reduce((a, w, i) => a + w * xs[i], 0);
-      const quantile = (q) => {
-        let cum = 0;
-        for (let i = 0; i < G; i++) {
-          cum += mass[i];
-          if (cum >= q) return xs[i];
-        }
-        return 1;
-      };
-      let win = 0;
-      for (let i = 0; i < G; i++) {
-        if (xs[i] > 0.5) win += mass[i];
-        else if (xs[i] === 0.5) win += mass[i] / 2;
-      }
-      return { mean, lo: quantile(0.05), hi: quantile(0.95), win };
-    }
-
-    const pct = (x) => `${Math.round(x * 100)}%`;
-    const prob = (x) => (x < 0.01 ? '< 1%' : x > 0.99 ? '> 99%' : pct(x));
-
-    function showStats(prefix, s) {
-      $(`poll-${prefix}-mean`).textContent = s ? pct(s.mean) : '—';
-      $(`poll-${prefix}-range`).textContent = s ? `${pct(s.lo)} – ${pct(s.hi)}` : '—';
-      $(`poll-${prefix}-win`).textContent = s ? prob(s.win) : '—';
-    }
-
-    let posteriorMass = null;
-
-    function update() {
-      const n = Number(nInput.value);
-      const k = Math.round((n * Number(shareInput.value)) / 100);
-      $('poll-n-out').textContent = n;
-      $('poll-share-out').textContent = `${k} of ${n} (${n > 0 ? pct(k / n) : '—'})`;
-
-      const prior = toMass(interpolate(priorPoints));
-      const lik = toMass(likelihood(k, n));
-      const post = prior ? toMass(prior.map((p, i) => p * lik[i])) : null;
-      posteriorMass = post;
-
-      showStats('prior', prior && summarize(prior));
-      showStats('post', post && summarize(post));
-      $('poll-msg').textContent = !prior
-        ? 'Your prior rules out every value of θ.'
-        : !post
-          ? 'Your prior rules out everything the data allow.'
-          : '';
-      $('poll-carry').disabled = !post;
-
-      const density = (m) => (m ? m.map((w) => w / dx) : xs.map(() => 0));
-      plot.setSeries([
-        { label: 'Prior', color: COLORS.prior, xs, ys: density(prior) },
-        { label: 'Likelihood', color: COLORS.likelihood, xs, ys: density(lik), dash: [8, 6] },
-        { label: 'Posterior', color: COLORS.posterior, xs, ys: density(post), fill: 'rgba(0,128,0,0.12)' },
-      ]);
-    }
-
-    nInput.addEventListener('input', update);
-    shareInput.addEventListener('input', update);
-
-    window.addEventListener('poll-prior:change', (e) => {
-      if (Array.isArray(e.detail)) {
-        priorPoints = e.detail.slice();
-        update();
-      }
-    });
-
-    // Today's posterior is tomorrow's prior: sample it back onto the 21
-    // draggable points, then clear the survey so the data isn't counted twice
-    $('poll-carry').addEventListener('click', () => {
-      if (!posteriorMass) return;
-      const coarse = Array.from({ length: 21 }, (_, i) => posteriorMass[i * 10]);
-      const max = Math.max(...coarse);
-      if (!(max > 0)) return;
-      const values = coarse.map((v) => (v / max) * 100);
-
-      priorPoints = values;
-      window.__pollPrior = values.slice();
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
-      } catch {
-        // ignore storage errors
-      }
-      window.dispatchEvent(new CustomEvent('poll-prior:set', { detail: values.slice() }));
-      nInput.value = 0;
-      update();
-    });
-
-    update();
-  }
-</script>
+{{< include _includes/week1/poll-posterior.md >}}
 
 ## What to try {notes="notes/week1_notes.md#poll-try"}
 
-::: {.nonincremental}
 - **Flat prior vs. strong prior.** Draw a flat prior, then a narrow one around 60% (last
   election). With the same survey, how far apart are the posteriors?
 - **More data.** Keep the survey at 30%, but raise *n* from 20 to 500. What happens to the
@@ -1539,7 +828,6 @@ our data, one candidate value of θ at a time.
   Yesterday's posterior is today's prior.
 - **Answering the real question.** P( mayor wins ) is a direct statement about the hypothesis
   given the data: [P( hypothesis | data )]{.green}, not a p-value.
-:::
 
 ::: {.fragment}
 *What is the result, and how much does it depend on our assumptions?* This is that question,
