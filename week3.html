@@ -6,15 +6,15 @@
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <meta name="shinylive:serviceworker_dir" content=".">
 <script src="site_libs/quarto-contrib/shinylive-0.10.12/shinylive/load-shinylive-sw.js" type="module"></script>
 <script src="site_libs/quarto-contrib/shinylive-0.10.12/shinylive/run-python-blocks.js" type="module"></script>
 <link href="site_libs/quarto-contrib/shinylive-0.10.12/shinylive/shinylive.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.10.19">
+  <meta name="generator" content="quarto-1.10.18">
 
-  <title>week3</title>
+  <title>Data Lunch: Week 3</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-25fcfa154846157abc25f459b9c2b267.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-8ddff600aea4860d98c09de8672dafed.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -199,50 +199,16 @@
       margin-right: 0; 
     }
   </style>
-  <style>
-    .workflow {
-      display: flex;
-      gap: 14px;
-      align-items: stretch;
-      margin: 30px 0;
-    }
-    .workflow .step {
-      flex: 1 1 0;
-      border: 2px solid #16314d;
-      border-radius: 10px;
-      padding: 18px 12px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 0.8em;
-      background: white;
-    }
-    .workflow .step small {
-      display: block;
-      font-weight: 400;
-      font-size: 0.7em;
-      margin-top: 8px;
-      color: #16314d;
-    }
-    .workflow .arrow {
-      align-self: center;
-      font-size: 1.4em;
-      color: #999;
-    }
-    .workflow .step.science {
-      background: #e8f3ff;
-    }
-  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
-
-<section id="data-lunch-week-3" class="title-slide slide level1 center">
-<h1>Data Lunch: Week 3</h1>
-<p>Causal models</p>
+<section id="title-slide" class="center">
+  <h1 class="title">Data Lunch: Week 3</h1>
+  <p class="subtitle">Causal models</p>
+  <div class="footer">The Open Institute For Social Science</div>
 </section>
-
 <section>
 <section id="the-doctor-paradox" class="title-slide slide level1 center">
 <h1>The doctor paradox</h1>
@@ -301,7 +267,7 @@ Complex
 <td>
 Critical
 </td>
-<td data-id="rightmargin1" style="border-left: 1px solid black;">
+<td data-id="rightmargin1" class="total-col">
 Total
 </td>
 </tr>
@@ -320,7 +286,7 @@ Normal&nbsp;Surgeon
 <td>
 <span class="red">38.0%</span>
 </td>
-<td data-id="rightmargin2" style="border-left: 1px solid black;">
+<td data-id="rightmargin2" class="total-col">
 <span class="green">89.6%</span>
 </td>
 </tr>
@@ -337,7 +303,7 @@ Famous&nbsp;Surgeon
 <td>
 <span class="green">50.0%</span>
 </td>
-<td data-id="rightmargin3" style="border-left: 1px solid black;">
+<td data-id="rightmargin3" class="total-col">
 <span class="red">74.9%</span>
 </td>
 </tr>
@@ -484,6 +450,8 @@ Famous&nbsp;Surgeon
 </section></section>
 <section id="the-workflow" class="title-slide slide level1 center">
 <h1>The workflow</h1>
+<!-- The workflow as a row of boxes (week 3). Styles in css/deck.scss (.workflow);
+     the "science" boxes are shaded. -->
 <div class="workflow">
   <div class="step science">Estimand<small>What exactly do we want to know?</small></div>
   <div class="arrow">→</div>
@@ -603,791 +571,788 @@ Famous&nbsp;Surgeon
 </section>
 <section id="generative-model-demo" class="slide level2 no-title">
 <h2>Generative Model Demo</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a aria-label="1"></a>#| '!! shinylive warning !!': |</span>
-<span id="cb2-2"><a aria-label="2"></a>#|   shinylive does not work in self-contained HTML documents.</span>
-<span id="cb2-3"><a aria-label="3"></a>#|   Please set `embed-resources: false` in your metadata.</span>
-<span id="cb2-4"><a aria-label="4"></a>#| standalone: true</span>
-<span id="cb2-5"><a aria-label="5"></a>library(shiny)</span>
-<span id="cb2-6"><a aria-label="6"></a>library(bslib)</span>
-<span id="cb2-7"><a aria-label="7"></a>library(ggplot2)</span>
-<span id="cb2-8"><a aria-label="8"></a>library(tibble)</span>
-<span id="cb2-9"><a aria-label="9"></a>library(ggiraph)</span>
-<span id="cb2-10"><a aria-label="10"></a></span>
-<span id="cb2-11"><a aria-label="11"></a>INITIAL_ALPHA_FEMALE &lt;- -40</span>
-<span id="cb2-12"><a aria-label="12"></a>INITIAL_ALPHA_MALE &lt;- -32</span>
-<span id="cb2-13"><a aria-label="13"></a>INITIAL_BETA &lt;- 0.6</span>
-<span id="cb2-14"><a aria-label="14"></a>INITIAL_SIGMA &lt;- 5</span>
-<span id="cb2-15"><a aria-label="15"></a></span>
-<span id="cb2-16"><a aria-label="16"></a>N_POINTS &lt;- 200</span>
-<span id="cb2-17"><a aria-label="17"></a>HEIGHT_MEAN_CM &lt;- 155</span>
-<span id="cb2-18"><a aria-label="18"></a>HEIGHT_SD_CM &lt;- 25</span>
-<span id="cb2-19"><a aria-label="19"></a>KG_TO_LB &lt;- 2.20462</span>
-<span id="cb2-20"><a aria-label="20"></a>CM_PER_IN &lt;- 2.54</span>
-<span id="cb2-21"><a aria-label="21"></a></span>
-<span id="cb2-22"><a aria-label="22"></a>CSS &lt;- "</span>
-<span id="cb2-23"><a aria-label="23"></a>  .plot-wrap {</span>
-<span id="cb2-24"><a aria-label="24"></a>    position: relative;</span>
-<span id="cb2-25"><a aria-label="25"></a>    width: 100%;</span>
-<span id="cb2-26"><a aria-label="26"></a>    padding-left: 25px;</span>
-<span id="cb2-27"><a aria-label="27"></a>    padding-bottom: 25px;</span>
-<span id="cb2-28"><a aria-label="28"></a>  }</span>
-<span id="cb2-29"><a aria-label="29"></a></span>
-<span id="cb2-30"><a aria-label="30"></a>  .height-units-inline {</span>
-<span id="cb2-31"><a aria-label="31"></a>    position: absolute;</span>
-<span id="cb2-32"><a aria-label="32"></a>    left: 50%;</span>
-<span id="cb2-33"><a aria-label="33"></a>    bottom: 0;</span>
-<span id="cb2-34"><a aria-label="34"></a>    transform: translateX(-50%);</span>
-<span id="cb2-35"><a aria-label="35"></a>    width: 360px;</span>
-<span id="cb2-36"><a aria-label="36"></a>    z-index: 10;</span>
-<span id="cb2-37"><a aria-label="37"></a>  }</span>
-<span id="cb2-38"><a aria-label="38"></a></span>
-<span id="cb2-39"><a aria-label="39"></a>  .weight-units-inline {</span>
-<span id="cb2-40"><a aria-label="40"></a>    position: absolute;</span>
-<span id="cb2-41"><a aria-label="41"></a>    left: 0;</span>
-<span id="cb2-42"><a aria-label="42"></a>    bottom: 0;</span>
-<span id="cb2-43"><a aria-label="43"></a>    transform: translateY(-50%) rotate(-90deg);</span>
-<span id="cb2-44"><a aria-label="44"></a>    transform-origin: left top;</span>
-<span id="cb2-45"><a aria-label="45"></a>    width: 45%;</span>
-<span id="cb2-46"><a aria-label="46"></a>    z-index: 10;</span>
-<span id="cb2-47"><a aria-label="47"></a>  }</span>
-<span id="cb2-48"><a aria-label="48"></a></span>
-<span id="cb2-49"><a aria-label="49"></a>  .height-units-inline .shiny-input-container,</span>
-<span id="cb2-50"><a aria-label="50"></a>  .weight-units-inline .shiny-input-container {</span>
-<span id="cb2-51"><a aria-label="51"></a>    margin-bottom: 0;</span>
-<span id="cb2-52"><a aria-label="52"></a>    display: flex;</span>
-<span id="cb2-53"><a aria-label="53"></a>    align-items: center;</span>
-<span id="cb2-54"><a aria-label="54"></a>    gap: 0.5rem;</span>
-<span id="cb2-55"><a aria-label="55"></a>  }</span>
-<span id="cb2-56"><a aria-label="56"></a></span>
-<span id="cb2-57"><a aria-label="57"></a>  .weight-units-inline .shiny-input-container {</span>
-<span id="cb2-58"><a aria-label="58"></a>    justify-content: center;</span>
-<span id="cb2-59"><a aria-label="59"></a>    width: 100%;</span>
-<span id="cb2-60"><a aria-label="60"></a>  }</span>
-<span id="cb2-61"><a aria-label="61"></a></span>
-<span id="cb2-62"><a aria-label="62"></a>  .height-units-inline label,</span>
-<span id="cb2-63"><a aria-label="63"></a>  .weight-units-inline label {</span>
-<span id="cb2-64"><a aria-label="64"></a>    margin-bottom: 0;</span>
-<span id="cb2-65"><a aria-label="65"></a>    font-weight: 600;</span>
-<span id="cb2-66"><a aria-label="66"></a>    white-space: nowrap;</span>
-<span id="cb2-67"><a aria-label="67"></a>  }</span>
-<span id="cb2-68"><a aria-label="68"></a></span>
-<span id="cb2-69"><a aria-label="69"></a>  .height-units-inline .form-select,</span>
-<span id="cb2-70"><a aria-label="70"></a>  .weight-units-inline .form-select,</span>
-<span id="cb2-71"><a aria-label="71"></a>  .height-units-inline select,</span>
-<span id="cb2-72"><a aria-label="72"></a>  .weight-units-inline select {</span>
-<span id="cb2-73"><a aria-label="73"></a>    flex: 1;</span>
-<span id="cb2-74"><a aria-label="74"></a>    min-width: 0;</span>
-<span id="cb2-75"><a aria-label="75"></a>  }</span>
-<span id="cb2-76"><a aria-label="76"></a></span>
-<span id="cb2-77"><a aria-label="77"></a>  .height-units-inline .selectize-control,</span>
-<span id="cb2-78"><a aria-label="78"></a>  .weight-units-inline .selectize-control {</span>
-<span id="cb2-79"><a aria-label="79"></a>    width: 200px;</span>
-<span id="cb2-80"><a aria-label="80"></a>  }</span>
-<span id="cb2-81"><a aria-label="81"></a>"</span>
-<span id="cb2-82"><a aria-label="82"></a></span>
-<span id="cb2-83"><a aria-label="83"></a>param_row &lt;- function(input_ui, button_id, button_margin = "1rem") {</span>
-<span id="cb2-84"><a aria-label="84"></a>  tags$div(</span>
-<span id="cb2-85"><a aria-label="85"></a>    class = "d-flex flex-nowrap gap-2 align-items-end",</span>
-<span id="cb2-86"><a aria-label="86"></a>    input_ui,</span>
-<span id="cb2-87"><a aria-label="87"></a>    tags$div(</span>
-<span id="cb2-88"><a aria-label="88"></a>      class = "d-flex flex-column justify-content-end",</span>
-<span id="cb2-89"><a aria-label="89"></a>      actionButton(</span>
-<span id="cb2-90"><a aria-label="90"></a>        button_id,</span>
-<span id="cb2-91"><a aria-label="91"></a>        "↺",</span>
-<span id="cb2-92"><a aria-label="92"></a>        class = "btn-primary",</span>
-<span id="cb2-93"><a aria-label="93"></a>        style = paste0("margin-bottom: ", button_margin, ";")</span>
-<span id="cb2-94"><a aria-label="94"></a>      )</span>
-<span id="cb2-95"><a aria-label="95"></a>    )</span>
-<span id="cb2-96"><a aria-label="96"></a>  )</span>
-<span id="cb2-97"><a aria-label="97"></a>}</span>
-<span id="cb2-98"><a aria-label="98"></a></span>
-<span id="cb2-99"><a aria-label="99"></a>ui &lt;- page_sidebar(</span>
-<span id="cb2-100"><a aria-label="100"></a>  tags$head(tags$style(HTML(CSS))),</span>
-<span id="cb2-101"><a aria-label="101"></a>  sidebar = sidebar(</span>
-<span id="cb2-102"><a aria-label="102"></a>    open = "always",</span>
-<span id="cb2-103"><a aria-label="103"></a>    width = 430,</span>
-<span id="cb2-104"><a aria-label="104"></a>    style = "gap: 10px",</span>
-<span id="cb2-105"><a aria-label="105"></a>    withMathJax(),</span>
-<span id="cb2-106"><a aria-label="106"></a>    tags$h2("Generative Models"),</span>
-<span id="cb2-107"><a aria-label="107"></a>    checkboxInput("include_sex", "Include sex?", value = FALSE),</span>
-<span id="cb2-108"><a aria-label="108"></a>    tags$div(uiOutput("modelDef")),</span>
-<span id="cb2-109"><a aria-label="109"></a>    tags$hr(),</span>
-<span id="cb2-110"><a aria-label="110"></a>    tags$h3("Parameters"),</span>
-<span id="cb2-111"><a aria-label="111"></a></span>
-<span id="cb2-112"><a aria-label="112"></a>    uiOutput("alpha_ui"),</span>
-<span id="cb2-113"><a aria-label="113"></a></span>
-<span id="cb2-114"><a aria-label="114"></a>    param_row(</span>
-<span id="cb2-115"><a aria-label="115"></a>      numericInput(</span>
-<span id="cb2-116"><a aria-label="116"></a>        "beta",</span>
-<span id="cb2-117"><a aria-label="117"></a>        "𝛽 (coefficient)",</span>
-<span id="cb2-118"><a aria-label="118"></a>        value = INITIAL_BETA,</span>
-<span id="cb2-119"><a aria-label="119"></a>        width = "100%"</span>
-<span id="cb2-120"><a aria-label="120"></a>      ),</span>
-<span id="cb2-121"><a aria-label="121"></a>      "generate_beta"</span>
-<span id="cb2-122"><a aria-label="122"></a>    ),</span>
-<span id="cb2-123"><a aria-label="123"></a></span>
-<span id="cb2-124"><a aria-label="124"></a>    param_row(</span>
-<span id="cb2-125"><a aria-label="125"></a>      sliderInput(</span>
-<span id="cb2-126"><a aria-label="126"></a>        "sigma",</span>
-<span id="cb2-127"><a aria-label="127"></a>        "𝜎 (residual deviation)",</span>
-<span id="cb2-128"><a aria-label="128"></a>        min = 0,</span>
-<span id="cb2-129"><a aria-label="129"></a>        max = 100,</span>
-<span id="cb2-130"><a aria-label="130"></a>        value = INITIAL_SIGMA,</span>
-<span id="cb2-131"><a aria-label="131"></a>        width = "100%"</span>
-<span id="cb2-132"><a aria-label="132"></a>      ),</span>
-<span id="cb2-133"><a aria-label="133"></a>      "generate_sigma",</span>
-<span id="cb2-134"><a aria-label="134"></a>      button_margin = "1.5rem"</span>
-<span id="cb2-135"><a aria-label="135"></a>    ),</span>
-<span id="cb2-136"><a aria-label="136"></a></span>
-<span id="cb2-137"><a aria-label="137"></a>    # tags$hr(),</span>
-<span id="cb2-138"><a aria-label="138"></a>    # actionButton(</span>
-<span id="cb2-139"><a aria-label="139"></a>    #   "generate_data",</span>
-<span id="cb2-140"><a aria-label="140"></a>    #   "Generate new data",</span>
-<span id="cb2-141"><a aria-label="141"></a>    #   class = "btn-secondary w-100"</span>
-<span id="cb2-142"><a aria-label="142"></a>    # )</span>
-<span id="cb2-143"><a aria-label="143"></a>  ),</span>
-<span id="cb2-144"><a aria-label="144"></a></span>
-<span id="cb2-145"><a aria-label="145"></a>  tags$p("What are we doing here?"),</span>
-<span id="cb2-146"><a aria-label="146"></a>  tags$ul(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a aria-label="1"></a>#| standalone: true</span>
+<span id="cb2-2"><a aria-label="2"></a>library(shiny)</span>
+<span id="cb2-3"><a aria-label="3"></a>library(bslib)</span>
+<span id="cb2-4"><a aria-label="4"></a>library(ggplot2)</span>
+<span id="cb2-5"><a aria-label="5"></a>library(tibble)</span>
+<span id="cb2-6"><a aria-label="6"></a>library(ggiraph)</span>
+<span id="cb2-7"><a aria-label="7"></a></span>
+<span id="cb2-8"><a aria-label="8"></a>INITIAL_ALPHA_FEMALE &lt;- -40</span>
+<span id="cb2-9"><a aria-label="9"></a>INITIAL_ALPHA_MALE &lt;- -32</span>
+<span id="cb2-10"><a aria-label="10"></a>INITIAL_BETA &lt;- 0.6</span>
+<span id="cb2-11"><a aria-label="11"></a>INITIAL_SIGMA &lt;- 5</span>
+<span id="cb2-12"><a aria-label="12"></a></span>
+<span id="cb2-13"><a aria-label="13"></a>N_POINTS &lt;- 200</span>
+<span id="cb2-14"><a aria-label="14"></a>HEIGHT_MEAN_CM &lt;- 155</span>
+<span id="cb2-15"><a aria-label="15"></a>HEIGHT_SD_CM &lt;- 25</span>
+<span id="cb2-16"><a aria-label="16"></a>KG_TO_LB &lt;- 2.20462</span>
+<span id="cb2-17"><a aria-label="17"></a>CM_PER_IN &lt;- 2.54</span>
+<span id="cb2-18"><a aria-label="18"></a></span>
+<span id="cb2-19"><a aria-label="19"></a>CSS &lt;- "</span>
+<span id="cb2-20"><a aria-label="20"></a>  .plot-wrap {</span>
+<span id="cb2-21"><a aria-label="21"></a>    position: relative;</span>
+<span id="cb2-22"><a aria-label="22"></a>    width: 100%;</span>
+<span id="cb2-23"><a aria-label="23"></a>    padding-left: 25px;</span>
+<span id="cb2-24"><a aria-label="24"></a>    padding-bottom: 25px;</span>
+<span id="cb2-25"><a aria-label="25"></a>  }</span>
+<span id="cb2-26"><a aria-label="26"></a></span>
+<span id="cb2-27"><a aria-label="27"></a>  .height-units-inline {</span>
+<span id="cb2-28"><a aria-label="28"></a>    position: absolute;</span>
+<span id="cb2-29"><a aria-label="29"></a>    left: 50%;</span>
+<span id="cb2-30"><a aria-label="30"></a>    bottom: 0;</span>
+<span id="cb2-31"><a aria-label="31"></a>    transform: translateX(-50%);</span>
+<span id="cb2-32"><a aria-label="32"></a>    width: 360px;</span>
+<span id="cb2-33"><a aria-label="33"></a>    z-index: 10;</span>
+<span id="cb2-34"><a aria-label="34"></a>  }</span>
+<span id="cb2-35"><a aria-label="35"></a></span>
+<span id="cb2-36"><a aria-label="36"></a>  .weight-units-inline {</span>
+<span id="cb2-37"><a aria-label="37"></a>    position: absolute;</span>
+<span id="cb2-38"><a aria-label="38"></a>    left: 0;</span>
+<span id="cb2-39"><a aria-label="39"></a>    bottom: 0;</span>
+<span id="cb2-40"><a aria-label="40"></a>    transform: translateY(-50%) rotate(-90deg);</span>
+<span id="cb2-41"><a aria-label="41"></a>    transform-origin: left top;</span>
+<span id="cb2-42"><a aria-label="42"></a>    width: 45%;</span>
+<span id="cb2-43"><a aria-label="43"></a>    z-index: 10;</span>
+<span id="cb2-44"><a aria-label="44"></a>  }</span>
+<span id="cb2-45"><a aria-label="45"></a></span>
+<span id="cb2-46"><a aria-label="46"></a>  .height-units-inline .shiny-input-container,</span>
+<span id="cb2-47"><a aria-label="47"></a>  .weight-units-inline .shiny-input-container {</span>
+<span id="cb2-48"><a aria-label="48"></a>    margin-bottom: 0;</span>
+<span id="cb2-49"><a aria-label="49"></a>    display: flex;</span>
+<span id="cb2-50"><a aria-label="50"></a>    align-items: center;</span>
+<span id="cb2-51"><a aria-label="51"></a>    gap: 0.5rem;</span>
+<span id="cb2-52"><a aria-label="52"></a>  }</span>
+<span id="cb2-53"><a aria-label="53"></a></span>
+<span id="cb2-54"><a aria-label="54"></a>  .weight-units-inline .shiny-input-container {</span>
+<span id="cb2-55"><a aria-label="55"></a>    justify-content: center;</span>
+<span id="cb2-56"><a aria-label="56"></a>    width: 100%;</span>
+<span id="cb2-57"><a aria-label="57"></a>  }</span>
+<span id="cb2-58"><a aria-label="58"></a></span>
+<span id="cb2-59"><a aria-label="59"></a>  .height-units-inline label,</span>
+<span id="cb2-60"><a aria-label="60"></a>  .weight-units-inline label {</span>
+<span id="cb2-61"><a aria-label="61"></a>    margin-bottom: 0;</span>
+<span id="cb2-62"><a aria-label="62"></a>    font-weight: 600;</span>
+<span id="cb2-63"><a aria-label="63"></a>    white-space: nowrap;</span>
+<span id="cb2-64"><a aria-label="64"></a>  }</span>
+<span id="cb2-65"><a aria-label="65"></a></span>
+<span id="cb2-66"><a aria-label="66"></a>  .height-units-inline .form-select,</span>
+<span id="cb2-67"><a aria-label="67"></a>  .weight-units-inline .form-select,</span>
+<span id="cb2-68"><a aria-label="68"></a>  .height-units-inline select,</span>
+<span id="cb2-69"><a aria-label="69"></a>  .weight-units-inline select {</span>
+<span id="cb2-70"><a aria-label="70"></a>    flex: 1;</span>
+<span id="cb2-71"><a aria-label="71"></a>    min-width: 0;</span>
+<span id="cb2-72"><a aria-label="72"></a>  }</span>
+<span id="cb2-73"><a aria-label="73"></a></span>
+<span id="cb2-74"><a aria-label="74"></a>  .height-units-inline .selectize-control,</span>
+<span id="cb2-75"><a aria-label="75"></a>  .weight-units-inline .selectize-control {</span>
+<span id="cb2-76"><a aria-label="76"></a>    width: 200px;</span>
+<span id="cb2-77"><a aria-label="77"></a>  }</span>
+<span id="cb2-78"><a aria-label="78"></a>"</span>
+<span id="cb2-79"><a aria-label="79"></a></span>
+<span id="cb2-80"><a aria-label="80"></a>param_row &lt;- function(input_ui, button_id, button_margin = "1rem") {</span>
+<span id="cb2-81"><a aria-label="81"></a>  tags$div(</span>
+<span id="cb2-82"><a aria-label="82"></a>    class = "d-flex flex-nowrap gap-2 align-items-end",</span>
+<span id="cb2-83"><a aria-label="83"></a>    input_ui,</span>
+<span id="cb2-84"><a aria-label="84"></a>    tags$div(</span>
+<span id="cb2-85"><a aria-label="85"></a>      class = "d-flex flex-column justify-content-end",</span>
+<span id="cb2-86"><a aria-label="86"></a>      actionButton(</span>
+<span id="cb2-87"><a aria-label="87"></a>        button_id,</span>
+<span id="cb2-88"><a aria-label="88"></a>        "↺",</span>
+<span id="cb2-89"><a aria-label="89"></a>        class = "btn-primary",</span>
+<span id="cb2-90"><a aria-label="90"></a>        style = paste0("margin-bottom: ", button_margin, ";")</span>
+<span id="cb2-91"><a aria-label="91"></a>      )</span>
+<span id="cb2-92"><a aria-label="92"></a>    )</span>
+<span id="cb2-93"><a aria-label="93"></a>  )</span>
+<span id="cb2-94"><a aria-label="94"></a>}</span>
+<span id="cb2-95"><a aria-label="95"></a></span>
+<span id="cb2-96"><a aria-label="96"></a>ui &lt;- page_sidebar(</span>
+<span id="cb2-97"><a aria-label="97"></a>  tags$head(tags$style(HTML(CSS))),</span>
+<span id="cb2-98"><a aria-label="98"></a>  sidebar = sidebar(</span>
+<span id="cb2-99"><a aria-label="99"></a>    open = "always",</span>
+<span id="cb2-100"><a aria-label="100"></a>    width = 430,</span>
+<span id="cb2-101"><a aria-label="101"></a>    style = "gap: 10px",</span>
+<span id="cb2-102"><a aria-label="102"></a>    withMathJax(),</span>
+<span id="cb2-103"><a aria-label="103"></a>    tags$h2("Generative Models"),</span>
+<span id="cb2-104"><a aria-label="104"></a>    checkboxInput("include_sex", "Include sex?", value = FALSE),</span>
+<span id="cb2-105"><a aria-label="105"></a>    tags$div(uiOutput("modelDef")),</span>
+<span id="cb2-106"><a aria-label="106"></a>    tags$hr(),</span>
+<span id="cb2-107"><a aria-label="107"></a>    tags$h3("Parameters"),</span>
+<span id="cb2-108"><a aria-label="108"></a></span>
+<span id="cb2-109"><a aria-label="109"></a>    uiOutput("alpha_ui"),</span>
+<span id="cb2-110"><a aria-label="110"></a></span>
+<span id="cb2-111"><a aria-label="111"></a>    param_row(</span>
+<span id="cb2-112"><a aria-label="112"></a>      numericInput(</span>
+<span id="cb2-113"><a aria-label="113"></a>        "beta",</span>
+<span id="cb2-114"><a aria-label="114"></a>        "𝛽 (coefficient)",</span>
+<span id="cb2-115"><a aria-label="115"></a>        value = INITIAL_BETA,</span>
+<span id="cb2-116"><a aria-label="116"></a>        width = "100%"</span>
+<span id="cb2-117"><a aria-label="117"></a>      ),</span>
+<span id="cb2-118"><a aria-label="118"></a>      "generate_beta"</span>
+<span id="cb2-119"><a aria-label="119"></a>    ),</span>
+<span id="cb2-120"><a aria-label="120"></a></span>
+<span id="cb2-121"><a aria-label="121"></a>    param_row(</span>
+<span id="cb2-122"><a aria-label="122"></a>      sliderInput(</span>
+<span id="cb2-123"><a aria-label="123"></a>        "sigma",</span>
+<span id="cb2-124"><a aria-label="124"></a>        "𝜎 (residual deviation)",</span>
+<span id="cb2-125"><a aria-label="125"></a>        min = 0,</span>
+<span id="cb2-126"><a aria-label="126"></a>        max = 100,</span>
+<span id="cb2-127"><a aria-label="127"></a>        value = INITIAL_SIGMA,</span>
+<span id="cb2-128"><a aria-label="128"></a>        width = "100%"</span>
+<span id="cb2-129"><a aria-label="129"></a>      ),</span>
+<span id="cb2-130"><a aria-label="130"></a>      "generate_sigma",</span>
+<span id="cb2-131"><a aria-label="131"></a>      button_margin = "1.5rem"</span>
+<span id="cb2-132"><a aria-label="132"></a>    ),</span>
+<span id="cb2-133"><a aria-label="133"></a></span>
+<span id="cb2-134"><a aria-label="134"></a>    # tags$hr(),</span>
+<span id="cb2-135"><a aria-label="135"></a>    # actionButton(</span>
+<span id="cb2-136"><a aria-label="136"></a>    #   "generate_data",</span>
+<span id="cb2-137"><a aria-label="137"></a>    #   "Generate new data",</span>
+<span id="cb2-138"><a aria-label="138"></a>    #   class = "btn-secondary w-100"</span>
+<span id="cb2-139"><a aria-label="139"></a>    # )</span>
+<span id="cb2-140"><a aria-label="140"></a>  ),</span>
+<span id="cb2-141"><a aria-label="141"></a></span>
+<span id="cb2-142"><a aria-label="142"></a>  tags$p("What are we doing here?"),</span>
+<span id="cb2-143"><a aria-label="143"></a>  tags$ul(</span>
+<span id="cb2-144"><a aria-label="144"></a>    tags$li(</span>
+<span id="cb2-145"><a aria-label="145"></a>      "When fitting a statistical model, we use observed data to infer the values of unknown parameters."</span>
+<span id="cb2-146"><a aria-label="146"></a>    ),</span>
 <span id="cb2-147"><a aria-label="147"></a>    tags$li(</span>
-<span id="cb2-148"><a aria-label="148"></a>      "When fitting a statistical model, we use observed data to infer the values of unknown parameters."</span>
-<span id="cb2-149"><a aria-label="149"></a>    ),</span>
-<span id="cb2-150"><a aria-label="150"></a>    tags$li(</span>
-<span id="cb2-151"><a aria-label="151"></a>      "When simulating from a generative model, we do the opposite: we choose parameter values and generate synthetic data from them to see what kinds of predictions the model would make."</span>
-<span id="cb2-152"><a aria-label="152"></a>    )</span>
-<span id="cb2-153"><a aria-label="153"></a>  ),</span>
-<span id="cb2-154"><a aria-label="154"></a></span>
-<span id="cb2-155"><a aria-label="155"></a>  div(</span>
-<span id="cb2-156"><a aria-label="156"></a>    class = "plot-wrap",</span>
-<span id="cb2-157"><a aria-label="157"></a>    div(</span>
-<span id="cb2-158"><a aria-label="158"></a>      class = "weight-units-inline",</span>
-<span id="cb2-159"><a aria-label="159"></a>      selectInput(</span>
-<span id="cb2-160"><a aria-label="160"></a>        "weight_units",</span>
-<span id="cb2-161"><a aria-label="161"></a>        "Weight",</span>
-<span id="cb2-162"><a aria-label="162"></a>        choices = c("Kilograms", "Pounds"),</span>
-<span id="cb2-163"><a aria-label="163"></a>        selected = "Kilograms"</span>
-<span id="cb2-164"><a aria-label="164"></a>      )</span>
-<span id="cb2-165"><a aria-label="165"></a>    ),</span>
-<span id="cb2-166"><a aria-label="166"></a>    girafeOutput("generatedPlot"),</span>
-<span id="cb2-167"><a aria-label="167"></a>    div(</span>
-<span id="cb2-168"><a aria-label="168"></a>      class = "height-units-inline",</span>
-<span id="cb2-169"><a aria-label="169"></a>      selectInput(</span>
-<span id="cb2-170"><a aria-label="170"></a>        "height_units",</span>
-<span id="cb2-171"><a aria-label="171"></a>        "Height",</span>
-<span id="cb2-172"><a aria-label="172"></a>        choices = c("Centimeters", "Inches", "Standardized Units"),</span>
-<span id="cb2-173"><a aria-label="173"></a>        selected = "Centimeters"</span>
-<span id="cb2-174"><a aria-label="174"></a>      )</span>
-<span id="cb2-175"><a aria-label="175"></a>    )</span>
-<span id="cb2-176"><a aria-label="176"></a>  )</span>
-<span id="cb2-177"><a aria-label="177"></a>)</span>
-<span id="cb2-178"><a aria-label="178"></a></span>
-<span id="cb2-179"><a aria-label="179"></a>server &lt;- function(input, output, session) {</span>
-<span id="cb2-180"><a aria-label="180"></a>  root_alpha_female &lt;- reactiveVal(INITIAL_ALPHA_FEMALE)</span>
-<span id="cb2-181"><a aria-label="181"></a>  root_alpha_male &lt;- reactiveVal(INITIAL_ALPHA_MALE)</span>
-<span id="cb2-182"><a aria-label="182"></a>  root_beta &lt;- reactiveVal(INITIAL_BETA)</span>
-<span id="cb2-183"><a aria-label="183"></a>  root_sigma &lt;- reactiveVal(INITIAL_SIGMA)</span>
-<span id="cb2-184"><a aria-label="184"></a></span>
-<span id="cb2-185"><a aria-label="185"></a>  updating_inputs &lt;- reactiveVal(FALSE)</span>
-<span id="cb2-186"><a aria-label="186"></a></span>
-<span id="cb2-187"><a aria-label="187"></a>  weight_scale &lt;- reactive({</span>
-<span id="cb2-188"><a aria-label="188"></a>    switch(</span>
-<span id="cb2-189"><a aria-label="189"></a>      input$weight_units,</span>
-<span id="cb2-190"><a aria-label="190"></a>      "Kilograms" = 1,</span>
-<span id="cb2-191"><a aria-label="191"></a>      "Pounds" = KG_TO_LB,</span>
-<span id="cb2-192"><a aria-label="192"></a>      1</span>
-<span id="cb2-193"><a aria-label="193"></a>    )</span>
-<span id="cb2-194"><a aria-label="194"></a>  })</span>
-<span id="cb2-195"><a aria-label="195"></a></span>
-<span id="cb2-196"><a aria-label="196"></a>  alpha_shift_root &lt;- reactive({</span>
-<span id="cb2-197"><a aria-label="197"></a>    switch(</span>
-<span id="cb2-198"><a aria-label="198"></a>      input$height_units,</span>
-<span id="cb2-199"><a aria-label="199"></a>      "Centimeters" = 0,</span>
-<span id="cb2-200"><a aria-label="200"></a>      "Inches" = 0,</span>
-<span id="cb2-201"><a aria-label="201"></a>      "Standardized Units" = HEIGHT_MEAN_CM * root_beta(),</span>
-<span id="cb2-202"><a aria-label="202"></a>      0</span>
-<span id="cb2-203"><a aria-label="203"></a>    )</span>
-<span id="cb2-204"><a aria-label="204"></a>  })</span>
-<span id="cb2-205"><a aria-label="205"></a></span>
-<span id="cb2-206"><a aria-label="206"></a>  beta_display_scale &lt;- reactive({</span>
-<span id="cb2-207"><a aria-label="207"></a>    switch(</span>
-<span id="cb2-208"><a aria-label="208"></a>      input$height_units,</span>
-<span id="cb2-209"><a aria-label="209"></a>      "Centimeters" = 1,</span>
-<span id="cb2-210"><a aria-label="210"></a>      "Inches" = CM_PER_IN,</span>
-<span id="cb2-211"><a aria-label="211"></a>      "Standardized Units" = HEIGHT_SD_CM,</span>
-<span id="cb2-212"><a aria-label="212"></a>      1</span>
-<span id="cb2-213"><a aria-label="213"></a>    ) *</span>
-<span id="cb2-214"><a aria-label="214"></a>      weight_scale()</span>
-<span id="cb2-215"><a aria-label="215"></a>  })</span>
-<span id="cb2-216"><a aria-label="216"></a></span>
-<span id="cb2-217"><a aria-label="217"></a>  display_alpha_female &lt;- reactive({</span>
-<span id="cb2-218"><a aria-label="218"></a>    (root_alpha_female() + alpha_shift_root()) * weight_scale()</span>
-<span id="cb2-219"><a aria-label="219"></a>  })</span>
-<span id="cb2-220"><a aria-label="220"></a></span>
-<span id="cb2-221"><a aria-label="221"></a>  display_alpha_male &lt;- reactive({</span>
-<span id="cb2-222"><a aria-label="222"></a>    (root_alpha_male() + alpha_shift_root()) * weight_scale()</span>
-<span id="cb2-223"><a aria-label="223"></a>  })</span>
-<span id="cb2-224"><a aria-label="224"></a></span>
-<span id="cb2-225"><a aria-label="225"></a>  display_alpha &lt;- reactive({</span>
-<span id="cb2-226"><a aria-label="226"></a>    (root_alpha_female() + alpha_shift_root()) * weight_scale()</span>
-<span id="cb2-227"><a aria-label="227"></a>  })</span>
-<span id="cb2-228"><a aria-label="228"></a></span>
-<span id="cb2-229"><a aria-label="229"></a>  display_beta &lt;- reactive({</span>
-<span id="cb2-230"><a aria-label="230"></a>    root_beta() * beta_display_scale()</span>
-<span id="cb2-231"><a aria-label="231"></a>  })</span>
-<span id="cb2-232"><a aria-label="232"></a></span>
-<span id="cb2-233"><a aria-label="233"></a>  display_sigma &lt;- reactive({</span>
-<span id="cb2-234"><a aria-label="234"></a>    root_sigma() * weight_scale()</span>
-<span id="cb2-235"><a aria-label="235"></a>  })</span>
-<span id="cb2-236"><a aria-label="236"></a></span>
-<span id="cb2-237"><a aria-label="237"></a>  height_unit_label &lt;- reactive({</span>
-<span id="cb2-238"><a aria-label="238"></a>    switch(</span>
-<span id="cb2-239"><a aria-label="239"></a>      input$height_units,</span>
-<span id="cb2-240"><a aria-label="240"></a>      "Centimeters" = "cm",</span>
-<span id="cb2-241"><a aria-label="241"></a>      "Inches" = "in",</span>
-<span id="cb2-242"><a aria-label="242"></a>      "Standardized Units" = "z",</span>
-<span id="cb2-243"><a aria-label="243"></a>      ""</span>
-<span id="cb2-244"><a aria-label="244"></a>    )</span>
-<span id="cb2-245"><a aria-label="245"></a>  })</span>
-<span id="cb2-246"><a aria-label="246"></a></span>
-<span id="cb2-247"><a aria-label="247"></a>  weight_unit_label &lt;- reactive({</span>
-<span id="cb2-248"><a aria-label="248"></a>    switch(</span>
-<span id="cb2-249"><a aria-label="249"></a>      input$weight_units,</span>
-<span id="cb2-250"><a aria-label="250"></a>      "Kilograms" = "kg",</span>
-<span id="cb2-251"><a aria-label="251"></a>      "Pounds" = "lb",</span>
-<span id="cb2-252"><a aria-label="252"></a>      ""</span>
-<span id="cb2-253"><a aria-label="253"></a>    )</span>
-<span id="cb2-254"><a aria-label="254"></a>  })</span>
-<span id="cb2-255"><a aria-label="255"></a></span>
-<span id="cb2-256"><a aria-label="256"></a>  canonical_to_display_height &lt;- function(height_cm, units) {</span>
-<span id="cb2-257"><a aria-label="257"></a>    switch(</span>
-<span id="cb2-258"><a aria-label="258"></a>      units,</span>
-<span id="cb2-259"><a aria-label="259"></a>      "Centimeters" = height_cm,</span>
-<span id="cb2-260"><a aria-label="260"></a>      "Inches" = height_cm / CM_PER_IN,</span>
-<span id="cb2-261"><a aria-label="261"></a>      "Standardized Units" = (height_cm - HEIGHT_MEAN_CM) / HEIGHT_SD_CM,</span>
-<span id="cb2-262"><a aria-label="262"></a>      height_cm</span>
-<span id="cb2-263"><a aria-label="263"></a>    )</span>
-<span id="cb2-264"><a aria-label="264"></a>  }</span>
-<span id="cb2-265"><a aria-label="265"></a></span>
-<span id="cb2-266"><a aria-label="266"></a>  canonical_to_display_weight &lt;- function(weight_kg, units) {</span>
-<span id="cb2-267"><a aria-label="267"></a>    switch(</span>
-<span id="cb2-268"><a aria-label="268"></a>      units,</span>
-<span id="cb2-269"><a aria-label="269"></a>      "Kilograms" = weight_kg,</span>
-<span id="cb2-270"><a aria-label="270"></a>      "Pounds" = weight_kg * KG_TO_LB,</span>
-<span id="cb2-271"><a aria-label="271"></a>      weight_kg</span>
-<span id="cb2-272"><a aria-label="272"></a>    )</span>
-<span id="cb2-273"><a aria-label="273"></a>  }</span>
-<span id="cb2-274"><a aria-label="274"></a></span>
-<span id="cb2-275"><a aria-label="275"></a>  set_root_alpha_from_display &lt;- function(</span>
-<span id="cb2-276"><a aria-label="276"></a>    alpha_display,</span>
-<span id="cb2-277"><a aria-label="277"></a>    which = c("female", "male"),</span>
-<span id="cb2-278"><a aria-label="278"></a>    beta_root = root_beta()</span>
-<span id="cb2-279"><a aria-label="279"></a>  ) {</span>
-<span id="cb2-280"><a aria-label="280"></a>    which &lt;- match.arg(which)</span>
-<span id="cb2-281"><a aria-label="281"></a></span>
-<span id="cb2-282"><a aria-label="282"></a>    shift &lt;- switch(</span>
-<span id="cb2-283"><a aria-label="283"></a>      input$height_units,</span>
-<span id="cb2-284"><a aria-label="284"></a>      "Centimeters" = 0,</span>
-<span id="cb2-285"><a aria-label="285"></a>      "Inches" = 0,</span>
-<span id="cb2-286"><a aria-label="286"></a>      "Standardized Units" = HEIGHT_MEAN_CM * beta_root,</span>
-<span id="cb2-287"><a aria-label="287"></a>      0</span>
-<span id="cb2-288"><a aria-label="288"></a>    )</span>
-<span id="cb2-289"><a aria-label="289"></a></span>
-<span id="cb2-290"><a aria-label="290"></a>    alpha_root &lt;- (alpha_display / weight_scale()) - shift</span>
-<span id="cb2-291"><a aria-label="291"></a></span>
-<span id="cb2-292"><a aria-label="292"></a>    if (which == "female") {</span>
-<span id="cb2-293"><a aria-label="293"></a>      root_alpha_female(alpha_root)</span>
-<span id="cb2-294"><a aria-label="294"></a>    } else {</span>
-<span id="cb2-295"><a aria-label="295"></a>      root_alpha_male(alpha_root)</span>
-<span id="cb2-296"><a aria-label="296"></a>    }</span>
-<span id="cb2-297"><a aria-label="297"></a>  }</span>
-<span id="cb2-298"><a aria-label="298"></a></span>
-<span id="cb2-299"><a aria-label="299"></a>  sync_inputs_from_root &lt;- function() {</span>
-<span id="cb2-300"><a aria-label="300"></a>    vals &lt;- isolate(list(</span>
-<span id="cb2-301"><a aria-label="301"></a>      include_sex = isTRUE(input$include_sex),</span>
-<span id="cb2-302"><a aria-label="302"></a>      alpha = round(display_alpha(), 3),</span>
-<span id="cb2-303"><a aria-label="303"></a>      alpha_female = round(display_alpha_female(), 3),</span>
-<span id="cb2-304"><a aria-label="304"></a>      alpha_male = round(display_alpha_male(), 3),</span>
-<span id="cb2-305"><a aria-label="305"></a>      beta = round(display_beta(), 3),</span>
-<span id="cb2-306"><a aria-label="306"></a>      sigma = min(max(display_sigma(), 0), 100)</span>
-<span id="cb2-307"><a aria-label="307"></a>    ))</span>
+<span id="cb2-148"><a aria-label="148"></a>      "When simulating from a generative model, we do the opposite: we choose parameter values and generate synthetic data from them to see what kinds of predictions the model would make."</span>
+<span id="cb2-149"><a aria-label="149"></a>    )</span>
+<span id="cb2-150"><a aria-label="150"></a>  ),</span>
+<span id="cb2-151"><a aria-label="151"></a></span>
+<span id="cb2-152"><a aria-label="152"></a>  div(</span>
+<span id="cb2-153"><a aria-label="153"></a>    class = "plot-wrap",</span>
+<span id="cb2-154"><a aria-label="154"></a>    div(</span>
+<span id="cb2-155"><a aria-label="155"></a>      class = "weight-units-inline",</span>
+<span id="cb2-156"><a aria-label="156"></a>      selectInput(</span>
+<span id="cb2-157"><a aria-label="157"></a>        "weight_units",</span>
+<span id="cb2-158"><a aria-label="158"></a>        "Weight",</span>
+<span id="cb2-159"><a aria-label="159"></a>        choices = c("Kilograms", "Pounds"),</span>
+<span id="cb2-160"><a aria-label="160"></a>        selected = "Kilograms"</span>
+<span id="cb2-161"><a aria-label="161"></a>      )</span>
+<span id="cb2-162"><a aria-label="162"></a>    ),</span>
+<span id="cb2-163"><a aria-label="163"></a>    girafeOutput("generatedPlot"),</span>
+<span id="cb2-164"><a aria-label="164"></a>    div(</span>
+<span id="cb2-165"><a aria-label="165"></a>      class = "height-units-inline",</span>
+<span id="cb2-166"><a aria-label="166"></a>      selectInput(</span>
+<span id="cb2-167"><a aria-label="167"></a>        "height_units",</span>
+<span id="cb2-168"><a aria-label="168"></a>        "Height",</span>
+<span id="cb2-169"><a aria-label="169"></a>        choices = c("Centimeters", "Inches", "Standardized Units"),</span>
+<span id="cb2-170"><a aria-label="170"></a>        selected = "Centimeters"</span>
+<span id="cb2-171"><a aria-label="171"></a>      )</span>
+<span id="cb2-172"><a aria-label="172"></a>    )</span>
+<span id="cb2-173"><a aria-label="173"></a>  )</span>
+<span id="cb2-174"><a aria-label="174"></a>)</span>
+<span id="cb2-175"><a aria-label="175"></a></span>
+<span id="cb2-176"><a aria-label="176"></a>server &lt;- function(input, output, session) {</span>
+<span id="cb2-177"><a aria-label="177"></a>  root_alpha_female &lt;- reactiveVal(INITIAL_ALPHA_FEMALE)</span>
+<span id="cb2-178"><a aria-label="178"></a>  root_alpha_male &lt;- reactiveVal(INITIAL_ALPHA_MALE)</span>
+<span id="cb2-179"><a aria-label="179"></a>  root_beta &lt;- reactiveVal(INITIAL_BETA)</span>
+<span id="cb2-180"><a aria-label="180"></a>  root_sigma &lt;- reactiveVal(INITIAL_SIGMA)</span>
+<span id="cb2-181"><a aria-label="181"></a></span>
+<span id="cb2-182"><a aria-label="182"></a>  updating_inputs &lt;- reactiveVal(FALSE)</span>
+<span id="cb2-183"><a aria-label="183"></a></span>
+<span id="cb2-184"><a aria-label="184"></a>  weight_scale &lt;- reactive({</span>
+<span id="cb2-185"><a aria-label="185"></a>    switch(</span>
+<span id="cb2-186"><a aria-label="186"></a>      input$weight_units,</span>
+<span id="cb2-187"><a aria-label="187"></a>      "Kilograms" = 1,</span>
+<span id="cb2-188"><a aria-label="188"></a>      "Pounds" = KG_TO_LB,</span>
+<span id="cb2-189"><a aria-label="189"></a>      1</span>
+<span id="cb2-190"><a aria-label="190"></a>    )</span>
+<span id="cb2-191"><a aria-label="191"></a>  })</span>
+<span id="cb2-192"><a aria-label="192"></a></span>
+<span id="cb2-193"><a aria-label="193"></a>  alpha_shift_root &lt;- reactive({</span>
+<span id="cb2-194"><a aria-label="194"></a>    switch(</span>
+<span id="cb2-195"><a aria-label="195"></a>      input$height_units,</span>
+<span id="cb2-196"><a aria-label="196"></a>      "Centimeters" = 0,</span>
+<span id="cb2-197"><a aria-label="197"></a>      "Inches" = 0,</span>
+<span id="cb2-198"><a aria-label="198"></a>      "Standardized Units" = HEIGHT_MEAN_CM * root_beta(),</span>
+<span id="cb2-199"><a aria-label="199"></a>      0</span>
+<span id="cb2-200"><a aria-label="200"></a>    )</span>
+<span id="cb2-201"><a aria-label="201"></a>  })</span>
+<span id="cb2-202"><a aria-label="202"></a></span>
+<span id="cb2-203"><a aria-label="203"></a>  beta_display_scale &lt;- reactive({</span>
+<span id="cb2-204"><a aria-label="204"></a>    switch(</span>
+<span id="cb2-205"><a aria-label="205"></a>      input$height_units,</span>
+<span id="cb2-206"><a aria-label="206"></a>      "Centimeters" = 1,</span>
+<span id="cb2-207"><a aria-label="207"></a>      "Inches" = CM_PER_IN,</span>
+<span id="cb2-208"><a aria-label="208"></a>      "Standardized Units" = HEIGHT_SD_CM,</span>
+<span id="cb2-209"><a aria-label="209"></a>      1</span>
+<span id="cb2-210"><a aria-label="210"></a>    ) *</span>
+<span id="cb2-211"><a aria-label="211"></a>      weight_scale()</span>
+<span id="cb2-212"><a aria-label="212"></a>  })</span>
+<span id="cb2-213"><a aria-label="213"></a></span>
+<span id="cb2-214"><a aria-label="214"></a>  display_alpha_female &lt;- reactive({</span>
+<span id="cb2-215"><a aria-label="215"></a>    (root_alpha_female() + alpha_shift_root()) * weight_scale()</span>
+<span id="cb2-216"><a aria-label="216"></a>  })</span>
+<span id="cb2-217"><a aria-label="217"></a></span>
+<span id="cb2-218"><a aria-label="218"></a>  display_alpha_male &lt;- reactive({</span>
+<span id="cb2-219"><a aria-label="219"></a>    (root_alpha_male() + alpha_shift_root()) * weight_scale()</span>
+<span id="cb2-220"><a aria-label="220"></a>  })</span>
+<span id="cb2-221"><a aria-label="221"></a></span>
+<span id="cb2-222"><a aria-label="222"></a>  display_alpha &lt;- reactive({</span>
+<span id="cb2-223"><a aria-label="223"></a>    (root_alpha_female() + alpha_shift_root()) * weight_scale()</span>
+<span id="cb2-224"><a aria-label="224"></a>  })</span>
+<span id="cb2-225"><a aria-label="225"></a></span>
+<span id="cb2-226"><a aria-label="226"></a>  display_beta &lt;- reactive({</span>
+<span id="cb2-227"><a aria-label="227"></a>    root_beta() * beta_display_scale()</span>
+<span id="cb2-228"><a aria-label="228"></a>  })</span>
+<span id="cb2-229"><a aria-label="229"></a></span>
+<span id="cb2-230"><a aria-label="230"></a>  display_sigma &lt;- reactive({</span>
+<span id="cb2-231"><a aria-label="231"></a>    root_sigma() * weight_scale()</span>
+<span id="cb2-232"><a aria-label="232"></a>  })</span>
+<span id="cb2-233"><a aria-label="233"></a></span>
+<span id="cb2-234"><a aria-label="234"></a>  height_unit_label &lt;- reactive({</span>
+<span id="cb2-235"><a aria-label="235"></a>    switch(</span>
+<span id="cb2-236"><a aria-label="236"></a>      input$height_units,</span>
+<span id="cb2-237"><a aria-label="237"></a>      "Centimeters" = "cm",</span>
+<span id="cb2-238"><a aria-label="238"></a>      "Inches" = "in",</span>
+<span id="cb2-239"><a aria-label="239"></a>      "Standardized Units" = "z",</span>
+<span id="cb2-240"><a aria-label="240"></a>      ""</span>
+<span id="cb2-241"><a aria-label="241"></a>    )</span>
+<span id="cb2-242"><a aria-label="242"></a>  })</span>
+<span id="cb2-243"><a aria-label="243"></a></span>
+<span id="cb2-244"><a aria-label="244"></a>  weight_unit_label &lt;- reactive({</span>
+<span id="cb2-245"><a aria-label="245"></a>    switch(</span>
+<span id="cb2-246"><a aria-label="246"></a>      input$weight_units,</span>
+<span id="cb2-247"><a aria-label="247"></a>      "Kilograms" = "kg",</span>
+<span id="cb2-248"><a aria-label="248"></a>      "Pounds" = "lb",</span>
+<span id="cb2-249"><a aria-label="249"></a>      ""</span>
+<span id="cb2-250"><a aria-label="250"></a>    )</span>
+<span id="cb2-251"><a aria-label="251"></a>  })</span>
+<span id="cb2-252"><a aria-label="252"></a></span>
+<span id="cb2-253"><a aria-label="253"></a>  canonical_to_display_height &lt;- function(height_cm, units) {</span>
+<span id="cb2-254"><a aria-label="254"></a>    switch(</span>
+<span id="cb2-255"><a aria-label="255"></a>      units,</span>
+<span id="cb2-256"><a aria-label="256"></a>      "Centimeters" = height_cm,</span>
+<span id="cb2-257"><a aria-label="257"></a>      "Inches" = height_cm / CM_PER_IN,</span>
+<span id="cb2-258"><a aria-label="258"></a>      "Standardized Units" = (height_cm - HEIGHT_MEAN_CM) / HEIGHT_SD_CM,</span>
+<span id="cb2-259"><a aria-label="259"></a>      height_cm</span>
+<span id="cb2-260"><a aria-label="260"></a>    )</span>
+<span id="cb2-261"><a aria-label="261"></a>  }</span>
+<span id="cb2-262"><a aria-label="262"></a></span>
+<span id="cb2-263"><a aria-label="263"></a>  canonical_to_display_weight &lt;- function(weight_kg, units) {</span>
+<span id="cb2-264"><a aria-label="264"></a>    switch(</span>
+<span id="cb2-265"><a aria-label="265"></a>      units,</span>
+<span id="cb2-266"><a aria-label="266"></a>      "Kilograms" = weight_kg,</span>
+<span id="cb2-267"><a aria-label="267"></a>      "Pounds" = weight_kg * KG_TO_LB,</span>
+<span id="cb2-268"><a aria-label="268"></a>      weight_kg</span>
+<span id="cb2-269"><a aria-label="269"></a>    )</span>
+<span id="cb2-270"><a aria-label="270"></a>  }</span>
+<span id="cb2-271"><a aria-label="271"></a></span>
+<span id="cb2-272"><a aria-label="272"></a>  set_root_alpha_from_display &lt;- function(</span>
+<span id="cb2-273"><a aria-label="273"></a>    alpha_display,</span>
+<span id="cb2-274"><a aria-label="274"></a>    which = c("female", "male"),</span>
+<span id="cb2-275"><a aria-label="275"></a>    beta_root = root_beta()</span>
+<span id="cb2-276"><a aria-label="276"></a>  ) {</span>
+<span id="cb2-277"><a aria-label="277"></a>    which &lt;- match.arg(which)</span>
+<span id="cb2-278"><a aria-label="278"></a></span>
+<span id="cb2-279"><a aria-label="279"></a>    shift &lt;- switch(</span>
+<span id="cb2-280"><a aria-label="280"></a>      input$height_units,</span>
+<span id="cb2-281"><a aria-label="281"></a>      "Centimeters" = 0,</span>
+<span id="cb2-282"><a aria-label="282"></a>      "Inches" = 0,</span>
+<span id="cb2-283"><a aria-label="283"></a>      "Standardized Units" = HEIGHT_MEAN_CM * beta_root,</span>
+<span id="cb2-284"><a aria-label="284"></a>      0</span>
+<span id="cb2-285"><a aria-label="285"></a>    )</span>
+<span id="cb2-286"><a aria-label="286"></a></span>
+<span id="cb2-287"><a aria-label="287"></a>    alpha_root &lt;- (alpha_display / weight_scale()) - shift</span>
+<span id="cb2-288"><a aria-label="288"></a></span>
+<span id="cb2-289"><a aria-label="289"></a>    if (which == "female") {</span>
+<span id="cb2-290"><a aria-label="290"></a>      root_alpha_female(alpha_root)</span>
+<span id="cb2-291"><a aria-label="291"></a>    } else {</span>
+<span id="cb2-292"><a aria-label="292"></a>      root_alpha_male(alpha_root)</span>
+<span id="cb2-293"><a aria-label="293"></a>    }</span>
+<span id="cb2-294"><a aria-label="294"></a>  }</span>
+<span id="cb2-295"><a aria-label="295"></a></span>
+<span id="cb2-296"><a aria-label="296"></a>  sync_inputs_from_root &lt;- function() {</span>
+<span id="cb2-297"><a aria-label="297"></a>    vals &lt;- isolate(list(</span>
+<span id="cb2-298"><a aria-label="298"></a>      include_sex = isTRUE(input$include_sex),</span>
+<span id="cb2-299"><a aria-label="299"></a>      alpha = round(display_alpha(), 3),</span>
+<span id="cb2-300"><a aria-label="300"></a>      alpha_female = round(display_alpha_female(), 3),</span>
+<span id="cb2-301"><a aria-label="301"></a>      alpha_male = round(display_alpha_male(), 3),</span>
+<span id="cb2-302"><a aria-label="302"></a>      beta = round(display_beta(), 3),</span>
+<span id="cb2-303"><a aria-label="303"></a>      sigma = min(max(display_sigma(), 0), 100)</span>
+<span id="cb2-304"><a aria-label="304"></a>    ))</span>
+<span id="cb2-305"><a aria-label="305"></a></span>
+<span id="cb2-306"><a aria-label="306"></a>    updating_inputs(TRUE)</span>
+<span id="cb2-307"><a aria-label="307"></a>    on.exit(updating_inputs(FALSE), add = TRUE)</span>
 <span id="cb2-308"><a aria-label="308"></a></span>
-<span id="cb2-309"><a aria-label="309"></a>    updating_inputs(TRUE)</span>
-<span id="cb2-310"><a aria-label="310"></a>    on.exit(updating_inputs(FALSE), add = TRUE)</span>
-<span id="cb2-311"><a aria-label="311"></a></span>
-<span id="cb2-312"><a aria-label="312"></a>    freezeReactiveValue(input, "alpha")</span>
-<span id="cb2-313"><a aria-label="313"></a>    freezeReactiveValue(input, "alpha_female")</span>
-<span id="cb2-314"><a aria-label="314"></a>    freezeReactiveValue(input, "alpha_male")</span>
-<span id="cb2-315"><a aria-label="315"></a>    freezeReactiveValue(input, "beta")</span>
-<span id="cb2-316"><a aria-label="316"></a>    freezeReactiveValue(input, "sigma")</span>
-<span id="cb2-317"><a aria-label="317"></a></span>
-<span id="cb2-318"><a aria-label="318"></a>    if (vals$include_sex) {</span>
-<span id="cb2-319"><a aria-label="319"></a>      updateNumericInput(session, "alpha_female", value = vals$alpha_female)</span>
-<span id="cb2-320"><a aria-label="320"></a>      updateNumericInput(session, "alpha_male", value = vals$alpha_male)</span>
-<span id="cb2-321"><a aria-label="321"></a>    } else {</span>
-<span id="cb2-322"><a aria-label="322"></a>      updateNumericInput(session, "alpha", value = vals$alpha)</span>
-<span id="cb2-323"><a aria-label="323"></a>    }</span>
-<span id="cb2-324"><a aria-label="324"></a></span>
-<span id="cb2-325"><a aria-label="325"></a>    updateNumericInput(session, "beta", value = vals$beta)</span>
-<span id="cb2-326"><a aria-label="326"></a>    updateSliderInput(session, "sigma", value = vals$sigma)</span>
-<span id="cb2-327"><a aria-label="327"></a>  }</span>
-<span id="cb2-328"><a aria-label="328"></a></span>
-<span id="cb2-329"><a aria-label="329"></a>  sim_data &lt;- reactiveVal(NULL)</span>
-<span id="cb2-330"><a aria-label="330"></a></span>
-<span id="cb2-331"><a aria-label="331"></a>  regenerate_data &lt;- function() {</span>
-<span id="cb2-332"><a aria-label="332"></a>    sim_data(list(</span>
-<span id="cb2-333"><a aria-label="333"></a>      height_z = rnorm(N_POINTS, 0, 1),</span>
-<span id="cb2-334"><a aria-label="334"></a>      resid_z = rnorm(N_POINTS, 0, 1),</span>
-<span id="cb2-335"><a aria-label="335"></a>      sex = rbinom(N_POINTS, 1, 0.5)</span>
-<span id="cb2-336"><a aria-label="336"></a>    ))</span>
-<span id="cb2-337"><a aria-label="337"></a>  }</span>
-<span id="cb2-338"><a aria-label="338"></a></span>
-<span id="cb2-339"><a aria-label="339"></a>  regenerate_data()</span>
-<span id="cb2-340"><a aria-label="340"></a></span>
-<span id="cb2-341"><a aria-label="341"></a>  observeEvent(input$generate_data, {</span>
-<span id="cb2-342"><a aria-label="342"></a>    regenerate_data()</span>
-<span id="cb2-343"><a aria-label="343"></a>  })</span>
-<span id="cb2-344"><a aria-label="344"></a></span>
-<span id="cb2-345"><a aria-label="345"></a>  observeEvent(input$generate_alpha, {</span>
-<span id="cb2-346"><a aria-label="346"></a>    if (isTRUE(input$include_sex)) {</span>
+<span id="cb2-309"><a aria-label="309"></a>    freezeReactiveValue(input, "alpha")</span>
+<span id="cb2-310"><a aria-label="310"></a>    freezeReactiveValue(input, "alpha_female")</span>
+<span id="cb2-311"><a aria-label="311"></a>    freezeReactiveValue(input, "alpha_male")</span>
+<span id="cb2-312"><a aria-label="312"></a>    freezeReactiveValue(input, "beta")</span>
+<span id="cb2-313"><a aria-label="313"></a>    freezeReactiveValue(input, "sigma")</span>
+<span id="cb2-314"><a aria-label="314"></a></span>
+<span id="cb2-315"><a aria-label="315"></a>    if (vals$include_sex) {</span>
+<span id="cb2-316"><a aria-label="316"></a>      updateNumericInput(session, "alpha_female", value = vals$alpha_female)</span>
+<span id="cb2-317"><a aria-label="317"></a>      updateNumericInput(session, "alpha_male", value = vals$alpha_male)</span>
+<span id="cb2-318"><a aria-label="318"></a>    } else {</span>
+<span id="cb2-319"><a aria-label="319"></a>      updateNumericInput(session, "alpha", value = vals$alpha)</span>
+<span id="cb2-320"><a aria-label="320"></a>    }</span>
+<span id="cb2-321"><a aria-label="321"></a></span>
+<span id="cb2-322"><a aria-label="322"></a>    updateNumericInput(session, "beta", value = vals$beta)</span>
+<span id="cb2-323"><a aria-label="323"></a>    updateSliderInput(session, "sigma", value = vals$sigma)</span>
+<span id="cb2-324"><a aria-label="324"></a>  }</span>
+<span id="cb2-325"><a aria-label="325"></a></span>
+<span id="cb2-326"><a aria-label="326"></a>  sim_data &lt;- reactiveVal(NULL)</span>
+<span id="cb2-327"><a aria-label="327"></a></span>
+<span id="cb2-328"><a aria-label="328"></a>  regenerate_data &lt;- function() {</span>
+<span id="cb2-329"><a aria-label="329"></a>    sim_data(list(</span>
+<span id="cb2-330"><a aria-label="330"></a>      height_z = rnorm(N_POINTS, 0, 1),</span>
+<span id="cb2-331"><a aria-label="331"></a>      resid_z = rnorm(N_POINTS, 0, 1),</span>
+<span id="cb2-332"><a aria-label="332"></a>      sex = rbinom(N_POINTS, 1, 0.5)</span>
+<span id="cb2-333"><a aria-label="333"></a>    ))</span>
+<span id="cb2-334"><a aria-label="334"></a>  }</span>
+<span id="cb2-335"><a aria-label="335"></a></span>
+<span id="cb2-336"><a aria-label="336"></a>  regenerate_data()</span>
+<span id="cb2-337"><a aria-label="337"></a></span>
+<span id="cb2-338"><a aria-label="338"></a>  observeEvent(input$generate_data, {</span>
+<span id="cb2-339"><a aria-label="339"></a>    regenerate_data()</span>
+<span id="cb2-340"><a aria-label="340"></a>  })</span>
+<span id="cb2-341"><a aria-label="341"></a></span>
+<span id="cb2-342"><a aria-label="342"></a>  observeEvent(input$generate_alpha, {</span>
+<span id="cb2-343"><a aria-label="343"></a>    if (isTRUE(input$include_sex)) {</span>
+<span id="cb2-344"><a aria-label="344"></a>      root_alpha_female(rnorm(1, mean = 60, sd = 10))</span>
+<span id="cb2-345"><a aria-label="345"></a>      root_alpha_male(rnorm(1, mean = 60, sd = 10))</span>
+<span id="cb2-346"><a aria-label="346"></a>    } else {</span>
 <span id="cb2-347"><a aria-label="347"></a>      root_alpha_female(rnorm(1, mean = 60, sd = 10))</span>
-<span id="cb2-348"><a aria-label="348"></a>      root_alpha_male(rnorm(1, mean = 60, sd = 10))</span>
-<span id="cb2-349"><a aria-label="349"></a>    } else {</span>
-<span id="cb2-350"><a aria-label="350"></a>      root_alpha_female(rnorm(1, mean = 60, sd = 10))</span>
-<span id="cb2-351"><a aria-label="351"></a>      root_alpha_male(root_alpha_female())</span>
-<span id="cb2-352"><a aria-label="352"></a>    }</span>
-<span id="cb2-353"><a aria-label="353"></a>    sync_inputs_from_root()</span>
-<span id="cb2-354"><a aria-label="354"></a>  })</span>
-<span id="cb2-355"><a aria-label="355"></a></span>
-<span id="cb2-356"><a aria-label="356"></a>  observeEvent(input$generate_alpha_female, {</span>
-<span id="cb2-357"><a aria-label="357"></a>    root_alpha_female(rnorm(1, mean = 60, sd = 10))</span>
-<span id="cb2-358"><a aria-label="358"></a>    sync_inputs_from_root()</span>
-<span id="cb2-359"><a aria-label="359"></a>  })</span>
-<span id="cb2-360"><a aria-label="360"></a></span>
-<span id="cb2-361"><a aria-label="361"></a>  observeEvent(input$generate_alpha_male, {</span>
-<span id="cb2-362"><a aria-label="362"></a>    root_alpha_male(rnorm(1, mean = 60, sd = 10))</span>
-<span id="cb2-363"><a aria-label="363"></a>    sync_inputs_from_root()</span>
-<span id="cb2-364"><a aria-label="364"></a>  })</span>
+<span id="cb2-348"><a aria-label="348"></a>      root_alpha_male(root_alpha_female())</span>
+<span id="cb2-349"><a aria-label="349"></a>    }</span>
+<span id="cb2-350"><a aria-label="350"></a>    sync_inputs_from_root()</span>
+<span id="cb2-351"><a aria-label="351"></a>  })</span>
+<span id="cb2-352"><a aria-label="352"></a></span>
+<span id="cb2-353"><a aria-label="353"></a>  observeEvent(input$generate_alpha_female, {</span>
+<span id="cb2-354"><a aria-label="354"></a>    root_alpha_female(rnorm(1, mean = 60, sd = 10))</span>
+<span id="cb2-355"><a aria-label="355"></a>    sync_inputs_from_root()</span>
+<span id="cb2-356"><a aria-label="356"></a>  })</span>
+<span id="cb2-357"><a aria-label="357"></a></span>
+<span id="cb2-358"><a aria-label="358"></a>  observeEvent(input$generate_alpha_male, {</span>
+<span id="cb2-359"><a aria-label="359"></a>    root_alpha_male(rnorm(1, mean = 60, sd = 10))</span>
+<span id="cb2-360"><a aria-label="360"></a>    sync_inputs_from_root()</span>
+<span id="cb2-361"><a aria-label="361"></a>  })</span>
+<span id="cb2-362"><a aria-label="362"></a></span>
+<span id="cb2-363"><a aria-label="363"></a>  observeEvent(input$generate_beta, {</span>
+<span id="cb2-364"><a aria-label="364"></a>    new_root_beta &lt;- rnorm(1, mean = 0, sd = 5)</span>
 <span id="cb2-365"><a aria-label="365"></a></span>
-<span id="cb2-366"><a aria-label="366"></a>  observeEvent(input$generate_beta, {</span>
-<span id="cb2-367"><a aria-label="367"></a>    new_root_beta &lt;- rnorm(1, mean = 0, sd = 5)</span>
-<span id="cb2-368"><a aria-label="368"></a></span>
-<span id="cb2-369"><a aria-label="369"></a>    if (identical(input$height_units, "Standardized Units")) {</span>
-<span id="cb2-370"><a aria-label="370"></a>      if (isTRUE(input$include_sex)) {</span>
-<span id="cb2-371"><a aria-label="371"></a>        alpha_female_disp &lt;- isolate(as.numeric(input$alpha_female))</span>
-<span id="cb2-372"><a aria-label="372"></a>        alpha_male_disp &lt;- isolate(as.numeric(input$alpha_male))</span>
-<span id="cb2-373"><a aria-label="373"></a></span>
-<span id="cb2-374"><a aria-label="374"></a>        root_beta(new_root_beta)</span>
-<span id="cb2-375"><a aria-label="375"></a>        set_root_alpha_from_display(</span>
-<span id="cb2-376"><a aria-label="376"></a>          alpha_female_disp,</span>
-<span id="cb2-377"><a aria-label="377"></a>          "female",</span>
-<span id="cb2-378"><a aria-label="378"></a>          beta_root = new_root_beta</span>
-<span id="cb2-379"><a aria-label="379"></a>        )</span>
-<span id="cb2-380"><a aria-label="380"></a>        set_root_alpha_from_display(</span>
-<span id="cb2-381"><a aria-label="381"></a>          alpha_male_disp,</span>
-<span id="cb2-382"><a aria-label="382"></a>          "male",</span>
-<span id="cb2-383"><a aria-label="383"></a>          beta_root = new_root_beta</span>
-<span id="cb2-384"><a aria-label="384"></a>        )</span>
-<span id="cb2-385"><a aria-label="385"></a></span>
-<span id="cb2-386"><a aria-label="386"></a>        updating_inputs(TRUE)</span>
-<span id="cb2-387"><a aria-label="387"></a>        on.exit(updating_inputs(FALSE), add = TRUE)</span>
-<span id="cb2-388"><a aria-label="388"></a>        freezeReactiveValue(input, "alpha_female")</span>
-<span id="cb2-389"><a aria-label="389"></a>        freezeReactiveValue(input, "alpha_male")</span>
-<span id="cb2-390"><a aria-label="390"></a>        freezeReactiveValue(input, "beta")</span>
-<span id="cb2-391"><a aria-label="391"></a>        updateNumericInput(</span>
-<span id="cb2-392"><a aria-label="392"></a>          session,</span>
-<span id="cb2-393"><a aria-label="393"></a>          "alpha_female",</span>
-<span id="cb2-394"><a aria-label="394"></a>          value = round(alpha_female_disp, 3)</span>
-<span id="cb2-395"><a aria-label="395"></a>        )</span>
-<span id="cb2-396"><a aria-label="396"></a>        updateNumericInput(</span>
-<span id="cb2-397"><a aria-label="397"></a>          session,</span>
-<span id="cb2-398"><a aria-label="398"></a>          "alpha_male",</span>
-<span id="cb2-399"><a aria-label="399"></a>          value = round(alpha_male_disp, 3)</span>
-<span id="cb2-400"><a aria-label="400"></a>        )</span>
-<span id="cb2-401"><a aria-label="401"></a>        updateNumericInput(</span>
-<span id="cb2-402"><a aria-label="402"></a>          session,</span>
-<span id="cb2-403"><a aria-label="403"></a>          "beta",</span>
-<span id="cb2-404"><a aria-label="404"></a>          value = round(new_root_beta * beta_display_scale(), 3)</span>
-<span id="cb2-405"><a aria-label="405"></a>        )</span>
-<span id="cb2-406"><a aria-label="406"></a>      } else {</span>
-<span id="cb2-407"><a aria-label="407"></a>        alpha_disp &lt;- isolate(as.numeric(input$alpha))</span>
-<span id="cb2-408"><a aria-label="408"></a>        root_beta(new_root_beta)</span>
-<span id="cb2-409"><a aria-label="409"></a>        set_root_alpha_from_display(</span>
-<span id="cb2-410"><a aria-label="410"></a>          alpha_disp,</span>
-<span id="cb2-411"><a aria-label="411"></a>          "female",</span>
-<span id="cb2-412"><a aria-label="412"></a>          beta_root = new_root_beta</span>
-<span id="cb2-413"><a aria-label="413"></a>        )</span>
-<span id="cb2-414"><a aria-label="414"></a>        root_alpha_male(root_alpha_female())</span>
-<span id="cb2-415"><a aria-label="415"></a></span>
-<span id="cb2-416"><a aria-label="416"></a>        updating_inputs(TRUE)</span>
-<span id="cb2-417"><a aria-label="417"></a>        on.exit(updating_inputs(FALSE), add = TRUE)</span>
-<span id="cb2-418"><a aria-label="418"></a>        freezeReactiveValue(input, "alpha")</span>
-<span id="cb2-419"><a aria-label="419"></a>        freezeReactiveValue(input, "beta")</span>
-<span id="cb2-420"><a aria-label="420"></a>        updateNumericInput(session, "alpha", value = round(alpha_disp, 3))</span>
-<span id="cb2-421"><a aria-label="421"></a>        updateNumericInput(</span>
-<span id="cb2-422"><a aria-label="422"></a>          session,</span>
-<span id="cb2-423"><a aria-label="423"></a>          "beta",</span>
-<span id="cb2-424"><a aria-label="424"></a>          value = round(new_root_beta * beta_display_scale(), 3)</span>
-<span id="cb2-425"><a aria-label="425"></a>        )</span>
-<span id="cb2-426"><a aria-label="426"></a>      }</span>
-<span id="cb2-427"><a aria-label="427"></a>    } else {</span>
-<span id="cb2-428"><a aria-label="428"></a>      root_beta(new_root_beta)</span>
-<span id="cb2-429"><a aria-label="429"></a>      sync_inputs_from_root()</span>
-<span id="cb2-430"><a aria-label="430"></a>    }</span>
-<span id="cb2-431"><a aria-label="431"></a>  })</span>
-<span id="cb2-432"><a aria-label="432"></a></span>
-<span id="cb2-433"><a aria-label="433"></a>  observeEvent(input$generate_sigma, {</span>
-<span id="cb2-434"><a aria-label="434"></a>    root_sigma(abs(rnorm(1, mean = 0, sd = 10)))</span>
-<span id="cb2-435"><a aria-label="435"></a>    sync_inputs_from_root()</span>
-<span id="cb2-436"><a aria-label="436"></a>  })</span>
-<span id="cb2-437"><a aria-label="437"></a></span>
-<span id="cb2-438"><a aria-label="438"></a>  observeEvent(</span>
-<span id="cb2-439"><a aria-label="439"></a>    input$alpha,</span>
-<span id="cb2-440"><a aria-label="440"></a>    {</span>
-<span id="cb2-441"><a aria-label="441"></a>      req(!updating_inputs(), !is.na(input$alpha))</span>
-<span id="cb2-442"><a aria-label="442"></a>      set_root_alpha_from_display(as.numeric(input$alpha), "female")</span>
-<span id="cb2-443"><a aria-label="443"></a>      root_alpha_male(root_alpha_female())</span>
-<span id="cb2-444"><a aria-label="444"></a>    },</span>
-<span id="cb2-445"><a aria-label="445"></a>    ignoreInit = TRUE</span>
-<span id="cb2-446"><a aria-label="446"></a>  )</span>
-<span id="cb2-447"><a aria-label="447"></a></span>
-<span id="cb2-448"><a aria-label="448"></a>  observeEvent(</span>
-<span id="cb2-449"><a aria-label="449"></a>    input$alpha_female,</span>
-<span id="cb2-450"><a aria-label="450"></a>    {</span>
-<span id="cb2-451"><a aria-label="451"></a>      req(!updating_inputs(), !is.na(input$alpha_female))</span>
-<span id="cb2-452"><a aria-label="452"></a>      set_root_alpha_from_display(as.numeric(input$alpha_female), "female")</span>
-<span id="cb2-453"><a aria-label="453"></a>    },</span>
-<span id="cb2-454"><a aria-label="454"></a>    ignoreInit = TRUE</span>
-<span id="cb2-455"><a aria-label="455"></a>  )</span>
-<span id="cb2-456"><a aria-label="456"></a></span>
-<span id="cb2-457"><a aria-label="457"></a>  observeEvent(</span>
-<span id="cb2-458"><a aria-label="458"></a>    input$alpha_male,</span>
-<span id="cb2-459"><a aria-label="459"></a>    {</span>
-<span id="cb2-460"><a aria-label="460"></a>      req(!updating_inputs(), !is.na(input$alpha_male))</span>
-<span id="cb2-461"><a aria-label="461"></a>      set_root_alpha_from_display(as.numeric(input$alpha_male), "male")</span>
-<span id="cb2-462"><a aria-label="462"></a>    },</span>
-<span id="cb2-463"><a aria-label="463"></a>    ignoreInit = TRUE</span>
-<span id="cb2-464"><a aria-label="464"></a>  )</span>
-<span id="cb2-465"><a aria-label="465"></a></span>
-<span id="cb2-466"><a aria-label="466"></a>  observeEvent(</span>
-<span id="cb2-467"><a aria-label="467"></a>    input$beta,</span>
-<span id="cb2-468"><a aria-label="468"></a>    {</span>
-<span id="cb2-469"><a aria-label="469"></a>      req(!updating_inputs(), !is.na(input$beta))</span>
-<span id="cb2-470"><a aria-label="470"></a></span>
-<span id="cb2-471"><a aria-label="471"></a>      new_root_beta &lt;- as.numeric(input$beta) / beta_display_scale()</span>
-<span id="cb2-472"><a aria-label="472"></a></span>
-<span id="cb2-473"><a aria-label="473"></a>      if (identical(input$height_units, "Standardized Units")) {</span>
-<span id="cb2-474"><a aria-label="474"></a>        if (isTRUE(input$include_sex)) {</span>
-<span id="cb2-475"><a aria-label="475"></a>          alpha_female_disp &lt;- isolate(as.numeric(input$alpha_female))</span>
-<span id="cb2-476"><a aria-label="476"></a>          alpha_male_disp &lt;- isolate(as.numeric(input$alpha_male))</span>
-<span id="cb2-477"><a aria-label="477"></a></span>
-<span id="cb2-478"><a aria-label="478"></a>          root_beta(new_root_beta)</span>
-<span id="cb2-479"><a aria-label="479"></a>          set_root_alpha_from_display(</span>
-<span id="cb2-480"><a aria-label="480"></a>            alpha_female_disp,</span>
-<span id="cb2-481"><a aria-label="481"></a>            "female",</span>
-<span id="cb2-482"><a aria-label="482"></a>            beta_root = new_root_beta</span>
-<span id="cb2-483"><a aria-label="483"></a>          )</span>
-<span id="cb2-484"><a aria-label="484"></a>          set_root_alpha_from_display(</span>
-<span id="cb2-485"><a aria-label="485"></a>            alpha_male_disp,</span>
-<span id="cb2-486"><a aria-label="486"></a>            "male",</span>
-<span id="cb2-487"><a aria-label="487"></a>            beta_root = new_root_beta</span>
-<span id="cb2-488"><a aria-label="488"></a>          )</span>
-<span id="cb2-489"><a aria-label="489"></a></span>
-<span id="cb2-490"><a aria-label="490"></a>          updating_inputs(TRUE)</span>
-<span id="cb2-491"><a aria-label="491"></a>          on.exit(updating_inputs(FALSE), add = TRUE)</span>
-<span id="cb2-492"><a aria-label="492"></a>          freezeReactiveValue(input, "alpha_female")</span>
-<span id="cb2-493"><a aria-label="493"></a>          freezeReactiveValue(input, "alpha_male")</span>
-<span id="cb2-494"><a aria-label="494"></a>          updateNumericInput(</span>
-<span id="cb2-495"><a aria-label="495"></a>            session,</span>
-<span id="cb2-496"><a aria-label="496"></a>            "alpha_female",</span>
-<span id="cb2-497"><a aria-label="497"></a>            value = round(alpha_female_disp, 3)</span>
-<span id="cb2-498"><a aria-label="498"></a>          )</span>
-<span id="cb2-499"><a aria-label="499"></a>          updateNumericInput(</span>
-<span id="cb2-500"><a aria-label="500"></a>            session,</span>
-<span id="cb2-501"><a aria-label="501"></a>            "alpha_male",</span>
-<span id="cb2-502"><a aria-label="502"></a>            value = round(alpha_male_disp, 3)</span>
-<span id="cb2-503"><a aria-label="503"></a>          )</span>
-<span id="cb2-504"><a aria-label="504"></a>        } else {</span>
-<span id="cb2-505"><a aria-label="505"></a>          alpha_disp &lt;- isolate(as.numeric(input$alpha))</span>
-<span id="cb2-506"><a aria-label="506"></a>          root_beta(new_root_beta)</span>
-<span id="cb2-507"><a aria-label="507"></a>          set_root_alpha_from_display(</span>
-<span id="cb2-508"><a aria-label="508"></a>            alpha_disp,</span>
-<span id="cb2-509"><a aria-label="509"></a>            "female",</span>
-<span id="cb2-510"><a aria-label="510"></a>            beta_root = new_root_beta</span>
-<span id="cb2-511"><a aria-label="511"></a>          )</span>
-<span id="cb2-512"><a aria-label="512"></a>          root_alpha_male(root_alpha_female())</span>
-<span id="cb2-513"><a aria-label="513"></a></span>
-<span id="cb2-514"><a aria-label="514"></a>          updating_inputs(TRUE)</span>
-<span id="cb2-515"><a aria-label="515"></a>          on.exit(updating_inputs(FALSE), add = TRUE)</span>
-<span id="cb2-516"><a aria-label="516"></a>          freezeReactiveValue(input, "alpha")</span>
-<span id="cb2-517"><a aria-label="517"></a>          updateNumericInput(session, "alpha", value = round(alpha_disp, 3))</span>
-<span id="cb2-518"><a aria-label="518"></a>        }</span>
-<span id="cb2-519"><a aria-label="519"></a>      } else {</span>
-<span id="cb2-520"><a aria-label="520"></a>        root_beta(new_root_beta)</span>
-<span id="cb2-521"><a aria-label="521"></a>      }</span>
-<span id="cb2-522"><a aria-label="522"></a>    },</span>
-<span id="cb2-523"><a aria-label="523"></a>    ignoreInit = TRUE</span>
-<span id="cb2-524"><a aria-label="524"></a>  )</span>
-<span id="cb2-525"><a aria-label="525"></a></span>
-<span id="cb2-526"><a aria-label="526"></a>  observeEvent(</span>
-<span id="cb2-527"><a aria-label="527"></a>    input$sigma,</span>
-<span id="cb2-528"><a aria-label="528"></a>    {</span>
-<span id="cb2-529"><a aria-label="529"></a>      req(!updating_inputs(), !is.na(input$sigma))</span>
-<span id="cb2-530"><a aria-label="530"></a>      root_sigma(as.numeric(input$sigma) / weight_scale())</span>
-<span id="cb2-531"><a aria-label="531"></a>    },</span>
-<span id="cb2-532"><a aria-label="532"></a>    ignoreInit = TRUE</span>
-<span id="cb2-533"><a aria-label="533"></a>  )</span>
-<span id="cb2-534"><a aria-label="534"></a></span>
-<span id="cb2-535"><a aria-label="535"></a>  observeEvent(</span>
-<span id="cb2-536"><a aria-label="536"></a>    input$include_sex,</span>
-<span id="cb2-537"><a aria-label="537"></a>    {</span>
-<span id="cb2-538"><a aria-label="538"></a>      if (isTRUE(input$include_sex)) {</span>
-<span id="cb2-539"><a aria-label="539"></a>        root_alpha_male(root_alpha_male())</span>
-<span id="cb2-540"><a aria-label="540"></a>      } else {</span>
-<span id="cb2-541"><a aria-label="541"></a>        root_alpha_male(root_alpha_female())</span>
-<span id="cb2-542"><a aria-label="542"></a>      }</span>
-<span id="cb2-543"><a aria-label="543"></a></span>
-<span id="cb2-544"><a aria-label="544"></a>      session$onFlushed(</span>
-<span id="cb2-545"><a aria-label="545"></a>        function() {</span>
-<span id="cb2-546"><a aria-label="546"></a>          sync_inputs_from_root()</span>
-<span id="cb2-547"><a aria-label="547"></a>        },</span>
-<span id="cb2-548"><a aria-label="548"></a>        once = TRUE</span>
-<span id="cb2-549"><a aria-label="549"></a>      )</span>
-<span id="cb2-550"><a aria-label="550"></a>    },</span>
-<span id="cb2-551"><a aria-label="551"></a>    ignoreInit = TRUE</span>
-<span id="cb2-552"><a aria-label="552"></a>  )</span>
-<span id="cb2-553"><a aria-label="553"></a></span>
-<span id="cb2-554"><a aria-label="554"></a>  observeEvent(</span>
-<span id="cb2-555"><a aria-label="555"></a>    list(input$height_units, input$weight_units),</span>
-<span id="cb2-556"><a aria-label="556"></a>    {</span>
-<span id="cb2-557"><a aria-label="557"></a>      sync_inputs_from_root()</span>
-<span id="cb2-558"><a aria-label="558"></a>    },</span>
-<span id="cb2-559"><a aria-label="559"></a>    ignoreInit = TRUE</span>
-<span id="cb2-560"><a aria-label="560"></a>  )</span>
-<span id="cb2-561"><a aria-label="561"></a></span>
-<span id="cb2-562"><a aria-label="562"></a>  output$alpha_ui &lt;- renderUI({</span>
-<span id="cb2-563"><a aria-label="563"></a>    if (isTRUE(input$include_sex)) {</span>
-<span id="cb2-564"><a aria-label="564"></a>      tagList(</span>
-<span id="cb2-565"><a aria-label="565"></a>        param_row(</span>
-<span id="cb2-566"><a aria-label="566"></a>          numericInput(</span>
-<span id="cb2-567"><a aria-label="567"></a>            "alpha_female",</span>
-<span id="cb2-568"><a aria-label="568"></a>            "⍺[female] (intercept)",</span>
-<span id="cb2-569"><a aria-label="569"></a>            value = NA_real_,</span>
-<span id="cb2-570"><a aria-label="570"></a>            width = "100%"</span>
-<span id="cb2-571"><a aria-label="571"></a>          ),</span>
-<span id="cb2-572"><a aria-label="572"></a>          "generate_alpha_female"</span>
-<span id="cb2-573"><a aria-label="573"></a>        ),</span>
-<span id="cb2-574"><a aria-label="574"></a>        param_row(</span>
-<span id="cb2-575"><a aria-label="575"></a>          numericInput(</span>
-<span id="cb2-576"><a aria-label="576"></a>            "alpha_male",</span>
-<span id="cb2-577"><a aria-label="577"></a>            "⍺[male] (intercept)",</span>
-<span id="cb2-578"><a aria-label="578"></a>            value = NA_real_,</span>
-<span id="cb2-579"><a aria-label="579"></a>            width = "100%"</span>
-<span id="cb2-580"><a aria-label="580"></a>          ),</span>
-<span id="cb2-581"><a aria-label="581"></a>          "generate_alpha_male"</span>
-<span id="cb2-582"><a aria-label="582"></a>        )</span>
-<span id="cb2-583"><a aria-label="583"></a>      )</span>
-<span id="cb2-584"><a aria-label="584"></a>    } else {</span>
-<span id="cb2-585"><a aria-label="585"></a>      param_row(</span>
-<span id="cb2-586"><a aria-label="586"></a>        numericInput(</span>
-<span id="cb2-587"><a aria-label="587"></a>          "alpha",</span>
-<span id="cb2-588"><a aria-label="588"></a>          "⍺ (intercept)",</span>
-<span id="cb2-589"><a aria-label="589"></a>          value = NA_real_,</span>
-<span id="cb2-590"><a aria-label="590"></a>          width = "100%"</span>
-<span id="cb2-591"><a aria-label="591"></a>        ),</span>
-<span id="cb2-592"><a aria-label="592"></a>        "generate_alpha"</span>
-<span id="cb2-593"><a aria-label="593"></a>      )</span>
-<span id="cb2-594"><a aria-label="594"></a>    }</span>
-<span id="cb2-595"><a aria-label="595"></a>  })</span>
-<span id="cb2-596"><a aria-label="596"></a></span>
-<span id="cb2-597"><a aria-label="597"></a>  plot_data &lt;- reactive({</span>
-<span id="cb2-598"><a aria-label="598"></a>    s &lt;- sim_data()</span>
-<span id="cb2-599"><a aria-label="599"></a>    req(!is.null(s), !is.na(root_sigma()), root_sigma() &gt;= 0)</span>
-<span id="cb2-600"><a aria-label="600"></a></span>
-<span id="cb2-601"><a aria-label="601"></a>    height_cm &lt;- HEIGHT_MEAN_CM + HEIGHT_SD_CM * s$height_z</span>
-<span id="cb2-602"><a aria-label="602"></a></span>
-<span id="cb2-603"><a aria-label="603"></a>    alpha_by_sex &lt;- if (isTRUE(input$include_sex)) {</span>
-<span id="cb2-604"><a aria-label="604"></a>      ifelse(s$sex == 1, root_alpha_male(), root_alpha_female())</span>
-<span id="cb2-605"><a aria-label="605"></a>    } else {</span>
-<span id="cb2-606"><a aria-label="606"></a>      rep(root_alpha_female(), length(s$sex))</span>
-<span id="cb2-607"><a aria-label="607"></a>    }</span>
+<span id="cb2-366"><a aria-label="366"></a>    if (identical(input$height_units, "Standardized Units")) {</span>
+<span id="cb2-367"><a aria-label="367"></a>      if (isTRUE(input$include_sex)) {</span>
+<span id="cb2-368"><a aria-label="368"></a>        alpha_female_disp &lt;- isolate(as.numeric(input$alpha_female))</span>
+<span id="cb2-369"><a aria-label="369"></a>        alpha_male_disp &lt;- isolate(as.numeric(input$alpha_male))</span>
+<span id="cb2-370"><a aria-label="370"></a></span>
+<span id="cb2-371"><a aria-label="371"></a>        root_beta(new_root_beta)</span>
+<span id="cb2-372"><a aria-label="372"></a>        set_root_alpha_from_display(</span>
+<span id="cb2-373"><a aria-label="373"></a>          alpha_female_disp,</span>
+<span id="cb2-374"><a aria-label="374"></a>          "female",</span>
+<span id="cb2-375"><a aria-label="375"></a>          beta_root = new_root_beta</span>
+<span id="cb2-376"><a aria-label="376"></a>        )</span>
+<span id="cb2-377"><a aria-label="377"></a>        set_root_alpha_from_display(</span>
+<span id="cb2-378"><a aria-label="378"></a>          alpha_male_disp,</span>
+<span id="cb2-379"><a aria-label="379"></a>          "male",</span>
+<span id="cb2-380"><a aria-label="380"></a>          beta_root = new_root_beta</span>
+<span id="cb2-381"><a aria-label="381"></a>        )</span>
+<span id="cb2-382"><a aria-label="382"></a></span>
+<span id="cb2-383"><a aria-label="383"></a>        updating_inputs(TRUE)</span>
+<span id="cb2-384"><a aria-label="384"></a>        on.exit(updating_inputs(FALSE), add = TRUE)</span>
+<span id="cb2-385"><a aria-label="385"></a>        freezeReactiveValue(input, "alpha_female")</span>
+<span id="cb2-386"><a aria-label="386"></a>        freezeReactiveValue(input, "alpha_male")</span>
+<span id="cb2-387"><a aria-label="387"></a>        freezeReactiveValue(input, "beta")</span>
+<span id="cb2-388"><a aria-label="388"></a>        updateNumericInput(</span>
+<span id="cb2-389"><a aria-label="389"></a>          session,</span>
+<span id="cb2-390"><a aria-label="390"></a>          "alpha_female",</span>
+<span id="cb2-391"><a aria-label="391"></a>          value = round(alpha_female_disp, 3)</span>
+<span id="cb2-392"><a aria-label="392"></a>        )</span>
+<span id="cb2-393"><a aria-label="393"></a>        updateNumericInput(</span>
+<span id="cb2-394"><a aria-label="394"></a>          session,</span>
+<span id="cb2-395"><a aria-label="395"></a>          "alpha_male",</span>
+<span id="cb2-396"><a aria-label="396"></a>          value = round(alpha_male_disp, 3)</span>
+<span id="cb2-397"><a aria-label="397"></a>        )</span>
+<span id="cb2-398"><a aria-label="398"></a>        updateNumericInput(</span>
+<span id="cb2-399"><a aria-label="399"></a>          session,</span>
+<span id="cb2-400"><a aria-label="400"></a>          "beta",</span>
+<span id="cb2-401"><a aria-label="401"></a>          value = round(new_root_beta * beta_display_scale(), 3)</span>
+<span id="cb2-402"><a aria-label="402"></a>        )</span>
+<span id="cb2-403"><a aria-label="403"></a>      } else {</span>
+<span id="cb2-404"><a aria-label="404"></a>        alpha_disp &lt;- isolate(as.numeric(input$alpha))</span>
+<span id="cb2-405"><a aria-label="405"></a>        root_beta(new_root_beta)</span>
+<span id="cb2-406"><a aria-label="406"></a>        set_root_alpha_from_display(</span>
+<span id="cb2-407"><a aria-label="407"></a>          alpha_disp,</span>
+<span id="cb2-408"><a aria-label="408"></a>          "female",</span>
+<span id="cb2-409"><a aria-label="409"></a>          beta_root = new_root_beta</span>
+<span id="cb2-410"><a aria-label="410"></a>        )</span>
+<span id="cb2-411"><a aria-label="411"></a>        root_alpha_male(root_alpha_female())</span>
+<span id="cb2-412"><a aria-label="412"></a></span>
+<span id="cb2-413"><a aria-label="413"></a>        updating_inputs(TRUE)</span>
+<span id="cb2-414"><a aria-label="414"></a>        on.exit(updating_inputs(FALSE), add = TRUE)</span>
+<span id="cb2-415"><a aria-label="415"></a>        freezeReactiveValue(input, "alpha")</span>
+<span id="cb2-416"><a aria-label="416"></a>        freezeReactiveValue(input, "beta")</span>
+<span id="cb2-417"><a aria-label="417"></a>        updateNumericInput(session, "alpha", value = round(alpha_disp, 3))</span>
+<span id="cb2-418"><a aria-label="418"></a>        updateNumericInput(</span>
+<span id="cb2-419"><a aria-label="419"></a>          session,</span>
+<span id="cb2-420"><a aria-label="420"></a>          "beta",</span>
+<span id="cb2-421"><a aria-label="421"></a>          value = round(new_root_beta * beta_display_scale(), 3)</span>
+<span id="cb2-422"><a aria-label="422"></a>        )</span>
+<span id="cb2-423"><a aria-label="423"></a>      }</span>
+<span id="cb2-424"><a aria-label="424"></a>    } else {</span>
+<span id="cb2-425"><a aria-label="425"></a>      root_beta(new_root_beta)</span>
+<span id="cb2-426"><a aria-label="426"></a>      sync_inputs_from_root()</span>
+<span id="cb2-427"><a aria-label="427"></a>    }</span>
+<span id="cb2-428"><a aria-label="428"></a>  })</span>
+<span id="cb2-429"><a aria-label="429"></a></span>
+<span id="cb2-430"><a aria-label="430"></a>  observeEvent(input$generate_sigma, {</span>
+<span id="cb2-431"><a aria-label="431"></a>    root_sigma(abs(rnorm(1, mean = 0, sd = 10)))</span>
+<span id="cb2-432"><a aria-label="432"></a>    sync_inputs_from_root()</span>
+<span id="cb2-433"><a aria-label="433"></a>  })</span>
+<span id="cb2-434"><a aria-label="434"></a></span>
+<span id="cb2-435"><a aria-label="435"></a>  observeEvent(</span>
+<span id="cb2-436"><a aria-label="436"></a>    input$alpha,</span>
+<span id="cb2-437"><a aria-label="437"></a>    {</span>
+<span id="cb2-438"><a aria-label="438"></a>      req(!updating_inputs(), !is.na(input$alpha))</span>
+<span id="cb2-439"><a aria-label="439"></a>      set_root_alpha_from_display(as.numeric(input$alpha), "female")</span>
+<span id="cb2-440"><a aria-label="440"></a>      root_alpha_male(root_alpha_female())</span>
+<span id="cb2-441"><a aria-label="441"></a>    },</span>
+<span id="cb2-442"><a aria-label="442"></a>    ignoreInit = TRUE</span>
+<span id="cb2-443"><a aria-label="443"></a>  )</span>
+<span id="cb2-444"><a aria-label="444"></a></span>
+<span id="cb2-445"><a aria-label="445"></a>  observeEvent(</span>
+<span id="cb2-446"><a aria-label="446"></a>    input$alpha_female,</span>
+<span id="cb2-447"><a aria-label="447"></a>    {</span>
+<span id="cb2-448"><a aria-label="448"></a>      req(!updating_inputs(), !is.na(input$alpha_female))</span>
+<span id="cb2-449"><a aria-label="449"></a>      set_root_alpha_from_display(as.numeric(input$alpha_female), "female")</span>
+<span id="cb2-450"><a aria-label="450"></a>    },</span>
+<span id="cb2-451"><a aria-label="451"></a>    ignoreInit = TRUE</span>
+<span id="cb2-452"><a aria-label="452"></a>  )</span>
+<span id="cb2-453"><a aria-label="453"></a></span>
+<span id="cb2-454"><a aria-label="454"></a>  observeEvent(</span>
+<span id="cb2-455"><a aria-label="455"></a>    input$alpha_male,</span>
+<span id="cb2-456"><a aria-label="456"></a>    {</span>
+<span id="cb2-457"><a aria-label="457"></a>      req(!updating_inputs(), !is.na(input$alpha_male))</span>
+<span id="cb2-458"><a aria-label="458"></a>      set_root_alpha_from_display(as.numeric(input$alpha_male), "male")</span>
+<span id="cb2-459"><a aria-label="459"></a>    },</span>
+<span id="cb2-460"><a aria-label="460"></a>    ignoreInit = TRUE</span>
+<span id="cb2-461"><a aria-label="461"></a>  )</span>
+<span id="cb2-462"><a aria-label="462"></a></span>
+<span id="cb2-463"><a aria-label="463"></a>  observeEvent(</span>
+<span id="cb2-464"><a aria-label="464"></a>    input$beta,</span>
+<span id="cb2-465"><a aria-label="465"></a>    {</span>
+<span id="cb2-466"><a aria-label="466"></a>      req(!updating_inputs(), !is.na(input$beta))</span>
+<span id="cb2-467"><a aria-label="467"></a></span>
+<span id="cb2-468"><a aria-label="468"></a>      new_root_beta &lt;- as.numeric(input$beta) / beta_display_scale()</span>
+<span id="cb2-469"><a aria-label="469"></a></span>
+<span id="cb2-470"><a aria-label="470"></a>      if (identical(input$height_units, "Standardized Units")) {</span>
+<span id="cb2-471"><a aria-label="471"></a>        if (isTRUE(input$include_sex)) {</span>
+<span id="cb2-472"><a aria-label="472"></a>          alpha_female_disp &lt;- isolate(as.numeric(input$alpha_female))</span>
+<span id="cb2-473"><a aria-label="473"></a>          alpha_male_disp &lt;- isolate(as.numeric(input$alpha_male))</span>
+<span id="cb2-474"><a aria-label="474"></a></span>
+<span id="cb2-475"><a aria-label="475"></a>          root_beta(new_root_beta)</span>
+<span id="cb2-476"><a aria-label="476"></a>          set_root_alpha_from_display(</span>
+<span id="cb2-477"><a aria-label="477"></a>            alpha_female_disp,</span>
+<span id="cb2-478"><a aria-label="478"></a>            "female",</span>
+<span id="cb2-479"><a aria-label="479"></a>            beta_root = new_root_beta</span>
+<span id="cb2-480"><a aria-label="480"></a>          )</span>
+<span id="cb2-481"><a aria-label="481"></a>          set_root_alpha_from_display(</span>
+<span id="cb2-482"><a aria-label="482"></a>            alpha_male_disp,</span>
+<span id="cb2-483"><a aria-label="483"></a>            "male",</span>
+<span id="cb2-484"><a aria-label="484"></a>            beta_root = new_root_beta</span>
+<span id="cb2-485"><a aria-label="485"></a>          )</span>
+<span id="cb2-486"><a aria-label="486"></a></span>
+<span id="cb2-487"><a aria-label="487"></a>          updating_inputs(TRUE)</span>
+<span id="cb2-488"><a aria-label="488"></a>          on.exit(updating_inputs(FALSE), add = TRUE)</span>
+<span id="cb2-489"><a aria-label="489"></a>          freezeReactiveValue(input, "alpha_female")</span>
+<span id="cb2-490"><a aria-label="490"></a>          freezeReactiveValue(input, "alpha_male")</span>
+<span id="cb2-491"><a aria-label="491"></a>          updateNumericInput(</span>
+<span id="cb2-492"><a aria-label="492"></a>            session,</span>
+<span id="cb2-493"><a aria-label="493"></a>            "alpha_female",</span>
+<span id="cb2-494"><a aria-label="494"></a>            value = round(alpha_female_disp, 3)</span>
+<span id="cb2-495"><a aria-label="495"></a>          )</span>
+<span id="cb2-496"><a aria-label="496"></a>          updateNumericInput(</span>
+<span id="cb2-497"><a aria-label="497"></a>            session,</span>
+<span id="cb2-498"><a aria-label="498"></a>            "alpha_male",</span>
+<span id="cb2-499"><a aria-label="499"></a>            value = round(alpha_male_disp, 3)</span>
+<span id="cb2-500"><a aria-label="500"></a>          )</span>
+<span id="cb2-501"><a aria-label="501"></a>        } else {</span>
+<span id="cb2-502"><a aria-label="502"></a>          alpha_disp &lt;- isolate(as.numeric(input$alpha))</span>
+<span id="cb2-503"><a aria-label="503"></a>          root_beta(new_root_beta)</span>
+<span id="cb2-504"><a aria-label="504"></a>          set_root_alpha_from_display(</span>
+<span id="cb2-505"><a aria-label="505"></a>            alpha_disp,</span>
+<span id="cb2-506"><a aria-label="506"></a>            "female",</span>
+<span id="cb2-507"><a aria-label="507"></a>            beta_root = new_root_beta</span>
+<span id="cb2-508"><a aria-label="508"></a>          )</span>
+<span id="cb2-509"><a aria-label="509"></a>          root_alpha_male(root_alpha_female())</span>
+<span id="cb2-510"><a aria-label="510"></a></span>
+<span id="cb2-511"><a aria-label="511"></a>          updating_inputs(TRUE)</span>
+<span id="cb2-512"><a aria-label="512"></a>          on.exit(updating_inputs(FALSE), add = TRUE)</span>
+<span id="cb2-513"><a aria-label="513"></a>          freezeReactiveValue(input, "alpha")</span>
+<span id="cb2-514"><a aria-label="514"></a>          updateNumericInput(session, "alpha", value = round(alpha_disp, 3))</span>
+<span id="cb2-515"><a aria-label="515"></a>        }</span>
+<span id="cb2-516"><a aria-label="516"></a>      } else {</span>
+<span id="cb2-517"><a aria-label="517"></a>        root_beta(new_root_beta)</span>
+<span id="cb2-518"><a aria-label="518"></a>      }</span>
+<span id="cb2-519"><a aria-label="519"></a>    },</span>
+<span id="cb2-520"><a aria-label="520"></a>    ignoreInit = TRUE</span>
+<span id="cb2-521"><a aria-label="521"></a>  )</span>
+<span id="cb2-522"><a aria-label="522"></a></span>
+<span id="cb2-523"><a aria-label="523"></a>  observeEvent(</span>
+<span id="cb2-524"><a aria-label="524"></a>    input$sigma,</span>
+<span id="cb2-525"><a aria-label="525"></a>    {</span>
+<span id="cb2-526"><a aria-label="526"></a>      req(!updating_inputs(), !is.na(input$sigma))</span>
+<span id="cb2-527"><a aria-label="527"></a>      root_sigma(as.numeric(input$sigma) / weight_scale())</span>
+<span id="cb2-528"><a aria-label="528"></a>    },</span>
+<span id="cb2-529"><a aria-label="529"></a>    ignoreInit = TRUE</span>
+<span id="cb2-530"><a aria-label="530"></a>  )</span>
+<span id="cb2-531"><a aria-label="531"></a></span>
+<span id="cb2-532"><a aria-label="532"></a>  observeEvent(</span>
+<span id="cb2-533"><a aria-label="533"></a>    input$include_sex,</span>
+<span id="cb2-534"><a aria-label="534"></a>    {</span>
+<span id="cb2-535"><a aria-label="535"></a>      if (isTRUE(input$include_sex)) {</span>
+<span id="cb2-536"><a aria-label="536"></a>        root_alpha_male(root_alpha_male())</span>
+<span id="cb2-537"><a aria-label="537"></a>      } else {</span>
+<span id="cb2-538"><a aria-label="538"></a>        root_alpha_male(root_alpha_female())</span>
+<span id="cb2-539"><a aria-label="539"></a>      }</span>
+<span id="cb2-540"><a aria-label="540"></a></span>
+<span id="cb2-541"><a aria-label="541"></a>      session$onFlushed(</span>
+<span id="cb2-542"><a aria-label="542"></a>        function() {</span>
+<span id="cb2-543"><a aria-label="543"></a>          sync_inputs_from_root()</span>
+<span id="cb2-544"><a aria-label="544"></a>        },</span>
+<span id="cb2-545"><a aria-label="545"></a>        once = TRUE</span>
+<span id="cb2-546"><a aria-label="546"></a>      )</span>
+<span id="cb2-547"><a aria-label="547"></a>    },</span>
+<span id="cb2-548"><a aria-label="548"></a>    ignoreInit = TRUE</span>
+<span id="cb2-549"><a aria-label="549"></a>  )</span>
+<span id="cb2-550"><a aria-label="550"></a></span>
+<span id="cb2-551"><a aria-label="551"></a>  observeEvent(</span>
+<span id="cb2-552"><a aria-label="552"></a>    list(input$height_units, input$weight_units),</span>
+<span id="cb2-553"><a aria-label="553"></a>    {</span>
+<span id="cb2-554"><a aria-label="554"></a>      sync_inputs_from_root()</span>
+<span id="cb2-555"><a aria-label="555"></a>    },</span>
+<span id="cb2-556"><a aria-label="556"></a>    ignoreInit = TRUE</span>
+<span id="cb2-557"><a aria-label="557"></a>  )</span>
+<span id="cb2-558"><a aria-label="558"></a></span>
+<span id="cb2-559"><a aria-label="559"></a>  output$alpha_ui &lt;- renderUI({</span>
+<span id="cb2-560"><a aria-label="560"></a>    if (isTRUE(input$include_sex)) {</span>
+<span id="cb2-561"><a aria-label="561"></a>      tagList(</span>
+<span id="cb2-562"><a aria-label="562"></a>        param_row(</span>
+<span id="cb2-563"><a aria-label="563"></a>          numericInput(</span>
+<span id="cb2-564"><a aria-label="564"></a>            "alpha_female",</span>
+<span id="cb2-565"><a aria-label="565"></a>            "⍺[female] (intercept)",</span>
+<span id="cb2-566"><a aria-label="566"></a>            value = NA_real_,</span>
+<span id="cb2-567"><a aria-label="567"></a>            width = "100%"</span>
+<span id="cb2-568"><a aria-label="568"></a>          ),</span>
+<span id="cb2-569"><a aria-label="569"></a>          "generate_alpha_female"</span>
+<span id="cb2-570"><a aria-label="570"></a>        ),</span>
+<span id="cb2-571"><a aria-label="571"></a>        param_row(</span>
+<span id="cb2-572"><a aria-label="572"></a>          numericInput(</span>
+<span id="cb2-573"><a aria-label="573"></a>            "alpha_male",</span>
+<span id="cb2-574"><a aria-label="574"></a>            "⍺[male] (intercept)",</span>
+<span id="cb2-575"><a aria-label="575"></a>            value = NA_real_,</span>
+<span id="cb2-576"><a aria-label="576"></a>            width = "100%"</span>
+<span id="cb2-577"><a aria-label="577"></a>          ),</span>
+<span id="cb2-578"><a aria-label="578"></a>          "generate_alpha_male"</span>
+<span id="cb2-579"><a aria-label="579"></a>        )</span>
+<span id="cb2-580"><a aria-label="580"></a>      )</span>
+<span id="cb2-581"><a aria-label="581"></a>    } else {</span>
+<span id="cb2-582"><a aria-label="582"></a>      param_row(</span>
+<span id="cb2-583"><a aria-label="583"></a>        numericInput(</span>
+<span id="cb2-584"><a aria-label="584"></a>          "alpha",</span>
+<span id="cb2-585"><a aria-label="585"></a>          "⍺ (intercept)",</span>
+<span id="cb2-586"><a aria-label="586"></a>          value = NA_real_,</span>
+<span id="cb2-587"><a aria-label="587"></a>          width = "100%"</span>
+<span id="cb2-588"><a aria-label="588"></a>        ),</span>
+<span id="cb2-589"><a aria-label="589"></a>        "generate_alpha"</span>
+<span id="cb2-590"><a aria-label="590"></a>      )</span>
+<span id="cb2-591"><a aria-label="591"></a>    }</span>
+<span id="cb2-592"><a aria-label="592"></a>  })</span>
+<span id="cb2-593"><a aria-label="593"></a></span>
+<span id="cb2-594"><a aria-label="594"></a>  plot_data &lt;- reactive({</span>
+<span id="cb2-595"><a aria-label="595"></a>    s &lt;- sim_data()</span>
+<span id="cb2-596"><a aria-label="596"></a>    req(!is.null(s), !is.na(root_sigma()), root_sigma() &gt;= 0)</span>
+<span id="cb2-597"><a aria-label="597"></a></span>
+<span id="cb2-598"><a aria-label="598"></a>    height_cm &lt;- HEIGHT_MEAN_CM + HEIGHT_SD_CM * s$height_z</span>
+<span id="cb2-599"><a aria-label="599"></a></span>
+<span id="cb2-600"><a aria-label="600"></a>    alpha_by_sex &lt;- if (isTRUE(input$include_sex)) {</span>
+<span id="cb2-601"><a aria-label="601"></a>      ifelse(s$sex == 1, root_alpha_male(), root_alpha_female())</span>
+<span id="cb2-602"><a aria-label="602"></a>    } else {</span>
+<span id="cb2-603"><a aria-label="603"></a>      rep(root_alpha_female(), length(s$sex))</span>
+<span id="cb2-604"><a aria-label="604"></a>    }</span>
+<span id="cb2-605"><a aria-label="605"></a></span>
+<span id="cb2-606"><a aria-label="606"></a>    weight_kg_pred &lt;- alpha_by_sex + root_beta() * height_cm</span>
+<span id="cb2-607"><a aria-label="607"></a>    weight_kg &lt;- weight_kg_pred + root_sigma() * s$resid_z</span>
 <span id="cb2-608"><a aria-label="608"></a></span>
-<span id="cb2-609"><a aria-label="609"></a>    weight_kg_pred &lt;- alpha_by_sex + root_beta() * height_cm</span>
-<span id="cb2-610"><a aria-label="610"></a>    weight_kg &lt;- weight_kg_pred + root_sigma() * s$resid_z</span>
-<span id="cb2-611"><a aria-label="611"></a></span>
-<span id="cb2-612"><a aria-label="612"></a>    tibble(</span>
-<span id="cb2-613"><a aria-label="613"></a>      height_cm = height_cm,</span>
-<span id="cb2-614"><a aria-label="614"></a>      height = canonical_to_display_height(height_cm, input$height_units),</span>
-<span id="cb2-615"><a aria-label="615"></a>      weight = canonical_to_display_weight(weight_kg, input$weight_units),</span>
-<span id="cb2-616"><a aria-label="616"></a>      sex = s$sex,</span>
-<span id="cb2-617"><a aria-label="617"></a>      sex_label = ifelse(s$sex == 1, "Male", "Female")</span>
-<span id="cb2-618"><a aria-label="618"></a>    )</span>
-<span id="cb2-619"><a aria-label="619"></a>  })</span>
-<span id="cb2-620"><a aria-label="620"></a></span>
-<span id="cb2-621"><a aria-label="621"></a>  line_data &lt;- reactive({</span>
-<span id="cb2-622"><a aria-label="622"></a>    if (isTRUE(input$include_sex)) {</span>
-<span id="cb2-623"><a aria-label="623"></a>      tibble(</span>
-<span id="cb2-624"><a aria-label="624"></a>        sex = c(0, 1),</span>
-<span id="cb2-625"><a aria-label="625"></a>        sex_label = c("Female", "Male"),</span>
-<span id="cb2-626"><a aria-label="626"></a>        intercept = c(display_alpha_female(), display_alpha_male()),</span>
-<span id="cb2-627"><a aria-label="627"></a>        slope = c(display_beta(), display_beta())</span>
-<span id="cb2-628"><a aria-label="628"></a>      )</span>
-<span id="cb2-629"><a aria-label="629"></a>    } else {</span>
-<span id="cb2-630"><a aria-label="630"></a>      tibble(</span>
-<span id="cb2-631"><a aria-label="631"></a>        sex = 0,</span>
-<span id="cb2-632"><a aria-label="632"></a>        sex_label = "Data",</span>
-<span id="cb2-633"><a aria-label="633"></a>        intercept = display_alpha(),</span>
-<span id="cb2-634"><a aria-label="634"></a>        slope = display_beta()</span>
-<span id="cb2-635"><a aria-label="635"></a>      )</span>
-<span id="cb2-636"><a aria-label="636"></a>    }</span>
-<span id="cb2-637"><a aria-label="637"></a>  })</span>
-<span id="cb2-638"><a aria-label="638"></a></span>
-<span id="cb2-639"><a aria-label="639"></a>  output$generatedPlot &lt;- renderGirafe({</span>
-<span id="cb2-640"><a aria-label="640"></a>    df &lt;- plot_data()</span>
-<span id="cb2-641"><a aria-label="641"></a>    lines &lt;- line_data()</span>
-<span id="cb2-642"><a aria-label="642"></a></span>
-<span id="cb2-643"><a aria-label="643"></a>    x_min &lt;- switch(</span>
-<span id="cb2-644"><a aria-label="644"></a>      input$height_units,</span>
-<span id="cb2-645"><a aria-label="645"></a>      "Centimeters" = HEIGHT_MEAN_CM - 4 * HEIGHT_SD_CM,</span>
-<span id="cb2-646"><a aria-label="646"></a>      "Inches" = (HEIGHT_MEAN_CM - 4 * HEIGHT_SD_CM) / CM_PER_IN,</span>
-<span id="cb2-647"><a aria-label="647"></a>      "Standardized Units" = -4,</span>
-<span id="cb2-648"><a aria-label="648"></a>      HEIGHT_MEAN_CM - 4 * HEIGHT_SD_CM</span>
-<span id="cb2-649"><a aria-label="649"></a>    )</span>
-<span id="cb2-650"><a aria-label="650"></a></span>
-<span id="cb2-651"><a aria-label="651"></a>    x_max &lt;- switch(</span>
-<span id="cb2-652"><a aria-label="652"></a>      input$height_units,</span>
-<span id="cb2-653"><a aria-label="653"></a>      "Centimeters" = HEIGHT_MEAN_CM + 4 * HEIGHT_SD_CM,</span>
-<span id="cb2-654"><a aria-label="654"></a>      "Inches" = (HEIGHT_MEAN_CM + 4 * HEIGHT_SD_CM) / CM_PER_IN,</span>
-<span id="cb2-655"><a aria-label="655"></a>      "Standardized Units" = 4,</span>
-<span id="cb2-656"><a aria-label="656"></a>      HEIGHT_MEAN_CM + 4 * HEIGHT_SD_CM</span>
-<span id="cb2-657"><a aria-label="657"></a>    )</span>
-<span id="cb2-658"><a aria-label="658"></a></span>
-<span id="cb2-659"><a aria-label="659"></a>    y_max &lt;- switch(</span>
-<span id="cb2-660"><a aria-label="660"></a>      input$weight_units,</span>
-<span id="cb2-661"><a aria-label="661"></a>      "Kilograms" = 120,</span>
-<span id="cb2-662"><a aria-label="662"></a>      "Pounds" = 120 * KG_TO_LB,</span>
-<span id="cb2-663"><a aria-label="663"></a>      120</span>
-<span id="cb2-664"><a aria-label="664"></a>    )</span>
-<span id="cb2-665"><a aria-label="665"></a></span>
-<span id="cb2-666"><a aria-label="666"></a>    p &lt;- ggplot(df, aes(x = height, y = weight)) +</span>
-<span id="cb2-667"><a aria-label="667"></a>      geom_point_interactive(</span>
-<span id="cb2-668"><a aria-label="668"></a>        aes(</span>
-<span id="cb2-669"><a aria-label="669"></a>          tooltip = paste0(</span>
-<span id="cb2-670"><a aria-label="670"></a>            "Height: ",</span>
-<span id="cb2-671"><a aria-label="671"></a>            round(height, 1),</span>
-<span id="cb2-672"><a aria-label="672"></a>            " ",</span>
-<span id="cb2-673"><a aria-label="673"></a>            height_unit_label(),</span>
-<span id="cb2-674"><a aria-label="674"></a>            "&lt;br&gt;Weight: ",</span>
-<span id="cb2-675"><a aria-label="675"></a>            round(weight, 1),</span>
-<span id="cb2-676"><a aria-label="676"></a>            " ",</span>
-<span id="cb2-677"><a aria-label="677"></a>            weight_unit_label(),</span>
-<span id="cb2-678"><a aria-label="678"></a>            if (isTRUE(input$include_sex)) {</span>
-<span id="cb2-679"><a aria-label="679"></a>              paste0("&lt;br&gt;Sex: ", sex_label)</span>
-<span id="cb2-680"><a aria-label="680"></a>            } else {</span>
-<span id="cb2-681"><a aria-label="681"></a>              ""</span>
-<span id="cb2-682"><a aria-label="682"></a>            }</span>
-<span id="cb2-683"><a aria-label="683"></a>          ),</span>
-<span id="cb2-684"><a aria-label="684"></a>          data_id = seq_len(nrow(df)),</span>
-<span id="cb2-685"><a aria-label="685"></a>          colour = if (isTRUE(input$include_sex)) sex_label else "Data"</span>
-<span id="cb2-686"><a aria-label="686"></a>        ),</span>
-<span id="cb2-687"><a aria-label="687"></a>        alpha = 0.8</span>
-<span id="cb2-688"><a aria-label="688"></a>      ) +</span>
-<span id="cb2-689"><a aria-label="689"></a>      geom_abline(</span>
-<span id="cb2-690"><a aria-label="690"></a>        data = lines,</span>
-<span id="cb2-691"><a aria-label="691"></a>        aes(intercept = intercept, slope = slope, colour = sex_label),</span>
-<span id="cb2-692"><a aria-label="692"></a>        linewidth = 1,</span>
-<span id="cb2-693"><a aria-label="693"></a>        alpha = 0.8,</span>
-<span id="cb2-694"><a aria-label="694"></a>        show.legend = isTRUE(input$include_sex)</span>
-<span id="cb2-695"><a aria-label="695"></a>      ) +</span>
-<span id="cb2-696"><a aria-label="696"></a>      labs(x = "", y = "", colour = NULL) +</span>
-<span id="cb2-697"><a aria-label="697"></a>      coord_cartesian(</span>
-<span id="cb2-698"><a aria-label="698"></a>        xlim = c(x_min, x_max),</span>
-<span id="cb2-699"><a aria-label="699"></a>        ylim = c(0, y_max),</span>
-<span id="cb2-700"><a aria-label="700"></a>        clip = "off"</span>
-<span id="cb2-701"><a aria-label="701"></a>      ) +</span>
-<span id="cb2-702"><a aria-label="702"></a>      theme_minimal(base_size = 12) +</span>
-<span id="cb2-703"><a aria-label="703"></a>      theme(</span>
-<span id="cb2-704"><a aria-label="704"></a>        legend.position = if (isTRUE(input$include_sex)) "top" else "none"</span>
-<span id="cb2-705"><a aria-label="705"></a>      )</span>
-<span id="cb2-706"><a aria-label="706"></a></span>
-<span id="cb2-707"><a aria-label="707"></a>    girafe(</span>
-<span id="cb2-708"><a aria-label="708"></a>      ggobj = p,</span>
-<span id="cb2-709"><a aria-label="709"></a>      width_svg = 12,</span>
-<span id="cb2-710"><a aria-label="710"></a>      height_svg = 6,</span>
-<span id="cb2-711"><a aria-label="711"></a>      options = list(</span>
-<span id="cb2-712"><a aria-label="712"></a>        opts_hover(css = "fill:orange;r:4px;"),</span>
-<span id="cb2-713"><a aria-label="713"></a>        opts_toolbar(saveaspng = TRUE)</span>
-<span id="cb2-714"><a aria-label="714"></a>      )</span>
-<span id="cb2-715"><a aria-label="715"></a>    )</span>
-<span id="cb2-716"><a aria-label="716"></a>  })</span>
-<span id="cb2-717"><a aria-label="717"></a></span>
-<span id="cb2-718"><a aria-label="718"></a>  output$modelDef &lt;- renderUI({</span>
-<span id="cb2-719"><a aria-label="719"></a>    if (isTRUE(input$include_sex)) {</span>
-<span id="cb2-720"><a aria-label="720"></a>      withMathJax(HTML(</span>
-<span id="cb2-721"><a aria-label="721"></a>        paste0(</span>
-<span id="cb2-722"><a aria-label="722"></a>          "$$",</span>
-<span id="cb2-723"><a aria-label="723"></a>          "\\begin{array}{@{} r @{\\qquad} l @{}}</span>
-<span id="cb2-724"><a aria-label="724"></a>          \\textbf{Likelihood:} &amp;</span>
-<span id="cb2-725"><a aria-label="725"></a>            \\begin{aligned}[t]</span>
-<span id="cb2-726"><a aria-label="726"></a>            \\text{weight}_i &amp;\\sim \\text{Normal}(\\mu_i, \\sigma)</span>
-<span id="cb2-727"><a aria-label="727"></a>            \\end{aligned}</span>
-<span id="cb2-728"><a aria-label="728"></a>            \\\\[6pt]</span>
-<span id="cb2-729"><a aria-label="729"></a></span>
-<span id="cb2-730"><a aria-label="730"></a>          \\textbf{Predictor:} &amp;</span>
-<span id="cb2-731"><a aria-label="731"></a>            \\begin{aligned}[t]</span>
-<span id="cb2-732"><a aria-label="732"></a>            \\mu_i &amp;= \\alpha_{\\text{sex}[i]} + \\beta \\times \\text{height}_i</span>
-<span id="cb2-733"><a aria-label="733"></a>            \\end{aligned}</span>
-<span id="cb2-734"><a aria-label="734"></a>            \\\\[6pt]</span>
-<span id="cb2-735"><a aria-label="735"></a></span>
-<span id="cb2-736"><a aria-label="736"></a>          \\textbf{Priors:} &amp;</span>
-<span id="cb2-737"><a aria-label="737"></a>            \\begin{aligned}[t]</span>
-<span id="cb2-738"><a aria-label="738"></a>            \\alpha_{\\text{female}} &amp;\\sim \\text{Normal}(60, 10) \\\\</span>
-<span id="cb2-739"><a aria-label="739"></a>            \\alpha_{\\text{male}} &amp;\\sim \\text{Normal}(60, 10) \\\\</span>
-<span id="cb2-740"><a aria-label="740"></a>            \\beta &amp;\\sim \\text{Normal}(0, 20) \\\\</span>
-<span id="cb2-741"><a aria-label="741"></a>            \\sigma &amp;\\sim \\text{Normal}(10) \\quad {\\sigma} &gt; 0</span>
-<span id="cb2-742"><a aria-label="742"></a>            \\end{aligned}</span>
-<span id="cb2-743"><a aria-label="743"></a>          \\end{array}",</span>
-<span id="cb2-744"><a aria-label="744"></a>          "$$"</span>
-<span id="cb2-745"><a aria-label="745"></a>        )</span>
-<span id="cb2-746"><a aria-label="746"></a>      ))</span>
-<span id="cb2-747"><a aria-label="747"></a>    } else {</span>
-<span id="cb2-748"><a aria-label="748"></a>      withMathJax(HTML(</span>
-<span id="cb2-749"><a aria-label="749"></a>        paste0(</span>
-<span id="cb2-750"><a aria-label="750"></a>          "$$",</span>
-<span id="cb2-751"><a aria-label="751"></a>          "\\begin{array}{@{} r @{\\qquad} l @{}}</span>
-<span id="cb2-752"><a aria-label="752"></a>          \\textbf{Likelihood:} &amp;</span>
-<span id="cb2-753"><a aria-label="753"></a>            \\begin{aligned}[t]</span>
-<span id="cb2-754"><a aria-label="754"></a>            \\text{weight}_i &amp;\\sim \\text{Normal}(\\mu_i, \\sigma)</span>
-<span id="cb2-755"><a aria-label="755"></a>            \\end{aligned}</span>
-<span id="cb2-756"><a aria-label="756"></a>            \\\\[6pt]</span>
-<span id="cb2-757"><a aria-label="757"></a></span>
-<span id="cb2-758"><a aria-label="758"></a>          \\textbf{Predictor:} &amp;</span>
-<span id="cb2-759"><a aria-label="759"></a>            \\begin{aligned}[t]</span>
-<span id="cb2-760"><a aria-label="760"></a>            \\mu_i &amp;= \\alpha + \\beta \\times \\text{height}_i</span>
-<span id="cb2-761"><a aria-label="761"></a>            \\end{aligned}</span>
-<span id="cb2-762"><a aria-label="762"></a>            \\\\[6pt]</span>
-<span id="cb2-763"><a aria-label="763"></a></span>
-<span id="cb2-764"><a aria-label="764"></a>          \\textbf{Priors:} &amp;</span>
-<span id="cb2-765"><a aria-label="765"></a>            \\begin{aligned}[t]</span>
-<span id="cb2-766"><a aria-label="766"></a>            \\alpha &amp;\\sim \\text{Normal}(60, 10) \\\\</span>
-<span id="cb2-767"><a aria-label="767"></a>            \\beta &amp;\\sim \\text{Normal}(0, 20) \\\\</span>
-<span id="cb2-768"><a aria-label="768"></a>            \\sigma &amp;\\sim \\text{Normal}(10) \\quad {\\sigma} &gt; 0</span>
-<span id="cb2-769"><a aria-label="769"></a>            \\end{aligned}</span>
-<span id="cb2-770"><a aria-label="770"></a>          \\end{array}",</span>
-<span id="cb2-771"><a aria-label="771"></a>          "$$"</span>
-<span id="cb2-772"><a aria-label="772"></a>        )</span>
-<span id="cb2-773"><a aria-label="773"></a>      ))</span>
-<span id="cb2-774"><a aria-label="774"></a>    }</span>
-<span id="cb2-775"><a aria-label="775"></a>  })</span>
-<span id="cb2-776"><a aria-label="776"></a></span>
-<span id="cb2-777"><a aria-label="777"></a>  session$onFlushed(</span>
-<span id="cb2-778"><a aria-label="778"></a>    function() {</span>
-<span id="cb2-779"><a aria-label="779"></a>      sync_inputs_from_root()</span>
-<span id="cb2-780"><a aria-label="780"></a>    },</span>
-<span id="cb2-781"><a aria-label="781"></a>    once = TRUE</span>
-<span id="cb2-782"><a aria-label="782"></a>  )</span>
-<span id="cb2-783"><a aria-label="783"></a>}</span>
-<span id="cb2-784"><a aria-label="784"></a></span>
-<span id="cb2-785"><a aria-label="785"></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-609"><a aria-label="609"></a>    tibble(</span>
+<span id="cb2-610"><a aria-label="610"></a>      height_cm = height_cm,</span>
+<span id="cb2-611"><a aria-label="611"></a>      height = canonical_to_display_height(height_cm, input$height_units),</span>
+<span id="cb2-612"><a aria-label="612"></a>      weight = canonical_to_display_weight(weight_kg, input$weight_units),</span>
+<span id="cb2-613"><a aria-label="613"></a>      sex = s$sex,</span>
+<span id="cb2-614"><a aria-label="614"></a>      sex_label = ifelse(s$sex == 1, "Male", "Female")</span>
+<span id="cb2-615"><a aria-label="615"></a>    )</span>
+<span id="cb2-616"><a aria-label="616"></a>  })</span>
+<span id="cb2-617"><a aria-label="617"></a></span>
+<span id="cb2-618"><a aria-label="618"></a>  line_data &lt;- reactive({</span>
+<span id="cb2-619"><a aria-label="619"></a>    if (isTRUE(input$include_sex)) {</span>
+<span id="cb2-620"><a aria-label="620"></a>      tibble(</span>
+<span id="cb2-621"><a aria-label="621"></a>        sex = c(0, 1),</span>
+<span id="cb2-622"><a aria-label="622"></a>        sex_label = c("Female", "Male"),</span>
+<span id="cb2-623"><a aria-label="623"></a>        intercept = c(display_alpha_female(), display_alpha_male()),</span>
+<span id="cb2-624"><a aria-label="624"></a>        slope = c(display_beta(), display_beta())</span>
+<span id="cb2-625"><a aria-label="625"></a>      )</span>
+<span id="cb2-626"><a aria-label="626"></a>    } else {</span>
+<span id="cb2-627"><a aria-label="627"></a>      tibble(</span>
+<span id="cb2-628"><a aria-label="628"></a>        sex = 0,</span>
+<span id="cb2-629"><a aria-label="629"></a>        sex_label = "Data",</span>
+<span id="cb2-630"><a aria-label="630"></a>        intercept = display_alpha(),</span>
+<span id="cb2-631"><a aria-label="631"></a>        slope = display_beta()</span>
+<span id="cb2-632"><a aria-label="632"></a>      )</span>
+<span id="cb2-633"><a aria-label="633"></a>    }</span>
+<span id="cb2-634"><a aria-label="634"></a>  })</span>
+<span id="cb2-635"><a aria-label="635"></a></span>
+<span id="cb2-636"><a aria-label="636"></a>  output$generatedPlot &lt;- renderGirafe({</span>
+<span id="cb2-637"><a aria-label="637"></a>    df &lt;- plot_data()</span>
+<span id="cb2-638"><a aria-label="638"></a>    lines &lt;- line_data()</span>
+<span id="cb2-639"><a aria-label="639"></a></span>
+<span id="cb2-640"><a aria-label="640"></a>    x_min &lt;- switch(</span>
+<span id="cb2-641"><a aria-label="641"></a>      input$height_units,</span>
+<span id="cb2-642"><a aria-label="642"></a>      "Centimeters" = HEIGHT_MEAN_CM - 4 * HEIGHT_SD_CM,</span>
+<span id="cb2-643"><a aria-label="643"></a>      "Inches" = (HEIGHT_MEAN_CM - 4 * HEIGHT_SD_CM) / CM_PER_IN,</span>
+<span id="cb2-644"><a aria-label="644"></a>      "Standardized Units" = -4,</span>
+<span id="cb2-645"><a aria-label="645"></a>      HEIGHT_MEAN_CM - 4 * HEIGHT_SD_CM</span>
+<span id="cb2-646"><a aria-label="646"></a>    )</span>
+<span id="cb2-647"><a aria-label="647"></a></span>
+<span id="cb2-648"><a aria-label="648"></a>    x_max &lt;- switch(</span>
+<span id="cb2-649"><a aria-label="649"></a>      input$height_units,</span>
+<span id="cb2-650"><a aria-label="650"></a>      "Centimeters" = HEIGHT_MEAN_CM + 4 * HEIGHT_SD_CM,</span>
+<span id="cb2-651"><a aria-label="651"></a>      "Inches" = (HEIGHT_MEAN_CM + 4 * HEIGHT_SD_CM) / CM_PER_IN,</span>
+<span id="cb2-652"><a aria-label="652"></a>      "Standardized Units" = 4,</span>
+<span id="cb2-653"><a aria-label="653"></a>      HEIGHT_MEAN_CM + 4 * HEIGHT_SD_CM</span>
+<span id="cb2-654"><a aria-label="654"></a>    )</span>
+<span id="cb2-655"><a aria-label="655"></a></span>
+<span id="cb2-656"><a aria-label="656"></a>    y_max &lt;- switch(</span>
+<span id="cb2-657"><a aria-label="657"></a>      input$weight_units,</span>
+<span id="cb2-658"><a aria-label="658"></a>      "Kilograms" = 120,</span>
+<span id="cb2-659"><a aria-label="659"></a>      "Pounds" = 120 * KG_TO_LB,</span>
+<span id="cb2-660"><a aria-label="660"></a>      120</span>
+<span id="cb2-661"><a aria-label="661"></a>    )</span>
+<span id="cb2-662"><a aria-label="662"></a></span>
+<span id="cb2-663"><a aria-label="663"></a>    p &lt;- ggplot(df, aes(x = height, y = weight)) +</span>
+<span id="cb2-664"><a aria-label="664"></a>      geom_point_interactive(</span>
+<span id="cb2-665"><a aria-label="665"></a>        aes(</span>
+<span id="cb2-666"><a aria-label="666"></a>          tooltip = paste0(</span>
+<span id="cb2-667"><a aria-label="667"></a>            "Height: ",</span>
+<span id="cb2-668"><a aria-label="668"></a>            round(height, 1),</span>
+<span id="cb2-669"><a aria-label="669"></a>            " ",</span>
+<span id="cb2-670"><a aria-label="670"></a>            height_unit_label(),</span>
+<span id="cb2-671"><a aria-label="671"></a>            "&lt;br&gt;Weight: ",</span>
+<span id="cb2-672"><a aria-label="672"></a>            round(weight, 1),</span>
+<span id="cb2-673"><a aria-label="673"></a>            " ",</span>
+<span id="cb2-674"><a aria-label="674"></a>            weight_unit_label(),</span>
+<span id="cb2-675"><a aria-label="675"></a>            if (isTRUE(input$include_sex)) {</span>
+<span id="cb2-676"><a aria-label="676"></a>              paste0("&lt;br&gt;Sex: ", sex_label)</span>
+<span id="cb2-677"><a aria-label="677"></a>            } else {</span>
+<span id="cb2-678"><a aria-label="678"></a>              ""</span>
+<span id="cb2-679"><a aria-label="679"></a>            }</span>
+<span id="cb2-680"><a aria-label="680"></a>          ),</span>
+<span id="cb2-681"><a aria-label="681"></a>          data_id = seq_len(nrow(df)),</span>
+<span id="cb2-682"><a aria-label="682"></a>          colour = if (isTRUE(input$include_sex)) sex_label else "Data"</span>
+<span id="cb2-683"><a aria-label="683"></a>        ),</span>
+<span id="cb2-684"><a aria-label="684"></a>        alpha = 0.8</span>
+<span id="cb2-685"><a aria-label="685"></a>      ) +</span>
+<span id="cb2-686"><a aria-label="686"></a>      geom_abline(</span>
+<span id="cb2-687"><a aria-label="687"></a>        data = lines,</span>
+<span id="cb2-688"><a aria-label="688"></a>        aes(intercept = intercept, slope = slope, colour = sex_label),</span>
+<span id="cb2-689"><a aria-label="689"></a>        linewidth = 1,</span>
+<span id="cb2-690"><a aria-label="690"></a>        alpha = 0.8,</span>
+<span id="cb2-691"><a aria-label="691"></a>        show.legend = isTRUE(input$include_sex)</span>
+<span id="cb2-692"><a aria-label="692"></a>      ) +</span>
+<span id="cb2-693"><a aria-label="693"></a>      labs(x = "", y = "", colour = NULL) +</span>
+<span id="cb2-694"><a aria-label="694"></a>      coord_cartesian(</span>
+<span id="cb2-695"><a aria-label="695"></a>        xlim = c(x_min, x_max),</span>
+<span id="cb2-696"><a aria-label="696"></a>        ylim = c(0, y_max),</span>
+<span id="cb2-697"><a aria-label="697"></a>        clip = "off"</span>
+<span id="cb2-698"><a aria-label="698"></a>      ) +</span>
+<span id="cb2-699"><a aria-label="699"></a>      theme_minimal(base_size = 12) +</span>
+<span id="cb2-700"><a aria-label="700"></a>      theme(</span>
+<span id="cb2-701"><a aria-label="701"></a>        legend.position = if (isTRUE(input$include_sex)) "top" else "none"</span>
+<span id="cb2-702"><a aria-label="702"></a>      )</span>
+<span id="cb2-703"><a aria-label="703"></a></span>
+<span id="cb2-704"><a aria-label="704"></a>    girafe(</span>
+<span id="cb2-705"><a aria-label="705"></a>      ggobj = p,</span>
+<span id="cb2-706"><a aria-label="706"></a>      width_svg = 12,</span>
+<span id="cb2-707"><a aria-label="707"></a>      height_svg = 6,</span>
+<span id="cb2-708"><a aria-label="708"></a>      options = list(</span>
+<span id="cb2-709"><a aria-label="709"></a>        opts_hover(css = "fill:orange;r:4px;"),</span>
+<span id="cb2-710"><a aria-label="710"></a>        opts_toolbar(saveaspng = TRUE)</span>
+<span id="cb2-711"><a aria-label="711"></a>      )</span>
+<span id="cb2-712"><a aria-label="712"></a>    )</span>
+<span id="cb2-713"><a aria-label="713"></a>  })</span>
+<span id="cb2-714"><a aria-label="714"></a></span>
+<span id="cb2-715"><a aria-label="715"></a>  output$modelDef &lt;- renderUI({</span>
+<span id="cb2-716"><a aria-label="716"></a>    if (isTRUE(input$include_sex)) {</span>
+<span id="cb2-717"><a aria-label="717"></a>      withMathJax(HTML(</span>
+<span id="cb2-718"><a aria-label="718"></a>        paste0(</span>
+<span id="cb2-719"><a aria-label="719"></a>          "$$",</span>
+<span id="cb2-720"><a aria-label="720"></a>          "\\begin{array}{@{} r @{\\qquad} l @{}}</span>
+<span id="cb2-721"><a aria-label="721"></a>          \\textbf{Likelihood:} &amp;</span>
+<span id="cb2-722"><a aria-label="722"></a>            \\begin{aligned}[t]</span>
+<span id="cb2-723"><a aria-label="723"></a>            \\text{weight}_i &amp;\\sim \\text{Normal}(\\mu_i, \\sigma)</span>
+<span id="cb2-724"><a aria-label="724"></a>            \\end{aligned}</span>
+<span id="cb2-725"><a aria-label="725"></a>            \\\\[6pt]</span>
+<span id="cb2-726"><a aria-label="726"></a></span>
+<span id="cb2-727"><a aria-label="727"></a>          \\textbf{Predictor:} &amp;</span>
+<span id="cb2-728"><a aria-label="728"></a>            \\begin{aligned}[t]</span>
+<span id="cb2-729"><a aria-label="729"></a>            \\mu_i &amp;= \\alpha_{\\text{sex}[i]} + \\beta \\times \\text{height}_i</span>
+<span id="cb2-730"><a aria-label="730"></a>            \\end{aligned}</span>
+<span id="cb2-731"><a aria-label="731"></a>            \\\\[6pt]</span>
+<span id="cb2-732"><a aria-label="732"></a></span>
+<span id="cb2-733"><a aria-label="733"></a>          \\textbf{Priors:} &amp;</span>
+<span id="cb2-734"><a aria-label="734"></a>            \\begin{aligned}[t]</span>
+<span id="cb2-735"><a aria-label="735"></a>            \\alpha_{\\text{female}} &amp;\\sim \\text{Normal}(60, 10) \\\\</span>
+<span id="cb2-736"><a aria-label="736"></a>            \\alpha_{\\text{male}} &amp;\\sim \\text{Normal}(60, 10) \\\\</span>
+<span id="cb2-737"><a aria-label="737"></a>            \\beta &amp;\\sim \\text{Normal}(0, 20) \\\\</span>
+<span id="cb2-738"><a aria-label="738"></a>            \\sigma &amp;\\sim \\text{Normal}(10) \\quad {\\sigma} &gt; 0</span>
+<span id="cb2-739"><a aria-label="739"></a>            \\end{aligned}</span>
+<span id="cb2-740"><a aria-label="740"></a>          \\end{array}",</span>
+<span id="cb2-741"><a aria-label="741"></a>          "$$"</span>
+<span id="cb2-742"><a aria-label="742"></a>        )</span>
+<span id="cb2-743"><a aria-label="743"></a>      ))</span>
+<span id="cb2-744"><a aria-label="744"></a>    } else {</span>
+<span id="cb2-745"><a aria-label="745"></a>      withMathJax(HTML(</span>
+<span id="cb2-746"><a aria-label="746"></a>        paste0(</span>
+<span id="cb2-747"><a aria-label="747"></a>          "$$",</span>
+<span id="cb2-748"><a aria-label="748"></a>          "\\begin{array}{@{} r @{\\qquad} l @{}}</span>
+<span id="cb2-749"><a aria-label="749"></a>          \\textbf{Likelihood:} &amp;</span>
+<span id="cb2-750"><a aria-label="750"></a>            \\begin{aligned}[t]</span>
+<span id="cb2-751"><a aria-label="751"></a>            \\text{weight}_i &amp;\\sim \\text{Normal}(\\mu_i, \\sigma)</span>
+<span id="cb2-752"><a aria-label="752"></a>            \\end{aligned}</span>
+<span id="cb2-753"><a aria-label="753"></a>            \\\\[6pt]</span>
+<span id="cb2-754"><a aria-label="754"></a></span>
+<span id="cb2-755"><a aria-label="755"></a>          \\textbf{Predictor:} &amp;</span>
+<span id="cb2-756"><a aria-label="756"></a>            \\begin{aligned}[t]</span>
+<span id="cb2-757"><a aria-label="757"></a>            \\mu_i &amp;= \\alpha + \\beta \\times \\text{height}_i</span>
+<span id="cb2-758"><a aria-label="758"></a>            \\end{aligned}</span>
+<span id="cb2-759"><a aria-label="759"></a>            \\\\[6pt]</span>
+<span id="cb2-760"><a aria-label="760"></a></span>
+<span id="cb2-761"><a aria-label="761"></a>          \\textbf{Priors:} &amp;</span>
+<span id="cb2-762"><a aria-label="762"></a>            \\begin{aligned}[t]</span>
+<span id="cb2-763"><a aria-label="763"></a>            \\alpha &amp;\\sim \\text{Normal}(60, 10) \\\\</span>
+<span id="cb2-764"><a aria-label="764"></a>            \\beta &amp;\\sim \\text{Normal}(0, 20) \\\\</span>
+<span id="cb2-765"><a aria-label="765"></a>            \\sigma &amp;\\sim \\text{Normal}(10) \\quad {\\sigma} &gt; 0</span>
+<span id="cb2-766"><a aria-label="766"></a>            \\end{aligned}</span>
+<span id="cb2-767"><a aria-label="767"></a>          \\end{array}",</span>
+<span id="cb2-768"><a aria-label="768"></a>          "$$"</span>
+<span id="cb2-769"><a aria-label="769"></a>        )</span>
+<span id="cb2-770"><a aria-label="770"></a>      ))</span>
+<span id="cb2-771"><a aria-label="771"></a>    }</span>
+<span id="cb2-772"><a aria-label="772"></a>  })</span>
+<span id="cb2-773"><a aria-label="773"></a></span>
+<span id="cb2-774"><a aria-label="774"></a>  session$onFlushed(</span>
+<span id="cb2-775"><a aria-label="775"></a>    function() {</span>
+<span id="cb2-776"><a aria-label="776"></a>      sync_inputs_from_root()</span>
+<span id="cb2-777"><a aria-label="777"></a>    },</span>
+<span id="cb2-778"><a aria-label="778"></a>    once = TRUE</span>
+<span id="cb2-779"><a aria-label="779"></a>  )</span>
+<span id="cb2-780"><a aria-label="780"></a>}</span>
+<span id="cb2-781"><a aria-label="781"></a></span>
+<span id="cb2-782"><a aria-label="782"></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="step-3-two-statistical-models" class="slide level2 mechanics">
 <h2>Step 3: Two statistical models</h2>
@@ -1638,7 +1603,7 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
 </section>
 <section id="dagitty" class="slide level2 no-title">
 <h2>DAGitty</h2>
-<iframe data-external="1" style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;" src="https://dagitty.net/dags.html"></iframe>
+<iframe class="dagitty-embed" data-external="1" src="https://dagitty.net/dags.html"></iframe>
 </section></section>
 <section id="summary" class="title-slide slide level1 center">
 <h1>Summary</h1>
@@ -1758,7 +1723,7 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
         shuffle: false,
 
         // Turns fragments on and off globally
-        fragments: false,
+        fragments: true,
 
         // Flags whether to include the current fragment in the URL,
         // so that reloading brings you to the same fragment position
@@ -1971,7 +1936,7 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
           const currentSlide = Reveal.getCurrentSlide();
 
           // 1) Toggle Reveal stepping behavior
-          Reveal.configure({ fragments: enabled, incremental: enabled });
+          Reveal.configure({ fragments: enabled });
 
           // 2) Toggle DOM markers to fix Scroll View spacing
           if (enabled) {
@@ -1991,7 +1956,7 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
           if (typeof Reveal.layout === "function") Reveal.layout();
           if (typeof Reveal.sync === "function") Reveal.sync();
 
-          // 4) Reset slide state immediately (this is what you were missing)
+          // 4) Reset slide state immediately
           if (enabled) {
             // Force "start of slide" (no fragments visible)
             // Using Reveal.slide ensures Reveal updates internal fragment state too.
@@ -2012,38 +1977,56 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
           }
         }
 
-        function addControls() {
-          const sidebar = document.querySelector(".slide-menu-panel");
-          if (!sidebar) return;
+        function controlsHTML() {
+          return `
+            <label>
+              <input type="checkbox" class="toggle-fragments">
+              Incremental Build
+            </label>
+            <label>
+              <input type="checkbox" class="toggle-transitions" checked>
+              Animated Transitions
+            </label>
+          `;
+        }
 
+        function addControls() {
           // Patch once controls are being added (Reveal is ready)
           patchScrollViewFragmentCounting();
 
-          const box = document.createElement("div");
-          box.style.padding = "0.5rem 0.75rem";
-          box.style.borderTop = "1px solid #ccc";
-          box.innerHTML = `
-            <label style="display:block; font-size:0.85rem;">
-              <input type="checkbox" id="toggleFragments">
-              Incremental Build
-            </label>
-            <label style="display:block; font-size:0.85rem;">
-              <input type="checkbox" id="toggleTransitions" checked>
-              Transitions
-            </label>
-          `;
-          sidebar.appendChild(box);
+          // Same controls in two places: the slide menu sidebar, and the bottom-left
+          // corner of the title slide. All copies stay in sync.
+          const sidebar = document.querySelector(".slide-menu-panel");
+          if (sidebar) {
+            const box = document.createElement("div");
+            box.className = "deck-toggles deck-toggles-menu";
+            box.innerHTML = controlsHTML();
+            sidebar.appendChild(box);
+          }
 
-          const frag = box.querySelector("#toggleFragments");
-          const trans = box.querySelector("#toggleTransitions");
+          const corner = document.createElement("div");
+          corner.className = "deck-toggles deck-toggles-title";
+          corner.innerHTML = controlsHTML();
+          document.body.appendChild(corner);
+
+          const fragBoxes = () => document.querySelectorAll(".toggle-fragments");
+          const transBoxes = () => document.querySelectorAll(".toggle-transitions");
+
+          // Show the corner copy only on the first slide
+          function updateCorner() {
+            const i = Reveal.getIndices();
+            corner.classList.toggle("visible", i.h === 0 && (i.v || 0) === 0);
+          }
+          Reveal.on("slidechanged", updateCorner);
+          updateCorner();
 
           // Capture fragment state early so re-enabling restores correctly
           document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
 
-          // Initialize checkbox to current config (and fix scroll spacing on load)
+          // Initialize checkboxes to current config (and fix scroll spacing on load)
           try {
             const cfg = Reveal.getConfig();
-            frag.checked = !!cfg.fragments;
+            fragBoxes().forEach((el) => (el.checked = !!cfg.fragments));
 
             // If config says fragments are off, remove fragment DOM markers immediately
             // so Scroll View doesn't allocate dead-scroll space.
@@ -2055,26 +2038,32 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
             }
           } catch (e) { }
 
-          frag.addEventListener("change", () => {
-            applyFragments(frag.checked);
+          fragBoxes().forEach((frag) =>
+            frag.addEventListener("change", () => {
+              fragBoxes().forEach((el) => (el.checked = frag.checked));
+              applyFragments(frag.checked);
 
-            // If we're in scroll view, layout already called in applyFragments(),
-            // but leaving this is harmless.
-            if (inScrollView()) {
-              Reveal.layout();
-            }
-          });
+              // If we're in scroll view, layout already called in applyFragments(),
+              // but leaving this is harmless.
+              if (inScrollView()) {
+                Reveal.layout();
+              }
+            })
+          );
 
-          trans.addEventListener("change", () => {
-            if (trans.checked) {
-              Reveal.configure({ transition: "slide", backgroundTransition: "slide" });
-            } else {
-              Reveal.configure({ transition: "none", backgroundTransition: "none" });
-            }
-          });
+          // Restore whatever the deck configured (_quarto.yml) when re-enabled
+          const { transition, backgroundTransition } = Reveal.getConfig();
+          transBoxes().forEach((trans) =>
+            trans.addEventListener("change", () => {
+              transBoxes().forEach((el) => (el.checked = trans.checked));
+              if (trans.checked) {
+                Reveal.configure({ transition, backgroundTransition });
+              } else {
+                Reveal.configure({ transition: "none", backgroundTransition: "none" });
+              }
+            })
+          );
 
-          // Optional: expose to your own UI as well
-          window.setFragmentsEnabled = applyFragments;
         }
 
         if (window.Reveal) {

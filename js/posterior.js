@@ -1,4 +1,6 @@
-// js/posterior.js
+import { brand } from './palette.js';
+import { clearCanvas, drawPercentAxes, font } from './canvas-axes.js';
+
 // Read-only canvas plot of one or more curves over x in [0, 1], used to show
 // prior, likelihood and posterior together. Styled to match LineGraphWidget.
 export class PosteriorPlot {
@@ -69,11 +71,7 @@ export class PosteriorPlot {
 
   _draw() {
     if (!this.dpr) return;
-    const ctx = this.ctx;
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
+    clearCanvas(this.canvas, this.ctx);
     this._drawAxesAndGrid();
     const yMax = this._yMax();
     for (const s of this.series) this._drawSeries(s, yMax);
@@ -83,22 +81,13 @@ export class PosteriorPlot {
   _drawAxesAndGrid() {
     const ctx = this.ctx;
     const pr = this._plotRect();
-    const tickLen = 6 * this.dpr;
+    drawPercentAxes(ctx, pr, this.dpr, { xLabel: this.xLabel });
 
     ctx.save();
 
-    ctx.strokeStyle = "#e6e6e6";
-    ctx.lineWidth = 1 * this.dpr;
-    for (let x = 0; x <= 1 + 1e-9; x += 0.1) {
-      const cx = pr.x + x * pr.w;
-      ctx.beginPath();
-      ctx.moveTo(cx, pr.y);
-      ctx.lineTo(cx, pr.y + pr.h);
-      ctx.stroke();
-    }
-
     // 50% line: the threshold for winning
-    ctx.strokeStyle = "#999999";
+    ctx.strokeStyle = brand("gray");
+    ctx.lineWidth = 1 * this.dpr;
     ctx.setLineDash([4 * this.dpr, 4 * this.dpr]);
     ctx.beginPath();
     ctx.moveTo(pr.x + 0.5 * pr.w, pr.y);
@@ -106,35 +95,14 @@ export class PosteriorPlot {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    ctx.strokeStyle = "#333333";
-    ctx.lineWidth = 1.5 * this.dpr;
-    ctx.beginPath();
-    ctx.moveTo(pr.x, pr.y);
-    ctx.lineTo(pr.x, pr.y + pr.h);
-    ctx.lineTo(pr.x + pr.w, pr.y + pr.h);
-    ctx.stroke();
-
-    ctx.fillStyle = "#333333";
-    ctx.font = `${12 * this.dpr}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "top";
-    for (let x = 0; x <= 1 + 1e-9; x += 0.1) {
-      const cx = pr.x + x * pr.w;
-      ctx.beginPath();
-      ctx.moveTo(cx, pr.y + pr.h);
-      ctx.lineTo(cx, pr.y + pr.h + tickLen);
-      ctx.stroke();
-      ctx.fillText(`${Math.round(x * 100)}`, cx, pr.y + pr.h + tickLen + 4 * this.dpr);
-    }
-    ctx.fillText(this.xLabel, pr.x + pr.w / 2, pr.y + pr.h + tickLen + 20 * this.dpr);
-
     // Y axis is relative plausibility; absolute values aren't meaningful here
-    ctx.save();
+    ctx.fillStyle = brand("ink");
+    ctx.font = font(12, this.dpr);
+    ctx.textAlign = "center";
     ctx.translate(pr.x - 8 * this.dpr, pr.y + pr.h / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.textBaseline = "bottom";
     ctx.fillText("Plausibility", 0, 0);
-    ctx.restore();
 
     ctx.restore();
   }
@@ -180,7 +148,7 @@ export class PosteriorPlot {
     const swatch = 26 * d;
 
     ctx.save();
-    ctx.font = `${13 * d}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
+    ctx.font = font(13, d);
     ctx.textBaseline = "middle";
     ctx.textAlign = "left";
 
@@ -204,7 +172,7 @@ export class PosteriorPlot {
       ctx.lineTo(bx + 8 * d + swatch, cy);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = "#333333";
+      ctx.fillStyle = brand("ink");
       ctx.fillText(s.label, bx + 16 * d + swatch, cy);
     });
 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-d76b89148f2051d413c67903796ad183.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -110,6 +110,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <script src="../js/dagitty.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => DAGitty.setup());</script>
+<style>svg { overflow: visible; }</style>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -2294,40 +2296,33 @@ dag{
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plot_param <span class="ot">&lt;-</span> <span class="cf">function</span>(draws, param, <span class="at">prior_sd =</span> BETA_SD) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(draws, <span class="fu">aes</span>(<span class="at">x =</span> .data[[param]])) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">fun =</span> dnorm,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> prior_sd),</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"indianred3"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"cornflowerblue"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="fl">0.35</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_pointinterval</span>(</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">0</span>),</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">point_interval =</span> median_qi</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> BETA_SD, <span class="dv">3</span> <span class="sc">*</span> BETA_SD)) <span class="sc">+</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> param,</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> param,</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Density"</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the prior is Normal(0, prior_sd); show it out to 3 SDs either side</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(draws, <span class="fu">aes</span>(<span class="at">x =</span> .data[[param]])) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">fun =</span> dnorm,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> prior_sd),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"indianred3"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"cornflowerblue"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="fl">0.35</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_pointinterval</span>(</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">0</span>),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">point_interval =</span> median_qi</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> prior_sd, <span class="dv">3</span> <span class="sc">*</span> prior_sd)) <span class="sc">+</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> param,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> param,</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Density"</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  DAGitty.setup();
-});
-</script>
-<style>
-  svg { overflow: visible; }
-</style>
 </section>
 <section id="formal-model" class="level1">
 <h1>Formal Model</h1>
@@ -2433,7 +2428,7 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> knitr<span class="sc">::</span>knit_code<span class="sc">$</span><span class="fu">get</span>(<span class="st">"model1_stan"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="at">.open =</span> <span class="st">"&lt;&lt;"</span>, <span class="at">.close =</span> <span class="st">"&gt;&gt;"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>(<span class="at">dir =</span> <span class="st">"../.stancache"</span>) <span class="sc">|&gt;</span>  <span class="co"># reuse compiled models across renders</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
@@ -2465,9 +2460,9 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <col style="width: 10%">
 <col style="width: 9%">
 <col style="width: 9%">
-<col style="width: 10%">
-<col style="width: 10%">
 <col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
 <col style="width: 9%">
 <col style="width: 9%">
 </colgroup>
@@ -2488,39 +2483,39 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">alpha</td>
-<td style="text-align: right;">33.838613</td>
-<td style="text-align: right;">33.847533</td>
-<td style="text-align: right;">1.822168</td>
-<td style="text-align: right;">1.843216</td>
-<td style="text-align: right;">30.794711</td>
-<td style="text-align: right;">36.880081</td>
-<td style="text-align: right;">1.000616</td>
-<td style="text-align: right;">3566.381</td>
-<td style="text-align: right;">2984.857</td>
+<td style="text-align: right;">33.774465</td>
+<td style="text-align: right;">33.771966</td>
+<td style="text-align: right;">1.847854</td>
+<td style="text-align: right;">1.819532</td>
+<td style="text-align: right;">30.76020</td>
+<td style="text-align: right;">36.774059</td>
+<td style="text-align: right;">0.9996227</td>
+<td style="text-align: right;">4139.181</td>
+<td style="text-align: right;">2825.573</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_CED</td>
-<td style="text-align: right;">-6.204389</td>
-<td style="text-align: right;">-6.233661</td>
-<td style="text-align: right;">1.803184</td>
-<td style="text-align: right;">1.800519</td>
-<td style="text-align: right;">-9.112974</td>
-<td style="text-align: right;">-3.215299</td>
-<td style="text-align: right;">1.002563</td>
-<td style="text-align: right;">3697.866</td>
-<td style="text-align: right;">3013.807</td>
+<td style="text-align: right;">-6.166803</td>
+<td style="text-align: right;">-6.168762</td>
+<td style="text-align: right;">1.823785</td>
+<td style="text-align: right;">1.806196</td>
+<td style="text-align: right;">-9.17483</td>
+<td style="text-align: right;">-3.144188</td>
+<td style="text-align: right;">1.0007561</td>
+<td style="text-align: right;">4592.338</td>
+<td style="text-align: right;">2773.962</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">24.294928</td>
-<td style="text-align: right;">24.241106</td>
-<td style="text-align: right;">1.317788</td>
-<td style="text-align: right;">1.303483</td>
-<td style="text-align: right;">22.198245</td>
-<td style="text-align: right;">26.502479</td>
-<td style="text-align: right;">1.000274</td>
-<td style="text-align: right;">3581.615</td>
-<td style="text-align: right;">2711.036</td>
+<td style="text-align: right;">24.271547</td>
+<td style="text-align: right;">24.199200</td>
+<td style="text-align: right;">1.321663</td>
+<td style="text-align: right;">1.244931</td>
+<td style="text-align: right;">22.21663</td>
+<td style="text-align: right;">26.545251</td>
+<td style="text-align: right;">1.0006882</td>
+<td style="text-align: right;">4231.281</td>
+<td style="text-align: right;">3179.582</td>
 </tr>
 </tbody>
 </table>
@@ -2599,7 +2594,7 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> knitr<span class="sc">::</span>knit_code<span class="sc">$</span><span class="fu">get</span>(<span class="st">"model2_stan"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="at">.open =</span> <span class="st">"&lt;&lt;"</span>, <span class="at">.close =</span> <span class="st">"&gt;&gt;"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>(<span class="at">dir =</span> <span class="st">"../.stancache"</span>) <span class="sc">|&gt;</span>  <span class="co"># reuse compiled models across renders</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
@@ -2629,16 +2624,16 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 9%">
 <col style="width: 11%">
 <col style="width: 11%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 11%">
-<col style="width: 10%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -2657,75 +2652,75 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">alpha</td>
-<td style="text-align: right;">32.9247709</td>
-<td style="text-align: right;">32.9169515</td>
-<td style="text-align: right;">1.432130</td>
-<td style="text-align: right;">1.441347</td>
-<td style="text-align: right;">30.6105310</td>
-<td style="text-align: right;">35.294857</td>
-<td style="text-align: right;">1.000034</td>
-<td style="text-align: right;">4588.889</td>
-<td style="text-align: right;">3246.511</td>
+<td style="text-align: right;">32.8927469</td>
+<td style="text-align: right;">32.9009545</td>
+<td style="text-align: right;">1.372639</td>
+<td style="text-align: right;">1.331965</td>
+<td style="text-align: right;">30.606329</td>
+<td style="text-align: right;">35.184154</td>
+<td style="text-align: right;">1.000196</td>
+<td style="text-align: right;">4108.499</td>
+<td style="text-align: right;">3329.729</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_CED</td>
-<td style="text-align: right;">-4.8428940</td>
-<td style="text-align: right;">-4.8605990</td>
-<td style="text-align: right;">1.500247</td>
-<td style="text-align: right;">1.515788</td>
-<td style="text-align: right;">-7.2319891</td>
-<td style="text-align: right;">-2.394914</td>
-<td style="text-align: right;">1.000060</td>
-<td style="text-align: right;">3865.482</td>
-<td style="text-align: right;">3222.703</td>
+<td style="text-align: right;">-4.8336883</td>
+<td style="text-align: right;">-4.8540614</td>
+<td style="text-align: right;">1.492766</td>
+<td style="text-align: right;">1.482915</td>
+<td style="text-align: right;">-7.297394</td>
+<td style="text-align: right;">-2.306570</td>
+<td style="text-align: right;">1.000691</td>
+<td style="text-align: right;">3464.100</td>
+<td style="text-align: right;">2668.104</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">beta_YN</td>
-<td style="text-align: right;">0.8822753</td>
-<td style="text-align: right;">0.8660148</td>
-<td style="text-align: right;">1.774998</td>
-<td style="text-align: right;">1.774025</td>
-<td style="text-align: right;">-1.9987244</td>
-<td style="text-align: right;">3.817689</td>
-<td style="text-align: right;">1.001183</td>
-<td style="text-align: right;">3205.068</td>
-<td style="text-align: right;">2939.243</td>
+<td style="text-align: right;">0.9144935</td>
+<td style="text-align: right;">0.9040309</td>
+<td style="text-align: right;">1.694852</td>
+<td style="text-align: right;">1.681344</td>
+<td style="text-align: right;">-1.850573</td>
+<td style="text-align: right;">3.716847</td>
+<td style="text-align: right;">1.000788</td>
+<td style="text-align: right;">3533.243</td>
+<td style="text-align: right;">3215.958</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_RL</td>
-<td style="text-align: right;">-17.9284083</td>
-<td style="text-align: right;">-17.9658960</td>
-<td style="text-align: right;">2.602111</td>
-<td style="text-align: right;">2.556554</td>
-<td style="text-align: right;">-22.0673342</td>
-<td style="text-align: right;">-13.629211</td>
-<td style="text-align: right;">1.001913</td>
-<td style="text-align: right;">2015.512</td>
-<td style="text-align: right;">2510.330</td>
+<td style="text-align: right;">-17.9184131</td>
+<td style="text-align: right;">-17.9138875</td>
+<td style="text-align: right;">2.538597</td>
+<td style="text-align: right;">2.560954</td>
+<td style="text-align: right;">-22.122951</td>
+<td style="text-align: right;">-13.685960</td>
+<td style="text-align: right;">1.003018</td>
+<td style="text-align: right;">2124.863</td>
+<td style="text-align: right;">2049.972</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">beta_VA</td>
-<td style="text-align: right;">4.5854108</td>
-<td style="text-align: right;">4.6206967</td>
-<td style="text-align: right;">2.322932</td>
-<td style="text-align: right;">2.293697</td>
-<td style="text-align: right;">0.7976792</td>
-<td style="text-align: right;">8.395861</td>
-<td style="text-align: right;">1.001834</td>
-<td style="text-align: right;">2148.719</td>
-<td style="text-align: right;">2304.866</td>
+<td style="text-align: right;">4.5090363</td>
+<td style="text-align: right;">4.5207764</td>
+<td style="text-align: right;">2.298186</td>
+<td style="text-align: right;">2.282212</td>
+<td style="text-align: right;">0.689094</td>
+<td style="text-align: right;">8.244355</td>
+<td style="text-align: right;">1.001467</td>
+<td style="text-align: right;">2402.372</td>
+<td style="text-align: right;">2273.706</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">18.6041653</td>
-<td style="text-align: right;">18.5695405</td>
-<td style="text-align: right;">1.004759</td>
-<td style="text-align: right;">1.019931</td>
-<td style="text-align: right;">17.0587728</td>
-<td style="text-align: right;">20.313571</td>
-<td style="text-align: right;">1.002122</td>
-<td style="text-align: right;">2969.721</td>
-<td style="text-align: right;">2185.567</td>
+<td style="text-align: right;">18.6105535</td>
+<td style="text-align: right;">18.5684310</td>
+<td style="text-align: right;">1.014557</td>
+<td style="text-align: right;">1.003664</td>
+<td style="text-align: right;">17.029953</td>
+<td style="text-align: right;">20.361838</td>
+<td style="text-align: right;">1.000922</td>
+<td style="text-align: right;">4018.243</td>
+<td style="text-align: right;">2847.954</td>
 </tr>
 </tbody>
 </table>
@@ -2751,10 +2746,6 @@ VE_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <p><img src="sameer_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1 row containing missing values or values outside the scale range
-(`stat_slabinterval()`).</code></pre>
 </div>
 <div class="cell-output-display">
 <div>

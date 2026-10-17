@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-d76b89148f2051d413c67903796ad183.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -110,6 +110,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <script src="../js/dagitty.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => DAGitty.setup());</script>
+<style>svg { overflow: visible; }</style>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -2064,40 +2066,33 @@ bb="0,0,1,1"
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plot_param <span class="ot">&lt;-</span> <span class="cf">function</span>(draws, param, <span class="at">prior_sd =</span> BETA_SD) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(draws, <span class="fu">aes</span>(<span class="at">x =</span> .data[[param]])) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">fun =</span> dnorm,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> prior_sd),</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"indianred3"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"cornflowerblue"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="fl">0.35</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_pointinterval</span>(</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">0</span>),</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">point_interval =</span> median_qi</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> BETA_SD, <span class="dv">3</span> <span class="sc">*</span> BETA_SD)) <span class="sc">+</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> param,</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> param,</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Density"</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the prior is Normal(0, prior_sd); show it out to 3 SDs either side</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(draws, <span class="fu">aes</span>(<span class="at">x =</span> .data[[param]])) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">fun =</span> dnorm,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> prior_sd),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"indianred3"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"cornflowerblue"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="fl">0.35</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_pointinterval</span>(</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">0</span>),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">point_interval =</span> median_qi</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> prior_sd, <span class="dv">3</span> <span class="sc">*</span> prior_sd)) <span class="sc">+</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> param,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> param,</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Density"</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  DAGitty.setup();
-});
-</script>
-<style>
-  svg { overflow: visible; }
-</style>
 </section>
 <section id="formal-model" class="level1">
 <h1>Formal Model</h1>
@@ -2191,7 +2186,7 @@ WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> knitr<span class="sc">::</span>knit_code<span class="sc">$</span><span class="fu">get</span>(<span class="st">"model1_stan"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="at">.open =</span> <span class="st">"&lt;&lt;"</span>, <span class="at">.close =</span> <span class="st">"&gt;&gt;"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>(<span class="at">dir =</span> <span class="st">"../.stancache"</span>) <span class="sc">|&gt;</span>  <span class="co"># reuse compiled models across renders</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
@@ -2223,7 +2218,7 @@ WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <col style="width: 11%">
 <col style="width: 10%">
 <col style="width: 10%">
-<col style="width: 11%">
+<col style="width: 10%">
 <col style="width: 10%">
 <col style="width: 9%">
 <col style="width: 9%">
@@ -2246,39 +2241,39 @@ WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">alpha</td>
-<td style="text-align: right;">63.991358</td>
-<td style="text-align: right;">64.247277</td>
-<td style="text-align: right;">15.294105</td>
-<td style="text-align: right;">15.592610</td>
-<td style="text-align: right;">38.126715</td>
-<td style="text-align: right;">89.19711</td>
-<td style="text-align: right;">1.000304</td>
-<td style="text-align: right;">4401.722</td>
-<td style="text-align: right;">2895.050</td>
+<td style="text-align: right;">64.009127</td>
+<td style="text-align: right;">64.197259</td>
+<td style="text-align: right;">15.044206</td>
+<td style="text-align: right;">15.022248</td>
+<td style="text-align: right;">38.72903</td>
+<td style="text-align: right;">88.48907</td>
+<td style="text-align: right;">1.003686</td>
+<td style="text-align: right;">4503.887</td>
+<td style="text-align: right;">3008.591</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_DWS</td>
-<td style="text-align: right;">8.184115</td>
-<td style="text-align: right;">8.147576</td>
-<td style="text-align: right;">8.624827</td>
-<td style="text-align: right;">8.672778</td>
-<td style="text-align: right;">-5.792732</td>
-<td style="text-align: right;">22.11363</td>
-<td style="text-align: right;">1.000851</td>
-<td style="text-align: right;">3621.827</td>
-<td style="text-align: right;">2881.707</td>
+<td style="text-align: right;">8.060831</td>
+<td style="text-align: right;">7.940517</td>
+<td style="text-align: right;">8.696593</td>
+<td style="text-align: right;">8.690430</td>
+<td style="text-align: right;">-5.95363</td>
+<td style="text-align: right;">22.15188</td>
+<td style="text-align: right;">1.000702</td>
+<td style="text-align: right;">3829.924</td>
+<td style="text-align: right;">2866.623</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">242.562354</td>
-<td style="text-align: right;">242.410935</td>
-<td style="text-align: right;">8.225024</td>
-<td style="text-align: right;">8.190157</td>
-<td style="text-align: right;">229.493396</td>
-<td style="text-align: right;">256.35325</td>
-<td style="text-align: right;">1.000706</td>
-<td style="text-align: right;">3836.649</td>
-<td style="text-align: right;">2719.993</td>
+<td style="text-align: right;">242.037571</td>
+<td style="text-align: right;">241.977760</td>
+<td style="text-align: right;">7.940090</td>
+<td style="text-align: right;">8.023668</td>
+<td style="text-align: right;">229.15205</td>
+<td style="text-align: right;">255.48599</td>
+<td style="text-align: right;">1.000976</td>
+<td style="text-align: right;">4190.441</td>
+<td style="text-align: right;">3026.465</td>
 </tr>
 </tbody>
 </table>
@@ -2291,7 +2286,7 @@ WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_param</span>(draws1, <span class="st">"beta_DWS"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 22 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 24 rows containing missing values or values outside the scale range
 (`stat_slabinterval()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -2357,7 +2352,7 @@ WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> knitr<span class="sc">::</span>knit_code<span class="sc">$</span><span class="fu">get</span>(<span class="st">"model2_stan"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="at">.open =</span> <span class="st">"&lt;&lt;"</span>, <span class="at">.close =</span> <span class="st">"&gt;&gt;"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_stan_file</span>(<span class="at">dir =</span> <span class="st">"../.stancache"</span>) <span class="sc">|&gt;</span>  <span class="co"># reuse compiled models across renders</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cmdstan_model</span>()</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
@@ -2386,16 +2381,16 @@ WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 11%">
 <col style="width: 10%">
 <col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 11%">
 <col style="width: 9%">
 <col style="width: 9%">
-<col style="width: 10%">
-<col style="width: 10%">
 <col style="width: 9%">
-<col style="width: 8%">
-<col style="width: 8%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -2414,63 +2409,63 @@ WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">alpha</td>
-<td style="text-align: right;">65.535859</td>
-<td style="text-align: right;">65.111138</td>
-<td style="text-align: right;">15.117623</td>
-<td style="text-align: right;">15.267316</td>
-<td style="text-align: right;">41.078896</td>
-<td style="text-align: right;">90.411179</td>
-<td style="text-align: right;">0.9996053</td>
-<td style="text-align: right;">4734.807</td>
-<td style="text-align: right;">3323.466</td>
+<td style="text-align: right;">65.596448</td>
+<td style="text-align: right;">65.73840</td>
+<td style="text-align: right;">14.985196</td>
+<td style="text-align: right;">15.115525</td>
+<td style="text-align: right;">40.727687</td>
+<td style="text-align: right;">90.019773</td>
+<td style="text-align: right;">1.001045</td>
+<td style="text-align: right;">5277.081</td>
+<td style="text-align: right;">2885.454</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_DWS</td>
-<td style="text-align: right;">4.359786</td>
-<td style="text-align: right;">4.257322</td>
-<td style="text-align: right;">8.790620</td>
-<td style="text-align: right;">8.787630</td>
-<td style="text-align: right;">-9.803245</td>
-<td style="text-align: right;">18.838361</td>
-<td style="text-align: right;">1.0013735</td>
-<td style="text-align: right;">4421.667</td>
-<td style="text-align: right;">2981.116</td>
+<td style="text-align: right;">4.557514</td>
+<td style="text-align: right;">4.56050</td>
+<td style="text-align: right;">8.828777</td>
+<td style="text-align: right;">8.699095</td>
+<td style="text-align: right;">-9.940900</td>
+<td style="text-align: right;">19.044125</td>
+<td style="text-align: right;">1.000429</td>
+<td style="text-align: right;">4653.003</td>
+<td style="text-align: right;">3078.339</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">beta_RUR</td>
-<td style="text-align: right;">-12.191204</td>
-<td style="text-align: right;">-12.437601</td>
-<td style="text-align: right;">9.167002</td>
-<td style="text-align: right;">9.367979</td>
-<td style="text-align: right;">-26.954049</td>
-<td style="text-align: right;">2.718882</td>
-<td style="text-align: right;">1.0009740</td>
-<td style="text-align: right;">4602.499</td>
-<td style="text-align: right;">3134.970</td>
+<td style="text-align: right;">-12.499336</td>
+<td style="text-align: right;">-12.33628</td>
+<td style="text-align: right;">9.171829</td>
+<td style="text-align: right;">9.473534</td>
+<td style="text-align: right;">-27.570770</td>
+<td style="text-align: right;">2.829008</td>
+<td style="text-align: right;">1.000493</td>
+<td style="text-align: right;">4953.076</td>
+<td style="text-align: right;">3021.149</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">beta_WSW</td>
-<td style="text-align: right;">12.307233</td>
-<td style="text-align: right;">12.265329</td>
-<td style="text-align: right;">8.968408</td>
-<td style="text-align: right;">9.024260</td>
-<td style="text-align: right;">-2.348556</td>
-<td style="text-align: right;">26.830772</td>
-<td style="text-align: right;">1.0008725</td>
-<td style="text-align: right;">4558.098</td>
-<td style="text-align: right;">2815.803</td>
+<td style="text-align: right;">11.924566</td>
+<td style="text-align: right;">12.06679</td>
+<td style="text-align: right;">9.190461</td>
+<td style="text-align: right;">9.198818</td>
+<td style="text-align: right;">-3.152563</td>
+<td style="text-align: right;">27.079586</td>
+<td style="text-align: right;">1.001468</td>
+<td style="text-align: right;">4690.506</td>
+<td style="text-align: right;">2894.462</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">241.263011</td>
-<td style="text-align: right;">241.076110</td>
-<td style="text-align: right;">8.143281</td>
-<td style="text-align: right;">8.137139</td>
-<td style="text-align: right;">228.389806</td>
-<td style="text-align: right;">255.099718</td>
-<td style="text-align: right;">0.9998804</td>
-<td style="text-align: right;">4409.038</td>
-<td style="text-align: right;">3150.958</td>
+<td style="text-align: right;">241.128697</td>
+<td style="text-align: right;">241.04698</td>
+<td style="text-align: right;">7.958685</td>
+<td style="text-align: right;">8.029435</td>
+<td style="text-align: right;">228.159898</td>
+<td style="text-align: right;">254.440224</td>
+<td style="text-align: right;">1.001955</td>
+<td style="text-align: right;">4654.547</td>
+<td style="text-align: right;">3169.712</td>
 </tr>
 </tbody>
 </table>
@@ -2484,7 +2479,7 @@ WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>params <span class="sc">|&gt;</span> purrr<span class="sc">::</span><span class="fu">walk</span>(\(param) <span class="fu">print</span>(<span class="fu">plot_param</span>(draws, param)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 4 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 11 rows containing missing values or values outside the scale range
 (`stat_slabinterval()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -2495,7 +2490,7 @@ WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 </div>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 102 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 101 rows containing missing values or values outside the scale range
 (`stat_slabinterval()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -2506,7 +2501,7 @@ WST_i &amp;\sim \text{Normal}(\mu_i,\sigma) \\
 </div>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 93 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 100 rows containing missing values or values outside the scale range
 (`stat_slabinterval()`).</code></pre>
 </div>
 <div class="cell-output-display">
