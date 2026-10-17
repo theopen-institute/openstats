@@ -1,12 +1,6 @@
 ---
 title: Sambit's project
-engine: knitr
-format:
-  html:
-    df-print: kable
-    include-in-header:
-      - text: |
-          <script src="../js/dagitty.js"></script>
+format: html
 ---
 
 ```{r project_config, echo=FALSE, warning=FALSE, message=FALSE}
@@ -118,7 +112,7 @@ generated quantities {
 model1 <- knitr::knit_code$get("model1_stan") |>
   paste(collapse = "\n") |>
   glue::glue(.open = "<<", .close = ">>") |>
-  write_stan_file() |>
+  write_stan_file(dir = "../.stancache") |>  # reuse compiled models across renders
   cmdstan_model()
 
 fit1 <- df |>
@@ -200,7 +194,7 @@ generated quantities {
 model2 <- knitr::knit_code$get("model2_stan") |>
   paste(collapse = "\n") |>
   glue::glue(.open = "<<", .close = ">>") |>
-  write_stan_file() |>
+  write_stan_file(dir = "../.stancache") |>  # reuse compiled models across renders
   cmdstan_model()
 
 fit2 <- df |>

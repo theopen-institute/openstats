@@ -1,34 +1,53 @@
 /*-- scss:defaults --*/
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
-// Brand palette (anchored on the logo blue)
-$brand:        #1b91ff;
-$brand-dark:   #0a6fd0;
-$ink:          #16314d; // softened near-black for body text
-$ink-head:     #0b2545; // deep navy for headings
+// Course palette: the single source for every color in the course.
+//   - SCSS: these variables
+//   - CSS / JavaScript: var(--brand-blue), ... (emitted at the top of the rules below)
+//   - R: r/rlib.R reads these lines and defines BLUE, INK, ... for plots
+// Keep each on its own line in this `$brand-name: #rrggbb;` form so R can parse it.
+$brand-blue:      #1b91ff; // logo blue: links, highlights, likelihood
+$brand-blue-dark: #0a6fd0; // link hover
+$brand-ink:       #16314d; // body text
+$brand-ink-head:  #0b2545; // headings
+$brand-red:       #ff2c2d; // emphasis, prior
+$brand-green:     #008000; // posterior
+$brand-gray:      #999999; // muted text, reference lines
+$brand-orange:    #e69f00; // extra category colors, for plots with
+$brand-teal:      #009e73; //   more groups than red/blue can carry
+
+// YAML title slide: left-aligned like the content slides (Quarto centers it by default)
+$presentation-title-slide-text-align: left;
 
 // Typography
 $mainFont:            'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
 $headingFont:         'Space Grotesk', 'Inter', system-ui, sans-serif;
-$mainColor:           $ink;
-$headingColor:        $ink-head;
+$mainColor:           $brand-ink;
+$headingColor:        $brand-ink-head;
 $headingFontWeight:   700;
 $headingTextTransform: none;
 $headingLetterSpacing: -0.02em;
 $headingTextShadow:    none;
 
 // Links & selection
-$linkColor:                 $brand;
-$linkColorHover:            $brand-dark;
-$selectionBackgroundColor:  rgba($brand, 0.28);
-$selectionColor:            $ink-head;
+$linkColor:                 $brand-blue;
+$linkColorHover:            $brand-blue-dark;
+$selectionBackgroundColor:  rgba($brand-blue, 0.28);
+$selectionColor:            $brand-ink-head;
 
 /*-- scss:rules --*/
-// Local aliases so rules can reference the brand palette
-$c-brand: #1b91ff;
-$c-brand-dark: #0a6fd0;
-$c-ink: #16314d;
-$c-ink-head: #0b2545;
+// The palette as CSS variables, for inline widgets and _build/_reveal.html
+:root {
+  --brand-blue: #{$brand-blue};
+  --brand-blue-dark: #{$brand-blue-dark};
+  --brand-ink: #{$brand-ink};
+  --brand-ink-head: #{$brand-ink-head};
+  --brand-red: #{$brand-red};
+  --brand-green: #{$brand-green};
+  --brand-gray: #{$brand-gray};
+  --brand-orange: #{$brand-orange};
+  --brand-teal: #{$brand-teal};
+}
 
 /* ------------------------------------------------------------------ */
 /* Background scrim — lifts text contrast in the central band where    */
@@ -74,7 +93,7 @@ $c-ink-head: #0b2545;
   height: 5px;
   margin-top: 0.55rem;
   border-radius: 999px;
-  background: linear-gradient(90deg, $c-brand 0%, lighten($c-brand, 18%) 100%);
+  background: linear-gradient(90deg, $brand-blue 0%, lighten($brand-blue, 18%) 100%);
 }
 
 /* ------------------------------------------------------------------ */
@@ -138,13 +157,13 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   width: 0.5em;
   height: 0.5em;
   border-radius: 3px;
-  background: $c-brand;
+  background: $brand-blue;
 }
 
 /* nested bullets get a lighter, hollow marker */
 .reveal .slides ul ul > li::before {
   background: transparent;
-  border: 2px solid rgba($c-brand, 0.6);
+  border: 2px solid rgba($brand-blue, 0.6);
 }
 
 /* ------------------------------------------------------------------ */
@@ -153,13 +172,13 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
 .reveal blockquote {
   background: rgba(255, 255, 255, 0.72);
   border: none;
-  border-left: 6px solid $c-brand;
+  border-left: 6px solid $brand-blue;
   border-radius: 0 14px 14px 0;
   padding: 1.1rem 1.6rem;
   margin: 0.8rem 0;
-  box-shadow: 0 10px 30px rgba($c-ink-head, 0.1);
+  box-shadow: 0 10px 30px rgba($brand-ink-head, 0.1);
   font-style: normal;
-  color: $c-ink;
+  color: $brand-ink;
   backdrop-filter: blur(3px);
 }
 
@@ -173,23 +192,23 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   border-radius: 14px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 10px 30px rgba($c-ink-head, 0.1);
+  box-shadow: 0 10px 30px rgba($brand-ink-head, 0.1);
   backdrop-filter: blur(3px);
 }
 
 .reveal .slides table th,
 .reveal .slides table td {
   border: none;
-  border-bottom: 1px solid rgba($c-ink-head, 0.08);
+  border-bottom: 1px solid rgba($brand-ink-head, 0.08);
   padding: 0.55em 0.9em;
 }
 
 .reveal .slides table thead th {
-  background: rgba($c-brand, 0.12);
-  color: $c-ink-head;
+  background: rgba($brand-blue, 0.12);
+  color: $brand-ink-head;
   font-family: $headingFont;
   font-weight: 600;
-  border-bottom: 2px solid rgba($c-brand, 0.4);
+  border-bottom: 2px solid rgba($brand-blue, 0.4);
 }
 
 .reveal .slides table tbody tr:last-child td {
@@ -197,7 +216,7 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
 }
 
 .reveal .slides table tbody tr:hover td {
-  background: rgba($c-brand, 0.05);
+  background: rgba($brand-blue, 0.05);
 }
 
 /* ------------------------------------------------------------------ */
@@ -205,31 +224,91 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
 /* ------------------------------------------------------------------ */
 .reveal a {
   text-decoration: underline;
-  text-decoration-color: rgba($c-brand, 0.35);
+  text-decoration-color: rgba($brand-blue, 0.35);
   text-underline-offset: 3px;
   transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
 .reveal a:hover {
-  text-decoration-color: $c-brand;
+  text-decoration-color: $brand-blue;
 }
 
 /* ------------------------------------------------------------------ */
 /* UI chrome — accent the reveal controls, progress bar and footer     */
 /* ------------------------------------------------------------------ */
 .reveal .progress {
-  color: $c-brand;
+  color: $brand-blue;
   height: 4px;
 }
 
 .reveal .controls {
-  color: $c-brand;
+  color: $brand-blue;
 }
 
 .reveal .footer {
-  color: rgba($c-ink, 0.55);
+  color: rgba($brand-ink, 0.55);
   font-size: 0.72em;
   letter-spacing: 0.02em;
+}
+
+/* Incremental Build / Animated Transitions toggles (built by _build/_reveal.html):
+   one copy in the slide menu, one in the title slide's bottom-left corner */
+.deck-toggles label {
+  display: block;
+  cursor: pointer;
+}
+
+.deck-toggles-menu {
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid rgba($brand-ink, 0.2);
+  font-size: 0.85rem;
+}
+
+.deck-toggles-title {
+  position: fixed;
+  left: 16px;
+  bottom: 56px; /* just above reveal's menu/chalkboard buttons */
+  z-index: 30;
+  font-family: $mainFont;
+  font-size: 14px;
+  line-height: 1.6;
+  color: $brand-ink;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba($brand-ink, 0.12);
+  border-radius: 8px;
+  padding: 6px 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  input {
+    accent-color: $brand-blue;
+  }
+
+  @media print {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Title slide (from YAML title/subtitle via _build/title-slide.html), */
+/* left-aligned and styled like the content slides.                    */
+/* ------------------------------------------------------------------ */
+/* the template's footer div is copied into the page footer by Quarto; hide the original */
+.reveal .slides #title-slide > .footer {
+  display: none;
+}
+
+#title-slide .subtitle {
+  margin: 12px 0;
+  font-size: 1em;
+  font-weight: 400;
+  color: $brand-ink;
 }
 
 /* custom classes */
@@ -238,24 +317,257 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   display: none;
 }
 
-.relative {
-  position: relative;
+/* scoped under .reveal .slides so they outrank same-named classes from libraries loaded
+   after the theme (jspreadsheet's CSS defines its own `.red { color: red }`) and the
+   table-header color rule above */
+.reveal .slides .red {
+  color: $brand-red;
 }
 
-.red {
-  color: #ff2c2d;
+.reveal .slides .green {
+  color: $brand-green;
 }
 
-.green {
-  color: green;
+.reveal .slides .blue {
+  color: $brand-blue;
 }
 
-.blue {
-  color: #1b91ff;
+.reveal .slides .gray {
+  color: $brand-gray;
 }
 
-.gray {
-  color: #999;
+/* ------------------------------------------------------------------ */
+/* Interactive widgets (week 1). Their scripts live in js/.            */
+/* ------------------------------------------------------------------ */
+.num-input {
+  width: 4.5em;
+  font: inherit;
+  text-align: right;
+  padding: 2px 6px;
+  border: 1px solid rgba($brand-ink, 0.2);
+  border-radius: 6px;
+
+  &.key {
+    border: 2px solid $brand-blue; /* the cell the question is about */
+  }
+}
+
+.widget-btn {
+  font-size: 12pt;
+  padding: 6px 10px;
+}
+
+/* graph on the left, controls on the right */
+.widget-layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.widget-graph {
+  aspect-ratio: 3 / 2;
+}
+
+/* "Probability lets us ask questions": the hand count (js/count-demo.js) */
+#count-demo .count-inputs {
+  display: flex;
+  gap: 40px;
+  margin: 20px 0;
+}
+
+#count-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 1300px;
+  margin: 20px 0;
+
+  span {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba($brand-ink, 0.13);
+
+    &.on {
+      background: $brand-blue;
+    }
+  }
+}
+
+#count-result {
+  font-size: 130%;
+  font-weight: 600;
+}
+
+/* "Direction of conditions": the editable 2x2 table (js/cond-table.js) */
+#cond-table {
+  margin: 60px 120px 40px;
+
+  .cond-total {
+    color: $brand-gray;
+    font-style: italic;
+    text-align: right;
+  }
+
+  /* the Reset button sits out of flow so it doesn't widen the totals column */
+  th.cond-reset-cell {
+    position: relative;
+  }
+}
+
+#cond-reset {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 8px;
+}
+
+.cond-results p {
+  margin: 0.3em 0;
+}
+
+/* "Step 1: The prior": draggable graph plus table (js/poll-prior.js) */
+#poll-prior-graph {
+  flex: 0 0 70%;
+}
+
+#poll-prior-sheet {
+  flex: 1 1 auto;
+  min-width: 260px;
+  font-size: 16pt;
+}
+
+.sheet-controls {
+  margin-top: 8px;
+  text-align: right;
+}
+
+.jss_about {
+  display: none;
+}
+
+/* jspreadsheet's clipboard textarea: off-screen but still usable */
+.jss_textarea {
+  position: absolute !important;
+  left: -10000px !important;
+  top: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* "Step 3: Prior x likelihood -> posterior" (js/poll-posterior.js) */
+#poll-post-graph {
+  flex: 0 0 64%;
+  margin-right: 8px; /* a little more room before the controls */
+}
+
+.poll-side {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 18pt;
+
+  input[type="range"] {
+    width: 100%;
+  }
+
+  table.poll-stats {
+    font-size: 16pt;
+    width: 100%;
+    margin-top: 16px;
+
+    td,
+    th {
+      padding: 4px 8px;
+    }
+  }
+}
+
+#poll-msg {
+  font-size: 14pt;
+  min-height: 1.2em;
+}
+
+#poll-carry {
+  align-self: flex-end;
+}
+
+/* The workflow as a row of boxes with arrows between them (week 3) */
+.workflow {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+  margin: 30px 0;
+
+  .step {
+    flex: 1 1 0;
+    border: 2px solid $brand-ink;
+    border-radius: 10px;
+    padding: 18px 12px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.8em;
+    background: white;
+
+    &.science {
+      background: mix($brand-blue, white, 10%);
+    }
+
+    small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.7em;
+      margin-top: 8px;
+      color: $brand-ink;
+    }
+  }
+
+  .arrow {
+    align-self: center;
+    font-size: 1.4em;
+    color: $brand-gray;
+  }
+}
+
+/* Small gray source / credit line under a figure or table */
+.reveal .slides .source {
+  color: $brand-gray;
+  font-size: 60%;
+}
+
+/* A large closing line, e.g. "The science always comes first." */
+.big-statement {
+  font-size: 150%;
+  font-weight: bold;
+  margin-top: 1em;
+
+  /* placed with Quarto's {.absolute top=... left=...}: the position is exact */
+  &.absolute {
+    margin-top: 0;
+  }
+}
+
+/* Small caption text beside a figure (week 2) */
+.small-caption {
+  font-size: 12pt;
+}
+
+/* Divider before a table's totals column (week 3). Scoped to outrank the table cell
+   border rule above. */
+.reveal .slides .total-col {
+  border-left: 1px solid $brand-ink;
+}
+
+/* The dagitty.net editor embedded on a slide (_includes/dagitty-slide.md) */
+.dagitty-embed {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  border: 1px solid $brand-ink;
 }
 
 /* theme overrides */
@@ -269,54 +581,13 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
 }
 
 
-/* daggity overrides */
-.dagitty svg {
-  rect {
-    fill: transparent
-  }
-
-  text {
-    font-size: 40%
-  }
-
-}
-
-
-/* allow selecting text inside the sheet */
-.reveal #sheet-wrapper,
-.reveal #sheet-wrapper * {
-  -webkit-user-select: text !important;
-  user-select: text !important;
-}
-
-/* Prevent native text selection highlight inside the grid */
-.reveal #sheet-wrapper .jss_content,
-.reveal #sheet-wrapper .jss_content * {
-  -webkit-user-select: none !important;
-  user-select: none !important;
-}
-
-/* But keep the internal clipboard textarea available (don’t display:none) */
-.reveal #sheet-wrapper .jss_textarea {
-  position: absolute !important;
-  left: -10000px !important;
-  top: 0 !important;
-  width: 1px !important;
-  height: 1px !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  -webkit-user-select: text !important;
-  user-select: text !important;
-}
-
-
 /* shinylive slides */
 .sourceCode[data-engine="r"] {
   border: none !important;
-  // margin: -1em;
 }
 
 .shinylive-wrapper {
+  /* the full slide: keep in sync with width/height in _quarto.yml */
   width: 1605px;
   height: 1050px;
   margin-top: 0 !important;

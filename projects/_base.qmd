@@ -239,6 +239,7 @@ purrr::walk(scatter_plots, print)
 
 ```{r parameter_plot_function}
 plot_param <- function(draws, param, prior_sd = BETA_SD) {
+  # the prior is Normal(0, prior_sd); show it out to 3 SDs either side
   ggplot(draws, aes(x = .data[[param]])) +
     stat_function(
       fun = dnorm,
@@ -255,7 +256,7 @@ plot_param <- function(draws, param, prior_sd = BETA_SD) {
       aes(y = 0),
       point_interval = median_qi
     ) +
-    scale_x_continuous(limits = c(-3 * BETA_SD, 3 * BETA_SD)) +
+    scale_x_continuous(limits = c(-3 * prior_sd, 3 * prior_sd)) +
     scale_y_continuous(limits = c(0, NA)) +
     labs(
       title = param,
@@ -264,12 +265,3 @@ plot_param <- function(draws, param, prior_sd = BETA_SD) {
     )
 }
 ```
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  DAGitty.setup();
-});
-</script>
-<style>
-  svg { overflow: visible; }
-</style>

@@ -1,6 +1,5 @@
 library(shiny)
 library(bslib)
-library(shinyjs)
 library(ggplot2)
 library(ggiraph)
 library(munsell)

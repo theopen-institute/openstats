@@ -375,7 +375,7 @@ fit_prior <- fit_model(df, prior_only = 1)
 fit_prior |>
   spread_draws(p[sex, dept]) |>
   ggplot(aes(x = p)) +
-  geom_histogram(bins = 40, fill = "#1b91ff", color = "white") +
+  geom_histogram(bins = 40, fill = BLUE, color = "white") +
   labs(
     x = "Admission probability for a sex × department cell",
     y = "Prior draws",
@@ -384,7 +384,7 @@ fit_prior |>
 
 direct_effect(fit_prior) |>
   ggplot(aes(x = direct_effect)) +
-  stat_halfeye(fill = "#1b91ff") +
+  stat_halfeye(fill = BLUE) +
   labs(
     x = "Direct effect (female − male)",
     y = NULL,
@@ -431,11 +431,11 @@ recovery |>
   select(discrimination, truth, estimate) |>
   unnest(estimate) |>
   ggplot(aes(x = direct_effect, y = factor(discrimination))) +
-  stat_halfeye(fill = "#1b91ff") +
+  stat_halfeye(fill = BLUE) +
   geom_point(
     data = distinct(recovery, discrimination, truth),
     aes(x = truth),
-    color = "red",
+    color = RED,
     shape = 4,
     size = 4,
     stroke = 1.5
@@ -547,7 +547,7 @@ de <- direct_effect(fit)
 
 de |>
   ggplot(aes(x = direct_effect)) +
-  stat_halfeye(fill = "#1b91ff") +
+  stat_halfeye(fill = BLUE) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(
     x = "Direct effect (female − male)",
@@ -613,7 +613,7 @@ prior_sensitivity <- prior_scenarios |>
 ```{r sensitivity_priors_plot}
 prior_sensitivity |>
   ggplot(aes(x = direct_effect, y = scenario)) +
-  stat_halfeye(fill = "#1b91ff") +
+  stat_halfeye(fill = BLUE) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(
     x = "Direct effect (female − male)",
@@ -709,11 +709,11 @@ confounding |>
   select(female_selection, truth, estimate) |>
   unnest(estimate) |>
   ggplot(aes(x = direct_effect, y = factor(female_selection))) +
-  stat_halfeye(fill = "#1b91ff") +
+  stat_halfeye(fill = BLUE) +
   geom_point(
     data = distinct(confounding, female_selection, truth),
     aes(x = truth),
-    color = "red",
+    color = RED,
     shape = 4,
     size = 4,
     stroke = 1.5
@@ -721,7 +721,7 @@ confounding |>
   geom_vline(xintercept = 0, linetype = "dashed") +
   geom_vline(
     xintercept = median(de$direct_effect),
-    color = "#1b91ff",
+    color = BLUE,
     linetype = "dotted"
   ) +
   labs(

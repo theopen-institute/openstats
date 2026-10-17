@@ -1,67 +1,13 @@
 ---
+title: "Data Lunch: Week 4"
+subtitle: "Confounders and paradoxes"
 format:
   revealjs: default
 ---
 
 ```{r setup, include=FALSE}
-library(tidyverse)
-source("r/rlib.R")
-
-knitr::opts_chunk$set(
-  echo = FALSE,
-  warning = FALSE,
-  message = FALSE,
-  fig.width = 12,
-  fig.height = 6.5,
-  dpi = 150,
-  dev.args = list(bg = "transparent")
-)
-
-BLUE <- "#1b91ff"
-RED <- "#ff2c2d"
-GRAY <- "#999999"
-INK <- "#16314d"
-
-theme_set(
-  theme_minimal(base_size = 22) +
-    theme(
-      panel.grid.minor = element_blank(),
-      plot.title = element_text(face = "bold", color = INK),
-      legend.position = "top"
-    )
-)
-
-fmt <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = ",")
-pct <- function(x) paste0(round(100 * x), "%")
-
-# The three building blocks, drawn the same way everywhere
-fork_dag <- function(x = "X", z = "Z", y = "Y", labels = NULL, direct = FALSE, ...) {
-  dag_plot(
-    c(paste(z, "->", x), paste(z, "->", y), if (direct) paste(x, "->", y)),
-    setNames(list(c(0, 0), c(1, 1.1), c(2, 0)), c(x, z, y)),
-    labels = labels, above = z, exposure = x, outcome = y, ...
-  )
-}
-pipe_dag <- function(x = "X", z = "Z", y = "Y", labels = NULL, ...) {
-  dag_plot(
-    c(paste(x, "->", z), paste(z, "->", y)),
-    setNames(list(c(0, 0), c(1, 1.1), c(2, 0)), c(x, z, y)),
-    labels = labels, above = z, exposure = x, outcome = y, ...
-  )
-}
-collider_dag <- function(x = "X", z = "Z", y = "Y", labels = NULL, ...) {
-  dag_plot(
-    c(paste(x, "->", z), paste(y, "->", z)),
-    setNames(list(c(0, 1.1), c(1, 0), c(2, 1.1)), c(x, z, y)),
-    labels = labels, above = c(x, y), exposure = x, outcome = y, ...
-  )
-}
+source("r/deck-setup.R")
 ```
-
-
-# Data Lunch: Week 4 {.center}
-
-Confounders and paradoxes
 
 
 # Last week → this week
@@ -90,7 +36,7 @@ Confounders and paradoxes
 ::: {.column width="33%"}
 **Fork**: a common cause
 
-```{r blocks-fork, fig.width = 5, fig.height = 3.6}
+```{r blocks-fork, opts.label = "dag_third"}
 fork_dag()
 ```
 :::
@@ -98,7 +44,7 @@ fork_dag()
 ::: {.column width="33%"}
 **Pipe**: a mediator
 
-```{r blocks-pipe, fig.width = 5, fig.height = 3.6}
+```{r blocks-pipe, opts.label = "dag_third"}
 pipe_dag()
 ```
 :::
@@ -106,7 +52,7 @@ pipe_dag()
 ::: {.column width="33%"}
 **Collider**: a common effect
 
-```{r blocks-collider, fig.width = 5, fig.height = 3.6}
+```{r blocks-collider, opts.label = "dag_third"}
 collider_dag()
 ```
 :::
@@ -163,7 +109,7 @@ marriage <- tibble(
 
 ::: {.columns}
 ::: {.column}
-```{r fork-all, fig.width = 7, fig.height = 5.5}
+```{r fork-all, opts.label = "half"}
 ggplot(marriage, aes(age, happiness)) +
   geom_point(color = GRAY, alpha = 0.6, size = 2) +
   geom_smooth(method = "lm", se = FALSE, color = INK, linewidth = 1.5) +
@@ -173,7 +119,7 @@ ggplot(marriage, aes(age, happiness)) +
 
 ::: {.column}
 ::: {.fragment}
-```{r fork-split, fig.width = 7, fig.height = 5.5}
+```{r fork-split, opts.label = "half"}
 ggplot(marriage, aes(age, happiness, color = place)) +
   geom_point(alpha = 0.6, size = 2) +
   geom_smooth(method = "lm", se = FALSE, linewidth = 1.5) +
@@ -192,7 +138,7 @@ ggplot(marriage, aes(age, happiness, color = place)) +
 
 ::: {.columns}
 ::: {.column width="45%"}
-```{r fork-dag, fig.width = 6, fig.height = 4.5}
+```{r fork-dag, opts.label = "dag_side"}
 fork_dag(
   "A", "G", "H",
   labels = c(A = "Age at marriage", G = "Geography", H = "Happiness"),
@@ -218,19 +164,9 @@ Association flows through a fork. **Control for the common cause** to close the 
 ## Do mobile phones lower birth rates?
 
 ```{r phones-data}
-wb_raw <- read_csv(
-  "datasets/wb2022.csv",
-  na = c("", ".."),
-  col_types = cols(.default = "c"),
-  locale = locale(encoding = "latin1")
-) |>
-  select(code = `Country Code`, series = `Series Code`, value = `2022 [YR2022]`) |>
-  filter(series %in% c("IT.CEL.SETS.P2", "SP.DYN.TFRT.IN")) |>
-  distinct(code, series, .keep_all = TRUE) |>
-  mutate(value = as.numeric(value)) |>
-  pivot_wider(names_from = series, values_from = value)
+wb_raw <- load_wb(c("IT.CEL.SETS.P2", "SP.DYN.TFRT.IN"))
 
-phones <- read_csv("datasets/wb_country.csv") |>
+phones <- load_wb_countries() |>
   select(code = Code, income = `Income group`) |>
   inner_join(wb_raw, by = "code") |>
   transmute(
@@ -251,7 +187,7 @@ r_within <- phones |>
 
 ::: {.columns}
 ::: {.column}
-```{r phones-all, fig.width = 7, fig.height = 5.5}
+```{r phones-all, opts.label = "half"}
 ggplot(phones, aes(phones, fertility)) +
   geom_point(color = GRAY, alpha = 0.7, size = 2.5) +
   geom_smooth(method = "lm", se = FALSE, color = INK, linewidth = 1.5) +
@@ -265,8 +201,8 @@ ggplot(phones, aes(phones, fertility)) +
 
 ::: {.column}
 ::: {.fragment}
-```{r phones-split, fig.width = 7, fig.height = 5.5}
-income_colors <- c("#ff2c2d", "#e69f00", "#009e73", "#1b91ff")
+```{r phones-split, opts.label = "half"}
+income_colors <- c(RED, ORANGE, TEAL, BLUE)
 
 ggplot(phones, aes(phones, fertility, color = income)) +
   geom_point(alpha = 0.7, size = 2.5) +
@@ -384,7 +320,7 @@ exams <- tibble(
 
 ::: {.columns}
 ::: {.column}
-```{r pipe-density, fig.width = 7, fig.height = 5.5}
+```{r pipe-density, opts.label = "half"}
 ggplot(exams, aes(result, fill = gender)) +
   geom_density(alpha = 0.6, color = NA) +
   scale_fill_manual(values = c(Female = RED, Male = BLUE), name = NULL) +
@@ -395,7 +331,7 @@ ggplot(exams, aes(result, fill = gender)) +
 
 ::: {.column}
 ::: {.fragment}
-```{r pipe-split, fig.width = 7, fig.height = 5.5}
+```{r pipe-split, opts.label = "half"}
 ggplot(exams, aes(study, result, color = gender)) +
   geom_point(alpha = 0.6, size = 2) +
   geom_smooth(method = "lm", se = FALSE, linewidth = 1.5) +
@@ -414,7 +350,7 @@ ggplot(exams, aes(study, result, color = gender)) +
 
 ::: {.columns}
 ::: {.column width="45%"}
-```{r pipe-dag, fig.width = 6, fig.height = 4.5}
+```{r pipe-dag, opts.label = "dag_side"}
 pipe_dag(
   "G", "T", "R",
   labels = c(G = "Gender", T = "Study time", R = "Exam result"),
@@ -474,7 +410,7 @@ bind_rows(growth_all, growth_split) |>
   facet_wrap(~group) +
   scale_fill_manual(values = c(Untreated = GRAY, Treated = BLUE), guide = "none") +
   labs(x = NULL, y = "Average growth (cm)") +
-  theme(strip.text = element_text(size = 16, face = "bold"), axis.text.x = element_text(size = 14))
+  theme(strip.text = element_text(size = 16), axis.text.x = element_text(size = 14))
 ```
 :::
 
@@ -499,7 +435,7 @@ pipe_dag(
 ## A real paradox: Berkeley admissions, 1973
 
 ```{r berkeley}
-berkeley <- read_csv("datasets/berkeley.csv")
+berkeley <- load_berkeley()
 
 berk_overall <- berkeley |>
   group_by(sex) |>
@@ -548,14 +484,11 @@ bind_rows(
 
 ::: {.columns}
 ::: {.column width="45%"}
-```{r berkeley-dag, fig.width = 6, fig.height = 4.5}
-dag_plot(
-  c("S -> D", "D -> A", "S -> A"),
-  list(S = c(0, 0), D = c(1, 1.1), A = c(2, 0)),
+```{r berkeley-dag, opts.label = "dag_side"}
+pipe_dag(
+  "S", "D", "A",
   labels = c(S = "Sex", D = "Department", A = "Admitted"),
-  above = "D",
-  exposure = "S",
-  outcome = "A",
+  direct = TRUE,
   highlight = c("S -> D", "D -> A")
 )
 ```
@@ -594,7 +527,7 @@ jobs <- tibble(
 
 ::: {.columns}
 ::: {.column}
-```{r collider-selected, fig.width = 7, fig.height = 5.5}
+```{r collider-selected, opts.label = "half"}
 jobs |>
   filter(job) |>
   ggplot(aes(wealth, work)) +
@@ -607,7 +540,7 @@ jobs |>
 
 ::: {.column}
 ::: {.fragment}
-```{r collider-all, fig.width = 7, fig.height = 5.5}
+```{r collider-all, opts.label = "half"}
 ggplot(jobs, aes(wealth, work)) +
   geom_point(aes(color = status), alpha = 0.6, size = 2) +
   geom_smooth(method = "lm", se = FALSE, color = INK, linewidth = 1.5) +
@@ -629,7 +562,7 @@ ggplot(jobs, aes(wealth, work)) +
 
 ::: {.columns}
 ::: {.column width="45%"}
-```{r collider-dag, fig.width = 6, fig.height = 4.5}
+```{r collider-dag, opts.label = "dag_side"}
 collider_dag(
   "W", "J", "H",
   labels = c(W = "Family wealth", J = "Prestigious job", H = "Hard work"),
@@ -713,7 +646,7 @@ A variable caused by Z acts like a weaker copy of Z.
 
 ::: {.columns}
 ::: {.column}
-```{r desc-fork, fig.width = 7, fig.height = 4.5}
+```{r desc-fork, opts.label = "dag_half"}
 dag_plot(
   c("Z -> X", "Z -> Y", "Z -> D"),
   list(X = c(0, 0), Z = c(1, 1.1), Y = c(2, 0), D = c(1, -0.4)),
@@ -731,7 +664,7 @@ It closes the fork *partly*, which is why some correlation was left over.
 :::
 
 ::: {.column}
-```{r desc-collider, fig.width = 7, fig.height = 4.5}
+```{r desc-collider, opts.label = "dag_half"}
 dag_plot(
   c("X -> Z", "Y -> Z", "Z -> D"),
   list(X = c(0, 1.1), Z = c(1, 0.3), Y = c(2, 1.1), D = c(2, -0.6)),
@@ -757,7 +690,6 @@ the job, so it partly opens the collider.
 | **Pipe** X → Z → Y | open | closed | Only for the *direct* effect |
 | **Collider** X → Z ← Y | closed | **open** | Don't |
 | **Descendant** of Z | like Z, weaker | like Z, weaker | Same as Z |
-: {.nonincremental}
 
 
 ## The back-door rule
@@ -858,12 +790,4 @@ science.
 - Do your model's variables match? If not, which DAG are you really assuming?
 
 
-## DAGitty {.no-title}
-
-```{=html}
-<iframe
-  data-external="1"
-  style="width:100%; aspect-ratio: 2 / 1; border:1px solid black;"
-  src="https://dagitty.net/dags.html"
-></iframe>
-```
+{{< include _includes/dagitty-slide.md >}}

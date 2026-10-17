@@ -1,13 +1,18 @@
-// js/graph.js
+// Draggable line graph over x in [0, 1]: `count` evenly spaced points whose
+// heights (0-100) the user drags. Used for the week 1 poll prior (poll-prior.js).
+import { brand } from './palette.js';
+import { clearCanvas, drawPercentAxes } from './canvas-axes.js';
+
 export class LineGraphWidget {
-  constructor({ container, yValues, onChange } = {}) {
+  constructor({ container, yValues, onChange, count = 21, xLabel = "Percent of Voters" } = {}) {
     if (!container) throw new Error("LineGraphWidget: container is required");
     this.container = container;
     this.onChange = typeof onChange === "function" ? onChange : null;
+    this.xLabel = xLabel;
 
-    // Fixed x positions: 0..1 step 0.05 => 21 points
-    this.step = 0.05;
-    this.count = Math.round(1 / this.step) + 1; // 21
+    // Fixed x positions: count points from 0 to 1
+    this.count = count;
+    this.step = 1 / (count - 1);
 
     this.yMin = 0;
     this.yMax = 100;
@@ -239,109 +244,22 @@ export class LineGraphWidget {
   }
 
   _draw() {
-    const ctx = this.ctx;
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    this._drawAxesAndGrid();
+    clearCanvas(this.canvas, this.ctx);
+    const yTicks = [];
+    for (let y = this.yMin; y <= this.yMax; y += 10) yTicks.push(y);
+    drawPercentAxes(this.ctx, this._plotRect(), this.dpr, {
+      xLabel: this.xLabel,
+      yTicks,
+      yToCanvas: (y) => this._valueToCanvasY(y),
+    });
     this._drawLineAndPoints();
-  }
-
-  _drawAxesAndGrid() {
-    const ctx = this.ctx;
-    const pr = this._plotRect();
-
-    // Tick configuration
-    const yTickStep = 10;
-    const xTickStep = 0.1;
-    const tickLen = 6 * this.dpr;
-
-    const fmtX = (v) => `${Math.round(v * 100)}`;
-    const fmtY = (v) => String(v);
-
-    ctx.save();
-
-    // Grid (Y)
-    ctx.strokeStyle = "#e6e6e6";
-    ctx.lineWidth = 1 * this.dpr;
-    for (let y = this.yMin; y <= this.yMax; y += yTickStep) {
-      const cy = this._valueToCanvasY(y);
-      ctx.beginPath();
-      ctx.moveTo(pr.x, cy);
-      ctx.lineTo(pr.x + pr.w, cy);
-      ctx.stroke();
-    }
-
-    // Optional Grid (X)
-    for (let x = 0; x <= 1 + 1e-9; x += xTickStep) {
-      const cx = this._valueToCanvasX(x);
-      ctx.beginPath();
-      ctx.moveTo(cx, pr.y);
-      ctx.lineTo(cx, pr.y + pr.h);
-      ctx.stroke();
-    }
-
-    // Axes
-    ctx.strokeStyle = "#333333";
-    ctx.lineWidth = 1.5 * this.dpr;
-
-    ctx.beginPath();
-    ctx.moveTo(pr.x, pr.y);
-    ctx.lineTo(pr.x, pr.y + pr.h);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(pr.x, pr.y + pr.h);
-    ctx.lineTo(pr.x + pr.w, pr.y + pr.h);
-    ctx.stroke();
-
-    // Ticks + labels
-    ctx.fillStyle = "#333333";
-    ctx.font = `${12 * this.dpr}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
-
-    // Y ticks + labels
-    ctx.textAlign = "right";
-    ctx.textBaseline = "middle";
-    for (let y = this.yMin; y <= this.yMax; y += yTickStep) {
-      const cy = this._valueToCanvasY(y);
-
-      ctx.beginPath();
-      ctx.moveTo(pr.x, cy);
-      ctx.lineTo(pr.x - tickLen, cy);
-      ctx.stroke();
-
-      ctx.fillText(fmtY(y), pr.x - tickLen - 6 * this.dpr, cy);
-    }
-
-    // X ticks + labels
-    ctx.textAlign = "center";
-    ctx.textBaseline = "top";
-    for (let x = 0; x <= 1 + 1e-9; x += xTickStep) {
-      const cx = this._valueToCanvasX(x);
-
-      ctx.beginPath();
-      ctx.moveTo(cx, pr.y + pr.h);
-      ctx.lineTo(cx, pr.y + pr.h + tickLen);
-      ctx.stroke();
-
-      ctx.fillText(fmtX(x), cx, pr.y + pr.h + tickLen + 4 * this.dpr);
-    }
-
-    // X axis label
-    ctx.textAlign = "center";
-    ctx.textBaseline = "top";
-    ctx.fillText("Percent of Voters", pr.x + pr.w / 2, pr.y + pr.h + tickLen + 20 * this.dpr);
-
-    ctx.restore();
   }
 
   _drawLineAndPoints() {
     const ctx = this.ctx;
 
     ctx.save();
-    ctx.strokeStyle = "#1976d2";
+    ctx.strokeStyle = brand("blue");
     ctx.lineWidth = 2 * this.dpr;
 
     ctx.beginPath();
@@ -361,8 +279,8 @@ export class LineGraphWidget {
 
       ctx.beginPath();
       const isActive = i === this._dragIndex || i === this._hoverIndex;
-      ctx.fillStyle = isActive ? "#ff7043" : "#ffffff";
-      ctx.strokeStyle = "#1976d2";
+      ctx.fillStyle = isActive ? brand("red") : "#ffffff";
+      ctx.strokeStyle = brand("blue");
       ctx.lineWidth = 2 * this.dpr;
       ctx.arc(x, y, this.pointRadius * this.dpr, 0, Math.PI * 2);
       ctx.fill();
@@ -370,54 +288,6 @@ export class LineGraphWidget {
     }
 
     ctx.restore();
-
-    this._applyNodeHoverHandlers();
-  }
-
-  _applyNodeHoverHandlers() {
-    // find nodes by the class used when creating them (adjust selector if your nodes use a different class)
-    const nodes = this.container.querySelectorAll('.lg-node, circle.node, .node');
-    nodes.forEach((node) => {
-      // ensure pointer cursor
-      node.style.cursor = 'pointer';
-
-      // store original attributes so we can restore them
-      if (!node.dataset._origFill) {
-        node.dataset._origFill = node.getAttribute('fill') || window.getComputedStyle(node).fill || '';
-      }
-      if (!node.dataset._origR) {
-        node.dataset._origR = node.getAttribute('r') || node.style.r || '';
-      }
-
-      // choose hover color: prefer a dataset hint, otherwise a safe default
-      const hoverColor = node.dataset.hoverFill || '#ff9800';
-
-      // handlers (defined as named functions so removals avoid duplicates)
-      function onEnter() {
-        // enlarge slightly if it's a circle
-        if (node.tagName && node.tagName.toLowerCase() === 'circle') {
-          const r = parseFloat(node.getAttribute('r') || node.dataset._origR || 3);
-          node.setAttribute('r', (r * 1.25).toString());
-        }
-        // set hover fill
-        node.setAttribute('fill', hoverColor);
-        node.classList && node.classList.add('lg-node--hover');
-      }
-      function onLeave() {
-        if (node.tagName && node.tagName.toLowerCase() === 'circle') {
-          if (node.dataset._origR) node.setAttribute('r', node.dataset._origR);
-        }
-        if (node.dataset._origFill) node.setAttribute('fill', node.dataset._origFill);
-        node.classList && node.classList.remove('lg-node--hover');
-      }
-
-      // remove any previous handlers to avoid duplicates (safe no-op if they weren't attached)
-      node.removeEventListener('mouseenter', onEnter);
-      node.removeEventListener('mouseleave', onLeave);
-
-      node.addEventListener('mouseenter', onEnter);
-      node.addEventListener('mouseleave', onLeave);
-    });
   }
 
   _clamp(v, lo, hi) {

@@ -96,7 +96,7 @@
       const currentSlide = Reveal.getCurrentSlide();
 
       // 1) Toggle Reveal stepping behavior
-      Reveal.configure({ fragments: enabled, incremental: enabled });
+      Reveal.configure({ fragments: enabled });
 
       // 2) Toggle DOM markers to fix Scroll View spacing
       if (enabled) {
@@ -116,7 +116,7 @@
       if (typeof Reveal.layout === "function") Reveal.layout();
       if (typeof Reveal.sync === "function") Reveal.sync();
 
-      // 4) Reset slide state immediately (this is what you were missing)
+      // 4) Reset slide state immediately
       if (enabled) {
         // Force "start of slide" (no fragments visible)
         // Using Reveal.slide ensures Reveal updates internal fragment state too.
@@ -137,38 +137,56 @@
       }
     }
 
-    function addControls() {
-      const sidebar = document.querySelector(".slide-menu-panel");
-      if (!sidebar) return;
+    function controlsHTML() {
+      return `
+        <label>
+          <input type="checkbox" class="toggle-fragments">
+          Incremental Build
+        </label>
+        <label>
+          <input type="checkbox" class="toggle-transitions" checked>
+          Animated Transitions
+        </label>
+      `;
+    }
 
+    function addControls() {
       // Patch once controls are being added (Reveal is ready)
       patchScrollViewFragmentCounting();
 
-      const box = document.createElement("div");
-      box.style.padding = "0.5rem 0.75rem";
-      box.style.borderTop = "1px solid #ccc";
-      box.innerHTML = `
-        <label style="display:block; font-size:0.85rem;">
-          <input type="checkbox" id="toggleFragments">
-          Incremental Build
-        </label>
-        <label style="display:block; font-size:0.85rem;">
-          <input type="checkbox" id="toggleTransitions" checked>
-          Transitions
-        </label>
-      `;
-      sidebar.appendChild(box);
+      // Same controls in two places: the slide menu sidebar, and the bottom-left
+      // corner of the title slide. All copies stay in sync.
+      const sidebar = document.querySelector(".slide-menu-panel");
+      if (sidebar) {
+        const box = document.createElement("div");
+        box.className = "deck-toggles deck-toggles-menu";
+        box.innerHTML = controlsHTML();
+        sidebar.appendChild(box);
+      }
 
-      const frag = box.querySelector("#toggleFragments");
-      const trans = box.querySelector("#toggleTransitions");
+      const corner = document.createElement("div");
+      corner.className = "deck-toggles deck-toggles-title";
+      corner.innerHTML = controlsHTML();
+      document.body.appendChild(corner);
+
+      const fragBoxes = () => document.querySelectorAll(".toggle-fragments");
+      const transBoxes = () => document.querySelectorAll(".toggle-transitions");
+
+      // Show the corner copy only on the first slide
+      function updateCorner() {
+        const i = Reveal.getIndices();
+        corner.classList.toggle("visible", i.h === 0 && (i.v || 0) === 0);
+      }
+      Reveal.on("slidechanged", updateCorner);
+      updateCorner();
 
       // Capture fragment state early so re-enabling restores correctly
       document.querySelectorAll(".reveal .fragment").forEach(storeFragmentState);
 
-      // Initialize checkbox to current config (and fix scroll spacing on load)
+      // Initialize checkboxes to current config (and fix scroll spacing on load)
       try {
         const cfg = Reveal.getConfig();
-        frag.checked = !!cfg.fragments;
+        fragBoxes().forEach((el) => (el.checked = !!cfg.fragments));
 
         // If config says fragments are off, remove fragment DOM markers immediately
         // so Scroll View doesn't allocate dead-scroll space.
@@ -180,26 +198,32 @@
         }
       } catch (e) { }
 
-      frag.addEventListener("change", () => {
-        applyFragments(frag.checked);
+      fragBoxes().forEach((frag) =>
+        frag.addEventListener("change", () => {
+          fragBoxes().forEach((el) => (el.checked = frag.checked));
+          applyFragments(frag.checked);
 
-        // If we're in scroll view, layout already called in applyFragments(),
-        // but leaving this is harmless.
-        if (inScrollView()) {
-          Reveal.layout();
-        }
-      });
+          // If we're in scroll view, layout already called in applyFragments(),
+          // but leaving this is harmless.
+          if (inScrollView()) {
+            Reveal.layout();
+          }
+        })
+      );
 
-      trans.addEventListener("change", () => {
-        if (trans.checked) {
-          Reveal.configure({ transition: "slide", backgroundTransition: "slide" });
-        } else {
-          Reveal.configure({ transition: "none", backgroundTransition: "none" });
-        }
-      });
+      // Restore whatever the deck configured (_quarto.yml) when re-enabled
+      const { transition, backgroundTransition } = Reveal.getConfig();
+      transBoxes().forEach((trans) =>
+        trans.addEventListener("change", () => {
+          transBoxes().forEach((el) => (el.checked = trans.checked));
+          if (trans.checked) {
+            Reveal.configure({ transition, backgroundTransition });
+          } else {
+            Reveal.configure({ transition: "none", backgroundTransition: "none" });
+          }
+        })
+      );
 
-      // Optional: expose to your own UI as well
-      window.setFragmentsEnabled = applyFragments;
     }
 
     if (window.Reveal) {

@@ -37,6 +37,7 @@ if (graphEl && sheetEl && !graphEl.dataset.initialized) {
 
     widget = new LineGraphWidget({
       container: graphEl,
+      count: POINTS,
       yValues: loadPrior(),
       onChange: (points) => {
         updateSheet(points);

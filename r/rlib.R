@@ -1,5 +1,43 @@
-library(rlang)
+# Shared helpers for the course decks and pages. Decks load this through
+# r/deck-setup.R; workflow.qmd includes it directly.
 
+# ---- Palette -----------------------------------------------------------------
+# Course colors are defined once, in css/deck.scss (the `$brand-name: #rrggbb;`
+# lines). Read them from there so plots always match the slide theme.
+read_palette <- function(paths = c("css/deck.scss", "../css/deck.scss")) {
+  path <- paths[file.exists(paths)][1]
+  lines <- readLines(path, warn = FALSE)
+  found <- regmatches(lines, regexec("^\\$brand-([a-z-]+):\\s*(#[0-9a-fA-F]{6});", lines))
+  found <- Filter(length, found)
+  stats::setNames(
+    vapply(found, `[`, "", 3),
+    toupper(gsub("-", "_", vapply(found, `[`, "", 2)))
+  )
+}
+
+PALETTE <- read_palette()
+BLUE <- PALETTE[["BLUE"]]
+INK <- PALETTE[["INK"]]
+RED <- PALETTE[["RED"]]
+GREEN <- PALETTE[["GREEN"]]
+GRAY <- PALETTE[["GRAY"]]
+ORANGE <- PALETTE[["ORANGE"]]
+TEAL <- PALETTE[["TEAL"]]
+
+# A palette color mixed with white: amount = 1 is the color itself, 0 is white.
+# For light shades (bands, guides) that stay on-palette, e.g. tint(BLUE, 0.2).
+tint <- function(color, amount) {
+  rgb <- grDevices::col2rgb(color)[, 1]
+  mixed <- 255 - amount * (255 - rgb)
+  grDevices::rgb(mixed[1], mixed[2], mixed[3], maxColorValue = 255)
+}
+
+# ---- Formatting for inline numbers ---------------------------------------------
+fmt <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = ",")
+pct <- function(x) paste0(round(100 * x), "%")
+dollars <- function(x) paste0("$", formatC(x, format = "f", digits = 0, big.mark = ","))
+
+# ---- Stan index labels -----------------------------------------------------------
 replace_indexes <- function(tbl, data, ...) {
   specs <- rlang::enquos(...)
   factor_levels <- lapply(data, levels)
@@ -90,10 +128,10 @@ dag_plot <- function(
   r = 0.3,
   text_size = 9
 ) {
-  ink <- "#16314d"
-  blue <- "#1b91ff"
-  red <- "#ff2c2d"
-  gray <- "#999999"
+  ink <- INK
+  blue <- BLUE
+  red <- RED
+  gray <- GRAY
 
   nodes <- tibble::tibble(
     name = names(pos),
@@ -190,4 +228,34 @@ dag_plot <- function(
     ) +
     ggplot2::scale_y_continuous(expand = ggplot2::expansion(add = 0.6)) +
     ggplot2::theme_void()
+}
+
+# ---- The three DAG building blocks, drawn the same way everywhere --------------
+#   fork:     X <- Z -> Y
+#   pipe:     X -> Z -> Y
+#   collider: X -> Z <- Y
+# direct = TRUE adds the arrow X -> Y. Other arguments (highlight, unobserved, ...)
+# go to dag_plot().
+fork_dag <- function(x = "X", z = "Z", y = "Y", labels = NULL, direct = FALSE, ...) {
+  dag_plot(
+    c(paste(z, "->", x), paste(z, "->", y), if (direct) paste(x, "->", y)),
+    stats::setNames(list(c(0, 0), c(1, 1.1), c(2, 0)), c(x, z, y)),
+    labels = labels, above = z, exposure = x, outcome = y, ...
+  )
+}
+
+pipe_dag <- function(x = "X", z = "Z", y = "Y", labels = NULL, direct = FALSE, ...) {
+  dag_plot(
+    c(paste(x, "->", z), paste(z, "->", y), if (direct) paste(x, "->", y)),
+    stats::setNames(list(c(0, 0), c(1, 1.1), c(2, 0)), c(x, z, y)),
+    labels = labels, above = z, exposure = x, outcome = y, ...
+  )
+}
+
+collider_dag <- function(x = "X", z = "Z", y = "Y", labels = NULL, direct = FALSE, ...) {
+  dag_plot(
+    c(paste(x, "->", z), paste(y, "->", z), if (direct) paste(x, "->", y)),
+    stats::setNames(list(c(0, 1.1), c(1, 0), c(2, 1.1)), c(x, z, y)),
+    labels = labels, above = c(x, y), exposure = x, outcome = y, ...
+  )
 }
