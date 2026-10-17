@@ -1007,7 +1007,7 @@ $$
 $$
 
 ```{r model_weight2, message=FALSE, results="hide"}
-model_weight2 <- cmdstan_model("models/weight2.stan", dir=".stancache")
+model_weight2 <- cmdstan_model("models/weight_sex.stan", dir=".stancache")
 fit_weight2 <- df_weight |>
   compose_data() |>
   model_weight2$sample()
@@ -1114,7 +1114,7 @@ $$
 $$
 
 ```{r model_weight4, message=FALSE, results="hide"}
-model_weight4 <- cmdstan_model("models/weight4.stan", dir=".stancache")
+model_weight4 <- cmdstan_model("models/weight_sex_height.stan", dir=".stancache")
 fit_weight4 <- df_weight |>
   compose_data() |>
   model_weight4$sample()
@@ -1274,7 +1274,7 @@ ggplot(df, aes(x = log(SP.DYN.IMRT.IN), y = SP.DYN.TFRT.IN)) +
 
 # Model (Fertility ~ Women in College)
 ```{r model1a, message=FALSE, results="hide"}
-model1a <- cmdstan_model("models/fertility1a.stan", dir=".stancache")
+model1a <- cmdstan_model("models/fertility_college.stan", dir=".stancache")
 fit1a <- df |>
   transmute(
     fertility_rate = SP.DYN.TFRT.IN,
@@ -1320,7 +1320,7 @@ fit1b$summary()
 
 # Model (Fertility ~ Women in College + Infant Mortality)
 ```{r model2, message=FALSE, results="hide"}
-model2 <- cmdstan_model("models/fertility2.stan", dir=".stancache")
+model2 <- cmdstan_model("models/fertility_college_mortality.stan", dir=".stancache")
 fit2 <- df |>
   transmute(
     fertility_rate = SP.DYN.TFRT.IN,

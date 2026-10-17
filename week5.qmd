@@ -7,6 +7,7 @@ format:
 
 ```{r setup, include=FALSE}
 source("r/deck-setup.R")
+source("r/week5.R")
 ```
 
 
@@ -122,13 +123,7 @@ _What if we intervened?_
 ::: {.columns}
 ::: {.column}
 ```{r obs-dag, opts.label = "dag_half"}
-fork_dag(
-  "X", "U", "Y",
-  labels = c(X = "Program", U = "Motivation, wealth, ...", Y = "Outcome"),
-  direct = TRUE,
-  highlight = c("U -> X", "U -> Y"),
-  unobserved = "U"
-)
+observational_dag()
 ```
 
 **Observational**: people chose X. Everything that drove that choice is a possible
@@ -138,15 +133,7 @@ back door.
 ::: {.column}
 ::: {.fragment}
 ```{r rct-dag, opts.label = "dag_half"}
-dag_plot(
-  c("R -> X", "U -> Y", "X -> Y"),
-  list(X = c(0, 0), U = c(1, 1.1), Y = c(2, 0), R = c(-0.2, 1.1)),
-  labels = c(R = "Coin flip", X = "Program", U = "Motivation, wealth, ...", Y = "Outcome"),
-  above = c("U", "R"),
-  exposure = "X",
-  outcome = "Y",
-  unobserved = "U"
-)
+randomized_dag()
 ```
 
 **Randomized**: a coin flip chose X. Every arrow into X is **deleted**, including
@@ -363,36 +350,7 @@ _A made-up world: norms around early marriage drive both girls' schooling and bi
 Schooling itself has [**no effect**]{.red} on births._
 
 ```{r more-data, fig.width = 13, fig.height = 5.5}
-set.seed(5)
-
-fit_row <- function(fit, model, n) {
-  ci <- confint(fit)["x", ]
-  tibble(model = model, n = n, est = coef(fit)[["x"]], lo = ci[[1]], hi = ci[[2]])
-}
-
-sizes <- c(50, 200, 1000, 5000, 20000)
-
-more_data <- map_dfr(sizes, function(n) {
-  u <- rnorm(n) # early-marriage norms: nobody measured these
-  x <- -0.6 * u + rnorm(n) # schooling
-  y <- 0.6 * u + rnorm(n) # births; schooling has no effect
-  bind_rows(
-    fit_row(lm(y ~ x), "What they ran: births ~ schooling", n),
-    fit_row(lm(y ~ x + u), "If norms had been measured", n)
-  )
-})
-
-more_data$model <- fct_inorder(more_data$model)
-
-ggplot(more_data, aes(n, est, color = model)) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = INK) +
-  annotate("text", x = 2200, y = 0.04, label = "true effect", vjust = 0,
-           color = INK, size = 6) +
-  geom_pointrange(aes(ymin = lo, ymax = hi), linewidth = 1.2, size = 0.9,
-                  position = position_dodge(width = 0.15)) +
-  scale_x_log10(breaks = sizes, labels = fmt(sizes, 0)) +
-  scale_color_manual(values = c(RED, GRAY), name = NULL) +
-  labs(x = "Sample size", y = "Estimated effect\nof schooling")
+more_data_plot()
 ```
 
 ::: {.fragment}
@@ -443,20 +401,8 @@ X and Y both decide who ends up in the data. _It's in how the data was made._
 
 ::: {.columns}
 ::: {.column}
-```{r implied-dag, fig.width = 7, fig.height = 5}
-dag_plot(
-  c("G -> S", "G -> B", "S -> B", "C -> B"),
-  list(S = c(0, 0), B = c(3, 0), G = c(1.5, 1.3), C = c(1.5, -1.3)),
-  labels = c(
-    S = "Schooling", B = "Births",
-    G = "GDP per capita", C = "Contraceptive use"
-  ),
-  above = "G",
-  left = "S",
-  right = "B",
-  exposure = "S",
-  outcome = "B"
-)
+```{r implied-dag, opts.label = "half_short"}
+implied_dag()
 ```
 :::
 
@@ -511,24 +457,7 @@ In development data, the same few common causes come up again and again.
 ::: {.columns}
 ::: {.column}
 ```{r missing-forks, opts.label = "half"}
-dag_plot(
-  c("G -> S", "G -> B", "S -> B", "U -> S", "U -> B", "N -> S", "N -> B"),
-  list(
-    S = c(0, 0), B = c(4, 0), G = c(2, 1.3),
-    U = c(0.4, -1.6), N = c(3.6, -1.6)
-  ),
-  labels = c(
-    S = "Schooling", B = "Births",
-    G = "GDP", U = "Urbanization", N = "Gender norms"
-  ),
-  above = "G",
-  left = "S",
-  right = "B",
-  exposure = "S",
-  outcome = "B",
-  unobserved = c("U", "N"),
-  highlight = c("U -> S", "U -> B", "N -> S", "N -> B")
-)
+missing_forks_dag()
 ```
 :::
 
@@ -582,21 +511,8 @@ benchmarking against measured variables (Cinelli & Hazlett 2020).]{.source}
 
 ::: {.columns}
 ::: {.column}
-```{r mediators, fig.width = 7, fig.height = 5}
-dag_plot(
-  c("S -> M", "M -> B", "S -> C", "C -> B", "S -> B"),
-  list(S = c(0, 0), B = c(3, 0), M = c(1.5, 1.3), C = c(1.5, -1.3)),
-  labels = c(
-    S = "Schooling", B = "Births",
-    M = "Age at marriage", C = "Contraceptive use"
-  ),
-  above = "M",
-  left = "S",
-  right = "B",
-  exposure = "S",
-  outcome = "B",
-  highlight = c("S -> M", "M -> B", "S -> C", "C -> B")
-)
+```{r mediators, opts.label = "half_short"}
+mediators_dag()
 ```
 :::
 
@@ -651,18 +567,8 @@ claim about a pipe. Did they rule out the channels they never drew?
 
 ::: {.columns}
 ::: {.column}
-```{r clinic-collider, fig.width = 7, fig.height = 5}
-dag_plot(
-  c("S -> V", "B -> V", "S -> B"),
-  list(S = c(0, 0), B = c(3, 0), V = c(1.5, -1.3)),
-  labels = c(S = "Schooling", B = "Births", V = "Surveyed at a clinic"),
-  left = "S",
-  right = "B",
-  exposure = "S",
-  outcome = "B",
-  unobserved = "V",
-  highlight = c("S -> V", "B -> V")
-)
+```{r clinic-collider, opts.label = "half_short"}
+clinic_collider_dag()
 ```
 :::
 

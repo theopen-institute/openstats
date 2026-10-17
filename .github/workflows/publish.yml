@@ -61,9 +61,11 @@ jobs:
       - name: Install Quarto shinylive extension
         run: quarto add quarto-ext/shinylive@v0.2.0 --no-prompt
 
-      # include-code-files has no tagged releases, so it can't be pinned
-      - name: Install Quarto code embed extension
-        run: quarto add quarto-ext/include-code-files --no-prompt
+      # freeze: auto only notices edits to a page's own .qmd. Fail if a page's other
+      # inputs (sourced R, models, data, includes) changed since it was last frozen,
+      # instead of publishing stale output. Fix: run `Rscript _build/freeze.R` locally.
+      - name: Check that frozen pages are up to date
+        run: Rscript _build/freeze.R --check
 
       - name: Create the Stan model cache directory
         run: mkdir -p .stancache

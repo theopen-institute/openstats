@@ -136,3 +136,68 @@ likelihood_plot <- function(n, k, marks) {
       y = paste0("P( ", k, " of ", n, " | θ )")
     )
 }
+
+# ---- Numbers the slides state as plain text --------------------------------------
+# The base-rate slides type their numbers out so they read as plain markdown. They
+# depend on each other, so this recomputes each one and stops the render if a slide
+# and its calculation disagree. If you change a number on a slide, change it here.
+check_stated_numbers <- function() {
+  # P( true | positive ): the share of positives that are real
+  ppv <- function(base, tpr, fpr) base * tpr / (base * tpr + (1 - base) * fpr)
+
+  # `stated` is what the slide says, `digits` the decimals it shows
+  expect <- function(slide, value, stated, digits = 0) {
+    if (round(value, digits) != stated) {
+      stop(
+        sprintf('week1.qmd, "%s": the slide says %s, but it works out to %s',
+                slide, stated, signif(value, 4)),
+        call. = FALSE
+      )
+    }
+  }
+  pct <- function(x) 100 * x
+
+  # Kathmandu rain: rainy days over days counted, five years of records
+  rain <- "Probability: Convention 3"
+  expect("Probability: Convention 1", 113 / 365, 0.31, 2)
+  expect(rain, 565 / (5 * 365), 0.31, 2)
+  expect(rain, 35 / (5 * 30), 0.23, 2)
+  expect(rain, 5 / (5 * 31), 0.03, 2)
+  expect(rain, 126 / (5 * 31), 0.81, 2)
+  expect(rain, 8 / (5 * 28), 0.06, 2)
+
+  # HIV test: prevalence 0.1%, sensitivity 99%, specificity 97%, 100,000 people
+  hiv <- "Probability for Decision Making (continued)"
+  expect(hiv, pct(ppv(0.001, 0.99, 0.03)), 3.2, 1)
+  expect(hiv, 1e5 * 0.001 * 0.99, 99)
+  expect(hiv, 1e5 * 0.001 * 0.01, 1)
+  expect(hiv, 1e5 * 0.999 * 0.03, 2997)
+  expect(hiv, 1e5 * 0.999 * 0.97, 96903)
+  expect(hiv, pct(ppv(0.001, 0.99, 0.002)), 33) # modern tests: 99.8% specificity
+
+  # Research findings: 1% of hypotheses true, 80% power, alpha = 5%, 10,000 tested
+  relabeled <- "The same table, relabeled"
+  expect(relabeled, 1e4 * 0.01 * 0.8, 80)
+  expect(relabeled, 1e4 * 0.01 * 0.2, 20)
+  expect(relabeled, 1e4 * 0.99 * 0.05, 495)
+  expect(relabeled, 1e4 * 0.99 * 0.95, 9405)
+  expect(relabeled, pct(ppv(0.01, 0.8, 0.05)), 14)
+  expect(relabeled, pct(1 - ppv(0.01, 0.8, 0.05)), 86)
+
+  # The scenarios grid. p-hacked: 20% power, alpha about 20%.
+  grid <- "How bad does it get?"
+  for (row in list(c(0.5, 94, 80, 50), c(0.1, 64, 31, 10), c(0.01, 14, 4, 1))) {
+    expect(grid, pct(ppv(row[1], 0.8, 0.05)), row[2])
+    expect(grid, pct(ppv(row[1], 0.2, 0.05)), row[3])
+    expect(grid, pct(ppv(row[1], 0.2, 0.2)), row[4])
+  }
+  expect(grid, pct(ppv(0.01, 1, 0.05)), 17) # "a perfect study only reaches 17%"
+
+  # Replication: each significant result updates the last one's posterior
+  stated <- c(1, 14, 72, 98)
+  belief <- 0.01
+  for (i in seq_along(stated)) {
+    expect("What if we look again?", pct(belief), stated[i])
+    belief <- ppv(belief, 0.8, 0.05)
+  }
+}

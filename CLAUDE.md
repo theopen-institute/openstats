@@ -12,7 +12,8 @@ The Open Institute For Social Science. It produces two kinds of output from the 
 - **HTML pages** — `index.qmd`, `workflow.qmd` (the full Bayesian workflow),
   `wb-vars.qmd` (World Bank series reference), `homework/week*.qmd`, and the student
   project writeups under `projects/`. Each sets `format: html` so it isn't also built as
-  a deck. (`homework/week*_key.md` are answer keys: not rendered, not published.)
+  a deck. (`homework/week*_key.md` are answer keys: gitignored, because the repo is
+  public. They exist only in the maintainer's working copy.)
 
 Files starting with `_` are never rendered: `_removed.qmd` is a parking file for cut
 slides (keep the assets it references), `_includes/` holds shared slide snippets.
@@ -33,6 +34,8 @@ quarto render                    # render the whole site to .output.nosync/
 quarto render week1.qmd          # render a single deck/page
 quarto preview week1.qmd         # live-reload preview while editing
 quarto preview                   # preview the whole site
+Rscript _build/freeze.R          # re-render pages whose R/model/data/include inputs changed
+Rscript _build/freeze.R --check  # just list them (CI runs this and fails if any)
 ```
 
 There is no test suite, linter, or build step beyond `quarto render`. The knitr engine
@@ -48,6 +51,16 @@ it depends on an uncommitted package or extension.
 - **Engine is `knitr`** (set globally in `_quarto.yml`). R code chunks run at render
   time. `freeze: auto` stores results in `_freeze/` (committed): a page only re-runs
   its R code when its source changes, and CI reuses the frozen results.
+- **Freeze doesn't see a page's other inputs.** The frozen output also bakes in the R
+  files a page sources, the models and datasets it reads, and everything it pulls in
+  with `{{< include >}}` (Shiny apps, `_includes/`). Editing those doesn't trigger a
+  re-run in a full render. After editing anything under `r/`, `models/`, `datasets/`,
+  `shiny/`, `_includes/` or the palette, run `Rscript _build/freeze.R`: it re-renders
+  the affected pages and records their inputs' hashes in `_build/frozen-inputs.tsv`
+  (commit it with `_freeze/`). CI runs it with `--check` and fails on stale pages.
+  (Rendering one file, `quarto render week2.qmd`, always re-runs its code too, but
+  doesn't update the record.) `notes/` and the non-palette parts of `deck.scss` are
+  applied after execution, so they never go stale.
 - **Output dir is `.output.nosync/`** — gitignored, never edit by hand. So are
   `.quarto/`, `_extensions/`, and `.stancache/`.
 - **The repo lives in iCloud Drive**, which skips anything named `*.nosync`. The site
@@ -58,9 +71,9 @@ it depends on an uncommitted package or extension.
   in `_quarto.yml` anchored with a leading `/` (`/images/`, not `images/`): unanchored
   globs also match inside `.output.nosync`, and every render then copies the output
   into itself one level deeper until paths get too long and renders fail.
-- **Quarto extensions are NOT committed** (`_extensions/` is gitignored). CI runs
-  `quarto add quarto-ext/shinylive@v0.2.0` and `quarto add quarto-ext/include-code-files`.
-  Locally they must already be installed or renders of Shiny/embedded-code slides fail.
+- **Quarto extensions are NOT committed** (`_extensions/` is gitignored). The only one
+  is shinylive: CI runs `quarto add quarto-ext/shinylive@v0.2.0`, and locally it must
+  already be installed or renders of Shiny slides fail.
 - **Pinned versions:** CI pins Quarto 1.10.18, shinylive v0.2.0, CmdStan 2.37.0 and
   R 4.5.2 (`.github/workflows/publish.yml`). Bump them together with your local install.
 - **Stan models are cached** in `.stancache/` keyed by model; first render compiles with
@@ -71,13 +84,20 @@ it depends on an uncommitted package or extension.
 Three Quarto filters run on every render (`_quarto.yml`):
 - `shinylive` — turns ```` ```{shinylive-r} ```` chunks into self-contained
   browser-run Shiny apps (no server).
-- `include-code-files` — enables `{{< include path >}}` to inline files.
 - `_build/notes.lua` — custom speaker-notes filter (see below).
+- `_build/list-fragments.lua` — a list item that is only a fragment span,
+  `- [text]{.fragment fragment-index=2}`, becomes a fragment `<li>` (bullet and text
+  appear together). Use it instead of a raw-HTML `<ul>` when items need their own
+  fragment order.
+
+`{{< include path >}}` is built into Quarto. It works inside code blocks too, which is
+how `workflow.qmd` shows `models/berkeley.stan` and the decks embed `shiny/*.R`.
 
 ## Architecture / things that span files
 
 ### Shiny demos (`shiny/*.R`)
-Each file is a complete standalone `shinyApp(ui, server)`. They are pulled into slides
+Each file is a complete standalone `shinyApp(ui, server)`, and must stay that way: no
+`source()`, no shared palette, nothing from elsewhere in this repo. They are pulled into slides
 with `{{< include shiny/<name>.R >}}` inside a `{shinylive-r}` chunk (see `week1.qmd`),
 so they run entirely client-side in the browser. `regression.R` is the most complex:
 it keeps parameters in a canonical ("root") unit space and reactively converts to the
@@ -106,8 +126,11 @@ the R-side hyperparameters, written with `write_stan_file()`, and compiled with
 `cmdstan_model()`. This is how priors defined once in R flow into the Stan source.
 
 ### Standalone Stan models (`models/*.stan`)
-Plain `.stan` files (e.g. `weight1.stan`, `berkeley.stan`, `fertility*.stan`) used by the
-week decks (as opposed to the inline-glued models in `projects/`).
+Plain `.stan` files used by the week decks and `workflow.qmd` (as opposed to the
+inline-glued models in `projects/`), named for what they fit: `weight_sex.stan`,
+`weight_sex_height.stan`, `fertility_college.stan`, `fertility_college_mortality.stan`,
+`linear.stan` (any number of standardized predictors), `berkeley.stan`. (`weight1`,
+`weight3` and `fertility1b` are only referenced from `_removed.qmd`.)
 
 ### Data (`datasets/*.csv`)
 `wb2022.csv` + `wb_country.csv` are the World Bank panel used by all projects (joined and
@@ -121,13 +144,17 @@ Slides reference external notes with an attribute on the slide heading:
 block placeholder, `::: {notes="notes/week1_notes.md#id"} :::`, but the decks all use
 the heading form.) The Lua filter finds the heading with that
 `{#id}` in the markdown file, extracts everything until the next same-or-higher heading,
-and injects it as a reveal `<aside class="notes">`. `notes/` is excluded from direct
+and injects it as a reveal `<aside class="notes">`. A reference that doesn't resolve
+(missing file or `#id`) stops the render. `notes/` is excluded from direct
 rendering (`!notes/**` in `_quarto.yml`) — it is a content source, not pages.
 
 ### DAGs
 - **In decks:** drawn as ggplots with `dag_plot()` from `r/rlib.R`. Any three-node DAG
   (with or without a direct X → Y arrow, `direct = TRUE`) should use the `fork_dag()`,
-  `pipe_dag()` or `collider_dag()` building blocks so they look the same everywhere. The dagitty.net editor slide is the
+  `pipe_dag()` or `collider_dag()` building blocks so they look the same everywhere.
+  A DAG with its own layout is a named function in `r/weekN.R` (`howell_dag()`,
+  `wealth_fork_dag()`); one used by several decks (`surgeon_dag()`, `bedrooms_dag()`)
+  is in `rlib.R`. The dagitty.net editor slide is the
   shared include `_includes/dagitty-slide.md`.
 - **On project pages and `workflow.qmd`:** authored as dagitty strings and rendered
   client-side by `js/dagitty.js`. `projects/_metadata.yml` loads it (and runs
@@ -167,11 +194,22 @@ callouts their title with `title="..."` rather than a `##` heading inside the ca
 The `weekN.qmd` files should read as slides. Things that aren't content live elsewhere:
 - **Plot code longer than a few lines** goes in `r/weekN.R` as a function named for
   what it draws (`garden_plot()`, `normal_rule_plot()`), so the chunk is one line.
-  Short ggplots, and the small simulations that define a made-up example, stay inline.
-- **Raw HTML** (widgets, diagrams) goes in `_includes/` and is pulled in with
-  `{{< include _includes/... >}}`.
+  So do data prep and model fitting (`load_phones()`, `weight_model_draws()`).
+  Short ggplots, and the small simulations that define a made-up example, stay inline;
+  week 4's `pooled_plot()`/`split_plot()` keep its "everyone vs. by group" pairs short.
+- **Raw HTML** (widgets, diagrams, auto-animate tables) goes in `_includes/` (shared)
+  or `_includes/weekN/` (one deck) and is pulled in with `{{< include ... >}}`. Text
+  that appears in more than one place is an include too: the ten workflow steps are
+  `_includes/bayesian-workflow.md`, used by `workflow.qmd` and week 1. For a line
+  break, end the line with `\` rather than `<br>` (pipe-table cells still need `<br>`).
 - **Figure sizes** use the named layouts from `r/deck-setup.R` where one fits:
-  `{r name, opts.label = "half"}` (also `dag_half`, `dag_side`, `dag_third`).
+  `{r name, opts.label = "half"}` (also `half_short`, `half_tall`, `dag_half`,
+  `dag_side`, `dag_third`). A layout only one deck uses is set in its `r/weekN.R`
+  (week 2's `belief`). One-off sizes stay inline.
+- **Numbers typed into the text** that are calculated from each other get a check that
+  recomputes them, so the render fails if one is edited and the rest aren't: week 1's
+  base-rate numbers are checked by `check_stated_numbers()` in `r/week1.R`, called
+  from the setup chunk.
 - **Incremental lists:** `_quarto.yml` makes lists build one item at a time. Week 1
   turns that off in its front matter (most of its lists appear at once) and marks the
   few that build with `::: {.incremental}`; the other decks mark the exceptions with
@@ -182,12 +220,14 @@ The `weekN.qmd` files should read as slides. Things that aren't content live els
   It loads tidyverse, `rlib.R` and `data.R`, sets the knitr chunk options (no echo,
   12×6.5 figures, transparent backgrounds), the named figure layouts and the ggplot
   theme.
-- **`r/weekN.R`** — one deck's plot helpers, sourced by that deck after
-  `deck-setup.R`.
-- **`r/stan.R`** — `fit_stan()` (quiet sampling, models cached in `.stancache`) and
-  `plot_posteriors()`, for decks that fit Stan models.
+- **`r/weekN.R`** — one deck's plots, DAGs, data prep and model fits, sourced by that
+  deck after `deck-setup.R` (and `stan.R`, for week 3).
+- **`r/stan.R`** — `fit_stan()` (quiet sampling, models cached in `.stancache`),
+  `param_draws()` (one parameter's draws, labelled by model), `posterior_medians()`
+  and `plot_posteriors()`, for decks that fit Stan models.
 - **`r/rlib.R`** — the palette (read from `css/deck.scss`), `fmt()`/`pct()`/`dollars()`
-  for inline numbers, `dag_plot()` and the fork/pipe/collider helpers, and
+  for inline numbers, `standardize()` for z-scores, `dag_plot()` and the
+  fork/pipe/collider helpers, the DAGs shared between decks, and
   `replace_indexes()` (relabels Stan names like `alpha[2]` as `alpha[female]`).
   `workflow.qmd` includes it directly so students can read it.
 - **`r/data.R`** — `load_howell()`, `load_houses()`, `load_berkeley()`,

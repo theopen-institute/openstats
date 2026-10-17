@@ -43,5 +43,5 @@ format:
     toc-expand: true
 filters:
   - shinylive
-  - include-code-files
   - _build/notes.lua
+  - _build/list-fragments.lua

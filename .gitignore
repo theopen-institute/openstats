@@ -70,6 +70,9 @@ Rplots.pdf
 /*_files/
 /site_libs/
 
+# Homework answer keys: the repo is public, so keep them out of it
+homework/*_key.md
+
 # OS and local tool settings
 .DS_Store
 # iCloud Drive conflict copies ("week1 2.html", "site_libs 3/")
