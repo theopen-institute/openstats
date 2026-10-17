@@ -18,9 +18,12 @@ knitr::opts_chunk$set(
   dev.args = list(bg = "transparent") # let the slide background show through
 )
 
-# Figure sizes for the usual slide layouts: {r name, opts.label = "half"}
+# Figure sizes for the usual slide layouts: {r name, opts.label = "half"}. A size
+# only one deck uses goes in that deck's r/weekN.R.
 knitr::opts_template$set(
   half = list(fig.width = 7, fig.height = 5.5), # a plot in one of two columns
+  half_short = list(fig.width = 7, fig.height = 5), # ... with text above or below it
+  half_tall = list(fig.width = 7, fig.height = 6), # ... filling the column
   dag_half = list(fig.width = 7, fig.height = 4.5), # a DAG in one of two columns
   dag_side = list(fig.width = 6, fig.height = 4.5), # a DAG beside a column of text
   dag_third = list(fig.width = 5, fig.height = 4) # a DAG in one of three columns

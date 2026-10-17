@@ -15,6 +15,22 @@ fit_stan <- function(file, data) {
   )
 }
 
+# Draws of one parameter as a tibble with a `model` column and a column `name`, for
+# plot_posteriors(). Bind several: bind_rows(param_draws(fit_a, "beta", "A"), ...)
+param_draws <- function(fit, variable, model, name = variable) {
+  fit$draws(variable, format = "df") |>
+    as_tibble() |>
+    transmute(model = model, "{name}" := .data[[variable]])
+}
+
+# The posterior median of `x` for each model, as a named vector: m[["model name"]]
+posterior_medians <- function(draws, x) {
+  draws |>
+    group_by(model) |>
+    summarise(median = median({{ x }})) |>
+    deframe()
+}
+
 # Posteriors of one quantity under several models, one row per model. `draws` has a
 # `model` column and a column of draws named by `x`.
 plot_posteriors <- function(draws, x, xlab, colors = c(RED, BLUE)) {

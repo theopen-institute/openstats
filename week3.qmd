@@ -14,30 +14,19 @@ source("r/week3.R")
 howell <- load_howell() |>
   mutate(
     sex = factor(if_else(male == 1, "male", "female"), levels = c("female", "male")),
-    height_std = (height - mean(height)) / sd(height)
+    height_std = standardize(height)
   )
 
 # Ames, Iowa house sales, from Week 2
 houses <- load_houses() |>
   mutate(
-    z_price = (price - mean(price)) / sd(price),
-    z_bedrooms = (bedrooms - mean(bedrooms)) / sd(bedrooms),
-    z_area = (area_m2 - mean(area_m2)) / sd(area_m2)
+    z_price = standardize(price),
+    z_bedrooms = standardize(bedrooms),
+    z_area = standardize(area_m2)
   )
 
 # World Bank 2022: fertility, women's college enrollment, infant mortality
-countries <- load_wb(c("SP.DYN.TFRT.IN", "SE.TER.ENRR.FE", "SP.DYN.IMRT.IN")) |>
-  transmute(
-    code,
-    fertility_rate = SP.DYN.TFRT.IN,
-    college = SE.TER.ENRR.FE,
-    mortality = SP.DYN.IMRT.IN
-  ) |>
-  drop_na() |>
-  mutate(
-    women_in_college = (college - mean(college)) / sd(college),
-    infant_mortality = (mortality - mean(mortality)) / sd(mortality)
-  )
+countries <- load_fertility_countries()
 ```
 
 # The doctor paradox
@@ -45,59 +34,12 @@ countries <- load_wb(c("SP.DYN.TFRT.IN", "SE.TER.ENRR.FE", "SP.DYN.IMRT.IN")) |>
 ## {auto-animate=true}
 Two surgeons, one normal and one famous, have different success rates for a procedure. How should we interpret this?
 
-::: {data-id="table"}
-<table>
-  <thead>
-    <tr>
-      <td data-id="leftmargin1"></td>
-      <td data-id="rightmargin1">Success</td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td data-id="leftmargin2">Normal&nbsp;Surgeon</td>
-      <td data-id="rightmargin2">[89.6%]{.green}</td>
-    </tr>
-    <tr>
-      <td data-id="leftmargin3">Famous&nbsp;Surgeon</td>
-      <td data-id="rightmargin3">[74.9%]{.red}</td>
-    </tr>
-  </tbody>
-</table>
-:::
+{{< include _includes/week3/surgeon-totals.md >}}
 
 ## {auto-animate=true}
 How about now?
 
-::: {data-id="table"}
-<table>
-  <thead>
-    <tr>
-      <td data-id="leftmargin1"></td>
-      <td>Standard</td>
-      <td>Complex</td>
-      <td>Critical</td>
-      <td data-id="rightmargin1" class="total-col">Total</td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td data-id="leftmargin2">Normal&nbsp;Surgeon</td>
-      <td>[97.3%]{.red}</td>
-      <td>[66.0%]{.red}</td>
-      <td>[38.0%]{.red}</td>
-      <td data-id="rightmargin2" class="total-col">[89.6%]{.green}</td>
-    </tr>
-    <tr>
-      <td data-id="leftmargin3">Famous&nbsp;Surgeon</td>
-      <td>[99.7%]{.green}</td>
-      <td>[75.0%]{.green}</td>
-      <td>[50.0%]{.green}</td>
-      <td data-id="rightmargin3" class="total-col">[74.9%]{.red}</td>
-    </tr>
-  </tbody>
-</table>
-:::
+{{< include _includes/week3/surgeon-by-case.md >}}
 
 
 ## What changed?
@@ -209,7 +151,7 @@ This is the causal question.
 
 # The workflow
 
-{{< include _includes/workflow-steps.md >}}
+{{< include _includes/week3/workflow-boxes.md >}}
 
 - **Estimand**: the question, stated precisely enough that a number could answer it.
 - **Generative model**: our causal story (a DAG, plus a simulation of it).
@@ -222,10 +164,7 @@ This is the causal question.
 # Worked example: does sex affect weight?
 
 ```{r howell-scatter, fig.height = 5.5}
-ggplot(howell, aes(height, weight, color = sex)) +
-  geom_point(alpha = 0.7, size = 2.5) +
-  scale_color_manual(values = c(female = RED, male = BLUE), name = NULL) +
-  labs(x = "Height (cm)", y = "Weight (kg)")
+sex_scatter(howell)
 ```
 
 - The !Kung San adults from Week 2. Men are taller *and* heavier.
@@ -287,18 +226,12 @@ simulate_people <- function(n) {
 :::
 
 ::: {.column width="50%"}
-```{r sim-plot, fig.width = 7, fig.height = 5}
+```{r sim-plot, opts.label = "half_short"}
 set.seed(4)
 sim <- simulate_people(1000) |>
-  mutate(
-    sex = factor(sex, levels = c("female", "male")),
-    height_std = (height - mean(height)) / sd(height)
-  )
+  mutate(sex = factor(sex, levels = c("female", "male")), height_std = standardize(height))
 
-ggplot(sim, aes(height, weight, color = sex)) +
-  geom_point(alpha = 0.5, size = 2) +
-  scale_color_manual(values = c(female = RED, male = BLUE), name = NULL) +
-  labs(x = "Height (cm)", y = "Weight (kg)")
+sex_scatter(sim, alpha = 0.5, size = 2)
 ```
 :::
 :::
@@ -353,16 +286,7 @@ $$
 ## Step 3: Test the models on simulated data
 
 ```{r sim-fits, results = "hide"}
-sim_a <- fit_stan("models/weight2.stan", compose_data(select(sim, weight, sex)))
-sim_b <- fit_stan(
-  "models/weight4.stan",
-  compose_data(select(sim, weight, height_std, sex))
-)
-
-sim_draws <- bind_rows(
-  sex_difference(sim_a) |> mutate(model = "A: weight ~ sex"),
-  sex_difference(sim_b) |> mutate(model = "B: weight ~ sex + height")
-)
+sim_draws <- weight_model_draws(sim)
 ```
 
 ```{r sim-posteriors, fig.height = 5}
@@ -380,21 +304,8 @@ plot_posteriors(sim_draws, difference, "Men − women (kg)") +
 ## Steps 4 & 5: Real data, real estimates
 
 ```{r howell-fits, results = "hide"}
-fit_a <- fit_stan("models/weight2.stan", compose_data(select(howell, weight, sex)))
-fit_b <- fit_stan(
-  "models/weight4.stan",
-  compose_data(select(howell, weight, height_std, sex))
-)
-
-howell_draws <- bind_rows(
-  sex_difference(fit_a) |> mutate(model = "A: weight ~ sex"),
-  sex_difference(fit_b) |> mutate(model = "B: weight ~ sex + height")
-)
-howell_difference <- howell_draws |>
-  group_by(model) |>
-  median_qi(difference, .width = 0.89) |>
-  select(model, difference) |>
-  deframe()
+howell_draws <- weight_model_draws(howell)
+howell_difference <- posterior_medians(howell_draws, difference)
 ```
 
 ```{r howell-posteriors, fig.height = 5}
@@ -463,12 +374,7 @@ howell_dag(highlight = c("A -> H", "A -> W"))
 ::: {.columns}
 ::: {.column width="45%"}
 ```{r house-dag, fig.width = 6, fig.height = 5}
-fork_dag(
-  "B", "A", "P",
-  labels = c(B = "Bedrooms", A = "Living area", P = "Price"),
-  direct = TRUE,
-  highlight = c("A -> B", "A -> P")
-)
+bedrooms_dag()
 ```
 :::
 
@@ -485,27 +391,7 @@ fork_dag(
 ## Bedrooms: two models
 
 ```{r house-fits, results = "hide"}
-house_fit <- function(predictors) {
-  fit_stan(
-    "models/linear.stan",
-    list(
-      n = nrow(houses),
-      k = length(predictors),
-      X = as.matrix(houses[predictors]),
-      y = houses$z_price
-    )
-  )
-}
-
-house_1 <- house_fit("z_bedrooms")
-house_2 <- house_fit(c("z_bedrooms", "z_area"))
-
-house_draws <- bind_rows(
-  house_1$draws("beta[1]", format = "df") |> mutate(model = "price ~ bedrooms"),
-  house_2$draws("beta[1]", format = "df") |> mutate(model = "price ~ bedrooms + area")
-) |>
-  as_tibble() |>
-  rename(beta_bedrooms = `beta[1]`)
+house_draws <- bedroom_model_draws(houses)
 ```
 
 ```{r house-posteriors, fig.height = 4.5}
@@ -559,13 +445,7 @@ The science has to come first.
 ::: {.columns}
 ::: {.column width="55%"}
 ```{r fertility-scatter, opts.label = "half"}
-ggplot(countries, aes(college, fertility_rate)) +
-  geom_point(color = BLUE, alpha = 0.7, size = 3) +
-  geom_smooth(method = "lm", se = FALSE, color = INK) +
-  labs(
-    x = "Women's college enrollment (% gross)",
-    y = "Births per woman"
-  )
+fertility_scatter(countries)
 ```
 :::
 
@@ -580,30 +460,12 @@ ggplot(countries, aes(college, fertility_rate)) +
 
 ## Two defensible DAGs
 
-```{r fertility-dags}
-fert_labels <- c(
-  C = "Women in college",
-  M = "Infant mortality",
-  F = "Births per woman",
-  D = "Development"
-)
-```
-
 ::: {.columns}
 ::: {.column}
 **DAG 1: development first**
 
 ```{r fertility-dag1, opts.label = "dag_half"}
-dag_plot(
-  c("D -> C", "D -> M", "C -> F", "M -> F"),
-  pos = list(D = c(0.4, 1.4), C = c(0, 0), M = c(2.6, 1.4), F = c(3, 0)),
-  labels = fert_labels,
-  above = c("D", "M"),
-  highlight = c("D -> C", "D -> M", "M -> F"),
-  exposure = "C",
-  outcome = "F",
-  unobserved = "D"
-)
+development_dag()
 ```
 
 Richer countries have more women in college *and* fewer infant deaths. The red path
@@ -614,15 +476,7 @@ isn't an effect of education. **Hold infant mortality fixed.**
 **DAG 2: education first**
 
 ```{r fertility-dag2, opts.label = "dag_half"}
-dag_plot(
-  c("C -> M", "C -> F", "M -> F"),
-  pos = list(C = c(0, 0), M = c(1.5, 1.2), F = c(3, 0)),
-  labels = fert_labels,
-  above = "M",
-  highlight = c("C -> M", "M -> F"),
-  exposure = "C",
-  outcome = "F"
-)
+education_dag()
 ```
 
 Educated mothers have healthier babies, so families need fewer births. The red path
@@ -634,29 +488,8 @@ Educated mothers have healthier babies, so families need fewer births. The red p
 ## Same data, different science, different answer
 
 ```{r fertility-fits, results = "hide"}
-fert_1 <- fit_stan(
-  "models/fertility1a.stan",
-  compose_data(select(countries, fertility_rate, women_in_college))
-)
-fert_2 <- fit_stan(
-  "models/fertility2.stan",
-  compose_data(select(countries, fertility_rate, women_in_college, infant_mortality))
-)
-
-fert_draws <- bind_rows(
-  fert_1$draws("beta", format = "df") |>
-    rename(beta_college = beta) |>
-    mutate(model = "DAG 2: births ~ college"),
-  fert_2$draws("beta_college", format = "df") |>
-    mutate(model = "DAG 1: births ~ college + mortality")
-) |>
-  as_tibble()
-
-fert_beta <- fert_draws |>
-  group_by(model) |>
-  median_qi(beta_college, .width = 0.89) |>
-  select(model, beta_college) |>
-  deframe()
+fert_draws <- fertility_model_draws(countries)
+fert_beta <- posterior_medians(fert_draws, beta_college)
 ```
 
 ```{r fertility-posteriors, fig.height = 4.5}

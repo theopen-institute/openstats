@@ -7,6 +7,7 @@ format:
 
 ```{r setup, include=FALSE}
 source("r/deck-setup.R")
+source("r/week4.R")
 ```
 
 
@@ -110,9 +111,7 @@ marriage <- tibble(
 ::: {.columns}
 ::: {.column}
 ```{r fork-all, opts.label = "half"}
-ggplot(marriage, aes(age, happiness)) +
-  geom_point(color = GRAY, alpha = 0.6, size = 2) +
-  geom_smooth(method = "lm", se = FALSE, color = INK, linewidth = 1.5) +
+pooled_plot(marriage, age, happiness) +
   labs(x = "Age at marriage", y = "Happiness", title = "Everyone")
 ```
 :::
@@ -120,10 +119,7 @@ ggplot(marriage, aes(age, happiness)) +
 ::: {.column}
 ::: {.fragment}
 ```{r fork-split, opts.label = "half"}
-ggplot(marriage, aes(age, happiness, color = place)) +
-  geom_point(alpha = 0.6, size = 2) +
-  geom_smooth(method = "lm", se = FALSE, linewidth = 1.5) +
-  scale_color_manual(values = c(Rural = RED, Urban = BLUE), name = NULL) +
+split_plot(marriage, age, happiness, place, c(Rural = RED, Urban = BLUE)) +
   labs(x = "Age at marriage", y = "Happiness", title = "Split by geography")
 ```
 :::
@@ -164,20 +160,7 @@ Association flows through a fork. **Control for the common cause** to close the 
 ## Do mobile phones lower birth rates?
 
 ```{r phones-data}
-wb_raw <- load_wb(c("IT.CEL.SETS.P2", "SP.DYN.TFRT.IN"))
-
-phones <- load_wb_countries() |>
-  select(code = Code, income = `Income group`) |>
-  inner_join(wb_raw, by = "code") |>
-  transmute(
-    phones = IT.CEL.SETS.P2,
-    fertility = SP.DYN.TFRT.IN,
-    income = factor(
-      income,
-      levels = c("Low income", "Lower middle income", "Upper middle income", "High income")
-    )
-  ) |>
-  drop_na()
+phones <- load_phones()
 
 r_phones <- cor(phones$phones, phones$fertility)
 r_within <- phones |>
@@ -188,9 +171,7 @@ r_within <- phones |>
 ::: {.columns}
 ::: {.column}
 ```{r phones-all, opts.label = "half"}
-ggplot(phones, aes(phones, fertility)) +
-  geom_point(color = GRAY, alpha = 0.7, size = 2.5) +
-  geom_smooth(method = "lm", se = FALSE, color = INK, linewidth = 1.5) +
+pooled_plot(phones, phones, fertility, alpha = 0.7, size = 2.5) +
   labs(
     x = "Mobile subscriptions per 100 people",
     y = "Births per woman",
@@ -202,19 +183,7 @@ ggplot(phones, aes(phones, fertility)) +
 ::: {.column}
 ::: {.fragment}
 ```{r phones-split, opts.label = "half"}
-income_colors <- c(RED, ORANGE, TEAL, BLUE)
-
-ggplot(phones, aes(phones, fertility, color = income)) +
-  geom_point(alpha = 0.7, size = 2.5) +
-  geom_smooth(method = "lm", se = FALSE, linewidth = 1.5) +
-  scale_color_manual(values = income_colors, name = NULL) +
-  guides(color = guide_legend(nrow = 2)) +
-  labs(
-    x = "Mobile subscriptions per 100 people",
-    y = "Births per woman",
-    title = "Within income groups"
-  ) +
-  theme(legend.text = element_text(size = 14))
+phones_by_income_plot(phones)
 ```
 :::
 :::
@@ -228,20 +197,7 @@ ggplot(phones, aes(phones, fertility, color = income)) +
 ## In development data, wealth is the fork behind everything
 
 ```{r fork-wealth, fig.width = 12, fig.height = 4.2}
-dag_plot(
-  c("W -> P", "W -> S", "W -> B", "W -> H", "W -> C", "S -> B"),
-  list(
-    W = c(2.6, 1.4), P = c(0, 0), S = c(1.3, 0), B = c(2.6, 0), H = c(3.9, 0), C = c(5.2, 0)
-  ),
-  labels = c(
-    W = "Wealth / SES", P = "Phones", S = "Schooling", B = "Births",
-    H = "Health", C = "Clean water"
-  ),
-  above = "W",
-  exposure = "S",
-  outcome = "B",
-  highlight = c("W -> S", "W -> B")
-)
+wealth_fork_dag()
 ```
 
 - Your claim is **A → B**. Fine. But nearly always, **money → A** and **money → B** as well.
@@ -258,12 +214,7 @@ dag_plot(
 ::: {.columns}
 ::: {.column}
 ```{r fork-houses, fig.width = 6, fig.height = 4.2}
-fork_dag(
-  "B", "A", "P",
-  labels = c(B = "Bedrooms", A = "Living area", P = "Price"),
-  direct = TRUE,
-  highlight = c("A -> B", "A -> P")
-)
+bedrooms_dag()
 ```
 
 **Week 2:** more bedrooms looked valuable, because bigger houses have more of them.
@@ -271,12 +222,7 @@ fork_dag(
 
 ::: {.column}
 ```{r fork-surgeon, fig.width = 6, fig.height = 4.2}
-fork_dag(
-  "S", "C", "O",
-  labels = c(S = "Surgeon", C = "Case difficulty", O = "Outcome"),
-  direct = TRUE,
-  highlight = c("C -> S", "C -> O")
-)
+surgeon_dag(highlight = c("C -> S", "C -> O"))
 ```
 
 **Week 3:** the famous surgeon looked worse, because he got the hardest cases.
@@ -332,10 +278,7 @@ ggplot(exams, aes(result, fill = gender)) +
 ::: {.column}
 ::: {.fragment}
 ```{r pipe-split, opts.label = "half"}
-ggplot(exams, aes(study, result, color = gender)) +
-  geom_point(alpha = 0.6, size = 2) +
-  geom_smooth(method = "lm", se = FALSE, linewidth = 1.5) +
-  scale_color_manual(values = c(Female = RED, Male = BLUE), name = NULL) +
+split_plot(exams, study, result, gender, c(Female = RED, Male = BLUE)) +
   labs(x = "Hours studied per week", y = "Exam result", title = "Holding study time fixed")
 ```
 :::
@@ -385,32 +328,12 @@ plants <- tibble(
   fungus = rbinom(n, 1, if_else(treated == "Treated", 0.1, 0.5)),
   growth = rnorm(n, 5 - 3 * fungus, 1)
 )
-
-growth_all <- plants |>
-  group_by(treated) |>
-  summarise(growth = mean(growth)) |>
-  mutate(group = "All plants")
-
-growth_split <- plants |>
-  mutate(group = if_else(fungus == 1, "With fungus", "No fungus")) |>
-  group_by(group, treated) |>
-  summarise(growth = mean(growth), .groups = "drop")
 ```
 
 ::: {.columns}
 ::: {.column width="55%"}
 ```{r fungus-plot, fig.width = 7.5, fig.height = 5.5}
-bind_rows(growth_all, growth_split) |>
-  mutate(
-    group = factor(group, levels = c("All plants", "No fungus", "With fungus")),
-    treated = factor(treated, levels = c("Untreated", "Treated"))
-  ) |>
-  ggplot(aes(treated, growth, fill = treated)) +
-  geom_col(width = 0.7) +
-  facet_wrap(~group) +
-  scale_fill_manual(values = c(Untreated = GRAY, Treated = BLUE), guide = "none") +
-  labs(x = NULL, y = "Average growth (cm)") +
-  theme(strip.text = element_text(size = 16), axis.text.x = element_text(size = 14))
+fungus_plot(plants)
 ```
 :::
 
@@ -435,45 +358,20 @@ pipe_dag(
 ## A real paradox: Berkeley admissions, 1973
 
 ```{r berkeley}
-berkeley <- load_berkeley()
-
-berk_overall <- berkeley |>
-  group_by(sex) |>
-  summarise(rate = mean(admitted), applicants = n())
-
-berk_dept <- berkeley |>
-  group_by(dept, sex) |>
-  summarise(rate = mean(admitted), applicants = n(), .groups = "drop")
-
-women_higher <- berk_dept |>
-  select(dept, sex, rate) |>
-  pivot_wider(names_from = sex, values_from = rate) |>
-  summarise(n = sum(female > male)) |>
-  pull(n)
+berkeley <- berkeley_rates(load_berkeley())
 ```
 
 ::: {.columns}
 ::: {.column width="55%"}
 ```{r berkeley-plot, fig.width = 7.5, fig.height = 6}
-bind_rows(
-  berk_overall |> mutate(dept = "All"),
-  berk_dept
-) |>
-  mutate(dept = fct_relevel(factor(dept), "All")) |>
-  ggplot(aes(rate, fct_rev(dept), color = sex)) +
-  geom_line(aes(group = dept), color = GRAY, linewidth = 1) +
-  geom_point(aes(size = applicants), alpha = 0.9) +
-  scale_color_manual(values = c(female = RED, male = BLUE), name = NULL) +
-  scale_size_area(max_size = 10, guide = "none") +
-  scale_x_continuous(labels = scales::label_percent()) +
-  labs(x = "Admission rate", y = "Department")
+berkeley_plot(berkeley)
 ```
 :::
 
 ::: {.column width="45%"}
-- Overall: **`r pct(berk_overall$rate[berk_overall$sex == "male"])`** of men admitted,
-  **`r pct(berk_overall$rate[berk_overall$sex == "female"])`** of women.
-- But in `r women_higher` of 6 departments, women were admitted at a **higher** rate.
+- Overall: **`r pct(overall_rate(berkeley, "male"))`** of men admitted,
+  **`r pct(overall_rate(berkeley, "female"))`** of women.
+- But in `r women_higher(berkeley)` of 6 departments, women were admitted at a **higher** rate.
 - Women mostly applied to the departments that were **hardest to get into**.
 - Dot size: number of applicants.
 :::
@@ -528,27 +426,14 @@ jobs <- tibble(
 ::: {.columns}
 ::: {.column}
 ```{r collider-selected, opts.label = "half"}
-jobs |>
-  filter(job) |>
-  ggplot(aes(wealth, work)) +
-  geom_point(color = BLUE, alpha = 0.7, size = 2) +
-  geom_smooth(method = "lm", se = FALSE, color = BLUE, linewidth = 1.5) +
-  coord_cartesian(xlim = range(jobs$wealth), ylim = range(jobs$work)) +
-  labs(x = "Family wealth", y = "Hard work", title = "People with prestigious jobs")
+hired_plot(jobs)
 ```
 :::
 
 ::: {.column}
 ::: {.fragment}
 ```{r collider-all, opts.label = "half"}
-ggplot(jobs, aes(wealth, work)) +
-  geom_point(aes(color = status), alpha = 0.6, size = 2) +
-  geom_smooth(method = "lm", se = FALSE, color = INK, linewidth = 1.5) +
-  scale_color_manual(
-    values = c("Prestigious job" = BLUE, "No prestigious job" = GRAY),
-    name = NULL
-  ) +
-  labs(x = "Family wealth", y = "Hard work", title = "Everyone")
+everyone_jobs_plot(jobs)
 ```
 :::
 :::
@@ -603,15 +488,8 @@ r_funded <- with(filter(grants, funded), cor(newsworthy, trustworthy))
 
 ::: {.columns}
 ::: {.column width="55%"}
-```{r grants-plot, fig.width = 7, fig.height = 6}
-ggplot(grants, aes(newsworthy, trustworthy, color = funded)) +
-  geom_point(size = 3, alpha = 0.8) +
-  geom_smooth(
-    data = filter(grants, funded),
-    method = "lm", se = FALSE, color = BLUE, linewidth = 1.5
-  ) +
-  scale_color_manual(values = c(`TRUE` = BLUE, `FALSE` = GRAY), guide = "none") +
-  labs(x = "Newsworthiness", y = "Trustworthiness")
+```{r grants-plot, opts.label = "half_tall"}
+grants_plot(grants)
 ```
 :::
 
@@ -647,16 +525,7 @@ A variable caused by Z acts like a weaker copy of Z.
 ::: {.columns}
 ::: {.column}
 ```{r desc-fork, opts.label = "dag_half"}
-dag_plot(
-  c("Z -> X", "Z -> Y", "Z -> D"),
-  list(X = c(0, 0), Z = c(1, 1.1), Y = c(2, 0), D = c(1, -0.4)),
-  labels = c(X = "Phones", Z = "Wealth", Y = "Births", D = "Income group"),
-  above = "Z",
-  exposure = "X",
-  outcome = "Y",
-  unobserved = "Z",
-  highlight = "Z -> D"
-)
+proxy_dag()
 ```
 
 **A proxy for a confounder.** We can't measure wealth exactly, so we used income group.
@@ -665,15 +534,7 @@ It closes the fork *partly*, which is why some correlation was left over.
 
 ::: {.column}
 ```{r desc-collider, opts.label = "dag_half"}
-dag_plot(
-  c("X -> Z", "Y -> Z", "Z -> D"),
-  list(X = c(0, 1.1), Z = c(1, 0.3), Y = c(2, 1.1), D = c(2, -0.6)),
-  labels = c(X = "Wealth", Z = "Job", Y = "Hard work", D = "Salary"),
-  above = c("X", "Y"),
-  exposure = "X",
-  outcome = "Y",
-  highlight = "Z -> D"
-)
+salary_dag()
 ```
 
 **A consequence of a collider.** Studying only high earners partly selects on having
@@ -712,16 +573,7 @@ Last week's examples follow this rule. Height was caused by sex, so we left it o
 ::: {.columns}
 ::: {.column width="45%"}
 ```{r berkeley-u, fig.width = 6, fig.height = 4.8}
-dag_plot(
-  c("S -> D", "D -> A", "S -> A", "U -> D", "U -> A"),
-  list(S = c(0, 0), D = c(1, 1.1), A = c(2, 0), U = c(2, 1.1)),
-  labels = c(S = "Sex", D = "Department", A = "Admitted", U = "Ability"),
-  above = c("D", "U"),
-  exposure = "S",
-  outcome = "A",
-  unobserved = "U",
-  highlight = c("S -> D", "U -> D", "U -> A")
-)
+berkeley_ability_dag()
 ```
 :::
 

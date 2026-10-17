@@ -17,11 +17,14 @@
 --     # Title {#title}
 --     ## Section {#published-research}
 --     ### Subsection {#some-subsection}
+--
+-- A reference that can't be resolved (missing file, missing #id, malformed value)
+-- stops the render, so a typo can't silently drop a slide's notes.
 
 local cache = {}
 
-local function warn(msg)
-  io.stderr:write("[notes.lua] " .. msg .. "\n")
+local function fail(msg)
+  error("[notes.lua] " .. msg, 0)
 end
 
 local function read_file(path)
@@ -94,10 +97,7 @@ local function resolve_path(p)
     end
   end
 
-  warn("Could not resolve relative path: " .. p)
-  warn("Tried:\n  - " .. table.concat(tried, "\n  - "))
-  -- Return the first candidate so the error message shows a concrete path.
-  return join_path(candidate_bases()[1], p)
+  fail("Could not find notes file " .. p .. ". Tried:\n  - " .. table.concat(tried, "\n  - "))
 end
 
 local function load_markdown_doc(path)
@@ -105,9 +105,7 @@ local function load_markdown_doc(path)
 
   local txt = read_file(path)
   if not txt then
-    warn("Could not read file: " .. path)
-    cache[path] = pandoc.Pandoc({})
-    return cache[path]
+    fail("Could not read notes file: " .. path)
   end
 
   local doc = pandoc.read(txt, "markdown")
@@ -168,8 +166,7 @@ end
 local function notes_html(ref)
   local p, frag = split_ref(ref)
   if not p or not frag or p == "" or frag == "" then
-    warn('Bad notes value (expected "file.md#id"): ' .. tostring(ref))
-    return nil
+    fail('Bad notes value (expected "file.md#id"): ' .. tostring(ref))
   end
 
   local fullpath = resolve_path(p)
@@ -177,8 +174,7 @@ local function notes_html(ref)
 
   local blocks, err = extract_section_blocks(doc, frag)
   if not blocks then
-    warn(err .. " (in " .. fullpath .. ")")
-    return nil
+    fail(err .. " (in " .. fullpath .. ")")
   end
 
   return blocks_to_html(sanitize_notes(blocks))

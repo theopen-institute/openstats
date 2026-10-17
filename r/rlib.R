@@ -37,6 +37,9 @@ fmt <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = ",")
 pct <- function(x) paste0(round(100 * x), "%")
 dollars <- function(x) paste0("$", formatC(x, format = "f", digits = 0, big.mark = ","))
 
+# z-scores: how many standard deviations each value is from the mean
+standardize <- function(x) (x - mean(x)) / sd(x)
+
 # ---- Stan index labels -----------------------------------------------------------
 replace_indexes <- function(tbl, data, ...) {
   specs <- rlang::enquos(...)
@@ -257,5 +260,29 @@ collider_dag <- function(x = "X", z = "Z", y = "Y", labels = NULL, direct = FALS
     c(paste(x, "->", z), paste(y, "->", z), if (direct) paste(x, "->", y)),
     stats::setNames(list(c(0, 1.1), c(1, 0), c(2, 1.1)), c(x, z, y)),
     labels = labels, above = c(x, y), exposure = x, outcome = y, ...
+  )
+}
+
+# ---- DAGs that come back in more than one deck ---------------------------------
+
+# The surgeon example (weeks 3 and 4): case difficulty decides who operates, and
+# how it goes
+surgeon_dag <- function(...) {
+  fork_dag(
+    "S", "C", "O",
+    labels = c(S = "Surgeon", C = "Case difficulty", O = "Outcome"),
+    direct = TRUE,
+    ...
+  )
+}
+
+# The bedrooms puzzle (weeks 3 and 4): bigger houses have more bedrooms and sell
+# for more
+bedrooms_dag <- function() {
+  fork_dag(
+    "B", "A", "P",
+    labels = c(B = "Bedrooms", A = "Living area", P = "Price"),
+    direct = TRUE,
+    highlight = c("A -> B", "A -> P")
   )
 }

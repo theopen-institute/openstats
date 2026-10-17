@@ -1,5 +1,5 @@
 ```{=html}
-<!-- The workflow as a row of boxes (week 3). Styles in css/deck.scss (.workflow);
+<!-- Week 3, "The workflow": the workflow as a row of boxes. Styles in css/deck.scss (.workflow);
      the "science" boxes are shaded. -->
 <div class="workflow">
   <div class="step science">Estimand<small>What exactly do we want to know?</small></div>
