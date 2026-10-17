@@ -1,0 +1,26 @@
+<section id="$idprefix$title-slide"$for(title-slide-attributes/pairs)$ $it.key$="$it.value$"$endfor$>
+  <h1 class="title">$title$</h1>
+$if(subtitle)$
+  <p class="subtitle">$subtitle$</p>
+$endif$
+$for(author)$
+  <p class="author">$author$</p>
+$endfor$
+$for(institute)$
+  <p class="institute">$institute$</p>
+$endfor$
+$if(date)$
+  <p class="date">$date$</p>
+$endif$
+$-- Additions to Quarto's stock title slide (share/formats/revealjs/pandoc/title-slide.html):
+$-- a per-deck footer (YAML `title-footer`) and speaker notes (YAML `title-notes`,
+$-- turned into `title-notes-html` by _build/notes.lua).
+$if(title-footer)$
+  <div class="footer">$title-footer$</div>
+$endif$
+$if(title-notes-html)$
+  <aside class="notes">
+$title-notes-html$
+  </aside>
+$endif$
+</section>

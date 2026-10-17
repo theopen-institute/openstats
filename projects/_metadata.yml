@@ -1,0 +1,10 @@
+# Shared front matter for every page in projects/. Each page sets only its title
+# (and `format: html`, which stops Quarto from also building it as a slide deck).
+format:
+  html:
+    df-print: kable
+    include-in-header:
+      - text: |
+          <script src="../js/dagitty.js"></script>
+          <script>document.addEventListener("DOMContentLoaded", () => DAGitty.setup());</script>
+          <style>svg { overflow: visible; }</style>
