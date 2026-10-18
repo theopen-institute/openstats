@@ -306,7 +306,7 @@ the goal of this course.</p></li>
 </ul></li>
 <li class="fragment">Understand why most research is wrong (and why that’s okay)</li>
 <li class="fragment">Learn all of statistics (in just one formula)</li>
-<li class="fragment">Reflect on objectivity in research</li>
+<li class="fragment">Rethink objectivity and subjectivity in research</li>
 <li class="fragment">Appendix: election polling (a worked example)</li>
 </ul>
 </section>
@@ -2387,10 +2387,10 @@ just one simple idea:</p>
 this is the machinery under the hood. Nice to follow, not necessary for
 the big picture. If you only remember “prior × likelihood → posterior”,
 you’re fine.</li>
-<li>It’s the same rule as before, written as a formula, in the same
-colors. Walk through the terms in order: the prior (what we believed),
-the likelihood (how well the data fit each belief), the posterior (what
-we believe now).</li>
+<li>After the click, it’s the same rule as before, written as a formula,
+in the same colors. Walk through the terms in order: the prior (what we
+believed), the likelihood (how well the data fit each belief), the
+posterior (what we believe now).</li>
 <li>The bottom, P(data), is the same whichever belief we’re considering,
 so it only rescales the answer to add up to 1. Drop it and you’re left
 with prior × likelihood → posterior.</li>
@@ -2399,8 +2399,9 @@ conditional: it turns P(data | belief), which is what a test or study
 gives us, into P(belief | data), which is what we want. That’s the HIV
 test again. Second, it describes updating: we believed something, we saw
 something, and now we believe something slightly or very different.</li>
-<li>The textbook form, P(A | B) = P(B | A) P(A) / P(B), is on the bottom
-line for anyone who has seen it before.</li>
+<li>It opens in the textbook form, P(A | B) = P(B | A) P(A) / P(B),
+which some students will have seen. Click: A becomes belief and B
+becomes data, term for term, and the colors appear.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2414,17 +2415,26 @@ line for anyone who has seen it before.</li>
           display:block!important;
       }</style></aside>
 <p><em>The one rule, written as a formula.</em></p>
+<div class="r-stack">
+<div class="fragment fade-out" data-fragment-index="1">
+<p><span class="math display">\[
+P(A \mid B) = \frac{P(B \mid A) \times P(A)}{P(B)}
+\]</span></p>
+</div>
+<div class="fragment" data-fragment-index="1">
 <p><span class="math display">\[
 \class{green}{P(\text{belief} \mid \text{data})}
 =
 \frac{
-\class{red}{P(\text{belief})}
-\;\times\;
 \class{blue}{P(\text{data} \mid \text{belief})}
+\;\times\;
+\class{red}{P(\text{belief})}
 }{
 \class{gray}{P(\text{data})}
 }
 \]</span></p>
+</div>
+</div>
 <ul>
 <li class="fragment"><span class="red"><strong>P( belief )</strong></span>: the <strong>prior</strong>. What we believed before.</li>
 <li class="fragment"><span class="blue"><strong>P( data | belief )</strong></span>: the <strong>likelihood</strong>. How likely the data are, if the belief is true.</li>
@@ -2434,7 +2444,6 @@ line for anyone who has seen it before.</li>
 <div class="fragment">
 <p>Without the bottom line, it’s the rule we started with: <span class="red"><strong>Prior</strong></span> × <span class="blue"><strong>Likelihood</strong></span> → <span class="green"><strong>Posterior</strong></span></p>
 </div>
-<p><span class="source">Usually written P(A | B) = P(B | A) P(A) / P(B). It turns P(B | A) into P(A | B).</span></p>
 </section></section>
 <section>
 <section id="so-why-is-most-published-research-wrong" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#why-research-wrong">
@@ -2627,15 +2636,13 @@ threshold can give it.</li>
 <ul>
 <li>Back to the capybara: most published research is wrong, and that’s
 okay.</li>
-<li>It’s okay because nobody (should) read a study as a verdict. A study
-is a contribution to an ongoing conversation.</li>
-<li>The process around the study is what does the work: other labs try
-it again, critics poke holes, someone proposes a better explanation,
-theory says whether it even makes sense.</li>
-<li>Each study joins an existing body of knowledge. It nudges what we
-believe, a little or a lot. It doesn’t define it.</li>
-<li>Science works really well. It just doesn’t work one study at a
-time.</li>
+<li>It’s okay because a study was never supposed to be a verdict. It’s
+one observation, a contribution to what we already know. It nudges our
+beliefs, a little or a lot; it doesn’t define them.</li>
+<li>Ethnographers already work this way. Nobody writes an ethnography
+from one interview or treats one informant as the truth. One interview
+is weighed against others, in context. A statistical result deserves the
+same treatment.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2649,207 +2656,22 @@ time.</li>
           display:block!important;
       }</style></aside>
 <p><em>Most studies are wrong.</em> <span class="fragment blue">…and that’s okay.</span></p>
-<div class="fragment">
 <ul>
-<li>A study was never supposed to be the answer.</li>
-<li>We interpret each study as part of a <strong>larger scientific process</strong>: replication, critique, competing explanations, theory, more data.</li>
-<li>That process is what gets things right. Not any single study.</li>
+<li class="fragment">A study was never supposed to be the answer. It’s one observation.</li>
+<li class="fragment">Each one joins what we already know and nudges it, a little or a lot.</li>
+<li class="fragment">That’s how an ethnographer treats an interview, too.</li>
 </ul>
-</div>
-<div class="fragment">
-<p>Science doesn’t work because individual studies are right. It works because the field <span class="green">keeps looking</span>.</p>
-</div>
 </section>
-<section id="statistics-is-observation-not-answers" class="slide level2" data-notes="notes/week1_notes.md#observation-not-answers">
-<h2>Statistics is observation, not answers</h2>
+<section id="objective-or-subjective" class="slide level2" data-notes="notes/week1_notes.md#objective-subjective">
+<h2>Objective or subjective?</h2>
 <aside class="notes">
 <ul>
-<li>So where do the problems come from? Not from statistics being wrong.
-The math is fine.</li>
-<li>They come from expecting too much of it. We treat a p-value as an
-answer to “is this true?” It isn’t. It’s an observation.</li>
-<li>Go back through today: the person terrified by one positive HIV
-screen, the 86% of “discoveries” that are false, the analyst trying
-forks until p &lt; 0.05. Every one of those is someone believing
-statistics is more powerful than it is.</li>
-<li>Ethnographers already know how to handle this. Nobody writes an
-ethnography from one interview, or treats one informant as the truth.
-One interview is an observation. You weigh it against others, think
-about context, argue about what it means.</li>
-<li>We just need to do the same thing with statistics. A regression, a
-survey, a significant result: one observation, to be weighed and argued
-about.</li>
-<li>The science always comes first. The question, the theory, the
-knowledge of the context. Statistics serves that. It never replaces
-it.</li>
+<li>Read the quote. Students will have heard it, and some will half
+believe it.</li>
 </ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<div class="fragment">
-<ul>
-<li>The real problem isn’t that studies are wrong. It’s that we <span class="red">expect them to be right</span>.</li>
-<li>The HIV scare, the false discoveries, p-hacking: they all come from believing statistics is <span class="red">more powerful than it is</span>.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>In ethnography, everyone knows <strong>one interview isn’t the answer</strong>. It’s one observation, weighed against others and argued over.</li>
-<li>We just need to treat a statistical result the same way.</li>
-</ul>
-</div>
-<div class="fragment">
-<div class="big-statement">
-<p>The science always comes first.</p>
-</div>
-</div>
-</section>
-<section id="hard-data" class="slide level2" data-notes="notes/week1_notes.md#hard-data">
-<h2>Hard data?</h2>
-<aside class="notes">
-<ul>
-<li>Put the claim up plainly, and don’t mock it. Many students have
-heard it from supervisors, reviewers or funders, and some believe
-it.</li>
-<li>Ask for a show of hands: who has heard this? Who has said it? It’s a
-fair question to test, and we now have the tools to test it.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<blockquote>
-<p><em>“Ethnography is subjective. Statistics is objective. It’s hard data.”</em></p>
-</blockquote>
-<p>You’ve probably heard this. Maybe you’ve said it.</p>
-<div class="fragment">
-<p>Let’s test it against what we’ve seen today.</p>
-</div>
-</section>
-<section id="whats-true-about-it" class="slide level2" data-notes="notes/week1_notes.md#hard-data-true">
-<h2>What’s true about it</h2>
-<aside class="notes">
-<ul>
-<li>Be fair to the claim first. The arithmetic really is objective: give
-two people the same data and the same model, and they get the same
-number.</li>
-<li>Numbers are also easy to share and recompute, which is a real
-strength.</li>
-<li>The catch: the arithmetic is the last and smallest step. Everything
-before it (what to measure, who to ask, which model) involves
-judgment.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<ul>
-<li><strong>The arithmetic is objective.</strong> Same data, same model: same number, every time, for anyone.</li>
-<li><strong>Numbers are easy to share and check.</strong> Anyone can recompute them.</li>
-<li><strong>Large samples average out some kinds of noise.</strong> Not all of them.</li>
-</ul>
-<div class="fragment">
-<p>But the arithmetic is the <span class="red">smallest part of the work</span>.</p>
-</div>
-</section>
-<section id="every-number-today-rested-on-a-choice" class="slide level2 smaller" data-notes="notes/week1_notes.md#hard-data-choices">
-<h2>Every number today rested on a choice</h2>
-<aside class="notes">
-<ul>
-<li>Walk down the table. Every number came from earlier in today’s
-lecture, and each one moved when a choice changed.</li>
-<li>Rain: a different station, a different decade or a 0.1 mm threshold
-gives a different number.</li>
-<li>HIV: the 3.2% is for a random person from the general population.
-For people tested at a clinic because they have symptoms, the base rate
-is far higher, and so is the answer.</li>
-<li>p &lt; 0.05: the 5% is a convention from the 1920s, not a law of
-nature. Choosing the test, the controls and the stopping point are all
-researcher decisions.</li>
-<li>14%: depends on a base rate nobody can observe.</li>
-<li>The mayor: depends on who we reached, who answered and what prior we
-drew.</li>
-<li>None of these choices is wrong. The point is that they are choices,
-made by people, just like an ethnographer’s choices about whom to
-interview and how to read what they said.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>The number</th>
-<th>The choice behind it</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>P( rain ) = 31%</td>
-<td>Which station, which years, what counts as “rain” (≥ 1 mm), and how to fill gaps in the record</td>
-</tr>
-<tr class="even">
-<td>P( HIV+ | test+ ) = 3.2%</td>
-<td>Who gets tested. Among people who come to a clinic with symptoms, it’s very different.</td>
-</tr>
-<tr class="odd">
-<td>p &lt; 0.05</td>
-<td>Why 5%? A convention. Plus which test, which controls, when to stop collecting data.</td>
-</tr>
-<tr class="even">
-<td>14% of “discoveries” are true</td>
-<td>A base rate that nobody can measure directly</td>
-</tr>
-<tr class="odd">
-<td>The mayor at about 45%</td>
-<td>Who we surveyed, who answered, and the prior we drew</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<p>Once the choices are made, the number is objective. <span class="red">The choices aren’t.</span></p>
-</div>
-</section>
-<section id="objective-and-subjective" class="slide level2" data-notes="notes/week1_notes.md#statistics-is-observation">
-<h2>Objective and subjective</h2>
-<aside class="notes">
 <p>Updating is the foundation of our statistics: We believed something,
-we saw something, and we now believe something slightliy or
-significantly different from what we believed before.</p>
+we saw something, and we now believe something slightly or significantly
+different from what we believed before.</p>
 <p>What does that mean?</p>
 <p>It’s why it’s okay that most published research is false.</p>
 <p>Observation is messy. We love the mess. We live in the mess.
@@ -2883,19 +2705,21 @@ others can challenge them.</p>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>Statistics and ethnography have the same structure.</em></p>
+<blockquote>
+<p><em>“Ethnography is subjective. Statistics is objective. It’s hard data.”</em></p>
+</blockquote>
 <div class="fragment">
 <table class="caption-top">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 31%">
-<col style="width: 51%">
+<col style="width: 17%">
+<col style="width: 32%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
 <th></th>
 <th>Observation</th>
-<th>Interesting inferences assume…</th>
+<th>Interpretation assumes…</th>
 </tr>
 </thead>
 <tbody>
@@ -2913,24 +2737,24 @@ others can challenge them.</p>
 </table>
 </div>
 <div class="fragment">
-<p>Call the observation “objective” if you like. But interesting inferences rest on <span class="red">strong assumptions</span>, and choosing assumptions is <span class="red">subjective</span>, in both.</p>
+<p>Both join an objective part, the observation, with a subjective part, the assumptions. <span class="blue">The difference isn’t the field. It’s whether the assumptions are stated openly, where others can challenge them.</span></p>
 </div>
 </section>
-<section id="the-same-standard-for-both" class="slide level2" data-notes="notes/week1_notes.md#hard-data-standard">
-<h2>The same standard for both</h2>
+<section id="updating-improves-our-assumptions" class="slide level2" data-notes="notes/week1_notes.md#updating-assumptions">
+<h2>Updating improves our assumptions</h2>
 <aside class="notes">
 <ul>
-<li>The useful distinction isn’t objective vs.&nbsp;subjective fields. It’s
-transparent vs.&nbsp;hidden choices.</li>
-<li>Ethnography has spent decades building habits for this: reflexivity
-(how did I shape what I saw?), positionality (who am I to the people I
-studied?), thick description (show enough that readers can judge for
-themselves). Statistics talks less about these habits, and is worse for
-it.</li>
-<li>Tie it back to Ioannidis: “hard data” is exactly the belief that
-lets a single significant result pass as truth. Drop the belief, and the
-problem of most research being wrong becomes manageable. That’s the next
-section.</li>
+<li>This is the core of the week, and it isn’t technical.</li>
+<li>A prior is an assumption we write down, so others can see it and
+argue with it. That’s a strength, not a weakness: assumptions we hide
+can’t be checked.</li>
+<li>New data test the assumption. If what we saw fits what we assumed,
+our confidence grows. If it doesn’t, the assumption moves.</li>
+<li>The posterior is our improved assumption, and tomorrow it’s the
+prior. No single step has to be right. The process gets better.</li>
+<li>“Assume, look, update. Repeat.” is the whole method, and it’s what
+good researchers in any field already do. Bayesian statistics just makes
+it explicit and careful.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2944,88 +2768,29 @@ section.</li>
           display:block!important;
       }</style></aside>
 <ul>
-<li>Both have an <strong>observational</strong> part and an <strong>inferential</strong> part. Neither is “hard” or “soft” by nature.</li>
-<li>Trust is <strong>earned</strong> the same way in both: show how the observation was made, state your assumptions, let others challenge them, and look again.</li>
-<li>Ethnographers have long practice at this: reflexivity, positionality, thick description. Statistics can learn from it.</li>
+<li class="fragment">A <span class="red"><strong>prior</strong></span> is an assumption, written down where others can see it and argue with it.</li>
+<li class="fragment">New <span class="blue"><strong>data</strong></span> test it: does what we saw fit what we assumed?</li>
+<li class="fragment">The <span class="green"><strong>posterior</strong></span> is a better assumption, and the starting point next time.</li>
 </ul>
 <div class="fragment">
-<p>“Hard data” isn’t a property of numbers. It’s a claim about how much to trust them.</p>
+<div class="big-statement">
+<p>Assume, look, update. Repeat.</p>
 </div>
-<div class="fragment">
-<p><span class="red">Treating it as a property of the numbers is how so much published research ends up wrong while looking right.</span></p>
-</div>
-</section>
-<section id="observations-add-up" class="slide level2">
-<h2>Observations add up</h2>
-<p><em>Back to where we started: a study is one observation.</em></p>
-<ul>
-<li class="fragment">Bayesian updating is how observations add up: each one moves what we believe, a little or a lot.</li>
-<li class="fragment">No single study defines what we know. Each one joins an existing body of knowledge and nudges it.</li>
-<li class="fragment">Ethnography works the same way. Understanding comes from many observations, debated over time.</li>
-</ul>
-</section>
-<section id="doing-science" class="slide level2" data-notes="notes/week1_notes.md#doing-science">
-<h2>Doing science</h2>
-<aside class="notes">
-<ul>
-<li>“Science first” can sound like a slogan. Make it concrete: these are
-three habits, and none of them needs math.</li>
-<li>Question every observation. We’ve already done this today: a
-positive HIV test turned out to be wrong most of the time, and so did a
-significant result. Ask how the observation was made and what else could
-explain it. That’s what an ethnographer does with an interview,
-too.</li>
-<li>Look from different perspectives. No method sees everything. A
-survey sees breadth, an interview sees meaning, an experiment sees cause
-in one place, history sees change over time. Agreement across
-perspectives is strong evidence; disagreement tells you where to look
-next.</li>
-<li>Think in likelihood, not proof. Science never proves anything for
-good. We hold beliefs with more or less confidence and move them as
-evidence comes in. One study nudges a belief; it doesn’t settle it.</li>
-<li>That last habit is exactly what Bayesian updating formalizes, which
-is where we’re heading.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p><em>So what does it mean to put the science first?</em></p>
-<div class="fragment">
-<ul>
-<li><span class="blue"><strong>Question every observation.</strong></span> How was it made? Who’s missing? What else could have produced it? A positive test, a significant result and an interview can all mislead.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><span class="blue"><strong>Look from different perspectives.</strong></span> Other methods, other places, other people’s readings. Surveys, experiments, ethnography and history each see what the others miss. When they agree, believe more. When they disagree, look closer.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><span class="blue"><strong>Think in likelihood, not proof.</strong></span> Nothing is ever proved. Ask: <em>how likely is what I saw if this were true, compared with if it weren’t?</em> Beliefs move by degrees, and never quite reach 100%.</li>
-</ul>
-</div>
-<div class="fragment">
-<p>Statistics doesn’t replace any of this. At its best, it’s a careful way of doing the third one. That question is the <span class="blue">likelihood</span>, and updating is how we use it.</p>
 </div>
 </section>
 <section id="summary" class="slide level2" data-notes="notes/week1_notes.md#summary">
 <h2>Summary</h2>
 <aside class="notes">
 <ul>
-<li>Four ideas, one per part of the lecture. Read them out slowly.</li>
-<li>If students remember one line, it’s the last one: the science always
-comes first.</li>
-<li>Check for questions here, before the course preview and the
-appendix.</li>
+<li>Three ideas. Read them slowly.</li>
+<li>Probability is counting, and the direction of a conditional
+matters.</li>
+<li>Statistics, like ethnography, joins objective observation with
+subjective assumptions. A study is one observation, not an answer.</li>
+<li>Bayesian updating is how we improve those assumptions.</li>
+<li>End on the big statement: the science always comes first. Statistics
+serves the question, the theory and the knowledge of the context; it
+never replaces them.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3039,11 +2804,9 @@ appendix.</li>
           display:block!important;
       }</style></aside>
 <ol type="1">
-<li><span class="blue"><strong>Probability is counting.</strong></span> Count the ways the world could be.</li>
-<li><span class="blue"><strong>Direction matters.</strong></span> P( A | B ) ≠ P( B | A ). A p-value asks about the data in a world where nothing is going on. When true hypotheses are rare, most significant findings are false.</li>
-<li><span class="blue"><strong>That’s okay.</strong></span> A study is one observation, not an answer. It joins what we already know and nudges it, but doesn’t define it.</li>
-<li><span class="blue"><strong>Bayesian updating is one rule</strong></span> for learning from observation: prior × likelihood → posterior.</li>
-<li><span class="blue"><strong>Numbers aren’t “hard data.”</strong></span> Statistics rests on choices, just like ethnography. Trust comes from stating them, not from the numbers.</li>
+<li><span class="blue"><strong>Probability is counting</strong></span>, and direction matters: P( A | B ) ≠ P( B | A ).</li>
+<li><span class="blue"><strong>Objective and subjective.</strong></span> Statistics, like ethnography, joins objective observation with subjective assumptions. A study is one observation, not an answer.</li>
+<li><span class="blue"><strong>Bayesian updating</strong></span> is how we improve those assumptions: prior × likelihood → posterior.</li>
 </ol>
 <div class="fragment">
 <div class="big-statement">
