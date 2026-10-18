@@ -1603,13 +1603,11 @@ observe.</li>
 </tbody>
 </table>
 </div>
-<div class="fragment">
 <ul>
-<li>A p-value doesn’t tell you if a hypothesis is true.</li>
-<li>It tells you how unlikely the data would be if the null hypothesis were true.</li>
-<li>Those aren’t the same thing. P(A | B) ≠ P(B | A)</li>
+<li class="fragment">A p-value doesn’t tell you if a hypothesis is true.</li>
+<li class="fragment">It tells you how unlikely the data would be if the null hypothesis were true.</li>
+<li class="fragment">Those aren’t the same thing. P(A | B) ≠ P(B | A)</li>
 </ul>
-</div>
 <div class="fragment">
 <p>We want a different kind of statistics to work the same way knowledge does: we start with <span class="red">assumptions</span>, we encounter new <span class="blue">data</span>, and we <span class="green">update our beliefs</span> about the world.</p>
 </div>
@@ -2380,6 +2378,63 @@ just one simple idea:</p>
 <span id="cb2-701"><a aria-label="701"></a>}</span>
 <span id="cb2-702"><a aria-label="702"></a></span>
 <span id="cb2-703"><a aria-label="703"></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="bayes-theorem" class="slide level2 mechanics" data-notes="notes/week1_notes.md#bayes-theorem">
+<h2>Bayes’ theorem</h2>
+<aside class="notes">
+<ul>
+<li>First “Mechanics” slide: point out the tag in the corner. It means
+this is the machinery under the hood. Nice to follow, not necessary for
+the big picture. If you only remember “prior × likelihood → posterior”,
+you’re fine.</li>
+<li>It’s the same rule as before, written as a formula, in the same
+colors. Walk through the terms in order: the prior (what we believed),
+the likelihood (how well the data fit each belief), the posterior (what
+we believe now).</li>
+<li>The bottom, P(data), is the same whichever belief we’re considering,
+so it only rescales the answer to add up to 1. Drop it and you’re left
+with prior × likelihood → posterior.</li>
+<li>Two things worth noticing. First, the formula reverses a
+conditional: it turns P(data | belief), which is what a test or study
+gives us, into P(belief | data), which is what we want. That’s the HIV
+test again. Second, it describes updating: we believed something, we saw
+something, and now we believe something slightly or very different.</li>
+<li>The textbook form, P(A | B) = P(B | A) P(A) / P(B), is on the bottom
+line for anyone who has seen it before.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>The one rule, written as a formula.</em></p>
+<p><span class="math display">\[
+\class{green}{P(\text{belief} \mid \text{data})}
+=
+\frac{
+\class{red}{P(\text{belief})}
+\;\times\;
+\class{blue}{P(\text{data} \mid \text{belief})}
+}{
+\class{gray}{P(\text{data})}
+}
+\]</span></p>
+<ul>
+<li class="fragment"><span class="red"><strong>P( belief )</strong></span>: the <strong>prior</strong>. What we believed before.</li>
+<li class="fragment"><span class="blue"><strong>P( data | belief )</strong></span>: the <strong>likelihood</strong>. How likely the data are, if the belief is true.</li>
+<li class="fragment"><span class="green"><strong>P( belief | data )</strong></span>: the <strong>posterior</strong>. What we believe now.</li>
+<li class="fragment"><span class="gray"><strong>P( data )</strong></span>: the same for every belief, so it only rescales the answer. We can ignore it.</li>
+</ul>
+<div class="fragment">
+<p>Without the bottom line, it’s the rule we started with: <span class="red"><strong>Prior</strong></span> × <span class="blue"><strong>Likelihood</strong></span> → <span class="green"><strong>Posterior</strong></span></p>
+</div>
+<p><span class="source">Usually written P(A | B) = P(B | A) P(A) / P(B). It turns P(B | A) into P(A | B).</span></p>
 </section></section>
 <section>
 <section id="so-why-is-most-published-research-wrong" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#why-research-wrong">
@@ -2402,11 +2457,11 @@ math is fine. A significant result answers P(data | hypothesis), and
 when true ideas are rare, P(hypothesis | data) is very different.</li>
 <li>1 in 100 is one scenario, realistic for exploratory work.
 Confirmatory research can be closer to 50%, and then most discoveries
-are real. The mechanics slides at the end of this section show the
-range, if there’s time.</li>
+are real. The table at the end of this section shows the range, if
+there’s time.</li>
 <li>This is why it’s okay. Once you expect most single findings to be
-noise, you stop treating one p &lt; 0.05 as truth and start accumulating
-evidence, which is the next slide.</li>
+noise, you stop treating one p &lt; 0.05 as truth and start treating
+each one as a nudge to what we already know, not the final word.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2460,152 +2515,38 @@ Only 8 are real.</p>
 </div>
 </div></div>
 </section>
-<section id="what-if-we-look-again" class="slide level2" data-notes="notes/week1_notes.md#scenarios-replication">
-<h2>What if we look again?</h2>
+<section id="how-far-can-we-trust-a-discovery" class="slide level2 mechanics smaller" data-notes="notes/week1_notes.md#research-math">
+<h2>How far can we trust a “discovery”?</h2>
 <aside class="notes">
 <ul>
-<li>This is the HIV confirmatory test again. A positive screen at 3%
-isn’t a diagnosis, so you test again. Same here.</li>
-<li>Each row uses the previous row’s answer as the new base rate. That’s
-Bayesian updating: today’s posterior is tomorrow’s prior.</li>
-<li>At 80% power: 1% → 14% → 72% → 98%. Three independent significant
-results and we can be fairly confident.</li>
-<li>At 20% power it takes longer, but it still gets there: 1% → 4% → 14%
-→ 39% → 72% after four results. (Not on the slide; mention it if someone
-asks about weak studies.)</li>
-<li>The caveat matters. This only works if replications are independent.
-If every lab uses the same flawed measure, or only successful
-replications get published, the evidence doesn’t really add up. That’s
-why the scientific process includes critique, not just repetition.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p><em>Test the same idea again, in new, independent studies.</em></p>
-<div class="fragment">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>After…</th>
-<th style="text-align: center;">Chance it’s true</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>No studies</td>
-<td style="text-align: center;">1%</td>
-</tr>
-<tr class="even">
-<td>1 significant result</td>
-<td style="text-align: center;"><span class="red">14%</span></td>
-</tr>
-<tr class="odd">
-<td>2 significant results</td>
-<td style="text-align: center;">72%</td>
-</tr>
-<tr class="even">
-<td>3 significant results</td>
-<td style="text-align: center;"><strong>98%</strong></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="fragment">
-<p>No single study told us much. <span class="green">The sequence did.</span></p>
-</div>
-<p><span class="source">Assumes the studies are honest and independent.</span></p>
-</section>
-<section id="the-math-power-and-α" class="slide level2 mechanics" data-notes="notes/week1_notes.md#research-math">
-<h2>The math: power and α</h2>
-<aside class="notes">
-<ul>
-<li>Mechanics slide, optional. It’s the 1,000-ideas picture as a table,
-with 10,000 hypotheses so the counts come out whole.</li>
-<li>Power is the chance a study gets a significant result when the idea
-is true: its sensitivity. α is the chance it does when the idea is
-false: its false-positive rate, usually 5%.</li>
-<li>80 true discoveries and 495 false ones, so 80 / 575 ≈ 14% of
-significant results are true. Same calculation as the HIV table.</li>
-<li>80% power is generous. Median power is around 20% in fields like
-neuroscience (Button et al. 2013) and economics (Ioannidis, Stanley
-&amp; Doucouliagos 2017). At 1% and 20% power, only about 4% of
-significant results are true. That’s the next slide.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p><em>1% of hypotheses are true · 80% power · α = 5%</em></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>10,000 tested</th>
-<th><span class="red">Significant</span></th>
-<th>Not significant</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>True</strong> (100)</td>
-<td><strong>80</strong><br><span class="gray">power: P( sig | true )</span></td>
-<td>20</td>
-</tr>
-<tr class="even">
-<td><strong>False</strong> (9,900)</td>
-<td><strong>495</strong><br><span class="gray">α: P( sig | false )</span></td>
-<td>9,405</td>
-</tr>
-</tbody>
-</table>
-<p>P( <span class="blue">true</span> | <span class="red">significant</span> ) = 80 / (80 + 495) ≈ <span class="red"><strong>14%</strong></span></p>
-<div class="fragment">
-<p>Power and α are a study’s sensitivity and false-positive rate, just like the HIV test’s.</p>
-</div>
-</section>
-<section id="how-bad-does-it-get" class="slide level2 mechanics" data-notes="notes/week1_notes.md#scenarios-grid">
-<h2>How bad does it get?</h2>
-<aside class="notes">
-<ul>
-<li>Mechanics slide. Every cell is the same calculation as the HIV
-table: (base rate × power) / (base rate × power + (1 − base rate) ×
-α).</li>
-<li>Read across a row: lower power hurts, but not catastrophically when
-the base rate is high. At 50% true, even 20% power gives 80%.</li>
-<li>Read down a column: the base rate is what really drives it. At 80%
-power, going from 50% true to 1% true drops us from 94% to 14%.</li>
-<li>The perfect study: even with 100% power, a 1% base rate gives only
-17%. The false positives come from the 99% of false hypotheses, and
-power does nothing about them. No study design rescues an unlikely
-hypothesis.</li>
-<li>The last column is p-hacking. α = 5% assumes exactly one pre-planned
-test. Real analyses have forks: which outcome, which subgroup, which
-controls. Nobody has to be dishonest; it’s usually a sincere search for
-“the right analysis” that stops when something works. 20% is
-illustrative; Simmons, Nelson &amp; Simonsohn (2011) showed a handful of
-common choices can push the false-positive rate past 60%.</li>
-<li>In that column, power equals α, so a significant result is equally
-likely whether the hypothesis is true or false. The posterior equals the
-prior: each cell is just the base rate. The study taught us
-nothing.</li>
+<li>Mechanics slide, optional. It generalizes the 1,000-ideas picture to
+other kinds of study.</li>
+<li>Two error rates, both like the HIV test. α is the false-positive
+rate: how often a study says “significant” when the idea is false
+(usually set at 5%). β is the miss rate: how often it fails to find an
+idea that’s true. Power, a term students may meet in papers, is 1 −
+β.</li>
+<li>Every cell is the same calculation as the HIV table: (true share ×
+(1 − β)) / (true share × (1 − β) + (1 − true share) × α).</li>
+<li>Read down the rows. A large trial of a promising idea is usually
+right (94%). The search for new effects, our 1,000 ideas, is usually
+wrong (14%), and worse with small samples (4%). Same α, same β; the
+difference is how many tested ideas were true to begin with. That’s the
+takeaway line.</li>
+<li>β of 80% (power of 20%) isn’t a strawman. Median power is around 20%
+in fields like neuroscience (Button et al. 2013) and economics
+(Ioannidis, Stanley &amp; Doucouliagos 2017).</li>
+<li>The p-hacked row: α = 5% assumes one pre-planned test. Trying
+several outcomes, subgroups or controls until something works pushes the
+real false-positive rate up; 20% is illustrative, and Simmons, Nelson
+&amp; Simonsohn (2011) showed common choices can push it past 60%. When
+α equals 1 − β, a significant result is equally likely whether the idea
+is true or false, so the chance stays at the starting 10%. The study
+taught us nothing.</li>
 <li>If asked about fixes: a stricter threshold (p &lt; 0.005, Benjamin
-et al. 2018) lifts the 1% row from 14% to 62% at 80% power, but needs
-much bigger samples. Replication works better, which is the next
-slide.</li>
+et al. 2018) helps but needs much bigger samples. Replication works
+better: a finding that keeps holding up in new studies earns trust no
+threshold can give it.</li>
 <li>Ask the room: which row does your own field live in?</li>
 </ul>
 <style type="text/css">
@@ -2619,47 +2560,160 @@ slide.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>P( <span class="blue">true</span> | <span class="red">significant</span> ) under different conditions:</p>
+<p><em>α: the chance of a “significant” result when the idea is false · β: the chance of missing an idea that’s true</em></p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 47%">
+<col style="width: 14%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 20%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>True hypotheses</th>
-<th style="text-align: center;">80% power</th>
-<th style="text-align: center;">20% power</th>
-<th style="text-align: center;">p-hacked</th>
+<th>Type of study</th>
+<th style="text-align: center;">True ideas</th>
+<th style="text-align: center;">α</th>
+<th style="text-align: center;">β</th>
+<th style="text-align: center;">Chance a “discovery” is true</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>50%</strong> <span class="gray">confirmatory</span></td>
-<td style="text-align: center;">94%</td>
-<td style="text-align: center;">80%</td>
-<td style="text-align: center;"><span class="red">50%</span></td>
+<td>Large trial of a promising idea</td>
+<td style="text-align: center;">50%</td>
+<td style="text-align: center;">5%</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;"><strong>94%</strong></td>
 </tr>
 <tr class="even">
-<td><strong>10%</strong></td>
-<td style="text-align: center;">64%</td>
-<td style="text-align: center;"><span class="red">31%</span></td>
-<td style="text-align: center;"><span class="red">10%</span></td>
+<td>Small study of a promising idea</td>
+<td style="text-align: center;">50%</td>
+<td style="text-align: center;">5%</td>
+<td style="text-align: center;">80%</td>
+<td style="text-align: center;">80%</td>
 </tr>
 <tr class="odd">
-<td><strong>1%</strong> <span class="gray">exploratory</span></td>
+<td>Search for new effects <em>(the 1,000 ideas)</em></td>
+<td style="text-align: center;">1%</td>
+<td style="text-align: center;">5%</td>
+<td style="text-align: center;">20%</td>
 <td style="text-align: center;"><span class="red">14%</span></td>
+</tr>
+<tr class="even">
+<td>Small search for new effects</td>
+<td style="text-align: center;">1%</td>
+<td style="text-align: center;">5%</td>
+<td style="text-align: center;">80%</td>
 <td style="text-align: center;"><span class="red">4%</span></td>
-<td style="text-align: center;"><span class="red">1%</span></td>
+</tr>
+<tr class="odd">
+<td>p-hacked small study</td>
+<td style="text-align: center;">10%</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">80%</td>
+<td style="text-align: center;"><span class="red">10%</span></td>
 </tr>
 </tbody>
 </table>
 <div class="fragment">
-<ul>
-<li>The <span class="blue">base rate</span> matters more than power. Even a perfect study only reaches 17% at 1%.</li>
-<li>p-hacked (20% power, α ≈ 20%): a “significant” result tells us nothing new.</li>
-</ul>
+<p>What matters most is how many of the ideas we test are true to begin with.</p>
 </div>
 </section></section>
 <section>
-<section id="hard-data" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#hard-data">
-<h1>Hard data?</h1>
+<section id="most-studies-are-wrong.-is-that-a-problem" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#is-that-a-problem">
+<h1>Most studies are wrong. Is that a problem?</h1>
+<aside class="notes">
+<ul>
+<li>Back to the capybara: most published research is wrong, and that’s
+okay.</li>
+<li>It’s okay because nobody (should) read a study as a verdict. A study
+is a contribution to an ongoing conversation.</li>
+<li>The process around the study is what does the work: other labs try
+it again, critics poke holes, someone proposes a better explanation,
+theory says whether it even makes sense.</li>
+<li>Each study joins an existing body of knowledge. It nudges what we
+believe, a little or a lot. It doesn’t define it.</li>
+<li>Science works really well. It just doesn’t work one study at a
+time.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Most studies are wrong.</em> <span class="fragment blue">…and that’s okay.</span></p>
+<div class="fragment">
+<ul>
+<li>A study was never supposed to be the answer.</li>
+<li>We interpret each study as part of a <strong>larger scientific process</strong>: replication, critique, competing explanations, theory, more data.</li>
+<li>That process is what gets things right. Not any single study.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Science doesn’t work because individual studies are right. It works because the field <span class="green">keeps looking</span>.</p>
+</div>
+</section>
+<section id="statistics-is-observation-not-answers" class="slide level2" data-notes="notes/week1_notes.md#observation-not-answers">
+<h2>Statistics is observation, not answers</h2>
+<aside class="notes">
+<ul>
+<li>So where do the problems come from? Not from statistics being wrong.
+The math is fine.</li>
+<li>They come from expecting too much of it. We treat a p-value as an
+answer to “is this true?” It isn’t. It’s an observation.</li>
+<li>Go back through today: the person terrified by one positive HIV
+screen, the 86% of “discoveries” that are false, the analyst trying
+forks until p &lt; 0.05. Every one of those is someone believing
+statistics is more powerful than it is.</li>
+<li>Ethnographers already know how to handle this. Nobody writes an
+ethnography from one interview, or treats one informant as the truth.
+One interview is an observation. You weigh it against others, think
+about context, argue about what it means.</li>
+<li>We just need to do the same thing with statistics. A regression, a
+survey, a significant result: one observation, to be weighed and argued
+about.</li>
+<li>The science always comes first. The question, the theory, the
+knowledge of the context. Statistics serves that. It never replaces
+it.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="fragment">
+<ul>
+<li>The real problem isn’t that studies are wrong. It’s that we <span class="red">expect them to be right</span>.</li>
+<li>The HIV scare, the false discoveries, p-hacking: they all come from believing statistics is <span class="red">more powerful than it is</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>In ethnography, everyone knows <strong>one interview isn’t the answer</strong>. It’s one observation, weighed against others and argued over.</li>
+<li>We just need to treat a statistical result the same way.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="big-statement">
+<p>The science always comes first.</p>
+</div>
+</div>
+</section>
+<section id="hard-data" class="slide level2" data-notes="notes/week1_notes.md#hard-data">
+<h2>Hard data?</h2>
 <aside class="notes">
 <ul>
 <li>Put the claim up plainly, and don’t mock it. Many students have
@@ -2900,394 +2954,13 @@ section.</li>
 <div class="fragment">
 <p><span class="red">Treating it as a property of the numbers is how so much published research ends up wrong while looking right.</span></p>
 </div>
-</section></section>
-<section>
-<section id="bayes-2" class="title-slide slide level1 center">
-<h1>Bayes 2</h1>
-
-</section>
-<section id="bayesian-updating-why-one-rule-helps" class="slide level2 mechanics" data-notes="notes/week1_notes.md#bayesian-updating-how">
-<h2>Bayesian Updating: Why one rule helps</h2>
-<aside class="notes">
-<p>The nice thing about having one process is that a lot of the rules
-you may have learned for tests simply go away.</p>
-<p>Tests need a stopping rule fixed in advance: if you peek at the data
-and stop when p dips below 0.05, your false positive rate quietly
-balloons. (Sequential designs can plan for interim looks, but the looks
-have to be planned and paid for.) Bayesian updating doesn’t care when
-you stop. The posterior is just what you believe given what you’ve seen
-so far.</p>
-<p>Updating is also cumulative. Last week’s posterior becomes this
-week’s prior, and you end up in the same place as if you’d analyzed
-everything at once.</p>
-<p>We still make assumptions, but we choose them to fit the data and we
-write them down, instead of inheriting them from whichever test we
-picked. (This is really a contrast between picking tests and building
-models; frequentist GLMs build models too.) And small samples don’t
-break anything; they leave us more uncertain, and the prior matters
-more, so it deserves more scrutiny.</p>
-<p>Most importantly, it answers the question we actually care about: how
-plausible is the hypothesis, given the data?</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<ul>
-<li class="fragment"><strong>One rule for everything.</strong> Prior × likelihood → posterior. No flowchart of tests to choose from.</li>
-<li class="fragment"><strong>No fixed sample size.</strong> Look at the data whenever you like and stop when you’ve learned enough. The posterior means the same thing either way.<br>
-<span class="fragment blue"><em>A p-value depends on the stopping rule you planned in advance. Unplanned peeking breaks it.</em></span></li>
-<li class="fragment"><strong>Today’s posterior is tomorrow’s prior.</strong> Updating survey by survey gives the same answer as analyzing all the surveys at once.</li>
-<li class="fragment"><strong>You build the model to fit your data.</strong> Counts, proportions, skewed incomes: describe the data as they are, instead of picking whichever test’s assumptions come closest.</li>
-<li class="fragment"><strong>Small samples are still valid.</strong> No large-sample approximations. Less data means more uncertainty, and the prior carries more of the weight.</li>
-<li class="fragment"><strong>It answers the question we actually ask:</strong> P( <span class="red">hypothesis</span> | <span class="blue">data</span> ).</li>
-</ul>
-</section>
-<section id="bayes-theorem" class="slide level2 mechanics" data-notes="notes/week1_notes.md#bayes-theorem">
-<h2>Bayes Theorem</h2>
-<aside class="notes">
-<ul>
-<li>First “Mechanics” slide: point out the tag in the corner. It means
-this is the machinery under the hood. Nice to follow, not necessary for
-the big picture. If you only remember “prior × likelihood → posterior”,
-you’re fine.</li>
-</ul>
-<p>That’s all statistics is.</p>
-<p>We’re going to dig into an example here that is very simple, but it
-represents the entire philosophical underpinnings of statistical
-analysis:</p>
-<p>I just want you to notice two things here:</p>
-<ul>
-<li>first the main purpose of this function is to reverse conditional
-dependency, turning P(B | A) into P(A | B).</li>
-<li>second, the combination of priors, likelihoods, and posteriors
-drives a process called “updating”. We used to believe something, then
-we saw something, and now we believe something slightly or significantly
-different.</li>
-</ul>
-<p>believe something (prior), observe something (likelihood), update
-beliefs (posterior)</p>
-<p>With this simple process, we’re going to do some very cool things.
-instead, we have updating</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p><span class="math display">\[
-P(A|B) = \frac{P(B|A)\,P(A)}{P(B)}
-\]</span></p>
-<p>or</p>
-<p><span class="math display">\[
-\class{green}{P(\text{belief} \mid \text{data})}
-=
-\frac{
-\class{blue}{P(\text{data} \mid \text{belief})}
-\;\class{red}{P(\text{belief})}
-}{
-\class{gray}{P(\text{data})}
-}
-\]</span></p>
-<ul>
-<li class="fragment"><span class="blue"><strong>P(data | belief)</strong></span>: likelihood</li>
-<li class="fragment"><span class="red"><strong>P(belief)</strong></span>: prior probability</li>
-<li class="fragment"><span class="green"><strong>P(belief | data)</strong></span>: posterior probability</li>
-<li class="fragment"><span class="gray"><strong>P(data)</strong></span>: marginal likelihood (not interesting)</li>
-</ul>
-<div class="fragment">
-<p>In simple terms:</p>
-<ul>
-<li>prior × likelihood =&gt; posterior</li>
-</ul>
-</div>
-</section>
-<section id="isnt-the-prior-subjective" class="slide level2" data-notes="notes/week1_notes.md#prior-subjective">
-<h2>Isn’t the prior subjective?</h2>
-<aside class="notes">
-<ul>
-<li>Someone will ask. Better to raise it ourselves.</li>
-<li>Yes, priors are a choice. But every method makes choices: which
-test, which variables to control for, when to stop collecting data,
-which outcome to report. Frequentist methods make those choices too;
-they’re just less visible.</li>
-<li>A prior is visible. It’s written down, so it can be criticized, and
-we can check how much the answer depends on it (sensitivity analysis,
-later in the course).</li>
-<li>With plenty of data, reasonable priors converge. With little data,
-the prior matters, and that is honest: the data alone can’t tell us
-much.</li>
-<li>Lead into the next slide: this isn’t special to statistics. Every
-field that learns from observation makes assumptions.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p><em>Yes. That’s a feature, not a bug.</em></p>
-<ul>
-<li>Every analysis makes assumptions. A p-value hides them: which test, which controls, when to stop collecting data.</li>
-<li>A prior puts an assumption <strong>on the table</strong>, written down where anyone can see it and argue with it.</li>
-<li>With enough data, people who start from different reasonable priors end up in nearly the same place.</li>
-<li>When they don’t, the data is weak. That’s worth knowing too.</li>
-</ul>
-<div class="fragment">
-<p>Subjective doesn’t mean arbitrary. It means someone made a choice, and has to <span class="blue">defend it</span>.</p>
-</div>
-</section>
-<section id="youve-already-done-this" class="slide level2 smaller" data-notes="notes/week1_notes.md#prior-likelihood-posterior">
-<h2>You’ve already done this</h2>
-<aside class="notes">
-<ul>
-<li>Read the definitions row first, then go down the examples. The
-point: the HIV test and the published-research table were Bayesian
-updates all along. We just didn’t use the names.</li>
-<li>In the HIV row, the prior is prevalence, the likelihood is
-sensitivity and the false-positive rate, and the posterior is P(HIV+ |
-test+).</li>
-<li>In the research row, the prior is the base rate, the likelihood is
-power and α, and the posterior is P(true | significant).</li>
-<li>The mayor poll is the same thing with many possible answers (every
-vote share from 0 to 100%) instead of two. We’ll do it live in the
-demonstration.</li>
-<li>Address the obvious question head on: “Isn’t the likelihood
-backwards too, like a p-value?” Yes. On its own, it’s P(data | belief).
-A p-value stops there, and only for one imagined world. Bayes computes
-it for every possibility and combines it with the prior, which turns it
-around into P(belief | data).</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<table class="caption-top">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><span class="red">Prior</span></th>
-<th><span class="blue">Likelihood</span></th>
-<th><span class="green">Posterior</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Means</strong></td>
-<td>What I believed before</td>
-<td>How likely what I saw is, under each possibility</td>
-<td>What I believe now</td>
-</tr>
-<tr class="even">
-<td><strong>Asks</strong></td>
-<td><em>“What did I think?”</em></td>
-<td><em>“If this were true, how likely is what I saw?”</em></td>
-<td><em>“What do I think now?”</em></td>
-</tr>
-<tr class="odd">
-<td><strong>Written</strong></td>
-<td>P( belief )</td>
-<td>P( data | belief )</td>
-<td>P( belief | data )</td>
-</tr>
-<tr class="even">
-<td><strong>HIV test</strong></td>
-<td>0.1% of people have HIV</td>
-<td>A positive test: 99% likely if HIV+, 3% if HIV–</td>
-<td>After a positive test: <strong>3.2%</strong></td>
-</tr>
-<tr class="odd">
-<td><strong>Published research</strong></td>
-<td>1% of tested hypotheses are true</td>
-<td>Significant: 80% likely if true, 5% if false</td>
-<td>After a significant result: <strong>14%</strong></td>
-</tr>
-<tr class="even">
-<td><strong>Mayor poll</strong></td>
-<td>About 60%, from the last election</td>
-<td>6 of 20 for the mayor: likely if support is ~30%, unlikely if 60%</td>
-<td>About <strong>45%</strong></td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<p>The likelihood alone runs the same direction as a p-value: P( data | belief ). Bayes doesn’t stop there. It combines the likelihood with the prior to answer the question we actually care about: P( belief | data ).</p>
-</div>
-</section>
-<section id="from-two-possibilities-to-many" class="slide level2" data-notes="notes/week1_notes.md#two-to-many">
-<h2>From two possibilities to many</h2>
-<aside class="notes">
-<ul>
-<li>This is the bridge from the HIV and research examples to real
-models. Those had two possibilities. Most questions have many.</li>
-<li>Nothing about the rule changes. We just do it once for each
-possibility and compare.</li>
-<li>For the bag of stones, the likelihood is literally counting: for a
-bag with 3 blue stones, how many ways could we draw blue, black, blue?
-Compare with a bag with 6 blue. This is the “Counting ways” slide
-again.</li>
-<li>The output is a distribution, which is why the bag app shows a bar
-chart rather than a single number. Everything from Week 2 on is about
-distributions like this.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p><em>The HIV test and published research had <strong>two</strong> possibilities: true or false.</em></p>
-<div class="fragment">
-<p>Most questions have many:</p>
-<ul>
-<li>How many of 9 stones in a bag are blue? <strong>10</strong> possibilities, 0 to 9.</li>
-<li>What share of voters support the mayor? <strong>Every</strong> value from 0% to 100%.</li>
-</ul>
-</div>
-<div class="fragment">
-<p>Same rule, done once for each possibility:</p>
-<ul>
-<li><span class="red"><strong>Prior</strong></span>: how plausible was each possibility before?</li>
-<li><span class="blue"><strong>Likelihood</strong></span>: if this possibility were true, how likely is what we saw? For the bag, just count the ways it could happen. <em>(Counting ways)</em></li>
-<li><span class="green"><strong>Posterior</strong></span>: multiply the two, and compare across possibilities.</li>
-</ul>
-</div>
-<div class="fragment">
-<p>The answer is a <strong>distribution</strong>: a plausibility for every possible answer, not a single yes or no. Let’s try it with the bag.</p>
-</div>
-</section></section>
-<section>
-<section id="most-studies-are-wrong.-is-that-a-problem" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#is-that-a-problem">
-<h1>Most studies are wrong. Is that a problem?</h1>
-<aside class="notes">
-<ul>
-<li>Back to the capybara: most published research is wrong, and that’s
-okay.</li>
-<li>It’s okay because nobody (should) read a study as a verdict. A study
-is a contribution to an ongoing conversation.</li>
-<li>The process around the study is what does the work: other labs try
-it again, critics poke holes, someone proposes a better explanation,
-theory says whether it even makes sense.</li>
-<li>The replication table showed this with numbers. One study: 14%. A
-field that keeps looking: 98%.</li>
-<li>Science works really well. It just doesn’t work one study at a
-time.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p><em>Most studies are wrong.</em> <span class="fragment blue">…and that’s okay.</span></p>
-<div class="fragment">
-<ul>
-<li>A study was never supposed to be the answer.</li>
-<li>We interpret each study as part of a <strong>larger scientific process</strong>: replication, critique, competing explanations, theory, more data.</li>
-<li>That process is what gets things right. Not any single study.</li>
-</ul>
-</div>
-<div class="fragment">
-<p>Science doesn’t work because individual studies are right. It works because the field <span class="green">keeps looking</span>.</p>
-</div>
-</section>
-<section id="statistics-is-observation-not-answers" class="slide level2" data-notes="notes/week1_notes.md#observation-not-answers">
-<h2>Statistics is observation, not answers</h2>
-<aside class="notes">
-<ul>
-<li>So where do the problems come from? Not from statistics being wrong.
-The math is fine.</li>
-<li>They come from expecting too much of it. We treat a p-value as an
-answer to “is this true?” It isn’t. It’s an observation.</li>
-<li>Go back through today: the person terrified by one positive HIV
-screen, the 86% of “discoveries” that are false, the analyst trying
-forks until p &lt; 0.05. Every one of those is someone believing
-statistics is more powerful than it is.</li>
-<li>Ethnographers already know how to handle this. Nobody writes an
-ethnography from one interview, or treats one informant as the truth.
-One interview is an observation. You weigh it against others, think
-about context, argue about what it means.</li>
-<li>We just need to do the same thing with statistics. A regression, a
-survey, a significant result: one observation, to be weighed and argued
-about.</li>
-<li>The science always comes first. The question, the theory, the
-knowledge of the context. Statistics serves that. It never replaces
-it.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<div class="fragment">
-<ul>
-<li>The real problem isn’t that studies are wrong. It’s that we <span class="red">expect them to be right</span>.</li>
-<li>The HIV scare, the false discoveries, p-hacking: they all come from believing statistics is <span class="red">more powerful than it is</span>.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>In ethnography, everyone knows <strong>one interview isn’t the answer</strong>. It’s one observation, weighed against others and argued over.</li>
-<li>We just need to treat a statistical result the same way.</li>
-</ul>
-</div>
-<div class="fragment">
-<div class="big-statement">
-<p>The science always comes first.</p>
-</div>
-</div>
 </section>
 <section id="observations-add-up" class="slide level2">
 <h2>Observations add up</h2>
 <p><em>Back to where we started: a study is one observation.</em></p>
 <ul>
 <li class="fragment">Bayesian updating is how observations add up: each one moves what we believe, a little or a lot.</li>
-<li class="fragment">That’s what happened when we looked again and again: 1% → 14% → 72% → 98%.</li>
+<li class="fragment">No single study defines what we know. Each one joins an existing body of knowledge and nudges it.</li>
 <li class="fragment">Ethnography works the same way. Understanding comes from many observations, debated over time.</li>
 </ul>
 </section>
@@ -3309,8 +2982,7 @@ perspectives is strong evidence; disagreement tells you where to look
 next.</li>
 <li>Think in likelihood, not proof. Science never proves anything for
 good. We hold beliefs with more or less confidence and move them as
-evidence comes in. The replication table is the picture to keep in mind:
-1% → 14% → 72% → 98%.</li>
+evidence comes in. One study nudges a belief; it doesn’t settle it.</li>
 <li>That last habit is exactly what Bayesian updating formalizes, which
 is where we’re heading.</li>
 </ul>
@@ -3338,7 +3010,7 @@ is where we’re heading.</li>
 </div>
 <div class="fragment">
 <ul>
-<li><span class="blue"><strong>Think in likelihood, not proof.</strong></span> Nothing is ever proved. Ask: <em>how likely is what I saw if this were true, compared with if it weren’t?</em> Beliefs move by degrees (1% → 14% → 72% → 98%), and never quite reach 100%.</li>
+<li><span class="blue"><strong>Think in likelihood, not proof.</strong></span> Nothing is ever proved. Ask: <em>how likely is what I saw if this were true, compared with if it weren’t?</em> Beliefs move by degrees, and never quite reach 100%.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -3369,7 +3041,7 @@ appendix.</li>
 <ol type="1">
 <li><span class="blue"><strong>Probability is counting.</strong></span> Count the ways the world could be.</li>
 <li><span class="blue"><strong>Direction matters.</strong></span> P( A | B ) ≠ P( B | A ). A p-value asks about the data in a world where nothing is going on. When true hypotheses are rare, most significant findings are false.</li>
-<li><span class="blue"><strong>That’s okay.</strong></span> A study is one observation, not an answer. The field gets things right by looking again: 1% → 14% → 72% → 98%.</li>
+<li><span class="blue"><strong>That’s okay.</strong></span> A study is one observation, not an answer. It joins what we already know and nudges it, but doesn’t define it.</li>
 <li><span class="blue"><strong>Bayesian updating is one rule</strong></span> for learning from observation: prior × likelihood → posterior.</li>
 <li><span class="blue"><strong>Numbers aren’t “hard data.”</strong></span> Statistics rests on choices, just like ethnography. Trust comes from stating them, not from the numbers.</li>
 </ol>
@@ -3378,9 +3050,9 @@ appendix.</li>
 <p>The science always comes first.</p>
 </div>
 </div>
-</section>
-<section id="whats-ahead" class="slide level2" data-notes="notes/week1_notes.md#whats-ahead">
-<h2>What’s ahead</h2>
+</section></section>
+<section id="whats-ahead" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#whats-ahead">
+<h1>What’s ahead</h1>
 <aside class="notes">
 <ul>
 <li>Keep this quick, about 30 seconds. It’s a map, not a lesson.</li>
@@ -3415,7 +3087,8 @@ class.</li>
 <div class="fragment">
 <p>Every week starts with the question and what we believe about the world. <span class="gray">The statistics come after.</span></p>
 </div>
-</section></section>
+</section>
+
 <section>
 <section id="practical-work-election-polling" class="title-slide slide level1 center">
 <h1>Practical Work: Election polling</h1>
