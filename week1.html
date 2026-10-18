@@ -385,7 +385,7 @@ concepts.</li>
 <ul>
 <li class="fragment">I don’t know if it’s going to rain tomorrow…</li>
 <li class="fragment">…but that doesn’t mean I don’t know anything.</li>
-<li class="fragment">In Nepal, the probability of rain is different in June than in January.</li>
+<li class="fragment">In Nepal, rain works differently in June than in January.</li>
 </ul>
 <div class="fragment">
 <p>But what does <em>“a 31% chance of rain”</em> actually mean?</p>
@@ -630,7 +630,7 @@ don’t know.</li>
 </table>
 </div>
 <div class="fragment">
-<p>Either way, it’s the same count: the ways we care about, out of all the ways that could happen.</p>
+<p>To convert between the two, move the decimal point two places to the right or to the left.</p>
 </div>
 </section>
 <section id="describing-probability-convention-2" class="slide level2" data-notes="notes/week1_notes.md#convention-2">
@@ -2439,10 +2439,10 @@ P(A \mid B) = \frac{P(B \mid A) \times P(A)}{P(B)}
 <li class="fragment"><span class="red"><strong>P( belief )</strong></span>: the <strong>prior</strong>. What we believed before.</li>
 <li class="fragment"><span class="blue"><strong>P( data | belief )</strong></span>: the <strong>likelihood</strong>. How likely the data are, if the belief is true.</li>
 <li class="fragment"><span class="green"><strong>P( belief | data )</strong></span>: the <strong>posterior</strong>. What we believe now.</li>
-<li class="fragment"><span class="gray"><strong>P( data )</strong></span>: the same for every belief, so it only rescales the answer. We can ignore it.</li>
+<li class="fragment"><span class="gray"><strong>P( data )</strong></span>: Usually not interesting. Just here to rescale total possibilities to 100%.</li>
 </ul>
 <div class="fragment">
-<p>Without the bottom line, it’s the rule we started with: <span class="red"><strong>Prior</strong></span> × <span class="blue"><strong>Likelihood</strong></span> → <span class="green"><strong>Posterior</strong></span></p>
+<p>Conceptually: <span class="red"><strong>Prior</strong></span> × <span class="blue"><strong>Likelihood</strong></span> → <span class="green"><strong>Posterior</strong></span></p>
 </div>
 </section></section>
 <section>
@@ -2637,12 +2637,15 @@ threshold can give it.</li>
 <li>Back to the capybara: most published research is wrong, and that’s
 okay.</li>
 <li>It’s okay because a study was never supposed to be a verdict. It’s
-one observation, a contribution to what we already know. It nudges our
-beliefs, a little or a lot; it doesn’t define them.</li>
-<li>Ethnographers already work this way. Nobody writes an ethnography
-from one interview or treats one informant as the truth. One interview
-is weighed against others, in context. A statistical result deserves the
-same treatment.</li>
+one observation, and each observation joins what we already know and
+nudges it, a little or a lot.</li>
+<li>No single observation gives us the answer. We use observations to
+support or challenge what we think we already know.</li>
+<li>The last bullet is the strong claim, so slow down: without prior
+assumptions, data is meaningless. A number only tells us something
+against a background of what we expected. Ethnographers know this
+already: an interview means something because of everything else the
+researcher knows about the place and the people.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2658,9 +2661,49 @@ same treatment.</li>
 <p><em>Most studies are wrong.</em> <span class="fragment blue">…and that’s okay.</span></p>
 <ul>
 <li class="fragment">A study was never supposed to be the answer. It’s one observation.</li>
-<li class="fragment">Each one joins what we already know and nudges it, a little or a lot.</li>
-<li class="fragment">That’s how an ethnographer treats an interview, too.</li>
+<li class="fragment">Each observation joins what we already know and nudges it, a little or a lot.</li>
+<li class="fragment">A single observation never gives us the answer.</li>
+<li class="fragment">Instead, we use observations to support or challenge what we think we already know.</li>
+<li class="fragment">Without these prior assumptions, data is meaningless.</li>
 </ul>
+</section>
+<section id="science-is-updating" class="slide level2" data-notes="notes/week1_notes.md#science-is-updating">
+<h2>Science is updating</h2>
+<aside class="notes">
+<ul>
+<li>Ask the room: what makes science work? Most people say experiments,
+or careful observation.</li>
+<li>Push back. Single observations are messy, and they often contradict
+each other. What makes science work is people: groups of scientists
+arguing about how to fit many observations together.</li>
+<li>The big statement: science isn’t the experiments we do, it’s the
+debates we have about them. Over time, those debates make us less, and
+less, and less wrong.</li>
+<li>This is updating at the scale of a whole field. Each observation
+nudges what the field believes; the argument is how the nudges get
+weighed.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p>What makes science work isn’t experiments or observations.</p>
+<div class="fragment">
+<p>It’s <span class="blue">groups of scientists arguing</span> about how to fit many observations together, observations that often contradict each other.</p>
+</div>
+<div class="fragment">
+<div class="big-statement">
+<p>Science isn’t the experiments we do.<br>
+It’s the debates we have about them.</p>
+</div>
+</div>
 </section>
 <section id="objective-or-subjective" class="slide level2" data-notes="notes/week1_notes.md#objective-subjective">
 <h2>Objective or subjective?</h2>
@@ -2738,6 +2781,44 @@ others can challenge them.</p>
 </div>
 <div class="fragment">
 <p>Both join an objective part, the observation, with a subjective part, the assumptions. <span class="blue">The difference isn’t the field. It’s whether the assumptions are stated openly, where others can challenge them.</span></p>
+</div>
+</section>
+<section id="doing-science" class="slide level2" data-notes="notes/week1_notes.md#doing-science">
+<h2>Doing science</h2>
+<aside class="notes">
+<ul>
+<li>The math is the least interesting part of using statistics for
+science. Say it plainly; it’s a relief for many students.</li>
+<li>Nearly every important choice happens before any numbers: what
+question to ask, what to observe, who to include, what to assume. The
+calculation comes last, and it’s the part a computer does.</li>
+<li>That means students can already interpret and critique statistical
+arguments without the mechanics. Ask what a study assumes, how its data
+were made, and what else could explain the result. Those questions don’t
+need a formula.</li>
+<li>This is what “doing science” means in this course. The science comes
+first; the statistics serve it.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>The math is the least interesting part.</em></p>
+<ul>
+<li class="fragment">Nearly every important choice happens before any numbers: what to ask, what to observe, who to include, what to assume.</li>
+<li class="fragment">So we can interpret and critique a statistical argument without the statistical mechanics. Ask what it assumes, how the data were made, and what else could explain it.</li>
+</ul>
+<div class="fragment">
+<div class="big-statement">
+<p>The science comes first.</p>
+</div>
 </div>
 </section>
 <section id="updating-improves-our-assumptions" class="slide level2" data-notes="notes/week1_notes.md#updating-assumptions">
@@ -2852,13 +2933,8 @@ class.</li>
 </div>
 </section>
 
-<section>
-<section id="practical-work-election-polling" class="title-slide slide level1 center">
-<h1>Practical Work: Election polling</h1>
-<p><em>Appendix: we’ll work through this together with the TA in our second class.</em></p>
-</section>
-<section id="the-bayesian-workflow" class="slide level2 smaller mechanics">
-<h2>The Bayesian workflow</h2>
+<section id="the-bayesian-workflow" class="title-slide slide level1 smaller mechanics center">
+<h1>The Bayesian workflow</h1>
 <!-- The ten-step workflow, shared by workflow.qmd and the week 1 deck. -->
 <ul>
 <li class="fragment"><strong>Scientific model:</strong> what we believe about the world, before any statistics.
@@ -2881,10 +2957,11 @@ class.</li>
 <li class="fragment"><strong>Test its robustness.</strong> How much does the estimate depend on our assumptions?</li>
 </ol></li>
 </ul>
-</section></section>
+</section>
+
 <section>
-<section id="demonstration-will-the-mayor-win" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#poll-demo">
-<h1>Demonstration: Will the mayor win?</h1>
+<section id="practical-work-will-the-mayor-win" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#poll-demo">
+<h1>Practical work: Will the mayor win?</h1>
 <aside class="notes">
 <ul>
 <li>We’re going to run the whole prior → likelihood → posterior loop on
@@ -2906,6 +2983,7 @@ we’ll build them later. Today the point is the logic of updating.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+<p><em>Appendix: we’ll work through this together with the TA in our second class.</em></p>
 <p>Let’s walk through the simplest possible version of this workflow.</p>
 <ul>
 <li><strong>Estimand</strong>: θ, the share of Kathmandu voters who will vote for the current mayor.</li>
