@@ -78,7 +78,7 @@ It's a way of talking about uncertainty.
 ::: {.incremental}
 - I don't know if it's going to rain tomorrow...
 - ...but that doesn't mean I don't know anything.
-- In Nepal, the probability of rain is different in June than in January.
+- In Nepal, rain works differently in June than in January.
 :::
 
 ::: {.fragment}
@@ -176,8 +176,8 @@ _We write a probability as a number between 0 and 1, or as a percentage._
 :::
 
 ::: {.fragment}
-Either way, it's the same count: the ways we care about, out of all the ways that
-could happen.
+To convert between the two, move the decimal point two places to the right or to the
+left.
 :::
 
 
@@ -474,11 +474,11 @@ $$
 - [**P( belief )**]{.red}: the **prior**. What we believed before.
 - [**P( data | belief )**]{.blue}: the **likelihood**. How likely the data are, if the belief is true.
 - [**P( belief | data )**]{.green}: the **posterior**. What we believe now.
-- [**P( data )**]{.gray}: the same for every belief, so it only rescales the answer. We can ignore it.
+- [**P( data )**]{.gray}: Usually not interesting. Just here to rescale total possibilities to 100%.
 :::
 
 ::: {.fragment}
-Without the bottom line, it's the rule we started with:
+Conceptually:
 [**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
 :::
 
@@ -550,8 +550,26 @@ _Most studies are wrong._ [...and that's okay.]{.fragment .blue}
 
 ::: {.incremental}
 - A study was never supposed to be the answer. It's one observation.
-- Each one joins what we already know and nudges it, a little or a lot.
-- That's how an ethnographer treats an interview, too.
+- Each observation joins what we already know and nudges it, a little or a lot.
+- A single observation never gives us the answer.
+- Instead, we use observations to support or challenge what we think we already know.
+- Without these prior assumptions, data is meaningless.
+:::
+
+## Science is updating {notes="notes/week1_notes.md#science-is-updating"}
+
+What makes science work isn't experiments or observations.
+
+::: {.fragment}
+It's [groups of scientists arguing]{.blue} about how to fit many observations together,
+observations that often contradict each other.
+:::
+
+::: {.fragment}
+::: {.big-statement}
+Science isn't the experiments we do.\
+It's the debates we have about them.
+:::
 :::
 
 ## Objective or subjective? {notes="notes/week1_notes.md#objective-subjective"}
@@ -569,6 +587,23 @@ _Most studies are wrong._ [...and that's okay.]{.fragment .blue}
 Both join an objective part, the observation, with a subjective part, the assumptions.
 [The difference isn't the field. It's whether the assumptions are stated openly, where
 others can challenge them.]{.blue}
+:::
+
+## Doing science {notes="notes/week1_notes.md#doing-science"}
+
+_The math is the least interesting part._
+
+::: {.incremental}
+- Nearly every important choice happens before any numbers: what to ask, what to
+  observe, who to include, what to assume.
+- So we can interpret and critique a statistical argument without the statistical
+  mechanics. Ask what it assumes, how the data were made, and what else could explain it.
+:::
+
+::: {.fragment}
+::: {.big-statement}
+The science comes first.
+:::
 :::
 
 ## Updating improves our assumptions {notes="notes/week1_notes.md#updating-assumptions"}
@@ -615,17 +650,15 @@ Every week starts with the question and what we believe about the world.
 [The statistics come after.]{.gray}
 :::
 
-# Practical Work: Election polling {.center}
-
-_Appendix: we'll work through this together with the TA in our second class._
-
-## The Bayesian workflow {.smaller .mechanics}
+# The Bayesian workflow {.smaller .mechanics}
 
 ::: {.incremental}
 {{< include _includes/bayesian-workflow.md >}}
 :::
 
-# Demonstration: Will the mayor win? {notes="notes/week1_notes.md#poll-demo"}
+# Practical work: Will the mayor win? {notes="notes/week1_notes.md#poll-demo"}
+
+_Appendix: we'll work through this together with the TA in our second class._
 
 Let's walk through the simplest possible version of this workflow.
 

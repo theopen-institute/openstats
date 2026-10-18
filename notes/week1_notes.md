@@ -216,8 +216,16 @@ For those interested in math, I definitely encourage you to where the theorem co
 # Most studies are wrong. Is that a problem? {#is-that-a-problem}
 
 - Back to the capybara: most published research is wrong, and that's okay.
-- It's okay because a study was never supposed to be a verdict. It's one observation, a contribution to what we already know. It nudges our beliefs, a little or a lot; it doesn't define them.
-- Ethnographers already work this way. Nobody writes an ethnography from one interview or treats one informant as the truth. One interview is weighed against others, in context. A statistical result deserves the same treatment.
+- It's okay because a study was never supposed to be a verdict. It's one observation, and each observation joins what we already know and nudges it, a little or a lot.
+- No single observation gives us the answer. We use observations to support or challenge what we think we already know.
+- The last bullet is the strong claim, so slow down: without prior assumptions, data is meaningless. A number only tells us something against a background of what we expected. Ethnographers know this already: an interview means something because of everything else the researcher knows about the place and the people.
+
+# Science is updating {#science-is-updating}
+
+- Ask the room: what makes science work? Most people say experiments, or careful observation.
+- Push back. Single observations are messy, and they often contradict each other. What makes science work is people: groups of scientists arguing about how to fit many observations together.
+- The big statement: science isn't the experiments we do, it's the debates we have about them. Over time, those debates make us less, and less, and less wrong.
+- This is updating at the scale of a whole field. Each observation nudges what the field believes; the argument is how the nudges get weighed.
 
 # Objective or subjective? {#objective-subjective}
 
@@ -234,6 +242,13 @@ Observation is messy. We love the mess. We live in the mess. Observation doesn't
 Science is not the experiments we do. Rather, it's the debates we have about the experiments we do. Over time, we can become less, and less, and less, and less, and less, and less wrong.
 
 This is why I'm always confused when people say statistics is "objective" or "more concrete", and ethnography is "subjective". I don't know what that means. Both have an observational part and an inferential part. We can call the observation part "objective" if we want: the survey responses are what they are, just like the interview transcript is what it is. Inference isn't necessarily subjective. Some inferences are almost mechanical. But the interesting ones, the ones that say something about causes, about people we didn't observe, about what would happen if, are always built on strong assumptions. What causes what, how the data were generated, which priors are reasonable: those assumptions are subjective, just like the ethnographer's assumptions about what people meant are subjective. The difference isn't between objective and subjective fields. The job in both is to state our assumptions openly so others can challenge them.
+
+# Doing science {#doing-science}
+
+- The math is the least interesting part of using statistics for science. Say it plainly; it's a relief for many students.
+- Nearly every important choice happens before any numbers: what question to ask, what to observe, who to include, what to assume. The calculation comes last, and it's the part a computer does.
+- That means students can already interpret and critique statistical arguments without the mechanics. Ask what a study assumes, how its data were made, and what else could explain the result. Those questions don't need a formula.
+- This is what "doing science" means in this course. The science comes first; the statistics serve it.
 
 # Updating improves our assumptions {#updating-assumptions}
 
