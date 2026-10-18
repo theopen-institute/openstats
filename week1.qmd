@@ -39,7 +39,7 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
   - Statistical significance
 - Understand why most research is wrong (and why that's okay)
 - Learn all of statistics (in just one formula)
-- Reflect on objectivity in research
+- Rethink objectivity and subjectivity in research
 - Appendix: election polling (a worked example)
 :::
 
@@ -448,17 +448,27 @@ That's it. A poll, a regression, a causal model: everything in this course is ju
 
 _The one rule, written as a formula._
 
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+$$
+P(A \mid B) = \frac{P(B \mid A) \times P(A)}{P(B)}
+$$
+:::
+
+::: {.fragment fragment-index=1}
 $$
 \class{green}{P(\text{belief} \mid \text{data})}
 =
 \frac{
-\class{red}{P(\text{belief})}
-\;\times\;
 \class{blue}{P(\text{data} \mid \text{belief})}
+\;\times\;
+\class{red}{P(\text{belief})}
 }{
 \class{gray}{P(\text{data})}
 }
 $$
+:::
+:::
 
 ::: {.incremental}
 - [**P( belief )**]{.red}: the **prior**. What we believed before.
@@ -471,8 +481,6 @@ $$
 Without the bottom line, it's the rule we started with:
 [**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
 :::
-
-[Usually written P(A | B) = P(B | A) P(A) / P(B). It turns P(B | A) into P(A | B).]{.source}
 
 
 # So why is most published research wrong? {notes="notes/week1_notes.md#why-research-wrong"}
@@ -540,164 +548,58 @@ What matters most is how many of the ideas we test are true to begin with.
 
 _Most studies are wrong._ [...and that's okay.]{.fragment .blue}
 
+::: {.incremental}
+- A study was never supposed to be the answer. It's one observation.
+- Each one joins what we already know and nudges it, a little or a lot.
+- That's how an ethnographer treats an interview, too.
+:::
+
+## Objective or subjective? {notes="notes/week1_notes.md#objective-subjective"}
+
+> _"Ethnography is subjective. Statistics is objective. It's hard data."_
+
 ::: {.fragment}
-- A study was never supposed to be the answer.
-- We interpret each study as part of a **larger scientific process**: replication, critique,
-  competing explanations, theory, more data.
-- That process is what gets things right. Not any single study.
+|                 | Observation                    | Interpretation assumes…                          |
+|-----------------|--------------------------------|--------------------------------------------------|
+| **Ethnography** | interviews, field notes        | what people meant; whose voices stand for others |
+| **Statistics**  | surveys, measurements, records | what causes what; how the data were generated    |
 :::
 
 ::: {.fragment}
-Science doesn't work because individual studies are right. It works because
-the field [keeps looking]{.green}.
+Both join an objective part, the observation, with a subjective part, the assumptions.
+[The difference isn't the field. It's whether the assumptions are stated openly, where
+others can challenge them.]{.blue}
 :::
 
-## Statistics is observation, not answers {notes="notes/week1_notes.md#observation-not-answers"}
+## Updating improves our assumptions {notes="notes/week1_notes.md#updating-assumptions"}
 
-::: {.fragment}
-- The real problem isn't that studies are wrong. It's that we [expect them to be right]{.red}.
-- The HIV scare, the false discoveries, p-hacking: they all come from believing
-  statistics is [more powerful than it is]{.red}.
-:::
-
-::: {.fragment}
-- In ethnography, everyone knows **one interview isn't the answer**. It's one observation,
-  weighed against others and argued over.
-- We just need to treat a statistical result the same way.
+::: {.incremental}
+- A [**prior**]{.red} is an assumption, written down where others can see it and argue
+  with it.
+- New [**data**]{.blue} test it: does what we saw fit what we assumed?
+- The [**posterior**]{.green} is a better assumption, and the starting point next time.
 :::
 
 ::: {.fragment}
 ::: {.big-statement}
-The science always comes first.
+Assume, look, update. Repeat.
 :::
-:::
-
-## Hard data? {notes="notes/week1_notes.md#hard-data"}
-
-> _"Ethnography is subjective. Statistics is objective. It's hard data."_
-
-You've probably heard this. Maybe you've said it.
-
-::: {.fragment}
-Let's test it against what we've seen today.
-:::
-
-## What's true about it {notes="notes/week1_notes.md#hard-data-true"}
-
-- **The arithmetic is objective.** Same data, same model: same number, every time, for
-  anyone.
-- **Numbers are easy to share and check.** Anyone can recompute them.
-- **Large samples average out some kinds of noise.** Not all of them.
-
-::: {.fragment}
-But the arithmetic is the [smallest part of the work]{.red}.
-:::
-
-## Every number today rested on a choice {.smaller notes="notes/week1_notes.md#hard-data-choices"}
-
-| The number | The choice behind it |
-|---|---|
-| P( rain ) = 31% | Which station, which years, what counts as "rain" (≥ 1 mm), and how to fill gaps in the record |
-| P( HIV+ \| test+ ) = 3.2% | Who gets tested. Among people who come to a clinic with symptoms, it's very different. |
-| p &lt; 0.05 | Why 5%? A convention. Plus which test, which controls, when to stop collecting data. |
-| 14% of "discoveries" are true | A base rate that nobody can measure directly |
-| The mayor at about 45% | Who we surveyed, who answered, and the prior we drew |
-
-::: {.fragment}
-Once the choices are made, the number is objective. [The choices aren't.]{.red}
-:::
-
-## Objective and subjective {notes="notes/week1_notes.md#statistics-is-observation"}
-
-_Statistics and ethnography have the same structure._
-
-::: {.fragment}
-
-|                 | Observation                    | Interesting inferences assume…                     |
-|-----------------|--------------------------------|----------------------------------------------------|
-| **Ethnography** | interviews, field notes        | what people meant; whose voices stand for others   |
-| **Statistics**  | surveys, measurements, records | what causes what; how the data were generated      |
-
-:::
-
-::: {.fragment}
-Call the observation "objective" if you like. But interesting inferences rest on [strong assumptions]{.red}, and choosing assumptions is [subjective]{.red}, in both.
-:::
-
-## The same standard for both {notes="notes/week1_notes.md#hard-data-standard"}
-
-- Both have an **observational** part and an **inferential** part. Neither is "hard" or
-  "soft" by nature.
-- Trust is **earned** the same way in both: show how the observation was made, state
-  your assumptions, let others challenge them, and look again.
-- Ethnographers have long practice at this: reflexivity, positionality, thick
-  description. Statistics can learn from it.
-
-::: {.fragment}
-"Hard data" isn't a property of numbers. It's a claim about how much to trust them.
-:::
-
-::: {.fragment}
-[Treating it as a property of the numbers is how so much published research ends up
-wrong while looking right.]{.red}
-:::
-
-## Observations add up
-
-_Back to where we started: a study is one observation._
-
-::: {.incremental}
-- Bayesian updating is how observations add up: each one moves what we believe, a little or a lot.
-- No single study defines what we know. Each one joins an existing body of knowledge and
-  nudges it.
-- Ethnography works the same way. Understanding comes from many observations, debated over time.
-:::
-
-## Doing science {notes="notes/week1_notes.md#doing-science"}
-
-_So what does it mean to put the science first?_
-
-::: {.fragment}
-- [**Question every observation.**]{.blue} How was it made? Who's missing? What else could
-  have produced it? A positive test, a significant result and an interview can all
-  mislead.
-:::
-
-::: {.fragment}
-- [**Look from different perspectives.**]{.blue} Other methods, other places, other
-  people's readings. Surveys, experiments, ethnography and history each see what the
-  others miss. When they agree, believe more. When they disagree, look closer.
-:::
-
-::: {.fragment}
-- [**Think in likelihood, not proof.**]{.blue} Nothing is ever proved. Ask: _how likely is
-  what I saw if this were true, compared with if it weren't?_ Beliefs move by degrees,
-  and never quite reach 100%.
-:::
-
-::: {.fragment}
-Statistics doesn't replace any of this. At its best, it's a careful way of doing the
-third one. That question is the [likelihood]{.blue}, and updating is how we use it.
 :::
 
 ## Summary {notes="notes/week1_notes.md#summary"}
 
-1. [**Probability is counting.**]{.blue} Count the ways the world could be.
-2. [**Direction matters.**]{.blue} P( A | B ) ≠ P( B | A ). A p-value asks about the data in a
-   world where nothing is going on. When true hypotheses are rare, most significant
-   findings are false.
-3. [**That's okay.**]{.blue} A study is one observation, not an answer. It joins what we
-   already know and nudges it, but doesn't define it.
-4. [**Bayesian updating is one rule**]{.blue} for learning from observation:
+1. [**Probability is counting**]{.blue}, and direction matters: P( A | B ) ≠ P( B | A ).
+2. [**Objective and subjective.**]{.blue} Statistics, like ethnography, joins objective
+   observation with subjective assumptions. A study is one observation, not an answer.
+3. [**Bayesian updating**]{.blue} is how we improve those assumptions:
    prior × likelihood → posterior.
-5. [**Numbers aren't "hard data."**]{.blue} Statistics rests on choices, just like
-   ethnography. Trust comes from stating them, not from the numbers.
 
 ::: {.fragment}
 ::: {.big-statement}
 The science always comes first.
 :::
 :::
+
 
 # What's ahead {notes="notes/week1_notes.md#whats-ahead"}
 
