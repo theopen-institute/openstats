@@ -1,29 +1,33 @@
 
 ## Data Lunch: Week 2 {#title}
 
-- Last week was about what a single study can and can't tell us. This week is about the most common thing studies report: patterns. Distributions, correlations, coefficients.
-- The tools are useful. The punchline is about their limits: a pattern is a description, not an explanation.
+- This week is about one idea: distributions. Say the word often. By the end, students should reach for it without being asked.
+- A distribution is a different way to think about a number. Instead of one value, it's every value the number could take, and how common or plausible each one is.
+- It does two jobs: describing populations (how values vary across cases) and describing uncertainty (how sure we are). Everything else this week, including correlation, regression and the spurious patterns at the end, is built on those two.
 
-## Two headlines {#headlines}
+## Think in distributions {#think-in-distributions}
 
-- Read both headlines out loud, like a news anchor. Ask: do you believe them? Would you act on them?
-- Both numbers are real in the sense that they come straight from the data on the screen later today. Nobody made an arithmetic mistake.
-- Don't explain yet. The point is to leave the question open: both patterns are there, and neither means what it says. We come back to them at the start of Part 2.
-- If someone already spots the ice cream answer (hot weather), great. Ask them to hold onto it, and ask about the second one instead. Nobody will have an answer for that one.
+- Read the sentence. It's true, and it's the kind of number a report would print.
+- Then ask what it leaves out. Let students find both answers before the callouts appear.
+- First, a population: real adults differ, from about 137 to 179 cm. "Average" describes the middle of a spread, not a person. How the heights vary is a distribution of data.
+- Second, uncertainty: we measured 352 people. A different 352 would give a slightly different average. How sure we are about the true average is a distribution of belief.
+- The big statement is the week in one line. Every number has a distribution behind it, and both kinds use the same shapes and the same vocabulary.
 
 ## Last week → this week {#last-week}
 
-- Connect the two weeks in one sentence: last week, a study is one observation, not an answer. This week, a pattern in our observations is a description, not an explanation.
-- Then the practical connection. The mayor's answer wasn't a number, it was a distribution. So we need to get comfortable reading distributions before we can do anything else.
+- The bridge from Week 1: the mayor's answer wasn't a number, it was a curve. Students already drew one when they made their prior.
+- Name the key word and give the plain definition: every value a number could take, and how common or plausible each one is.
+- Then preview the two uses. Populations come first, in Part 1. Uncertainty, the kind they met with the mayor, comes in Part 2.
 
 ## Goals this week {#goals}
 
-- Part 1 is the toolkit. Part 2 is where the toolkit misleads us, and what protects us.
-- The house-price exercise is the appendix. They'll do it with the TA in the second session, using everything from Part 1.
+- Four parts. Parts 1 and 2 are the two kinds of distribution. Part 3 puts two variables together. Part 4 is where patterns fool us.
+- The house-price exercise is the appendix. They'll do it with the TA in the second session, using everything from Parts 1 to 3.
 
-## Part 1: Describing patterns {#part1}
+## Part 1: Distributions of data {#part1}
 
-- Section break. Part 1 builds four tools in order, each one using the last: distributions, z-scores, correlation, regression.
+- Section break. The first kind of distribution: how a quantity varies across real cases.
+- The tools in this part (center, spread, shape, the Normal, z-scores) are all ways of describing one distribution, or one case's place in it.
 
 ## Randomness has patterns {#randomness}
 
@@ -31,19 +35,6 @@
 - Population: we're never asking about one application. We're asking about a group, and we have to say which group.
 - Variation: the cases differ in ways we care about. Without variation there's nothing to explain.
 - Randomness: we will never predict one admission decision perfectly. But a coin flipped 1,000 times is very predictable in aggregate. Random individuals, predictable populations. That's why distributions work.
-
-## Probability distributions {#belief-distributions}
-
-- Start with the photo. Ask the room: how old is he? Collect a few guesses. Nobody says one number with certainty. They say "about 40, maybe older." That sentence is a distribution.
-- Walk through the four shapes. Uninformed: flat, every age equally plausible. Weakly informed: a wide hump around 40. Strongly informed: a narrow hump. Domain-specific: a plateau between 30 and 50, dropping off outside.
-- The point: a distribution is just a picture of "how plausible is each value?" People reason this way all the time. We're drawing it.
-- This is exactly what students did with the mayor's prior last week.
-
-## Two kinds of distributions {#two-kinds}
-
-- An important distinction that trips people up later. Distributions of data describe how a quantity varies across real cases: the heights of actual people. Distributions of belief describe how plausible each value of an unknown is: the mayor's vote share.
-- Same shapes, same vocabulary, same math. That's convenient, and also why they get confused.
-- Today starts with data distributions and ends, with β, on a belief distribution.
 
 ## A distribution of data: Nepal's population {#nepal-population}
 
@@ -99,8 +90,33 @@
 - The R code is one line. Students don't need to memorize it.
 - Real uses: comparing exam marks on different scales, or prices in different currencies.
 
+## Part 2: Distributions of belief {#part2}
+
+- Section break. The second kind: not how real cases vary, but how plausible each value of something unknown is.
+- Students met this kind last week with the mayor. This part shows it's an everyday way of talking, and that it uses the same shapes as Part 1.
+
+## How old is he? A distribution of belief {#belief-distributions}
+
+- Start with the photo. Ask the room: how old is he? Collect a few guesses. Nobody says one number with certainty. They say "about 40, maybe older." That sentence is a distribution.
+- Walk through the four shapes. Uninformed: flat, every age equally plausible. Weakly informed: a wide hump around 40. Strongly informed: a narrow hump. Domain-specific: a plateau between 30 and 50, dropping off outside.
+- The point: a distribution is just a picture of "how plausible is each value?" People reason this way all the time. We're drawing it.
+- This is exactly what students did with the mayor's prior last week.
+- Contrast with Part 1: there's only one man and one true age. Nothing varies here except how sure we are.
+
+## Two kinds of distributions {#two-kinds}
+
+- An important distinction that trips people up later. Distributions of data describe how a quantity varies across real cases: the heights of actual people. Distributions of belief describe how plausible each value of an unknown is: the mayor's vote share.
+- Same shapes, same vocabulary, same math. That's convenient, and also why they get confused.
+- Part 1 was the first kind, Part 2 the second. Part 3 uses both: a pattern in the data, and then how sure we are about it.
+
+## Part 3: Two variables at once {#part3}
+
+- Section break. So far, one variable at a time. Now two: how do height and weight vary together?
+- Correlation and regression describe that joint pattern. At the end, the regression coefficient turns out to be uncertain, so it gets a distribution of belief. Both kinds of distribution in one slide.
+
 ## Correlation {#correlation}
 
+- Each variable has its own distribution, which Part 1 described. A scatterplot shows both at once.
 - Raw scatterplot of height and weight. Taller people tend to be heavier. The question is how strongly.
 - Ask the room to guess a number from 0 to 1 before we compute it.
 
@@ -155,15 +171,22 @@
 - Small samples aren't invalid, they're just honest about being unsure. Keep this in mind for the noise example in Part 2.
 - We just moved from a distribution of data to a distribution of belief.
 
-## Part 1: Summary {#part1-summary}
+## Distributions so far {#recap}
 
-- Quick recap of the four tools. Check for questions before Part 2.
-- Pivot: we now have tools to describe patterns. Next, how patterns fool us.
+- Quick recap before Part 4. Check for questions.
+- The thread: every tool so far either describes a distribution (center, spread, shape, r, β) or places a case in one (z-scores), and unknowns get distributions of belief.
+- Pivot: these descriptions are real patterns. Next, how real patterns can still mislead.
 
-## Part 2: When patterns mislead {#part2}
+## Part 4: When patterns mislead {#part4}
 
-- Back to the two headlines from the start. Put them up again mentally: ice cream and drownings, and the two country indicators.
-- Both patterns are real. By the end of Part 2, students should be able to say exactly why each one misleads.
+- Section break. Everything so far describes patterns accurately. That's exactly the danger: an accurate description can still be read the wrong way.
+- Two headlines, both based on real patterns. By the end of Part 4, students should be able to say exactly why each one misleads.
+
+## Two headlines {#headlines}
+
+- Read both headlines out loud, like a news anchor. Ask: do you believe them? Would you act on them?
+- Both numbers are real: they come straight from the data in the next few slides. Nobody made an arithmetic mistake.
+- If someone already spots the ice cream answer (hot weather), great. Ask about the second one instead. Nobody will have an answer for that one yet.
 
 ## Spurious correlations {#spurious}
 
@@ -191,6 +214,7 @@
 
 ## Small samples and many comparisons {#small-samples}
 
+- Point out that this histogram is itself a distribution: how much r varies by chance alone. Its width is exactly the uncertainty that the wide β posterior showed in Part 3.
 - The histogram shows r for every pair of unrelated variables. With 20 cases, chance alone gives r values of ±0.5 and beyond. With 500 cases, they stay near 0.
 - This is Week 1's problem again. Try enough comparisons and some will look significant. The base rate of real relationships in this dataset is zero, so every "discovery" is false.
 
@@ -203,9 +227,9 @@
 
 ## Summary {#summary}
 
-- Four points, one per idea. Read them slowly.
-- The line to remember: a pattern is a description, not an explanation.
-- Tie it to last week: statistics is observation. Patterns are observations too.
+- Four points, one per part. Read them slowly.
+- The line to remember is the big statement: think in distributions, not single numbers. Ask students to say what the two kinds are.
+- The second line, a pattern is a description, not an explanation, ties back to last week (statistics is observation) and forward to next week's causal models.
 
 ## Next week {#next-week}
 

@@ -131,6 +131,16 @@ I want to illustrate a very famous example involving HIV testing. This is releva
 
 - My point here is not that these tests are worthless. Rather what I want to point out is that probability is often unpredictable and unintuitive.
 
+# The base rate paradox {#base-rate-paradox}
+
+- Name the thing we just saw. The base rate paradox: when something is rare, most positive results are false, even from an accurate test.
+- First frame: 1,000 people. HIV prevalence is 0.1%, so one of them has it. Point at the single blue square. That's the base rate.
+- Click. The test catches that one person. But it also wrongly flags 3% of the other 999: about 30 red squares.
+- Click. 31 positive results, and only 1 is real. About 3%, the same 3.2% as the table.
+- The test isn't bad. The problem is that the healthy group is so much bigger that even a small error rate in it swamps the one true case.
+- Keep this picture in mind. It comes back, almost square for square, when we ask why most published research is wrong.
+- Next: the app lets students change the prevalence and the test accuracy and watch this happen.
+
 # Statistical Significance (revisited) {#statistical-significance-revisited}
 
 There's a lot of very dense jargon here, but we don't need to unpack it all. let's just take a minute to think about what is being measured here.
@@ -168,15 +178,28 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 
 # So why is most published research wrong? {#why-research-wrong}
 
-- Now we can close the loop on Ioannidis. His argument is the HIV example in disguise.
-- Swap the labels: "has the disease" becomes "the hypothesis is actually true," and "tests positive" becomes "gets a significant result (p < 0.05)."
-- The base rate matters just as much here. Genuinely novel, interesting hypotheses are rare — most of the things researchers test are not true. That's the "disease is rare" part.
-- With a 1% base rate, 80% power, and the usual 5% false positive rate, only about 14% of significant results point to a true hypothesis. The other 86% are false positives, exactly like the false-positive HIV tests.
-- The 1% base rate is one scenario, not a universal figure. It's low, but realistic for exploratory work. Confirmatory research (e.g. a well-designed trial of a plausible treatment) can have base rates closer to 50%, and then most significant results are true. The variation across fields is the point.
-- 80% power, on the other hand, is generous. Median power is around 20% in fields like neuroscience (Button et al. 2013) and economics (Ioannidis, Stanley & Doucouliagos 2017). At 1% base rate and 20% power, only about 4% of significant results are true.
-- On top of that, researchers run many comparisons, and p-hacking inflates the effective false positive rate well past 5%. Push those and the true-discovery rate drops further.
-- So the punchline isn't that scientists are dishonest or bad at math. The math is fine. It's that significance testing answers P(data | hypothesis) when the base rate makes P(hypothesis | data) the thing that actually matters — and the two can be wildly different.
-- This is why it's okay. Once you expect most single findings to be noise, you stop treating one p < 0.05 as truth and start thinking like a Bayesian: accumulating evidence and updating.
+- Now we close the loop on Ioannidis. His argument is the HIV example in disguise: "has HIV" becomes "the idea is true," and "tests positive" becomes "gets a significant result."
+- First frame: 1,000 ideas that researchers test. Most new ideas are wrong, so only 10 are true (the blue squares). That's the "HIV is rare" part.
+- Click. Good studies catch most true ideas: 8 of the 10. But they also get a significant result for about 5% of the false ones, purely by chance: about 50 red squares, scattered everywhere.
+- Click. 58 discoveries, and only 8 are real: about 14%. Let that land before moving on.
+- The point isn't that scientists are dishonest or bad at math. The math is fine. A significant result answers P(data | hypothesis), and when true ideas are rare, P(hypothesis | data) is very different.
+- 1 in 100 is one scenario, realistic for exploratory work. Confirmatory research can be closer to 50%, and then most discoveries are real. The mechanics slides at the end of this section show the range, if there's time.
+- This is why it's okay. Once you expect most single findings to be noise, you stop treating one p < 0.05 as truth and start accumulating evidence, which is the next slide.
+
+# Scenarios: replication {#scenarios-replication}
+
+- This is the HIV confirmatory test again. A positive screen at 3% isn't a diagnosis, so you test again. Same here.
+- Each row uses the previous row's answer as the new base rate. That's Bayesian updating: today's posterior is tomorrow's prior.
+- At 80% power: 1% → 14% → 72% → 98%. Three independent significant results and we can be fairly confident.
+- At 20% power it takes longer, but it still gets there: 1% → 4% → 14% → 39% → 72% after four results. (Not on the slide; mention it if someone asks about weak studies.)
+- The caveat matters. This only works if replications are independent. If every lab uses the same flawed measure, or only successful replications get published, the evidence doesn't really add up. That's why the scientific process includes critique, not just repetition.
+
+# The math: power and α {#research-math}
+
+- Mechanics slide, optional. It's the 1,000-ideas picture as a table, with 10,000 hypotheses so the counts come out whole.
+- Power is the chance a study gets a significant result when the idea is true: its sensitivity. α is the chance it does when the idea is false: its false-positive rate, usually 5%.
+- 80 true discoveries and 495 false ones, so 80 / 575 ≈ 14% of significant results are true. Same calculation as the HIV table.
+- 80% power is generous. Median power is around 20% in fields like neuroscience (Button et al. 2013) and economics (Ioannidis, Stanley & Doucouliagos 2017). At 1% and 20% power, only about 4% of significant results are true. That's the next slide.
 
 # How bad does it get? {#scenarios-grid}
 
@@ -188,14 +211,6 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - In that column, power equals α, so a significant result is equally likely whether the hypothesis is true or false. The posterior equals the prior: each cell is just the base rate. The study taught us nothing.
 - If asked about fixes: a stricter threshold (p < 0.005, Benjamin et al. 2018) lifts the 1% row from 14% to 62% at 80% power, but needs much bigger samples. Replication works better, which is the next slide.
 - Ask the room: which row does your own field live in?
-
-# Scenarios: replication {#scenarios-replication}
-
-- This is the HIV confirmatory test again. A positive screen at 3% isn't a diagnosis, so you test again. Same here.
-- Each row uses the previous row's answer as the new base rate. That's Bayesian updating, before we've even named it. Today's posterior is tomorrow's prior.
-- At 80% power: 1% → 14% → 72% → 98%. Three independent significant results and we can be fairly confident.
-- At 20% power it takes longer, but it still gets there: 1% → 4% → 14% → 39% → 72% after four results. (Not on the slide; mention it if someone asks about weak studies.)
-- The caveat matters. This only works if replications are independent. If every lab uses the same flawed measure, or only successful replications get published, the evidence doesn't really add up. That's why the scientific process includes critique, not just repetition.
 
 # Bayesian Updating: What it is {#bayesian-updating}
 

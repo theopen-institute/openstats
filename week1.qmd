@@ -37,9 +37,9 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
   - Probability
   - The base rate paradox
   - Statistical significance
-- Unpack the notion of objectivity in research
-- Learn all of statistics (in just one formula)
 - Understand why most research is wrong (and why that's okay)
+- Learn all of statistics (in just one formula)
+- Reflect on objectivity in research
 - Appendix: election polling (a worked example)
 :::
 
@@ -71,13 +71,27 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 
 So what is probability? 
 
-[It's just a way of talking about uncertainty.]{.fragment}
-
 ::: {.fragment}
-Underneath, probability is just [**counting**]{.blue}.
+It's a way of talking about uncertainty.
 :::
 
-## Probability is counting {notes="notes/week1_notes.md#counting"}
+::: {.incremental}
+- I don't know if it's going to rain tomorrow...
+- ...but that doesn't mean I don't know anything.
+- In Nepal, the probability of rain is different in June than in January.
+:::
+
+::: {.fragment}
+But what does _"a 31% chance of rain"_ actually mean? 
+:::
+
+::: {.incremental}
+- Tomorrow's weather isn't a lottery. Specific physical factors decide it.
+- The day isn't random. [But, _**we**_ are uncertain about it.]{.blue} 
+- 31% describes our degree of certainty about an uncertain fact.
+:::
+
+## Probability is just counting {notes="notes/week1_notes.md#counting"}
 
 _Count everything that could happen. Count the ones you care about. Compare._
 
@@ -109,9 +123,19 @@ _Flip a coin four times. How likely is exactly two heads?_
 
 ::: {.columns}
 ::: {.column width="58%"}
-```{r garden, fig.width = 9, fig.height = 5.4, out.width = "100%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r garden-all, opts.label = "garden"}
+garden_plot(n = 4)
+```
+:::
+
+::: {.fragment fragment-index=1}
+```{r garden, opts.label = "garden"}
 garden_plot(n = 4, target = 2)
 ```
+:::
+:::
 :::
 
 ::: {.column width="42%"}
@@ -136,51 +160,36 @@ What we're doing is simple:\
 [We list all the ways the world could be, and count them.]{.blue}
 :::
 
-## Probability lets us ask questions {notes="notes/week1_notes.md#lets-count"}
+## Describing Probability: Convention 1 {notes="notes/week1_notes.md#convention-1"}
 
-_Hands up if you had tea this morning._
-
-{{< include _includes/week1/count-demo.md >}}
-
-
-::: {.incremental}
-- That's not really a probability yet. It's just a fact about this room.
-- It becomes a **probability** when we use it to say something we _don't_ know:
-  - _"If we pick one student at random, how likely is it they had tea?"_\
-  [(Exactly []{.count-k-out} in []{.count-n-out})]{.blue}
-  - _"If we poll a random person on the street, how likely is it that they had tea?"_\
-  [(Maybe similar, if we're willing to make a few assumptions.)]{.blue}
-:::
-
-## Probability: Convention 1 {notes="notes/week1_notes.md#convention-1"}
-
-_Probability is written as a number between 0 and 1, or as a percentage._
+_We write a probability as a number between 0 and 1, or as a percentage._
 
 ::: {.fragment}
-- **0** (0%) means impossible. **1** (100%) means certain.
-- A fair coin landing heads: **0.5**, or 50%.
-- Kathmandu sees rain (≥ 1 mm) on about 113 of 365 days: 113 ÷ 365 = **0.31**, or 31%.
+| Number | Percentage | Example |
+|---|---|---|
+| 0 | 0% | Impossible |
+| 0.02 | 2% | Winning the raffle: 10 ÷ 500 |
+| 0.17 | 17% | Rolling a six: 1 ÷ 6 |
+| 0.31 | 31% | Rain in Kathmandu: 113 ÷ 365 days |
+| 0.5 | 50% | A fair coin landing heads: 1 ÷ 2 |
+| 1 | 100% | Certain |
 :::
 
 ::: {.fragment}
-But what does _"a 31% chance of rain"_ mean? Tomorrow's weather isn't a lottery. Specific physical factors decide it.
+Either way, it's the same count: the ways we care about, out of all the ways that
+could happen.
 :::
 
-::: {.fragment}
-The day isn't random. [But, _**we**_ are uncertain about it.]{.blue} 31% describes our degree of certainty about an uncertain question.
-:::
 
-[Kathmandu Airport weather station, NOAA GHCN-Daily (NP000444540), 2021–2025. Days missing from the record are filled in at that month's average rate.]{.source}
-
-## Probability: Convention 2 {notes="notes/week1_notes.md#convention-2"}
+## Describing Probability: Convention 2 {notes="notes/week1_notes.md#convention-2"}
 
 _We write the probability of an event as P( event )._
 
 ::: {.fragment}
 | We write | We say | Value |
 |---|---|---|
-| P( it raining ) | "the probability of rain" | 113 ÷ 365 ≈ 0.31 |
-| P( getting heads ) | "the probability of heads" | 1 ÷ 2 ≈ 0.5 |
+| P( rain tomorrow ) | "the probability of rain tomorrow" | 113 ÷ 365 ≈ 0.31 |
+| P( getting heads ) | "the probability of getting heads" | 1 ÷ 2 ≈ 0.5 |
 | P( rolling a six ) | "the probability of rolling a six" | 1 ÷ 6 ≈ 0.17 |
 | P( winning the raffle ) | "the probability of winning the raffle" | 10 ÷ 500 = 0.02 |
 :::
@@ -189,53 +198,51 @@ _We write the probability of an event as P( event )._
 It's just shorthand. Everything inside the brackets is the thing we're unsure about.
 :::
 
-## Probability: Convention 3 {notes="notes/week1_notes.md#rain"}
+## Describing Probability: Convention 3 {notes="notes/week1_notes.md#rain"}
 
 _We make a probability more specific by adding a condition: P( event | condition )._
+- P( rain | July ) means [_"the probability of rain, given that it's July."_]{.blue}
 
 ::: {.fragment}
-P( rain | July ) means [_"the probability of rain, given that it's July."_]{.blue}
-:::
-
-::: {.fragment}
-| Last 5 years | Rainy days | Days counted | Probability |
-|---|--:|--:|--:|
-| P( rain ) | 565 | 1,825 | **0.31** |
-| P( rain \| Apr ) | 35 | 150 | **0.23** |
-| P( rain \| Dec ) | 5 | 155 | **0.03** |
-| P( rain \| Jul ) | 126 | 155 | **0.81** |
-| P( rain \| Feb ) | 8 | 140 | **0.06** |
+|  | Rainy days | Days counted | Probability | % |
+|---|--:|--:|--:|--:|
+| P( rain ) | 565 | 1,825 | **0.31** | (31%) |
+| P( rain \| Apr ) | 35 | 150 | **0.23** | (23%) |
+| P( rain \| Dec ) | 5 | 155 | **0.03** | (3%) |
+| P( rain \| Jul ) | 126 | 155 | **0.81** | (81%) |
+| P( rain \| Feb ) | 8 | 140 | **0.06** | (6%) |
 :::
 
 ::: {.fragment}
-[To use this as a prediction, we need to assume that this year will be similar to the average of the past five years.]{.blue} Whether or not that's reasonable is not really something statistics can answer.
+Can data from the past five years help predict tomorrow? [Maybe, maybe not.]{.blue .fragment}
 :::
 
-
-## Probability Examples
-
-::: {.fragment}
-- P( bachelors degree )
-- P( bachelors degree | urban )
-- P( bachelors degree | rural )
-:::
-
-::: {.incremental}
-- P( football team wins | leading at halftime)
-- P( disease | family history )
-- P( rain today | rained yesterday )
-- P( survival | attacked by bear )
-:::
 
 ## Conditional risk {notes="notes/week1_notes.md#conditional-risk"}
 
-![](images/week1/conditional_risk.png){fig-align="center" height="620px"}
+![](images/week1/conditional_risk.png){fig-align="center" height="800px"}
 
 [xkcd 795, "Conditional Risk," by Randall Munroe (CC BY-NC 2.5)]{.source}
 
-::: {.fragment}
-P( killed by lightning ) is tiny. P( killed by lightning | outside in a storm ) is not.
+## Probability lets us ask questions {notes="notes/week1_notes.md#lets-count"}
+
+_Hands up if you had tea this morning._
+
+{{< include _includes/week1/count-demo.md >}}
+
+::: {.incremental}
+- That's not really a probability yet. It's just a fact about this group.
+- It becomes a **probability** when we use it to say something we _don't_ know:
+  - _"If we pick one student at random, how likely is it they had tea?"_\
+  [(Exactly []{.count-k-out} in []{.count-n-out})]{.blue}
+  - _"If we poll a random person on the street, how likely is it that they had tea?"_\
+  [(Possibly similar, if we're willing to make a few assumptions.)]{.blue}
 :::
+
+::: {.fragment}
+Every prediction needs assumptions. [Interesting predictions need strong assumptions.]{.blue}
+:::
+
 
 # Probability for Decision Making {notes="notes/week1_notes.md#applied-probability"}
 
@@ -280,23 +287,69 @@ What about P( HIV+ | test+)? [3.2%]{.fragment fragment-index=2 .red}
 :::
 
 ::: {.fragment}
-_Paradox: P(A|B) is not the same as P(B|A)_
+
+- _Paradox: P(A|B) is not the same as P(B|A)_
 
 [Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.]{.source}
 :::
 
 
-# Base Rate Paradox {.no-title}
+## Direction of conditions
+
+P(A|B) _is not the same as_ P(B|A)
+
+{{< include _includes/week1/cond-table.md >}}
+
+
+# The base rate paradox {notes="notes/week1_notes.md#base-rate-paradox"}
+
+_When something is rare, most positive results are false, even from an accurate test._
+
+::: {.columns}
+::: {.column width="58%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r hiv-all, opts.label = "base_rate"}
+base_rate_plot(n_true = 1, true_positives = 1, false_positives = 30)
+```
+:::
+
+::: {.fragment fragment-index=1}
+```{r hiv-tested, opts.label = "base_rate"}
+base_rate_plot(
+  n_true = 1,
+  true_positives = 1,
+  false_positives = 30,
+  results = TRUE
+)
+```
+:::
+:::
+:::
+
+::: {.column width="42%"}
+1,000 people get tested. Only [1 person has HIV]{.blue}. The test identifies them. 
+
+::: {.fragment fragment-index=1}
+It also flags [30 people who don't have HIV]{.red}.
+:::
+
+::: {.fragment fragment-index=2}
+::: {.big-statement}
+31 positives.\
+Only 1 is real.
+:::
+:::
+:::
+:::
+
+## Base Rate Paradox Demo {.no-title}
 ```{shinylive-r}
 #| standalone: true
 {{< include shiny/baserate.R >}}
 ```
 
-## Direction of conditions
 
-_P(A|B) is not the same as P(B|A)_
-
-{{< include _includes/week1/cond-table.md >}}
 
 # Statistical significance (revisited) {notes="notes/week1_notes.md#statistical-significance-revisited"}
 
@@ -314,7 +367,7 @@ Two key phrases:
 ::: {.fragment}
 This frames _statistical significance_ as:
 
-- P( [data]{.blue} | [hypothesis]{.red} ) [(schematically; formally, P( data at least this extreme | H₀ ))]{.source}
+- P( [data]{.blue} | [hypothesis]{.red} )
 :::
 
 ::: {.fragment}
@@ -326,64 +379,148 @@ Not the same as (what we usually actually want):
 
 ## The problem with p-values {notes="notes/week1_notes.md#pvalue-direction"}
 
-If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}. The p-value
-runs in a [weird direction]{.red}.
+If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}. P-value
+imagines the world in a very [strange way]{.red}.
 
-::: {.fragment}
+::: {.fragment fragment-index=1}
 
 |  | Starts from | Asks |
 |---|---|---|
-| **How we observe** | what we [saw]{.blue} | _"What does this tell me about the [world]{.green}?"_ |
-| **A p-value** | an [imagined world]{.red} with nothing going on | _"How surprising would my [data]{.blue} be there?"_ |
+| [**How we observe**]{.fragment fragment-index=2} | [what we [saw]{.blue}]{.fragment fragment-index=2} | [_"What does this tell me about the [world]{.green}?"_]{.fragment fragment-index=2} |
+| [**A p-value**]{.fragment fragment-index=3} | [an [imagined world]{.red} with nothing going on]{.fragment fragment-index=3} | [_"How surprising would my [data]{.blue} be there?"_]{.fragment fragment-index=3} |
 :::
 
 ::: {.fragment}
-- No ethnographer asks _"if nothing were going on, how surprising would this interview
-  be?"_ They ask what the interview tells them about the world.
-- A p-value never tells you how likely your hypothesis is. Reading it that way is the
-  HIV mistake again: P( A | B ) ≠ P( B | A ).
+- A p-value doesn't tell you if a hypothesis is true.
+- It tells you how unlikely the data would be if the null hypothesis were true.
+- Those aren't the same thing. P(A | B) ≠ P(B | A)
 :::
 
 ::: {.fragment}
-We want statistics that runs the way observation does: from [data]{.blue} to
-[beliefs about the world]{.green}.
+We want a different kind of statistics to work the same way knowledge does: we start with [assumptions]{.red}, we encounter new [data]{.blue}, and we [update our beliefs]{.green} about the world.
 :::
+
+
+# Bayesian Updating
+
+## Bayesian Updating: What it is not
+![*Statistical Rethinking*, p.2 (Richard McElreath, 2020)](images/week1/mcelreath-2.png){fig-align="center" width="100%"}
+
+## Bayesian Updating: What it is {notes="notes/week1_notes.md#bayesian-updating"}
+
+Instead of a flowchart of tests, [**one rule for all of statistics**]{.blue}:
+
+[**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
+
+::: {.incremental}
+- [**Prior**]{.red}: what we believe about the world _before_ seeing the new data
+- [**Likelihood**]{.blue}: how likely the data we saw would be, under _each_ possible answer
+- [**Posterior**]{.green}: what we believe _after_ combining the two. It challenges the
+  prior, or makes it stronger
+:::
+
+::: {.fragment .callout-tip title="Example: will the mayor win?"}
+::: {.incremental}
+- [**Prior**]{.red}: _"He got 60% last time, so I think about 60% of Kathmandu will vote
+  for him."_
+- [**Likelihood**]{.blue}: _"I took a small survey and only 20% of people said they'll vote for him. That doesn't fit very well with my prior belief of 60% but fits better with lower numbers."_
+- [**Posterior**]{.green}: _"I now think about 45% of people will vote for him."_
+:::
+:::
+
+::: {.fragment}
+That's it. A poll, a regression, a causal model: everything in this course is just this
+[one rule]{.blue}, applied again and again.
+:::
+
+## Bayesian Updating Example {.no-title}
+```{shinylive-r}
+#| standalone: true
+{{< include shiny/updating.R >}}
+```
+
+
+
+
+
 
 # So why is most published research wrong? {notes="notes/week1_notes.md#why-research-wrong"}
 
-It's the HIV test again, relabeled:
+_It's the HIV test again._
+
+::: {.columns}
+::: {.column width="58%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r ideas-all, opts.label = "base_rate"}
+base_rate_plot(n_true = 10, true_positives = 8, false_positives = 50)
+```
+:::
+
+::: {.fragment fragment-index=1}
+```{r ideas-significant, opts.label = "base_rate"}
+base_rate_plot(
+  n_true = 10,
+  true_positives = 8,
+  false_positives = 50,
+  results = TRUE
+)
+```
+:::
+:::
+:::
+
+::: {.column width="42%"}
+1,000 ideas get tested. Most are wrong: only [10 are true]{.blue}.
+
+::: {.fragment fragment-index=1}
+Good studies find [8]{.blue} of the true ones.
+
+They also "find" [50]{.red} false ones, by chance.
+:::
+
+::: {.fragment fragment-index=2}
+::: {.big-statement}
+58 discoveries.\
+Only 8 are real.
+:::
+:::
+:::
+:::
+
+## What if we look again? {notes="notes/week1_notes.md#scenarios-replication"}
+
+_Test the same idea again, in new, independent studies._
 
 ::: {.fragment}
 
-| HIV test | Research study |
-|---|---|
-| Has HIV | The [hypothesis is true]{.blue} |
-| Tests positive | A [significant result]{.red} (p &lt; 0.05) |
-| Sensitivity: P( test+ \| HIV+ ) | **Power**: P( [significant]{.red} \| [true]{.blue} ) |
-| False-positive rate: P( test+ \| HIV– ) | **α**: P( [significant]{.red} \| [false]{.blue} ), usually 5% |
-| HIV is rare | Interesting hypotheses are rare |
+| After… | Chance it's true |
+|---|:-:|
+| No studies | 1% |
+| 1 significant result | [14%]{.red} |
+| 2 significant results | 72% |
+| 3 significant results | **98%** |
 :::
 
 ::: {.fragment}
-So most "significant" findings can be false, like most positive tests.
+No single study told us much. [The sequence did.]{.green}
 :::
 
-## The same table, relabeled {.no-title}
+[Assumes the studies are honest and independent.]{.source}
 
-_[1%]{.blue} of tested hypotheses are true · [80%]{.blue} power · α = [5%]{.blue}_
+## The math: power and α {.mechanics notes="notes/week1_notes.md#research-math"}
 
-::: {.fragment}
+_1% of hypotheses are true · 80% power · α = 5%_
 
 | 10,000 tested | [Significant]{.red} | Not significant |
 |---|---|---|
-| **True** [(100)]{.blue} | **80**<br>[true positive (80%)]{.gray} | 20<br>[false negative]{.gray} |
-| **False** [(9,900)]{.blue} | **495**<br>[false positive (5%)]{.gray} | 9,405<br>[true negative]{.gray} |
-:::
+| **True** (100) | **80**<br>[power: P( sig \| true )]{.gray} | 20 |
+| **False** (9,900) | **495**<br>[α: P( sig \| false )]{.gray} | 9,405 |
 
-::: {.fragment}
 P( [true]{.blue} | [significant]{.red} ) = 80 / (80 + 495) ≈ [**14%**]{.red}
 
-About **86 of every 100** "discoveries" are false.
+::: {.fragment}
+Power and α are a study's sensitivity and false-positive rate, just like the HIV test's.
 :::
 
 ## How bad does it get? {.mechanics notes="notes/week1_notes.md#scenarios-grid"}
@@ -401,28 +538,6 @@ P( [true]{.blue} | [significant]{.red} ) under different conditions:
   at 1%.
 - p-hacked (20% power, α ≈ 20%): a "significant" result tells us nothing new.
 :::
-
-## What if we look again? {notes="notes/week1_notes.md#scenarios-replication"}
-
-_The same hypothesis, tested again by independent studies. 1% are true, 80% power, α = 5%._
-
-::: {.fragment}
-
-| After… | P( [true]{.blue} ) |
-|---|:-:|
-| No studies (the base rate) | 1% |
-| 1 significant result | [14%]{.red} |
-| 2 significant results | 72% |
-| 3 significant results | **98%** |
-:::
-
-::: {.fragment}
-No single study told us much. [The sequence did.]{.green} Each row starts from the one
-before it: that's [Bayesian updating]{.blue}.
-:::
-
-[Assumes the replications are independent and honest. Replications that share the same
-biases don't add up this way.]{.source}
 
 
 # Hard data? {notes="notes/week1_notes.md#hard-data"}
@@ -495,76 +610,8 @@ Call the observation "objective" if you like. But interesting inferences rest on
 wrong while looking right.]{.red}
 :::
 
-# Bayesian Updating
 
-## Bayesian Updating: What it is not
-![*Statistical Rethinking*, p.2 (Richard McElreath, 2020)](images/week1/mcelreath-2.png){fig-align="center" width="100%"}
-
-## Bayesian Updating: What it is {notes="notes/week1_notes.md#bayesian-updating"}
-
-Instead of a flowchart of tests, [**one rule for all of statistics**]{.blue}:
-
-::: {.incremental}
-- [**Prior**]{.red}: what we believe about the world _before_ seeing the new data.\
-  [_I think that about 60% of Kathmandu will vote for the current mayor, because that's what he got last time._]{.fragment .blue}
-- [**Likelihood**]{.blue}: how likely the data we saw would be, under _each_ possible answer.\
-  [_In my survey, only 30% said they'll vote for the mayor. That's quite likely if true support is around 30%, and unlikely if it's 60%._]{.fragment .blue}
-- [**Posterior**]{.green}: what we believe _after_ combining the two. It challenges the prior, or makes it stronger.\
-  [_I now think that about 45% of Kathmandu will vote for the current mayor._]{.fragment .blue}
-:::
-
-::: {.fragment}
-That's it. A poll, a regression, a causal model: everything in this course is this
-[one rule]{.blue}, applied again and again.
-:::
-
-## You've already done this {.smaller notes="notes/week1_notes.md#prior-likelihood-posterior"}
-
-|  | [Prior]{.red} | [Likelihood]{.blue} | [Posterior]{.green} |
-|---|---|---|---|
-| **Means** | What I believed before | How likely what I saw is, under each possibility | What I believe now |
-| **Asks** | _"What did I think?"_ | _"If this were true, how likely is what I saw?"_ | _"What do I think now?"_ |
-| **Written** | P( belief ) | P( data \| belief ) | P( belief \| data ) |
-| **HIV test** | 0.1% of people have HIV | A positive test: 99% likely if HIV+, 3% if HIV– | After a positive test: **3.2%** |
-| **Published research** | 1% of tested hypotheses are true | Significant: 80% likely if true, 5% if false | After a significant result: **14%** |
-| **Mayor poll** | About 60%, from the last election | 6 of 20 for the mayor: likely if support is ~30%, unlikely if 60% | About **45%** |
-
-::: {.fragment}
-The likelihood alone runs the same direction as a p-value: P( data \| belief ). Bayes
-doesn't stop there. It combines the likelihood with the prior to answer the question
-we actually care about: P( belief \| data ).
-:::
-
-## From two possibilities to many {notes="notes/week1_notes.md#two-to-many"}
-
-_The HIV test and published research had **two** possibilities: true or false._
-
-::: {.fragment}
-Most questions have many:
-
-- How many of 9 stones in a bag are blue? **10** possibilities, 0 to 9.
-- What share of voters support the mayor? **Every** value from 0% to 100%.
-:::
-
-::: {.fragment}
-Same rule, done once for each possibility:
-
-- [**Prior**]{.red}: how plausible was each possibility before?
-- [**Likelihood**]{.blue}: if this possibility were true, how likely is what we saw? For the
-  bag, just count the ways it could happen. _(Counting ways)_
-- [**Posterior**]{.green}: multiply the two, and compare across possibilities.
-:::
-
-::: {.fragment}
-The answer is a **distribution**: a plausibility for every possible answer, not a single
-yes or no. Let's try it with the bag.
-:::
-
-## Bayesian Updating Example {.no-title}
-```{shinylive-r}
-#| standalone: true
-{{< include shiny/updating.R >}}
-```
+# Bayes 2
 
 ## Bayesian Updating: Why one rule helps {.mechanics notes="notes/week1_notes.md#bayesian-updating-how"}
 
@@ -626,6 +673,48 @@ _Yes. That's a feature, not a bug._
 ::: {.fragment}
 Subjective doesn't mean arbitrary. It means someone made a choice, and has to
 [defend it]{.blue}.
+:::
+
+## You've already done this {.smaller notes="notes/week1_notes.md#prior-likelihood-posterior"}
+
+|  | [Prior]{.red} | [Likelihood]{.blue} | [Posterior]{.green} |
+|---|---|---|---|
+| **Means** | What I believed before | How likely what I saw is, under each possibility | What I believe now |
+| **Asks** | _"What did I think?"_ | _"If this were true, how likely is what I saw?"_ | _"What do I think now?"_ |
+| **Written** | P( belief ) | P( data \| belief ) | P( belief \| data ) |
+| **HIV test** | 0.1% of people have HIV | A positive test: 99% likely if HIV+, 3% if HIV– | After a positive test: **3.2%** |
+| **Published research** | 1% of tested hypotheses are true | Significant: 80% likely if true, 5% if false | After a significant result: **14%** |
+| **Mayor poll** | About 60%, from the last election | 6 of 20 for the mayor: likely if support is ~30%, unlikely if 60% | About **45%** |
+
+::: {.fragment}
+The likelihood alone runs the same direction as a p-value: P( data \| belief ). Bayes
+doesn't stop there. It combines the likelihood with the prior to answer the question
+we actually care about: P( belief \| data ).
+:::
+
+## From two possibilities to many {notes="notes/week1_notes.md#two-to-many"}
+
+_The HIV test and published research had **two** possibilities: true or false._
+
+::: {.fragment}
+Most questions have many:
+
+- How many of 9 stones in a bag are blue? **10** possibilities, 0 to 9.
+- What share of voters support the mayor? **Every** value from 0% to 100%.
+:::
+
+::: {.fragment}
+Same rule, done once for each possibility:
+
+- [**Prior**]{.red}: how plausible was each possibility before?
+- [**Likelihood**]{.blue}: if this possibility were true, how likely is what we saw? For the
+  bag, just count the ways it could happen. _(Counting ways)_
+- [**Posterior**]{.green}: multiply the two, and compare across possibilities.
+:::
+
+::: {.fragment}
+The answer is a **distribution**: a plausibility for every possible answer, not a single
+yes or no. Let's try it with the bag.
 :::
 
 # Most studies are wrong. Is that a problem? {notes="notes/week1_notes.md#is-that-a-problem"}
@@ -724,7 +813,7 @@ The science always comes first.
 
 That's what we're going to do here: [put the science first]{.blue}.
 
-- **Week 2**: describe the world. Distributions, correlation, a first regression.
+- **Week 2**: distributions. A different way to think about numbers, for populations and for uncertainty.
 - **Week 3**: draw our science. Causal diagrams (DAGs) before any model.
 - **Week 4**: forks, pipes and colliders. What to control for, and what not to.
 - **Week 5**: what did they leave out? Unobserved forks, pipes and colliders.

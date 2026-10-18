@@ -1,6 +1,6 @@
 ---
 title: "Data Lunch: Week 2"
-subtitle: "Talking about numbers differently"
+subtitle: "Distributions: a different way to think about numbers"
 title-notes: "notes/week2_notes.md#title"
 format:
   revealjs: default
@@ -28,73 +28,70 @@ houses <- load_houses() |>
   mutate(z_price = standardize(price), z_area = standardize(area_m2))
 ```
 
-# Two headlines {notes="notes/week2_notes.md#headlines"}
+# Think in distributions {notes="notes/week2_notes.md#think-in-distributions"}
 
-```{r icecream-sim}
-# Simulated beach town: hot days bring both ice cream sales and swimmers
-set.seed(11)
-beach <- tibble(day = 1:365) |>
-  mutate(
-    temp = 18 + 8 * sin(2 * pi * (day - 100) / 365) + rnorm(n(), 0, 2.5),
-    ice_cream = 40 * temp + rnorm(n(), 0, 120),
-    drownings = rpois(n(), exp(-3 + 0.13 * temp))
-  )
-r_ice <- cor(beach$ice_cream, beach$drownings)
-```
-
-```{r noise-sim}
-# 50 made-up "indicators" for 20 made-up "countries", all pure random noise
-set.seed(3)
-n_vars <- 50
-noise_small <- matrix(rnorm(20 * n_vars), nrow = 20)
-r_small <- cor(noise_small)
-r_small[lower.tri(r_small, diag = TRUE)] <- NA
-best <- which(abs(r_small) == max(abs(r_small), na.rm = TRUE), arr.ind = TRUE)
-r_best <- r_small[best]
-```
+_"The average !Kung adult is `r fmt(h_mean, 0)` cm tall."_
 
 ::: {.fragment}
-> _"Ice cream sales linked to drownings"_ (*r* = `r fmt(r_ice, 2)`, one year of daily data)
+True. But that one number hides two things.
 :::
 
-::: {.fragment}
-> _"Countries that spend more on [one thing] have `r if (r_best > 0) "more" else "less"` [another]"_ (*r* = `r fmt(r_best, 2)`,
-> 20 countries)
+::: {.columns}
+::: {.column}
+::: {.fragment .callout-note title="A population"}
+Not everyone is `r fmt(h_mean, 0)` cm. The adults range from `r fmt(min(howell$height), 0)`
+to `r fmt(max(howell$height), 0)` cm.
+
+How do heights **vary across people**? That's a **distribution of data**.
+:::
 :::
 
-::: {.fragment .nonincremental}
-- Both patterns are really there in the data.
-- Neither one means what the headline says.
+::: {.column}
+::: {.fragment .callout-tip title="Uncertainty"}
+We measured `r nrow(howell)` adults, not every one. The true average could be a little
+higher or lower.
+
+How **sure** are we about the average? That's a **distribution of belief**.
+:::
+:::
 :::
 
 ::: {.fragment}
-By the end of today, you'll know why, and how to tell the two apart.
+::: {.big-statement}
+This week: think in distributions, not single numbers.
 :::
+:::
+
 
 # Last week → this week {notes="notes/week2_notes.md#last-week"}
 
-- Last week: a study is [one observation]{.blue}, not an answer.
-- This week: the patterns we find in observations are [descriptions]{.blue}, not
-  explanations.
 - Last week, our answer to "will the mayor win?" was not a number.
 - It was a **distribution**: a whole curve of more and less plausible values.
-- This week we learn to *read* and *talk about* distributions, and then use them to
-  describe how two things move together.
+- That's this week's key word. A distribution describes a number by **every value it
+  could take**, and how common or plausible each one is.
+- We'll use distributions for [populations]{.blue} (how values vary across cases) and
+  for [uncertainty]{.blue} (how sure we are about something we don't know).
+
 
 # Goals this week {notes="notes/week2_notes.md#goals"}
 
-- Part 1: Describing patterns
-  - Probability distributions: describing *how values vary*
-  - Standardized values (z-scores): a common ruler
-  - Correlation: how two variables move together
-  - Regression: our first coefficient (one parameter only)
-- Part 2: When patterns mislead
+- Part 1: Distributions of data (populations)
+  - Center, spread and shape
+  - The Normal distribution
+  - z-scores: where one case sits in its distribution
+- Part 2: Distributions of belief (uncertainty)
+- Part 3: Two variables at once
+  - Correlation and our first regression coefficient
+  - A coefficient has a distribution too
+- Part 4: When patterns mislead
   - Spurious correlations: confounding and chance
 - Appendix: What makes a house expensive? (with the TA in our second session)
 
-# Part 1: Describing patterns {.center notes="notes/week2_notes.md#part1"}
 
-How values vary, and how two things move together
+# Part 1: Distributions of data {.center notes="notes/week2_notes.md#part1"}
+
+How values vary across a population
+
 
 # Randomness has patterns {notes="notes/week2_notes.md#randomness"}
 
@@ -119,7 +116,174 @@ Problem: we want to understand how the admissions process works at a university.
 - Random individuals → Predictable populations
 :::
 
-# Probability distributions: talking about numbers differently {notes="notes/week2_notes.md#belief-distributions"}
+
+# A distribution of data: Nepal's population {notes="notes/week2_notes.md#nepal-population"}
+<!-- TODO: Add NLSS age data. Why the bumps? -->
+![Population of Nepal](images/week2/population.svg){width="80%" fig-align="center"}
+
+
+# Our running example: the !Kung San {notes="notes/week2_notes.md#kung"}
+
+::: {.columns}
+::: {.column width="45%"}
+- Census data collected by anthropologist **Nancy Howell** in the late 1960s among
+  the !Kung San of the Kalahari.
+- `r nrow(howell)` adults (18+).
+- Height (cm), weight (kg), age, sex.
+- The same data McElreath uses in *Statistical Rethinking*.
+:::
+
+::: {.column width="55%"}
+```{r howell-table}
+howell |>
+  select(height, weight, age, sex) |>
+  head(6) |>
+  knitr::kable(digits = 1)
+```
+:::
+:::
+
+
+# Describing a distribution {notes="notes/week2_notes.md#describing"}
+
+```{r height-hist}
+height_hist_plot(howell)
+```
+
+- [**Center**]{.red}: where is a typical value? (mean)
+- [**Spread**]{.blue}: how far is a typical case from the center? (standard deviation)
+- **Shape**: one hump or two? Symmetric, or a long tail?
+
+
+# The Normal distribution {notes="notes/week2_notes.md#normal"}
+
+::: {.columns}
+::: {.column width="60%"}
+```{r normal-overlay}
+normal_overlay_plot(howell)
+```
+:::
+
+::: {.column width="40%"}
+- The blue curve is a Normal distribution with
+  - mean = `r fmt(h_mean)`
+  - SD = `r fmt(h_sd)`
+- **Two numbers** describe the whole shape.
+- Real data is never perfectly Normal, but many things are close.
+:::
+:::
+
+::: {.fragment}
+$$
+\text{height} \sim \text{Normal}(\mu = `r fmt(h_mean)`,\ \sigma = `r fmt(h_sd)`)
+$$
+:::
+
+
+# The 68–95–99.7 rule {notes="notes/week2_notes.md#rule-68-95"}
+
+```{r normal-rule}
+normal_rule_plot()
+```
+
+- For a Normal distribution, about **68%** of cases fall within 1 SD of the mean,
+  **95%** within 2 SD.
+- Check: `r fmt(100 * mean(abs(howell$z_height) < 1), 0)`% of !Kung adults are within 1 SD
+  of the average height, and `r fmt(100 * mean(abs(howell$z_height) < 2), 0)`% within 2 SD.
+
+
+# Distributions Demo {.no-title notes="notes/week2_notes.md#dist-demo"}
+
+```{shinylive-r}
+#| standalone: true
+{{< include shiny/distributions.R >}}
+```
+
+
+# Standardized values (z-scores) {notes="notes/week2_notes.md#z-scores"}
+
+```{r z-example}
+ex_h <- 165
+ex_w <- 58
+ex_zh <- (ex_h - h_mean) / h_sd
+ex_zw <- (ex_w - w_mean) / w_sd
+```
+
+A !Kung man is **`r ex_h` cm** tall and weighs **`r ex_w` kg**.
+Is he more unusually *tall* or more unusually *heavy*?
+
+- We can't compare centimeters to kilograms.
+- But we can ask of each: **how many standard deviations from average is this?**
+
+::: {.fragment}
+$$
+z = \frac{x - \text{mean}}{\text{SD}}
+$$
+:::
+
+::: {.fragment .nonincremental}
+- Height: (`r ex_h` − `r fmt(h_mean)`) / `r fmt(h_sd)` = [**`r fmt(ex_zh, 2)`**]{.blue}
+- Weight: (`r ex_w` − `r fmt(w_mean)`) / `r fmt(w_sd)` = [**`r fmt(ex_zw, 2)`**]{.red}
+- He is more unusually heavy than he is tall.
+:::
+
+
+## Same data, new ruler {notes="notes/week2_notes.md#new-ruler"}
+
+::: {.columns}
+::: {.column}
+```{r hist-cm, opts.label = "half_short"}
+height_ruler_plot(howell)
+```
+:::
+
+::: {.column}
+```{r hist-z, opts.label = "half_short"}
+height_ruler_plot(howell, z = TRUE)
+```
+:::
+:::
+
+- The **shape** doesn't change at all. Only the labels on the axis.
+- The mean becomes **0**. The standard deviation becomes **1**.
+- The units disappear: a z-score is measured in "standard deviations".
+
+
+## Reading z-scores {notes="notes/week2_notes.md#reading-z"}
+
+::: {.columns}
+::: {.column width="45%"}
+| z      | Meaning                          |
+|--------|----------------------------------|
+| 0      | exactly average                  |
+| ±1     | ordinary                         |
+| ±2     | unusual (about 1 in 20)          |
+| ±3     | rare (about 1 in 370)            |
+:::
+
+::: {.column width="55%"}
+In R:
+
+```{r z-code, echo = TRUE, eval = FALSE}
+howell |>
+  mutate(
+    z_height = (height - mean(height)) / sd(height),
+    z_weight = (weight - mean(weight)) / sd(weight)
+  )
+```
+:::
+:::
+
+- z-scores let us compare things measured on completely different scales:
+  exam marks out of 50 vs. out of 100, rupees vs. dollars, cm vs. kg.
+
+
+# Part 2: Distributions of belief {.center notes="notes/week2_notes.md#part2"}
+
+How sure we are about a number we don't know
+
+
+# How old is he? A distribution of belief {notes="notes/week2_notes.md#belief-distributions"}
 
 ::: {.fragment .callout-note .nonincremental}
 - We talk about probability distributions all the time: "He's probably about 40, but he could be quite a bit older". 
@@ -179,6 +343,7 @@ belief_plot(plateau_density(center = 40, plateau = 20, taper = 15), ymax = 0.05)
 
 :::
 
+
 # Two kinds of distributions {notes="notes/week2_notes.md#two-kinds"}
 
 ::: {.columns}
@@ -204,161 +369,15 @@ How **plausible** each value of a parameter is.
 :::
 
 ::: {.fragment}
-Same shapes, same vocabulary, same math. Today we start with the first kind and end
-with the second.
+Same shapes, same vocabulary, same math. Part 3 uses both: a pattern in the data,
+and how sure we are about it.
 :::
 
-# A distribution of data: Nepal's population {notes="notes/week2_notes.md#nepal-population"}
-<!-- TODO: Add NLSS age data. Why the bumps? -->
-![Population of Nepal](images/week2/population.svg){width="80%" fig-align="center"}
 
-# Our running example: the !Kung San {notes="notes/week2_notes.md#kung"}
+# Part 3: Two variables at once {.center notes="notes/week2_notes.md#part3"}
 
-::: {.columns}
-::: {.column width="45%"}
-- Census data collected by anthropologist **Nancy Howell** in the late 1960s among
-  the !Kung San of the Kalahari.
-- `r nrow(howell)` adults (18+).
-- Height (cm), weight (kg), age, sex.
-- The same data McElreath uses in *Statistical Rethinking*.
-:::
+How two distributions vary together: correlation and regression
 
-::: {.column width="55%"}
-```{r howell-table}
-howell |>
-  select(height, weight, age, sex) |>
-  head(6) |>
-  knitr::kable(digits = 1)
-```
-:::
-:::
-
-# Describing a distribution {notes="notes/week2_notes.md#describing"}
-
-```{r height-hist}
-height_hist_plot(howell)
-```
-
-- [**Center**]{.red}: where is a typical value? (mean)
-- [**Spread**]{.blue}: how far is a typical case from the center? (standard deviation)
-- **Shape**: one hump or two? Symmetric, or a long tail?
-
-# The Normal distribution {notes="notes/week2_notes.md#normal"}
-
-::: {.columns}
-::: {.column width="60%"}
-```{r normal-overlay}
-normal_overlay_plot(howell)
-```
-:::
-
-::: {.column width="40%"}
-- The blue curve is a Normal distribution with
-  - mean = `r fmt(h_mean)`
-  - SD = `r fmt(h_sd)`
-- **Two numbers** describe the whole shape.
-- Real data is never perfectly Normal, but many things are close.
-:::
-:::
-
-::: {.fragment}
-$$
-\text{height} \sim \text{Normal}(\mu = `r fmt(h_mean)`,\ \sigma = `r fmt(h_sd)`)
-$$
-:::
-
-# The 68–95–99.7 rule {notes="notes/week2_notes.md#rule-68-95"}
-
-```{r normal-rule}
-normal_rule_plot()
-```
-
-- For a Normal distribution, about **68%** of cases fall within 1 SD of the mean,
-  **95%** within 2 SD.
-- Check: `r fmt(100 * mean(abs(howell$z_height) < 1), 0)`% of !Kung adults are within 1 SD
-  of the average height, and `r fmt(100 * mean(abs(howell$z_height) < 2), 0)`% within 2 SD.
-
-# Distributions Demo {.no-title notes="notes/week2_notes.md#dist-demo"}
-
-```{shinylive-r}
-#| standalone: true
-{{< include shiny/distributions.R >}}
-```
-
-# Standardized values (z-scores) {notes="notes/week2_notes.md#z-scores"}
-
-```{r z-example}
-ex_h <- 165
-ex_w <- 58
-ex_zh <- (ex_h - h_mean) / h_sd
-ex_zw <- (ex_w - w_mean) / w_sd
-```
-
-A !Kung man is **`r ex_h` cm** tall and weighs **`r ex_w` kg**.
-Is he more unusually *tall* or more unusually *heavy*?
-
-- We can't compare centimeters to kilograms.
-- But we can ask of each: **how many standard deviations from average is this?**
-
-::: {.fragment}
-$$
-z = \frac{x - \text{mean}}{\text{SD}}
-$$
-:::
-
-::: {.fragment .nonincremental}
-- Height: (`r ex_h` − `r fmt(h_mean)`) / `r fmt(h_sd)` = [**`r fmt(ex_zh, 2)`**]{.blue}
-- Weight: (`r ex_w` − `r fmt(w_mean)`) / `r fmt(w_sd)` = [**`r fmt(ex_zw, 2)`**]{.red}
-- He is more unusually heavy than he is tall.
-:::
-
-## Same data, new ruler {notes="notes/week2_notes.md#new-ruler"}
-
-::: {.columns}
-::: {.column}
-```{r hist-cm, opts.label = "half_short"}
-height_ruler_plot(howell)
-```
-:::
-
-::: {.column}
-```{r hist-z, opts.label = "half_short"}
-height_ruler_plot(howell, z = TRUE)
-```
-:::
-:::
-
-- The **shape** doesn't change at all. Only the labels on the axis.
-- The mean becomes **0**. The standard deviation becomes **1**.
-- The units disappear: a z-score is measured in "standard deviations".
-
-## Reading z-scores {notes="notes/week2_notes.md#reading-z"}
-
-::: {.columns}
-::: {.column width="45%"}
-| z      | Meaning                          |
-|--------|----------------------------------|
-| 0      | exactly average                  |
-| ±1     | ordinary                         |
-| ±2     | unusual (about 1 in 20)          |
-| ±3     | rare (about 1 in 370)            |
-:::
-
-::: {.column width="55%"}
-In R:
-
-```{r z-code, echo = TRUE, eval = FALSE}
-howell |>
-  mutate(
-    z_height = (height - mean(height)) / sd(height),
-    z_weight = (weight - mean(weight)) / sd(weight)
-  )
-```
-:::
-:::
-
-- z-scores let us compare things measured on completely different scales:
-  exam marks out of 50 vs. out of 100, rupees vs. dollars, cm vs. kg.
 
 # Correlation {notes="notes/week2_notes.md#correlation"}
 
@@ -368,13 +387,17 @@ ggplot(howell, aes(height, weight)) +
   labs(x = "Height (cm)", y = "Weight (kg)")
 ```
 
+- Height and weight each have their own distribution. A scatterplot shows how they
+  vary **together**.
 - Taller people tend to be heavier. But **how strongly** do they go together?
+
 
 ## Standardize both variables {notes="notes/week2_notes.md#standardize-both"}
 
 ```{r scatter-z}
 agreement_plot(howell)
 ```
+
 
 ## Correlation is average agreement {.mechanics notes="notes/week2_notes.md#average-agreement"}
 
@@ -403,6 +426,7 @@ cor(howell$height, howell$weight)
 :::
 :::
 
+
 ## What does *r* look like? {notes="notes/week2_notes.md#r-gallery"}
 
 ```{r cor-gallery, fig.height = 3.6}
@@ -410,6 +434,7 @@ cor_gallery_plot()
 ```
 
 - Our height and weight: *r* = `r fmt(r_hw, 2)`. A strong relationship, but far from perfect.
+
 
 ## What correlation misses {notes="notes/week2_notes.md#cor-misses"}
 
@@ -419,6 +444,7 @@ cor_misses_plot()
 
 - *r* only measures **straight-line** agreement.
 - **Always plot your data** before trusting a single number.
+
 
 # Regression: our first coefficient {notes="notes/week2_notes.md#regression"}
 
@@ -441,6 +467,7 @@ $$
 :::
 :::
 
+
 ## The best line {notes="notes/week2_notes.md#best-line"}
 
 ::: {.columns}
@@ -457,6 +484,7 @@ residuals_plot(howell, r_hw)
   **β = r = `r fmt(r_hw, 2)`**.
 :::
 :::
+
 
 ## Reading the coefficient {.mechanics notes="notes/week2_notes.md#reading-coef"}
 
@@ -488,6 +516,7 @@ coef(lm(weight ~ height, data = howell))
 :::
 :::
 
+
 ## β is a parameter, so it has a distribution {notes="notes/week2_notes.md#beta-posterior"}
 
 ```{r beta-posterior}
@@ -499,19 +528,67 @@ beta_posterior_plot(howell)
 - With 20 people we're unsure about β. With `r nrow(howell)`, much less so.
 :::
 
-# Part 1: Summary {notes="notes/week2_notes.md#part1-summary"}
 
-- **Distributions**: describe numbers by their *center*, *spread*, and *shape*, not
-  just a single value.
-- **z-scores**: how many SDs from the average. One ruler for everything.
-- **Correlation** (*r*): the average agreement of two z-scores, from −1 to +1.
-- **Regression coefficient** (β): the slope of the best line. With standardized data
-  and one predictor, β = *r*.
-- β is a **parameter**: we can have a prior and a posterior distribution for it.
+# Distributions so far {notes="notes/week2_notes.md#recap"}
 
-# Part 2: When patterns mislead {.center notes="notes/week2_notes.md#part2"}
+- A **distribution** describes a number by all the values it could take, not just one.
+- **Distributions of data**: how values vary across a population. Center, spread,
+  shape. A z-score says where one case sits.
+- **Distributions of belief**: how plausible each value of an unknown is. Wide when we
+  know little.
+- **Correlation** (*r*) and **regression** (β) describe how two variables vary
+  together. With standardized data and one predictor, β = *r*.
+- β is unknown, so it has a distribution of belief too.
 
-Back to our two headlines
+
+# Part 4: When patterns mislead {.center notes="notes/week2_notes.md#part4"}
+
+Real patterns that don't mean what they seem
+
+
+## Two headlines {notes="notes/week2_notes.md#headlines"}
+
+```{r icecream-sim}
+# Simulated beach town: hot days bring both ice cream sales and swimmers
+set.seed(11)
+beach <- tibble(day = 1:365) |>
+  mutate(
+    temp = 18 + 8 * sin(2 * pi * (day - 100) / 365) + rnorm(n(), 0, 2.5),
+    ice_cream = 40 * temp + rnorm(n(), 0, 120),
+    drownings = rpois(n(), exp(-3 + 0.13 * temp))
+  )
+r_ice <- cor(beach$ice_cream, beach$drownings)
+```
+
+```{r noise-sim}
+# 50 made-up "indicators" for 20 made-up "countries", all pure random noise
+set.seed(3)
+n_vars <- 50
+noise_small <- matrix(rnorm(20 * n_vars), nrow = 20)
+r_small <- cor(noise_small)
+r_small[lower.tri(r_small, diag = TRUE)] <- NA
+best <- which(abs(r_small) == max(abs(r_small), na.rm = TRUE), arr.ind = TRUE)
+r_best <- r_small[best]
+```
+
+::: {.fragment}
+> _"Ice cream sales linked to drownings"_ (*r* = `r fmt(r_ice, 2)`, one year of daily data)
+:::
+
+::: {.fragment}
+> _"Countries that spend more on [one thing] have `r if (r_best > 0) "more" else "less"` [another]"_ (*r* = `r fmt(r_best, 2)`,
+> 20 countries)
+:::
+
+::: {.fragment .nonincremental}
+- Both patterns are really there in the data.
+- Neither one means what the headline says.
+:::
+
+::: {.fragment}
+Let's see why, and how to tell the two apart.
+:::
+
 
 ## Spurious correlations {notes="notes/week2_notes.md#spurious"}
 
@@ -534,6 +611,7 @@ and will disappear in new data.
 :::
 :::
 
+
 ## Kind 1: Does ice cream cause drowning? {notes="notes/week2_notes.md#ice-cream"}
 
 ::: {.columns}
@@ -553,6 +631,7 @@ ggplot(beach, aes(ice_cream, drownings)) +
 :::
 :::
 
+
 ## The confounder: temperature {notes="notes/week2_notes.md#temperature"}
 
 ```{r icecream-strata, fig.height = 5}
@@ -564,6 +643,7 @@ icecream_strata_plot(beach)
 - More data would not help: a million days would show the same strong *r*.
 - A confounder can hide a relationship, invent one, or even flip its sign. You'll see
   a sign flip in the house-price exercise.
+
 
 ## Kind 2: Correlations from pure noise {notes="notes/week2_notes.md#noise"}
 
@@ -587,17 +667,20 @@ tibble(x = noise_small[, best[1]], y = noise_small[, best[2]]) |>
 :::
 :::
 
+
 ## Small samples and many comparisons {notes="notes/week2_notes.md#small-samples"}
 
 ```{r noise-dist, fig.height = 5}
 noise_dist_plot(r_small, n_vars)
 ```
 
-- The true correlation is **0** for every pair. With [20 cases]{.red}, chance alone
-  produces *r* values of ±0.5 and beyond. With [500 cases]{.blue}, they stay close to 0.
+- Each histogram is the **distribution** of *r* when nothing is going on. With
+  [20 cases]{.red}, chance alone produces values of ±0.5 and beyond. With
+  [500 cases]{.blue}, they stay close to 0.
 - Search through enough pairs and you're guaranteed to find something "interesting".
 - This is Week 1's problem again: try enough comparisons and some will look
   "significant." The base rate of real relationships here is zero.
+
 
 ## Telling the two apart {notes="notes/week2_notes.md#telling-apart"}
 
@@ -616,23 +699,26 @@ noise_dist_plot(r_small, n_vars)
 - We'll come back to this in Week 5: more data won't save you from a confounder.
 :::
 
+
 # Summary {notes="notes/week2_notes.md#summary"}
 
 ::: {.nonincremental}
-1. [**Distributions**]{.blue} describe how values vary: center, spread, shape. Our beliefs
-   are distributions too.
-2. [**z-scores, correlation and regression**]{.blue} summarize how two things move
-   together.
-3. [**A coefficient is a parameter**]{.blue}: it has a posterior, wide when data are few.
-4. [**Patterns can mislead in two ways**]{.blue}: chance (more data and replication help)
-   and confounding (only the science helps).
+1. [**A distribution**]{.blue} is a different way to think about a number: every value it
+   could take, and how common or plausible each one is.
+2. [**Distributions of data**]{.blue} describe populations: center, spread, shape. A
+   z-score places one case.
+3. [**Distributions of belief**]{.blue} describe uncertainty. A coefficient has one too,
+   wide when data are few.
+4. [**Correlation and regression**]{.blue} describe how two variables vary together. But
+   a pattern is a description, not an explanation: chance and confounding both mislead.
 :::
 
 ::: {.fragment}
 ::: {.big-statement}
-A pattern is a description, not an explanation.
+Think in distributions, not single numbers.
 :::
 :::
+
 
 # Next week {notes="notes/week2_notes.md#next-week"}
 
@@ -642,9 +728,11 @@ A pattern is a description, not an explanation.
   causes what.
 - Next week: **DAGs** and **causal models**.
 
+
 # Practical work: What makes a house expensive? {.center notes="notes/week2_notes.md#houses"}
 
 _Appendix: we'll work through this together with the TA in our second session._
+
 
 ## The data: house sales in Ames, Iowa {notes="notes/week2_notes.md#houses-data"}
 
@@ -659,6 +747,7 @@ houses |>
   knitr::kable(align = "r")
 ```
 
+
 ## Step 1: Look at the distribution {notes="notes/week2_notes.md#houses-step1"}
 
 ```{r price-hist, fig.height = 5.5}
@@ -667,6 +756,7 @@ price_hist_plot(houses)
 
 - Not Normal: a **long right tail** of a few very expensive houses.
 - The tail pulls the [mean]{.red} above the [median]{.blue}. Which is the "typical" price?
+
 
 ## Step 2: How unusual is this house? {notes="notes/week2_notes.md#houses-step2"}
 
@@ -709,6 +799,7 @@ unusual |>
 ```
 :::
 
+
 ## Step 3: Price and living area {notes="notes/week2_notes.md#houses-step3"}
 
 ```{r price-area, fig.height = 6}
@@ -718,6 +809,7 @@ price_area_plot(houses, unusual)
 
 - *r* = `r fmt(r_pa, 2)`. Bigger houses sell for more, but with lots of scatter.
 - House B is far off the pattern. What might be going on?
+
 
 ## Step 4: Guess first {notes="notes/week2_notes.md#houses-guess"}
 
@@ -732,6 +824,7 @@ Before we look: **rank these from strongest to weakest correlation with price.**
 - Year built
 :::
 
+
 ## Step 4: The correlations {notes="notes/week2_notes.md#houses-correlations"}
 
 ```{r cor-bars, fig.height = 6}
@@ -739,6 +832,7 @@ price_cor_plot(houses)
 ```
 
 - Because *r* has no units, we can compare m², cars, years, and rooms on one scale.
+
 
 ## Step 5: One coefficient {.mechanics notes="notes/week2_notes.md#houses-coef"}
 
@@ -771,6 +865,7 @@ ggplot(houses, aes(z_area, z_price)) +
 :::
 :::
 
+
 ## A puzzle: bedrooms {notes="notes/week2_notes.md#bedrooms-puzzle"}
 
 ```{r bedrooms-puzzle, fig.height = 5.5}
@@ -781,6 +876,7 @@ bedrooms_puzzle_plot(houses)
 - But among medium and large houses of **similar size**, more bedrooms go with a
   *lower* price.
 - How can both be true?
+
 
 ## Solving the bedrooms puzzle {notes="notes/week2_notes.md#bedrooms-solved"}
 

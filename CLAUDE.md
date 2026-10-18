@@ -26,6 +26,7 @@ Several slides embed live, browser-run Shiny apps via `shinylive`.
 
 Never commit code unless explicitly instructed to. The maintainer commits manually.
 Make and leave changes in the working tree; do not run `git commit` on your own.
+When asked to commit, don't add `Co-Authored-By` or other Claude attribution lines.
 
 ## Commands
 
@@ -78,8 +79,13 @@ it depends on an uncommitted package or extension.
   R 4.5.2 (`.github/workflows/publish.yml`). Bump them together with your local install.
 - **Stan models are cached** in `.stancache/` keyed by model; first render compiles with
   CmdStan (slow), later renders reuse the cache.
-- **The shinylive filter needs the network** on every render (it fetches
-  `bioconductor.org/config.yaml`); renders with Shiny slides fail offline.
+- **Renders work offline, and Bioconductor is off.** shinylive resolves each app's
+  dependencies with pkgdepends/pkgcache, which by default also searches Bioconductor
+  and looks up its version online on every render. `_environment` (read by Quarto for
+  every render, CI included) turns that off: `PKG_USE_BIOCONDUCTOR=false` keeps the
+  apps to CRAN packages, and `R_BIOC_VERSION` stops the version lookup, which pkgcache
+  does even with Bioconductor off. Offline builds still need caches from one online
+  build: the CRAN package list and shinylive's in-browser package files.
 
 Three Quarto filters run on every render (`_quarto.yml`):
 - `shinylive` — turns ```` ```{shinylive-r} ```` chunks into self-contained
@@ -97,7 +103,8 @@ how `workflow.qmd` shows `models/berkeley.stan` and the decks embed `shiny/*.R`.
 
 ### Shiny demos (`shiny/*.R`)
 Each file is a complete standalone `shinyApp(ui, server)`, and must stay that way: no
-`source()`, no shared palette, nothing from elsewhere in this repo. They are pulled into slides
+`source()`, no shared palette, nothing from elsewhere in this repo. They may use CRAN
+packages only (see the Bioconductor note under "Rendering model"). They are pulled into slides
 with `{{< include shiny/<name>.R >}}` inside a `{shinylive-r}` chunk (see `week1.qmd`),
 so they run entirely client-side in the browser. `regression.R` is the most complex:
 it keeps parameters in a canonical ("root") unit space and reactively converts to the

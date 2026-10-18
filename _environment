@@ -1,0 +1,13 @@
+# Environment variables for every render. Quarto reads this file itself (locally, in
+# Positron's preview, and on CI), so nothing needs to be set in the shell.
+
+# No Bioconductor. The Shiny apps only use CRAN packages, but shinylive works out
+# their dependencies with pkgdepends/pkgcache, which also search Bioconductor by
+# default and look up its current version online (bioconductor.org/config.yaml) on
+# every render, so renders failed without a network connection.
+#   - PKG_USE_BIOCONDUCTOR=false: resolve dependencies from CRAN only.
+#   - R_BIOC_VERSION: pkgcache asks for the Bioconductor version even when it isn't
+#     used. Giving it one stops the online lookup. With Bioconductor off the value is
+#     never used for anything, so it doesn't need to track the R version.
+PKG_USE_BIOCONDUCTOR=false
+R_BIOC_VERSION=3.22
