@@ -183,33 +183,18 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - Click. Good studies catch most true ideas: 8 of the 10. But they also get a significant result for about 5% of the false ones, purely by chance: about 50 red squares, scattered everywhere.
 - Click. 58 discoveries, and only 8 are real: about 14%. Let that land before moving on.
 - The point isn't that scientists are dishonest or bad at math. The math is fine. A significant result answers P(data | hypothesis), and when true ideas are rare, P(hypothesis | data) is very different.
-- 1 in 100 is one scenario, realistic for exploratory work. Confirmatory research can be closer to 50%, and then most discoveries are real. The mechanics slides at the end of this section show the range, if there's time.
-- This is why it's okay. Once you expect most single findings to be noise, you stop treating one p < 0.05 as truth and start accumulating evidence, which is the next slide.
+- 1 in 100 is one scenario, realistic for exploratory work. Confirmatory research can be closer to 50%, and then most discoveries are real. The table at the end of this section shows the range, if there's time.
+- This is why it's okay. Once you expect most single findings to be noise, you stop treating one p < 0.05 as truth and start treating each one as a nudge to what we already know, not the final word.
 
-# Scenarios: replication {#scenarios-replication}
+# How far can we trust a "discovery"? {#research-math}
 
-- This is the HIV confirmatory test again. A positive screen at 3% isn't a diagnosis, so you test again. Same here.
-- Each row uses the previous row's answer as the new base rate. That's Bayesian updating: today's posterior is tomorrow's prior.
-- At 80% power: 1% → 14% → 72% → 98%. Three independent significant results and we can be fairly confident.
-- At 20% power it takes longer, but it still gets there: 1% → 4% → 14% → 39% → 72% after four results. (Not on the slide; mention it if someone asks about weak studies.)
-- The caveat matters. This only works if replications are independent. If every lab uses the same flawed measure, or only successful replications get published, the evidence doesn't really add up. That's why the scientific process includes critique, not just repetition.
-
-# The math: power and α {#research-math}
-
-- Mechanics slide, optional. It's the 1,000-ideas picture as a table, with 10,000 hypotheses so the counts come out whole.
-- Power is the chance a study gets a significant result when the idea is true: its sensitivity. α is the chance it does when the idea is false: its false-positive rate, usually 5%.
-- 80 true discoveries and 495 false ones, so 80 / 575 ≈ 14% of significant results are true. Same calculation as the HIV table.
-- 80% power is generous. Median power is around 20% in fields like neuroscience (Button et al. 2013) and economics (Ioannidis, Stanley & Doucouliagos 2017). At 1% and 20% power, only about 4% of significant results are true. That's the next slide.
-
-# How bad does it get? {#scenarios-grid}
-
-- Mechanics slide. Every cell is the same calculation as the HIV table: (base rate × power) / (base rate × power + (1 − base rate) × α).
-- Read across a row: lower power hurts, but not catastrophically when the base rate is high. At 50% true, even 20% power gives 80%.
-- Read down a column: the base rate is what really drives it. At 80% power, going from 50% true to 1% true drops us from 94% to 14%.
-- The perfect study: even with 100% power, a 1% base rate gives only 17%. The false positives come from the 99% of false hypotheses, and power does nothing about them. No study design rescues an unlikely hypothesis.
-- The last column is p-hacking. α = 5% assumes exactly one pre-planned test. Real analyses have forks: which outcome, which subgroup, which controls. Nobody has to be dishonest; it's usually a sincere search for "the right analysis" that stops when something works. 20% is illustrative; Simmons, Nelson & Simonsohn (2011) showed a handful of common choices can push the false-positive rate past 60%.
-- In that column, power equals α, so a significant result is equally likely whether the hypothesis is true or false. The posterior equals the prior: each cell is just the base rate. The study taught us nothing.
-- If asked about fixes: a stricter threshold (p < 0.005, Benjamin et al. 2018) lifts the 1% row from 14% to 62% at 80% power, but needs much bigger samples. Replication works better, which is the next slide.
+- Mechanics slide, optional. It generalizes the 1,000-ideas picture to other kinds of study.
+- Two error rates, both like the HIV test. α is the false-positive rate: how often a study says "significant" when the idea is false (usually set at 5%). β is the miss rate: how often it fails to find an idea that's true. Power, a term students may meet in papers, is 1 − β.
+- Every cell is the same calculation as the HIV table: (true share × (1 − β)) / (true share × (1 − β) + (1 − true share) × α).
+- Read down the rows. A large trial of a promising idea is usually right (94%). The search for new effects, our 1,000 ideas, is usually wrong (14%), and worse with small samples (4%). Same α, same β; the difference is how many tested ideas were true to begin with. That's the takeaway line.
+- β of 80% (power of 20%) isn't a strawman. Median power is around 20% in fields like neuroscience (Button et al. 2013) and economics (Ioannidis, Stanley & Doucouliagos 2017).
+- The p-hacked row: α = 5% assumes one pre-planned test. Trying several outcomes, subgroups or controls until something works pushes the real false-positive rate up; 20% is illustrative, and Simmons, Nelson & Simonsohn (2011) showed common choices can push it past 60%. When α equals 1 − β, a significant result is equally likely whether the idea is true or false, so the chance stays at the starting 10%. The study taught us nothing.
+- If asked about fixes: a stricter threshold (p < 0.005, Benjamin et al. 2018) helps but needs much bigger samples. Replication works better: a finding that keeps holding up in new studies earns trust no threshold can give it.
 - Ask the room: which row does your own field live in?
 
 # Bayesian Updating: What it is {#bayesian-updating}
@@ -220,59 +205,30 @@ A million tests. We have one process, called Bayesian updating. Everything we bu
 
 For those interested in math, I definitely encourage you to where the theorem comes from and how it's derived, but for our purposes, we need just one simple idea:
 
-# You've already done this {#prior-likelihood-posterior}
-
-- Read the definitions row first, then go down the examples. The point: the HIV test and the published-research table were Bayesian updates all along. We just didn't use the names.
-- In the HIV row, the prior is prevalence, the likelihood is sensitivity and the false-positive rate, and the posterior is P(HIV+ | test+).
-- In the research row, the prior is the base rate, the likelihood is power and α, and the posterior is P(true | significant).
-- The mayor poll is the same thing with many possible answers (every vote share from 0 to 100%) instead of two. We'll do it live in the demonstration.
-- Address the obvious question head on: "Isn't the likelihood backwards too, like a p-value?" Yes. On its own, it's P(data | belief). A p-value stops there, and only for one imagined world. Bayes computes it for every possibility and combines it with the prior, which turns it around into P(belief | data).
-
-# From two possibilities to many {#two-to-many}
-
-- This is the bridge from the HIV and research examples to real models. Those had two possibilities. Most questions have many.
-- Nothing about the rule changes. We just do it once for each possibility and compare.
-- For the bag of stones, the likelihood is literally counting: for a bag with 3 blue stones, how many ways could we draw blue, black, blue? Compare with a bag with 6 blue. This is the "Counting ways" slide again.
-- The output is a distribution, which is why the bag app shows a bar chart rather than a single number. Everything from Week 2 on is about distributions like this.
-
-# Bayesian Updating: Why one rule helps {#bayesian-updating-how}
-
-The nice thing about having one process is that a lot of the rules you may have learned for tests simply go away.
-
-Tests need a stopping rule fixed in advance: if you peek at the data and stop when p dips below 0.05, your false positive rate quietly balloons. (Sequential designs can plan for interim looks, but the looks have to be planned and paid for.) Bayesian updating doesn't care when you stop. The posterior is just what you believe given what you've seen so far.
-
-Updating is also cumulative. Last week's posterior becomes this week's prior, and you end up in the same place as if you'd analyzed everything at once.
-
-We still make assumptions, but we choose them to fit the data and we write them down, instead of inheriting them from whichever test we picked. (This is really a contrast between picking tests and building models; frequentist GLMs build models too.) And small samples don't break anything; they leave us more uncertain, and the prior matters more, so it deserves more scrutiny.
-
-Most importantly, it answers the question we actually care about: how plausible is the hypothesis, given the data?
-
-# Bayes Theorem {#bayes-theorem}
+# Bayes' theorem {#bayes-theorem}
 
 - First "Mechanics" slide: point out the tag in the corner. It means this is the machinery under the hood. Nice to follow, not necessary for the big picture. If you only remember "prior × likelihood → posterior", you're fine.
+- It's the same rule as before, written as a formula, in the same colors. Walk through the terms in order: the prior (what we believed), the likelihood (how well the data fit each belief), the posterior (what we believe now).
+- The bottom, P(data), is the same whichever belief we're considering, so it only rescales the answer to add up to 1. Drop it and you're left with prior × likelihood → posterior.
+- Two things worth noticing. First, the formula reverses a conditional: it turns P(data | belief), which is what a test or study gives us, into P(belief | data), which is what we want. That's the HIV test again. Second, it describes updating: we believed something, we saw something, and now we believe something slightly or very different.
+- The textbook form, P(A | B) = P(B | A) P(A) / P(B), is on the bottom line for anyone who has seen it before.
 
-That's all statistics is.
+# Is that a problem? {#is-that-a-problem}
 
-We're going to dig into an example here that is very simple, but it represents the entire philosophical underpinnings of statistical analysis:
+- Back to the capybara: most published research is wrong, and that's okay.
+- It's okay because nobody (should) read a study as a verdict. A study is a contribution to an ongoing conversation.
+- The process around the study is what does the work: other labs try it again, critics poke holes, someone proposes a better explanation, theory says whether it even makes sense.
+- Each study joins an existing body of knowledge. It nudges what we believe, a little or a lot. It doesn't define it.
+- Science works really well. It just doesn't work one study at a time.
 
+# Statistics is observation, not answers {#observation-not-answers}
 
-I just want you to notice two things here:
-
-- first the main purpose of this function is to reverse conditional dependency, turning P(B | A) into P(A | B).
-- second, the combination of priors, likelihoods, and posteriors drives a process called "updating". We used to believe something, then we saw something, and now we believe something slightly or significantly different.
-
-believe something (prior), observe something (likelihood), update beliefs (posterior)
-
-With this simple process, we're going to do some very cool things.
-instead, we have updating
-
-# Isn't the prior subjective? {#prior-subjective}
-
-- Someone will ask. Better to raise it ourselves.
-- Yes, priors are a choice. But every method makes choices: which test, which variables to control for, when to stop collecting data, which outcome to report. Frequentist methods make those choices too; they're just less visible.
-- A prior is visible. It's written down, so it can be criticized, and we can check how much the answer depends on it (sensitivity analysis, later in the course).
-- With plenty of data, reasonable priors converge. With little data, the prior matters, and that is honest: the data alone can't tell us much.
-- Lead into the next slide: this isn't special to statistics. Every field that learns from observation makes assumptions.
+- So where do the problems come from? Not from statistics being wrong. The math is fine.
+- They come from expecting too much of it. We treat a p-value as an answer to "is this true?" It isn't. It's an observation.
+- Go back through today: the person terrified by one positive HIV screen, the 86% of "discoveries" that are false, the analyst trying forks until p < 0.05. Every one of those is someone believing statistics is more powerful than it is.
+- Ethnographers already know how to handle this. Nobody writes an ethnography from one interview, or treats one informant as the truth. One interview is an observation. You weigh it against others, think about context, argue about what it means.
+- We just need to do the same thing with statistics. A regression, a survey, a significant result: one observation, to be weighed and argued about.
+- The science always comes first. The question, the theory, the knowledge of the context. Statistics serves that. It never replaces it.
 
 # Hard data? {#hard-data}
 
@@ -315,29 +271,12 @@ This is why I'm always confused when people say statistics is "objective" or "mo
 - Ethnography has spent decades building habits for this: reflexivity (how did I shape what I saw?), positionality (who am I to the people I studied?), thick description (show enough that readers can judge for themselves). Statistics talks less about these habits, and is worse for it.
 - Tie it back to Ioannidis: "hard data" is exactly the belief that lets a single significant result pass as truth. Drop the belief, and the problem of most research being wrong becomes manageable. That's the next section.
 
-# Is that a problem? {#is-that-a-problem}
-
-- Back to the capybara: most published research is wrong, and that's okay.
-- It's okay because nobody (should) read a study as a verdict. A study is a contribution to an ongoing conversation.
-- The process around the study is what does the work: other labs try it again, critics poke holes, someone proposes a better explanation, theory says whether it even makes sense.
-- The replication table showed this with numbers. One study: 14%. A field that keeps looking: 98%.
-- Science works really well. It just doesn't work one study at a time.
-
-# Statistics is observation, not answers {#observation-not-answers}
-
-- So where do the problems come from? Not from statistics being wrong. The math is fine.
-- They come from expecting too much of it. We treat a p-value as an answer to "is this true?" It isn't. It's an observation.
-- Go back through today: the person terrified by one positive HIV screen, the 86% of "discoveries" that are false, the analyst trying forks until p < 0.05. Every one of those is someone believing statistics is more powerful than it is.
-- Ethnographers already know how to handle this. Nobody writes an ethnography from one interview, or treats one informant as the truth. One interview is an observation. You weigh it against others, think about context, argue about what it means.
-- We just need to do the same thing with statistics. A regression, a survey, a significant result: one observation, to be weighed and argued about.
-- The science always comes first. The question, the theory, the knowledge of the context. Statistics serves that. It never replaces it.
-
 # Doing science {#doing-science}
 
 - "Science first" can sound like a slogan. Make it concrete: these are three habits, and none of them needs math.
 - Question every observation. We've already done this today: a positive HIV test turned out to be wrong most of the time, and so did a significant result. Ask how the observation was made and what else could explain it. That's what an ethnographer does with an interview, too.
 - Look from different perspectives. No method sees everything. A survey sees breadth, an interview sees meaning, an experiment sees cause in one place, history sees change over time. Agreement across perspectives is strong evidence; disagreement tells you where to look next.
-- Think in likelihood, not proof. Science never proves anything for good. We hold beliefs with more or less confidence and move them as evidence comes in. The replication table is the picture to keep in mind: 1% → 14% → 72% → 98%.
+- Think in likelihood, not proof. Science never proves anything for good. We hold beliefs with more or less confidence and move them as evidence comes in. One study nudges a belief; it doesn't settle it.
 - That last habit is exactly what Bayesian updating formalizes, which is where we're heading.
 
 # Summary {#summary}

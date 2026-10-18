@@ -228,35 +228,17 @@ check_stated_numbers <- function() {
   expect(paradox, 999 * 0.03, 30) # 29.97
   expect(paradox, 1 + 30, 31)
 
-  # Research findings: 1% of hypotheses true, 80% power, alpha = 5%. The main slide
-  # counts 1,000 ideas (and draws them with base_rate_plot()); the mechanics slide
-  # counts 10,000.
+  # Research findings: 1% of ideas true, 80% power (beta = 20%), alpha = 5%, drawn
+  # as 1,000 ideas with base_rate_plot()
   research <- "So why is most published research wrong?"
   expect(research, 1000 * 0.01, 10)
   expect(research, 1000 * 0.01 * 0.8, 8)
   expect(research, 1000 * 0.99 * 0.05, 50) # 49.5: "about 50"
   expect(research, 8 + 50, 58)
-  math <- "The math: power and α"
-  expect(math, 1e4 * 0.01 * 0.8, 80)
-  expect(math, 1e4 * 0.01 * 0.2, 20)
-  expect(math, 1e4 * 0.99 * 0.05, 495)
-  expect(math, 1e4 * 0.99 * 0.95, 9405)
-  expect(math, pct(ppv(0.01, 0.8, 0.05)), 14)
-
-  # The scenarios grid. p-hacked: 20% power, alpha about 20%.
-  grid <- "How bad does it get?"
-  for (row in list(c(0.5, 94, 80, 50), c(0.1, 64, 31, 10), c(0.01, 14, 4, 1))) {
-    expect(grid, pct(ppv(row[1], 0.8, 0.05)), row[2])
-    expect(grid, pct(ppv(row[1], 0.2, 0.05)), row[3])
-    expect(grid, pct(ppv(row[1], 0.2, 0.2)), row[4])
-  }
-  expect(grid, pct(ppv(0.01, 1, 0.05)), 17) # "a perfect study only reaches 17%"
-
-  # Replication: each significant result updates the last one's posterior
-  stated <- c(1, 14, 72, 98)
-  belief <- 0.01
-  for (i in seq_along(stated)) {
-    expect("What if we look again?", pct(belief), stated[i])
-    belief <- ppv(belief, 0.8, 0.05)
+  # The table of study types: true-idea share, alpha, beta -> chance a discovery is true
+  trust <- 'How far can we trust a "discovery"?'
+  for (row in list(c(0.5, 0.05, 0.2, 94), c(0.5, 0.05, 0.8, 80), c(0.01, 0.05, 0.2, 14),
+                   c(0.01, 0.05, 0.8, 4), c(0.1, 0.2, 0.8, 10))) {
+    expect(trust, pct(ppv(row[1], 1 - row[3], row[2])), row[4])
   }
 }

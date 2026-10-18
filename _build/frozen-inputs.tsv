@@ -20,7 +20,7 @@ week1.qmd	datasets/wb2022.csv	0453ba3f319b384b049dd1c844d1dd1e
 week1.qmd	r/data.R	7292cdba6f8c32914d83fef128e01929
 week1.qmd	r/deck-setup.R	238885271e646d424f24e4e750fb1d2a
 week1.qmd	r/rlib.R	5d48b7a934f59fde562c86a13a21ff29
-week1.qmd	r/week1.R	3b0a6fe068dc1141d28b8bc10392c208
+week1.qmd	r/week1.R	a17e35b88b8d11b70019e75e96468f66
 week1.qmd	shiny/baserate.R	334c4826f733bcdecba1b6bb2ef6f796
 week1.qmd	shiny/updating.R	c1c0860c9f115dd2fde42ede0552c923
 week2.qmd	css/deck.scss	5592ecf67ca1d30dd586fcec41dd739a

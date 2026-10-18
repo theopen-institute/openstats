@@ -390,7 +390,7 @@ imagines the world in a very [strange way]{.red}.
 | [**A p-value**]{.fragment fragment-index=3} | [an [imagined world]{.red} with nothing going on]{.fragment fragment-index=3} | [_"How surprising would my [data]{.blue} be there?"_]{.fragment fragment-index=3} |
 :::
 
-::: {.fragment}
+::: {.incremental}
 - A p-value doesn't tell you if a hypothesis is true.
 - It tells you how unlikely the data would be if the null hypothesis were true.
 - Those aren't the same thing. P(A | B) ≠ P(B | A)
@@ -444,6 +444,37 @@ That's it. A poll, a regression, a causal model: everything in this course is ju
 
 
 
+## Bayes' theorem {.mechanics notes="notes/week1_notes.md#bayes-theorem"}
+
+_The one rule, written as a formula._
+
+$$
+\class{green}{P(\text{belief} \mid \text{data})}
+=
+\frac{
+\class{red}{P(\text{belief})}
+\;\times\;
+\class{blue}{P(\text{data} \mid \text{belief})}
+}{
+\class{gray}{P(\text{data})}
+}
+$$
+
+::: {.incremental}
+- [**P( belief )**]{.red}: the **prior**. What we believed before.
+- [**P( data | belief )**]{.blue}: the **likelihood**. How likely the data are, if the belief is true.
+- [**P( belief | data )**]{.green}: the **posterior**. What we believe now.
+- [**P( data )**]{.gray}: the same for every belief, so it only rescales the answer. We can ignore it.
+:::
+
+::: {.fragment}
+Without the bottom line, it's the rule we started with:
+[**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
+:::
+
+[Usually written P(A | B) = P(B | A) P(A) / P(B). It turns P(B | A) into P(A | B).]{.source}
+
+
 # So why is most published research wrong? {notes="notes/week1_notes.md#why-research-wrong"}
 
 _It's the HIV test again._
@@ -488,59 +519,60 @@ Only 8 are real.
 :::
 :::
 
-## What if we look again? {notes="notes/week1_notes.md#scenarios-replication"}
+## How far can we trust a "discovery"? {.mechanics .smaller notes="notes/week1_notes.md#research-math"}
 
-_Test the same idea again, in new, independent studies._
+_α: the chance of a "significant" result when the idea is false · β: the chance of missing an idea that's true_
 
-::: {.fragment}
-
-| After… | Chance it's true |
-|---|:-:|
-| No studies | 1% |
-| 1 significant result | [14%]{.red} |
-| 2 significant results | 72% |
-| 3 significant results | **98%** |
-:::
+| Type of study | True ideas | α | β | Chance a "discovery" is true |
+|--------------------------------|:--------:|:----:|:----:|:------------:|
+| Large trial of a promising idea | 50% | 5% | 20% | **94%** |
+| Small study of a promising idea | 50% | 5% | 80% | 80% |
+| Search for new effects _(the 1,000 ideas)_ | 1% | 5% | 20% | [14%]{.red} |
+| Small search for new effects | 1% | 5% | 80% | [4%]{.red} |
+| p-hacked small study | 10% | 20% | 80% | [10%]{.red} |
 
 ::: {.fragment}
-No single study told us much. [The sequence did.]{.green}
-:::
-
-[Assumes the studies are honest and independent.]{.source}
-
-## The math: power and α {.mechanics notes="notes/week1_notes.md#research-math"}
-
-_1% of hypotheses are true · 80% power · α = 5%_
-
-| 10,000 tested | [Significant]{.red} | Not significant |
-|---|---|---|
-| **True** (100) | **80**<br>[power: P( sig \| true )]{.gray} | 20 |
-| **False** (9,900) | **495**<br>[α: P( sig \| false )]{.gray} | 9,405 |
-
-P( [true]{.blue} | [significant]{.red} ) = 80 / (80 + 495) ≈ [**14%**]{.red}
-
-::: {.fragment}
-Power and α are a study's sensitivity and false-positive rate, just like the HIV test's.
-:::
-
-## How bad does it get? {.mechanics notes="notes/week1_notes.md#scenarios-grid"}
-
-P( [true]{.blue} | [significant]{.red} ) under different conditions:
-
-| True hypotheses | 80% power | 20% power | p-hacked |
-|---|:-:|:-:|:-:|
-| **50%** [confirmatory]{.gray} | 94% | 80% | [50%]{.red} |
-| **10%** | 64% | [31%]{.red} | [10%]{.red} |
-| **1%** [exploratory]{.gray} | [14%]{.red} | [4%]{.red} | [1%]{.red} |
-
-::: {.fragment}
-- The [base rate]{.blue} matters more than power. Even a perfect study only reaches 17%
-  at 1%.
-- p-hacked (20% power, α ≈ 20%): a "significant" result tells us nothing new.
+What matters most is how many of the ideas we test are true to begin with.
 :::
 
 
-# Hard data? {notes="notes/week1_notes.md#hard-data"}
+# Most studies are wrong. Is that a problem? {notes="notes/week1_notes.md#is-that-a-problem"}
+
+_Most studies are wrong._ [...and that's okay.]{.fragment .blue}
+
+::: {.fragment}
+- A study was never supposed to be the answer.
+- We interpret each study as part of a **larger scientific process**: replication, critique,
+  competing explanations, theory, more data.
+- That process is what gets things right. Not any single study.
+:::
+
+::: {.fragment}
+Science doesn't work because individual studies are right. It works because
+the field [keeps looking]{.green}.
+:::
+
+## Statistics is observation, not answers {notes="notes/week1_notes.md#observation-not-answers"}
+
+::: {.fragment}
+- The real problem isn't that studies are wrong. It's that we [expect them to be right]{.red}.
+- The HIV scare, the false discoveries, p-hacking: they all come from believing
+  statistics is [more powerful than it is]{.red}.
+:::
+
+::: {.fragment}
+- In ethnography, everyone knows **one interview isn't the answer**. It's one observation,
+  weighed against others and argued over.
+- We just need to treat a statistical result the same way.
+:::
+
+::: {.fragment}
+::: {.big-statement}
+The science always comes first.
+:::
+:::
+
+## Hard data? {notes="notes/week1_notes.md#hard-data"}
 
 > _"Ethnography is subjective. Statistics is objective. It's hard data."_
 
@@ -610,156 +642,14 @@ Call the observation "objective" if you like. But interesting inferences rest on
 wrong while looking right.]{.red}
 :::
 
-
-# Bayes 2
-
-## Bayesian Updating: Why one rule helps {.mechanics notes="notes/week1_notes.md#bayesian-updating-how"}
-
-::: {.incremental}
-- **One rule for everything.** Prior × likelihood → posterior. No flowchart of tests to choose from.
-- **No fixed sample size.** Look at the data whenever you like and stop when you've learned enough. The posterior means the same thing either way.\
-  [_A p-value depends on the stopping rule you planned in advance. Unplanned peeking breaks it._]{.fragment .blue}
-- **Today's posterior is tomorrow's prior.** Updating survey by survey gives the same answer as analyzing all the surveys at once.
-- **You build the model to fit your data.** Counts, proportions, skewed incomes: describe the data as they are, instead of picking whichever test's assumptions come closest.
-- **Small samples are still valid.** No large-sample approximations. Less data means more uncertainty, and the prior carries more of the weight.
-- **It answers the question we actually ask:** P( [hypothesis]{.red} \| [data]{.blue} ).
-:::
-
-## Bayes Theorem {.mechanics notes="notes/week1_notes.md#bayes-theorem"}
-
-$$
-P(A|B) = \frac{P(B|A)\,P(A)}{P(B)}
-$$
-
-or
-
-$$
-\class{green}{P(\text{belief} \mid \text{data})}
-=
-\frac{
-\class{blue}{P(\text{data} \mid \text{belief})}
-\;\class{red}{P(\text{belief})}
-}{
-\class{gray}{P(\text{data})}
-}
-$$
-
-::: {.incremental}
-- [**P(data | belief)**]{.blue}: likelihood
-- [**P(belief)**]{.red}: prior probability
-- [**P(belief | data)**]{.green}: posterior probability
-- [**P(data)**]{.gray}: marginal likelihood (not interesting)
-:::
-
-
-::: {.fragment}
-In simple terms:
-
-- prior × likelihood => posterior
-:::
-
-## Isn't the prior subjective? {notes="notes/week1_notes.md#prior-subjective"}
-
-_Yes. That's a feature, not a bug._
-
-- Every analysis makes assumptions. A p-value hides them: which test, which controls,
-  when to stop collecting data.
-- A prior puts an assumption **on the table**, written down where anyone can see it and
-  argue with it.
-- With enough data, people who start from different reasonable priors end up in nearly
-  the same place.
-- When they don't, the data is weak. That's worth knowing too.
-
-::: {.fragment}
-Subjective doesn't mean arbitrary. It means someone made a choice, and has to
-[defend it]{.blue}.
-:::
-
-## You've already done this {.smaller notes="notes/week1_notes.md#prior-likelihood-posterior"}
-
-|  | [Prior]{.red} | [Likelihood]{.blue} | [Posterior]{.green} |
-|---|---|---|---|
-| **Means** | What I believed before | How likely what I saw is, under each possibility | What I believe now |
-| **Asks** | _"What did I think?"_ | _"If this were true, how likely is what I saw?"_ | _"What do I think now?"_ |
-| **Written** | P( belief ) | P( data \| belief ) | P( belief \| data ) |
-| **HIV test** | 0.1% of people have HIV | A positive test: 99% likely if HIV+, 3% if HIV– | After a positive test: **3.2%** |
-| **Published research** | 1% of tested hypotheses are true | Significant: 80% likely if true, 5% if false | After a significant result: **14%** |
-| **Mayor poll** | About 60%, from the last election | 6 of 20 for the mayor: likely if support is ~30%, unlikely if 60% | About **45%** |
-
-::: {.fragment}
-The likelihood alone runs the same direction as a p-value: P( data \| belief ). Bayes
-doesn't stop there. It combines the likelihood with the prior to answer the question
-we actually care about: P( belief \| data ).
-:::
-
-## From two possibilities to many {notes="notes/week1_notes.md#two-to-many"}
-
-_The HIV test and published research had **two** possibilities: true or false._
-
-::: {.fragment}
-Most questions have many:
-
-- How many of 9 stones in a bag are blue? **10** possibilities, 0 to 9.
-- What share of voters support the mayor? **Every** value from 0% to 100%.
-:::
-
-::: {.fragment}
-Same rule, done once for each possibility:
-
-- [**Prior**]{.red}: how plausible was each possibility before?
-- [**Likelihood**]{.blue}: if this possibility were true, how likely is what we saw? For the
-  bag, just count the ways it could happen. _(Counting ways)_
-- [**Posterior**]{.green}: multiply the two, and compare across possibilities.
-:::
-
-::: {.fragment}
-The answer is a **distribution**: a plausibility for every possible answer, not a single
-yes or no. Let's try it with the bag.
-:::
-
-# Most studies are wrong. Is that a problem? {notes="notes/week1_notes.md#is-that-a-problem"}
-
-_Most studies are wrong._ [...and that's okay.]{.fragment .blue}
-
-::: {.fragment}
-- A study was never supposed to be the answer.
-- We interpret each study as part of a **larger scientific process**: replication, critique,
-  competing explanations, theory, more data.
-- That process is what gets things right. Not any single study.
-:::
-
-::: {.fragment}
-Science doesn't work because individual studies are right. It works because
-the field [keeps looking]{.green}.
-:::
-
-## Statistics is observation, not answers {notes="notes/week1_notes.md#observation-not-answers"}
-
-::: {.fragment}
-- The real problem isn't that studies are wrong. It's that we [expect them to be right]{.red}.
-- The HIV scare, the false discoveries, p-hacking: they all come from believing
-  statistics is [more powerful than it is]{.red}.
-:::
-
-::: {.fragment}
-- In ethnography, everyone knows **one interview isn't the answer**. It's one observation,
-  weighed against others and argued over.
-- We just need to treat a statistical result the same way.
-:::
-
-::: {.fragment}
-::: {.big-statement}
-The science always comes first.
-:::
-:::
-
 ## Observations add up
 
 _Back to where we started: a study is one observation._
 
 ::: {.incremental}
 - Bayesian updating is how observations add up: each one moves what we believe, a little or a lot.
-- That's what happened when we looked again and again: 1% → 14% → 72% → 98%.
+- No single study defines what we know. Each one joins an existing body of knowledge and
+  nudges it.
 - Ethnography works the same way. Understanding comes from many observations, debated over time.
 :::
 
@@ -781,8 +671,8 @@ _So what does it mean to put the science first?_
 
 ::: {.fragment}
 - [**Think in likelihood, not proof.**]{.blue} Nothing is ever proved. Ask: _how likely is
-  what I saw if this were true, compared with if it weren't?_ Beliefs move by degrees
-  (1% → 14% → 72% → 98%), and never quite reach 100%.
+  what I saw if this were true, compared with if it weren't?_ Beliefs move by degrees,
+  and never quite reach 100%.
 :::
 
 ::: {.fragment}
@@ -796,8 +686,8 @@ third one. That question is the [likelihood]{.blue}, and updating is how we use 
 2. [**Direction matters.**]{.blue} P( A | B ) ≠ P( B | A ). A p-value asks about the data in a
    world where nothing is going on. When true hypotheses are rare, most significant
    findings are false.
-3. [**That's okay.**]{.blue} A study is one observation, not an answer. The field gets
-   things right by looking again: 1% → 14% → 72% → 98%.
+3. [**That's okay.**]{.blue} A study is one observation, not an answer. It joins what we
+   already know and nudges it, but doesn't define it.
 4. [**Bayesian updating is one rule**]{.blue} for learning from observation:
    prior × likelihood → posterior.
 5. [**Numbers aren't "hard data."**]{.blue} Statistics rests on choices, just like
@@ -809,7 +699,7 @@ The science always comes first.
 :::
 :::
 
-## What's ahead {notes="notes/week1_notes.md#whats-ahead"}
+# What's ahead {notes="notes/week1_notes.md#whats-ahead"}
 
 That's what we're going to do here: [put the science first]{.blue}.
 

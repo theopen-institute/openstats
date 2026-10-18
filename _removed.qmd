@@ -17,6 +17,116 @@ format:
 
 Slides cut from the main decks, kept here for reference and possible reuse.
 
+# From Week 1 (cut 2026-10-18) {.center}
+
+The "Bayes 2" section: distributions come in Week 2, model assumptions in Week 3.
+
+## Bayesian Updating: Why one rule helps {.mechanics}
+
+::: {.incremental}
+- **One rule for everything.** Prior × likelihood → posterior. No flowchart of tests to choose from.
+- **No fixed sample size.** Look at the data whenever you like and stop when you've learned enough. The posterior means the same thing either way.\
+  [_A p-value depends on the stopping rule you planned in advance. Unplanned peeking breaks it._]{.fragment .blue}
+- **Today's posterior is tomorrow's prior.** Updating survey by survey gives the same answer as analyzing all the surveys at once.
+- **You build the model to fit your data.** Counts, proportions, skewed incomes: describe the data as they are, instead of picking whichever test's assumptions come closest.
+- **Small samples are still valid.** No large-sample approximations. Less data means more uncertainty, and the prior carries more of the weight.
+- **It answers the question we actually ask:** P( [hypothesis]{.red} \| [data]{.blue} ).
+:::
+
+::: {.notes}
+The nice thing about having one process is that a lot of the rules you may have learned for tests simply go away.
+
+Tests need a stopping rule fixed in advance: if you peek at the data and stop when p dips below 0.05, your false positive rate quietly balloons. (Sequential designs can plan for interim looks, but the looks have to be planned and paid for.) Bayesian updating doesn't care when you stop. The posterior is just what you believe given what you've seen so far.
+
+Updating is also cumulative. Last week's posterior becomes this week's prior, and you end up in the same place as if you'd analyzed everything at once.
+
+We still make assumptions, but we choose them to fit the data and we write them down, instead of inheriting them from whichever test we picked. (This is really a contrast between picking tests and building models; frequentist GLMs build models too.) And small samples don't break anything; they leave us more uncertain, and the prior matters more, so it deserves more scrutiny.
+
+Most importantly, it answers the question we actually care about: how plausible is the hypothesis, given the data?
+:::
+
+## Isn't the prior subjective?
+
+_Yes. That's a feature, not a bug._
+
+- Every analysis makes assumptions. A p-value hides them: which test, which controls,
+  when to stop collecting data.
+- A prior puts an assumption **on the table**, written down where anyone can see it and
+  argue with it.
+- With enough data, people who start from different reasonable priors end up in nearly
+  the same place.
+- When they don't, the data is weak. That's worth knowing too.
+
+::: {.fragment}
+Subjective doesn't mean arbitrary. It means someone made a choice, and has to
+[defend it]{.blue}.
+:::
+
+::: {.notes}
+- Someone will ask. Better to raise it ourselves.
+- Yes, priors are a choice. But every method makes choices: which test, which variables to control for, when to stop collecting data, which outcome to report. Frequentist methods make those choices too; they're just less visible.
+- A prior is visible. It's written down, so it can be criticized, and we can check how much the answer depends on it (sensitivity analysis, later in the course).
+- With plenty of data, reasonable priors converge. With little data, the prior matters, and that is honest: the data alone can't tell us much.
+- Lead into the next slide: this isn't special to statistics. Every field that learns from observation makes assumptions.
+:::
+
+## You've already done this {.smaller}
+
+|  | [Prior]{.red} | [Likelihood]{.blue} | [Posterior]{.green} |
+|---|---|---|---|
+| **Means** | What I believed before | How likely what I saw is, under each possibility | What I believe now |
+| **Asks** | _"What did I think?"_ | _"If this were true, how likely is what I saw?"_ | _"What do I think now?"_ |
+| **Written** | P( belief ) | P( data \| belief ) | P( belief \| data ) |
+| **HIV test** | 0.1% of people have HIV | A positive test: 99% likely if HIV+, 3% if HIV– | After a positive test: **3.2%** |
+| **Published research** | 1% of tested hypotheses are true | Significant: 80% likely if true, 5% if false | After a significant result: **14%** |
+| **Mayor poll** | About 60%, from the last election | 6 of 20 for the mayor: likely if support is ~30%, unlikely if 60% | About **45%** |
+
+::: {.fragment}
+The likelihood alone runs the same direction as a p-value: P( data \| belief ). Bayes
+doesn't stop there. It combines the likelihood with the prior to answer the question
+we actually care about: P( belief \| data ).
+:::
+
+::: {.notes}
+- Read the definitions row first, then go down the examples. The point: the HIV test and the published-research table were Bayesian updates all along. We just didn't use the names.
+- In the HIV row, the prior is prevalence, the likelihood is sensitivity and the false-positive rate, and the posterior is P(HIV+ | test+).
+- In the research row, the prior is the base rate, the likelihood is power and α, and the posterior is P(true | significant).
+- The mayor poll is the same thing with many possible answers (every vote share from 0 to 100%) instead of two. We'll do it live in the demonstration.
+- Address the obvious question head on: "Isn't the likelihood backwards too, like a p-value?" Yes. On its own, it's P(data | belief). A p-value stops there, and only for one imagined world. Bayes computes it for every possibility and combines it with the prior, which turns it around into P(belief | data).
+:::
+
+## From two possibilities to many
+
+_The HIV test and published research had **two** possibilities: true or false._
+
+::: {.fragment}
+Most questions have many:
+
+- How many of 9 stones in a bag are blue? **10** possibilities, 0 to 9.
+- What share of voters support the mayor? **Every** value from 0% to 100%.
+:::
+
+::: {.fragment}
+Same rule, done once for each possibility:
+
+- [**Prior**]{.red}: how plausible was each possibility before?
+- [**Likelihood**]{.blue}: if this possibility were true, how likely is what we saw? For the
+  bag, just count the ways it could happen. _(Counting ways)_
+- [**Posterior**]{.green}: multiply the two, and compare across possibilities.
+:::
+
+::: {.fragment}
+The answer is a **distribution**: a plausibility for every possible answer, not a single
+yes or no. Let's try it with the bag.
+:::
+
+::: {.notes}
+- This is the bridge from the HIV and research examples to real models. Those had two possibilities. Most questions have many.
+- Nothing about the rule changes. We just do it once for each possibility and compare.
+- For the bag of stones, the likelihood is literally counting: for a bag with 3 blue stones, how many ways could we draw blue, black, blue? Compare with a bag with 6 blue. This is the "Counting ways" slide again.
+- The output is a distribution, which is why the bag app shows a bar chart rather than a single number. Everything from Week 2 on is about distributions like this.
+:::
+
 # From Week 2 (cut 2026-10-03) {.center}
 
 Bayes theorem, priors/posteriors and likelihood: now covered by Week 1.
