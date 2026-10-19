@@ -189,11 +189,12 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 # How far can we trust a "discovery"? {#research-math}
 
 - Mechanics slide, optional. It generalizes the 1,000-ideas picture to other kinds of study.
-- Two error rates, both like the HIV test. α is the false-positive rate: how often a study says "significant" when the idea is false (usually set at 5%). β is the miss rate: how often it fails to find an idea that's true. Power, a term students may meet in papers, is 1 − β.
-- Every cell is the same calculation as the HIV table: (true share × (1 − β)) / (true share × (1 − β) + (1 − true share) × α).
-- Read down the rows. A large trial of a promising idea is usually right (94%). The search for new effects, our 1,000 ideas, is usually wrong (14%), and worse with small samples (4%). Same α, same β; the difference is how many tested ideas were true to begin with. That's the takeaway line.
-- β of 80% (power of 20%) isn't a strawman. Median power is around 20% in fields like neuroscience (Button et al. 2013) and economics (Ioannidis, Stanley & Doucouliagos 2017).
-- The p-hacked row: α = 5% assumes one pre-planned test. Trying several outcomes, subgroups or controls until something works pushes the real false-positive rate up; 20% is illustrative, and Simmons, Nelson & Simonsohn (2011) showed common choices can push it past 60%. When α equals 1 − β, a significant result is equally likely whether the idea is true or false, so the chance stays at the starting 10%. The study taught us nothing.
+- A study is a test of an idea, so it has the same two kinds of accuracy as the HIV test. Sensitivity: of the true ideas, the share it finds. Specificity: of the false ideas, the share it correctly rejects.
+- Papers usually report the errors instead, which is the note at the bottom. α = 1 − specificity is the false-positive rate, usually set at 5%. β = 1 − sensitivity is the miss rate. Power, a term students will meet in papers, is just sensitivity (1 − β). Same idea as the HIV test, counted from the other side.
+- Every cell is the same calculation as the HIV table: (true share × sensitivity) / (true share × sensitivity + (1 − true share) × (1 − specificity)).
+- Read down the rows. A large trial of a promising idea is usually right (94%). The search for new effects, our 1,000 ideas, is usually wrong (14%), and worse with small samples (4%). Same sensitivity, same specificity; the difference is how many tested ideas were true to begin with. That's the takeaway line.
+- Sensitivity of 20% (β = 80%) isn't a strawman. Median power is around 20% in fields like neuroscience (Button et al. 2013) and economics (Ioannidis, Stanley & Doucouliagos 2017).
+- The p-hacked row: α = 5% assumes one pre-planned test. Trying several outcomes, subgroups or controls until something works pushes the real false-positive rate up; 20% is illustrative, and Simmons, Nelson & Simonsohn (2011) showed common choices can push it past 60%. When sensitivity equals 1 − specificity (20% each), a significant result is equally likely whether the idea is true or false, so the chance stays at the starting 10%. The study taught us nothing.
 - If asked about fixes: a stricter threshold (p < 0.005, Benjamin et al. 2018) helps but needs much bigger samples. Replication works better: a finding that keeps holding up in new studies earns trust no threshold can give it.
 - Ask the room: which row does your own field live in?
 

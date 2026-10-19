@@ -235,10 +235,11 @@ check_stated_numbers <- function() {
   expect(research, 1000 * 0.01 * 0.8, 8)
   expect(research, 1000 * 0.99 * 0.05, 50) # 49.5: "about 50"
   expect(research, 8 + 50, 58)
-  # The table of study types: true-idea share, alpha, beta -> chance a discovery is true
-  trust <- 'How far can we trust a "discovery"?'
-  for (row in list(c(0.5, 0.05, 0.2, 94), c(0.5, 0.05, 0.8, 80), c(0.01, 0.05, 0.2, 14),
-                   c(0.01, 0.05, 0.8, 4), c(0.1, 0.2, 0.8, 10))) {
-    expect(trust, pct(ppv(row[1], 1 - row[3], row[2])), row[4])
+  # The table of study types: true-idea share, sensitivity, specificity -> chance a
+  # discovery is true
+  trust <- "How far can we trust data?"
+  for (row in list(c(0.5, 0.8, 0.95, 94), c(0.5, 0.2, 0.95, 80), c(0.01, 0.8, 0.95, 14),
+                   c(0.01, 0.2, 0.95, 4), c(0.1, 0.2, 0.8, 10))) {
+    expect(trust, pct(ppv(row[1], row[2], 1 - row[3])), row[4])
   }
 }

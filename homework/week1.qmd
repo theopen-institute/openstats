@@ -1,237 +1,279 @@
 ---
-title: "Week 1 Homework"
-subtitle: "Probability, base rates, and Bayesian updating"
+title: "Week 1 Problem Types"
+subtitle: "Probability, base rates, and Bayesian updating: problem types and difficulty levels"
 format: html
 ---
 
-These exercises go with the Week 1 lecture. Part A checks your understanding of the
-ideas. Parts B–D are problems to work through. Part E is an optional R challenge.
+This page defines the kinds of problems that go with Week 1, rather than a fixed list of
+questions. Each **problem type** is one skill from the lecture, written so that a
+generator could produce new problems of that type: its parameters, the template the
+problem follows, how to compute the answer, and the mistakes students usually make.
 
-A few ground rules:
+Every type comes in **three levels**:
 
-- **Show your work.** A correct number with no reasoning is worth less than a wrong
-  number with clear reasoning. Drawing a table of counts (like we did for the HIV
-  example) is almost always the easiest way to do these problems.
-- **Write in plain language.** If you can't explain it to a friend who missed the
-  lecture, you haven't finished understanding it yet.
-- Problems marked ★ are harder. Give them a real try, but don't get stuck on them.
+| Level | What it asks for |
+|---|---|
+| **1. Direct** | One step. Round numbers, everything needed is given, and the question names the quantity to find. |
+| **2. Multi-step** | Two or more steps, or an intermediate quantity the student has to work out first. Realistic, less round numbers. Often a comparison between two cases. |
+| **3. Transfer** | The same idea used in an unfamiliar way: working backwards from an answer, chaining two steps of reasoning, or explaining *why* in words. |
 
-# Part A: Concepts
+**Conventions for every type**
 
-**A1.** In one or two sentences, explain what *probability* means in this course. Then
-explain how a Bayesian and a frequentist would each understand the sentence *"The
-shop near my house is probably open right now."*
+- **Answers** are given as a fraction or count ratio, a decimal (2–3 places) and a
+  percentage. Accept any of the three, rounded sensibly.
+- **Counts must be whole numbers.** When a problem builds a table of counts for a
+  population, choose the population size so that every cell is a whole number (or say
+  "about" when it can't be, as with 49.5 → "about 50").
+- **Contexts** should be familiar to students in Nepal where possible: Kathmandu weather,
+  local elections, schools and universities, clinics, cricket, buses. Each type lists a
+  few.
+- **Common mistakes** under each type are the errors students actually make; a
+  multiple-choice version can use them as wrong options.
 
-**A2.** Write each of these sentences in probability notation, `P( event | condition )`:
+# T1. Counting outcomes
 
-a. Of people who smoke, 15% develop lung cancer.
-b. Of people with lung cancer, 85% were smokers.
-c. When Nepal leads at halftime, they win 70% of the time.
-d. 40% of students at this university are from Kathmandu.
+**Skill.** Probability is counting: count everything that could happen, count the ways
+we care about, and compare. *(Lecture: "Probability is counting", "Counting the ways a
+thing could happen".)*
 
-Statements (a) and (b) are about the same two things, but the numbers are very
-different. Explain how both can be true at once.
+**Parameters.** `n` outcomes or trials, `k` outcomes of interest, the kind of event
+(single draw, repeated coin flips, dice).
 
-**A3.** A classmate gets a result with p = 0.03 and says: *"So there's only a 3% chance
-my hypothesis is wrong."*
-
-a. Write what a p-value measures in `P( … | … )` notation.
-b. Write what your classmate *thinks* it measures in `P( … | … )` notation.
-c. Explain the mistake in your own words.
-
-**A4.** Match each phrase to its probability statement. (HIV+ means the person has HIV.)
-
-| Term                                | Statement                 |
-|-------------------------------------|---------------------------|
-| Sensitivity                         | P( test– \| HIV+ )        |
-| Specificity                         | P( test+ \| HIV– )        |
-| Type I error (false positive)       | P( test+ \| HIV+ )        |
-| Type II error (false negative)      | P( test– \| HIV– )        |
-
-Then name the probability that a *patient* who just tested positive actually cares
-about. Is it one of the four above?
-
-**A5.** Ioannidis argued that most published research findings are false, and he did it
-without re-running a single study. In 4–6 sentences, explain how that is possible.
-Use the words *base rate*, *power*, and *false positive* in your answer.
-
-**A6.** True or false? Give a one-sentence reason for each.
-
-a. A test with 99% sensitivity and 99% specificity gives a correct result 99% of the
-   time for someone who tests positive.
-b. If P(A) = P(B), then P(A | B) = P(B | A).
-c. If your prior probability for a hypothesis is exactly 0, no amount of data can
-   change your mind.
-d. If everything else stays the same, lowering α from 0.05 to 0.005 increases the share
-   of significant results that are true.
-e. If most published findings are false, science doesn't work.
-
-**A7.** Find the **prior**, the **likelihood** (the observation), and the **posterior**
-in each story:
-
-a. A doctor thinks a patient's cough is probably a cold. A chest X-ray shows a shadow
-   on the lung, and now the doctor thinks pneumonia is more likely.
-b. You expect the bus to Patan to take about 30 minutes. Three days in a row it takes
-   50 minutes, so you now leave home earlier.
-c. In lecture: *"I think about 60% of Kathmandu will vote for the current mayor… a
-   survey says 30%… I now think about 45%."* Why is the posterior *between* 60% and
-   30%, and not exactly 30%? What would push it closer to 30%?
-
-# Part B: Probability calculations
-
-**B1.** In 2025, Kathmandu saw rain on 179 of 365 days. In April it rained on 13 of 30
-days, and in July on all 31 days.
-
-a. What is P( no rain )?
-b. What is P( April | rain )? That is, if you pick a rainy day at random from 2025,
-   how likely is it that the day is in April?
-c. Compare P( rain | April ) with P( April | rain ). Why are they so different?
-d. ★ What is P( July | rain )? Why is it nowhere near 1, even though P( rain | July ) = 1?
-
-**B2.** Use the table of students from the lecture:
-
-|            | Sociology | Economics | Total |
-|------------|-----------|-----------|-------|
-| **Urban**  | 240       | 300       | 540   |
-| **Rural**  | 80        | 20        | 100   |
-| **Total**  | 320       | 320       | 640   |
-
-Calculate:
-
-a. P( Urban )
-b. P( Economics | Urban )
-c. P( Urban | Economics )
-d. P( Rural )
-e. ★ Using **Bayes' theorem** (not the table), compute P( Sociology | Rural ) from
-   P( Rural | Sociology ) = 0.25, P( Sociology ), and P( Rural ). Check that you get the
-   0.80 from lecture.
-
-**B3.** Make your own 2×2 table from something in your life or work: your village,
-your office, your cricket team, your WhatsApp groups. Use real counts if you have them,
-or a reasonable guess if you don't. Then write one pair of conditional probabilities,
-P(A | B) and P(B | A), that come out *very* different, and explain why.
-
-# Part C: Base rates
-
-For every problem in this part, build a table of counts for a large population (for
-example 100,000 people), like the one in lecture.
-
-**C1.** *The HIV test, revisited.* Sensitivity is 99%, specificity is 97%, and
-prevalence is 0.1%.
-
-a. Rebuild the lecture table and confirm that P( HIV+ | test+ ) ≈ 3.2%.
-b. Now the same test is used in a clinic where 5% of patients have HIV. What is
-   P( HIV+ | test+ ) now?
-c. Go back to 0.1% prevalence, but improve the specificity to 99.9%. What is
-   P( HIV+ | test+ )?
-d. In (b) and (c), which change helped more, and why?
-e. What is P( HIV– | test– ) at 0.1% prevalence? Should someone who tests negative
-   worry?
-
-**C2.** ★ *Testing twice.* At 0.1% prevalence, a person tests positive. They take a
-second, independent test (same sensitivity and specificity) and it also comes back
-positive. What is the probability they have HIV now? *Hint: what is the "prior" for the
-second test?*
-
-**C3.** *AI detectors.* A university buys a tool that flags essays as written by AI. It
-correctly flags 95% of AI-written essays, and wrongly flags 2% of essays that students
-wrote themselves.
-
-a. If 10% of submitted essays are AI-written, what share of flagged essays are actually
-   AI-written?
-b. What if only 2% of essays are AI-written?
-c. A teacher says, "The detector is 95% accurate, so if it flags you, you cheated." Write
-   a short reply (3–4 sentences) using what you learned this week.
-
-**C4.** *Ioannidis's table.* In lecture we assumed 1% of tested hypotheses are true,
-80% power, and α = 5%. That gave P( true | significant ) ≈ 14%. Using 10,000 tested
-hypotheses, recompute P( true | significant ) for each case:
-
-| Case | Base rate | Power | α    |
-|------|-----------|-------|------|
-| a    | 1%        | 50%   | 0.05 |
-| b    | 10%       | 80%   | 0.05 |
-| c    | 1%        | 80%   | 0.20 (p-hacking) |
-| d    | 1%        | 80%   | 0.005 |
-
-Which change makes the biggest difference? What does that suggest a research field
-could do to publish fewer false findings?
-
-**C5.** ★ With 80% power and α = 0.05, what base rate would you need for exactly half of
-significant findings to be true? Set up an equation and solve it.
-
-# Part D: Bayesian updating
-
-These problems use the bag of stones from the lecture app. The bag holds **9 stones**,
-each blue (🔵) or black (⚫️). There are 10 possible bags (0 blue, 1 blue, …, 9 blue),
-and before drawing we think each one is **equally likely**. We draw one stone at a time,
-note its color, and **put it back**.
-
-**D1.** Before we draw anything:
-
-a. What is the prior probability of each of the 10 possible bags?
-b. We draw 🔵. Which bag(s) can we now rule out completely? Why?
-c. We draw ⚫️ next. Which bag(s) can we now rule out?
-
-**D2.** *Counting by hand.* Our three draws are 🔵 ⚫️ 🔵.
-
-a. For a bag with *k* blue stones, the chance of drawing blue is *k*/9. Write an
-   expression for the likelihood of 🔵 ⚫️ 🔵 for a bag with *k* blue stones.
-b. Fill in this table. (Tip: the "ways" column is the number of ways to produce the
-   sequence, *k* × (9 − *k*) × *k*. Then divide each row by the total.)
-
-| Blue stones (*k*) | Prior | Ways to get 🔵⚫️🔵 | Posterior |
+| Level | The problem | Example | Answer |
 |---|---|---|---|
-| 0 | 0.1 |   |   |
-| 1 | 0.1 |   |   |
-| … | … |   |   |
-| 9 | 0.1 |   |   |
+| 1 | One draw from equally likely outcomes: *k* of *n*. | A raffle sells 400 tickets and you buy 8. What is the probability you win? | 8 / 400 = 0.02 = 2% |
+| 2 | Repeated events, small enough to list every path: exactly *k* successes in *n* = 2–4 trials. | Flip a coin 3 times. What is the probability of exactly 2 heads? | 3 of 8 paths = 0.375 |
+| 3 | Too many paths to list (*n* = 5–8), or "at least" / "at most" events. | Flip a coin 6 times. What is the probability of at least 5 heads? | (6 + 1) / 64 = 7/64 ≈ 0.109 |
 
-c. Which bag is now most plausible? How plausible is it? Why aren't we more certain?
+**Answer.** *k* / *n* for a single draw. For repeated fair coin flips, the number of
+paths with exactly *k* heads is C(*n*, *k*), out of 2<sup>*n*</sup>.
 
-**D3.** Would the posterior be different if the draws came in the order ⚫️ 🔵 🔵? Explain
-why or why not.
+**Common mistakes.** Counting outcomes that aren't equally likely as if they were (two
+dice: "11 possible sums, so P(7) = 1/11"); forgetting that HHT, HTH and THH are
+different paths; adding paths for "at least" but leaving out the top case.
 
-**D4.** *Today's posterior is tomorrow's prior.* Start from your posterior in D2 and draw
-one more stone: 🔵.
+**Contexts.** Raffles, dice, coin flips, picking a student at random from a class
+("15 of 25 came by bus").
 
-a. Update using your D2 posterior as the new prior. Which bag is most plausible now?
-b. Now start from scratch with an equal prior and update on all four draws at once
-   (🔵 ⚫️ 🔵 🔵). Do you get the same answer? Why does this matter?
+# T2. Writing probabilities
 
-**D5.** *A different prior.* A friend who packed the bag tells you it holds either 3 blue
-stones or 6 blue stones, with equal chances. You draw 🔵 🔵 ⚫️. What is the
-probability the bag has 6 blue stones?
+**Skill.** A probability is a number from 0 to 1 or a percentage; the two convert by
+moving the decimal point two places. Probabilities can be ordered from impossible to
+certain. *(Lecture: "Describing Probability: Convention 1".)*
 
-**D6.** *Using the app.* Open the Bayesian Updating slide and set the bag to **Hidden**.
+**Parameters.** A count ratio or a probability in one form; for Level 2, a set of 3–5
+events to compare; for Level 3, very small probabilities or complements.
 
-a. Draw 5 stones. Write down the most plausible bag and its probability.
-b. Keep going to 20 draws, then 50 (hold **Shift** to draw 10 at a time). Record the
-   same two numbers each time.
-c. Reveal the bag. Were you right? Describe in 2–3 sentences how the shape of the
-   distribution changed as you collected more data.
-d. Reset and do it again with a new hidden bag. Did the second bag ever *look* like a
-   different bag along the way? What does that tell you about drawing conclusions from
-   a small sample?
+| Level | The problem | Example | Answer |
+|---|---|---|---|
+| 1 | Convert between a count ratio, a decimal and a percentage. | 3 of 20 students walk to school. Write this as a decimal and a percentage. | 0.15, 15% |
+| 2 | Compute several probabilities from counts and put them in order. | Order from least to most likely: winning a raffle (10 of 500 tickets), rolling a six, rain in Kathmandu (113 of 365 days), a coin landing heads. | 0.02 < 0.17 < 0.31 < 0.5 |
+| 3 | Very small or very large probabilities, and complements. | Lightning kills about 1 in 7,000,000 people a year. Write that as a decimal and a percentage. What is the probability of *no* rain on a random day, if it rains on 113 of 365? | 0.00000014 = 0.000014%; 1 − 0.31 = 0.69 |
 
-# Part E: R challenge (optional)
+**Answer.** Divide the counts; ×100 for a percentage. Complement: 1 − *p*.
 
-**E1.** Write an R function `p_true_given_sig(base_rate, power, alpha)` that returns
-P( true | significant ). Use it to check your answers to C4. Then make a plot with
-base rate (0.001 to 0.5) on the x-axis and P( true | significant ) on the y-axis, with
-one line for 50% power and one for 80% power.
+**Common mistakes.** Moving the decimal point one place, or the wrong way (0.15 → 1.5%);
+treating "1 in 7,000,000" as 7,000,000 or as 1/7; writing a probability above 1.
 
-**E2.** ★ Do D2 and D4 in R. Make a vector `k <- 0:9`, a prior `rep(1/10, 10)`, and
-compute the posterior using `prior * likelihood / sum(prior * likelihood)`. Write a loop
-that updates the posterior one draw at a time for any sequence of draws, such as
-`c("blue", "black", "blue", "blue")`.
+**Contexts.** Kathmandu rain, raffles, dice, exam pass rates, rare risks (lightning,
+lottery).
 
-# Part F: Reflection
+# T3. Probability notation
 
-**F1.** Find a news story that says "a new study shows…" about health, education, or
-the economy. In a short paragraph:
+**Skill.** Write a statement as P( event ) or P( event | condition ), and see that
+P( A | B ) and P( B | A ) describe different groups. *(Lecture: "Describing
+Probability: Conventions 2 and 3".)*
 
-- What was the claim?
-- Was this a surprising, novel idea (low base rate) or something many people already
-  expected (higher base rate)?
-- Using what you learned this week, how much should one study change your beliefs?
+**Parameters.** A sentence about a share of some group; for Level 3, a pair of
+sentences about the same two things in opposite directions.
+
+| Level | The problem | Example | Answer |
+|---|---|---|---|
+| 1 | No condition: translate a plain share. | "40% of students at this university are from Kathmandu." | P( from Kathmandu ) = 0.40 |
+| 2 | With a condition: identify which part is the condition. | "Of people who smoke, 15% develop lung cancer." | P( lung cancer \| smoker ) = 0.15 |
+| 3 | A reversed pair: translate both and explain how both can be true. | "Of smokers, 15% develop lung cancer. Of people with lung cancer, 85% smoked." | P( cancer \| smoker ) = 0.15 and P( smoker \| cancer ) = 0.85. Different groups: most smokers never get cancer, but cancer is rare and concentrated among smokers. |
+
+**Answer.** The group the sentence is *about* ("of people who…", "when…", "given…")
+goes after the bar.
+
+**Common mistakes.** Putting the condition on the wrong side of the bar; dropping the
+condition; assuming the two directions must be equal.
+
+**Contexts.** Health (smoking, symptoms), sport ("when Nepal leads at halftime, they win
+70% of the time"), weather by month, education.
+
+# T4. Conditional probability from a table
+
+**Skill.** Read a conditional probability from a table of counts by choosing the right
+denominator, and compute both directions. *(Lecture: "Describing Probability:
+Convention 3" (rain by month), "Direction of conditions" (the urban/rural table).)*
+
+**Parameters.** A 2×2 (or 2×*m*) table of counts; which margins are shown; for Level 3,
+partial information to rebuild the table from.
+
+| Level | The problem | Example | Answer |
+|---|---|---|---|
+| 1 | A 2×2 table with totals given: read one conditional. | Urban: 240 sociology, 300 economics (540). Rural: 80 sociology, 20 economics (100). What is P( Economics \| Urban )? | 300 / 540 ≈ 0.556 |
+| 2 | No totals given: compute them, then both directions, and explain the difference. | Same table without totals. Find P( Urban \| Economics ) and P( Economics \| Urban ). | 300 / 320 ≈ 0.94 and 300 / 540 ≈ 0.56. Different denominators: economics students vs. urban students. |
+| 3 | Rebuild the table from shares, then answer a conditional; or a table with many columns where the two directions are very different. | 640 students; half study sociology; 25% of sociology students are rural; 100 students are rural in all. What is P( Sociology \| Rural )? | Sociology = 320, rural sociology = 80, so 80 / 100 = 0.80 |
+
+**Answer.** P( A | B ) = count( A and B ) / count( B ).
+
+**Common mistakes.** Dividing by the grand total instead of the row or column total;
+dividing by the wrong margin (computing P( B | A ) when asked for P( A | B )).
+
+**Contexts.** Students by field and origin, rainy days by month (P( July | rain ) =
+31/179 ≈ 0.17, though P( rain | July ) = 1 in 2025), voters by ward and party, patients
+by symptom and diagnosis.
+
+# T5. Diagnostic tests and the base rate
+
+**Skill.** When a condition is rare, most positive results can be false even from an
+accurate test. Build a table of counts from prevalence, sensitivity and specificity, and
+find the chance that a positive result is real. *(Lecture: "Probability for Decision
+Making", "The base rate paradox" and its app.)*
+
+**Parameters.** Prevalence (base rate), sensitivity = P( positive | has it ),
+specificity = P( negative | doesn't have it ), population size *N*.
+
+| Level | The problem | Example | Answer |
+|---|---|---|---|
+| 1 | Round numbers (prevalence 5–20%, accuracy 80–95%), *N* given. | 1,000 people; 10% have the disease; the test catches 90% of cases and correctly clears 90% of healthy people. What share of positives have the disease? | 90 true positives, 90 false positives: 90 / 180 = 50% |
+| 2 | A rare condition (0.1–1%) and a very accurate test; or compare two settings. | HIV prevalence 0.1%, sensitivity 99%, specificity 97%, 100,000 people. Find P( HIV+ \| test+ ). Repeat in a clinic where 5% have HIV. | 99 / (99 + 2,997) ≈ 3.2%; in the clinic 4,950 / (4,950 + 2,850) ≈ 63.5% |
+| 3 | Work backwards (what accuracy or prevalence is needed?), or chain two tests. | At 0.1% prevalence and 99% sensitivity, what specificity does the test need for at least half of positives to be real? | False positives ≤ true positives: 99,900 × (1 − spec) ≤ 99, so specificity ≥ 99.9% |
+
+**Answer.** P( has it | positive ) = prev × sens / ( prev × sens + (1 − prev) × (1 − spec) ).
+In counts: true positives / (true positives + false positives).
+
+**Common mistakes.** Answering with the sensitivity (99%) instead of P( has it | positive );
+ignoring the base rate; computing false positives from the whole population instead of
+the healthy group; forgetting that a second test's "prior" is the first test's result.
+
+**Contexts.** HIV and other screening tests, AI-writing detectors, spam filters, airport
+security, fraud alerts.
+
+# T6. How far can we trust a discovery?
+
+**Skill.** A study is a test of an idea: its sensitivity is the chance it finds a true
+idea, and its specificity is the chance it correctly finds nothing when the idea is
+false. When true ideas are rare, most "discoveries" are false. *(Lecture: "So why is most
+published research wrong?" and the table of study types.)*
+
+**Parameters.** Number of ideas tested, share that are true (base rate), sensitivity
+(1 − β, also called power), specificity (1 − α).
+
+| Level | The problem | Example | Answer |
+|---|---|---|---|
+| 1 | Round numbers: count true and false discoveries. | 1,000 ideas, 10% true; studies find 80% of true ideas and wrongly "find" 5% of false ones. What share of discoveries are true? | 80 true, 45 false: 80 / 125 = 64% |
+| 2 | Compare study types: change the base rate, sensitivity or specificity, and say which matters most. | Compare 1% vs 10% true ideas and 20% vs 80% sensitivity (specificity 95%). | 1%: 3.9% and 13.9%. 10%: 30.8% and 64.0%. The base rate matters most. |
+| 3 | Work backwards, or model p-hacking as lower specificity. | With 80% sensitivity and 95% specificity, what share of ideas must be true for half of discoveries to be true? | 0.8 *b* = 0.05 (1 − *b*), so *b* ≈ 5.9% |
+
+**Answer.** Same formula as T5, with the base rate as prevalence. α = 1 − specificity,
+β = 1 − sensitivity.
+
+**Common mistakes.** Treating α = 5% as "5% of discoveries are false"; thinking higher
+sensitivity fixes a low base rate; forgetting that p-hacking raises the false-positive
+rate (lowers specificity).
+
+**Contexts.** Drug trials, education programs, psychology experiments, "a new study
+shows…" headlines.
+
+# T7. Which direction does the conditional run?
+
+**Skill.** Tell P( data | hypothesis ) apart from P( hypothesis | data ), and recognize
+when a claim reads one as the other. *(Lecture: "Statistical significance",
+"Statistical significance (revisited)", "Direction of conditions".)*
+
+**Parameters.** A statement or claim (a p-value interpretation, an accuracy claim, a
+headline); which direction it states and which it implies.
+
+| Level | The problem | Example | Answer |
+|---|---|---|---|
+| 1 | Classify a statement as P( data \| hypothesis ) or P( hypothesis \| data ). | "If the treatment did nothing, results this strong would happen 3% of the time." | P( data \| hypothesis ): the chance of the data, assuming no effect |
+| 2 | Spot a reversed reading and say what it should be. | A classmate gets p = 0.03 and says, "So there's only a 3% chance my hypothesis is wrong." | The p-value is P( data this extreme \| no effect ), not P( no effect \| data ). |
+| 3 | Write a short, fair correction of a realistic claim, saying what extra information would be needed. | "The detector is 95% accurate, so if it flags your essay, you cheated." | 95% is P( flag \| AI ). The question is P( AI \| flag ), which also depends on how many essays are AI-written (a base rate). |
+
+**Answer key (rubric).** Names both conditionals correctly; says which one the claim
+needs; identifies the missing ingredient (usually a base rate or prior).
+
+**Common mistakes.** Treating the two directions as interchangeable; arguing that the
+test or method is "wrong" rather than that the claim asks a different question.
+
+**Contexts.** p-value interpretations, test accuracy claims, news headlines, policy
+reports.
+
+# T8. Prior, likelihood and posterior in a story
+
+**Skill.** Find the three parts of Bayesian updating in an everyday story: what we
+believed before, what we observed, and what we believe now. *(Lecture: "Bayesian
+Updating: What it is", "Updating improves our assumptions".)*
+
+**Parameters.** A story template with a starting belief, an observation and (for
+Levels 1–2) an updated belief; for Level 3, a second observer or a change in the
+evidence.
+
+| Level | The problem | Example | Answer |
+|---|---|---|---|
+| 1 | All three parts are stated: label them. | A doctor thinks a cough is probably a cold. An X-ray shows a shadow on the lung, and now the doctor thinks pneumonia is more likely. | Prior: probably a cold. Data: the X-ray. Posterior: pneumonia more likely. |
+| 2 | The posterior isn't stated: say which way the belief should move, and why. | You expect the bus to Patan to take about 30 minutes. Three days in a row it takes 50 minutes. | Toward a longer trip time, because the observations fit a longer trip better. |
+| 3 | Explain the size of the update, or compare two people with different priors. | "I thought 60% would vote for the mayor; a survey said 30%; now I think about 45%." Why 45% and not 30%? What would move it closer to 30%? | The posterior combines prior and data. A bigger survey, or a weaker prior, would move it closer to 30%. |
+
+**Answer key (rubric).** Each part identified correctly; the direction of the update
+matches the evidence; Level 3 names the strength of the prior and the amount of data.
+
+**Common mistakes.** Calling the observation the posterior; expecting the posterior to
+equal the data; ignoring the prior entirely.
+
+**Contexts.** Medicine, travel times, elections, weather, cricket form.
+
+# T9. Bayesian updating by counting
+
+**Skill.** Update a belief over several possibilities by counting the ways each one
+could produce the data: prior × ways, then divide by the total. *(Lecture: the bag of
+stones app, "Bayes' theorem".)*
+
+**Parameters.** Number of stones in the bag *M* (3–9), which bags are possible
+(two, or all *M* + 1), the prior over bags (equal, or given), and a sequence of draws
+**with replacement**.
+
+| Level | The problem | Example | Answer |
+|---|---|---|---|
+| 1 | Two possible bags, equal prior, one or two draws. | A bag of 4 stones has either 1 or 3 blue stones, equally likely. You draw one stone: blue. How likely is the 3-blue bag? | Ways: 1 vs 3, so 3 / 4 = 0.75 |
+| 2 | Every possible bag, equal prior, 2–3 draws: fill in a table of ways and posteriors. | A bag of 3 stones holds 0–3 blue stones, each equally likely. Draws: blue, black, blue. | Ways *k* × (3 − *k*) × *k*: 0, 2, 4, 0. Posterior: 1 blue = 1/3, 2 blue = 2/3. |
+| 3 | Sequential updating (yesterday's posterior is today's prior), order of draws, or an unequal prior. | 9 stones, equal prior, draws blue, black, blue (posterior peaks at 6 blue, 0.20). Draw one more blue. Update, then check against updating on all four draws at once. | Ways *k*³ (9 − *k*), total 2,892. Peak moves to 7 blue (0.237). The same either way. |
+
+**Answer.** For *k* blue stones out of *M*, each blue draw contributes *k*, each black
+draw *M* − *k*. Posterior ∝ prior × product of ways; divide by the sum over bags.
+
+**Common mistakes.** Forgetting to divide by the total; thinking the order of draws
+matters (with replacement it doesn't); not ruling out impossible bags (0 blue after a
+blue draw); assuming the most plausible bag is certain.
+
+**Contexts.** The bag of stones; a box of tickets; a basket of good and bad mangoes;
+share of supporters among a few households.
+
+# T10. Observation and interpretation
+
+**Skill.** Separate the observed part of a claim (what was counted, measured or
+recorded) from the interpretation built on it (the assumptions), in both statistical
+and ethnographic work. *(Lecture: "Objective or subjective?", "Doing science", "Science
+is updating".)*
+
+**Parameters.** A claim (statistical, ethnographic, or one of each); for Levels 2–3, an
+alternative assumption that would change the conclusion.
+
+| Level | The problem | Example | Answer |
+|---|---|---|---|
+| 1 | Name the observation and one assumption behind a conclusion. | "It rained on 179 of 365 days in 2025, so there's a 49% chance of rain tomorrow." | Observation: 179 rainy days. Assumption: tomorrow is like an average day in 2025 (ignores the season). |
+| 2 | Show how a different assumption changes the conclusion. | "Only 30% of 20 people surveyed back the mayor, so the mayor will lose." | Observation: 6 of 20. Assumptions: the 20 represent voters, people answered honestly, they will vote. A small or unrepresentative sample could change the conclusion. |
+| 3 | Compare a statistical and an ethnographic claim, and propose an observation that would test an assumption. | A survey finds that 70% of households trust the ward office; an ethnographer concludes from interviews that trust is low. | Each joins observations with assumptions (who answered, what "trust" means, whose voices stand for others). Proposals: a follow-up that asks the survey question in interviews, or surveys the interviewed households. |
+
+**Answer key (rubric).** The observation is stated without interpretation; at least one
+assumption is named; the student explains how the conclusion depends on it; Level 3
+treats both kinds of claim even-handedly.
+
+**Common mistakes.** Treating numbers as automatically objective and interviews as
+automatically subjective; naming "bias" without saying which assumption.
+
+**Contexts.** Weather forecasts, polls, program evaluations, ethnographic findings,
+news reports.

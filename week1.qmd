@@ -167,17 +167,16 @@ _We write a probability as a number between 0 and 1, or as a percentage._
 ::: {.fragment}
 | Number | Percentage | Example |
 |---|---|---|
-| 0 | 0% | Impossible |
+| 0 | 0% | Something impossible |
 | 0.02 | 2% | Winning the raffle: 10 ÷ 500 |
 | 0.17 | 17% | Rolling a six: 1 ÷ 6 |
 | 0.31 | 31% | Rain in Kathmandu: 113 ÷ 365 days |
 | 0.5 | 50% | A fair coin landing heads: 1 ÷ 2 |
-| 1 | 100% | Certain |
+| 1 | 100% | Something certain |
 :::
 
 ::: {.fragment}
-To convert between the two, move the decimal point two places to the right or to the
-left.
+To convert between the two, move the decimal point two places right or left.
 :::
 
 
@@ -365,15 +364,11 @@ Two key phrases:
 - ["the probability of...data..."]{.fragment .blue fragment-index=3}
 
 ::: {.fragment}
-This frames _statistical significance_ as:
-
-- P( [data]{.blue} | [hypothesis]{.red} )
+How this frames _statistical significance_: P( [data]{.blue} | [hypothesis]{.red} )
 :::
 
 ::: {.fragment}
-Not the same as (what we usually actually want):
-
-- P( [hypothesis]{.red} | [data]{.blue} )
+What we usually actually want: P( [hypothesis]{.red} | [data]{.blue} )
 :::
 
 
@@ -448,36 +443,14 @@ That's it. A poll, a regression, a causal model: everything in this course is ju
 
 _The one rule, written as a formula._
 
-::: {.r-stack}
-::: {.fragment .fade-out fragment-index=1}
-$$
-P(A \mid B) = \frac{P(B \mid A) \times P(A)}{P(B)}
-$$
-:::
+{{< include _includes/week1/bayes-steps.md >}}
 
-::: {.fragment fragment-index=1}
-$$
-\class{green}{P(\text{belief} \mid \text{data})}
-=
-\frac{
-\class{blue}{P(\text{data} \mid \text{belief})}
-\;\times\;
-\class{red}{P(\text{belief})}
-}{
-\class{gray}{P(\text{data})}
-}
-$$
-:::
-:::
+- [[**P( belief )**]{.red}: the **prior**. What we believed before.]{.fragment fragment-index=2}
+- [[**P( data | belief )**]{.blue}: the **likelihood**. How likely the data are, if the belief is true.]{.fragment fragment-index=3}
+- [[**P( belief | data )**]{.green}: the **posterior**. What we believe now.]{.fragment fragment-index=4}
+- [[**P( data )**]{.gray}: Needed to rescale total possibilities to 100%. (Usually not interesting)]{.fragment fragment-index=5}
 
-::: {.incremental}
-- [**P( belief )**]{.red}: the **prior**. What we believed before.
-- [**P( data | belief )**]{.blue}: the **likelihood**. How likely the data are, if the belief is true.
-- [**P( belief | data )**]{.green}: the **posterior**. What we believe now.
-- [**P( data )**]{.gray}: Usually not interesting. Just here to rescale total possibilities to 100%.
-:::
-
-::: {.fragment}
+::: {.fragment fragment-index=6}
 Conceptually:
 [**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
 :::
@@ -527,26 +500,30 @@ Only 8 are real.
 :::
 :::
 
-## How far can we trust a "discovery"? {.mechanics .smaller notes="notes/week1_notes.md#research-math"}
+## How far can we trust data? {.mechanics .smaller notes="notes/week1_notes.md#research-math"}
 
-_α: the chance of a "significant" result when the idea is false · β: the chance of missing an idea that's true_
+_**Sensitivity**: of the true ideas, the share a study finds · **Specificity**: of the false ideas, the share it correctly rejects_
 
-| Type of study | True ideas | α | β | Chance a "discovery" is true |
-|--------------------------------|:--------:|:----:|:----:|:------------:|
-| Large trial of a promising idea | 50% | 5% | 20% | **94%** |
-| Small study of a promising idea | 50% | 5% | 80% | 80% |
-| Search for new effects _(the 1,000 ideas)_ | 1% | 5% | 20% | [14%]{.red} |
-| Small search for new effects | 1% | 5% | 80% | [4%]{.red} |
+| Type of study | True ideas | Sensitivity | Specificity | Chance a "discovery" is true |
+|--------------------------------|:--------:|:-----:|:-----:|:------------:|
+| Large trial of a promising idea | 50% | 80% | 95% | **94%** |
+| Small study of a promising idea | 50% | 20% | 95% | 80% |
+| Search for new effects _(the 1,000 ideas)_ | 1% | 80% | 95% | [14%]{.red} |
+| Small search for new effects | 1% | 20% | 95% | [4%]{.red} |
 | p-hacked small study | 10% | 20% | 80% | [10%]{.red} |
 
 ::: {.fragment}
-What matters most is how many of the ideas we test are true to begin with.
+What matters most is how many of the ideas we test are true to begin with, which isn't something we can really know.
 :::
 
+[Research usually reports these as error rates: α = 1 − specificity, the false-positive
+rate (usually 5%), and β = 1 − sensitivity, the miss rate. Sensitivity is also called
+power.]{.source}
 
-# Most studies are wrong. Is that a problem? {notes="notes/week1_notes.md#is-that-a-problem"}
 
-_Most studies are wrong._ [...and that's okay.]{.fragment .blue}
+# Most studies are wrong... {notes="notes/week1_notes.md#is-that-a-problem"}
+
+[...and that's okay.]{.fragment .blue}
 
 ::: {.incremental}
 - A study was never supposed to be the answer. It's one observation.
