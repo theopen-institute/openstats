@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Week 1 Homework</title>
+<title>Week 1 Problem Types</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -87,12 +87,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#part-a-concepts" id="toc-part-a-concepts" class="nav-link active" data-scroll-target="#part-a-concepts">Part A: Concepts</a></li>
-  <li><a href="#part-b-probability-calculations" id="toc-part-b-probability-calculations" class="nav-link" data-scroll-target="#part-b-probability-calculations">Part B: Probability calculations</a></li>
-  <li><a href="#part-c-base-rates" id="toc-part-c-base-rates" class="nav-link" data-scroll-target="#part-c-base-rates">Part C: Base rates</a></li>
-  <li><a href="#part-d-bayesian-updating" id="toc-part-d-bayesian-updating" class="nav-link" data-scroll-target="#part-d-bayesian-updating">Part D: Bayesian updating</a></li>
-  <li><a href="#part-e-r-challenge-optional" id="toc-part-e-r-challenge-optional" class="nav-link" data-scroll-target="#part-e-r-challenge-optional">Part E: R challenge (optional)</a></li>
-  <li><a href="#part-f-reflection" id="toc-part-f-reflection" class="nav-link" data-scroll-target="#part-f-reflection">Part F: Reflection</a></li>
+  <li><a href="#t1.-counting-outcomes" id="toc-t1.-counting-outcomes" class="nav-link active" data-scroll-target="#t1.-counting-outcomes">T1. Counting outcomes</a></li>
+  <li><a href="#t2.-writing-probabilities" id="toc-t2.-writing-probabilities" class="nav-link" data-scroll-target="#t2.-writing-probabilities">T2. Writing probabilities</a></li>
+  <li><a href="#t3.-probability-notation" id="toc-t3.-probability-notation" class="nav-link" data-scroll-target="#t3.-probability-notation">T3. Probability notation</a></li>
+  <li><a href="#t4.-conditional-probability-from-a-table" id="toc-t4.-conditional-probability-from-a-table" class="nav-link" data-scroll-target="#t4.-conditional-probability-from-a-table">T4. Conditional probability from a table</a></li>
+  <li><a href="#t5.-diagnostic-tests-and-the-base-rate" id="toc-t5.-diagnostic-tests-and-the-base-rate" class="nav-link" data-scroll-target="#t5.-diagnostic-tests-and-the-base-rate">T5. Diagnostic tests and the base rate</a></li>
+  <li><a href="#t6.-how-far-can-we-trust-a-discovery" id="toc-t6.-how-far-can-we-trust-a-discovery" class="nav-link" data-scroll-target="#t6.-how-far-can-we-trust-a-discovery">T6. How far can we trust a discovery?</a></li>
+  <li><a href="#t7.-which-direction-does-the-conditional-run" id="toc-t7.-which-direction-does-the-conditional-run" class="nav-link" data-scroll-target="#t7.-which-direction-does-the-conditional-run">T7. Which direction does the conditional run?</a></li>
+  <li><a href="#t8.-prior-likelihood-and-posterior-in-a-story" id="toc-t8.-prior-likelihood-and-posterior-in-a-story" class="nav-link" data-scroll-target="#t8.-prior-likelihood-and-posterior-in-a-story">T8. Prior, likelihood and posterior in a story</a></li>
+  <li><a href="#t9.-bayesian-updating-by-counting" id="toc-t9.-bayesian-updating-by-counting" class="nav-link" data-scroll-target="#t9.-bayesian-updating-by-counting">T9. Bayesian updating by counting</a></li>
+  <li><a href="#t10.-observation-and-interpretation" id="toc-t10.-observation-and-interpretation" class="nav-link" data-scroll-target="#t10.-observation-and-interpretation">T10. Observation and interpretation</a></li>
   </ul>
 </nav>
 </nav>
@@ -105,8 +109,8 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 1 Homework</h1>
-<p class="subtitle lead">Probability, base rates, and Bayesian updating</p>
+<h1 class="title">Week 1 Problem Types</h1>
+<p class="subtitle lead">Probability, base rates, and Bayesian updating: problem types and difficulty levels</p>
 </div>
 
 
@@ -123,263 +127,480 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>These exercises go with the Week 1 lecture. Part A checks your understanding of the ideas. Parts B–D are problems to work through. Part E is an optional R challenge.</p>
-<p>A few ground rules:</p>
+<p>This page defines the kinds of problems that go with Week 1, rather than a fixed list of questions. Each <strong>problem type</strong> is one skill from the lecture, written so that a generator could produce new problems of that type: its parameters, the template the problem follows, how to compute the answer, and the mistakes students usually make.</p>
+<p>Every type comes in <strong>three levels</strong>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>What it asks for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1. Direct</strong></td>
+<td>One step. Round numbers, everything needed is given, and the question names the quantity to find.</td>
+</tr>
+<tr class="even">
+<td><strong>2. Multi-step</strong></td>
+<td>Two or more steps, or an intermediate quantity the student has to work out first. Realistic, less round numbers. Often a comparison between two cases.</td>
+</tr>
+<tr class="odd">
+<td><strong>3. Transfer</strong></td>
+<td>The same idea used in an unfamiliar way: working backwards from an answer, chaining two steps of reasoning, or explaining <em>why</em> in words.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conventions for every type</strong></p>
 <ul>
-<li><strong>Show your work.</strong> A correct number with no reasoning is worth less than a wrong number with clear reasoning. Drawing a table of counts (like we did for the HIV example) is almost always the easiest way to do these problems.</li>
-<li><strong>Write in plain language.</strong> If you can’t explain it to a friend who missed the lecture, you haven’t finished understanding it yet.</li>
-<li>Problems marked ★ are harder. Give them a real try, but don’t get stuck on them.</li>
+<li><strong>Answers</strong> are given as a fraction or count ratio, a decimal (2–3 places) and a percentage. Accept any of the three, rounded sensibly.</li>
+<li><strong>Counts must be whole numbers.</strong> When a problem builds a table of counts for a population, choose the population size so that every cell is a whole number (or say “about” when it can’t be, as with 49.5 → “about 50”).</li>
+<li><strong>Contexts</strong> should be familiar to students in Nepal where possible: Kathmandu weather, local elections, schools and universities, clinics, cricket, buses. Each type lists a few.</li>
+<li><strong>Common mistakes</strong> under each type are the errors students actually make; a multiple-choice version can use them as wrong options.</li>
 </ul>
-<section id="part-a-concepts" class="level1">
-<h1>Part A: Concepts</h1>
-<p><strong>A1.</strong> In one or two sentences, explain what <em>probability</em> means in this course. Then explain how a Bayesian and a frequentist would each understand the sentence <em>“The shop near my house is probably open right now.”</em></p>
-<p><strong>A2.</strong> Write each of these sentences in probability notation, <code>P( event | condition )</code>:</p>
-<ol type="a">
-<li>Of people who smoke, 15% develop lung cancer.</li>
-<li>Of people with lung cancer, 85% were smokers.</li>
-<li>When Nepal leads at halftime, they win 70% of the time.</li>
-<li>40% of students at this university are from Kathmandu.</li>
-</ol>
-<p>Statements (a) and (b) are about the same two things, but the numbers are very different. Explain how both can be true at once.</p>
-<p><strong>A3.</strong> A classmate gets a result with p = 0.03 and says: <em>“So there’s only a 3% chance my hypothesis is wrong.”</em></p>
-<ol type="a">
-<li>Write what a p-value measures in <code>P( … | … )</code> notation.</li>
-<li>Write what your classmate <em>thinks</em> it measures in <code>P( … | … )</code> notation.</li>
-<li>Explain the mistake in your own words.</li>
-</ol>
-<p><strong>A4.</strong> Match each phrase to its probability statement. (HIV+ means the person has HIV.)</p>
+<section id="t1.-counting-outcomes" class="level1">
+<h1>T1. Counting outcomes</h1>
+<p><strong>Skill.</strong> Probability is counting: count everything that could happen, count the ways we care about, and compare. <em>(Lecture: “Probability is counting”, “Counting the ways a thing could happen”.)</em></p>
+<p><strong>Parameters.</strong> <code>n</code> outcomes or trials, <code>k</code> outcomes of interest, the kind of event (single draw, repeated coin flips, dice).</p>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Term</th>
-<th>Statement</th>
+<th>Level</th>
+<th>The problem</th>
+<th>Example</th>
+<th>Answer</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Sensitivity</td>
-<td>P( test– | HIV+ )</td>
-</tr>
-<tr class="even">
-<td>Specificity</td>
-<td>P( test+ | HIV– )</td>
-</tr>
-<tr class="odd">
-<td>Type I error (false positive)</td>
-<td>P( test+ | HIV+ )</td>
-</tr>
-<tr class="even">
-<td>Type II error (false negative)</td>
-<td>P( test– | HIV– )</td>
-</tr>
-</tbody>
-</table>
-<p>Then name the probability that a <em>patient</em> who just tested positive actually cares about. Is it one of the four above?</p>
-<p><strong>A5.</strong> Ioannidis argued that most published research findings are false, and he did it without re-running a single study. In 4–6 sentences, explain how that is possible. Use the words <em>base rate</em>, <em>power</em>, and <em>false positive</em> in your answer.</p>
-<p><strong>A6.</strong> True or false? Give a one-sentence reason for each.</p>
-<ol type="a">
-<li>A test with 99% sensitivity and 99% specificity gives a correct result 99% of the time for someone who tests positive.</li>
-<li>If P(A) = P(B), then P(A | B) = P(B | A).</li>
-<li>If your prior probability for a hypothesis is exactly 0, no amount of data can change your mind.</li>
-<li>If everything else stays the same, lowering α from 0.05 to 0.005 increases the share of significant results that are true.</li>
-<li>If most published findings are false, science doesn’t work.</li>
-</ol>
-<p><strong>A7.</strong> Find the <strong>prior</strong>, the <strong>likelihood</strong> (the observation), and the <strong>posterior</strong> in each story:</p>
-<ol type="a">
-<li>A doctor thinks a patient’s cough is probably a cold. A chest X-ray shows a shadow on the lung, and now the doctor thinks pneumonia is more likely.</li>
-<li>You expect the bus to Patan to take about 30 minutes. Three days in a row it takes 50 minutes, so you now leave home earlier.</li>
-<li>In lecture: <em>“I think about 60% of Kathmandu will vote for the current mayor… a survey says 30%… I now think about 45%.”</em> Why is the posterior <em>between</em> 60% and 30%, and not exactly 30%? What would push it closer to 30%?</li>
-</ol>
-</section>
-<section id="part-b-probability-calculations" class="level1">
-<h1>Part B: Probability calculations</h1>
-<p><strong>B1.</strong> In 2025, Kathmandu saw rain on 179 of 365 days. In April it rained on 13 of 30 days, and in July on all 31 days.</p>
-<ol type="a">
-<li>What is P( no rain )?</li>
-<li>What is P( April | rain )? That is, if you pick a rainy day at random from 2025, how likely is it that the day is in April?</li>
-<li>Compare P( rain | April ) with P( April | rain ). Why are they so different?</li>
-<li>★ What is P( July | rain )? Why is it nowhere near 1, even though P( rain | July ) = 1?</li>
-</ol>
-<p><strong>B2.</strong> Use the table of students from the lecture:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th></th>
-<th>Sociology</th>
-<th>Economics</th>
-<th>Total</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Urban</strong></td>
-<td>240</td>
-<td>300</td>
-<td>540</td>
-</tr>
-<tr class="even">
-<td><strong>Rural</strong></td>
-<td>80</td>
-<td>20</td>
-<td>100</td>
-</tr>
-<tr class="odd">
-<td><strong>Total</strong></td>
-<td>320</td>
-<td>320</td>
-<td>640</td>
-</tr>
-</tbody>
-</table>
-<p>Calculate:</p>
-<ol type="a">
-<li>P( Urban )</li>
-<li>P( Economics | Urban )</li>
-<li>P( Urban | Economics )</li>
-<li>P( Rural )</li>
-<li>★ Using <strong>Bayes’ theorem</strong> (not the table), compute P( Sociology | Rural ) from P( Rural | Sociology ) = 0.25, P( Sociology ), and P( Rural ). Check that you get the 0.80 from lecture.</li>
-</ol>
-<p><strong>B3.</strong> Make your own 2×2 table from something in your life or work: your village, your office, your cricket team, your WhatsApp groups. Use real counts if you have them, or a reasonable guess if you don’t. Then write one pair of conditional probabilities, P(A | B) and P(B | A), that come out <em>very</em> different, and explain why.</p>
-</section>
-<section id="part-c-base-rates" class="level1">
-<h1>Part C: Base rates</h1>
-<p>For every problem in this part, build a table of counts for a large population (for example 100,000 people), like the one in lecture.</p>
-<p><strong>C1.</strong> <em>The HIV test, revisited.</em> Sensitivity is 99%, specificity is 97%, and prevalence is 0.1%.</p>
-<ol type="a">
-<li>Rebuild the lecture table and confirm that P( HIV+ | test+ ) ≈ 3.2%.</li>
-<li>Now the same test is used in a clinic where 5% of patients have HIV. What is P( HIV+ | test+ ) now?</li>
-<li>Go back to 0.1% prevalence, but improve the specificity to 99.9%. What is P( HIV+ | test+ )?</li>
-<li>In (b) and (c), which change helped more, and why?</li>
-<li>What is P( HIV– | test– ) at 0.1% prevalence? Should someone who tests negative worry?</li>
-</ol>
-<p><strong>C2.</strong> ★ <em>Testing twice.</em> At 0.1% prevalence, a person tests positive. They take a second, independent test (same sensitivity and specificity) and it also comes back positive. What is the probability they have HIV now? <em>Hint: what is the “prior” for the second test?</em></p>
-<p><strong>C3.</strong> <em>AI detectors.</em> A university buys a tool that flags essays as written by AI. It correctly flags 95% of AI-written essays, and wrongly flags 2% of essays that students wrote themselves.</p>
-<ol type="a">
-<li>If 10% of submitted essays are AI-written, what share of flagged essays are actually AI-written?</li>
-<li>What if only 2% of essays are AI-written?</li>
-<li>A teacher says, “The detector is 95% accurate, so if it flags you, you cheated.” Write a short reply (3–4 sentences) using what you learned this week.</li>
-</ol>
-<p><strong>C4.</strong> <em>Ioannidis’s table.</em> In lecture we assumed 1% of tested hypotheses are true, 80% power, and α = 5%. That gave P( true | significant ) ≈ 14%. Using 10,000 tested hypotheses, recompute P( true | significant ) for each case:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Case</th>
-<th>Base rate</th>
-<th>Power</th>
-<th>α</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>a</td>
-<td>1%</td>
-<td>50%</td>
-<td>0.05</td>
-</tr>
-<tr class="even">
-<td>b</td>
-<td>10%</td>
-<td>80%</td>
-<td>0.05</td>
-</tr>
-<tr class="odd">
-<td>c</td>
-<td>1%</td>
-<td>80%</td>
-<td>0.20 (p-hacking)</td>
-</tr>
-<tr class="even">
-<td>d</td>
-<td>1%</td>
-<td>80%</td>
-<td>0.005</td>
-</tr>
-</tbody>
-</table>
-<p>Which change makes the biggest difference? What does that suggest a research field could do to publish fewer false findings?</p>
-<p><strong>C5.</strong> ★ With 80% power and α = 0.05, what base rate would you need for exactly half of significant findings to be true? Set up an equation and solve it.</p>
-</section>
-<section id="part-d-bayesian-updating" class="level1">
-<h1>Part D: Bayesian updating</h1>
-<p>These problems use the bag of stones from the lecture app. The bag holds <strong>9 stones</strong>, each blue (🔵) or black (⚫️). There are 10 possible bags (0 blue, 1 blue, …, 9 blue), and before drawing we think each one is <strong>equally likely</strong>. We draw one stone at a time, note its color, and <strong>put it back</strong>.</p>
-<p><strong>D1.</strong> Before we draw anything:</p>
-<ol type="a">
-<li>What is the prior probability of each of the 10 possible bags?</li>
-<li>We draw 🔵. Which bag(s) can we now rule out completely? Why?</li>
-<li>We draw ⚫️ next. Which bag(s) can we now rule out?</li>
-</ol>
-<p><strong>D2.</strong> <em>Counting by hand.</em> Our three draws are 🔵 ⚫️ 🔵.</p>
-<ol type="a">
-<li>For a bag with <em>k</em> blue stones, the chance of drawing blue is <em>k</em>/9. Write an expression for the likelihood of 🔵 ⚫️ 🔵 for a bag with <em>k</em> blue stones.</li>
-<li>Fill in this table. (Tip: the “ways” column is the number of ways to produce the sequence, <em>k</em> × (9 − <em>k</em>) × <em>k</em>. Then divide each row by the total.)</li>
-</ol>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Blue stones (<em>k</em>)</th>
-<th>Prior</th>
-<th>Ways to get 🔵⚫️🔵</th>
-<th>Posterior</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>0</td>
-<td>0.1</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
 <td>1</td>
-<td>0.1</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>…</td>
-<td>…</td>
-<td></td>
-<td></td>
+<td>One draw from equally likely outcomes: <em>k</em> of <em>n</em>.</td>
+<td>A raffle sells 400 tickets and you buy 8. What is the probability you win?</td>
+<td>8 / 400 = 0.02 = 2%</td>
 </tr>
 <tr class="even">
-<td>9</td>
-<td>0.1</td>
-<td></td>
-<td></td>
+<td>2</td>
+<td>Repeated events, small enough to list every path: exactly <em>k</em> successes in <em>n</em> = 2–4 trials.</td>
+<td>Flip a coin 3 times. What is the probability of exactly 2 heads?</td>
+<td>3 of 8 paths = 0.375</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Too many paths to list (<em>n</em> = 5–8), or “at least” / “at most” events.</td>
+<td>Flip a coin 6 times. What is the probability of at least 5 heads?</td>
+<td>(6 + 1) / 64 = 7/64 ≈ 0.109</td>
 </tr>
 </tbody>
 </table>
-<ol start="3" type="a">
-<li>Which bag is now most plausible? How plausible is it? Why aren’t we more certain?</li>
-</ol>
-<p><strong>D3.</strong> Would the posterior be different if the draws came in the order ⚫️ 🔵 🔵? Explain why or why not.</p>
-<p><strong>D4.</strong> <em>Today’s posterior is tomorrow’s prior.</em> Start from your posterior in D2 and draw one more stone: 🔵.</p>
-<ol type="a">
-<li>Update using your D2 posterior as the new prior. Which bag is most plausible now?</li>
-<li>Now start from scratch with an equal prior and update on all four draws at once (🔵 ⚫️ 🔵 🔵). Do you get the same answer? Why does this matter?</li>
-</ol>
-<p><strong>D5.</strong> <em>A different prior.</em> A friend who packed the bag tells you it holds either 3 blue stones or 6 blue stones, with equal chances. You draw 🔵 🔵 ⚫️. What is the probability the bag has 6 blue stones?</p>
-<p><strong>D6.</strong> <em>Using the app.</em> Open the Bayesian Updating slide and set the bag to <strong>Hidden</strong>.</p>
-<ol type="a">
-<li>Draw 5 stones. Write down the most plausible bag and its probability.</li>
-<li>Keep going to 20 draws, then 50 (hold <strong>Shift</strong> to draw 10 at a time). Record the same two numbers each time.</li>
-<li>Reveal the bag. Were you right? Describe in 2–3 sentences how the shape of the distribution changed as you collected more data.</li>
-<li>Reset and do it again with a new hidden bag. Did the second bag ever <em>look</em> like a different bag along the way? What does that tell you about drawing conclusions from a small sample?</li>
-</ol>
+<p><strong>Answer.</strong> <em>k</em> / <em>n</em> for a single draw. For repeated fair coin flips, the number of paths with exactly <em>k</em> heads is C(<em>n</em>, <em>k</em>), out of 2<sup><em>n</em></sup>.</p>
+<p><strong>Common mistakes.</strong> Counting outcomes that aren’t equally likely as if they were (two dice: “11 possible sums, so P(7) = 1/11”); forgetting that HHT, HTH and THH are different paths; adding paths for “at least” but leaving out the top case.</p>
+<p><strong>Contexts.</strong> Raffles, dice, coin flips, picking a student at random from a class (“15 of 25 came by bus”).</p>
 </section>
-<section id="part-e-r-challenge-optional" class="level1">
-<h1>Part E: R challenge (optional)</h1>
-<p><strong>E1.</strong> Write an R function <code>p_true_given_sig(base_rate, power, alpha)</code> that returns P( true | significant ). Use it to check your answers to C4. Then make a plot with base rate (0.001 to 0.5) on the x-axis and P( true | significant ) on the y-axis, with one line for 50% power and one for 80% power.</p>
-<p><strong>E2.</strong> ★ Do D2 and D4 in R. Make a vector <code>k &lt;- 0:9</code>, a prior <code>rep(1/10, 10)</code>, and compute the posterior using <code>prior * likelihood / sum(prior * likelihood)</code>. Write a loop that updates the posterior one draw at a time for any sequence of draws, such as <code>c("blue", "black", "blue", "blue")</code>.</p>
+<section id="t2.-writing-probabilities" class="level1">
+<h1>T2. Writing probabilities</h1>
+<p><strong>Skill.</strong> A probability is a number from 0 to 1 or a percentage; the two convert by moving the decimal point two places. Probabilities can be ordered from impossible to certain. <em>(Lecture: “Describing Probability: Convention 1”.)</em></p>
+<p><strong>Parameters.</strong> A count ratio or a probability in one form; for Level 2, a set of 3–5 events to compare; for Level 3, very small probabilities or complements.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>The problem</th>
+<th>Example</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Convert between a count ratio, a decimal and a percentage.</td>
+<td>3 of 20 students walk to school. Write this as a decimal and a percentage.</td>
+<td>0.15, 15%</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Compute several probabilities from counts and put them in order.</td>
+<td>Order from least to most likely: winning a raffle (10 of 500 tickets), rolling a six, rain in Kathmandu (113 of 365 days), a coin landing heads.</td>
+<td>0.02 &lt; 0.17 &lt; 0.31 &lt; 0.5</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Very small or very large probabilities, and complements.</td>
+<td>Lightning kills about 1 in 7,000,000 people a year. Write that as a decimal and a percentage. What is the probability of <em>no</em> rain on a random day, if it rains on 113 of 365?</td>
+<td>0.00000014 = 0.000014%; 1 − 0.31 = 0.69</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer.</strong> Divide the counts; ×100 for a percentage. Complement: 1 − <em>p</em>.</p>
+<p><strong>Common mistakes.</strong> Moving the decimal point one place, or the wrong way (0.15 → 1.5%); treating “1 in 7,000,000” as 7,000,000 or as 1/7; writing a probability above 1.</p>
+<p><strong>Contexts.</strong> Kathmandu rain, raffles, dice, exam pass rates, rare risks (lightning, lottery).</p>
 </section>
-<section id="part-f-reflection" class="level1">
-<h1>Part F: Reflection</h1>
-<p><strong>F1.</strong> Find a news story that says “a new study shows…” about health, education, or the economy. In a short paragraph:</p>
-<ul>
-<li>What was the claim?</li>
-<li>Was this a surprising, novel idea (low base rate) or something many people already expected (higher base rate)?</li>
-<li>Using what you learned this week, how much should one study change your beliefs?</li>
-</ul>
+<section id="t3.-probability-notation" class="level1">
+<h1>T3. Probability notation</h1>
+<p><strong>Skill.</strong> Write a statement as P( event ) or P( event | condition ), and see that P( A | B ) and P( B | A ) describe different groups. <em>(Lecture: “Describing Probability: Conventions 2 and 3”.)</em></p>
+<p><strong>Parameters.</strong> A sentence about a share of some group; for Level 3, a pair of sentences about the same two things in opposite directions.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>The problem</th>
+<th>Example</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>No condition: translate a plain share.</td>
+<td>“40% of students at this university are from Kathmandu.”</td>
+<td>P( from Kathmandu ) = 0.40</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>With a condition: identify which part is the condition.</td>
+<td>“Of people who smoke, 15% develop lung cancer.”</td>
+<td>P( lung cancer | smoker ) = 0.15</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>A reversed pair: translate both and explain how both can be true.</td>
+<td>“Of smokers, 15% develop lung cancer. Of people with lung cancer, 85% smoked.”</td>
+<td>P( cancer | smoker ) = 0.15 and P( smoker | cancer ) = 0.85. Different groups: most smokers never get cancer, but cancer is rare and concentrated among smokers.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer.</strong> The group the sentence is <em>about</em> (“of people who…”, “when…”, “given…”) goes after the bar.</p>
+<p><strong>Common mistakes.</strong> Putting the condition on the wrong side of the bar; dropping the condition; assuming the two directions must be equal.</p>
+<p><strong>Contexts.</strong> Health (smoking, symptoms), sport (“when Nepal leads at halftime, they win 70% of the time”), weather by month, education.</p>
+</section>
+<section id="t4.-conditional-probability-from-a-table" class="level1">
+<h1>T4. Conditional probability from a table</h1>
+<p><strong>Skill.</strong> Read a conditional probability from a table of counts by choosing the right denominator, and compute both directions. <em>(Lecture: “Describing Probability: Convention 3” (rain by month), “Direction of conditions” (the urban/rural table).)</em></p>
+<p><strong>Parameters.</strong> A 2×2 (or 2×<em>m</em>) table of counts; which margins are shown; for Level 3, partial information to rebuild the table from.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>The problem</th>
+<th>Example</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>A 2×2 table with totals given: read one conditional.</td>
+<td>Urban: 240 sociology, 300 economics (540). Rural: 80 sociology, 20 economics (100). What is P( Economics | Urban )?</td>
+<td>300 / 540 ≈ 0.556</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>No totals given: compute them, then both directions, and explain the difference.</td>
+<td>Same table without totals. Find P( Urban | Economics ) and P( Economics | Urban ).</td>
+<td>300 / 320 ≈ 0.94 and 300 / 540 ≈ 0.56. Different denominators: economics students vs.&nbsp;urban students.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Rebuild the table from shares, then answer a conditional; or a table with many columns where the two directions are very different.</td>
+<td>640 students; half study sociology; 25% of sociology students are rural; 100 students are rural in all. What is P( Sociology | Rural )?</td>
+<td>Sociology = 320, rural sociology = 80, so 80 / 100 = 0.80</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer.</strong> P( A | B ) = count( A and B ) / count( B ).</p>
+<p><strong>Common mistakes.</strong> Dividing by the grand total instead of the row or column total; dividing by the wrong margin (computing P( B | A ) when asked for P( A | B )).</p>
+<p><strong>Contexts.</strong> Students by field and origin, rainy days by month (P( July | rain ) = 31/179 ≈ 0.17, though P( rain | July ) = 1 in 2025), voters by ward and party, patients by symptom and diagnosis.</p>
+</section>
+<section id="t5.-diagnostic-tests-and-the-base-rate" class="level1">
+<h1>T5. Diagnostic tests and the base rate</h1>
+<p><strong>Skill.</strong> When a condition is rare, most positive results can be false even from an accurate test. Build a table of counts from prevalence, sensitivity and specificity, and find the chance that a positive result is real. <em>(Lecture: “Probability for Decision Making”, “The base rate paradox” and its app.)</em></p>
+<p><strong>Parameters.</strong> Prevalence (base rate), sensitivity = P( positive | has it ), specificity = P( negative | doesn’t have it ), population size <em>N</em>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>The problem</th>
+<th>Example</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Round numbers (prevalence 5–20%, accuracy 80–95%), <em>N</em> given.</td>
+<td>1,000 people; 10% have the disease; the test catches 90% of cases and correctly clears 90% of healthy people. What share of positives have the disease?</td>
+<td>90 true positives, 90 false positives: 90 / 180 = 50%</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>A rare condition (0.1–1%) and a very accurate test; or compare two settings.</td>
+<td>HIV prevalence 0.1%, sensitivity 99%, specificity 97%, 100,000 people. Find P( HIV+ | test+ ). Repeat in a clinic where 5% have HIV.</td>
+<td>99 / (99 + 2,997) ≈ 3.2%; in the clinic 4,950 / (4,950 + 2,850) ≈ 63.5%</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Work backwards (what accuracy or prevalence is needed?), or chain two tests.</td>
+<td>At 0.1% prevalence and 99% sensitivity, what specificity does the test need for at least half of positives to be real?</td>
+<td>False positives ≤ true positives: 99,900 × (1 − spec) ≤ 99, so specificity ≥ 99.9%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer.</strong> P( has it | positive ) = prev × sens / ( prev × sens + (1 − prev) × (1 − spec) ). In counts: true positives / (true positives + false positives).</p>
+<p><strong>Common mistakes.</strong> Answering with the sensitivity (99%) instead of P( has it | positive ); ignoring the base rate; computing false positives from the whole population instead of the healthy group; forgetting that a second test’s “prior” is the first test’s result.</p>
+<p><strong>Contexts.</strong> HIV and other screening tests, AI-writing detectors, spam filters, airport security, fraud alerts.</p>
+</section>
+<section id="t6.-how-far-can-we-trust-a-discovery" class="level1">
+<h1>T6. How far can we trust a discovery?</h1>
+<p><strong>Skill.</strong> A study is a test of an idea: its sensitivity is the chance it finds a true idea, and its specificity is the chance it correctly finds nothing when the idea is false. When true ideas are rare, most “discoveries” are false. <em>(Lecture: “So why is most published research wrong?” and the table of study types.)</em></p>
+<p><strong>Parameters.</strong> Number of ideas tested, share that are true (base rate), sensitivity (1 − β, also called power), specificity (1 − α).</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>The problem</th>
+<th>Example</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Round numbers: count true and false discoveries.</td>
+<td>1,000 ideas, 10% true; studies find 80% of true ideas and wrongly “find” 5% of false ones. What share of discoveries are true?</td>
+<td>80 true, 45 false: 80 / 125 = 64%</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Compare study types: change the base rate, sensitivity or specificity, and say which matters most.</td>
+<td>Compare 1% vs 10% true ideas and 20% vs 80% sensitivity (specificity 95%).</td>
+<td>1%: 3.9% and 13.9%. 10%: 30.8% and 64.0%. The base rate matters most.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Work backwards, or model p-hacking as lower specificity.</td>
+<td>With 80% sensitivity and 95% specificity, what share of ideas must be true for half of discoveries to be true?</td>
+<td>0.8 <em>b</em> = 0.05 (1 − <em>b</em>), so <em>b</em> ≈ 5.9%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer.</strong> Same formula as T5, with the base rate as prevalence. α = 1 − specificity, β = 1 − sensitivity.</p>
+<p><strong>Common mistakes.</strong> Treating α = 5% as “5% of discoveries are false”; thinking higher sensitivity fixes a low base rate; forgetting that p-hacking raises the false-positive rate (lowers specificity).</p>
+<p><strong>Contexts.</strong> Drug trials, education programs, psychology experiments, “a new study shows…” headlines.</p>
+</section>
+<section id="t7.-which-direction-does-the-conditional-run" class="level1">
+<h1>T7. Which direction does the conditional run?</h1>
+<p><strong>Skill.</strong> Tell P( data | hypothesis ) apart from P( hypothesis | data ), and recognize when a claim reads one as the other. <em>(Lecture: “Statistical significance”, “Statistical significance (revisited)”, “Direction of conditions”.)</em></p>
+<p><strong>Parameters.</strong> A statement or claim (a p-value interpretation, an accuracy claim, a headline); which direction it states and which it implies.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>The problem</th>
+<th>Example</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Classify a statement as P( data | hypothesis ) or P( hypothesis | data ).</td>
+<td>“If the treatment did nothing, results this strong would happen 3% of the time.”</td>
+<td>P( data | hypothesis ): the chance of the data, assuming no effect</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Spot a reversed reading and say what it should be.</td>
+<td>A classmate gets p = 0.03 and says, “So there’s only a 3% chance my hypothesis is wrong.”</td>
+<td>The p-value is P( data this extreme | no effect ), not P( no effect | data ).</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Write a short, fair correction of a realistic claim, saying what extra information would be needed.</td>
+<td>“The detector is 95% accurate, so if it flags your essay, you cheated.”</td>
+<td>95% is P( flag | AI ). The question is P( AI | flag ), which also depends on how many essays are AI-written (a base rate).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer key (rubric).</strong> Names both conditionals correctly; says which one the claim needs; identifies the missing ingredient (usually a base rate or prior).</p>
+<p><strong>Common mistakes.</strong> Treating the two directions as interchangeable; arguing that the test or method is “wrong” rather than that the claim asks a different question.</p>
+<p><strong>Contexts.</strong> p-value interpretations, test accuracy claims, news headlines, policy reports.</p>
+</section>
+<section id="t8.-prior-likelihood-and-posterior-in-a-story" class="level1">
+<h1>T8. Prior, likelihood and posterior in a story</h1>
+<p><strong>Skill.</strong> Find the three parts of Bayesian updating in an everyday story: what we believed before, what we observed, and what we believe now. <em>(Lecture: “Bayesian Updating: What it is”, “Updating improves our assumptions”.)</em></p>
+<p><strong>Parameters.</strong> A story template with a starting belief, an observation and (for Levels 1–2) an updated belief; for Level 3, a second observer or a change in the evidence.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>The problem</th>
+<th>Example</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>All three parts are stated: label them.</td>
+<td>A doctor thinks a cough is probably a cold. An X-ray shows a shadow on the lung, and now the doctor thinks pneumonia is more likely.</td>
+<td>Prior: probably a cold. Data: the X-ray. Posterior: pneumonia more likely.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>The posterior isn’t stated: say which way the belief should move, and why.</td>
+<td>You expect the bus to Patan to take about 30 minutes. Three days in a row it takes 50 minutes.</td>
+<td>Toward a longer trip time, because the observations fit a longer trip better.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Explain the size of the update, or compare two people with different priors.</td>
+<td>“I thought 60% would vote for the mayor; a survey said 30%; now I think about 45%.” Why 45% and not 30%? What would move it closer to 30%?</td>
+<td>The posterior combines prior and data. A bigger survey, or a weaker prior, would move it closer to 30%.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer key (rubric).</strong> Each part identified correctly; the direction of the update matches the evidence; Level 3 names the strength of the prior and the amount of data.</p>
+<p><strong>Common mistakes.</strong> Calling the observation the posterior; expecting the posterior to equal the data; ignoring the prior entirely.</p>
+<p><strong>Contexts.</strong> Medicine, travel times, elections, weather, cricket form.</p>
+</section>
+<section id="t9.-bayesian-updating-by-counting" class="level1">
+<h1>T9. Bayesian updating by counting</h1>
+<p><strong>Skill.</strong> Update a belief over several possibilities by counting the ways each one could produce the data: prior × ways, then divide by the total. <em>(Lecture: the bag of stones app, “Bayes’ theorem”.)</em></p>
+<p><strong>Parameters.</strong> Number of stones in the bag <em>M</em> (3–9), which bags are possible (two, or all <em>M</em> + 1), the prior over bags (equal, or given), and a sequence of draws <strong>with replacement</strong>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>The problem</th>
+<th>Example</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Two possible bags, equal prior, one or two draws.</td>
+<td>A bag of 4 stones has either 1 or 3 blue stones, equally likely. You draw one stone: blue. How likely is the 3-blue bag?</td>
+<td>Ways: 1 vs 3, so 3 / 4 = 0.75</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Every possible bag, equal prior, 2–3 draws: fill in a table of ways and posteriors.</td>
+<td>A bag of 3 stones holds 0–3 blue stones, each equally likely. Draws: blue, black, blue.</td>
+<td>Ways <em>k</em> × (3 − <em>k</em>) × <em>k</em>: 0, 2, 4, 0. Posterior: 1 blue = 1/3, 2 blue = 2/3.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Sequential updating (yesterday’s posterior is today’s prior), order of draws, or an unequal prior.</td>
+<td>9 stones, equal prior, draws blue, black, blue (posterior peaks at 6 blue, 0.20). Draw one more blue. Update, then check against updating on all four draws at once.</td>
+<td>Ways <em>k</em>³ (9 − <em>k</em>), total 2,892. Peak moves to 7 blue (0.237). The same either way.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer.</strong> For <em>k</em> blue stones out of <em>M</em>, each blue draw contributes <em>k</em>, each black draw <em>M</em> − <em>k</em>. Posterior ∝ prior × product of ways; divide by the sum over bags.</p>
+<p><strong>Common mistakes.</strong> Forgetting to divide by the total; thinking the order of draws matters (with replacement it doesn’t); not ruling out impossible bags (0 blue after a blue draw); assuming the most plausible bag is certain.</p>
+<p><strong>Contexts.</strong> The bag of stones; a box of tickets; a basket of good and bad mangoes; share of supporters among a few households.</p>
+</section>
+<section id="t10.-observation-and-interpretation" class="level1">
+<h1>T10. Observation and interpretation</h1>
+<p><strong>Skill.</strong> Separate the observed part of a claim (what was counted, measured or recorded) from the interpretation built on it (the assumptions), in both statistical and ethnographic work. <em>(Lecture: “Objective or subjective?”, “Doing science”, “Science is updating”.)</em></p>
+<p><strong>Parameters.</strong> A claim (statistical, ethnographic, or one of each); for Levels 2–3, an alternative assumption that would change the conclusion.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>The problem</th>
+<th>Example</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Name the observation and one assumption behind a conclusion.</td>
+<td>“It rained on 179 of 365 days in 2025, so there’s a 49% chance of rain tomorrow.”</td>
+<td>Observation: 179 rainy days. Assumption: tomorrow is like an average day in 2025 (ignores the season).</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Show how a different assumption changes the conclusion.</td>
+<td>“Only 30% of 20 people surveyed back the mayor, so the mayor will lose.”</td>
+<td>Observation: 6 of 20. Assumptions: the 20 represent voters, people answered honestly, they will vote. A small or unrepresentative sample could change the conclusion.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Compare a statistical and an ethnographic claim, and propose an observation that would test an assumption.</td>
+<td>A survey finds that 70% of households trust the ward office; an ethnographer concludes from interviews that trust is low.</td>
+<td>Each joins observations with assumptions (who answered, what “trust” means, whose voices stand for others). Proposals: a follow-up that asks the survey question in interviews, or surveys the interviewed households.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer key (rubric).</strong> The observation is stated without interpretation; at least one assumption is named; the student explains how the conclusion depends on it; Level 3 treats both kinds of claim even-handedly.</p>
+<p><strong>Common mistakes.</strong> Treating numbers as automatically objective and interviews as automatically subjective; naming “bias” without saying which assumption.</p>
+<p><strong>Contexts.</strong> Weather forecasts, polls, program evaluations, ethnographic findings, news reports.</p>
 
 
 </section>

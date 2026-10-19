@@ -599,7 +599,7 @@ don’t know.</li>
 <tr class="odd">
 <td>0</td>
 <td>0%</td>
-<td>Impossible</td>
+<td>Something impossible</td>
 </tr>
 <tr class="even">
 <td>0.02</td>
@@ -624,13 +624,13 @@ don’t know.</li>
 <tr class="even">
 <td>1</td>
 <td>100%</td>
-<td>Certain</td>
+<td>Something certain</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="fragment">
-<p>To convert between the two, move the decimal point two places to the right or to the left.</p>
+<p>To convert between the two, move the decimal point two places right or left.</p>
 </div>
 </section>
 <section id="describing-probability-convention-2" class="slide level2" data-notes="notes/week1_notes.md#convention-2">
@@ -1532,16 +1532,10 @@ making a serious mistake.</p>
 <li class="fragment blue" data-fragment-index="3">“the probability of…data…”</li>
 </ul>
 <div class="fragment">
-<p>This frames <em>statistical significance</em> as:</p>
-<ul>
-<li>P( <span class="blue">data</span> | <span class="red">hypothesis</span> )</li>
-</ul>
+<p>How this frames <em>statistical significance</em>: P( <span class="blue">data</span> | <span class="red">hypothesis</span> )</p>
 </div>
 <div class="fragment">
-<p>Not the same as (what we usually actually want):</p>
-<ul>
-<li>P( <span class="red">hypothesis</span> | <span class="blue">data</span> )</li>
-</ul>
+<p>What we usually actually want: P( <span class="red">hypothesis</span> | <span class="blue">data</span> )</p>
 </div>
 </section>
 <section id="the-problem-with-p-values" class="slide level2" data-notes="notes/week1_notes.md#pvalue-direction">
@@ -2415,13 +2409,70 @@ becomes data, term for term, and the colors appear.</li>
           display:block!important;
       }</style></aside>
 <p><em>The one rule, written as a formula.</em></p>
+<!-- Week 1, "Bayes' theorem": the textbook formula, then the belief/data version, with
+     one more term colored at each click (prior, likelihood, posterior, data). Clicks 2-5
+     line up with the definitions on the slide (fragment-index 2-5). The copies are
+     stacked in one place and each shows for one click, so an edit to the formula has to
+     be made in all five belief/data copies. -->
 <div class="r-stack">
 <div class="fragment fade-out" data-fragment-index="1">
 <p><span class="math display">\[
 P(A \mid B) = \frac{P(B \mid A) \times P(A)}{P(B)}
 \]</span></p>
 </div>
-<div class="fragment" data-fragment-index="1">
+<div class="fragment fade-in-then-out" data-fragment-index="1">
+<p><span class="math display">\[
+P(\text{belief} \mid \text{data})
+=
+\frac{
+P(\text{data} \mid \text{belief})
+\;\times\;
+P(\text{belief})
+}{
+P(\text{data})
+}
+\]</span></p>
+</div>
+<div class="fragment fade-in-then-out" data-fragment-index="2">
+<p><span class="math display">\[
+P(\text{belief} \mid \text{data})
+=
+\frac{
+P(\text{data} \mid \text{belief})
+\;\times\;
+\class{red}{P(\text{belief})}
+}{
+P(\text{data})
+}
+\]</span></p>
+</div>
+<div class="fragment fade-in-then-out" data-fragment-index="3">
+<p><span class="math display">\[
+P(\text{belief} \mid \text{data})
+=
+\frac{
+\class{blue}{P(\text{data} \mid \text{belief})}
+\;\times\;
+\class{red}{P(\text{belief})}
+}{
+P(\text{data})
+}
+\]</span></p>
+</div>
+<div class="fragment fade-in-then-out" data-fragment-index="4">
+<p><span class="math display">\[
+\class{green}{P(\text{belief} \mid \text{data})}
+=
+\frac{
+\class{blue}{P(\text{data} \mid \text{belief})}
+\;\times\;
+\class{red}{P(\text{belief})}
+}{
+P(\text{data})
+}
+\]</span></p>
+</div>
+<div class="fragment" data-fragment-index="5">
 <p><span class="math display">\[
 \class{green}{P(\text{belief} \mid \text{data})}
 =
@@ -2436,12 +2487,17 @@ P(A \mid B) = \frac{P(B \mid A) \times P(A)}{P(B)}
 </div>
 </div>
 <ul>
-<li class="fragment"><span class="red"><strong>P( belief )</strong></span>: the <strong>prior</strong>. What we believed before.</li>
-<li class="fragment"><span class="blue"><strong>P( data | belief )</strong></span>: the <strong>likelihood</strong>. How likely the data are, if the belief is true.</li>
-<li class="fragment"><span class="green"><strong>P( belief | data )</strong></span>: the <strong>posterior</strong>. What we believe now.</li>
-<li class="fragment"><span class="gray"><strong>P( data )</strong></span>: Usually not interesting. Just here to rescale total possibilities to 100%.</li>
+<li class="fragment" data-fragment-index="2"><span class="red"><strong>P( belief )</strong></span>: the
+<strong>prior</strong>. What we believed before.</li>
+<li class="fragment" data-fragment-index="3"><span class="blue"><strong>P( data | belief )</strong></span>: the
+<strong>likelihood</strong>. How likely the data are, if the belief is
+true.</li>
+<li class="fragment" data-fragment-index="4"><span class="green"><strong>P( belief | data )</strong></span>: the
+<strong>posterior</strong>. What we believe now.</li>
+<li class="fragment" data-fragment-index="5"><span class="gray"><strong>P( data )</strong></span>: Needed to rescale
+total possibilities to 100%. (Usually not interesting)</li>
 </ul>
-<div class="fragment">
+<div class="fragment" data-fragment-index="6">
 <p>Conceptually: <span class="red"><strong>Prior</strong></span> × <span class="blue"><strong>Likelihood</strong></span> → <span class="green"><strong>Posterior</strong></span></p>
 </div>
 </section></section>
@@ -2524,34 +2580,39 @@ Only 8 are real.</p>
 </div>
 </div></div>
 </section>
-<section id="how-far-can-we-trust-a-discovery" class="slide level2 mechanics smaller" data-notes="notes/week1_notes.md#research-math">
-<h2>How far can we trust a “discovery”?</h2>
+<section id="how-far-can-we-trust-data" class="slide level2 mechanics smaller" data-notes="notes/week1_notes.md#research-math">
+<h2>How far can we trust data?</h2>
 <aside class="notes">
 <ul>
 <li>Mechanics slide, optional. It generalizes the 1,000-ideas picture to
 other kinds of study.</li>
-<li>Two error rates, both like the HIV test. α is the false-positive
-rate: how often a study says “significant” when the idea is false
-(usually set at 5%). β is the miss rate: how often it fails to find an
-idea that’s true. Power, a term students may meet in papers, is 1 −
-β.</li>
+<li>A study is a test of an idea, so it has the same two kinds of
+accuracy as the HIV test. Sensitivity: of the true ideas, the share it
+finds. Specificity: of the false ideas, the share it correctly
+rejects.</li>
+<li>Papers usually report the errors instead, which is the note at the
+bottom. α = 1 − specificity is the false-positive rate, usually set at
+5%. β = 1 − sensitivity is the miss rate. Power, a term students will
+meet in papers, is just sensitivity (1 − β). Same idea as the HIV test,
+counted from the other side.</li>
 <li>Every cell is the same calculation as the HIV table: (true share ×
-(1 − β)) / (true share × (1 − β) + (1 − true share) × α).</li>
+sensitivity) / (true share × sensitivity + (1 − true share) × (1 −
+specificity)).</li>
 <li>Read down the rows. A large trial of a promising idea is usually
 right (94%). The search for new effects, our 1,000 ideas, is usually
-wrong (14%), and worse with small samples (4%). Same α, same β; the
-difference is how many tested ideas were true to begin with. That’s the
-takeaway line.</li>
-<li>β of 80% (power of 20%) isn’t a strawman. Median power is around 20%
-in fields like neuroscience (Button et al. 2013) and economics
-(Ioannidis, Stanley &amp; Doucouliagos 2017).</li>
+wrong (14%), and worse with small samples (4%). Same sensitivity, same
+specificity; the difference is how many tested ideas were true to begin
+with. That’s the takeaway line.</li>
+<li>Sensitivity of 20% (β = 80%) isn’t a strawman. Median power is
+around 20% in fields like neuroscience (Button et al. 2013) and
+economics (Ioannidis, Stanley &amp; Doucouliagos 2017).</li>
 <li>The p-hacked row: α = 5% assumes one pre-planned test. Trying
 several outcomes, subgroups or controls until something works pushes the
 real false-positive rate up; 20% is illustrative, and Simmons, Nelson
 &amp; Simonsohn (2011) showed common choices can push it past 60%. When
-α equals 1 − β, a significant result is equally likely whether the idea
-is true or false, so the chance stays at the starting 10%. The study
-taught us nothing.</li>
+sensitivity equals 1 − specificity (20% each), a significant result is
+equally likely whether the idea is true or false, so the chance stays at
+the starting 10%. The study taught us nothing.</li>
 <li>If asked about fixes: a stricter threshold (p &lt; 0.005, Benjamin
 et al. 2018) helps but needs much bigger samples. Replication works
 better: a finding that keeps holding up in new studies earns trust no
@@ -2569,21 +2630,21 @@ threshold can give it.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>α: the chance of a “significant” result when the idea is false · β: the chance of missing an idea that’s true</em></p>
+<p><em><strong>Sensitivity</strong>: of the true ideas, the share a study finds · <strong>Specificity</strong>: of the false ideas, the share it correctly rejects</em></p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 47%">
+<col style="width: 45%">
 <col style="width: 14%">
-<col style="width: 8%">
-<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 10%">
 <col style="width: 20%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Type of study</th>
 <th style="text-align: center;">True ideas</th>
-<th style="text-align: center;">α</th>
-<th style="text-align: center;">β</th>
+<th style="text-align: center;">Sensitivity</th>
+<th style="text-align: center;">Specificity</th>
 <th style="text-align: center;">Chance a “discovery” is true</th>
 </tr>
 </thead>
@@ -2591,29 +2652,29 @@ threshold can give it.</li>
 <tr class="odd">
 <td>Large trial of a promising idea</td>
 <td style="text-align: center;">50%</td>
-<td style="text-align: center;">5%</td>
-<td style="text-align: center;">20%</td>
+<td style="text-align: center;">80%</td>
+<td style="text-align: center;">95%</td>
 <td style="text-align: center;"><strong>94%</strong></td>
 </tr>
 <tr class="even">
 <td>Small study of a promising idea</td>
 <td style="text-align: center;">50%</td>
-<td style="text-align: center;">5%</td>
-<td style="text-align: center;">80%</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">95%</td>
 <td style="text-align: center;">80%</td>
 </tr>
 <tr class="odd">
 <td>Search for new effects <em>(the 1,000 ideas)</em></td>
 <td style="text-align: center;">1%</td>
-<td style="text-align: center;">5%</td>
-<td style="text-align: center;">20%</td>
+<td style="text-align: center;">80%</td>
+<td style="text-align: center;">95%</td>
 <td style="text-align: center;"><span class="red">14%</span></td>
 </tr>
 <tr class="even">
 <td>Small search for new effects</td>
 <td style="text-align: center;">1%</td>
-<td style="text-align: center;">5%</td>
-<td style="text-align: center;">80%</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">95%</td>
 <td style="text-align: center;"><span class="red">4%</span></td>
 </tr>
 <tr class="odd">
@@ -2626,12 +2687,13 @@ threshold can give it.</li>
 </tbody>
 </table>
 <div class="fragment">
-<p>What matters most is how many of the ideas we test are true to begin with.</p>
+<p>What matters most is how many of the ideas we test are true to begin with, which isn’t something we can really know.</p>
 </div>
+<p><span class="source">Research usually reports these as error rates: α = 1 − specificity, the false-positive rate (usually 5%), and β = 1 − sensitivity, the miss rate. Sensitivity is also called power.</span></p>
 </section></section>
 <section>
-<section id="most-studies-are-wrong.-is-that-a-problem" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#is-that-a-problem">
-<h1>Most studies are wrong. Is that a problem?</h1>
+<section id="most-studies-are-wrong" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#is-that-a-problem">
+<h1>Most studies are wrong…</h1>
 <aside class="notes">
 <ul>
 <li>Back to the capybara: most published research is wrong, and that’s
@@ -2658,7 +2720,7 @@ researcher knows about the place and the people.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>Most studies are wrong.</em> <span class="fragment blue">…and that’s okay.</span></p>
+<p><span class="fragment blue">…and that’s okay.</span></p>
 <ul>
 <li class="fragment">A study was never supposed to be the answer. It’s one observation.</li>
 <li class="fragment">Each observation joins what we already know and nudges it, a little or a lot.</li>
