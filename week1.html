@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-5e29452fd08c161994b09096d4eb1dea.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0d0f1eeccaead7f5abafd630047a34cd.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -311,7 +311,7 @@ the goal of this course.</p></li>
 </ul>
 </section>
 
-<section id="statistical-significance" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#goals">
+<section id="statistical-significance" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#statistical-significance">
 <h1>Statistical significance</h1>
 <aside class="notes">
 <ul>
@@ -392,25 +392,24 @@ concepts.</li>
 </div>
 <ul>
 <li class="fragment">Tomorrow’s weather isn’t a lottery. Specific physical factors decide it.</li>
-<li class="fragment">The day isn’t random. <span class="blue">But, <em><strong>we</strong></em> are uncertain about it.</span></li>
-<li class="fragment">31% describes our degree of certainty about an uncertain fact.</li>
+<li class="fragment">The day isn’t random <span class="blue">…but <em><strong>we</strong></em> are uncertain about it.</span></li>
+<li class="fragment">31% describes how certain we are about an uncertain fact.</li>
 </ul>
 </section>
 <section id="probability-is-just-counting" class="slide level2" data-notes="notes/week1_notes.md#counting">
 <h2>Probability is just counting</h2>
 <aside class="notes">
 <ul>
+<li>Students already know all of these. The point is that they already
+understand probability; they just haven’t been told that’s what it
+is.</li>
 <li>Before any notation: probability is counting. Count everything that
 could happen, count the ones you care about, compare the two.</li>
-<li>Take the examples slowly. Students already know all of these. The
-point is that they already understand probability; they just haven’t
-been told that’s what it is.</li>
 <li>The class example is made up. Swap in real numbers from the room if
 you know them.</li>
 <li>Flag the promise: every probability in this lecture is a count. The
-HIV table counts 100,000 people. The published-research table counts
-10,000 hypotheses. If they ever get lost, they can go back to
-counting.</li>
+HIV table counts 100,000 people. The published-research picture counts
+1,000 ideas. If they ever get lost, they can go back to counting.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -588,6 +587,11 @@ don’t know.</li>
 <p><em>We write a probability as a number between 0 and 1, or as a percentage.</em></p>
 <div class="fragment">
 <table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Number</th>
@@ -614,7 +618,7 @@ don’t know.</li>
 <tr class="even">
 <td>0.31</td>
 <td>31%</td>
-<td>Rain in Kathmandu: 113 ÷ 365 days</td>
+<td>Rain in Kathmandu: 113 ÷ 365 days<sup>1</sup></td>
 </tr>
 <tr class="odd">
 <td>0.5</td>
@@ -632,7 +636,7 @@ don’t know.</li>
 <div class="fragment">
 <p>To convert between the two, move the decimal point two places right or left.</p>
 </div>
-</section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month’s average rate.</p></li></ol></aside></section>
 <section id="describing-probability-convention-2" class="slide level2" data-notes="notes/week1_notes.md#convention-2">
 <h2>Describing Probability: Convention 2</h2>
 <aside class="notes">
@@ -680,7 +684,7 @@ hypothesis.</li>
 <tr class="even">
 <td>P( getting heads )</td>
 <td>“the probability of getting heads”</td>
-<td>1 ÷ 2 ≈ 0.5</td>
+<td>1 ÷ 2 = 0.5</td>
 </tr>
 <tr class="odd">
 <td>P( rolling a six )</td>
@@ -744,10 +748,17 @@ we’ll just treat historical data as our basis for prediction.</p></li>
 <p><em>We make a probability more specific by adding a condition: P( event | condition ).</em> - P( rain | July ) means <span class="blue"><em>“the probability of rain, given that it’s July.”</em></span></p>
 <div class="fragment">
 <table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th style="text-align: right;">Rainy days</th>
+<th style="text-align: right;">Rainy days<sup>1</sup></th>
 <th style="text-align: right;">Days counted</th>
 <th style="text-align: right;">Probability</th>
 <th style="text-align: right;">%</th>
@@ -795,7 +806,7 @@ we’ll just treat historical data as our basis for prediction.</p></li>
 <div class="fragment">
 <p>Can data from the past five years help predict tomorrow? <span class="blue fragment">Maybe, maybe not.</span></p>
 </div>
-</section>
+<aside><ol class="aside-footnotes"><li id="fn2"><p>Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month’s average rate.</p></li></ol></aside></section>
 <section id="conditional-risk" class="slide level2" data-notes="notes/week1_notes.md#conditional-risk">
 <h2>Conditional risk</h2>
 <aside class="notes">
@@ -912,7 +923,7 @@ medical exam.</p>
           display:block!important;
       }</style></aside>
 <div class="fragment">
-<p>In Nepal, HIV has a prevalence of about 0.1%. We can write that as:</p>
+<p>In Nepal, HIV has a prevalence of about 0.1%.<sup>1</sup> We can write that as:</p>
 </div>
 <ul>
 <li class="fragment">P( HIV+ ) = 0.001 (0.1%)</li>
@@ -930,7 +941,10 @@ medical exam.</p>
 <li class="fragment">P( test– | HIV– ) = <strong>0.97</strong> (true negative)</li>
 </ul></li>
 </ul>
-</section>
+<div class="fragment">
+<p><span class="source">Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.</span></p>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>UNAIDS, AIDSinfo country data for Nepal: HIV prevalence among adults aged 15–49.</p></li></ol></aside></section>
 <section id="probability-for-decision-making-continued" class="slide level2" data-notes="notes/week1_notes.md#base-rate">
 <h2>Probability for Decision Making (continued)</h2>
 <aside class="notes">
@@ -986,12 +1000,12 @@ unintuitive.</p></li>
 <li>Specificity P( test– | HIV– ): 97%</li>
 </ul>
 <div class="fragment" data-fragment-index="0">
-<p>But there’s something strange here…</p>
+<p>But there’s something strange here…<span class="fragment blue" data-fragment-index="1">it assumes the thing we want to know.</span></p>
 </div>
-<div class="fragment" data-fragment-index="1">
-<p>What about P( HIV+ | test+)? <span class="fragment red" data-fragment-index="2">3.2%</span></p>
+<div class="fragment" data-fragment-index="2">
+<p>What we really want is P( HIV+ | test+): <span class="fragment red" data-fragment-index="3">3.2%</span></p>
 </div>
-<div class="fragment" data-fragment-index="3">
+<div class="fragment" data-fragment-index="4">
 <table class="caption-top">
 <colgroup>
 <col style="width: 6%">
@@ -1000,30 +1014,24 @@ unintuitive.</p></li>
 </colgroup>
 <thead>
 <tr class="header">
-<th><span class="fragment blue" data-fragment-index="4">(pop: 100,000)</span></th>
+<th><span class="fragment blue" data-fragment-index="5">(pop: 100,000)</span></th>
 <th>Test+</th>
 <th>Test–</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>HIV+</strong><br><span class="fragment blue" data-fragment-index="5">(0.1%&nbsp;=&nbsp;100)</span></td>
-<td>P( Test+ | HIV+ ): <strong>99%</strong><br><em>Sensitivity (True Positive)</em><br><span class="fragment blue" data-fragment-index="6">(99)</span></td>
-<td>P( Test– | HIV+ ): <strong>1%</strong><br><em>Type II Error (False Negative)</em><br><span class="fragment blue" data-fragment-index="6">(1)</span></td>
+<td><strong>HIV+</strong><br><span class="fragment blue" data-fragment-index="6">(0.1%&nbsp;=&nbsp;100)</span></td>
+<td>P( Test+ | HIV+ ): <strong>99%</strong><br><em>Sensitivity (True Positive)</em><br><span class="fragment blue" data-fragment-index="7">(99)</span></td>
+<td>P( Test– | HIV+ ): <strong>1%</strong><br><em>Type II Error (False Negative)</em><br><span class="fragment blue" data-fragment-index="7">(1)</span></td>
 </tr>
 <tr class="even">
-<td><strong>HIV–</strong><br><span class="fragment blue" data-fragment-index="5">(99.9%&nbsp;=&nbsp;99,900)</span></td>
-<td>P( Test+ | HIV– ): <strong>3%</strong><br><em>Type I Error (False Positive)</em><br><span class="fragment blue" data-fragment-index="6">(2,997)</span></td>
-<td>P( Test– | HIV– ): <strong>97%</strong><br><em>Specificity (True Negative)</em><br><span class="fragment blue" data-fragment-index="6">(96,903)</span></td>
+<td><strong>HIV–</strong><br><span class="fragment blue" data-fragment-index="6">(99.9%&nbsp;=&nbsp;99,900)</span></td>
+<td>P( Test+ | HIV– ): <strong>3%</strong><br><em>Type I Error (False Positive)</em><br><span class="fragment blue" data-fragment-index="7">(2,997)</span></td>
+<td>P( Test– | HIV– ): <strong>97%</strong><br><em>Specificity (True Negative)</em><br><span class="fragment blue" data-fragment-index="7">(96,903)</span></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="fragment">
-<ul>
-<li><em>Paradox: P(A|B) is not the same as P(B|A)</em></li>
-</ul>
-<p><span class="source">Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.</span></p>
 </div>
 </section>
 <section id="direction-of-conditions" class="slide level2">
@@ -1137,7 +1145,7 @@ accuracy and watch this happen.</li>
 </div>
 </div>
 </div><div class="column" style="width:42%;">
-<p>1,000 people get tested. Only <span class="blue">1 person has HIV</span>. The test identifies them.</p>
+<p>1,000 people get tested at random. Only <span class="blue">1 person has HIV</span>. The test identifies them.</p>
 <div class="fragment" data-fragment-index="1">
 <p>It also flags <span class="red">30 people who don’t have HIV</span>.</p>
 </div>
@@ -1532,10 +1540,10 @@ making a serious mistake.</p>
 <li class="fragment blue" data-fragment-index="3">“the probability of…data…”</li>
 </ul>
 <div class="fragment">
-<p>How this frames <em>statistical significance</em>: P( <span class="blue">data</span> | <span class="red">hypothesis</span> )</p>
+<p>How this frames statistical significance: P( <span class="blue">data</span> | <span class="red">hypothesis</span> )</p>
 </div>
 <div class="fragment">
-<p>What we usually actually want: P( <span class="red">hypothesis</span> | <span class="blue">data</span> )</p>
+<p>How we intuitively think about data: P( <span class="red">hypothesis</span> | <span class="blue">data</span> )</p>
 </div>
 </section>
 <section id="the-problem-with-p-values" class="slide level2" data-notes="notes/week1_notes.md#pvalue-direction">
@@ -1568,7 +1576,7 @@ observe.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>If statistics has ever made you feel dumb or intimidated, <span class="blue">it’s not you</span>. P-value imagines the world in a very <span class="red">strange way</span>.</p>
+<p>If statistics has ever made you feel dumb or intimidated, <span class="blue">it’s not you</span>. Significance testing imagines the world in a very <span class="red">strange way</span>.</p>
 <div class="fragment" data-fragment-index="1">
 <table class="caption-top">
 <colgroup>
@@ -1590,7 +1598,7 @@ observe.</li>
 <td><span class="fragment" data-fragment-index="2"><em>“What does this tell me about the <span class="green">world</span>?”</em></span></td>
 </tr>
 <tr class="even">
-<td><span class="fragment" data-fragment-index="3"><strong>A p-value</strong></span></td>
+<td><span class="fragment" data-fragment-index="3"><strong>A significance test</strong></span></td>
 <td><span class="fragment" data-fragment-index="3">an <span class="red">imagined world</span> with nothing going on</span></td>
 <td><span class="fragment" data-fragment-index="3"><em>“How surprising would my <span class="blue">data</span> be there?”</em></span></td>
 </tr>
@@ -1599,11 +1607,11 @@ observe.</li>
 </div>
 <ul>
 <li class="fragment">A p-value doesn’t tell you if a hypothesis is true.</li>
-<li class="fragment">It tells you how unlikely the data would be if the null hypothesis were true.</li>
+<li class="fragment">It tells you how unlikely data this extreme would be if the null hypothesis were true.</li>
 <li class="fragment">Those aren’t the same thing. P(A | B) ≠ P(B | A)</li>
 </ul>
 <div class="fragment">
-<p>We want a different kind of statistics to work the same way knowledge does: we start with <span class="red">assumptions</span>, we encounter new <span class="blue">data</span>, and we <span class="green">update our beliefs</span> about the world.</p>
+<p>Statistical significance works the opposite way that our intuitions do.</p>
 </div>
 </section></section>
 <section>
@@ -1656,15 +1664,15 @@ just one simple idea:</p>
 <div class="callout-content">
 <ul>
 <li class="fragment"><span class="red"><strong>Prior</strong></span>: <em>“He got 60% last time, so I think about 60% of Kathmandu will vote for him.”</em></li>
-<li class="fragment"><span class="blue"><strong>Likelihood</strong></span>: <em>“I took a small survey and only 20% of people said they’ll vote for him. That doesn’t fit very well with my prior belief of 60% but fits better with lower numbers.”</em></li>
+<li class="fragment"><span class="blue"><strong>Likelihood</strong></span>: <em>“Only 20% of my small survey said they’ll vote for him. That would be surprising if his true support were 60%, but quite likely if it were around 20–30%.”</em></li>
 <li class="fragment"><span class="green"><strong>Posterior</strong></span>: <em>“I now think about 45% of people will vote for him.”</em></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
 <div class="fragment">
-<p>That’s it. A poll, a regression, a causal model: everything in this course is just this <span class="blue">one rule</span>, applied again and again.</p>
+<p>Our posterior then becomes our prior for future observations.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 </section>
 <section id="bayesian-updating-example" class="slide level2 no-title">
@@ -2590,19 +2598,22 @@ other kinds of study.</li>
 accuracy as the HIV test. Sensitivity: of the true ideas, the share it
 finds. Specificity: of the false ideas, the share it correctly
 rejects.</li>
-<li>Papers usually report the errors instead, which is the note at the
-bottom. α = 1 − specificity is the false-positive rate, usually set at
-5%. β = 1 − sensitivity is the miss rate. Power, a term students will
-meet in papers, is just sensitivity (1 − β). Same idea as the HIV test,
-counted from the other side.</li>
+<li>Papers use different names for the same two numbers, which is the
+second half of each definition line. Sensitivity is called power.
+Specificity is 1 − the significance level α. α = 1 − specificity is the
+false-positive rate, usually set at 5%. β = 1 − sensitivity is the miss
+rate. Power, a term students will meet in papers, is just sensitivity (1
+− β). Same idea as the HIV test, counted from the other side.</li>
 <li>Every cell is the same calculation as the HIV table: (true share ×
 sensitivity) / (true share × sensitivity + (1 − true share) × (1 −
 specificity)).</li>
-<li>Read down the rows. A large trial of a promising idea is usually
-right (94%). The search for new effects, our 1,000 ideas, is usually
-wrong (14%), and worse with small samples (4%). Same sensitivity, same
-specificity; the difference is how many tested ideas were true to begin
-with. That’s the takeaway line.</li>
+<li>Read down the rows. A large trial of a treatment with strong earlier
+evidence is usually right (94%). A plausible new idea is right more
+often than not in a large study (64%), but not in a small one (31%). The
+search for new effects, our 1,000 ideas, is usually wrong (14%), and
+worse with small samples (4%). Same sensitivity, same specificity; the
+difference is how many tested ideas were true to begin with. That’s the
+takeaway line.</li>
 <li>Sensitivity of 20% (β = 80%) isn’t a strawman. Median power is
 around 20% in fields like neuroscience (Button et al. 2013) and
 economics (Ioannidis, Stanley &amp; Doucouliagos 2017).</li>
@@ -2612,7 +2623,7 @@ real false-positive rate up; 20% is illustrative, and Simmons, Nelson
 &amp; Simonsohn (2011) showed common choices can push it past 60%. When
 sensitivity equals 1 − specificity (20% each), a significant result is
 equally likely whether the idea is true or false, so the chance stays at
-the starting 10%. The study taught us nothing.</li>
+the starting 1%. The study taught us nothing.</li>
 <li>If asked about fixes: a stricter threshold (p &lt; 0.005, Benjamin
 et al. 2018) helps but needs much bigger samples. Replication works
 better: a finding that keeps holding up in new studies earns trust no
@@ -2630,7 +2641,8 @@ threshold can give it.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em><strong>Sensitivity</strong>: of the true ideas, the share a study finds · <strong>Specificity</strong>: of the false ideas, the share it correctly rejects</em></p>
+<p><em><strong>Sensitivity</strong>, or <strong>power</strong>: if the idea is true, what is the chance of getting a significant result.</em><br>
+<em><strong>Specificity</strong>, or 1 − the <strong>significance level</strong> α: if the idea is false, what is the chance of not getting a significant result.</em></p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 45%">
@@ -2642,54 +2654,64 @@ threshold can give it.</li>
 <thead>
 <tr class="header">
 <th>Type of study</th>
-<th style="text-align: center;">True ideas</th>
+<th style="text-align: center;">Base Rate</th>
 <th style="text-align: center;">Sensitivity</th>
 <th style="text-align: center;">Specificity</th>
-<th style="text-align: center;">Chance a “discovery” is true</th>
+<th style="text-align: center;">Chance a discovery is true</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Large trial of a promising idea</td>
+<td>Large trial of a treatment with strong earlier evidence</td>
 <td style="text-align: center;">50%</td>
 <td style="text-align: center;">80%</td>
 <td style="text-align: center;">95%</td>
-<td style="text-align: center;"><strong>94%</strong></td>
+<td style="text-align: center;">94%</td>
 </tr>
 <tr class="even">
-<td>Small study of a promising idea</td>
+<td>Small trial of a treatment with strong earlier evidence</td>
 <td style="text-align: center;">50%</td>
 <td style="text-align: center;">20%</td>
 <td style="text-align: center;">95%</td>
 <td style="text-align: center;">80%</td>
 </tr>
 <tr class="odd">
-<td>Search for new effects <em>(the 1,000 ideas)</em></td>
+<td>Large study of a plausible new idea</td>
+<td style="text-align: center;">10%</td>
+<td style="text-align: center;">80%</td>
+<td style="text-align: center;">95%</td>
+<td style="text-align: center;">64%</td>
+</tr>
+<tr class="even">
+<td>Small study of a plausible new idea</td>
+<td style="text-align: center;">10%</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">95%</td>
+<td style="text-align: center;"><span class="red">31%</span></td>
+</tr>
+<tr class="odd">
+<td>Large search for surprising new effects</td>
 <td style="text-align: center;">1%</td>
 <td style="text-align: center;">80%</td>
 <td style="text-align: center;">95%</td>
 <td style="text-align: center;"><span class="red">14%</span></td>
 </tr>
 <tr class="even">
-<td>Small search for new effects</td>
+<td>Small search for surprising new effects</td>
 <td style="text-align: center;">1%</td>
 <td style="text-align: center;">20%</td>
 <td style="text-align: center;">95%</td>
 <td style="text-align: center;"><span class="red">4%</span></td>
 </tr>
 <tr class="odd">
-<td>p-hacked small study</td>
-<td style="text-align: center;">10%</td>
+<td>Small search, re-analysed until something is significant (p-hacked)</td>
+<td style="text-align: center;">1%</td>
 <td style="text-align: center;">20%</td>
 <td style="text-align: center;">80%</td>
-<td style="text-align: center;"><span class="red">10%</span></td>
+<td style="text-align: center;"><span class="red">1%</span></td>
 </tr>
 </tbody>
 </table>
-<div class="fragment">
-<p>What matters most is how many of the ideas we test are true to begin with, which isn’t something we can really know.</p>
-</div>
-<p><span class="source">Research usually reports these as error rates: α = 1 − specificity, the false-positive rate (usually 5%), and β = 1 − sensitivity, the miss rate. Sensitivity is also called power.</span></p>
 </section></section>
 <section>
 <section id="most-studies-are-wrong" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#is-that-a-problem">
@@ -2722,11 +2744,10 @@ researcher knows about the place and the people.</li>
       }</style></aside>
 <p><span class="fragment blue">…and that’s okay.</span></p>
 <ul>
-<li class="fragment">A study was never supposed to be the answer. It’s one observation.</li>
+<li class="fragment">A single study was never supposed to be the answer. It’s just one observation.</li>
 <li class="fragment">Each observation joins what we already know and nudges it, a little or a lot.</li>
-<li class="fragment">A single observation never gives us the answer.</li>
-<li class="fragment">Instead, we use observations to support or challenge what we think we already know.</li>
-<li class="fragment">Without these prior assumptions, data is meaningless.</li>
+<li class="fragment">We use observation to support or challenge what we think we already know.</li>
+<li class="fragment">Without these prior assumptions, data is meaningless. Interesting claims need strong assumptions.</li>
 </ul>
 </section>
 <section id="science-is-updating" class="slide level2" data-notes="notes/week1_notes.md#science-is-updating">
@@ -2738,12 +2759,20 @@ or careful observation.</li>
 <li>Push back. Single observations are messy, and they often contradict
 each other. What makes science work is people: groups of scientists
 arguing about how to fit many observations together.</li>
+<li>The three steps are Bayesian updating in plain words, in the same
+colors as prior × likelihood → posterior. Assume: a prior is an
+assumption we write down, so others can see it and argue with it.
+Assumptions we hide can’t be checked. Look: new data test it; if what we
+saw fits what we assumed, confidence grows, and if not, the assumption
+moves. Update: the posterior is the improved assumption, and tomorrow
+it’s the prior. No single step has to be right. The process gets
+better.</li>
 <li>The big statement: science isn’t the experiments we do, it’s the
 debates we have about them. Over time, those debates make us less, and
 less, and less wrong.</li>
-<li>This is updating at the scale of a whole field. Each observation
-nudges what the field believes; the argument is how the nudges get
-weighed.</li>
+<li>“Written down where others can argue with it” sets up the next
+slide: the difference between fields is whether assumptions are stated
+openly.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2758,8 +2787,13 @@ weighed.</li>
       }</style></aside>
 <p>What makes science work isn’t experiments or observations.</p>
 <div class="fragment">
-<p>It’s <span class="blue">groups of scientists arguing</span> about how to fit many observations together, observations that often contradict each other.</p>
+<p>It’s <span class="blue">groups of scientists arguing</span> about how to fit many (often contradictory) experiments and observations together.</p>
 </div>
+<ul>
+<li class="fragment"><span class="red"><strong>Assume</strong></span>: a prior, written down where others can argue with it.</li>
+<li class="fragment"><span class="blue"><strong>Look</strong></span>: new data test it.</li>
+<li class="fragment"><span class="green"><strong>Update</strong></span>: the posterior, which is the starting point next time.</li>
+</ul>
 <div class="fragment">
 <div class="big-statement">
 <p>Science isn’t the experiments we do.<br>
@@ -2767,8 +2801,8 @@ It’s the debates we have about them.</p>
 </div>
 </div>
 </section>
-<section id="objective-or-subjective" class="slide level2" data-notes="notes/week1_notes.md#objective-subjective">
-<h2>Objective or subjective?</h2>
+<section id="hard-data" class="slide level2" data-notes="notes/week1_notes.md#objective-subjective">
+<h2>Hard data?</h2>
 <aside class="notes">
 <ul>
 <li>Read the quote. Students will have heard it, and some will half
@@ -2811,7 +2845,7 @@ others can challenge them.</p>
           display:block!important;
       }</style></aside>
 <blockquote>
-<p><em>“Ethnography is subjective. Statistics is objective. It’s hard data.”</em></p>
+<p><em>“Qualitative research is subjective. Statistics is objective.”</em></p>
 </blockquote>
 <div class="fragment">
 <table class="caption-top">
@@ -2829,21 +2863,22 @@ others can challenge them.</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Ethnography</strong></td>
+<td><strong>Qualitative</strong></td>
 <td>interviews, field notes</td>
-<td>what people meant; whose voices stand for others</td>
+<td>what people meant; where we chose to look; whose voices stand for others</td>
 </tr>
 <tr class="even">
-<td><strong>Statistics</strong></td>
-<td>surveys, measurements, records</td>
+<td><strong>Quantitative</strong></td>
+<td>surveys, records, measurements</td>
 <td>what causes what; how the data were generated</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="fragment">
-<p>Both join an objective part, the observation, with a subjective part, the assumptions. <span class="blue">The difference isn’t the field. It’s whether the assumptions are stated openly, where others can challenge them.</span></p>
-</div>
+<ul>
+<li class="fragment">Observation gathers objective facts, but the way we gather those facts and interpret them is directly tied to assumptions.</li>
+<li class="fragment">In both qualitative and quantitative work, we need strong assumptions to make interesting claims.</li>
+</ul>
 </section>
 <section id="doing-science" class="slide level2" data-notes="notes/week1_notes.md#doing-science">
 <h2>Doing science</h2>
@@ -2872,88 +2907,17 @@ first; the statistics serve it.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>The math is the least interesting part.</em></p>
+<p><em>The math is the least interesting part of statistics.</em></p>
 <ul>
 <li class="fragment">Nearly every important choice happens before any numbers: what to ask, what to observe, who to include, what to assume.</li>
-<li class="fragment">So we can interpret and critique a statistical argument without the statistical mechanics. Ask what it assumes, how the data were made, and what else could explain it.</li>
+<li class="fragment">After we’ve gathered our data, it never speaks for itself. We have to interpret it in<br>
+terms of what we already know.</li>
+<li class="fragment">So we can interpret and critique a statistical argument without needing the statistical mechanics.</li>
+<li class="fragment">In this five-week course, we’re going to talk about those choices: what a study assumes, how the data were made, and what else could explain it. The statistical mechanics can come later.</li>
 </ul>
 <div class="fragment">
 <div class="big-statement">
 <p>The science comes first.</p>
-</div>
-</div>
-</section>
-<section id="updating-improves-our-assumptions" class="slide level2" data-notes="notes/week1_notes.md#updating-assumptions">
-<h2>Updating improves our assumptions</h2>
-<aside class="notes">
-<ul>
-<li>This is the core of the week, and it isn’t technical.</li>
-<li>A prior is an assumption we write down, so others can see it and
-argue with it. That’s a strength, not a weakness: assumptions we hide
-can’t be checked.</li>
-<li>New data test the assumption. If what we saw fits what we assumed,
-our confidence grows. If it doesn’t, the assumption moves.</li>
-<li>The posterior is our improved assumption, and tomorrow it’s the
-prior. No single step has to be right. The process gets better.</li>
-<li>“Assume, look, update. Repeat.” is the whole method, and it’s what
-good researchers in any field already do. Bayesian statistics just makes
-it explicit and careful.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<ul>
-<li class="fragment">A <span class="red"><strong>prior</strong></span> is an assumption, written down where others can see it and argue with it.</li>
-<li class="fragment">New <span class="blue"><strong>data</strong></span> test it: does what we saw fit what we assumed?</li>
-<li class="fragment">The <span class="green"><strong>posterior</strong></span> is a better assumption, and the starting point next time.</li>
-</ul>
-<div class="fragment">
-<div class="big-statement">
-<p>Assume, look, update. Repeat.</p>
-</div>
-</div>
-</section>
-<section id="summary" class="slide level2" data-notes="notes/week1_notes.md#summary">
-<h2>Summary</h2>
-<aside class="notes">
-<ul>
-<li>Three ideas. Read them slowly.</li>
-<li>Probability is counting, and the direction of a conditional
-matters.</li>
-<li>Statistics, like ethnography, joins objective observation with
-subjective assumptions. A study is one observation, not an answer.</li>
-<li>Bayesian updating is how we improve those assumptions.</li>
-<li>End on the big statement: the science always comes first. Statistics
-serves the question, the theory and the knowledge of the context; it
-never replaces them.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<ol type="1">
-<li><span class="blue"><strong>Probability is counting</strong></span>, and direction matters: P( A | B ) ≠ P( B | A ).</li>
-<li><span class="blue"><strong>Objective and subjective.</strong></span> Statistics, like ethnography, joins objective observation with subjective assumptions. A study is one observation, not an answer.</li>
-<li><span class="blue"><strong>Bayesian updating</strong></span> is how we improve those assumptions: prior × likelihood → posterior.</li>
-</ol>
-<div class="fragment">
-<div class="big-statement">
-<p>The science always comes first.</p>
 </div>
 </div>
 </section></section>
@@ -2985,38 +2949,35 @@ class.</li>
       }</style></aside>
 <p>That’s what we’re going to do here: <span class="blue">put the science first</span>.</p>
 <ul>
-<li><strong>Week 2</strong>: distributions. A different way to think about numbers, for populations and for uncertainty.</li>
-<li><strong>Week 3</strong>: draw our science. Causal diagrams (DAGs) before any model.</li>
-<li><strong>Week 4</strong>: forks, pipes and colliders. What to control for, and what not to.</li>
-<li><strong>Week 5</strong>: what did they leave out? Unobserved forks, pipes and colliders.</li>
+<li><strong>Week 2</strong>: Distributions: A different way to think about numbers, for populations and for uncertainty.</li>
+<li><strong>Week 3</strong>: Causal modeling: using diagrams (DAGs) to map assumptions.</li>
+<li><strong>Week 4</strong>: Causal pitfalls: forks, pipes and colliders. What to control for, and what not to.</li>
+<li><strong>Week 5</strong>: Evaluating research: what did the authors leave out? Unobserved forks, pipes and colliders.</li>
 </ul>
-<div class="fragment">
-<p>Every week starts with the question and what we believe about the world. <span class="gray">The statistics come after.</span></p>
-</div>
 </section>
 
 <section id="the-bayesian-workflow" class="title-slide slide level1 smaller mechanics center">
 <h1>The Bayesian workflow</h1>
 <!-- The ten-step workflow, shared by workflow.qmd and the week 1 deck. -->
 <ul>
-<li class="fragment"><strong>Scientific model:</strong> what we believe about the world, before any statistics.
+<li><strong>Scientific model:</strong> what we believe about the world, before any statistics.
 <ol type="1">
-<li class="fragment"><strong>Ask the question.</strong> Say in plain words what you want to know, and picture what the answer would look like.</li>
-<li class="fragment"><strong>Draw the causal model (DAG).</strong> Write down what you assume causes what, based on what you know about the domain.</li>
-<li class="fragment"><strong>Define the estimand.</strong> Use the DAG to turn your question into one exact number, before you touch the data.</li>
-<li class="fragment"><strong>Simulate the population.</strong> Write a simulation that could produce data like yours.</li>
+<li><strong>Ask the question.</strong> Say in plain words what you want to know, and picture what the answer would look like.</li>
+<li><strong>Draw the causal model (DAG).</strong> Write down what you assume causes what, based on what you know about the domain.</li>
+<li><strong>Define the estimand.</strong> Use the DAG to turn your question into one exact number, before you touch the data.</li>
+<li><strong>Simulate the population.</strong> Write a simulation that could produce data like yours.</li>
 </ol></li>
-<li class="fragment"><strong>Statistical model:</strong> the machinery that turns data into an estimate, tested where we already know the truth.
+<li><strong>Statistical model:</strong> the machinery that turns data into an estimate, tested where we already know the truth.
 <ol start="5" type="1">
-<li class="fragment"><strong>Write the formal model.</strong> Derive the statistical model from the DAG, in math notation.</li>
-<li class="fragment"><strong>Write the Stan code.</strong> Translate the formal model into a program.</li>
-<li class="fragment"><strong>Test on simulated data.</strong> Check that the priors imply plausible data and that the model recovers parameters we already know.</li>
+<li><strong>Write the formal model.</strong> Derive the statistical model from the DAG, in math notation.</li>
+<li><strong>Write the Stan code.</strong> Translate the formal model into a program.</li>
+<li><strong>Test on simulated data.</strong> Check that the priors imply plausible data and that the model recovers parameters we already know.</li>
 </ol></li>
-<li class="fragment"><strong>Analysis:</strong> the real data, the estimate, and how far to trust it.
+<li><strong>Analysis:</strong> the real data, the estimate, and how far to trust it.
 <ol start="8" type="1">
-<li class="fragment"><strong>Fit and validate the model.</strong> Run the sampler, check its diagnostics, and run posterior predictive checks. Can we trust the model?</li>
-<li class="fragment"><strong>Compute the estimate.</strong> Use the fitted model to estimate the estimand from step 3.</li>
-<li class="fragment"><strong>Test its robustness.</strong> How much does the estimate depend on our assumptions?</li>
+<li><strong>Fit and validate the model.</strong> Run the sampler, check its diagnostics, and run posterior predictive checks. Can we trust the model?</li>
+<li><strong>Compute the estimate.</strong> Use the fitted model to estimate the estimand from step 3.</li>
+<li><strong>Test its robustness.</strong> How much does the estimate depend on our assumptions?</li>
 </ol></li>
 </ul>
 </section>
@@ -3052,7 +3013,7 @@ we’ll build them later. Today the point is the logic of updating.</li>
 <li><strong>Background</strong>: in the last election, the mayor got 60% of the vote.</li>
 <li><strong>Data</strong>: we survey <em>n</em> voters at random, and <em>k</em> of them say they will vote for the mayor.</li>
 </ul>
-<div class="fragment" title="A deliberately simple model">
+<div title="A deliberately simple model">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -3096,9 +3057,9 @@ k &amp;\sim \text{Binomial}(n,\ \theta) &amp;&amp; \class{blue}{\text{likelihood
 \end{aligned}
 \]</span></p>
 <ul>
-<li class="fragment">The first line is the <strong>likelihood</strong>: how the data are generated, given θ.</li>
-<li class="fragment">The second line is the <strong>prior</strong>: what we believe about θ before any data.</li>
-<li class="fragment">From Week 3 on, we’ll build models like this from a DAG.</li>
+<li>The first line is the <strong>likelihood</strong>: how the data are generated, given θ.</li>
+<li>The second line is the <strong>prior</strong>: what we believe about θ before any data.</li>
+<li>From Week 3 on, we’ll build models like this from a DAG.</li>
 </ul>
 </section>
 <section id="step-1-the-prior" class="slide level2" data-notes="notes/week1_notes.md#poll-prior">
@@ -3108,6 +3069,9 @@ k &amp;\sim \text{Binomial}(n,\ \theta) &amp;&amp; \class{blue}{\text{likelihood
 <li>Ask the room to draw their own prior. Someone who remembers the 60%
 result from last election might pile weight around 60%. Someone with no
 opinion might leave it flat.</li>
+<li>Dragging a point pulls its neighbors along, less and less farther
+out, so one drag makes a smooth hump. Drag several points to shape it
+further.</li>
 <li>The “Score” column is just the height you drew. “Probability”
 rescales the scores so they add up to 1. Only the <em>shape</em>
 matters.</li>
@@ -3144,13 +3108,20 @@ here is what gets updated.</li>
 <h2>Step 2: The likelihood</h2>
 <aside class="notes">
 <ul>
+<li>This is where the data come in. The sliders set the survey: how many
+people we asked, and what share said “mayor”. It starts at 4 of 20
+(20%), the survey in the mayor example.</li>
 <li>Same question we asked about the HIV test, turned around: for each
 possible θ, how likely is the data we saw?</li>
-<li>6 of 20 is very plausible if θ is 30%, plausible-ish at 50%,
-unlikely at 60%, and almost impossible at 80%.</li>
+<li>Read the table: 4 of 20 is quite likely if θ is 20% (0.22), much
+less so at 40% (0.035), unlikely at 60%, and almost impossible at
+80%.</li>
+<li>Move the survey size up to a few hundred at the same 20%: the curve
+gets much narrower. More data rule out more values of θ.</li>
 <li>Point out that the likelihood curve is not a probability
 distribution over θ. It’s a set of answers to “P(data | θ)” for many
 θs.</li>
+<li>Whatever survey is set here is the one Step 3 uses.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3163,30 +3134,49 @@ distribution over θ. It’s a set of answers to “P(data | θ)” for many
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>We survey 20 voters. 6 of them (30%) say they will vote for the mayor.</em></p>
-<div class="columns">
-<div class="column" style="width:55%;">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week1_files/figure-revealjs/likelihood-1.png" style="width:100.0%"></p>
-</figure>
+<p><em>Set the survey. How likely is that result, for each possible value of θ?</em></p>
+<!-- Week 1, "Step 2: The likelihood": sliders for the survey, with the likelihood curve
+     and its value at a few θs. Behavior in js/poll-likelihood.js (the survey is shared
+     with Step 3 through js/poll-store.js), styles in css/deck.scss. -->
+<div class="widget-layout">
+  <div id="poll-lik-graph" class="widget-graph"></div>
+  <div class="poll-side">
+    <label for="poll-n">People surveyed: <b id="poll-n-out"></b></label>
+    <input type="range" id="poll-n" min="0" max="500" step="1" value="20">
+    <label for="poll-share">Said "mayor": <b id="poll-share-out"></b></label>
+    <input type="range" id="poll-share" min="0" max="100" step="1" value="20">
+    
+<table class="poll-stats caption-top">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">If θ is</th>
+<th id="poll-lik-head" class="blue" data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>20%</td>
+<td id="poll-lik-20"></td>
+</tr>
+<tr class="even">
+<td>40%</td>
+<td id="poll-lik-40"></td>
+</tr>
+<tr class="odd">
+<td>60%</td>
+<td id="poll-lik-60"></td>
+</tr>
+<tr class="even">
+<td>80%</td>
+<td id="poll-lik-80"></td>
+</tr>
+</tbody>
+</table>
+
+  </div>
 </div>
-</div>
-</div>
-</div><div class="column" style="width:45%;">
-<p>How consistent is “6 of 20” with each possible value of θ?</p>
-<ul>
-<li>If θ = 30%: P( 6 of 20 ) = 0.192</li>
-<li>If θ = 50%: P( 6 of 20 ) = 0.037</li>
-<li>If θ = 60%: P( 6 of 20 ) = 0.005</li>
-<li>If θ = 80%: P( 6 of 20 ) = 0.0000017</li>
-</ul>
-<div class="fragment">
-<p>The likelihood is <strong>not</strong> a belief. It’s what the coin-flip process in the world says about our data, one candidate value of θ at a time.</p>
-</div>
-</div></div>
+<script type="module" src="js/poll-likelihood.js"></script>
+<p>The likelihood is <strong>not</strong> a belief. It’s what our model of the survey (each answer like a coin flip) says about our data, one candidate value of θ at a time.</p>
 </section>
 <section id="step-3-prior-likelihood-posterior" class="slide level2" data-notes="notes/week1_notes.md#poll-posterior">
 <h2>Step 3: Prior × likelihood → posterior</h2>
@@ -3195,18 +3185,19 @@ distribution over θ. It’s a set of answers to “P(data | θ)” for many
 <li>At each value of θ, multiply the prior’s height by the likelihood’s
 height, then rescale so the total is 1. That’s the posterior. Nothing
 else is going on.</li>
-<li>Start at 20 people and 30%. With a flat prior, the green curve sits
-right on the dashed blue one. With a 60% prior, it lands in
-between.</li>
-<li>Drag the survey size up to a few hundred. The likelihood narrows,
-and the prior matters less and less.</li>
+<li>The survey comes from Step 2 (it starts at 4 of 20). With a flat
+prior, the green curve sits right on the dashed blue one. With a 60%
+prior, it lands in between.</li>
+<li>Go back to Step 2 and raise the survey size to a few hundred. Back
+here, the likelihood is narrower, and the prior matters less and
+less.</li>
 <li>“P( mayor wins )” is the share of the posterior above 50%. That’s
 the answer people actually want, and it’s the P(hypothesis | data) we
 couldn’t get from a significance test.</li>
 <li>“Make this posterior my new prior” copies the posterior back onto
-the 21 draggable points and clears the survey. Then run a “second poll”.
-It’s coarse, since 21 points can’t capture a very narrow curve, but it
-shows the idea.</li>
+the 21 draggable points and clears the survey on Step 2. Then set a
+“second poll” there. It’s coarse, since 21 points can’t capture a very
+narrow curve, but it shows the idea.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3219,15 +3210,12 @@ shows the idea.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<!-- Week 1, "Step 3": the prior from Step 1 times a survey likelihood. Behavior in
-     js/poll-posterior.js, styles in css/deck.scss. -->
+<!-- Week 1, "Step 3": the prior from Step 1 times the likelihood of the survey set on
+     Step 2. Behavior in js/poll-posterior.js, styles in css/deck.scss. -->
 <div class="widget-layout">
   <div id="poll-post-graph" class="widget-graph"></div>
   <div class="poll-side">
-    <label for="poll-n">People surveyed: <b id="poll-n-out"></b></label>
-    <input type="range" id="poll-n" min="0" max="500" step="1" value="20">
-    <label for="poll-share">Said "mayor": <b id="poll-share-out"></b></label>
-    <input type="range" id="poll-share" min="0" max="100" step="1" value="30">
+    <p class="poll-survey">Survey: <b id="poll-survey-out"></b><br><small>Change it on Step 2.</small></p>
     
 <table class="poll-stats caption-top">
 <thead>
@@ -3286,16 +3274,15 @@ building.</li>
       }</style></aside>
 <ul>
 <li><strong>Flat prior vs.&nbsp;strong prior.</strong> Draw a flat prior, then a narrow one around 60% (last election). With the same survey, how far apart are the posteriors?</li>
-<li><strong>More data.</strong> Keep the survey at 30%, but raise <em>n</em> from 20 to 500. What happens to the prior’s influence?</li>
-<li><strong>Updating in sequence.</strong> Make the posterior your new prior, then run a second survey. Yesterday’s posterior is today’s prior.</li>
+<li><strong>More data.</strong> On Step 2, keep the survey at 20% but raise <em>n</em> from 20 to 500. What happens to the prior’s influence?</li>
+<li><strong>Updating in sequence.</strong> Make the posterior your new prior, then set a second survey on Step 2. Yesterday’s posterior is today’s prior.</li>
 <li><strong>Answering the real question.</strong> P( mayor wins ) is a direct statement about the hypothesis given the data: <span class="green">P( hypothesis | data )</span>, not a p-value.</li>
 </ul>
-<div class="fragment">
 <p><em>What is the result, and how much does it depend on our assumptions?</em> This is that question, in miniature.</p>
-</div>
 
 
 </section></section>
+
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="images/logo_compact_blue.svg" class="slide-logo"></p>
