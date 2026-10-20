@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0d0f1eeccaead7f5abafd630047a34cd.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4e953c4d60f442aabfc0aaa9c98f0200.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -1960,7 +1960,35 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
           `;
         }
 
+        // Footnotes appear with the text they belong to. Quarto writes each reference as a
+        // bare <sup>N</sup> and the notes as a numbered list at the bottom of the slide.
+        // Mark each reference .footnote-ref (styled in deck.scss), and when it sits inside
+        // a fragment, make its note a fragment with the same index. Reveal only numbers a
+        // slide's fragments when it visits the slide, so number them here first.
+        function syncFootnoteFragments() {
+          document.querySelectorAll(".reveal .slides section").forEach((slide) => {
+            const notes = slide.querySelectorAll(":scope > aside ol.aside-footnotes > li");
+            if (!notes.length) return;
+            Reveal.syncFragments(slide);
+            let changed = false;
+            const sups = [...slide.querySelectorAll("sup")].filter((s) => !s.closest("aside"));
+            notes.forEach((note, i) => {
+              const ref = sups.find((s) => s.textContent.trim() === String(i + 1));
+              if (!ref) return;
+              ref.classList.add("footnote-ref");
+              const frag = ref.closest(".fragment");
+              if (!frag || !frag.hasAttribute("data-fragment-index")) return;
+              note.classList.add("fragment");
+              note.setAttribute("data-fragment-index", frag.getAttribute("data-fragment-index"));
+              changed = true;
+            });
+            if (changed) Reveal.syncFragments(slide);
+          });
+        }
+
         function addControls() {
+          syncFootnoteFragments();
+
           // Patch once controls are being added (Reveal is ready)
           patchScrollViewFragmentCounting();
 

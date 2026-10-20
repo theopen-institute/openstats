@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0d0f1eeccaead7f5abafd630047a34cd.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4e953c4d60f442aabfc0aaa9c98f0200.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -587,11 +587,6 @@ don’t know.</li>
 <p><em>We write a probability as a number between 0 and 1, or as a percentage.</em></p>
 <div class="fragment">
 <table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Number</th>
@@ -663,11 +658,6 @@ hypothesis.</li>
 <p><em>We write the probability of an event as P( event ).</em></p>
 <div class="fragment">
 <table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>We write</th>
@@ -745,16 +735,12 @@ we’ll just treat historical data as our basis for prediction.</p></li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>We make a probability more specific by adding a condition: P( event | condition ).</em> - P( rain | July ) means <span class="blue"><em>“the probability of rain, given that it’s July.”</em></span></p>
+<p><em>We make a probability more specific by adding a condition: P( event | condition ).</em></p>
+<ul>
+<li>P( rain | July ) means <span class="blue"><em>“the probability of rain, given that it’s July.”</em></span></li>
+</ul>
 <div class="fragment">
 <table class="caption-top">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -923,7 +909,7 @@ medical exam.</p>
           display:block!important;
       }</style></aside>
 <div class="fragment">
-<p>In Nepal, HIV has a prevalence of about 0.1%.<sup>1</sup> We can write that as:</p>
+<p>In Nepal, HIV has a prevalence of about 0.1%. We can write that as:</p>
 </div>
 <ul>
 <li class="fragment">P( HIV+ ) = 0.001 (0.1%)</li>
@@ -944,7 +930,7 @@ medical exam.</p>
 <div class="fragment">
 <p><span class="source">Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.</span></p>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn3"><p>UNAIDS, AIDSinfo country data for Nepal: HIV prevalence among adults aged 15–49.</p></li></ol></aside></section>
+</section>
 <section id="probability-for-decision-making-continued" class="slide level2" data-notes="notes/week1_notes.md#base-rate">
 <h2>Probability for Decision Making (continued)</h2>
 <aside class="notes">
@@ -1007,11 +993,6 @@ unintuitive.</p></li>
 </div>
 <div class="fragment" data-fragment-index="4">
 <table class="caption-top">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 46%">
-<col style="width: 46%">
-</colgroup>
 <thead>
 <tr class="header">
 <th><span class="fragment blue" data-fragment-index="5">(pop: 100,000)</span></th>
@@ -1579,11 +1560,6 @@ observe.</li>
 <p>If statistics has ever made you feel dumb or intimidated, <span class="blue">it’s not you</span>. Significance testing imagines the world in a very <span class="red">strange way</span>.</p>
 <div class="fragment" data-fragment-index="1">
 <table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -2644,13 +2620,6 @@ threshold can give it.</li>
 <p><em><strong>Sensitivity</strong>, or <strong>power</strong>: if the idea is true, what is the chance of getting a significant result.</em><br>
 <em><strong>Specificity</strong>, or 1 − the <strong>significance level</strong> α: if the idea is false, what is the chance of not getting a significant result.</em></p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 45%">
-<col style="width: 14%">
-<col style="width: 10%">
-<col style="width: 10%">
-<col style="width: 20%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Type of study</th>
@@ -2849,11 +2818,6 @@ others can challenge them.</p>
 </blockquote>
 <div class="fragment">
 <table class="caption-top">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 32%">
-<col style="width: 50%">
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -3038,6 +3002,17 @@ the likelihood (how data are generated given θ), and the second is the
 prior (what we believe about θ before data).</li>
 <li>Nobody needs to read Binomial notation fluently yet. The point is
 that the whole model is just a likelihood and a prior.</li>
+<li>Read the two lines aloud: “k is drawn from a binomial with n and θ;
+θ is drawn from your prior.” The table is the key: n and k are data we
+know, θ is the one thing we don’t.</li>
+<li>“Binomial” just means counting coin flips, the garden of forking
+paths from earlier with more flips. If asked: the chance of k “mayor”
+answers is (the number of ways to get k) × θ^k (1 − θ)^(n−k). For 4 of
+20 at θ = 20% that’s about 0.22, the number Step 2 shows.</li>
+<li>The coin-flip picture carries the assumptions: everyone answers
+independently, with the same chance θ. A real survey breaks both
+(households, neighborhoods, who picks up the phone), which is what the
+later weeks are about.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3056,10 +3031,41 @@ k &amp;\sim \text{Binomial}(n,\ \theta) &amp;&amp; \class{blue}{\text{likelihood
 \theta &amp;\sim \text{your prior} &amp;&amp; \class{red}{\text{prior}}
 \end{aligned}
 \]</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Read it as</th>
+<th>In our survey</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(n\)</span></td>
+<td>the number of people surveyed</td>
+<td>20: data, we know it</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(k\)</span></td>
+<td>how many of them said “mayor”</td>
+<td>4: data, we know it</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\theta\)</span></td>
+<td>the mayor’s share among all voters</td>
+<td>unknown: what we want to learn</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sim\)</span></td>
+<td>“is drawn from”</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>The first line is the <strong>likelihood</strong>: how the data are generated, given θ.</li>
-<li>The second line is the <strong>prior</strong>: what we believe about θ before any data.</li>
-<li>From Week 3 on, we’ll build models like this from a DAG.</li>
+<li class="fragment"><span class="blue"><strong>Line 1</strong></span>: each person we ask is a coin flip that lands “mayor” with chance θ.</li>
+<li class="fragment"><span class="red"><strong>Line 2</strong></span>: what we believe about θ before asking anyone.</li>
+<li class="fragment">From Week 3 on, we’ll build models like this visually.</li>
 </ul>
 </section>
 <section id="step-1-the-prior" class="slide level2" data-notes="notes/week1_notes.md#poll-prior">
@@ -3656,7 +3662,35 @@ building.</li>
           `;
         }
 
+        // Footnotes appear with the text they belong to. Quarto writes each reference as a
+        // bare <sup>N</sup> and the notes as a numbered list at the bottom of the slide.
+        // Mark each reference .footnote-ref (styled in deck.scss), and when it sits inside
+        // a fragment, make its note a fragment with the same index. Reveal only numbers a
+        // slide's fragments when it visits the slide, so number them here first.
+        function syncFootnoteFragments() {
+          document.querySelectorAll(".reveal .slides section").forEach((slide) => {
+            const notes = slide.querySelectorAll(":scope > aside ol.aside-footnotes > li");
+            if (!notes.length) return;
+            Reveal.syncFragments(slide);
+            let changed = false;
+            const sups = [...slide.querySelectorAll("sup")].filter((s) => !s.closest("aside"));
+            notes.forEach((note, i) => {
+              const ref = sups.find((s) => s.textContent.trim() === String(i + 1));
+              if (!ref) return;
+              ref.classList.add("footnote-ref");
+              const frag = ref.closest(".fragment");
+              if (!frag || !frag.hasAttribute("data-fragment-index")) return;
+              note.classList.add("fragment");
+              note.setAttribute("data-fragment-index", frag.getAttribute("data-fragment-index"));
+              changed = true;
+            });
+            if (changed) Reveal.syncFragments(slide);
+          });
+        }
+
         function addControls() {
+          syncFootnoteFragments();
+
           // Patch once controls are being added (Reveal is ready)
           patchScrollViewFragmentCounting();
 
