@@ -28,7 +28,7 @@
 
 - To make sense of it, we need to understand what statistics is. We need to stop treating statistics as mathmatical rituals and start treating it like a way to reflect on and update our own thinking. Thats the goal of this course.
 
-## This week's goals {#goals}
+# Statistical significance {#statistical-significance}
 
 - This approach is null hypothesis significance testing, the most familiar part of frequentist (or "classical") statistics. Most people just call it "statistics".
 - There's nothing wrong with frequentist approaches. They are valid, capable, convenient and useful.
@@ -45,10 +45,10 @@
 
 # Probability is counting {#counting}
 
+- Students already know all of these. The point is that they already understand probability; they just haven't been told that's what it is.
 - Before any notation: probability is counting. Count everything that could happen, count the ones you care about, compare the two.
-- Take the examples slowly. Students already know all of these. The point is that they already understand probability; they just haven't been told that's what it is.
 - The class example is made up. Swap in real numbers from the room if you know them.
-- Flag the promise: every probability in this lecture is a count. The HIV table counts 100,000 people. The published-research table counts 10,000 hypotheses. If they ever get lost, they can go back to counting.
+- Flag the promise: every probability in this lecture is a count. The HIV table counts 100,000 people. The published-research picture counts 1,000 ideas. If they ever get lost, they can go back to counting.
 
 # Counting ways {#counting-ways}
 
@@ -190,11 +190,11 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 
 - Mechanics slide, optional. It generalizes the 1,000-ideas picture to other kinds of study.
 - A study is a test of an idea, so it has the same two kinds of accuracy as the HIV test. Sensitivity: of the true ideas, the share it finds. Specificity: of the false ideas, the share it correctly rejects.
-- Papers usually report the errors instead, which is the note at the bottom. α = 1 − specificity is the false-positive rate, usually set at 5%. β = 1 − sensitivity is the miss rate. Power, a term students will meet in papers, is just sensitivity (1 − β). Same idea as the HIV test, counted from the other side.
+- Papers use different names for the same two numbers, which is the second half of each definition line. Sensitivity is called power. Specificity is 1 − the significance level α. α = 1 − specificity is the false-positive rate, usually set at 5%. β = 1 − sensitivity is the miss rate. Power, a term students will meet in papers, is just sensitivity (1 − β). Same idea as the HIV test, counted from the other side.
 - Every cell is the same calculation as the HIV table: (true share × sensitivity) / (true share × sensitivity + (1 − true share) × (1 − specificity)).
-- Read down the rows. A large trial of a promising idea is usually right (94%). The search for new effects, our 1,000 ideas, is usually wrong (14%), and worse with small samples (4%). Same sensitivity, same specificity; the difference is how many tested ideas were true to begin with. That's the takeaway line.
+- Read down the rows. A large trial of a treatment with strong earlier evidence is usually right (94%). A plausible new idea is right more often than not in a large study (64%), but not in a small one (31%). The search for new effects, our 1,000 ideas, is usually wrong (14%), and worse with small samples (4%). Same sensitivity, same specificity; the difference is how many tested ideas were true to begin with. That's the takeaway line.
 - Sensitivity of 20% (β = 80%) isn't a strawman. Median power is around 20% in fields like neuroscience (Button et al. 2013) and economics (Ioannidis, Stanley & Doucouliagos 2017).
-- The p-hacked row: α = 5% assumes one pre-planned test. Trying several outcomes, subgroups or controls until something works pushes the real false-positive rate up; 20% is illustrative, and Simmons, Nelson & Simonsohn (2011) showed common choices can push it past 60%. When sensitivity equals 1 − specificity (20% each), a significant result is equally likely whether the idea is true or false, so the chance stays at the starting 10%. The study taught us nothing.
+- The p-hacked row: α = 5% assumes one pre-planned test. Trying several outcomes, subgroups or controls until something works pushes the real false-positive rate up; 20% is illustrative, and Simmons, Nelson & Simonsohn (2011) showed common choices can push it past 60%. When sensitivity equals 1 − specificity (20% each), a significant result is equally likely whether the idea is true or false, so the chance stays at the starting 1%. The study taught us nothing.
 - If asked about fixes: a stricter threshold (p < 0.005, Benjamin et al. 2018) helps but needs much bigger samples. Replication works better: a finding that keeps holding up in new studies earns trust no threshold can give it.
 - Ask the room: which row does your own field live in?
 
@@ -225,8 +225,9 @@ For those interested in math, I definitely encourage you to where the theorem co
 
 - Ask the room: what makes science work? Most people say experiments, or careful observation.
 - Push back. Single observations are messy, and they often contradict each other. What makes science work is people: groups of scientists arguing about how to fit many observations together.
+- The three steps are Bayesian updating in plain words, in the same colors as prior × likelihood → posterior. Assume: a prior is an assumption we write down, so others can see it and argue with it. Assumptions we hide can't be checked. Look: new data test it; if what we saw fits what we assumed, confidence grows, and if not, the assumption moves. Update: the posterior is the improved assumption, and tomorrow it's the prior. No single step has to be right. The process gets better.
 - The big statement: science isn't the experiments we do, it's the debates we have about them. Over time, those debates make us less, and less, and less wrong.
-- This is updating at the scale of a whole field. Each observation nudges what the field believes; the argument is how the nudges get weighed.
+- "Written down where others can argue with it" sets up the next slide: the difference between fields is whether assumptions are stated openly.
 
 # Objective or subjective? {#objective-subjective}
 
@@ -250,14 +251,6 @@ This is why I'm always confused when people say statistics is "objective" or "mo
 - Nearly every important choice happens before any numbers: what question to ask, what to observe, who to include, what to assume. The calculation comes last, and it's the part a computer does.
 - That means students can already interpret and critique statistical arguments without the mechanics. Ask what a study assumes, how its data were made, and what else could explain the result. Those questions don't need a formula.
 - This is what "doing science" means in this course. The science comes first; the statistics serve it.
-
-# Updating improves our assumptions {#updating-assumptions}
-
-- This is the core of the week, and it isn't technical.
-- A prior is an assumption we write down, so others can see it and argue with it. That's a strength, not a weakness: assumptions we hide can't be checked.
-- New data test the assumption. If what we saw fits what we assumed, our confidence grows. If it doesn't, the assumption moves.
-- The posterior is our improved assumption, and tomorrow it's the prior. No single step has to be right. The process gets better.
-- "Assume, look, update. Repeat." is the whole method, and it's what good researchers in any field already do. Bayesian statistics just makes it explicit and careful.
 
 # Summary {#summary}
 
@@ -287,22 +280,26 @@ This is why I'm always confused when people say statistics is "objective" or "mo
 # Step 1: The prior {#poll-prior}
 
 - Ask the room to draw their own prior. Someone who remembers the 60% result from last election might pile weight around 60%. Someone with no opinion might leave it flat.
+- Dragging a point pulls its neighbors along, less and less farther out, so one drag makes a smooth hump. Drag several points to shape it further.
 - The "Score" column is just the height you drew. "Probability" rescales the scores so they add up to 1. Only the *shape* matters.
 - This prior carries over to the posterior slide, so whatever is drawn here is what gets updated.
 
 # Step 2: The likelihood {#poll-likelihood}
 
+- This is where the data come in. The sliders set the survey: how many people we asked, and what share said "mayor". It starts at 4 of 20 (20%), the survey in the mayor example.
 - Same question we asked about the HIV test, turned around: for each possible θ, how likely is the data we saw?
-- 6 of 20 is very plausible if θ is 30%, plausible-ish at 50%, unlikely at 60%, and almost impossible at 80%.
+- Read the table: 4 of 20 is quite likely if θ is 20% (0.22), much less so at 40% (0.035), unlikely at 60%, and almost impossible at 80%.
+- Move the survey size up to a few hundred at the same 20%: the curve gets much narrower. More data rule out more values of θ.
 - Point out that the likelihood curve is not a probability distribution over θ. It's a set of answers to "P(data | θ)" for many θs.
+- Whatever survey is set here is the one Step 3 uses.
 
 # Step 3: Prior × likelihood → posterior {#poll-posterior}
 
 - At each value of θ, multiply the prior's height by the likelihood's height, then rescale so the total is 1. That's the posterior. Nothing else is going on.
-- Start at 20 people and 30%. With a flat prior, the green curve sits right on the dashed blue one. With a 60% prior, it lands in between.
-- Drag the survey size up to a few hundred. The likelihood narrows, and the prior matters less and less.
+- The survey comes from Step 2 (it starts at 4 of 20). With a flat prior, the green curve sits right on the dashed blue one. With a 60% prior, it lands in between.
+- Go back to Step 2 and raise the survey size to a few hundred. Back here, the likelihood is narrower, and the prior matters less and less.
 - "P( mayor wins )" is the share of the posterior above 50%. That's the answer people actually want, and it's the P(hypothesis | data) we couldn't get from a significance test.
-- "Make this posterior my new prior" copies the posterior back onto the 21 draggable points and clears the survey. Then run a "second poll". It's coarse, since 21 points can't capture a very narrow curve, but it shows the idea.
+- "Make this posterior my new prior" copies the posterior back onto the 21 draggable points and clears the survey on Step 2. Then set a "second poll" there. It's coarse, since 21 points can't capture a very narrow curve, but it shows the idea.
 
 # What to try {#poll-try}
 

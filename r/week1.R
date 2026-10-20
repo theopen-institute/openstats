@@ -153,33 +153,6 @@ base_rate_plot <- function(n_true, true_positives, false_positives, results = FA
     theme_void()
 }
 
-# "Step 2: The likelihood": P( k of n | θ ) for every θ, with a few values marked
-likelihood_plot <- function(n, k, marks) {
-  ggplot() +
-    stat_function(
-      fun = function(x) dbinom(k, n, x),
-      xlim = c(0, 1),
-      n = 501,
-      color = BLUE,
-      linewidth = 1.5
-    ) +
-    annotate(
-      "segment",
-      x = marks,
-      xend = marks,
-      y = 0,
-      yend = dbinom(k, n, marks),
-      linetype = "dashed",
-      color = GRAY
-    ) +
-    annotate("point", x = marks, y = dbinom(k, n, marks), color = BLUE, size = 4) +
-    scale_x_continuous(labels = scales::label_percent()) +
-    labs(
-      x = "θ (share voting for the mayor)",
-      y = paste0("P( ", k, " of ", n, " | θ )")
-    )
-}
-
 # ---- Numbers the slides state as plain text --------------------------------------
 # The base-rate slides type their numbers out so they read as plain markdown. They
 # depend on each other, so this recomputes each one and stops the render if a slide
@@ -238,8 +211,9 @@ check_stated_numbers <- function() {
   # The table of study types: true-idea share, sensitivity, specificity -> chance a
   # discovery is true
   trust <- "How far can we trust data?"
-  for (row in list(c(0.5, 0.8, 0.95, 94), c(0.5, 0.2, 0.95, 80), c(0.01, 0.8, 0.95, 14),
-                   c(0.01, 0.2, 0.95, 4), c(0.1, 0.2, 0.8, 10))) {
+  for (row in list(c(0.5, 0.8, 0.95, 94), c(0.5, 0.2, 0.95, 80), c(0.1, 0.8, 0.95, 64),
+                   c(0.1, 0.2, 0.95, 31), c(0.01, 0.8, 0.95, 14), c(0.01, 0.2, 0.95, 4),
+                   c(0.01, 0.2, 0.8, 1))) {
     expect(trust, pct(ppv(row[1], row[2], 1 - row[3])), row[4])
   }
 }

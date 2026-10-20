@@ -86,6 +86,11 @@ it depends on an uncommitted package or extension.
   apps to CRAN packages, and `R_BIOC_VERSION` stops the version lookup, which pkgcache
   does even with Bioconductor off. Offline builds still need caches from one online
   build: the CRAN package list and shinylive's in-browser package files.
+- **`_environment.local`** (gitignored, local only) sets `SHINYLIVE_WASM_PACKAGES=0` for
+  faster previews: shinylive skips bundling the apps' R packages, so the Shiny apps in a
+  local build download them at runtime and need an internet connection to run. CI never
+  sees the file, so the published site still bundles everything. Comment the line out
+  before building locally to present offline.
 
 Three Quarto filters run on every render (`_quarto.yml`):
 - `shinylive` — turns ```` ```{shinylive-r} ```` chunks into self-contained
@@ -244,7 +249,7 @@ The `weekN.qmd` files should read as slides. Things that aren't content live els
 ### Interactive widgets (`js/`)
 Week 1's widgets are one include line each in the deck. Their HTML markup is in
 `_includes/week1/`, their behavior in `js/` (`count-demo.js`, `cond-table.js`, and the
-ES modules `poll-prior.js` and `poll-posterior.js`, which share the drawn prior through
-`poll-store.js`; the two canvas plots share axes and styling through
-`canvas-axes.js`), and their styles in `deck.scss`. jspreadsheet comes from a pinned CDN version via
+ES modules `poll-prior.js` (Step 1: draw the prior), `poll-likelihood.js` (Step 2: set
+the survey) and `poll-posterior.js` (Step 3), which share the prior and the survey through
+`poll-store.js`; the canvas plots share axes and styling through `canvas-axes.js`), and their styles in `deck.scss`. jspreadsheet comes from a pinned CDN version via
 `_build/jspreadsheet.html`.

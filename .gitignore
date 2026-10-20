@@ -70,6 +70,9 @@ Rplots.pdf
 /*_files/
 /site_libs/
 
+# Local-only render settings (see _environment.local)
+_environment.local
+
 # Homework answer keys: the repo is public, so keep them out of it
 homework/*_key.md
 
@@ -81,3 +84,5 @@ homework/*_key.md
 .claude/settings.local.json
 
 /.quarto/
+
+/_*.local

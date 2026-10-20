@@ -46,6 +46,29 @@ Once the assumptions are made, the number follows.
 - The arithmetic in each case is objective: same assumptions, same number, for anyone. The assumptions are where the judgment is, and where the work is.
 :::
 
+## Updating improves our assumptions
+
+::: {.incremental}
+- A [**prior**]{.red} is an assumption, written down where others can see it and argue
+  with it.
+- New [**data**]{.blue} test it: does what we saw fit what we assumed?
+- The [**posterior**]{.green} is a better assumption, and the starting point next time.
+:::
+
+::: {.fragment}
+::: {.big-statement}
+Assume, look, update. Repeat.
+:::
+:::
+
+::: {.notes}
+- This is the core of the week, and it isn't technical.
+- A prior is an assumption we write down, so others can see it and argue with it. That's a strength, not a weakness: assumptions we hide can't be checked.
+- New data test the assumption. If what we saw fits what we assumed, our confidence grows. If it doesn't, the assumption moves.
+- The posterior is our improved assumption, and tomorrow it's the prior. No single step has to be right. The process gets better.
+- "Assume, look, update. Repeat." is the whole method, and it's what good researchers in any field already do. Bayesian statistics just makes it explicit and careful.
+:::
+
 ## Most studies are wrong. Is that a problem?
 
 _Most studies are wrong._ [...and that's okay.]{.fragment .blue}

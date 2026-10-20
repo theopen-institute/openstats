@@ -1,14 +1,22 @@
 // Draggable line graph over x in [0, 1]: `count` evenly spaced points whose
 // heights (0-100) the user drags. Used for the week 1 poll prior (poll-prior.js).
+//
+// `falloff` (in points) makes a drag pull the neighbors along, less and less with
+// distance (a Gaussian: at distance d a neighbor moves by exp(-d^2 / (2 falloff^2)) of
+// the dragged point's change), so a single drag keeps the curve smooth. 0 moves only
+// the dragged point.
 import { brand } from './palette.js';
 import { clearCanvas, drawPercentAxes } from './canvas-axes.js';
 
 export class LineGraphWidget {
-  constructor({ container, yValues, onChange, count = 21, xLabel = "Percent of Voters" } = {}) {
+  constructor({
+    container, yValues, onChange, count = 21, xLabel = "Percent of Voters", falloff = 0,
+  } = {}) {
     if (!container) throw new Error("LineGraphWidget: container is required");
     this.container = container;
     this.onChange = typeof onChange === "function" ? onChange : null;
     this.xLabel = xLabel;
+    this.falloff = falloff;
 
     // Fixed x positions: count points from 0 to 1
     this.count = count;
@@ -143,6 +151,7 @@ export class LineGraphWidget {
     const idx = this._hitTestPoint(p.x, p.y);
     if (idx != null) {
       this._dragIndex = idx;
+      this._dragStart = this.yValues.slice(); // neighbors move relative to these
       this._changedDuringDrag = false;
 
       // Capture pointer so dragging continues even if pointer leaves canvas
@@ -169,7 +178,7 @@ export class LineGraphWidget {
     const clamped = this._clamp(yVal, this.yMin, this.yMax);
 
     if (clamped !== this.yValues[this._dragIndex]) {
-      this.yValues[this._dragIndex] = clamped;
+      this._dragTo(clamped);
       this._changedDuringDrag = true;
       this._invalidate(); // redraw live, but do not emit yet
     }
@@ -189,6 +198,20 @@ export class LineGraphWidget {
       if (shouldEmit) this._emitChange();
 
       e.preventDefault();
+    }
+  }
+
+  // Move the dragged point to `value`, and its neighbors by a share of the same change
+  _dragTo(value) {
+    const i = this._dragIndex;
+    const start = this._dragStart;
+    const delta = value - start[i];
+    const f = this.falloff;
+    for (let j = 0; j < this.count; j++) {
+      const d = j - i;
+      const weight = j === i ? 1 : f > 0 ? Math.exp(-(d * d) / (2 * f * f)) : 0;
+      if (weight < 0.01) continue; // too far out to matter
+      this.yValues[j] = this._clamp(start[j] + delta * weight, this.yMin, this.yMax);
     }
   }
 

@@ -216,7 +216,7 @@ evidence.
 |---|---|---|---|
 | 1 | All three parts are stated: label them. | A doctor thinks a cough is probably a cold. An X-ray shows a shadow on the lung, and now the doctor thinks pneumonia is more likely. | Prior: probably a cold. Data: the X-ray. Posterior: pneumonia more likely. |
 | 2 | The posterior isn't stated: say which way the belief should move, and why. | You expect the bus to Patan to take about 30 minutes. Three days in a row it takes 50 minutes. | Toward a longer trip time, because the observations fit a longer trip better. |
-| 3 | Explain the size of the update, or compare two people with different priors. | "I thought 60% would vote for the mayor; a survey said 30%; now I think about 45%." Why 45% and not 30%? What would move it closer to 30%? | The posterior combines prior and data. A bigger survey, or a weaker prior, would move it closer to 30%. |
+| 3 | Explain the size of the update, or compare two people with different priors. | "I thought 60% would vote for the mayor; a survey said 20%; now I think about 45%." Why 45% and not 20%? What would move it closer to 20%? | The posterior combines prior and data. A bigger survey, or a weaker prior, would move it closer to 20%. |
 
 **Answer key (rubric).** Each part identified correctly; the direction of the update
 matches the evidence; Level 3 names the strength of the prior and the amount of data.

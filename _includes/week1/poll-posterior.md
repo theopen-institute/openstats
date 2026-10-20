@@ -1,13 +1,10 @@
 ```{=html}
-<!-- Week 1, "Step 3": the prior from Step 1 times a survey likelihood. Behavior in
-     js/poll-posterior.js, styles in css/deck.scss. -->
+<!-- Week 1, "Step 3": the prior from Step 1 times the likelihood of the survey set on
+     Step 2. Behavior in js/poll-posterior.js, styles in css/deck.scss. -->
 <div class="widget-layout">
   <div id="poll-post-graph" class="widget-graph"></div>
   <div class="poll-side">
-    <label for="poll-n">People surveyed: <b id="poll-n-out"></b></label>
-    <input type="range" id="poll-n" min="0" max="500" step="1" value="20">
-    <label for="poll-share">Said "mayor": <b id="poll-share-out"></b></label>
-    <input type="range" id="poll-share" min="0" max="100" step="1" value="30">
+    <p class="poll-survey">Survey: <b id="poll-survey-out"></b><br><small>Change it on Step 2.</small></p>
     <table class="poll-stats">
       <thead>
         <tr><th></th><th class="red">Prior</th><th class="green">Posterior</th></tr>

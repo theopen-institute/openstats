@@ -39,6 +39,7 @@ if (graphEl && sheetEl && !graphEl.dataset.initialized) {
       container: graphEl,
       count: POINTS,
       yValues: loadPrior(),
+      falloff: 1.5, // dragging one point pulls its neighbors along, for a smooth curve
       onChange: (points) => {
         updateSheet(points);
         savePrior(points.map((p) => p.y));

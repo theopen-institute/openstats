@@ -459,7 +459,9 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   pointer-events: none !important;
 }
 
-/* "Step 3: Prior x likelihood -> posterior" (js/poll-posterior.js) */
+/* "Step 2: The likelihood" (js/poll-likelihood.js) and "Step 3: Prior x likelihood ->
+   posterior" (js/poll-posterior.js) share the graph-plus-side-panel layout */
+#poll-lik-graph,
 #poll-post-graph {
   flex: 0 0 64%;
   margin-right: 8px; /* a little more room before the controls */
@@ -486,6 +488,10 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
       padding: 4px 8px;
     }
   }
+}
+
+.poll-survey small {
+  color: $brand-gray;
 }
 
 #poll-msg {

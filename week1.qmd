@@ -44,7 +44,7 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 :::
 
 
-# Statistical significance {notes="notes/week1_notes.md#goals"}
+# Statistical significance {notes="notes/week1_notes.md#statistical-significance"}
 
 ::: {.columns}
 
@@ -87,8 +87,8 @@ But what does _"a 31% chance of rain"_ actually mean?
 
 ::: {.incremental}
 - Tomorrow's weather isn't a lottery. Specific physical factors decide it.
-- The day isn't random. [But, _**we**_ are uncertain about it.]{.blue} 
-- 31% describes our degree of certainty about an uncertain fact.
+- The day isn't random [...but _**we**_ are uncertain about it.]{.blue} 
+- 31% describes how certain we are about an uncertain fact.
 :::
 
 ## Probability is just counting {notes="notes/week1_notes.md#counting"}
@@ -170,7 +170,7 @@ _We write a probability as a number between 0 and 1, or as a percentage._
 | 0 | 0% | Something impossible |
 | 0.02 | 2% | Winning the raffle: 10 ÷ 500 |
 | 0.17 | 17% | Rolling a six: 1 ÷ 6 |
-| 0.31 | 31% | Rain in Kathmandu: 113 ÷ 365 days |
+| 0.31 | 31% | Rain in Kathmandu: 113 ÷ 365 days^[Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month's average rate.] |
 | 0.5 | 50% | A fair coin landing heads: 1 ÷ 2 |
 | 1 | 100% | Something certain |
 :::
@@ -188,7 +188,7 @@ _We write the probability of an event as P( event )._
 | We write | We say | Value |
 |---|---|---|
 | P( rain tomorrow ) | "the probability of rain tomorrow" | 113 ÷ 365 ≈ 0.31 |
-| P( getting heads ) | "the probability of getting heads" | 1 ÷ 2 ≈ 0.5 |
+| P( getting heads ) | "the probability of getting heads" | 1 ÷ 2 = 0.5 |
 | P( rolling a six ) | "the probability of rolling a six" | 1 ÷ 6 ≈ 0.17 |
 | P( winning the raffle ) | "the probability of winning the raffle" | 10 ÷ 500 = 0.02 |
 :::
@@ -203,7 +203,7 @@ _We make a probability more specific by adding a condition: P( event | condition
 - P( rain | July ) means [_"the probability of rain, given that it's July."_]{.blue}
 
 ::: {.fragment}
-|  | Rainy days | Days counted | Probability | % |
+|  | Rainy days^[Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month's average rate.] | Days counted | Probability | % |
 |---|--:|--:|--:|--:|
 | P( rain ) | 565 | 1,825 | **0.31** | (31%) |
 | P( rain \| Apr ) | 35 | 150 | **0.23** | (23%) |
@@ -246,7 +246,7 @@ Every prediction needs assumptions. [Interesting predictions need strong assumpt
 # Probability for Decision Making {notes="notes/week1_notes.md#applied-probability"}
 
 ::: {.fragment}
-In Nepal, HIV has a prevalence of about 0.1%. We can write that as:
+In Nepal, HIV has a prevalence of about 0.1%.^[UNAIDS, AIDSinfo country data for Nepal: HIV prevalence among adults aged 15–49.] We can write that as:
 :::
 
 ::: {.incremental}
@@ -264,34 +264,30 @@ With statistical tests and predictions, we talk about two kinds of accuracy:
   - P( test– | HIV– ) = **0.97** (true negative)
 :::
 
+::: {.fragment}
+[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.]{.source}
+:::
+
 ## Probability for Decision Making (continued) {notes="notes/week1_notes.md#base-rate"}
 
 - Sensitivity P( test+ | HIV+ ): 99%
 - Specificity P( test– | HIV– ): 97%
 
 ::: {.fragment fragment-index=0}
-But there's something strange here...
+But there's something strange here...[it assumes the thing we want to know.]{.fragment fragment-index=1 .blue}
 :::
 
-::: {.fragment fragment-index=1}
-What about P( HIV+ | test+)? [3.2%]{.fragment fragment-index=2 .red}
+::: {.fragment fragment-index=2}
+What we really want is P( HIV+ | test+): [3.2%]{.fragment fragment-index=3 .red}
 :::
 
-::: {.fragment fragment-index=3}
+::: {.fragment fragment-index=4}
 
-|[(pop: 100,000)]{.fragment fragment-index=4 .blue}           | Test+                                                            | Test–                                                             |
+|[(pop: 100,000)]{.fragment fragment-index=5 .blue}           | Test+                                                            | Test–                                                             |
 |----------|------------------------------------------------------------------|-------------------------------------------------------------------|
-| **HIV+**<br>[(0.1%&nbsp;=&nbsp;100)]{.fragment fragment-index=5 .blue}| P( Test+ \| HIV+ ): **99%**<br>_Sensitivity (True Positive)_<br>[(99)]{.fragment fragment-index=6 .blue}| P( Test– \| HIV+ ): **1%**<br>_Type II Error (False Negative)_<br>[(1)]{.fragment fragment-index=6 .blue}|
-| **HIV–**<br>[(99.9%&nbsp;=&nbsp;99,900)]{.fragment fragment-index=5 .blue} | P( Test+ \| HIV– ): **3%**<br>_Type I Error (False Positive)_<br>[(2,997)]{.fragment fragment-index=6 .blue}| P( Test– \| HIV– ): **97%**<br>_Specificity (True Negative)_<br>[(96,903)]{.fragment fragment-index=6 .blue}|
+| **HIV+**<br>[(0.1%&nbsp;=&nbsp;100)]{.fragment fragment-index=6 .blue}| P( Test+ \| HIV+ ): **99%**<br>_Sensitivity (True Positive)_<br>[(99)]{.fragment fragment-index=7 .blue}| P( Test– \| HIV+ ): **1%**<br>_Type II Error (False Negative)_<br>[(1)]{.fragment fragment-index=7 .blue}|
+| **HIV–**<br>[(99.9%&nbsp;=&nbsp;99,900)]{.fragment fragment-index=6 .blue} | P( Test+ \| HIV– ): **3%**<br>_Type I Error (False Positive)_<br>[(2,997)]{.fragment fragment-index=7 .blue}| P( Test– \| HIV– ): **97%**<br>_Specificity (True Negative)_<br>[(96,903)]{.fragment fragment-index=7 .blue}|
 :::
-
-::: {.fragment}
-
-- _Paradox: P(A|B) is not the same as P(B|A)_
-
-[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.]{.source}
-:::
-
 
 ## Direction of conditions
 
@@ -327,7 +323,7 @@ base_rate_plot(
 :::
 
 ::: {.column width="42%"}
-1,000 people get tested. Only [1 person has HIV]{.blue}. The test identifies them. 
+1,000 people get tested at random. Only [1 person has HIV]{.blue}. The test identifies them. 
 
 ::: {.fragment fragment-index=1}
 It also flags [30 people who don't have HIV]{.red}.
@@ -364,35 +360,34 @@ Two key phrases:
 - ["the probability of...data..."]{.fragment .blue fragment-index=3}
 
 ::: {.fragment}
-How this frames _statistical significance_: P( [data]{.blue} | [hypothesis]{.red} )
+How this frames statistical significance: P( [data]{.blue} | [hypothesis]{.red} )
 :::
 
 ::: {.fragment}
-What we usually actually want: P( [hypothesis]{.red} | [data]{.blue} )
+How we intuitively think about data: P( [hypothesis]{.red} | [data]{.blue} )
 :::
 
 
 ## The problem with p-values {notes="notes/week1_notes.md#pvalue-direction"}
 
-If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}. P-value
-imagines the world in a very [strange way]{.red}.
+If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}. Significance testing imagines the world in a very [strange way]{.red}.
 
 ::: {.fragment fragment-index=1}
 
 |  | Starts from | Asks |
 |---|---|---|
 | [**How we observe**]{.fragment fragment-index=2} | [what we [saw]{.blue}]{.fragment fragment-index=2} | [_"What does this tell me about the [world]{.green}?"_]{.fragment fragment-index=2} |
-| [**A p-value**]{.fragment fragment-index=3} | [an [imagined world]{.red} with nothing going on]{.fragment fragment-index=3} | [_"How surprising would my [data]{.blue} be there?"_]{.fragment fragment-index=3} |
+| [**A significance test**]{.fragment fragment-index=3} | [an [imagined world]{.red} with nothing going on]{.fragment fragment-index=3} | [_"How surprising would my [data]{.blue} be there?"_]{.fragment fragment-index=3} |
 :::
 
 ::: {.incremental}
 - A p-value doesn't tell you if a hypothesis is true.
-- It tells you how unlikely the data would be if the null hypothesis were true.
+- It tells you how unlikely data this extreme would be if the null hypothesis were true.
 - Those aren't the same thing. P(A | B) ≠ P(B | A)
 :::
 
 ::: {.fragment}
-We want a different kind of statistics to work the same way knowledge does: we start with [assumptions]{.red}, we encounter new [data]{.blue}, and we [update our beliefs]{.green} about the world.
+Statistical significance works the opposite way that our intuitions do.
 :::
 
 
@@ -418,25 +413,20 @@ Instead of a flowchart of tests, [**one rule for all of statistics**]{.blue}:
 ::: {.incremental}
 - [**Prior**]{.red}: _"He got 60% last time, so I think about 60% of Kathmandu will vote
   for him."_
-- [**Likelihood**]{.blue}: _"I took a small survey and only 20% of people said they'll vote for him. That doesn't fit very well with my prior belief of 60% but fits better with lower numbers."_
+- [**Likelihood**]{.blue}: _"Only 20% of my small survey said they'll vote for him. That would be surprising if his true support were 60%, but quite likely if it were around 20–30%."_
 - [**Posterior**]{.green}: _"I now think about 45% of people will vote for him."_
+:::
+::: {.fragment }
+Our posterior then becomes our prior for future observations.
 :::
 :::
 
-::: {.fragment}
-That's it. A poll, a regression, a causal model: everything in this course is just this
-[one rule]{.blue}, applied again and again.
-:::
 
 ## Bayesian Updating Example {.no-title}
 ```{shinylive-r}
 #| standalone: true
 {{< include shiny/updating.R >}}
 ```
-
-
-
-
 
 
 ## Bayes' theorem {.mechanics notes="notes/week1_notes.md#bayes-theorem"}
@@ -502,23 +492,19 @@ Only 8 are real.
 
 ## How far can we trust data? {.mechanics .smaller notes="notes/week1_notes.md#research-math"}
 
-_**Sensitivity**: of the true ideas, the share a study finds · **Specificity**: of the false ideas, the share it correctly rejects_
+_**Sensitivity**, or **power**: if the idea is true, what is the chance of getting a significant result._\
+_**Specificity**, or 1 − the **significance level** α: if the idea is false, what is the chance of not getting a significant result._
 
-| Type of study | True ideas | Sensitivity | Specificity | Chance a "discovery" is true |
+| Type of study | Base Rate | Sensitivity | Specificity | Chance a discovery is true |
 |--------------------------------|:--------:|:-----:|:-----:|:------------:|
-| Large trial of a promising idea | 50% | 80% | 95% | **94%** |
-| Small study of a promising idea | 50% | 20% | 95% | 80% |
-| Search for new effects _(the 1,000 ideas)_ | 1% | 80% | 95% | [14%]{.red} |
-| Small search for new effects | 1% | 20% | 95% | [4%]{.red} |
-| p-hacked small study | 10% | 20% | 80% | [10%]{.red} |
+| Large trial of a treatment with strong earlier evidence | 50% | 80% | 95% | 94% |
+| Small trial of a treatment with strong earlier evidence | 50% | 20% | 95% | 80% |
+| Large study of a plausible new idea | 10% | 80% | 95% | 64% |
+| Small study of a plausible new idea | 10% | 20% | 95% | [31%]{.red} |
+| Large search for surprising new effects | 1% | 80% | 95% | [14%]{.red} |
+| Small search for surprising new effects | 1% | 20% | 95% | [4%]{.red} |
+| Small search, re-analysed until something is significant (p-hacked) | 1% | 20% | 80% | [1%]{.red} |
 
-::: {.fragment}
-What matters most is how many of the ideas we test are true to begin with, which isn't something we can really know.
-:::
-
-[Research usually reports these as error rates: α = 1 − specificity, the false-positive
-rate (usually 5%), and β = 1 − sensitivity, the miss rate. Sensitivity is also called
-power.]{.source}
 
 
 # Most studies are wrong... {notes="notes/week1_notes.md#is-that-a-problem"}
@@ -526,11 +512,10 @@ power.]{.source}
 [...and that's okay.]{.fragment .blue}
 
 ::: {.incremental}
-- A study was never supposed to be the answer. It's one observation.
+- A single study was never supposed to be the answer. It's just one observation.
 - Each observation joins what we already know and nudges it, a little or a lot.
-- A single observation never gives us the answer.
-- Instead, we use observations to support or challenge what we think we already know.
-- Without these prior assumptions, data is meaningless.
+- We use observation to support or challenge what we think we already know.
+- Without these prior assumptions, data is meaningless. Interesting claims need strong assumptions.
 :::
 
 ## Science is updating {notes="notes/week1_notes.md#science-is-updating"}
@@ -538,8 +523,14 @@ power.]{.source}
 What makes science work isn't experiments or observations.
 
 ::: {.fragment}
-It's [groups of scientists arguing]{.blue} about how to fit many observations together,
-observations that often contradict each other.
+It's [groups of scientists arguing]{.blue} about how to fit many (often contradictory)
+experiments and observations together.
+:::
+
+::: {.incremental}
+- [**Assume**]{.red}: a prior, written down where others can argue with it.
+- [**Look**]{.blue}: new data test it.
+- [**Update**]{.green}: the posterior, which is the starting point next time.
 :::
 
 ::: {.fragment}
@@ -549,32 +540,34 @@ It's the debates we have about them.
 :::
 :::
 
-## Objective or subjective? {notes="notes/week1_notes.md#objective-subjective"}
+## Hard data? {notes="notes/week1_notes.md#objective-subjective"}
 
-> _"Ethnography is subjective. Statistics is objective. It's hard data."_
+> _"Qualitative research is subjective. Statistics is objective."_
 
 ::: {.fragment}
 |                 | Observation                    | Interpretation assumes…                          |
 |-----------------|--------------------------------|--------------------------------------------------|
-| **Ethnography** | interviews, field notes        | what people meant; whose voices stand for others |
-| **Statistics**  | surveys, measurements, records | what causes what; how the data were generated    |
+| **Qualitative** | interviews, field notes        | what people meant; where we chose to look; whose voices stand for others |
+| **Quantitative**  | surveys, records, measurements | what causes what; how the data were generated    |
 :::
 
-::: {.fragment}
-Both join an objective part, the observation, with a subjective part, the assumptions.
-[The difference isn't the field. It's whether the assumptions are stated openly, where
-others can challenge them.]{.blue}
+::: {.incremental}
+- Observation gathers objective facts, but the way we gather those facts and interpret them is directly tied to assumptions.
+- In both qualitative and quantitative work, we need strong assumptions to make interesting claims.
 :::
 
 ## Doing science {notes="notes/week1_notes.md#doing-science"}
 
-_The math is the least interesting part._
+_The math is the least interesting part of statistics._
 
 ::: {.incremental}
 - Nearly every important choice happens before any numbers: what to ask, what to
   observe, who to include, what to assume.
-- So we can interpret and critique a statistical argument without the statistical
-  mechanics. Ask what it assumes, how the data were made, and what else could explain it.
+- After we've gathered our data, it never speaks for itself. We have to interpret it in  
+  terms of what we already know.
+- So we can interpret and critique a statistical argument without needing the statistical
+  mechanics.
+- In this five-week course, we're going to talk about those choices: what a study assumes, how the data were made, and what else could explain it. The statistical mechanics can come later. 
 :::
 
 ::: {.fragment}
@@ -583,55 +576,19 @@ The science comes first.
 :::
 :::
 
-## Updating improves our assumptions {notes="notes/week1_notes.md#updating-assumptions"}
-
-::: {.incremental}
-- A [**prior**]{.red} is an assumption, written down where others can see it and argue
-  with it.
-- New [**data**]{.blue} test it: does what we saw fit what we assumed?
-- The [**posterior**]{.green} is a better assumption, and the starting point next time.
-:::
-
-::: {.fragment}
-::: {.big-statement}
-Assume, look, update. Repeat.
-:::
-:::
-
-## Summary {notes="notes/week1_notes.md#summary"}
-
-1. [**Probability is counting**]{.blue}, and direction matters: P( A | B ) ≠ P( B | A ).
-2. [**Objective and subjective.**]{.blue} Statistics, like ethnography, joins objective
-   observation with subjective assumptions. A study is one observation, not an answer.
-3. [**Bayesian updating**]{.blue} is how we improve those assumptions:
-   prior × likelihood → posterior.
-
-::: {.fragment}
-::: {.big-statement}
-The science always comes first.
-:::
-:::
-
-
 # What's ahead {notes="notes/week1_notes.md#whats-ahead"}
 
 That's what we're going to do here: [put the science first]{.blue}.
 
-- **Week 2**: distributions. A different way to think about numbers, for populations and for uncertainty.
-- **Week 3**: draw our science. Causal diagrams (DAGs) before any model.
-- **Week 4**: forks, pipes and colliders. What to control for, and what not to.
-- **Week 5**: what did they leave out? Unobserved forks, pipes and colliders.
+- **Week 2**: Distributions: A different way to think about numbers, for populations and for uncertainty.
+- **Week 3**: Causal modeling: using diagrams (DAGs) to map assumptions.
+- **Week 4**: Causal pitfalls: forks, pipes and colliders. What to control for, and what not to.
+- **Week 5**: Evaluating research: what did the authors leave out? Unobserved forks, pipes and colliders.
 
-::: {.fragment}
-Every week starts with the question and what we believe about the world.
-[The statistics come after.]{.gray}
-:::
 
 # The Bayesian workflow {.smaller .mechanics}
 
-::: {.incremental}
 {{< include _includes/bayesian-workflow.md >}}
-:::
 
 # Practical work: Will the mayor win? {notes="notes/week1_notes.md#poll-demo"}
 
@@ -643,7 +600,7 @@ Let's walk through the simplest possible version of this workflow.
 - **Background**: in the last election, the mayor got 60% of the vote.
 - **Data**: we survey *n* voters at random, and *k* of them say they will vote for the mayor.
 
-::: {.fragment .callout-note title="A deliberately simple model"}
+::: {.callout-note title="A deliberately simple model"}
 Each respondent is like a coin flip that comes up "mayor" with probability θ. No weighting,
 no turnout, no non-response, no post-stratification. We'll add those later.
 :::
@@ -657,11 +614,9 @@ k &\sim \text{Binomial}(n,\ \theta) && \class{blue}{\text{likelihood}} \\
 \end{aligned}
 $$
 
-::: {.incremental}
 - The first line is the **likelihood**: how the data are generated, given θ.
 - The second line is the **prior**: what we believe about θ before any data.
 - From Week 3 on, we'll build models like this from a DAG.
-:::
 
 ## Step 1: The prior {notes="notes/week1_notes.md#poll-prior"}
 
@@ -671,29 +626,11 @@ _Before seeing any survey, what do you believe about θ? Drag the points._
 
 ## Step 2: The likelihood {notes="notes/week1_notes.md#poll-likelihood"}
 
-_We survey 20 voters. 6 of them (30%) say they will vote for the mayor._
+_Set the survey. How likely is that result, for each possible value of θ?_
 
-::: {.columns}
-::: {.column width="55%"}
-```{r likelihood, opts.label = "half_short", out.width = "100%"}
-likelihood_plot(n = 20, k = 6, marks = c(0.3, 0.5, 0.6, 0.8))
-```
-:::
+{{< include _includes/week1/poll-likelihood.md >}}
 
-::: {.column width="45%"}
-How consistent is "6 of 20" with each possible value of θ?
-
-- If θ = 30%: P( 6 of 20 ) = `r round(dbinom(6, 20, 0.3), 3)`
-- If θ = 50%: P( 6 of 20 ) = `r round(dbinom(6, 20, 0.5), 3)`
-- If θ = 60%: P( 6 of 20 ) = `r round(dbinom(6, 20, 0.6), 3)`
-- If θ = 80%: P( 6 of 20 ) = `r format(signif(dbinom(6, 20, 0.8), 2), scientific = FALSE)`
-
-::: {.fragment}
-The likelihood is **not** a belief. It's what the coin-flip process in the world says about
-our data, one candidate value of θ at a time.
-:::
-:::
-:::
+The likelihood is **not** a belief. It's what our model of the survey (each answer like a coin flip) says about our data, one candidate value of θ at a time.
 
 ## Step 3: Prior × likelihood → posterior {notes="notes/week1_notes.md#poll-posterior"}
 
@@ -703,14 +640,12 @@ our data, one candidate value of θ at a time.
 
 - **Flat prior vs. strong prior.** Draw a flat prior, then a narrow one around 60% (last
   election). With the same survey, how far apart are the posteriors?
-- **More data.** Keep the survey at 30%, but raise *n* from 20 to 500. What happens to the
-  prior's influence?
-- **Updating in sequence.** Make the posterior your new prior, then run a second survey.
-  Yesterday's posterior is today's prior.
+- **More data.** On Step 2, keep the survey at 20% but raise *n* from 20 to 500. What happens
+  to the prior's influence?
+- **Updating in sequence.** Make the posterior your new prior, then set a second survey on
+  Step 2. Yesterday's posterior is today's prior.
 - **Answering the real question.** P( mayor wins ) is a direct statement about the hypothesis
   given the data: [P( hypothesis | data )]{.green}, not a p-value.
 
-::: {.fragment}
 *What is the result, and how much does it depend on our assumptions?* This is that question,
 in miniature.
-:::

@@ -4,10 +4,11 @@ import { clearCanvas, drawPercentAxes, font } from './canvas-axes.js';
 // Read-only canvas plot of one or more curves over x in [0, 1], used to show
 // prior, likelihood and posterior together. Styled to match LineGraphWidget.
 export class PosteriorPlot {
-  constructor({ container, xLabel = "Percent of Voters" } = {}) {
+  constructor({ container, xLabel = "Percent of Voters", yLabel = "Plausibility" } = {}) {
     if (!container) throw new Error("PosteriorPlot: container is required");
     this.container = container;
     this.xLabel = xLabel;
+    this.yLabel = yLabel;
     this.series = [];
 
     this.padding = { left: 24, right: 16, top: 16, bottom: 46 };
@@ -95,14 +96,14 @@ export class PosteriorPlot {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // Y axis is relative plausibility; absolute values aren't meaningful here
+    // Y axis is relative (plausibility or likelihood); absolute values aren't shown
     ctx.fillStyle = brand("ink");
     ctx.font = font(12, this.dpr);
     ctx.textAlign = "center";
     ctx.translate(pr.x - 8 * this.dpr, pr.y + pr.h / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.textBaseline = "bottom";
-    ctx.fillText("Plausibility", 0, 0);
+    ctx.fillText(this.yLabel, 0, 0);
 
     ctx.restore();
   }

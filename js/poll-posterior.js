@@ -1,7 +1,8 @@
 // Week 1, "Step 3: Prior × likelihood → posterior": combines the prior drawn on the
-// Step 1 slide with a binomial likelihood for a survey and plots all three curves.
+// Step 1 slide with the likelihood of the survey set on Step 2, and plots all three
+// curves.
 import { PosteriorPlot } from './posterior.js';
-import { POINTS, STEP, loadPrior, savePrior } from './poll-store.js';
+import { POINTS, STEP, loadPrior, loadSurvey, savePrior, saveSurvey, surveyCount } from './poll-store.js';
 import { brand, withAlpha } from './palette.js';
 
 // Fine grid over θ; the 21 prior points are interpolated onto it
@@ -73,16 +74,15 @@ if (graphEl && !graphEl.dataset.initialized) {
 
   const colors = { prior: brand('red'), likelihood: brand('blue'), posterior: brand('green') };
   const plot = new PosteriorPlot({ container: graphEl });
-  const nInput = $('poll-n');
-  const shareInput = $('poll-share');
   let priorPoints = loadPrior();
+  let survey = loadSurvey();
   let posteriorMass = null;
 
   function update() {
-    const n = Number(nInput.value);
-    const k = Math.round((n * Number(shareInput.value)) / 100);
-    $('poll-n-out').textContent = n;
-    $('poll-share-out').textContent = `${k} of ${n} (${n > 0 ? pct(k / n) : '—'})`;
+    const { n } = survey;
+    const k = surveyCount(survey);
+    $('poll-survey-out').textContent =
+      n > 0 ? `${k} of ${n} said "mayor" (${pct(k / n)})` : 'none yet';
 
     const prior = toMass(interpolate(priorPoints));
     const lik = toMass(likelihood(k, n));
@@ -109,8 +109,12 @@ if (graphEl && !graphEl.dataset.initialized) {
     ]);
   }
 
-  nInput.addEventListener('input', update);
-  shareInput.addEventListener('input', update);
+  window.addEventListener('poll-survey:change', (e) => {
+    if (e.detail) {
+      survey = { ...e.detail };
+      update();
+    }
+  });
 
   window.addEventListener('poll-prior:change', (e) => {
     if (Array.isArray(e.detail)) {
@@ -128,7 +132,8 @@ if (graphEl && !graphEl.dataset.initialized) {
     if (!(max > 0)) return;
     priorPoints = coarse.map((v) => (v / max) * 100);
     savePrior(priorPoints, 'poll-prior:set');
-    nInput.value = 0;
+    survey = { ...survey, n: 0 };
+    saveSurvey(survey, 'poll-survey:set');
     update();
   });
 
