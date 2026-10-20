@@ -1754,3 +1754,25 @@ fit2 |>
 ```{r model2_output3}
 fit2$summary()
 ```
+
+# From Week 2 (cut 2026-10-20) {.center}
+
+The mid-deck recap, cut when the old Part 4 (spurious correlations) was folded into
+Part 3. The three-card summary at the end covers it.
+
+# Distributions so far
+
+- A **distribution** describes a number by all the values it could take, not just one.
+- **Distributions of data**: how values vary across a population. Center, spread,
+  shape. A z-score says where one case sits.
+- **Distributions of belief**: how plausible each value of an unknown is. Wide when we
+  know little.
+- **Correlation** (*r*) and **regression** (β) describe how two variables vary
+  together. With standardized data and one predictor, β = *r*.
+- β is unknown, so it has a distribution of belief too.
+
+::: {.notes}
+- Quick recap before Part 4. Check for questions.
+- The thread: every tool so far either describes a distribution (center, spread, shape, r, β) or places a case in one (z-scores), and unknowns get distributions of belief.
+- Pivot: these descriptions are real patterns. Next, how real patterns can still mislead.
+:::

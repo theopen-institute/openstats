@@ -139,7 +139,7 @@ beta_posterior <- function(d) {
     mutate(post = post / sum(post) / (beta[2] - beta[1]))
 }
 
-# ---- Part 1: describing patterns -----------------------------------------------
+# ---- Parts 1-3: describing distributions -----------------------------------------
 
 # "Describing a distribution": height, with the mean and a band 1 SD either side
 height_hist_plot <- function(howell) {
@@ -303,7 +303,7 @@ beta_posterior_plot <- function(howell) {
     theme(axis.text.y = element_blank())
 }
 
-# ---- Part 2: when patterns mislead -----------------------------------------------
+# ---- Part 3: when patterns mislead -----------------------------------------------
 
 # "The confounder: temperature": ice cream and drownings within temperature bands
 icecream_strata_plot <- function(beach) {

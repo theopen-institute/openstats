@@ -3,30 +3,33 @@
 
 - This week is about one idea: distributions. Say the word often. By the end, students should reach for it without being asked.
 - A distribution is a different way to think about a number. Instead of one value, it's every value the number could take, and how common or plausible each one is.
-- It does two jobs: describing populations (how values vary across cases) and describing uncertainty (how sure we are). Everything else this week, including correlation, regression and the spurious patterns at the end, is built on those two.
+- The week has three parts, one per kind of distribution: data (how values vary across cases), belief (how sure we are about an unknown), and relationships (how two variables vary together). The third uses the first two: a relationship is a pattern in the data, and we can be more or less sure about it.
+- Each kind has its own color on the cards (blue, green, orange), and the same three cards come back at every part break and in the summary. Point at them.
 
 ## Think in distributions {#think-in-distributions}
 
 - Read the sentence. It's true, and it's the kind of number a report would print.
-- Then ask what it leaves out. Let students find both answers before the callouts appear.
+- Then ask what it leaves out. Let students find answers before the cards appear.
 - First, a population: real adults differ, from about 137 to 179 cm. "Average" describes the middle of a spread, not a person. How the heights vary is a distribution of data.
 - Second, uncertainty: we measured 352 people. A different 352 would give a slightly different average. How sure we are about the true average is a distribution of belief.
-- The big statement is the week in one line. Every number has a distribution behind it, and both kinds use the same shapes and the same vocabulary.
+- Third, a relationship: height doesn't vary on its own. Taller people tend to be heavier, but with plenty of exceptions. How the two vary together is the third kind.
+- These are the three parts of today, in order. The big statement is the week in one line.
 
 ## Last week → this week {#last-week}
 
 - The bridge from Week 1: the mayor's answer wasn't a number, it was a curve. Students already drew one when they made their prior.
 - Name the key word and give the plain definition: every value a number could take, and how common or plausible each one is.
-- Then preview the two uses. Populations come first, in Part 1. Uncertainty, the kind they met with the mayor, comes in Part 2.
+- Then name the three kinds, one per part. Data comes first. Belief, the kind they met with the mayor, is second. Relationships are third.
 
-## Goals this week {#goals}
+## Goals this week: three kinds of distribution {#goals}
 
-- Four parts. Parts 1 and 2 are the two kinds of distribution. Part 3 puts two variables together. Part 4 is where patterns fool us.
-- The house-price exercise is the appendix. They'll do it with the TA in the second session, using everything from Parts 1 to 3.
+- Three parts, one per card. Parts 1 and 2 are the two basic kinds: data and belief. Part 3 puts two variables together and uses both: the pattern is in the data, and β gets a distribution of belief. Part 3 ends with how relationships mislead.
+- These cards come back at every part break, with the current part highlighted.
+- The house-price exercise is the appendix. They'll do it with the TA in the second session, using all three kinds.
 
 ## Part 1: Distributions of data {#part1}
 
-- Section break. The first kind of distribution: how a quantity varies across real cases.
+- Section break. The first card: how a quantity varies across real cases.
 - The tools in this part (center, spread, shape, the Normal, z-scores) are all ways of describing one distribution, or one case's place in it.
 
 ## Randomness has patterns {#randomness}
@@ -92,7 +95,7 @@
 
 ## Part 2: Distributions of belief {#part2}
 
-- Section break. The second kind: not how real cases vary, but how plausible each value of something unknown is.
+- Section break. The second card: not how real cases vary, but how plausible each value of something unknown is.
 - Students met this kind last week with the mayor. This part shows it's an everyday way of talking, and that it uses the same shapes as Part 1.
 
 ## How old is he? A distribution of belief {#belief-distributions}
@@ -103,21 +106,23 @@
 - This is exactly what students did with the mayor's prior last week.
 - Contrast with Part 1: there's only one man and one true age. Nothing varies here except how sure we are.
 
-## Two kinds of distributions {#two-kinds}
+## Data or belief? {#two-kinds}
 
-- An important distinction that trips people up later. Distributions of data describe how a quantity varies across real cases: the heights of actual people. Distributions of belief describe how plausible each value of an unknown is: the mayor's vote share.
+- An important distinction that trips people up later. Distributions of data describe how a quantity varies across real cases: the heights of actual people. Distributions of belief describe how plausible each value of an unknown is: the mayor's vote share. There's one true value; we just don't know it.
+- A quick test: is there one true answer we're unsure about (belief), or many cases that really differ (data)? Try it on the examples.
 - Same shapes, same vocabulary, same math. That's convenient, and also why they get confused.
-- Part 1 was the first kind, Part 2 the second. Part 3 uses both: a pattern in the data, and then how sure we are about it.
+- Part 3 needs both: a pattern in the data, and then how sure we are about it.
 
-## Part 3: Two variables at once {#part3}
+## Part 3: Distributions of relationships {#part3}
 
-- Section break. So far, one variable at a time. Now two: how do height and weight vary together?
-- Correlation and regression describe that joint pattern. At the end, the regression coefficient turns out to be uncertain, so it gets a distribution of belief. Both kinds of distribution in one slide.
+- Section break. The third card. So far, one variable at a time. Now two: how do height and weight vary together?
+- This kind is built from the first two. The scatterplot is a distribution of data with two variables. Correlation and regression summarize it with one number. That number is unknown, so it gets a distribution of belief.
+- The part ends with the ways relationships mislead: confounding and chance.
 
-## Correlation {#correlation}
+## Two variables at once {#correlation}
 
-- Each variable has its own distribution, which Part 1 described. A scatterplot shows both at once.
-- Raw scatterplot of height and weight. Taller people tend to be heavier. The question is how strongly.
+- Each variable has its own distribution of data, which Part 1 described. A scatterplot shows both at once: one dot per adult.
+- Taller people tend to be heavier. The question is how strongly.
 - Ask the room to guess a number from 0 to 1 before we compute it.
 
 ## Standardize both variables {#standardize-both}
@@ -143,7 +148,7 @@
 - Three datasets where r badly misdescribes the relationship.
 - A curve: a strong, clear relationship with r near 0, because r only measures straight-line agreement.
 - One extreme point: 30 unrelated points plus a single outlier, and the outlier alone creates a large r.
-- Two groups: inside each group the relationship runs downhill, but the overall r is positive. Flag this one; it's the same shape as the bedrooms puzzle in the house exercise, and as confounding in Part 2.
+- Two groups: inside each group the relationship runs downhill, but the overall r is positive. Flag this one; it's the same shape as the bedrooms puzzle in the house exercise, and as confounding at the end of Part 3.
 - The lesson: always plot your data before trusting one number.
 
 ## Regression: our first coefficient {#regression}
@@ -162,31 +167,23 @@
 - Mechanics slide. Two ways to read the same β.
 - In z-scores: one SD taller goes with r SDs heavier.
 - In real units: convert back by multiplying by SD of weight and dividing by SD of height. About 0.6 kg per cm.
-- Watch the wording: "goes with," not "causes." That word choice comes back in Part 2.
+- Watch the wording: "goes with," not "causes." That word choice comes back at the end of Part 3.
 
-## β is a parameter, so it has a distribution {#beta-posterior}
+## How sure are we about β? {#beta-posterior}
 
-- This connects Part 1 back to Week 1. β is an unknown, like the mayor's vote share. So we can have a prior and a posterior for it.
+- β is an unknown, like the mayor's vote share. So we can have a prior and a posterior for it. This is the second card again, applied to a relationship.
 - Two posteriors: one from 20 adults (wide) and one from all 352 (narrow). Same rule as last week: prior × likelihood → posterior.
-- Small samples aren't invalid, they're just honest about being unsure. Keep this in mind for the noise example in Part 2.
-- We just moved from a distribution of data to a distribution of belief.
-
-## Distributions so far {#recap}
-
-- Quick recap before Part 4. Check for questions.
-- The thread: every tool so far either describes a distribution (center, spread, shape, r, β) or places a case in one (z-scores), and unknowns get distributions of belief.
+- Small samples aren't invalid, they're just honest about being unsure. Keep this in mind for the noise example coming up.
+- Part 3 now uses both kinds: the scatterplot is a distribution of data, and β has a distribution of belief.
 - Pivot: these descriptions are real patterns. Next, how real patterns can still mislead.
 
-## Part 4: When patterns mislead {#part4}
+## When patterns mislead: two headlines {#headlines}
 
-- Section break. Everything so far describes patterns accurately. That's exactly the danger: an accurate description can still be read the wrong way.
-- Two headlines, both based on real patterns. By the end of Part 4, students should be able to say exactly why each one misleads.
-
-## Two headlines {#headlines}
-
+- Everything so far describes relationships accurately. That's exactly the danger: an accurate description can still be read the wrong way.
 - Read both headlines out loud, like a news anchor. Ask: do you believe them? Would you act on them?
 - Both numbers are real: they come straight from the data in the next few slides. Nobody made an arithmetic mistake.
 - If someone already spots the ice cream answer (hot weather), great. Ask about the second one instead. Nobody will have an answer for that one yet.
+- By the end of Part 3, students should be able to say exactly why each one misleads.
 
 ## Spurious correlations {#spurious}
 
@@ -214,7 +211,7 @@
 
 ## Small samples and many comparisons {#small-samples}
 
-- Point out that this histogram is itself a distribution: how much r varies by chance alone. Its width is exactly the uncertainty that the wide β posterior showed in Part 3.
+- Point out that this histogram is itself a distribution: a distribution of r, showing how much a correlation varies by chance alone. It's the same uncertainty the wide β posterior showed with 20 adults.
 - The histogram shows r for every pair of unrelated variables. With 20 cases, chance alone gives r values of ±0.5 and beyond. With 500 cases, they stay near 0.
 - This is Week 1's problem again. Try enough comparisons and some will look significant. The base rate of real relationships in this dataset is zero, so every "discovery" is false.
 
@@ -225,11 +222,12 @@
 - What helps against confounding: thinking about causes. Nothing in the data alone can do it. That's why next week is about causal models.
 - Week 5 comes back to this hard: more data won't save you from a confounder.
 
-## Summary {#summary}
+## Summary: three kinds of distribution {#summary}
 
-- Four points, one per part. Read them slowly.
-- The line to remember is the big statement: think in distributions, not single numbers. Ask students to say what the two kinds are.
-- The second line, a pattern is a description, not an explanation, ties back to last week (statistics is observation) and forward to next week's causal models.
+- The definition, then one card per part. Read them slowly.
+- Ask students to name the three kinds without looking, and give an example of each.
+- The line to remember is the big statement: think in distributions, not single numbers.
+- The relationships card's last line, a pattern is a description, not an explanation, ties back to last week (statistics is observation) and forward to next week's causal models.
 
 ## Next week {#next-week}
 
@@ -238,7 +236,7 @@
 
 ## Practical work: What makes a house expensive? {#houses}
 
-- Appendix for the TA session. Everything here applies Part 1 to real data, and ends with a confounder from Part 2.
+- Appendix for the TA session. It uses all three kinds on real data. Steps 1 and 2 are Part 1 (a distribution of data, and z-scores). Steps 3 to 5 are Part 3 (relationships), and it ends with a confounder like the ice cream example.
 - Let students drive. Each step has a question to answer before the reveal.
 
 ## The data: house sales in Ames, Iowa {#houses-data}

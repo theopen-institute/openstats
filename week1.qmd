@@ -590,7 +590,7 @@ The science comes first.
 
 That's what we're going to do here: [put the science first]{.blue}.
 
-- **Week 2**: Distributions: A different way to think about numbers, for populations and for uncertainty.
+- **Week 2**: Distributions: A different way to think about numbers, for populations, for uncertainty and for relationships.
 - **Week 3**: Causal modeling: using diagrams (DAGs) to map assumptions.
 - **Week 4**: Causal pitfalls: forks, pipes and colliders. What to control for, and what not to.
 - **Week 5**: Evaluating research: what did the authors leave out? Unobserved forks, pipes and colliders.

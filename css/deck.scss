@@ -367,6 +367,11 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   color: $brand-gray;
 }
 
+/* darkened: the palette orange is too light to read as text on white */
+.reveal .slides .orange {
+  color: darken($brand-orange, 12%);
+}
+
 /* ------------------------------------------------------------------ */
 /* Interactive widgets (week 1). Their scripts live in js/.            */
 /* ------------------------------------------------------------------ */
@@ -624,6 +629,67 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
 /* Small caption text beside a figure (week 2) */
 .small-caption {
   font-size: 12pt;
+}
+
+/* Week 2's three kinds of distribution, as a row of cards, each with its own color:
+   data, belief, relationships (_includes/week2/three-kinds.md, and the opening and
+   summary slides). On a part divider, `# Part 2: ... {.part-2}` fades the other cards. */
+.kinds {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 24px;
+  margin: 30px 0;
+}
+
+@mixin kind-color($color) {
+  border-top-color: $color;
+  background: mix($color, white, 7%);
+}
+
+.kind {
+  border-top: 8px solid;
+  border-radius: 10px;
+  padding: 18px 24px;
+  font-size: 0.8em;
+  transition: opacity 0.4s;
+  @include kind-color($brand-blue);
+
+  &.kind-belief {
+    @include kind-color($brand-green);
+  }
+
+  &.kind-relationship {
+    @include kind-color($brand-orange);
+  }
+
+  p {
+    margin: 0.4em 0;
+  }
+
+  .kind-part {
+    display: block;
+    color: $brand-gray;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .kind-title {
+    display: block;
+    font-family: $headingFont;
+    font-weight: 700;
+    font-size: 1.2em;
+    color: $brand-ink-head;
+    margin-bottom: 0.3em;
+  }
+}
+
+.reveal .slides section.part-1 .kind:not(.kind-data),
+.reveal .slides section.part-2 .kind:not(.kind-belief),
+.reveal .slides section.part-3 .kind:not(.kind-relationship) {
+  opacity: 0.3;
 }
 
 /* Divider before a table's totals column (week 3). Scoped to outrank the table cell

@@ -177,7 +177,7 @@ rendering (`!notes/**` in `_quarto.yml`) — it is a content source, not pages.
 Single SCSS theme layered on reveal's `simple` theme: Inter/Space Grotesk fonts, the
 semantic color spans used as `[text]{.red}`, `.blue`, `.green`, `.gray`, and shared
 classes for things decks would otherwise style inline (`.source` for small gray source
-lines, `.big-statement`, `.small-caption`, the week 1 widgets, week 3's `.workflow`).
+lines, `.big-statement`, `.small-caption`, the week 1 widgets, week 2's `.kinds` cards, week 3's `.workflow`).
 Keep `style=` attributes and `<style>` blocks out of the decks; add a class here.
 Footnotes (`[^id]`, with the note defined below the table or paragraph) build in with
 the fragment their reference sits in, and the marker is light gray; both come from a

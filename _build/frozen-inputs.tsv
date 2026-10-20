@@ -25,6 +25,7 @@ week1.qmd	r/rlib.R	5d48b7a934f59fde562c86a13a21ff29
 week1.qmd	r/week1.R	24ef5fddac2de02bdd8247821f74ea05
 week1.qmd	shiny/baserate.R	334c4826f733bcdecba1b6bb2ef6f796
 week1.qmd	shiny/updating.R	c1c0860c9f115dd2fde42ede0552c923
+week2.qmd	_includes/week2/three-kinds.md	ddc7e6705dcdf17357d64a9ae83a3835
 week2.qmd	css/deck.scss	5592ecf67ca1d30dd586fcec41dd739a
 week2.qmd	datasets/ames.csv	49e516290210a3227d30ede3f6875cef
 week2.qmd	datasets/berkeley.csv	38d4083ba32c2ea5727f6ff9ebfa458d
@@ -34,7 +35,7 @@ week2.qmd	datasets/wb2022.csv	0453ba3f319b384b049dd1c844d1dd1e
 week2.qmd	r/data.R	7292cdba6f8c32914d83fef128e01929
 week2.qmd	r/deck-setup.R	238885271e646d424f24e4e750fb1d2a
 week2.qmd	r/rlib.R	5d48b7a934f59fde562c86a13a21ff29
-week2.qmd	r/week2.R	6512a0bca280f966a48b251976b7082a
+week2.qmd	r/week2.R	2a1d57d89bf4e7875528015e32b73ea3
 week2.qmd	shiny/distributions.R	c80858a4d72b7b52dea69b9dabc116b1
 week3.qmd	_includes/dagitty-slide.md	4ecd898127d132228ec654c71122d997
 week3.qmd	_includes/week3/surgeon-by-case.md	3f73a2ecf48cf777a0f9a3369f53e546

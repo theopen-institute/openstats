@@ -1,6 +1,6 @@
 ---
-title: "Data Lunch: Week 2"
-subtitle: "Distributions: a different way to think about numbers"
+title: "Data for Decision Making"
+subtitle: "Week 2: Distributions"
 title-notes: "notes/week2_notes.md#title"
 format:
   revealjs: default
@@ -33,26 +33,35 @@ houses <- load_houses() |>
 _"The average !Kung adult is `r fmt(h_mean, 0)` cm tall."_
 
 ::: {.fragment}
-True. But that one number hides two things.
+True. But that one number hides three things.
 :::
 
-::: {.columns}
-::: {.column}
-::: {.fragment .callout-note title="A population"}
+::: {.kinds}
+::: {.kind .kind-data .fragment}
+[A population]{.kind-title}
+
 Not everyone is `r fmt(h_mean, 0)` cm. The adults range from `r fmt(min(howell$height), 0)`
 to `r fmt(max(howell$height), 0)` cm.
 
 How do heights **vary across people**? That's a **distribution of data**.
 :::
-:::
 
-::: {.column}
-::: {.fragment .callout-tip title="Uncertainty"}
+::: {.kind .kind-belief .fragment}
+[Uncertainty]{.kind-title}
+
 We measured `r nrow(howell)` adults, not every one. The true average could be a little
 higher or lower.
 
 How **sure** are we about the average? That's a **distribution of belief**.
 :::
+
+::: {.kind .kind-relationship .fragment}
+[A relationship]{.kind-title}
+
+Height doesn't vary on its own. Taller adults tend to be heavier, but not always.
+
+How do height and weight **vary together**? That's a **distribution of a
+relationship**.
 :::
 :::
 
@@ -69,28 +78,22 @@ This week: think in distributions, not single numbers.
 - It was a **distribution**: a whole curve of more and less plausible values.
 - That's this week's key word. A distribution describes a number by **every value it
   could take**, and how common or plausible each one is.
-- We'll use distributions for [populations]{.blue} (how values vary across cases) and
-  for [uncertainty]{.blue} (how sure we are about something we don't know).
+- We'll meet three kinds: distributions of [data]{.blue} (how values vary across
+  cases), of [belief]{.green} (how sure we are about something we don't know), and of
+  [relationships]{.orange} (how two variables vary together).
 
 
-# Goals this week {notes="notes/week2_notes.md#goals"}
+# Goals this week: three kinds of distribution {notes="notes/week2_notes.md#goals"}
 
-- Part 1: Distributions of data (populations)
-  - Center, spread and shape
-  - The Normal distribution
-  - z-scores: where one case sits in its distribution
-- Part 2: Distributions of belief (uncertainty)
-- Part 3: Two variables at once
-  - Correlation and our first regression coefficient
-  - A coefficient has a distribution too
-- Part 4: When patterns mislead
-  - Spurious correlations: confounding and chance
-- Appendix: What makes a house expensive? (with the TA in our second session)
+{{< include _includes/week2/three-kinds.md >}}
+
+Appendix: What makes a house expensive? All three kinds at work on real data, with the
+TA in our second session.
 
 
-# Part 1: Distributions of data {.center notes="notes/week2_notes.md#part1"}
+# Part 1: Distributions of data {.center .part-1 notes="notes/week2_notes.md#part1"}
 
-How values vary across a population
+{{< include _includes/week2/three-kinds.md >}}
 
 
 # Randomness has patterns {notes="notes/week2_notes.md#randomness"}
@@ -278,9 +281,9 @@ howell |>
   exam marks out of 50 vs. out of 100, rupees vs. dollars, cm vs. kg.
 
 
-# Part 2: Distributions of belief {.center notes="notes/week2_notes.md#part2"}
+# Part 2: Distributions of belief {.center .part-2 notes="notes/week2_notes.md#part2"}
 
-How sure we are about a number we don't know
+{{< include _includes/week2/three-kinds.md >}}
 
 
 # How old is he? A distribution of belief {notes="notes/week2_notes.md#belief-distributions"}
@@ -344,42 +347,42 @@ belief_plot(plateau_density(center = 40, plateau = 20, taper = 15), ymax = 0.05)
 :::
 
 
-# Two kinds of distributions {notes="notes/week2_notes.md#two-kinds"}
+# Data or belief? {notes="notes/week2_notes.md#two-kinds"}
 
-::: {.columns}
-::: {.column}
-::: {.callout-note .nonincremental title="Distributions of data"}
-How a quantity **varies across cases**.
+::: {.kinds .nonincremental}
+::: {.kind .kind-data}
+[Distributions of data]{.kind-title}
+
+How a quantity **varies across cases**. Many cases, each with its own value.
 
 - Heights of the adults in a village
 - Prices of houses sold last year
 - Ages of everyone in Nepal
 :::
-:::
 
-::: {.column}
-::: {.callout-tip .nonincremental title="Distributions of belief"}
-How **plausible** each value of a parameter is.
+::: {.kind .kind-belief}
+[Distributions of belief]{.kind-title}
+
+How **plausible** each value of an unknown is. One true value; we're unsure which.
 
 - The mayor's share of the vote
 - The age of the man in the photo
-- How much heavier taller people are
-:::
+- The average height of all !Kung adults
 :::
 :::
 
 ::: {.fragment}
-Same shapes, same vocabulary, same math. Part 3 uses both: a pattern in the data,
+Same shapes, same vocabulary, same math. Part 3 needs both: a pattern in the data,
 and how sure we are about it.
 :::
 
 
-# Part 3: Two variables at once {.center notes="notes/week2_notes.md#part3"}
+# Part 3: Distributions of relationships {.center .part-3 notes="notes/week2_notes.md#part3"}
 
-How two distributions vary together: correlation and regression
+{{< include _includes/week2/three-kinds.md >}}
 
 
-# Correlation {notes="notes/week2_notes.md#correlation"}
+# Two variables at once {notes="notes/week2_notes.md#correlation"}
 
 ```{r scatter-raw}
 ggplot(howell, aes(height, weight)) +
@@ -387,8 +390,8 @@ ggplot(howell, aes(height, weight)) +
   labs(x = "Height (cm)", y = "Weight (kg)")
 ```
 
-- Height and weight each have their own distribution. A scatterplot shows how they
-  vary **together**.
+- Height and weight each have their own [distribution of data]{.blue}, from Part 1.
+  The scatterplot shows the two **together**: each dot is one adult.
 - Taller people tend to be heavier. But **how strongly** do they go together?
 
 
@@ -517,36 +520,20 @@ coef(lm(weight ~ height, data = howell))
 :::
 
 
-## β is a parameter, so it has a distribution {notes="notes/week2_notes.md#beta-posterior"}
+## How sure are we about β? {notes="notes/week2_notes.md#beta-posterior"}
 
 ```{r beta-posterior}
 beta_posterior_plot(howell)
 ```
 
 ::: {.nonincremental}
-- Just like the mayor's popularity last week: **prior × likelihood → posterior**.
+- β is a number we don't know, so it gets a [distribution of belief]{.green}. Just
+  like the mayor's popularity last week: **prior × likelihood → posterior**.
 - With 20 people we're unsure about β. With `r nrow(howell)`, much less so.
 :::
 
 
-# Distributions so far {notes="notes/week2_notes.md#recap"}
-
-- A **distribution** describes a number by all the values it could take, not just one.
-- **Distributions of data**: how values vary across a population. Center, spread,
-  shape. A z-score says where one case sits.
-- **Distributions of belief**: how plausible each value of an unknown is. Wide when we
-  know little.
-- **Correlation** (*r*) and **regression** (β) describe how two variables vary
-  together. With standardized data and one predictor, β = *r*.
-- β is unknown, so it has a distribution of belief too.
-
-
-# Part 4: When patterns mislead {.center notes="notes/week2_notes.md#part4"}
-
-Real patterns that don't mean what they seem
-
-
-## Two headlines {notes="notes/week2_notes.md#headlines"}
+# When patterns mislead: two headlines {notes="notes/week2_notes.md#headlines"}
 
 ```{r icecream-sim}
 # Simulated beach town: hot days bring both ice cream sales and swimmers
@@ -674,9 +661,9 @@ tibble(x = noise_small[, best[1]], y = noise_small[, best[2]]) |>
 noise_dist_plot(r_small, n_vars)
 ```
 
-- Each histogram is the **distribution** of *r* when nothing is going on. With
-  [20 cases]{.red}, chance alone produces values of ±0.5 and beyond. With
-  [500 cases]{.blue}, they stay close to 0.
+- Each histogram is a **distribution of *r***: how much a correlation varies by chance
+  alone, when nothing is going on. With [20 cases]{.red}, chance alone produces values
+  of ±0.5 and beyond. With [500 cases]{.blue}, they stay close to 0.
 - Search through enough pairs and you're guaranteed to find something "interesting".
 - This is Week 1's problem again: try enough comparisons and some will look
   "significant." The base rate of real relationships here is zero.
@@ -700,17 +687,30 @@ noise_dist_plot(r_small, n_vars)
 :::
 
 
-# Summary {notes="notes/week2_notes.md#summary"}
+# Summary: three kinds of distribution {notes="notes/week2_notes.md#summary"}
 
-::: {.nonincremental}
-1. [**A distribution**]{.blue} is a different way to think about a number: every value it
-   could take, and how common or plausible each one is.
-2. [**Distributions of data**]{.blue} describe populations: center, spread, shape. A
-   z-score places one case.
-3. [**Distributions of belief**]{.blue} describe uncertainty. A coefficient has one too,
-   wide when data are few.
-4. [**Correlation and regression**]{.blue} describe how two variables vary together. But
-   a pattern is a description, not an explanation: chance and confounding both mislead.
+A **distribution** is a different way to think about a number: every value it could
+take, and how common or plausible each one is.
+
+::: {.kinds .nonincremental}
+::: {.kind .kind-data}
+[Data]{.kind-title}
+
+How values vary across cases. Center, spread, shape. A z-score places one case.
+:::
+
+::: {.kind .kind-belief}
+[Belief]{.kind-title}
+
+How sure we are about an unknown. Wide when we know little, narrow when data are many.
+:::
+
+::: {.kind .kind-relationship}
+[Relationships]{.kind-title}
+
+How two variables vary together: *r* and β. A pattern is a description, not an
+explanation: chance and confounding both mislead.
+:::
 :::
 
 ::: {.fragment}
