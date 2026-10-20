@@ -123,6 +123,15 @@ if (graphEl && !graphEl.dataset.initialized) {
     }
   });
 
+  // Back to the Step 1 slide, to see (and reshape) the new prior
+  function goToPrior() {
+    const slide = $('poll-prior-graph')?.closest('section');
+    if (slide && window.Reveal) {
+      const { h, v } = window.Reveal.getIndices(slide);
+      window.Reveal.slide(h, v);
+    }
+  }
+
   // Today's posterior is tomorrow's prior: sample it back onto the 21 draggable
   // points, then clear the survey so the data isn't counted twice
   $('poll-carry').addEventListener('click', () => {
@@ -135,6 +144,7 @@ if (graphEl && !graphEl.dataset.initialized) {
     survey = { ...survey, n: 0 };
     saveSurvey(survey, 'poll-survey:set');
     update();
+    goToPrior();
   });
 
   update();

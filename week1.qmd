@@ -7,6 +7,8 @@ format:
     include-in-header: _build/jspreadsheet.html
     # Most lists here appear all at once; the few that build mark themselves .incremental
     incremental: false
+    # Size table columns to their content, even when a row is long in the source
+    tbl-colwidths: false
 ---
 
 ```{r setup, include=FALSE}
@@ -170,10 +172,13 @@ _We write a probability as a number between 0 and 1, or as a percentage._
 | 0 | 0% | Something impossible |
 | 0.02 | 2% | Winning the raffle: 10 ÷ 500 |
 | 0.17 | 17% | Rolling a six: 1 ÷ 6 |
-| 0.31 | 31% | Rain in Kathmandu: 113 ÷ 365 days^[Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month's average rate.] |
+| 0.31 | 31% | Rain in Kathmandu: 113 ÷ 365 days[^rain-1] |
 | 0.5 | 50% | A fair coin landing heads: 1 ÷ 2 |
 | 1 | 100% | Something certain |
+
+[^rain-1]: Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month's average rate.
 :::
+
 
 ::: {.fragment}
 To convert between the two, move the decimal point two places right or left.
@@ -200,17 +205,22 @@ It's just shorthand. Everything inside the brackets is the thing we're unsure ab
 ## Describing Probability: Convention 3 {notes="notes/week1_notes.md#rain"}
 
 _We make a probability more specific by adding a condition: P( event | condition )._
+
 - P( rain | July ) means [_"the probability of rain, given that it's July."_]{.blue}
 
 ::: {.fragment}
-|  | Rainy days^[Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month's average rate.] | Days counted | Probability | % |
+|  | Rainy days[^rain-3] | Days counted | Probability | % |
 |---|--:|--:|--:|--:|
 | P( rain ) | 565 | 1,825 | **0.31** | (31%) |
 | P( rain \| Apr ) | 35 | 150 | **0.23** | (23%) |
 | P( rain \| Dec ) | 5 | 155 | **0.03** | (3%) |
 | P( rain \| Jul ) | 126 | 155 | **0.81** | (81%) |
 | P( rain \| Feb ) | 8 | 140 | **0.06** | (6%) |
+
+[^rain-3]: Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month's average rate.
 :::
+
+
 
 ::: {.fragment}
 Can data from the past five years help predict tomorrow? [Maybe, maybe not.]{.blue .fragment}
@@ -246,7 +256,7 @@ Every prediction needs assumptions. [Interesting predictions need strong assumpt
 # Probability for Decision Making {notes="notes/week1_notes.md#applied-probability"}
 
 ::: {.fragment}
-In Nepal, HIV has a prevalence of about 0.1%.^[UNAIDS, AIDSinfo country data for Nepal: HIV prevalence among adults aged 15–49.] We can write that as:
+In Nepal, HIV has a prevalence of about 0.1%. We can write that as:
 :::
 
 ::: {.incremental}
@@ -614,9 +624,18 @@ k &\sim \text{Binomial}(n,\ \theta) && \class{blue}{\text{likelihood}} \\
 \end{aligned}
 $$
 
-- The first line is the **likelihood**: how the data are generated, given θ.
-- The second line is the **prior**: what we believe about θ before any data.
-- From Week 3 on, we'll build models like this from a DAG.
+| Symbol | Read it as | In our survey |
+|---|---|---|
+| $n$ | the number of people surveyed | 20: data, we know it |
+| $k$ | how many of them said "mayor" | 4: data, we know it |
+| $\theta$ | the mayor's share among all voters | unknown: what we want to learn |
+| $\sim$ | "is drawn from" | |
+
+::: {.incremental}
+- [**Line 1**]{.blue}: each person we ask is a coin flip that lands "mayor" with chance θ.
+- [**Line 2**]{.red}: what we believe about θ before asking anyone.
+- From Week 3 on, we'll build models like this visually.
+:::
 
 ## Step 1: The prior {notes="notes/week1_notes.md#poll-prior"}
 

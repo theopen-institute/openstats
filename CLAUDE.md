@@ -179,6 +179,9 @@ semantic color spans used as `[text]{.red}`, `.blue`, `.green`, `.gray`, and sha
 classes for things decks would otherwise style inline (`.source` for small gray source
 lines, `.big-statement`, `.small-caption`, the week 1 widgets, week 3's `.workflow`).
 Keep `style=` attributes and `<style>` blocks out of the decks; add a class here.
+Footnotes (`[^id]`, with the note defined below the table or paragraph) build in with
+the fragment their reference sits in, and the marker is light gray; both come from a
+small script in `_build/_reveal.html`.
 
 **The palette is defined once**, as the `$brand-*` lines at the top of `deck.scss`.
 The theme re-exports them as CSS variables (`var(--brand-blue)`) for scripts
@@ -188,8 +191,10 @@ shades. Change a color there and everything follows; don't hard-code hex values
 anywhere else. In MathJax, color with the same classes: `\class{blue}{...}`.
 
 Slides that go deeper into the math than the big picture needs (formulas, derivations,
-unit conversions, formal model notation) are marked `## Title {.mechanics}`. This adds a
-small "Mechanics" tag in the top-right corner and a dotted title underline. The class only
+unit conversions, formal model notation) are marked `## Title {.mechanics}`. This puts
+the whole screen on bordered slate graph paper (the class is copied onto reveal's
+background element), with a small "Mechanics" tag in the
+top-right corner and a dotted title underline. The class only
 works on a slide heading, not on a heading inside a callout or other div.
 
 ### Title slides (YAML, not a heading)

@@ -276,6 +276,9 @@ This is why I'm always confused when people say statistics is "objective" or "mo
 
 - Mechanics slide. The formal model is two lines. The first line is the likelihood (how data are generated given θ), and the second is the prior (what we believe about θ before data).
 - Nobody needs to read Binomial notation fluently yet. The point is that the whole model is just a likelihood and a prior.
+- Read the two lines aloud: "k is drawn from a binomial with n and θ; θ is drawn from your prior." The table is the key: n and k are data we know, θ is the one thing we don't.
+- "Binomial" just means counting coin flips, the garden of forking paths from earlier with more flips. If asked: the chance of k "mayor" answers is (the number of ways to get k) × θ^k (1 − θ)^(n−k). For 4 of 20 at θ = 20% that's about 0.22, the number Step 2 shows.
+- The coin-flip picture carries the assumptions: everyone answers independently, with the same chance θ. A real survey breaks both (households, neighborhoods, who picks up the phone), which is what the later weeks are about.
 
 # Step 1: The prior {#poll-prior}
 
