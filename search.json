@@ -240,175 +240,168 @@
   {
     "objectID": "week2.html#same-data-new-ruler",
     "href": "week2.html#same-data-new-ruler",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Same data, new ruler",
     "text": "Same data, new ruler\n\n\nThe two histograms have the same shape. Only the axis labels change.\nStandardizing doesn’t change the data, only the units.\nThe mean becomes 0 and the SD becomes 1. The units disappear.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe shape doesn’t change at all. Only the labels on the axis.\nThe mean becomes 0. The standard deviation becomes 1.\nThe units disappear: a z-score is measured in “standard deviations”."
   },
   {
     "objectID": "week2.html#reading-z-scores",
     "href": "week2.html#reading-z-scores",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Reading z-scores",
     "text": "Reading z-scores\n\n\nA quick reference table. 0 is average, ±1 is ordinary, ±2 is unusual\n(about 1 in 20), ±3 is rare (about 1 in 370).\nThe R code is one line. Students don’t need to memorize it.\nReal uses: comparing exam marks on different scales, or prices in\ndifferent currencies.\n\n\n\n\n\n\n\nz\nMeaning\n\n\n\n\n0\nexactly average\n\n\n±1\nordinary\n\n\n±2\nunusual (about 1 in 20)\n\n\n±3\nrare (about 1 in 370)\n\n\n\n\nIn R:\n\nhowell |&gt;\n  mutate(\n    z_height = (height - mean(height)) / sd(height),\n    z_weight = (weight - mean(weight)) / sd(weight)\n  )\n\n\n\nz-scores let us compare things measured on completely different scales: exam marks out of 50 vs. out of 100, rupees vs. dollars, cm vs. kg."
   },
   {
     "objectID": "week2.html#standardize-both-variables",
     "href": "week2.html#standardize-both-variables",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Standardize both variables",
     "text": "Standardize both variables\n\n\nSame scatterplot, now in z-scores, split into four quadrants at the\naverages.\nPoints in the top-right and bottom-left are on the same side of\naverage for both variables. Points in the other two quadrants are on\nopposite sides.\nMost points are in the “same side” quadrants. That’s what a positive\nrelationship looks like."
   },
   {
     "objectID": "week2.html#correlation-is-average-agreement",
     "href": "week2.html#correlation-is-average-agreement",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Correlation is average agreement",
     "text": "Correlation is average agreement\n\n\nMechanics slide. The formula says: multiply each person’s two\nz-scores, then average.\nThe plain-language version is what matters: each person votes. Same\nside of average on both is a positive vote. Opposite sides is a negative\nvote. r is the average vote.\nProperties worth remembering: always between −1 and +1, no units,\nand it doesn’t care whether you measure in cm or inches.\n\n\n\n\n\\[\nr = \\frac{1}{n-1} \\sum_{i=1}^{n} z_{\\text{height},i} \\times z_{\\text{weight},i}\n\\]\n\nEach person “votes”:\n\nSame side of average on both → positive vote\nOpposite sides → negative vote\n\nr is the average vote.\n\n\n\n\ncor(howell$height, howell$weight)\n\n[1] 0.7547479\n\n\n\n\nr is always between −1 and +1.\nr has no units.\nStandardizing changes nothing: r in cm/kg = r in z-scores."
   },
   {
     "objectID": "week2.html#what-does-r-look-like",
     "href": "week2.html#what-does-r-look-like",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "What does r look like?",
     "text": "What does r look like?\n\n\nBuild intuition. Six scatterplots from r = −0.8 to 0.9.\nAsk: where would our height and weight (r = 0.75) sit? Strong, but\nfar from perfect.\nNote that r = 0.3 looks like almost nothing to the eye, yet it’s a\nrelationship many papers would report.\n\n\n\n\nOur height and weight: r = 0.75. A strong relationship, but far from perfect."
   },
   {
     "objectID": "week2.html#what-correlation-misses",
     "href": "week2.html#what-correlation-misses",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "What correlation misses",
-    "text": "What correlation misses\n\n\nThree datasets where r badly misdescribes the relationship.\nA curve: a strong, clear relationship with r near 0, because r only\nmeasures straight-line agreement.\nOne extreme point: 30 unrelated points plus a single outlier, and\nthe outlier alone creates a large r.\nTwo groups: inside each group the relationship runs downhill, but\nthe overall r is positive. Flag this one; it’s the same shape as the\nbedrooms puzzle in the house exercise, and as confounding in Part\n2.\nThe lesson: always plot your data before trusting one number.\n\n\n\n\nr only measures straight-line agreement.\nAlways plot your data before trusting a single number."
+    "text": "What correlation misses\n\n\nThree datasets where r badly misdescribes the relationship.\nA curve: a strong, clear relationship with r near 0, because r only\nmeasures straight-line agreement.\nOne extreme point: 30 unrelated points plus a single outlier, and\nthe outlier alone creates a large r.\nTwo groups: inside each group the relationship runs downhill, but\nthe overall r is positive. Flag this one; it’s the same shape as the\nbedrooms puzzle in the house exercise, and as confounding at the end of\nPart 3.\nThe lesson: always plot your data before trusting one number.\n\n\n\n\nr only measures straight-line agreement.\nAlways plot your data before trusting a single number."
   },
   {
     "objectID": "week2.html#the-best-line",
     "href": "week2.html#the-best-line",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "The best line",
     "text": "The best line\n\n\nThe red segments are the errors: how far each person is from the\nline.\nThe best line makes the errors as small as possible overall\n(technically, the sum of squared errors).\nThe neat fact: with standardized data and one predictor, the best\nslope is exactly the correlation. β = r.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe red lines are the errors: how far each person is from the line.\nThe best line makes the errors as small as possible overall.\nWith standardized data and one predictor, the best β is exactly the correlation: β = r = 0.75."
   },
   {
     "objectID": "week2.html#reading-the-coefficient",
     "href": "week2.html#reading-the-coefficient",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Reading the coefficient",
-    "text": "Reading the coefficient\n\n\nMechanics slide. Two ways to read the same β.\nIn z-scores: one SD taller goes with r SDs heavier.\nIn real units: convert back by multiplying by SD of weight and\ndividing by SD of height. About 0.6 kg per cm.\nWatch the wording: “goes with,” not “causes.” That word choice comes\nback in Part 2.\n\n\n\n\n\nIn z-scores: β = 0.75\n\n“An adult 1 SD taller than average is, on average, 0.75 SD heavier.”\n\nBack in real units: β × SDweight / SDheight\n\n0.75 × 6.5 / 7.7 = 0.63 kg per cm\n“Each extra centimeter of height goes with about 0.63 kg more weight.”\n\n\n\n\n\n\n\n\n\n\n\n\n\ncoef(lm(weight ~ height, data = howell))\n\n(Intercept)      height \n -52.316178    0.629421"
+    "text": "Reading the coefficient\n\n\nMechanics slide. Two ways to read the same β.\nIn z-scores: one SD taller goes with r SDs heavier.\nIn real units: convert back by multiplying by SD of weight and\ndividing by SD of height. About 0.6 kg per cm.\nWatch the wording: “goes with,” not “causes.” That word choice comes\nback at the end of Part 3.\n\n\n\n\n\nIn z-scores: β = 0.75\n\n“An adult 1 SD taller than average is, on average, 0.75 SD heavier.”\n\nBack in real units: β × SDweight / SDheight\n\n0.75 × 6.5 / 7.7 = 0.63 kg per cm\n“Each extra centimeter of height goes with about 0.63 kg more weight.”\n\n\n\n\n\n\n\n\n\n\n\n\n\ncoef(lm(weight ~ height, data = howell))\n\n(Intercept)      height \n -52.316178    0.629421"
   },
   {
-    "objectID": "week2.html#β-is-a-parameter-so-it-has-a-distribution",
-    "href": "week2.html#β-is-a-parameter-so-it-has-a-distribution",
-    "title": "Data Lunch: Week 2",
-    "section": "β is a parameter, so it has a distribution",
-    "text": "β is a parameter, so it has a distribution\n\n\nThis connects Part 1 back to Week 1. β is an unknown, like the\nmayor’s vote share. So we can have a prior and a posterior for it.\nTwo posteriors: one from 20 adults (wide) and one from all 352\n(narrow). Same rule as last week: prior × likelihood → posterior.\nSmall samples aren’t invalid, they’re just honest about being\nunsure. Keep this in mind for the noise example in Part 2.\nWe just moved from a distribution of data to a distribution of\nbelief.\n\n\n\n\nJust like the mayor’s popularity last week: prior × likelihood → posterior.\nWith 20 people we’re unsure about β. With 352, much less so."
-  },
-  {
-    "objectID": "week2.html#two-headlines",
-    "href": "week2.html#two-headlines",
-    "title": "Data Lunch: Week 2",
-    "section": "Two headlines",
-    "text": "Two headlines\n\n\nRead both headlines out loud, like a news anchor. Ask: do you\nbelieve them? Would you act on them?\nBoth numbers are real: they come straight from the data in the next\nfew slides. Nobody made an arithmetic mistake.\nIf someone already spots the ice cream answer (hot weather), great.\nAsk about the second one instead. Nobody will have an answer for that\none yet.\n\n\n\n\n“Ice cream sales linked to drownings” (r = 0.43, one year of daily data)\n\n\n\n\n“Countries that spend more on [one thing] have more [another]” (r = 0.70, 20 countries)\n\n\n\n\nBoth patterns are really there in the data.\nNeither one means what the headline says.\n\n\n\nLet’s see why, and how to tell the two apart."
+    "objectID": "week2.html#how-sure-are-we-about-β",
+    "href": "week2.html#how-sure-are-we-about-β",
+    "title": "Data for Decision Making",
+    "section": "How sure are we about β?",
+    "text": "How sure are we about β?\n\n\nβ is an unknown, like the mayor’s vote share. So we can have a prior\nand a posterior for it. This is the second card again, applied to a\nrelationship.\nTwo posteriors: one from 20 adults (wide) and one from all 352\n(narrow). Same rule as last week: prior × likelihood → posterior.\nSmall samples aren’t invalid, they’re just honest about being\nunsure. Keep this in mind for the noise example coming up.\nPart 3 now uses both kinds: the scatterplot is a distribution of\ndata, and β has a distribution of belief.\nPivot: these descriptions are real patterns. Next, how real patterns\ncan still mislead.\n\n\n\n\nβ is a number we don’t know, so it gets a distribution of belief. Just like the mayor’s popularity last week: prior × likelihood → posterior.\nWith 20 people we’re unsure about β. With 352, much less so."
   },
   {
     "objectID": "week2.html#spurious-correlations",
     "href": "week2.html#spurious-correlations",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Spurious correlations",
     "text": "Spurious correlations\n\n\nDefinition: a real pattern in the data that does not mean one\nvariable affects the other.\nTwo ways to get one. Confounding: a third variable drives both.\nChance: noise happens to line up.\nThey behave very differently, and they have different fixes. That\ndifference is the core of today.\n\n\nA spurious correlation is a real pattern in the data that does not mean one variable affects the other. There are two common ways to get one:\n\n\n\n\n\n\n\n\n\nConfounding\n\n\nA third variable drives both. The pattern is real and will show up again in new data, but it isn’t about the two variables themselves.\n\n\n\n\n\n\n\n\n\n\n\n\nChance\n\n\nRandom noise happens to line up. The pattern is a fluke of this particular sample and will disappear in new data."
   },
   {
     "objectID": "week2.html#kind-1-does-ice-cream-cause-drowning",
     "href": "week2.html#kind-1-does-ice-cream-cause-drowning",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Kind 1: Does ice cream cause drowning?",
     "text": "Kind 1: Does ice cream cause drowning?\n\n\nFirst headline. One year of simulated daily data. More ice cream\nsales go with more drownings.\nAsk: should the town ban ice cream? Let them laugh, then ask what’s\nreally going on.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOne year of (simulated) daily data from a beach town.\nr = 0.43: days with more ice cream sales have more drownings.\nShould the town ban ice cream?"
   },
   {
     "objectID": "week2.html#the-confounder-temperature",
     "href": "week2.html#the-confounder-temperature",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "The confounder: temperature",
     "text": "The confounder: temperature\n\n\nHot days bring both ice cream and swimmers. Temperature is the\nconfounder.\nSplit the days by temperature and the relationship mostly\ndisappears. Comparing like with like is the basic move against\nconfounding.\nThe key line: more data would not help. A million days would show\nthe same strong r. The pattern is stable; it’s just not about ice\ncream.\nMention that a confounder can also hide or flip a relationship.\nThey’ll see a flip in the house exercise.\n\n\n\n\nice cream ← temperature → drownings\nCompare days with similar temperatures, and the relationship mostly disappears.\nMore data would not help: a million days would show the same strong r.\nA confounder can hide a relationship, invent one, or even flip its sign. You’ll see a sign flip in the house-price exercise."
   },
   {
     "objectID": "week2.html#kind-2-correlations-from-pure-noise",
     "href": "week2.html#kind-2-correlations-from-pure-noise",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Kind 2: Correlations from pure noise",
     "text": "Kind 2: Correlations from pure noise\n\n\nSecond headline. Reveal: it was pure noise. 50 made-up variables for\n20 made-up countries, every value random. Nothing is related to\nanything.\nWith 1,225 possible pairs, the strongest one has r = 0.70. Put names\non those two variables and it’s a headline.\nAsk: how many real studies look at many variables and report the\nstrongest?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nI made up 50 variables for 20 “countries”. Every value is drawn at random with rnorm(): nothing is related to anything.\nThat’s 1225 possible pairs.\nThe strongest pair: r = 0.70.\nGive these two variables names, and it would make a convincing headline."
   },
   {
     "objectID": "week2.html#small-samples-and-many-comparisons",
     "href": "week2.html#small-samples-and-many-comparisons",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Small samples and many comparisons",
-    "text": "Small samples and many comparisons\n\n\nPoint out that this histogram is itself a distribution: how much r\nvaries by chance alone. Its width is exactly the uncertainty that the\nwide β posterior showed in Part 3.\nThe histogram shows r for every pair of unrelated variables. With 20\ncases, chance alone gives r values of ±0.5 and beyond. With 500 cases,\nthey stay near 0.\nThis is Week 1’s problem again. Try enough comparisons and some will\nlook significant. The base rate of real relationships in this dataset is\nzero, so every “discovery” is false.\n\n\n\n\nEach histogram is the distribution of r when nothing is going on. With 20 cases, chance alone produces values of ±0.5 and beyond. With 500 cases, they stay close to 0.\nSearch through enough pairs and you’re guaranteed to find something “interesting”.\nThis is Week 1’s problem again: try enough comparisons and some will look “significant.” The base rate of real relationships here is zero."
+    "text": "Small samples and many comparisons\n\n\nPoint out that this histogram is itself a distribution: a\ndistribution of r, showing how much a correlation varies by chance\nalone. It’s the same uncertainty the wide β posterior showed with 20\nadults.\nThe histogram shows r for every pair of unrelated variables. With 20\ncases, chance alone gives r values of ±0.5 and beyond. With 500 cases,\nthey stay near 0.\nThis is Week 1’s problem again. Try enough comparisons and some will\nlook significant. The base rate of real relationships in this dataset is\nzero, so every “discovery” is false.\n\n\n\n\nEach histogram is a distribution of r: how much a correlation varies by chance alone, when nothing is going on. With 20 cases, chance alone produces values of ±0.5 and beyond. With 500 cases, they stay close to 0.\nSearch through enough pairs and you’re guaranteed to find something “interesting”.\nThis is Week 1’s problem again: try enough comparisons and some will look “significant.” The base rate of real relationships here is zero."
   },
   {
     "objectID": "week2.html#telling-the-two-apart",
     "href": "week2.html#telling-the-two-apart",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Telling the two apart",
     "text": "Telling the two apart\n\n\nWalk the table row by row. The most important row: does more data\nhelp? For chance, yes. For confounding, no.\nWhat helps against chance: bigger samples, deciding what to test\nbefore looking, replication. All things from Week 1.\nWhat helps against confounding: thinking about causes. Nothing in\nthe data alone can do it. That’s why next week is about causal\nmodels.\nWeek 5 comes back to this hard: more data won’t save you from a\nconfounder.\n\n\n\n\n\n\n\n\n\n\n\nConfounding\nChance\n\n\n\n\nWhat’s going on?\nA third variable drives both\nNoise happened to line up\n\n\nShows up in new data?\nYes\nNo\n\n\nDoes more data help?\nNo\nYes\n\n\nWhat helps?\nThinking about causes; comparing like with like\nBigger samples; deciding what to test before looking; replication\n\n\n\n\n\nThe posterior for β already protects us a little against chance: with 20 adults it was wide, saying “I’m not sure.”\nNothing in the data alone protects us against confounding. For that we need a causal model.\nWe’ll come back to this in Week 5: more data won’t save you from a confounder."
   },
   {
     "objectID": "week2.html#the-data-house-sales-in-ames-iowa",
     "href": "week2.html#the-data-house-sales-in-ames-iowa",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "The data: house sales in Ames, Iowa",
     "text": "The data: house sales in Ames, Iowa\n\n\n2,930 house sales in Ames, Iowa, 2006–2010, compiled by Dean De Cock\n(2011) for teaching. Prices in US dollars, areas converted to m².\nIt’s a US college town, so it’s not Nepal. Ask what might be\ndifferent about a housing market here.\n\n\n\n2,930 houses sold 2006–2010 in Ames, a US college town (De Cock, 2011). Prices in US dollars; areas converted to m².\n\n\n\n\n\n\nprice\narea_m2\nyear_built\nbedrooms\nbathrooms\ngarage_cars\n\n\n\n\n$215,000\n153.8\n1960\n3\n1\n2\n\n\n$105,000\n83.2\n1961\n2\n1\n1\n\n\n$172,000\n123.5\n1958\n3\n1\n1\n\n\n$244,000\n196.0\n1968\n3\n2\n2\n\n\n$189,900\n151.3\n1997\n3\n2\n2\n\n\n$195,500\n149.0\n1998\n3\n2\n2"
   },
   {
     "objectID": "week2.html#step-1-look-at-the-distribution",
     "href": "week2.html#step-1-look-at-the-distribution",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Step 1: Look at the distribution",
     "text": "Step 1: Look at the distribution\n\n\nNot Normal: a long right tail of a few very expensive houses.\nThe tail pulls the mean (about $181,000) above the median\n($160,000). Ask: which is the typical price? For skewed data, usually\nthe median.\nThis is why “always plot first” matters. A mean and SD alone would\nhide the tail.\n\n\n\n\nNot Normal: a long right tail of a few very expensive houses.\nThe tail pulls the mean above the median. Which is the “typical” price?"
   },
   {
     "objectID": "week2.html#step-2-how-unusual-is-this-house",
     "href": "week2.html#step-2-how-unusual-is-this-house",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Step 2: How unusual is this house?",
     "text": "Step 2: How unusual is this house?\n\n\nStudents compute z-scores for two houses: A, the most expensive, and\nB, the largest.\nLet them work it out with the means and SDs in the table before\nrevealing the answer.\nThe question “in what way is it unusual?” matters: a house can be\nordinary in price but extreme in size.\n\n\n\n\n\n\n\n\nMean\nSD\n\n\n\n\nPrice\n$180,796\n$79,887\n\n\nLiving area\n139.3 m²\n47.0 m²\n\n\n\n\n\n\n\n\n\nhouse\nprice\narea (m²)\n\n\n\n\nA: most expensive\n$755,000\n401.0\n\n\nB: largest\n$160,000\n524.1\n\n\n\n\n\n\nYour turn: compute the z-scores for houses A and B. Which one is more unusual, and in what way?\n\n\n\n\n\n\nhouse\nz (price)\nz (area)\n\n\n\n\nA: most expensive\n7.2\n5.6\n\n\nB: largest\n-0.3\n8.2"
   },
   {
     "objectID": "week2.html#step-3-price-and-living-area",
     "href": "week2.html#step-3-price-and-living-area",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Step 3: Price and living area",
     "text": "Step 3: Price and living area\n\n\nr is about 0.71. Bigger houses sell for more, with plenty of\nscatter.\nHouse B, the largest, sits far below the pattern. Ask what might\nexplain it. Good guesses: an unusual sale, a family sale, a house sold\nunfinished. De Cock’s documentation flags the very largest houses as\nunusual sales that don’t reflect market value.\nLesson: an outlier is a question about how the data were made, not\njust a nuisance.\n\n\n\n\nr = 0.71. Bigger houses sell for more, but with lots of scatter.\nHouse B is far off the pattern. What might be going on?"
   },
   {
     "objectID": "week2.html#step-4-guess-first",
     "href": "week2.html#step-4-guess-first",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Step 4: Guess first",
     "text": "Step 4: Guess first\n\n\nHave everyone rank the six features before looking. Write a few\nrankings on the board.\nGuessing first makes the result stick, and shows people how good or\nbad their intuitions are.\n\n\nBefore we look: rank these from strongest to weakest correlation with price.\n\nNumber of bedrooms\nNumber of bathrooms\nLiving area\nLot (land) area\nGarage size (cars)\nYear built"
   },
   {
     "objectID": "week2.html#step-4-the-correlations",
     "href": "week2.html#step-4-the-correlations",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Step 4: The correlations",
     "text": "Step 4: The correlations\n\n\nLiving area is strongest (about 0.71), then garage size (0.65), year\nbuilt (0.56), bathrooms (0.55), lot area (0.27), and bedrooms last\n(0.14).\nBedrooms near the bottom usually surprises people. Hold that thought\nfor the puzzle.\nBecause r has no units, we can compare m², cars, years and rooms on\none scale.\n\n\n\n\nBecause r has no units, we can compare m², cars, years, and rooms on one scale."
   },
   {
     "objectID": "week2.html#step-5-one-coefficient",
     "href": "week2.html#step-5-one-coefficient",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Step 5: One coefficient",
     "text": "Step 5: One coefficient\n\n\nMechanics slide. Same as the height and weight coefficient, now for\nprice and living area.\nIn z-scores: one SD more space goes with about 0.71 SD higher price.\nIn dollars per m², convert with the SDs.\nAgain: “goes with,” not “adds.” That distinction is the next\nslide.\n\n\n\n\n\\[\nz_{\\text{price}} = \\beta \\times z_{\\text{area}}\n\\]\n\nIn z-scores: β = 0.71\n\n“A house 1 SD larger than average sells, on average, for 0.71 SD more.”\n\nIn real units: 0.71 × $79,887 / 47.0 m² ≈ $1,202 per m²\n\n“Each extra square meter of living space goes with about $1,202 more in price.”"
   },
   {
     "objectID": "week2.html#a-puzzle-bedrooms",
     "href": "week2.html#a-puzzle-bedrooms",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "A puzzle: bedrooms",
     "text": "A puzzle: bedrooms\n\n\nOverall, more bedrooms go with a higher price. But among medium and\nlarge houses of similar size, more bedrooms go with a lower price.\nLet students argue about how both can be true before moving on.\n\n\n\n\nOverall, more bedrooms go with a higher price (r = 0.14).\nBut among medium and large houses of similar size, more bedrooms go with a lower price.\nHow can both be true?"
   },
   {
     "objectID": "week2.html#solving-the-bedrooms-puzzle",
     "href": "week2.html#solving-the-bedrooms-puzzle",
-    "title": "Data Lunch: Week 2",
+    "title": "Data for Decision Making",
     "section": "Solving the bedrooms puzzle",
     "text": "Solving the bedrooms puzzle\n\n\nIt’s a confounder, exactly like temperature. Living area drives both\nbedrooms and price.\nHolding size fixed, an extra bedroom means smaller rooms, which\nbuyers pay less for.\nA confounder flipped the sign of a relationship. That’s the\nstrongest version of “a pattern is a description, not an\nexplanation.”\nThe causal question, whether adding a bedroom makes a house more\nvaluable, needs a causal model. That’s Week 3.\n\n\n\nThe bedrooms puzzle: across all houses, more bedrooms go with higher prices.\nIt’s a confounder, like temperature for ice cream and drownings.\nBut bedrooms ← living area → price. Big houses have more bedrooms and sell for more.\nCompare houses of similar size, and extra bedrooms go with a lower price (less space per room).\nA confounder can hide a relationship, invent one, or even flip its sign.\nTo answer “does adding a bedroom make a house more valuable?”, we need to say what we think causes what. That’s Week 3."
   },

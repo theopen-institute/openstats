@@ -14,7 +14,7 @@
 <link href="site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
-  <title>Data Lunch: Week 2</title>
+  <title>Data for Decision Making</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4e953c4d60f442aabfc0aaa9c98f0200.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4498391a75a2d1d8b75d033352919b1c.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -205,8 +205,8 @@
     <div class="slides">
 
 <section id="title-slide" class="center">
-  <h1 class="title">Data Lunch: Week 2</h1>
-  <p class="subtitle">Distributions: a different way to think about numbers</p>
+  <h1 class="title">Data for Decision Making</h1>
+  <p class="subtitle">Week 2: Distributions</p>
   <div class="footer">The Open Institute For Social Science</div>
   <aside class="notes">
 <ul>
@@ -215,10 +215,14 @@ the end, students should reach for it without being asked.</li>
 <li>A distribution is a different way to think about a number. Instead
 of one value, it’s every value the number could take, and how common or
 plausible each one is.</li>
-<li>It does two jobs: describing populations (how values vary across
-cases) and describing uncertainty (how sure we are). Everything else
-this week, including correlation, regression and the spurious patterns
-at the end, is built on those two.</li>
+<li>The week has three parts, one per kind of distribution: data (how
+values vary across cases), belief (how sure we are about an unknown),
+and relationships (how two variables vary together). The third uses the
+first two: a relationship is a pattern in the data, and we can be more
+or less sure about it.</li>
+<li>Each kind has its own color on the cards (blue, green, orange), and
+the same three cards come back at every part break and in the summary.
+Point at them.</li>
 </ul>
   <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -238,17 +242,19 @@ at the end, is built on those two.</li>
 <ul>
 <li>Read the sentence. It’s true, and it’s the kind of number a report
 would print.</li>
-<li>Then ask what it leaves out. Let students find both answers before
-the callouts appear.</li>
+<li>Then ask what it leaves out. Let students find answers before the
+cards appear.</li>
 <li>First, a population: real adults differ, from about 137 to 179 cm.
 “Average” describes the middle of a spread, not a person. How the
 heights vary is a distribution of data.</li>
 <li>Second, uncertainty: we measured 352 people. A different 352 would
 give a slightly different average. How sure we are about the true
 average is a distribution of belief.</li>
-<li>The big statement is the week in one line. Every number has a
-distribution behind it, and both kinds use the same shapes and the same
-vocabulary.</li>
+<li>Third, a relationship: height doesn’t vary on its own. Taller people
+tend to be heavier, but with plenty of exceptions. How the two vary
+together is the third kind.</li>
+<li>These are the three parts of today, in order. The big statement is
+the week in one line.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -263,44 +269,25 @@ vocabulary.</li>
       }</style></aside>
 <p><em>“The average !Kung adult is 155 cm tall.”</em></p>
 <div class="fragment">
-<p>True. But that one number hides two things.</p>
+<p>True. But that one number hides three things.</p>
 </div>
-<div class="columns">
-<div class="column">
-<div class="fragment" title="A population">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>A population</strong></p>
-</div>
-<div class="callout-content">
+<div class="kinds">
+<div class="kind kind-data fragment">
+<p><span class="kind-title">A population</span></p>
 <p>Not everyone is 155 cm. The adults range from 137 to 179 cm.</p>
 <p>How do heights <strong>vary across people</strong>? That’s a <strong>distribution of data</strong>.</p>
 </div>
-</div>
-</div>
-</div>
-</div><div class="column">
-<div class="fragment" title="Uncertainty">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Uncertainty</strong></p>
-</div>
-<div class="callout-content">
+<div class="kind kind-belief fragment">
+<p><span class="kind-title">Uncertainty</span></p>
 <p>We measured 352 adults, not every one. The true average could be a little higher or lower.</p>
 <p>How <strong>sure</strong> are we about the average? That’s a <strong>distribution of belief</strong>.</p>
 </div>
+<div class="kind kind-relationship fragment">
+<p><span class="kind-title">A relationship</span></p>
+<p>Height doesn’t vary on its own. Taller adults tend to be heavier, but not always.</p>
+<p>How do height and weight <strong>vary together</strong>? That’s a <strong>distribution of a relationship</strong>.</p>
 </div>
 </div>
-</div>
-</div></div>
 <div class="fragment">
 <div class="big-statement">
 <p>This week: think in distributions, not single numbers.</p>
@@ -316,8 +303,9 @@ vocabulary.</li>
 curve. Students already drew one when they made their prior.</li>
 <li>Name the key word and give the plain definition: every value a
 number could take, and how common or plausible each one is.</li>
-<li>Then preview the two uses. Populations come first, in Part 1.
-Uncertainty, the kind they met with the mayor, comes in Part 2.</li>
+<li>Then name the three kinds, one per part. Data comes first. Belief,
+the kind they met with the mayor, is second. Relationships are
+third.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -334,18 +322,22 @@ Uncertainty, the kind they met with the mayor, comes in Part 2.</li>
 <li class="fragment">Last week, our answer to “will the mayor win?” was not a number.</li>
 <li class="fragment">It was a <strong>distribution</strong>: a whole curve of more and less plausible values.</li>
 <li class="fragment">That’s this week’s key word. A distribution describes a number by <strong>every value it could take</strong>, and how common or plausible each one is.</li>
-<li class="fragment">We’ll use distributions for <span class="blue">populations</span> (how values vary across cases) and for <span class="blue">uncertainty</span> (how sure we are about something we don’t know).</li>
+<li class="fragment">We’ll meet three kinds: distributions of <span class="blue">data</span> (how values vary across cases), of <span class="green">belief</span> (how sure we are about something we don’t know), and of <span class="orange">relationships</span> (how two variables vary together).</li>
 </ul>
 </section>
 
-<section id="goals-this-week" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#goals">
-<h1>Goals this week</h1>
+<section id="goals-this-week-three-kinds-of-distribution" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#goals">
+<h1>Goals this week: three kinds of distribution</h1>
 <aside class="notes">
 <ul>
-<li>Four parts. Parts 1 and 2 are the two kinds of distribution. Part 3
-puts two variables together. Part 4 is where patterns fool us.</li>
+<li>Three parts, one per card. Parts 1 and 2 are the two basic kinds:
+data and belief. Part 3 puts two variables together and uses both: the
+pattern is in the data, and β gets a distribution of belief. Part 3 ends
+with how relationships mislead.</li>
+<li>These cards come back at every part break, with the current part
+highlighted.</li>
 <li>The house-price exercise is the appendix. They’ll do it with the TA
-in the second session, using everything from Parts 1 to 3.</li>
+in the second session, using all three kinds.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -358,33 +350,46 @@ in the second session, using everything from Parts 1 to 3.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+<!-- Week 2's map: the three kinds of distribution, one card each. Used on "Goals this
+     week" and on each part divider, where a .part-N class on the slide heading fades
+     the other two cards back. Styles in css/deck.scss (.kinds). -->
+<div class="kinds">
+<div class="kind kind-data">
+<p><span class="kind-part">Part 1</span> <span class="kind-title">Distributions of data</span></p>
+<p>How values <strong>vary across cases</strong></p>
 <ul>
-<li class="fragment">Part 1: Distributions of data (populations)
-<ul>
-<li class="fragment">Center, spread and shape</li>
-<li class="fragment">The Normal distribution</li>
-<li class="fragment">z-scores: where one case sits in its distribution</li>
-</ul></li>
-<li class="fragment">Part 2: Distributions of belief (uncertainty)</li>
-<li class="fragment">Part 3: Two variables at once
-<ul>
-<li class="fragment">Correlation and our first regression coefficient</li>
-<li class="fragment">A coefficient has a distribution too</li>
-</ul></li>
-<li class="fragment">Part 4: When patterns mislead
-<ul>
-<li class="fragment">Spurious correlations: confounding and chance</li>
-</ul></li>
-<li class="fragment">Appendix: What makes a house expensive? (with the TA in our second session)</li>
+<li>Center, spread and shape</li>
+<li>The Normal distribution</li>
+<li>z-scores: where one case sits</li>
 </ul>
+</div>
+<div class="kind kind-belief">
+<p><span class="kind-part">Part 2</span> <span class="kind-title">Distributions of belief</span></p>
+<p>How <strong>sure</strong> we are about something we don’t know</p>
+<ul>
+<li>From “no idea” to “quite sure”</li>
+<li>Same shapes, different meaning</li>
+</ul>
+</div>
+<div class="kind kind-relationship">
+<p><span class="kind-part">Part 3</span> <span class="kind-title">Distributions of relationships</span></p>
+<p>How two variables <strong>vary together</strong></p>
+<ul>
+<li>Correlation and our first coefficient</li>
+<li>How sure we are about a relationship</li>
+<li>When relationships mislead</li>
+</ul>
+</div>
+</div>
+<p>Appendix: What makes a house expensive? All three kinds at work on real data, with the TA in our second session.</p>
 </section>
 
-<section id="part-1-distributions-of-data" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#part1">
+<section id="part-1-distributions-of-data" class="title-slide slide level1 center part-1" data-notes="notes/week2_notes.md#part1">
 <h1>Part 1: Distributions of data</h1>
 <aside class="notes">
 <ul>
-<li>Section break. The first kind of distribution: how a quantity varies
-across real cases.</li>
+<li>Section break. The first card: how a quantity varies across real
+cases.</li>
 <li>The tools in this part (center, spread, shape, the Normal, z-scores)
 are all ways of describing one distribution, or one case’s place in
 it.</li>
@@ -400,7 +405,37 @@ it.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>How values vary across a population</p>
+<!-- Week 2's map: the three kinds of distribution, one card each. Used on "Goals this
+     week" and on each part divider, where a .part-N class on the slide heading fades
+     the other two cards back. Styles in css/deck.scss (.kinds). -->
+<div class="kinds">
+<div class="kind kind-data">
+<p><span class="kind-part">Part 1</span> <span class="kind-title">Distributions of data</span></p>
+<p>How values <strong>vary across cases</strong></p>
+<ul>
+<li>Center, spread and shape</li>
+<li>The Normal distribution</li>
+<li>z-scores: where one case sits</li>
+</ul>
+</div>
+<div class="kind kind-belief">
+<p><span class="kind-part">Part 2</span> <span class="kind-title">Distributions of belief</span></p>
+<p>How <strong>sure</strong> we are about something we don’t know</p>
+<ul>
+<li>From “no idea” to “quite sure”</li>
+<li>Same shapes, different meaning</li>
+</ul>
+</div>
+<div class="kind kind-relationship">
+<p><span class="kind-part">Part 3</span> <span class="kind-title">Distributions of relationships</span></p>
+<p>How two variables <strong>vary together</strong></p>
+<ul>
+<li>Correlation and our first coefficient</li>
+<li>How sure we are about a relationship</li>
+<li>When relationships mislead</li>
+</ul>
+</div>
+</div>
 </section>
 
 <section id="randomness-has-patterns" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#randomness">
@@ -1766,11 +1801,11 @@ different currencies.</li>
 <li class="fragment">z-scores let us compare things measured on completely different scales: exam marks out of 50 vs.&nbsp;out of 100, rupees vs.&nbsp;dollars, cm vs.&nbsp;kg.</li>
 </ul>
 </section></section>
-<section id="part-2-distributions-of-belief" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#part2">
+<section id="part-2-distributions-of-belief" class="title-slide slide level1 center part-2" data-notes="notes/week2_notes.md#part2">
 <h1>Part 2: Distributions of belief</h1>
 <aside class="notes">
 <ul>
-<li>Section break. The second kind: not how real cases vary, but how
+<li>Section break. The second card: not how real cases vary, but how
 plausible each value of something unknown is.</li>
 <li>Students met this kind last week with the mayor. This part shows
 it’s an everyday way of talking, and that it uses the same shapes as
@@ -1787,7 +1822,37 @@ Part 1.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>How sure we are about a number we don’t know</p>
+<!-- Week 2's map: the three kinds of distribution, one card each. Used on "Goals this
+     week" and on each part divider, where a .part-N class on the slide heading fades
+     the other two cards back. Styles in css/deck.scss (.kinds). -->
+<div class="kinds">
+<div class="kind kind-data">
+<p><span class="kind-part">Part 1</span> <span class="kind-title">Distributions of data</span></p>
+<p>How values <strong>vary across cases</strong></p>
+<ul>
+<li>Center, spread and shape</li>
+<li>The Normal distribution</li>
+<li>z-scores: where one case sits</li>
+</ul>
+</div>
+<div class="kind kind-belief">
+<p><span class="kind-part">Part 2</span> <span class="kind-title">Distributions of belief</span></p>
+<p>How <strong>sure</strong> we are about something we don’t know</p>
+<ul>
+<li>From “no idea” to “quite sure”</li>
+<li>Same shapes, different meaning</li>
+</ul>
+</div>
+<div class="kind kind-relationship">
+<p><span class="kind-part">Part 3</span> <span class="kind-title">Distributions of relationships</span></p>
+<p>How two variables <strong>vary together</strong></p>
+<ul>
+<li>Correlation and our first coefficient</li>
+<li>How sure we are about a relationship</li>
+<li>When relationships mislead</li>
+</ul>
+</div>
+</div>
 </section>
 
 <section id="how-old-is-he-a-distribution-of-belief" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#belief-distributions">
@@ -1908,18 +1973,21 @@ varies here except how sure we are.</li>
 </div></div>
 </section>
 
-<section id="two-kinds-of-distributions" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#two-kinds">
-<h1>Two kinds of distributions</h1>
+<section id="data-or-belief" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#two-kinds">
+<h1>Data or belief?</h1>
 <aside class="notes">
 <ul>
 <li>An important distinction that trips people up later. Distributions
 of data describe how a quantity varies across real cases: the heights of
 actual people. Distributions of belief describe how plausible each value
-of an unknown is: the mayor’s vote share.</li>
+of an unknown is: the mayor’s vote share. There’s one true value; we
+just don’t know it.</li>
+<li>A quick test: is there one true answer we’re unsure about (belief),
+or many cases that really differ (data)? Try it on the examples.</li>
 <li>Same shapes, same vocabulary, same math. That’s convenient, and also
 why they get confused.</li>
-<li>Part 1 was the first kind, Part 2 the second. Part 3 uses both: a
-pattern in the data, and then how sure we are about it.</li>
+<li>Part 3 needs both: a pattern in the data, and then how sure we are
+about it.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1932,64 +2000,43 @@ pattern in the data, and then how sure we are about it.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<div class="columns">
-<div class="column">
-<div title="Distributions of data">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Distributions of data</strong></p>
-</div>
-<div class="callout-content">
-<p>How a quantity <strong>varies across cases</strong>.</p>
+<div class="kinds">
+<div class="kind kind-data">
+<p><span class="kind-title">Distributions of data</span></p>
+<p>How a quantity <strong>varies across cases</strong>. Many cases, each with its own value.</p>
 <ul>
 <li>Heights of the adults in a village</li>
 <li>Prices of houses sold last year</li>
 <li>Ages of everyone in Nepal</li>
 </ul>
 </div>
-</div>
-</div>
-</div>
-</div><div class="column">
-<div title="Distributions of belief">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Distributions of belief</strong></p>
-</div>
-<div class="callout-content">
-<p>How <strong>plausible</strong> each value of a parameter is.</p>
+<div class="kind kind-belief">
+<p><span class="kind-title">Distributions of belief</span></p>
+<p>How <strong>plausible</strong> each value of an unknown is. One true value; we’re unsure which.</p>
 <ul>
 <li>The mayor’s share of the vote</li>
 <li>The age of the man in the photo</li>
-<li>How much heavier taller people are</li>
+<li>The average height of all !Kung adults</li>
 </ul>
 </div>
 </div>
-</div>
-</div>
-</div></div>
 <div class="fragment">
-<p>Same shapes, same vocabulary, same math. Part 3 uses both: a pattern in the data, and how sure we are about it.</p>
+<p>Same shapes, same vocabulary, same math. Part 3 needs both: a pattern in the data, and how sure we are about it.</p>
 </div>
 </section>
 
-<section id="part-3-two-variables-at-once" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#part3">
-<h1>Part 3: Two variables at once</h1>
+<section id="part-3-distributions-of-relationships" class="title-slide slide level1 center part-3" data-notes="notes/week2_notes.md#part3">
+<h1>Part 3: Distributions of relationships</h1>
 <aside class="notes">
 <ul>
-<li>Section break. So far, one variable at a time. Now two: how do
-height and weight vary together?</li>
-<li>Correlation and regression describe that joint pattern. At the end,
-the regression coefficient turns out to be uncertain, so it gets a
-distribution of belief. Both kinds of distribution in one slide.</li>
+<li>Section break. The third card. So far, one variable at a time. Now
+two: how do height and weight vary together?</li>
+<li>This kind is built from the first two. The scatterplot is a
+distribution of data with two variables. Correlation and regression
+summarize it with one number. That number is unknown, so it gets a
+distribution of belief.</li>
+<li>The part ends with the ways relationships mislead: confounding and
+chance.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2002,18 +2049,47 @@ distribution of belief. Both kinds of distribution in one slide.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>How two distributions vary together: correlation and regression</p>
+<!-- Week 2's map: the three kinds of distribution, one card each. Used on "Goals this
+     week" and on each part divider, where a .part-N class on the slide heading fades
+     the other two cards back. Styles in css/deck.scss (.kinds). -->
+<div class="kinds">
+<div class="kind kind-data">
+<p><span class="kind-part">Part 1</span> <span class="kind-title">Distributions of data</span></p>
+<p>How values <strong>vary across cases</strong></p>
+<ul>
+<li>Center, spread and shape</li>
+<li>The Normal distribution</li>
+<li>z-scores: where one case sits</li>
+</ul>
+</div>
+<div class="kind kind-belief">
+<p><span class="kind-part">Part 2</span> <span class="kind-title">Distributions of belief</span></p>
+<p>How <strong>sure</strong> we are about something we don’t know</p>
+<ul>
+<li>From “no idea” to “quite sure”</li>
+<li>Same shapes, different meaning</li>
+</ul>
+</div>
+<div class="kind kind-relationship">
+<p><span class="kind-part">Part 3</span> <span class="kind-title">Distributions of relationships</span></p>
+<p>How two variables <strong>vary together</strong></p>
+<ul>
+<li>Correlation and our first coefficient</li>
+<li>How sure we are about a relationship</li>
+<li>When relationships mislead</li>
+</ul>
+</div>
+</div>
 </section>
 
 <section>
-<section id="correlation" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#correlation">
-<h1>Correlation</h1>
+<section id="two-variables-at-once" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#correlation">
+<h1>Two variables at once</h1>
 <aside class="notes">
 <ul>
-<li>Each variable has its own distribution, which Part 1 described. A
-scatterplot shows both at once.</li>
-<li>Raw scatterplot of height and weight. Taller people tend to be
-heavier. The question is how strongly.</li>
+<li>Each variable has its own distribution of data, which Part 1
+described. A scatterplot shows both at once: one dot per adult.</li>
+<li>Taller people tend to be heavier. The question is how strongly.</li>
 <li>Ask the room to guess a number from 0 to 1 before we compute
 it.</li>
 </ul>
@@ -2030,7 +2106,7 @@ it.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/scatter-raw-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">Height and weight each have their own distribution. A scatterplot shows how they vary <strong>together</strong>.</li>
+<li class="fragment">Height and weight each have their own <span class="blue">distribution of data</span>, from Part 1. The scatterplot shows the two <strong>together</strong>: each dot is one adult.</li>
 <li class="fragment">Taller people tend to be heavier. But <strong>how strongly</strong> do they go together?</li>
 </ul>
 </section>
@@ -2148,8 +2224,8 @@ measures straight-line agreement.</li>
 the outlier alone creates a large r.</li>
 <li>Two groups: inside each group the relationship runs downhill, but
 the overall r is positive. Flag this one; it’s the same shape as the
-bedrooms puzzle in the house exercise, and as confounding in Part
-2.</li>
+bedrooms puzzle in the house exercise, and as confounding at the end of
+Part 3.</li>
 <li>The lesson: always plot your data before trusting one number.</li>
 </ul>
 <style type="text/css">
@@ -2262,7 +2338,7 @@ slope is exactly the correlation. β = r.</li>
 <li>In real units: convert back by multiplying by SD of weight and
 dividing by SD of height. About 0.6 kg per cm.</li>
 <li>Watch the wording: “goes with,” not “causes.” That word choice comes
-back in Part 2.</li>
+back at the end of Part 3.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2307,44 +2383,19 @@ back in Part 2.</li>
 </div>
 </div></div>
 </section>
-<section id="β-is-a-parameter-so-it-has-a-distribution" class="slide level2" data-notes="notes/week2_notes.md#beta-posterior">
-<h2>β is a parameter, so it has a distribution</h2>
+<section id="how-sure-are-we-about-β" class="slide level2" data-notes="notes/week2_notes.md#beta-posterior">
+<h2>How sure are we about β?</h2>
 <aside class="notes">
 <ul>
-<li>This connects Part 1 back to Week 1. β is an unknown, like the
-mayor’s vote share. So we can have a prior and a posterior for it.</li>
+<li>β is an unknown, like the mayor’s vote share. So we can have a prior
+and a posterior for it. This is the second card again, applied to a
+relationship.</li>
 <li>Two posteriors: one from 20 adults (wide) and one from all 352
 (narrow). Same rule as last week: prior × likelihood → posterior.</li>
 <li>Small samples aren’t invalid, they’re just honest about being
-unsure. Keep this in mind for the noise example in Part 2.</li>
-<li>We just moved from a distribution of data to a distribution of
-belief.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-
-<img data-src="week2_files/figure-revealjs/beta-posterior-1.png" width="1800" class="r-stretch"><ul>
-<li>Just like the mayor’s popularity last week: <strong>prior × likelihood → posterior</strong>.</li>
-<li>With 20 people we’re unsure about β. With 352, much less so.</li>
-</ul>
-</section></section>
-<section id="distributions-so-far" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#recap">
-<h1>Distributions so far</h1>
-<aside class="notes">
-<ul>
-<li>Quick recap before Part 4. Check for questions.</li>
-<li>The thread: every tool so far either describes a distribution
-(center, spread, shape, r, β) or places a case in one (z-scores), and
-unknowns get distributions of belief.</li>
+unsure. Keep this in mind for the noise example coming up.</li>
+<li>Part 3 now uses both kinds: the scatterplot is a distribution of
+data, and β has a distribution of belief.</li>
 <li>Pivot: these descriptions are real patterns. Next, how real patterns
 can still mislead.</li>
 </ul>
@@ -2359,43 +2410,20 @@ can still mislead.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<ul>
-<li class="fragment">A <strong>distribution</strong> describes a number by all the values it could take, not just one.</li>
-<li class="fragment"><strong>Distributions of data</strong>: how values vary across a population. Center, spread, shape. A z-score says where one case sits.</li>
-<li class="fragment"><strong>Distributions of belief</strong>: how plausible each value of an unknown is. Wide when we know little.</li>
-<li class="fragment"><strong>Correlation</strong> (<em>r</em>) and <strong>regression</strong> (β) describe how two variables vary together. With standardized data and one predictor, β = <em>r</em>.</li>
-<li class="fragment">β is unknown, so it has a distribution of belief too.</li>
-</ul>
-</section>
 
-<section>
-<section id="part-4-when-patterns-mislead" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#part4">
-<h1>Part 4: When patterns mislead</h1>
-<aside class="notes">
-<ul>
-<li>Section break. Everything so far describes patterns accurately.
-That’s exactly the danger: an accurate description can still be read the
-wrong way.</li>
-<li>Two headlines, both based on real patterns. By the end of Part 4,
-students should be able to say exactly why each one misleads.</li>
+<img data-src="week2_files/figure-revealjs/beta-posterior-1.png" width="1800" class="r-stretch"><ul>
+<li>β is a number we don’t know, so it gets a <span class="green">distribution of belief</span>. Just like the mayor’s popularity last week: <strong>prior × likelihood → posterior</strong>.</li>
+<li>With 20 people we’re unsure about β. With 352, much less so.</li>
 </ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p>Real patterns that don’t mean what they seem</p>
-</section>
-<section id="two-headlines" class="slide level2" data-notes="notes/week2_notes.md#headlines">
-<h2>Two headlines</h2>
+</section></section>
+<section>
+<section id="when-patterns-mislead-two-headlines" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#headlines">
+<h1>When patterns mislead: two headlines</h1>
 <aside class="notes">
 <ul>
+<li>Everything so far describes relationships accurately. That’s exactly
+the danger: an accurate description can still be read the wrong
+way.</li>
 <li>Read both headlines out loud, like a news anchor. Ask: do you
 believe them? Would you act on them?</li>
 <li>Both numbers are real: they come straight from the data in the next
@@ -2403,6 +2431,8 @@ few slides. Nobody made an arithmetic mistake.</li>
 <li>If someone already spots the ice cream answer (hot weather), great.
 Ask about the second one instead. Nobody will have an answer for that
 one yet.</li>
+<li>By the end of Part 3, students should be able to say exactly why
+each one misleads.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2613,9 +2643,10 @@ strongest?</li>
 <h2>Small samples and many comparisons</h2>
 <aside class="notes">
 <ul>
-<li>Point out that this histogram is itself a distribution: how much r
-varies by chance alone. Its width is exactly the uncertainty that the
-wide β posterior showed in Part 3.</li>
+<li>Point out that this histogram is itself a distribution: a
+distribution of r, showing how much a correlation varies by chance
+alone. It’s the same uncertainty the wide β posterior showed with 20
+adults.</li>
 <li>The histogram shows r for every pair of unrelated variables. With 20
 cases, chance alone gives r values of ±0.5 and beyond. With 500 cases,
 they stay near 0.</li>
@@ -2636,7 +2667,7 @@ zero, so every “discovery” is false.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/noise-dist-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">Each histogram is the <strong>distribution</strong> of <em>r</em> when nothing is going on. With <span class="red">20 cases</span>, chance alone produces values of ±0.5 and beyond. With <span class="blue">500 cases</span>, they stay close to 0.</li>
+<li class="fragment">Each histogram is a <strong>distribution of <em>r</em></strong>: how much a correlation varies by chance alone, when nothing is going on. With <span class="red">20 cases</span>, chance alone produces values of ±0.5 and beyond. With <span class="blue">500 cases</span>, they stay close to 0.</li>
 <li class="fragment">Search through enough pairs and you’re guaranteed to find something “interesting”.</li>
 <li class="fragment">This is Week 1’s problem again: try enough comparisons and some will look “significant.” The base rate of real relationships here is zero.</li>
 </ul>
@@ -2710,16 +2741,18 @@ confounder.</li>
 </ul>
 </div>
 </section></section>
-<section id="summary" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#summary">
-<h1>Summary</h1>
+<section id="summary-three-kinds-of-distribution" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#summary">
+<h1>Summary: three kinds of distribution</h1>
 <aside class="notes">
 <ul>
-<li>Four points, one per part. Read them slowly.</li>
+<li>The definition, then one card per part. Read them slowly.</li>
+<li>Ask students to name the three kinds without looking, and give an
+example of each.</li>
 <li>The line to remember is the big statement: think in distributions,
-not single numbers. Ask students to say what the two kinds are.</li>
-<li>The second line, a pattern is a description, not an explanation,
-ties back to last week (statistics is observation) and forward to next
-week’s causal models.</li>
+not single numbers.</li>
+<li>The relationships card’s last line, a pattern is a description, not
+an explanation, ties back to last week (statistics is observation) and
+forward to next week’s causal models.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2732,12 +2765,21 @@ week’s causal models.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<ol type="1">
-<li><span class="blue"><strong>A distribution</strong></span> is a different way to think about a number: every value it could take, and how common or plausible each one is.</li>
-<li><span class="blue"><strong>Distributions of data</strong></span> describe populations: center, spread, shape. A z-score places one case.</li>
-<li><span class="blue"><strong>Distributions of belief</strong></span> describe uncertainty. A coefficient has one too, wide when data are few.</li>
-<li><span class="blue"><strong>Correlation and regression</strong></span> describe how two variables vary together. But a pattern is a description, not an explanation: chance and confounding both mislead.</li>
-</ol>
+<p>A <strong>distribution</strong> is a different way to think about a number: every value it could take, and how common or plausible each one is.</p>
+<div class="kinds">
+<div class="kind kind-data">
+<p><span class="kind-title">Data</span></p>
+<p>How values vary across cases. Center, spread, shape. A z-score places one case.</p>
+</div>
+<div class="kind kind-belief">
+<p><span class="kind-title">Belief</span></p>
+<p>How sure we are about an unknown. Wide when we know little, narrow when data are many.</p>
+</div>
+<div class="kind kind-relationship">
+<p><span class="kind-title">Relationships</span></p>
+<p>How two variables vary together: <em>r</em> and β. A pattern is a description, not an explanation: chance and confounding both mislead.</p>
+</div>
+</div>
 <div class="fragment">
 <div class="big-statement">
 <p>Think in distributions, not single numbers.</p>
@@ -2779,8 +2821,10 @@ That’s a DAG, next week.</li>
 <h1>Practical work: What makes a house expensive?</h1>
 <aside class="notes">
 <ul>
-<li>Appendix for the TA session. Everything here applies Part 1 to real
-data, and ends with a confounder from Part 2.</li>
+<li>Appendix for the TA session. It uses all three kinds on real data.
+Steps 1 and 2 are Part 1 (a distribution of data, and z-scores). Steps 3
+to 5 are Part 3 (relationships), and it ends with a confounder like the
+ice cream example.</li>
 <li>Let students drive. Each step has a question to answer before the
 reveal.</li>
 </ul>
