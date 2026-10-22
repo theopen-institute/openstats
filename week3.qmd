@@ -68,7 +68,7 @@ surgeon_dag()
   - "Whose patients did better last year?" → [the normal surgeon]{.green}
   - "For *my* operation, who gives me the better chance?" → [the famous surgeon]{.green}
 - The data alone can't tell us which comparison to make.
-- We need a story about **how the data was made**. That story is a **causal model**.
+- We need a story about **how the data were made**. That story is a **causal model**.
 
 
 # Goals this week
@@ -145,7 +145,7 @@ This is the causal question.
 :::
 :::
 
-- Data gives us **seeing**. Most of our questions are about **doing**.
+- Data give us **seeing**. Most of our questions are about **doing**.
 - A causal model is the bridge between them.
 
 
@@ -536,7 +536,7 @@ dag {
 # Summary
 
 - A **DAG** is a drawing of our causal assumptions: arrows for direct causes.
-- **Cause** means "changing X would change Y". Data shows us *seeing*; we usually want
+- **Cause** means "changing X would change Y". Data show us *seeing*; we usually want
   *doing*.
 - **Workflow**: estimand → generative model → statistical model → data → estimate.
 - The variables we include can change, even reverse, our answers, because effects flow

@@ -66,7 +66,8 @@
 - Make the distinction explicit. "9 out of 25 had tea" is a count, a fact about the room. Nothing about it is uncertain.
 - It becomes a probability when we use it to say something we don't know. Ask: if I picked one of you at random, without looking, what's the chance they had tea? They'll answer without thinking. That answer is a probability, and they built it from the count.
 - This distinction matters later. Data are counts and measurements. Probabilities are statements about what we don't know: the next person, the whole population, next year's rain, whether a hypothesis is true.
-- Bridge: the next two slides are just conventions for writing these counts down.
+- The street question needs assumptions the room question doesn't: that this room is like the street, that tea habits don't depend on who comes to a statistics lunch. Say them out loud. Together they're a story about how the data came to be, and that story is what we'll call a model.
+- Last click, the line to remember: a model is a claim about how the data came to be, and the conclusions are only as good as that claim. It comes back in the mayor appendix (each answer is a coin flip) and in week 3, where we draw the story as a DAG and simulate data from it.
 
 # Probability: Convention 1 {#convention-1}
 
@@ -147,7 +148,7 @@ There's a lot of very dense jargon here, but we don't need to unpack it all. let
 
 I don't want to get bogged down at this point in the specifics, but the structure is important: In frequentist analysis, We're treating our hypothesis as a fixed assumption and our data as a probability.
 
-That's fine, but it's not how we actually experience the practice of science most of the time. It's not how we think about uncertainty. More often, our data is the thing we know, and our hypothesis is the thing we're unsure of.
+That's fine, but it's not how we actually experience the practice of science most of the time. It's not how we think about uncertainty. More often, our data are the thing we know, and our hypothesis is the thing we're unsure of.
 
 What we're usually actually trying to figure out is the reverse conditional dependency: 
 P( hypothesis | data )
@@ -198,6 +199,13 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - If asked about fixes: a stricter threshold (p < 0.005, Benjamin et al. 2018) helps but needs much bigger samples. Replication works better: a finding that keeps holding up in new studies earns trust no threshold can give it.
 - Ask the room: which row does your own field live in?
 
+# The deeper problem {#best-case}
+
+- Everything today has been about noise: chance results, small samples, tests that are sometimes wrong. That's where most people's trust in "hard data" breaks first, so it's where we started.
+- Noise has a cure, at least in principle: more data, bigger samples, replication. The 1,000-ideas table gets better as studies get larger.
+- The deeper problem doesn't. If the study answers a different question than it thinks, more data only make it more confident. A common cause nobody drew (a fork) makes two things move together with no effect between them. Controlling for the wrong variable (a pipe or a collider) can hide a real effect or invent a fake one. A confounded study of 100,000 people has huge power and a tiny p-value, and it is still wrong.
+- This is the turn in the course: from "data are noisy, so science is updating" to doing that updating well. Week 2 ends with a first example (ice cream and drowning), week 3 draws the causal story as a DAG, week 4 covers forks, pipes and colliders, and week 5 asks what a study left out.
+
 # Bayesian Updating: What it is {#bayesian-updating}
 
 So I said that we were going to derive our entire statistics from first principles, and I meant it. Instead of a million pre-built tests, we have one process: Bayesian updating
@@ -219,7 +227,7 @@ For those interested in math, I definitely encourage you to where the theorem co
 - Back to the capybara: most published research is wrong, and that's okay.
 - It's okay because a study was never supposed to be a verdict. It's one observation, and each observation joins what we already know and nudges it, a little or a lot.
 - No single observation gives us the answer. We use observations to support or challenge what we think we already know.
-- The last bullet is the strong claim, so slow down: without prior assumptions, data is meaningless. A number only tells us something against a background of what we expected. Ethnographers know this already: an interview means something because of everything else the researcher knows about the place and the people.
+- The last bullet is the strong claim, so slow down: without prior assumptions, data are meaningless. A number only tells us something against a background of what we expected. Ethnographers know this already: an interview means something because of everything else the researcher knows about the place and the people.
 
 # Science is updating {#science-is-updating}
 
@@ -227,11 +235,12 @@ For those interested in math, I definitely encourage you to where the theorem co
 - Push back. Single observations are messy, and they often contradict each other. What makes science work is people: groups of scientists arguing about how to fit many observations together.
 - The three steps are Bayesian updating in plain words, in the same colors as prior × likelihood → posterior. Assume: a prior is an assumption we write down, so others can see it and argue with it. Assumptions we hide can't be checked. Look: new data test it; if what we saw fits what we assumed, confidence grows, and if not, the assumption moves. Update: the posterior is the improved assumption, and tomorrow it's the prior. No single step has to be right. The process gets better.
 - The big statement: science isn't the experiments we do, it's the debates we have about them. Over time, those debates make us less, and less, and less wrong.
-- "Written down where others can argue with it" sets up the next slide: the difference between fields is whether assumptions are stated openly.
+- "Written down where others can argue with it" picks up the last slide: in every field, what separates good work is whether its assumptions are stated openly, where others can challenge them.
 
 # Objective or subjective? {#objective-subjective}
 
 - Read the quote. Students will have heard it, and some will half believe it.
+- The first thing in the quantitative row is today's lecture: even a perfect measurement is one draw, and deciding that a pattern isn't just chance is an inference, not an observation.
 
 Updating is the foundation of our statistics: We believed something, we saw something, and we now believe something slightly or significantly different from what we believed before.
 
@@ -250,7 +259,9 @@ This is why I'm always confused when people say statistics is "objective" or "mo
 - The math is the least interesting part of using statistics for science. Say it plainly; it's a relief for many students.
 - Nearly every important choice happens before any numbers: what question to ask, what to observe, who to include, what to assume. The calculation comes last, and it's the part a computer does.
 - That means students can already interpret and critique statistical arguments without the mechanics. Ask what a study assumes, how its data were made, and what else could explain the result. Those questions don't need a formula.
-- This is what "doing science" means in this course. The science comes first; the statistics serve it.
+- The week list is a map, not a lesson: about 30 seconds. The order is the point. We learn to describe data (week 2), then spend two whole weeks on causal thinking (weeks 3 and 4) before we lean on any model, then practice using all of it on real studies and their own questions (week 5).
+- Most stats courses go tests first, science later. We're doing it the other way round. The science comes first; the statistics serve it.
+- That's the end of the main lecture. What follows is the appendix: the mayor poll, which they'll work through with the TA in the second class.
 
 # Summary {#summary}
 
@@ -259,13 +270,6 @@ This is why I'm always confused when people say statistics is "objective" or "mo
 - Statistics, like ethnography, joins objective observation with subjective assumptions. A study is one observation, not an answer.
 - Bayesian updating is how we improve those assumptions.
 - End on the big statement: the science always comes first. Statistics serves the question, the theory and the knowledge of the context; it never replaces them.
-
-# What's ahead {#whats-ahead}
-
-- Keep this quick, about 30 seconds. It's a map, not a lesson.
-- The order is the point. We learn to describe data (week 2), then spend two whole weeks on causal thinking (weeks 3 and 4) before we lean on any model, then practice using all of it on real studies and their own questions (week 5).
-- Most stats courses go tests first, science later. We're doing it the other way round.
-- That's the end of the main lecture. What follows is the appendix: the mayor poll, which they'll work through with the TA in the second class.
 
 # Demonstration: Will the mayor win? {#poll-demo}
 
@@ -290,7 +294,7 @@ This is why I'm always confused when people say statistics is "objective" or "mo
 # Step 2: The likelihood {#poll-likelihood}
 
 - This is where the data come in. The sliders set the survey: how many people we asked, and what share said "mayor". It starts at 4 of 20 (20%), the survey in the mayor example.
-- Same question we asked about the HIV test, turned around: for each possible θ, how likely is the data we saw?
+- Same question we asked about the HIV test, turned around: for each possible θ, how likely are the data we saw?
 - Read the table: 4 of 20 is quite likely if θ is 20% (0.22), much less so at 40% (0.035), unlikely at 60%, and almost impossible at 80%.
 - Move the survey size up to a few hundred at the same 20%: the curve gets much narrower. More data rule out more values of θ.
 - Point out that the likelihood curve is not a probability distribution over θ. It's a set of answers to "P(data | θ)" for many θs.
@@ -308,3 +312,8 @@ This is why I'm always confused when people say statistics is "objective" or "mo
 
 - Let students drive. Good pairs to compare: flat vs. strong prior at n = 20, then the same two at n = 500.
 - Close by tying this back to the workflow slide: even this toy model raises the question of how much the answer depends on our assumptions (here, the prior). Answering that honestly is the habit we're building.
+
+# More resources {#more-resources}
+
+- For students who want to go further. The book is where this course's approach comes from: Bayesian, causal models first, built up from simple counting.
+- The YouTube lectures cover the whole book, for free. They're a good way in for anyone who'd rather watch than read, and the early lectures line up well with Weeks 1 to 3.

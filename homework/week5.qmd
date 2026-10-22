@@ -136,7 +136,7 @@ Which word tells you? Write the estimand the NGO *seems* to have in mind.
 **B2.** *What did they actually measure?* The headline says "learning." What was
 measured? Give one reason the NGO's own practice exam might not match "learning."
 
-**B3.** *How was the data made?* What decided which schools got tablets? Draw a DAG with
+**B3.** *How were the data made?* What decided which schools got tablets? Draw a DAG with
 the tablet program, the exam score, and at least one unmeasured cause of both. Name the
 structure.
 
@@ -301,7 +301,7 @@ what would it be? Answer: who would you randomize, to what, and when would you m
 the outcome? Why is a coin flip so useful here? *(Hint: what does it do to the arrows
 into the program?)*
 
-**E2.** Now suppose this is the data you **actually** have (also made up): one
+**E2.** Now suppose these are the data you **actually** have (also made up): one
 household survey from 2023. For each household, it records whether a daughter aged
 15–16 is enrolled in school, whether the household owns a bicycle, the distance to the
 nearest secondary school, and household income.

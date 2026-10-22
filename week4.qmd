@@ -84,7 +84,7 @@ In practice, any of these:
   people with jobs.
 
 ::: {.fragment}
-That last one is easy to miss. Often the data was "controlled" before you ever saw it.
+That last one is easy to miss. Often the data were "controlled" before you ever saw them.
 :::
 
 

@@ -40,7 +40,7 @@ week2.qmd	shiny/distributions.R	c80858a4d72b7b52dea69b9dabc116b1
 week3.qmd	_includes/dagitty-slide.md	4ecd898127d132228ec654c71122d997
 week3.qmd	_includes/week3/surgeon-by-case.md	3f73a2ecf48cf777a0f9a3369f53e546
 week3.qmd	_includes/week3/surgeon-totals.md	3af1fec80d57097fbfe8b73c565f00d6
-week3.qmd	_includes/week3/workflow-boxes.md	0903e5612503c4be80376c60eaf622bb
+week3.qmd	_includes/week3/workflow-boxes.md	4a39c6bc288a4f680fb310c0ff424395
 week3.qmd	css/deck.scss	5592ecf67ca1d30dd586fcec41dd739a
 week3.qmd	datasets/ames.csv	49e516290210a3227d30ede3f6875cef
 week3.qmd	datasets/berkeley.csv	38d4083ba32c2ea5727f6ff9ebfa458d
@@ -78,7 +78,7 @@ week5.qmd	datasets/wb2022.csv	0453ba3f319b384b049dd1c844d1dd1e
 week5.qmd	r/data.R	7292cdba6f8c32914d83fef128e01929
 week5.qmd	r/deck-setup.R	238885271e646d424f24e4e750fb1d2a
 week5.qmd	r/rlib.R	5d48b7a934f59fde562c86a13a21ff29
-week5.qmd	r/week5.R	81edb3c7724a17c27f3bff77499fc97e
+week5.qmd	r/week5.R	2e201faecb937f8efb48ac51ae3f264e
 workflow.qmd	_includes/bayesian-workflow.md	fdd1c71da06d34acf9b04e189340f829
 workflow.qmd	css/deck.scss	5592ecf67ca1d30dd586fcec41dd739a
 workflow.qmd	datasets/berkeley.csv	38d4083ba32c2ea5727f6ff9ebfa458d

@@ -172,7 +172,7 @@ normal_overlay_plot(howell)
   - mean = `r fmt(h_mean)`
   - SD = `r fmt(h_sd)`
 - **Two numbers** describe the whole shape.
-- Real data is never perfectly Normal, but many things are close.
+- Real data are never perfectly Normal, but many things are close.
 :::
 :::
 
@@ -675,7 +675,7 @@ noise_dist_plot(r_small, n_vars)
 |-|-------------|--------|
 | What's going on? | A third variable drives both | Noise happened to line up |
 | Shows up in new data? | Yes | No |
-| Does more data help? | **No** | **Yes** |
+| Would more data help? | **No** | **Yes** |
 | What helps? | Thinking about causes; comparing like with like | Bigger samples; deciding what to test *before* looking; replication |
 
 ::: {.fragment}

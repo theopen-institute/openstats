@@ -4,7 +4,7 @@
 <div class="workflow">
   <div class="step science">Estimand<small>What exactly do we want to know?</small></div>
   <div class="arrow">→</div>
-  <div class="step science">Generative model<small>How do we think the data was made?</small></div>
+  <div class="step science">Generative model<small>How do we think the data were made?</small></div>
   <div class="arrow">→</div>
   <div class="step">Statistical model<small>What should we fit?</small></div>
   <div class="arrow">→</div>

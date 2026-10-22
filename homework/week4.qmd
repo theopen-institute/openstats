@@ -288,7 +288,7 @@ d. Compare these with the variables your model actually controls for (the ones m
    not ask for, is it a mediator, a collider, or harmless?
 e. Is there a variable you control for that a skeptic might say is caused by your X?
    Draw the skeptic's DAG. Would it change your adjustment set?
-f. Your data is a sample of countries with World Bank data for 2022. Countries with
+f. Your data are a sample of countries with World Bank data for 2022. Countries with
    missing data were dropped. Could this selection act like a collider? Give one
    reason why it might, or might not.
 

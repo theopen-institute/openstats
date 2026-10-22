@@ -192,7 +192,7 @@ a. Write one plain-language sentence explaining what each result means.
 b. Which model answers our estimand from C2 (the total effect)? Why?
 c. A classmate looks at Model B and says: *"See? Sex has no effect on weight."* What
    is wrong with that claim?
-d. In this data, men are about 10.8 cm taller than women, and each extra cm goes with
+d. In these data, men are about 10.8 cm taller than women, and each extra cm goes with
    about 0.63 kg more weight. Multiply these two numbers. Compare the result with
    Model A and Model B. What does that tell you about *where* the effect of sex on
    weight flows?
@@ -316,7 +316,7 @@ simulate_people <- function(n) {
 
 **E1.** Simulate 1,000 people. Fit `lm(weight ~ sex, data = sim)` and
 `lm(weight ~ sex + height, data = sim)`, and look at the `sexmale` coefficient in each.
-(`lm()` is a quick, non-Bayesian shortcut. With this much data and weak priors it
+(`lm()` is a quick, non-Bayesian shortcut. With 1,000 people and weak priors it
 gives almost the same answer as our Stan models.) Do you recover 8 kg and 2 kg? Now
 change the numbers in `simulate_people()` to match the worlds in C4 (a), (b), and (c)
 and check your answers.

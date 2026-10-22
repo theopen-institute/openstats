@@ -312,7 +312,7 @@ The science always comes first.
   [_A p-value depends on the stopping rule you planned in advance. Unplanned peeking breaks it._]{.fragment .blue}
 - **Today's posterior is tomorrow's prior.** Updating survey by survey gives the same answer as analyzing all the surveys at once.
 - **You build the model to fit your data.** Counts, proportions, skewed incomes: describe the data as they are, instead of picking whichever test's assumptions come closest.
-- **Small samples are still valid.** No large-sample approximations. Less data means more uncertainty, and the prior carries more of the weight.
+- **Small samples are still valid.** No large-sample approximations. Fewer data mean more uncertainty, and the prior carries more of the weight.
 - **It answers the question we actually ask:** P( [hypothesis]{.red} \| [data]{.blue} ).
 :::
 
@@ -338,7 +338,7 @@ _Yes. That's a feature, not a bug._
   argue with it.
 - With enough data, people who start from different reasonable priors end up in nearly
   the same place.
-- When they don't, the data is weak. That's worth knowing too.
+- When they don't, the data are weak. That's worth knowing too.
 
 ::: {.fragment}
 Subjective doesn't mean arbitrary. It means someone made a choice, and has to
@@ -349,7 +349,7 @@ Subjective doesn't mean arbitrary. It means someone made a choice, and has to
 - Someone will ask. Better to raise it ourselves.
 - Yes, priors are a choice. But every method makes choices: which test, which variables to control for, when to stop collecting data, which outcome to report. Frequentist methods make those choices too; they're just less visible.
 - A prior is visible. It's written down, so it can be criticized, and we can check how much the answer depends on it (sensitivity analysis, later in the course).
-- With plenty of data, reasonable priors converge. With little data, the prior matters, and that is honest: the data alone can't tell us much.
+- With plenty of data, reasonable priors converge. With few data, the prior matters, and that is honest: the data alone can't tell us much.
 - Lead into the next slide: this isn't special to statistics. Every field that learns from observation makes assumptions.
 :::
 
@@ -967,7 +967,7 @@ We surveyed 15 people and 4 said that they will vote for the current mayor.
 :::
 
 - Now, we need to ask, "How consistent is this observation with different possible values of our parameter?"
-- Given a particular parameter value, how likely is the data we saw?
+- Given a particular parameter value, how likely are the data we saw?
   - If our parameter is _actually_ 50%, what are the chances of seeing 4 out of 15?
   - If our parameter is _actually_ 30%, what are the chances of seeing 4 out of 15?
   - If our parameter is _actually_ 80%, what are the chances of seeing 4 out of 15?
@@ -1097,8 +1097,8 @@ knitr::opts_chunk$set(eval = FALSE)
 
 # What is a model?
 
-- Our **data** is the observation we made [(# of Surveys, # of Votes)]{.fragment .green}
-- Our **model** is a theoretical description of how this data was generated, combining:
+- Our **data** are the observations we made [(# of Surveys, # of Votes)]{.fragment .green}
+- Our **model** is a theoretical description of how these data were generated, combining:
   - Our *prior* belief about our parameter(s) [(Popularity)]{.fragment .blue}
   - A method of calculating our *likelihood* from data
 

@@ -35,7 +35,7 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 # This week's goals
 
 ::: {.incremental}
-- Explore the key concepts underlying Ioannidis's claim
+- See why "hard data" isn't the same as truth, using three ideas:
   - Probability
   - The base rate paradox
   - Statistical significance
@@ -250,6 +250,11 @@ _Hands up if you had tea this morning._
 
 ::: {.fragment}
 Every prediction needs assumptions. [Interesting predictions need strong assumptions.]{.blue}
+:::
+
+::: {.fragment}
+Those assumptions are a [**model**]{.blue}: a claim about how the data came to be.
+Our conclusions are only as good as that claim.
 :::
 
 
@@ -525,7 +530,23 @@ _**Specificity**, or 1 − the **significance level** α: if the idea is false, 
 - A single study was never supposed to be the answer. It's just one observation.
 - Each observation joins what we already know and nudges it, a little or a lot.
 - We use observation to support or challenge what we think we already know.
-- Without these prior assumptions, data is meaningless. Interesting claims need strong assumptions.
+- Without these prior assumptions, data are meaningless. Interesting claims need strong assumptions.
+:::
+
+## Hard data? {notes="notes/week1_notes.md#objective-subjective"}
+
+> _"Qualitative research is subjective. Statistics is objective."_
+
+::: {.fragment}
+|                 | Observation                    | Interpretation assumes…                          |
+|-----------------|--------------------------------|--------------------------------------------------|
+| **Qualitative** | interviews, field notes        | what people meant; where we chose to look; whose voices stand for others |
+| **Quantitative**  | surveys, records, measurements | that the pattern isn't just chance; what causes what; how the data were generated |
+:::
+
+::: {.incremental}
+- Observation gathers objective facts, but the way we gather those facts and interpret them is directly tied to assumptions.
+- In both qualitative and quantitative work, we need strong assumptions to make interesting claims.
 :::
 
 ## Science is updating {notes="notes/week1_notes.md#science-is-updating"}
@@ -550,34 +571,35 @@ It's the debates we have about them.
 :::
 :::
 
-## Hard data? {notes="notes/week1_notes.md#objective-subjective"}
+## The deeper problem {notes="notes/week1_notes.md#best-case"}
 
-> _"Qualitative research is subjective. Statistics is objective."_
+Everything today has been about [noise]{.blue}: chance results, small samples, false positives.
 
 ::: {.fragment}
-|                 | Observation                    | Interpretation assumes…                          |
-|-----------------|--------------------------------|--------------------------------------------------|
-| **Qualitative** | interviews, field notes        | what people meant; where we chose to look; whose voices stand for others |
-| **Quantitative**  | surveys, records, measurements | what causes what; how the data were generated    |
+Noise is the problem [more data can fix]{.blue}.
+:::
+
+::: {.fragment}
+The deeper problem, which [more data can't fix]{.red}, is the causal story:
 :::
 
 ::: {.incremental}
-- Observation gathers objective facts, but the way we gather those facts and interpret them is directly tied to assumptions.
-- In both qualitative and quantitative work, we need strong assumptions to make interesting claims.
+- a [common cause]{.red} nobody drew
+- a variable that [shouldn't have been controlled]{.red}
 :::
 
-## Doing science {notes="notes/week1_notes.md#doing-science"}
+# Doing science {notes="notes/week1_notes.md#doing-science"}
 
 _The math is the least interesting part of statistics._
 
-::: {.incremental}
-- Nearly every important choice happens before any numbers: what to ask, what to
-  observe, who to include, what to assume.
-- After we've gathered our data, it never speaks for itself. We have to interpret it in  
-  terms of what we already know.
-- So we can interpret and critique a statistical argument without needing the statistical
-  mechanics.
-- In this five-week course, we're going to talk about those choices: what a study assumes, how the data were made, and what else could explain it. The statistical mechanics can come later. 
+Nearly every important choice happens before any numbers: what to ask, what to
+observe, who to include, what to assume. Those choices are what this course is about.
+
+::: {.fragment}
+- **Week 2**: Distributions: A different way to think about numbers, for populations, for uncertainty and for relationships.
+- **Week 3**: Causal modeling: using diagrams (DAGs) to map assumptions.
+- **Week 4**: Causal pitfalls: forks, pipes and colliders. What to control for, and what not to.
+- **Week 5**: Evaluating research: what did the authors leave out? Unobserved forks, pipes and colliders.
 :::
 
 ::: {.fragment}
@@ -586,25 +608,11 @@ The science comes first.
 :::
 :::
 
-# What's ahead {notes="notes/week1_notes.md#whats-ahead"}
-
-That's what we're going to do here: [put the science first]{.blue}.
-
-- **Week 2**: Distributions: A different way to think about numbers, for populations, for uncertainty and for relationships.
-- **Week 3**: Causal modeling: using diagrams (DAGs) to map assumptions.
-- **Week 4**: Causal pitfalls: forks, pipes and colliders. What to control for, and what not to.
-- **Week 5**: Evaluating research: what did the authors leave out? Unobserved forks, pipes and colliders.
-
-
-# The Bayesian workflow {.smaller .mechanics}
-
-{{< include _includes/bayesian-workflow.md >}}
-
 # Practical work: Will the mayor win? {notes="notes/week1_notes.md#poll-demo"}
 
 _Appendix: we'll work through this together with the TA in our second class._
 
-Let's walk through the simplest possible version of this workflow.
+Let's walk through the simplest possible version of the full Bayesian workflow (next slide).
 
 - **Estimand**: θ, the share of Kathmandu voters who will vote for the current mayor.
 - **Background**: in the last election, the mayor got 60% of the vote.
@@ -614,6 +622,10 @@ Let's walk through the simplest possible version of this workflow.
 Each respondent is like a coin flip that comes up "mayor" with probability θ. No weighting,
 no turnout, no non-response, no post-stratification. We'll add those later.
 :::
+
+## The Bayesian workflow {.smaller .mechanics}
+
+{{< include _includes/bayesian-workflow.md >}}
 
 ## The model, written formally {.mechanics notes="notes/week1_notes.md#poll-model"}
 
@@ -668,3 +680,15 @@ The likelihood is **not** a belief. It's what our model of the survey (each answ
 
 *What is the result, and how much does it depend on our assumptions?* This is that question,
 in miniature.
+
+
+# More resources {notes="notes/week1_notes.md#more-resources"}
+
+This course draws heavily on the work of Richard McElreath, a statistician working out of the Max Planck Institute. If you want a deeper dive into statistical mechanics, consider the resources below.
+
+- **The book:** Richard McElreath,
+  [*Statistical Rethinking: A Bayesian Course with Examples in R and Stan*](https://xcelab.net/rm/)
+  (2nd edition, 2020). This course follows its approach.
+- **The lectures:** McElreath's
+  [Statistical Rethinking 2026](https://github.com/rmcelreath/stat_rethinking_2026)
+  series on YouTube. Twenty free lectures that follow the book.

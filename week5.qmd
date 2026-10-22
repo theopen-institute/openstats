@@ -40,7 +40,7 @@ source("r/week5.R")
   - Why it's the most important critique, and why more data can't fix it
   - Unobserved **forks**: common causes nobody measured
   - Hidden **pipes**: channels buried in the control list
-  - Unobserved **colliders**: selection in how the data was made
+  - Unobserved **colliders**: selection in how the data were made
 - Part 3: Asking your own question
   - From a decision to an estimand
   - The target trial: the experiment you wish you could run
@@ -58,7 +58,7 @@ Seven questions
 ::: {.nonincremental}
 1. **What exactly is the claim?**
 2. **What did they actually measure?**
-3. **How was the data made?**
+3. **How were the data made?**
 4. [**What did they leave out?**]{.blue} [← the one that matters most]{.gray}
 5. **Who is it about?**
 6. **How big, and how sure?**
@@ -118,7 +118,7 @@ _What if we intervened?_
 <!-- TODO: example of a measure that drifts from its concept (e.g. "poverty" as income vs. consumption) -->
 
 
-# 3. How was the data made?
+# 3. How were the data made?
 
 ::: {.columns}
 ::: {.column}
@@ -389,7 +389,7 @@ collider_dag("X", "S", "Y", direct = TRUE, highlight = c("X -> S", "Y -> S"), un
 
 **Unobserved collider**
 
-X and Y both decide who ends up in the data. _It's in how the data was made._
+X and Y both decide who ends up in the data. _It's in how the data were made._
 :::
 :::
 
@@ -669,7 +669,7 @@ None of these needed a single number. They needed a DAG, and knowledge of the wo
 
 - The most important question for any observational finding: [**what's in the world
   that isn't in their model?**]{.blue}
-- No test detects it and more data doesn't fix it. Only **knowing the world** finds it.
+- No test detects it and more data won't fix it. Only **knowing the world** finds it.
 - **Unobserved forks**: draw their DAG from the control list, go through the usual
   suspects, sign the bias, and ask how strong it would need to be.
 - **Hidden pipes**: for each control, could X have caused it? Does the question need the
@@ -746,7 +746,7 @@ if **[intervention]** compared to **[alternative]**?
 
 ## Is it worth finding out?
 
-- If every plausible answer leads to the same decision, the data has no value _to you_.
+- If every plausible answer leads to the same decision, the data have no value _to you_.
 - If the decision is expensive and hard to reverse, precision is worth paying for.
 - Sometimes the best decision is a **small pilot**, designed as an experiment.
 

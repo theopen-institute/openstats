@@ -1,6 +1,6 @@
 # Plots for the week 5 deck. Sourced by its setup chunk, after r/deck-setup.R.
 
-# ---- 3. How was the data made? -------------------------------------------------
+# ---- 3. How were the data made? ------------------------------------------------
 
 # Observational: people chose X, so everything behind that choice is a back door
 observational_dag <- function() {

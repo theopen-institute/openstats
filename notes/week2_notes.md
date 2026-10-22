@@ -19,7 +19,7 @@
 
 - The bridge from Week 1: the mayor's answer wasn't a number, it was a curve. Students already drew one when they made their prior.
 - Name the key word and give the plain definition: every value a number could take, and how common or plausible each one is.
-- Then name the three kinds, one per part. Data comes first. Belief, the kind they met with the mayor, is second. Relationships are third.
+- Then name the three kinds, one per part. Distributions of data come first. Belief, the kind they met with the mayor, is second. Relationships are third.
 
 ## Goals this week: three kinds of distribution {#goals}
 
@@ -61,7 +61,7 @@
 
 - The blue curve is a Normal distribution with the same mean and SD as the data. It fits well.
 - Two numbers describe the whole shape. That's the Normal's main attraction.
-- Real data is never perfectly Normal. It's a description, a useful approximation, not a law. We'll see a clearly non-Normal distribution in the house prices.
+- Real data are never perfectly Normal. The Normal is a description, a useful approximation, not a law. We'll see a clearly non-Normal distribution in the house prices.
 - The formula on the slide is just notation for "height follows a Normal with this mean and SD." Same notation as the mayor's model.
 
 ## The 68–95–99.7 rule {#rule-68-95}
@@ -217,7 +217,7 @@
 
 ## Telling the two apart {#telling-apart}
 
-- Walk the table row by row. The most important row: does more data help? For chance, yes. For confounding, no.
+- Walk the table row by row. The most important row: would more data help? For chance, yes. For confounding, no.
 - What helps against chance: bigger samples, deciding what to test before looking, replication. All things from Week 1.
 - What helps against confounding: thinking about causes. Nothing in the data alone can do it. That's why next week is about causal models.
 - Week 5 comes back to this hard: more data won't save you from a confounder.
