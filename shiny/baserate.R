@@ -46,7 +46,7 @@ ui <- page_sidebar(
     width = 400,
     tags$h2("The Base Rate Paradox"),
     p(
-      "Statistical tests help us evaluate the accuracy of prediction models. We often use tests to identify individuals with certain conditions or characteristics prevalent in our population."
+      "Diagnostic tests are usually judged by their sensitivity and specificity. But both describe people whose condition we already know, and neither takes the base rate into account: how common the condition is among the people being tested. When it's rare, even an accurate test can be wrong about most of the people it flags."
     ),
     tags$div(
       tags$div(

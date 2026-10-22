@@ -36,12 +36,13 @@
 - But it's a terrible way to learn statistics
 - The way it thinks about probability is deeply, deeply unintuitive.
 
-# Probability {#probability}
+# You already understand probability {#probability}
 
-- Imagine asking a friend if it will rain tomorrow. They say, "Probably". What does that word "probably" mean?
+- The message for this whole section: they already understand probability. They use it every day; nobody has told them that's what it is. The next few slides only give it notation, and then show the one place intuition slips.
+- Ask the room: will it rain tomorrow? Someone will say "probably" or "probably not." That word is a probability: a statement about how sure they are.
 - Intuitively, probability is a way of talking about uncertainty.
 - To frequentists, it's a way of talking about the long run outcome of repeated measurements. Strange.
-- We're going to build statistics using a more intuitive set of concepts.
+- We're going to build statistics on the intuitions they already have.
 
 # Probability is counting {#counting}
 
@@ -69,27 +70,28 @@
 - The street question needs assumptions the room question doesn't: that this room is like the street, that tea habits don't depend on who comes to a statistics lunch. Say them out loud. Together they're a story about how the data came to be, and that story is what we'll call a model.
 - Last click, the line to remember: a model is a claim about how the data came to be, and the conclusions are only as good as that claim. It comes back in the mayor appendix (each answer is a coin flip) and in week 3, where we draw the story as a DAG and simulate data from it.
 
-# Probability: Convention 1 {#convention-1}
+# Writing it down: 0 to 1 {#convention-1}
 
-- The format part is quick: 0 is impossible, 1 is certain, and percentages are the same numbers times 100.
+- New notation, not new ideas: everything on the next three slides is something they already know, written down. The format part is quick: 0 is impossible, 1 is certain, and percentages are the same numbers times 100.
 - Spend the time on the nuance. Ask: what does "a 31% chance of rain tomorrow" actually mean? Is the weather random?
 - Most people will say no, or not really. Tomorrow's weather is decided by physics: wind, pressure, moisture, the monsoon. If we knew everything, there'd be nothing random about it.
 - So the randomness isn't in the sky. It's in us. "31%" describes how uncertain we are about a day when all we know is that it's a day in Kathmandu. It's as if we picked a date from the calendar without looking.
 - This is the Bayesian way of thinking about probability, and it's the one we'll use all course: probability describes our knowledge, not a property of the world. A coin flip is the same: a perfect physicist could predict it. We call it 50% because we can't.
 - Connect back to "Let's count": the count (about 113 rainy days a year) is a fact. The probability (0.31) is what we say about a day we don't know.
 
-# Probability: Convention 2 {#convention-2}
+# Writing it down: P( event ) {#convention-2}
 
 - Pure notation. P( something ) is read "the probability of something."
 - The examples are deliberately ones they've already worked out: rain, coins, the die and the raffle from "Probability is counting."
 - Emphasize that whatever goes inside the brackets is the thing we're unsure about. That habit matters later, when the thing inside is a hypothesis.
 
-# Probability: Convention 3 {#rain}
+# Writing it down: P( event | condition ) {#rain}
 
 - The bar is read "given." P( rain | July ) is "the probability of rain, given that it's July."
+- The umbrella line: they already condition without thinking about it. Nobody plans a December day like a July day. The notation only writes that down.
 - A condition narrows down which cases we count. P( rain ) counts all days. P( rain | July ) counts only July days.
 - Adding information changes the probability, sometimes a lot: from 31% overall to 81% in July and 3% in December. Same city, same sky.
-- This is also the Convention 1 point again: the more we know about a day, the less uncertain we are.
+- This is also the 0-to-1 slide's point again: the more we know about a day, the less uncertain we are.
 
 - These numbers come from the past: the last five years (2021–2025) of daily records from the Kathmandu Airport weather station. We're using history as a guide to what's likely in a given month. Say the assumption out loud: next year will be like the average of the last five.
 - The record has gaps; each month has 58–97% of its days. We fill the missing days at that month's average rate, so every month is "out of" five full years: 150 days for 30-day months, 155 for 31-day months, 140 for February. That's why the denominators differ.
@@ -131,6 +133,13 @@ I want to illustrate a very famous example involving HIV testing. This is releva
 - These are historical numbers, from older screening tests. Modern tests are much better (around 99.8% specificity), but even then only about 1 in 3 positive screens is a true positive at 0.1% prevalence: 99 true positives vs. about 200 false positives per 100,000. That's why a positive screen is always followed by a confirmatory test before anyone is diagnosed.
 
 - My point here is not that these tests are worthless. Rather what I want to point out is that probability is often unpredictable and unintuitive.
+
+# Direction of conditions {#direction}
+
+- The turn in the section. Their intuitions have been right so far: counting, rain by month, the xkcd joke. They slip in one place, and the HIV table just showed it: which way the condition runs.
+- Read the two results under the table. With the starting numbers, 80% of rural students study sociology, but only 25% of sociology students are rural. Same people, same table, different question.
+- Let students change the numbers and watch the two drift apart. They're only equal when the two groups are the same size.
+- Nothing is wrong with their intuition, only with which question it answers. The same slip turns "99% sensitive" into "99% sure", and a p-value into "the chance the hypothesis is true."
 
 # The base rate paradox {#base-rate-paradox}
 
@@ -199,12 +208,12 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - If asked about fixes: a stricter threshold (p < 0.005, Benjamin et al. 2018) helps but needs much bigger samples. Replication works better: a finding that keeps holding up in new studies earns trust no threshold can give it.
 - Ask the room: which row does your own field live in?
 
-# The deeper problem {#best-case}
+# Is noise the only problem? {#best-case}
 
 - Everything today has been about noise: chance results, small samples, tests that are sometimes wrong. That's where most people's trust in "hard data" breaks first, so it's where we started.
 - Noise has a cure, at least in principle: more data, bigger samples, replication. The 1,000-ideas table gets better as studies get larger.
-- The deeper problem doesn't. If the study answers a different question than it thinks, more data only make it more confident. A common cause nobody drew (a fork) makes two things move together with no effect between them. Controlling for the wrong variable (a pipe or a collider) can hide a real effect or invent a fake one. A confounded study of 100,000 people has huge power and a tiny p-value, and it is still wrong.
-- This is the turn in the course: from "data are noisy, so science is updating" to doing that updating well. Week 2 ends with a first example (ice cream and drowning), week 3 draws the causal story as a DAG, week 4 covers forks, pipes and colliders, and week 5 asks what a study left out.
+- Then the turn: a pattern can be real, show up in every new dataset, and still not mean what it seems. Don't explain how yet. That's the end of week 2 (ice cream and drowning), and it lands better if they've been wondering for a week.
+- If someone asks: the other problem is the causal story, and more data don't fix it. Weeks 3 to 5 are about getting that story right.
 
 # Bayesian Updating: What it is {#bayesian-updating}
 
@@ -259,8 +268,13 @@ This is why I'm always confused when people say statistics is "objective" or "mo
 - The math is the least interesting part of using statistics for science. Say it plainly; it's a relief for many students.
 - Nearly every important choice happens before any numbers: what question to ask, what to observe, who to include, what to assume. The calculation comes last, and it's the part a computer does.
 - That means students can already interpret and critique statistical arguments without the mechanics. Ask what a study assumes, how its data were made, and what else could explain the result. Those questions don't need a formula.
-- The week list is a map, not a lesson: about 30 seconds. The order is the point. We learn to describe data (week 2), then spend two whole weeks on causal thinking (weeks 3 and 4) before we lean on any model, then practice using all of it on real studies and their own questions (week 5).
-- Most stats courses go tests first, science later. We're doing it the other way round. The science comes first; the statistics serve it.
+- The science comes first; the statistics serve it.
+
+# What's ahead {#whats-ahead}
+
+- One row per week, and each has one punchline. Read the punchlines, not the topics: if students remember five sentences from this course, these are the five.
+- The order is the argument. Week 1: data are noisy, so science is updating. Week 2: describe variation as distributions, then meet the two ways a pattern misleads, chance and hidden causes. Weeks 3 and 4: draw the causal story and use it to decide what to control for. Week 5: use all of it on real studies and their own questions.
+- Most stats courses go tests first, science later. We're doing it the other way round.
 - That's the end of the main lecture. What follows is the appendix: the mayor poll, which they'll work through with the TA in the second class.
 
 # Summary {#summary}
@@ -307,6 +321,40 @@ This is why I'm always confused when people say statistics is "objective" or "mo
 - Go back to Step 2 and raise the survey size to a few hundred. Back here, the likelihood is narrower, and the prior matters less and less.
 - "P( mayor wins )" is the share of the posterior above 50%. That's the answer people actually want, and it's the P(hypothesis | data) we couldn't get from a significance test.
 - "Make this posterior my new prior" copies the posterior back onto the 21 draggable points and clears the survey on Step 2. Then set a "second poll" there. It's coarse, since 21 points can't capture a very narrow curve, but it shows the idea.
+
+# Survey 1, by hand {#poll-by-hand}
+
+- The widgets did this for whatever prior students drew. Now one fixed prior, so everyone sees the same numbers: about 60%, as in the last election, and fairly sure of it.
+- The plot shows the three curves from Step 3. The dotted lines mark the three values of θ in the table.
+- Read the table one column at a time. At 20%, the data fit well (0.22), but the prior gives it no height at all, so the product is zero. At 60%, the prior loves it (99), but 4 of 20 would be very unlikely if 60% of voters backed him (0.00027), so the product is tiny. At 40%, both are lukewarm, and lukewarm × lukewarm wins (0.21).
+- The likelihood row is the coin-flip model from the formal-model slide: the chance of exactly 4 "mayor" answers out of 20, if each person says "mayor" with chance θ. It's only right if the 20 were picked at random. That's the model's assumption, and it's as much an assumption as the prior.
+- First click: that's the whole of Bayes' theorem. Do the same multiplication at every θ, not just three, then rescale so the curve adds up to 100%. The rescaling is the P(data) at the bottom of the formula.
+- Second click: the posterior is a compromise, and its shape shows where the compromise sits. It is also narrower than the prior: we know more than we did.
+
+# Today's posterior is tomorrow's prior {#poll-sequence}
+
+- A worked version of what the widgets do, with a fixed prior so everyone sees the same numbers. The prior is "about 60%, as in the last election", and fairly confident about it.
+- Read the curves left to right in time. Survey 1 (4 of 20) pulls the belief down and makes it narrower. Survey 2 (7 of 20) pulls a little further and narrows it again. It moves us less: we're more sure by then, and 35% is closer to what we already believed.
+- Click: every step is the same formula from the Bayes' theorem slide. The prior is P(θ), the survey's likelihood is P(survey | θ), and the posterior is P(θ | survey). The ∝ means "proportional to": multiply, then rescale so the curve adds up to 1, which is the P(data) we said wasn't interesting.
+- Click: the posterior from survey 1 is the prior for survey 2. Updating twice gives exactly the same answer as updating once on all 40 people. It doesn't matter whether the data arrive in one batch or two, or in which order. That's what makes "science is updating" work: each new study can start from where the last one left off.
+- If asked about the prior: it's a Beta(20, 13) distribution, which makes the arithmetic exact. Students don't need the name.
+
+# Different priors, same data {#poll-converge}
+
+- This answers the objection students will have been holding since the prior was introduced: if the prior is subjective, can't anyone get any answer they want?
+- Two people. The supporter thinks about 60%, as in the last election. The skeptic thinks about 30%. Both are equally confident: each prior is worth about 33 earlier voters.
+- They see the same three surveys: the two small ones, then a big poll of 360. The panels show their beliefs before any data, after the 40 people of the first two surveys, and after all 400.
+- After 40 people they're still far apart: the skeptic hasn't moved much, because the data (20% and 35%) were close to what they already believed. After 400 people, they nearly agree. The data have outweighed both priors.
+- That's the answer to the objection. A prior matters when data are scarce, which is exactly when it should. With enough shared evidence, people who start in different places end up in the same place. This is the "science is updating" slide in numbers.
+- The one exception is certainty. If someone's prior gives a value zero weight, the posterior there is prior × likelihood = zero, whatever the data say. Someone certain it's exactly 60% never moves. Dogmatism is a prior of zero.
+
+# Answering the question {#poll-answer}
+
+- The posterior is a whole distribution, so we can ask it any question. The one we care about here: will he get more than half the vote? The answer is the share of the posterior above 50%: the dark green area.
+- Read down the table: 89% before any surveys, 24% after the first, 10% after the second. Each survey changes the answer to the question we actually asked.
+- First click: this is P(hypothesis | data), the direction we wanted all along, and the one a p-value can't give. Compare the significance slides: a test would only tell us how surprising 11 of 40 would be if his support were exactly 50%.
+- Second click: and the answer carries its own uncertainty. Not a yes or no, but about a 1 in 10 chance.
+- If someone asks: this is the "P( mayor wins )" row on the Step 3 widget. Strictly it's "more than half the vote". In an election with several candidates, the mayor can win with less than half, and modelling that would need every candidate's share, not just his.
 
 # What to try {#poll-try}
 

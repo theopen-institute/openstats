@@ -1,6 +1,6 @@
 ---
 title: "Data Lunch: Week 4"
-subtitle: "Confounders and paradoxes"
+subtitle: "Confounders"
 format:
   revealjs: default
 ---

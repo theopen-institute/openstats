@@ -1,6 +1,6 @@
 ---
 title: "Data for Decision Making"
-subtitle: "Week 1: All of Statistics in One Formula"
+subtitle: "Week 1: Updating"
 title-notes: "notes/week1_notes.md#title"
 format:
   revealjs:
@@ -35,14 +35,13 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 # This week's goals
 
 ::: {.incremental}
-- See why "hard data" isn't the same as truth, using three ideas:
+- Learn the three concepts behind Ioannidis's claim:
   - Probability
   - The base rate paradox
   - Statistical significance
 - Understand why most research is wrong (and why that's okay)
-- Learn all of statistics (in just one formula)
-- Rethink objectivity and subjectivity in research
-- Appendix: election polling (a worked example)
+- Learn updating, the one formula for all of statistics
+- Worked example: election polling
 :::
 
 
@@ -69,12 +68,13 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 
 
 
-# Probability {notes="notes/week1_notes.md#probability"}
+# You already understand probability {notes="notes/week1_notes.md#probability"}
 
-So what is probability? 
+_"Will it rain tomorrow?"_ [_"Probably not."_]{.fragment}
 
 ::: {.fragment}
-It's a way of talking about uncertainty.
+That word, _probably_, is a probability. It's a way of talking about uncertainty, and
+you use it every day.
 :::
 
 ::: {.incremental}
@@ -116,7 +116,8 @@ _Count everything that could happen. Count the ones you care about. Compare._
 :::
 
 ::: {.fragment}
-Every analysis we do in this course will come down to counting, exactly like this.
+You already knew how to do all three. Every analysis in this course comes down to
+counting, exactly like this.
 :::
 
 ## Counting the ways a thing could happen {notes="notes/week1_notes.md#counting-ways"}
@@ -162,9 +163,9 @@ What we're doing is simple:\
 [We list all the ways the world could be, and count them.]{.blue}
 :::
 
-## Describing Probability: Convention 1 {notes="notes/week1_notes.md#convention-1"}
+## Writing it down: 0 to 1 {notes="notes/week1_notes.md#convention-1"}
 
-_We write a probability as a number between 0 and 1, or as a percentage._
+_New notation, not new ideas: a number from 0 to 1, or a percentage._
 
 ::: {.fragment}
 | Number | Percentage | Example |
@@ -185,9 +186,9 @@ To convert between the two, move the decimal point two places right or left.
 :::
 
 
-## Describing Probability: Convention 2 {notes="notes/week1_notes.md#convention-2"}
+## Writing it down: P(event) {notes="notes/week1_notes.md#convention-2"}
 
-_We write the probability of an event as P( event )._
+_We write the probability of an event as_ P( event ).
 
 ::: {.fragment}
 | We write | We say | Value |
@@ -202,11 +203,12 @@ _We write the probability of an event as P( event )._
 It's just shorthand. Everything inside the brackets is the thing we're unsure about.
 :::
 
-## Describing Probability: Convention 3 {notes="notes/week1_notes.md#rain"}
+## Writing it down: P(event | condition) {notes="notes/week1_notes.md#rain"}
 
-_We make a probability more specific by adding a condition: P( event | condition )._
+_We make a probability more specific by adding a condition._
 
 - P( rain | July ) means [_"the probability of rain, given that it's July."_]{.blue}
+  You already think this way: you carry an umbrella in July, not in December.
 
 ::: {.fragment}
 |  | Rainy days[^rain-3] | Days counted | Probability | % |
@@ -243,7 +245,7 @@ _Hands up if you had tea this morning._
 - That's not really a probability yet. It's just a fact about this group.
 - It becomes a **probability** when we use it to say something we _don't_ know:
   - _"If we pick one student at random, how likely is it they had tea?"_\
-  [(Exactly []{.count-k-out} in []{.count-n-out})]{.blue}
+  [(You just worked it out: []{.count-k-out} in []{.count-n-out})]{.blue}
   - _"If we poll a random person on the street, how likely is it that they had tea?"_\
   [(Possibly similar, if we're willing to make a few assumptions.)]{.blue}
 :::
@@ -251,12 +253,6 @@ _Hands up if you had tea this morning._
 ::: {.fragment}
 Every prediction needs assumptions. [Interesting predictions need strong assumptions.]{.blue}
 :::
-
-::: {.fragment}
-Those assumptions are a [**model**]{.blue}: a claim about how the data came to be.
-Our conclusions are only as good as that claim.
-:::
-
 
 # Probability for Decision Making {notes="notes/week1_notes.md#applied-probability"}
 
@@ -280,10 +276,10 @@ With statistical tests and predictions, we talk about two kinds of accuracy:
 :::
 
 ::: {.fragment}
-[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.]{.source}
+[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested aren't randomly selected.]{.source}
 :::
 
-## Probability for Decision Making (continued) {notes="notes/week1_notes.md#base-rate"}
+## Prediction for Decision Making {notes="notes/week1_notes.md#base-rate"}
 
 - Sensitivity P( test+ | HIV+ ): 99%
 - Specificity P( test– | HIV– ): 97%
@@ -304,16 +300,17 @@ What we really want is P( HIV+ | test+): [3.2%]{.fragment fragment-index=3 .red}
 | **HIV–**<br>[(99.9%&nbsp;=&nbsp;99,900)]{.fragment fragment-index=6 .blue} | P( Test+ \| HIV– ): **3%**<br>_Type I Error (False Positive)_<br>[(2,997)]{.fragment fragment-index=7 .blue}| P( Test– \| HIV– ): **97%**<br>_Specificity (True Negative)_<br>[(96,903)]{.fragment fragment-index=7 .blue}|
 :::
 
-## Direction of conditions
+## Direction of conditions {notes="notes/week1_notes.md#direction"}
 
-P(A|B) _is not the same as_ P(B|A)
+_Your intuitions about probability are good. They slip in one place: which way the
+condition runs._ P(A|B) is not the same as P(B|A).
 
 {{< include _includes/week1/cond-table.md >}}
 
 
 # The base rate paradox {notes="notes/week1_notes.md#base-rate-paradox"}
 
-_When something is rare, most positive results are false, even from an accurate test._
+_When something is rare, most positive results are false, even from an "accurate" test._
 
 ::: {.columns}
 ::: {.column width="58%"}
@@ -385,7 +382,7 @@ How we intuitively think about data: P( [hypothesis]{.red} | [data]{.blue} )
 
 ## The problem with p-values {notes="notes/week1_notes.md#pvalue-direction"}
 
-If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}. Significance testing imagines the world in a very [strange way]{.red}.
+If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}. Significance testing imagines the world [backwards]{.red} from our intuitions.
 
 ::: {.fragment fragment-index=1}
 
@@ -397,8 +394,8 @@ If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}.
 
 ::: {.incremental}
 - A p-value doesn't tell you if a hypothesis is true.
-- It tells you how unlikely data this extreme would be if the null hypothesis were true.
-- Those aren't the same thing. P(A | B) ≠ P(B | A)
+- It tells you how unlikely this data would be if the null hypothesis were true.
+- Those aren't the same thing. P(A|B) ≠ P(B|A)
 :::
 
 ::: {.fragment}
@@ -413,7 +410,7 @@ Statistical significance works the opposite way that our intuitions do.
 
 ## Bayesian Updating: What it is {notes="notes/week1_notes.md#bayesian-updating"}
 
-Instead of a flowchart of tests, [**one rule for all of statistics**]{.blue}:
+Instead of a flowchart of tests, updating is [**one rule for all of statistics**]{.blue}:
 
 [**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
 
@@ -446,7 +443,7 @@ Our posterior then becomes our prior for future observations.
 
 ## Bayes' theorem {.mechanics notes="notes/week1_notes.md#bayes-theorem"}
 
-_The one rule, written as a formula._
+_All of statistics in one formula._
 
 {{< include _includes/week1/bayes-steps.md >}}
 
@@ -571,35 +568,33 @@ It's the debates we have about them.
 :::
 :::
 
-## The deeper problem {notes="notes/week1_notes.md#best-case"}
+## Is noise the only problem? {notes="notes/week1_notes.md#best-case"}
 
-Everything today has been about [noise]{.blue}: chance results, small samples, false positives.
+Everything today has been about [noise]{.blue}: chance results, small samples, false
+positives. Noise is the problem [more data can fix]{.blue}.
 
 ::: {.fragment}
-Noise is the problem [more data can fix]{.blue}.
+But a pattern can be real, show up again in every new dataset, and still not mean what
+it seems.
 :::
 
 ::: {.fragment}
-The deeper problem, which [more data can't fix]{.red}, is the causal story:
+::: {.big-statement}
+Next week: the other way data mislead.
 :::
-
-::: {.incremental}
-- a [common cause]{.red} nobody drew
-- a variable that [shouldn't have been controlled]{.red}
 :::
 
 # Doing science {notes="notes/week1_notes.md#doing-science"}
 
 _The math is the least interesting part of statistics._
 
-Nearly every important choice happens before any numbers: what to ask, what to
-observe, who to include, what to assume. Those choices are what this course is about.
-
-::: {.fragment}
-- **Week 2**: Distributions: A different way to think about numbers, for populations, for uncertainty and for relationships.
-- **Week 3**: Causal modeling: using diagrams (DAGs) to map assumptions.
-- **Week 4**: Causal pitfalls: forks, pipes and colliders. What to control for, and what not to.
-- **Week 5**: Evaluating research: what did the authors leave out? Unobserved forks, pipes and colliders.
+::: {.incremental}
+- Nearly every important choice happens before any numbers: what to ask, what to
+  observe, who to include, what to assume.
+- After we've gathered our data, they never speak for themselves. We interpret them in
+  terms of what we already know.
+- So we can interpret and critique a statistical argument without the statistical
+  mechanics.
 :::
 
 ::: {.fragment}
@@ -607,6 +602,16 @@ observe, who to include, what to assume. Those choices are what this course is a
 The science comes first.
 :::
 :::
+
+# What's ahead {notes="notes/week1_notes.md#whats-ahead"}
+
+| Week | Topic | Punchline |
+|:-:|---|---|
+| **1** | Updating | Data are noisy. Science is updating. |
+| **2** | Distributions | [Think in distributions.]{.line} [A pattern can mislead by chance, or by a hidden cause.]{.line} |
+| **3** | Models | [Draw your assumptions.]{.line} [What you include can flip the answer.]{.line} |
+| **4** | Confounders | What to control for depends on the causal story, not the data. |
+| **5** | Evaluating&nbsp;research | Ask what's in the world that isn't in their model. |
 
 # Practical work: Will the mayor win? {notes="notes/week1_notes.md#poll-demo"}
 
@@ -666,6 +671,140 @@ The likelihood is **not** a belief. It's what our model of the survey (each answ
 ## Step 3: Prior × likelihood → posterior {notes="notes/week1_notes.md#poll-posterior"}
 
 {{< include _includes/week1/poll-posterior.md >}}
+
+## Survey 1, by hand {notes="notes/week1_notes.md#poll-by-hand"}
+
+```{r poll-demo, include=FALSE}
+steps <- poll_sequence()
+s1 <- POLL_SURVEYS[[1]]
+s2 <- POLL_SURVEYS[[2]]
+s3 <- POLL_BIG_SURVEY
+hand <- poll_by_hand()
+```
+
+_A worked example with one fixed prior: about `r pct(round(steps$guess[1], 1))`, as in the last
+election. Then survey 1: `r s1[["k"]]` of `r s1[["n"]]` say "mayor"._
+
+::: {.columns}
+::: {.column width="46%"}
+```{r poll-update, opts.label = "half"}
+poll_update_plot()
+```
+:::
+
+::: {.column width="54%"}
+| θ | `r hand$theta[1]` | `r hand$theta[2]` | `r hand$theta[3]` |
+|---|--:|--:|--:|
+| [**Prior**]{.red} (height) | `r hand$prior[1]` | `r hand$prior[2]` | `r hand$prior[3]` |
+| [**Likelihood**]{.blue} | `r hand$likelihood[1]` | `r hand$likelihood[2]` | `r hand$likelihood[3]` |
+| Prior × likelihood | `r hand$product[1]` | [**`r hand$product[2]`**]{.green} | `r hand$product[3]` |
+
+::: {.fragment}
+Do this at every θ, then rescale so the total is 100%. That's the
+[**posterior**]{.green}.
+:::
+
+::: {.fragment}
+It lands where both find θ plausible: not `r hand$theta[1]` (the prior rules it
+out), not `r hand$theta[3]` (the data do).
+:::
+:::
+:::
+
+## Today's posterior is tomorrow's prior {notes="notes/week1_notes.md#poll-sequence"}
+
+::: {.columns}
+::: {.column width="46%"}
+```{r poll-sequence, opts.label = "half"}
+poll_sequence_plot(steps)
+```
+
+Survey 1: `r s1[["k"]]` of `r s1[["n"]]` said "mayor". Survey 2: `r s2[["k"]]` of `r s2[["n"]]`.
+:::
+
+::: {.column width="54%"}
+| | Best&nbsp;guess | 90%&nbsp;range |
+|---|--:|--:|
+| [**Prior**]{.red} | `r pct(steps$guess[1])` | `r steps$range[1]` |
+| After&nbsp;survey&nbsp;1 | `r pct(steps$guess[2])` | `r steps$range[2]` |
+| After&nbsp;survey&nbsp;2 | [**`r pct(steps$guess[3])`**]{.green} | `r steps$range[3]` |
+
+::: {.fragment}
+Each row is Bayes' theorem:\
+$\class{green}{P(\theta \mid \text{survey})} \propto \class{blue}{P(\text{survey} \mid \theta)} \times \class{red}{P(\theta)}$
+:::
+
+::: {.fragment}
+Survey 1's posterior is survey 2's prior. Updating once on all
+`r s1[["n"]] + s2[["n"]]` people (`r s1[["k"]] + s2[["k"]]` of `r s1[["n"]] + s2[["n"]]`) gives the same answer.
+:::
+:::
+:::
+
+## Different priors, same data {notes="notes/week1_notes.md#poll-converge"}
+
+```{r poll-converge-numbers, include=FALSE}
+beliefs <- poll_converge()
+supporter <- beliefs$guess[beliefs$who == "Supporter"]
+skeptic <- beliefs$guess[beliefs$who == "Skeptic"]
+gap <- round(100 * supporter) - round(100 * skeptic) # as the table shows them
+```
+
+::: {.columns}
+::: {.column width="46%"}
+```{r poll-converge, opts.label = "half_tall"}
+poll_converge_plot(beliefs)
+```
+:::
+
+::: {.column width="54%"}
+| Best guess | [**Supporter**]{.orange} | **Skeptic** |
+|---|--:|--:|
+| `r levels(beliefs$stage)[1]` | `r pct(supporter[1])` | `r pct(skeptic[1])` |
+| `r levels(beliefs$stage)[2]` | `r pct(supporter[2])` | `r pct(skeptic[2])` |
+| `r levels(beliefs$stage)[3]` | `r pct(supporter[3])` | `r pct(skeptic[3])` |
+
+Survey 3 is a bigger poll: `r s3[["k"]]` of `r s3[["n"]]` say "mayor".
+
+::: {.fragment}
+They start `r gap[1]` points apart and end `r gap[3]` apart. A prior is where you start,
+not where you end up.
+:::
+
+::: {.fragment}
+Except for certainty: if you rule a value out (a prior of 0), no data can bring it back.
+:::
+:::
+:::
+
+## Answering the question {notes="notes/week1_notes.md#poll-answer"}
+
+::: {.columns}
+::: {.column width="46%"}
+```{r poll-majority, opts.label = "half"}
+poll_majority_plot(steps)
+```
+:::
+
+::: {.column width="54%"}
+_Will he get more than half the vote?_ Add up the belief above 50%.
+
+| | P( more than half ) |
+|---|--:|
+| [**Prior**]{.red} | `r pct(steps$majority[1])` |
+| After survey 1 | `r pct(steps$majority[2])` |
+| After survey 2 | [**`r pct(steps$majority[3])`**]{.green} |
+
+::: {.fragment}
+That's P( [hypothesis]{.red} | [data]{.blue} ): the question a p-value can't answer.
+:::
+
+::: {.fragment}
+And it says how sure we are: not "he'll lose", but about a 1 in
+`r round(1 / steps$majority[3])` chance of a majority.
+:::
+:::
+:::
 
 ## What to try {notes="notes/week1_notes.md#poll-try"}
 

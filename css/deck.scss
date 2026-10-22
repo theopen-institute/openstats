@@ -232,6 +232,8 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   border: none;
   border-bottom: 1px solid rgba($brand-ink-head, 0.08);
   padding: 0.55em 0.75em;
+  /* A cell that wraps splits into even lines, not a full line and one stray word */
+  text-wrap: balance;
 }
 
 .reveal .slides table thead th {
@@ -240,6 +242,13 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   font-family: $headingFont;
   font-weight: 600;
   border-bottom: 2px solid rgba($brand-blue, 0.4);
+}
+
+/* A cell holding two sentences, each starting its own line and wrapping evenly on
+   its own: [First sentence.]{.line} [Second sentence.]{.line}. (A <br> would also
+   start the new line, but stops the browser from balancing the cell.) */
+.reveal .slides table .line {
+  display: block;
 }
 
 .reveal .slides table tbody tr:last-child td {

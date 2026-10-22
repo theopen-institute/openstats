@@ -1,6 +1,6 @@
 ---
 title: "Data Lunch: Week 3"
-subtitle: "Causal models"
+subtitle: "Models"
 format:
   revealjs: default
 ---
