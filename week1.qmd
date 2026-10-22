@@ -388,8 +388,8 @@ If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}.
 
 |  | Starts from | Asks |
 |---|---|---|
-| [**How we observe**]{.fragment fragment-index=2} | [what we [saw]{.blue}]{.fragment fragment-index=2} | [_"What does this tell me about the [world]{.green}?"_]{.fragment fragment-index=2} |
-| [**A significance test**]{.fragment fragment-index=3} | [an [imagined world]{.red} with nothing going on]{.fragment fragment-index=3} | [_"How surprising would my [data]{.blue} be there?"_]{.fragment fragment-index=3} |
+| [**How&nbsp;we&nbsp;observe**]{.fragment fragment-index=2} | [what we [saw]{.blue}]{.fragment fragment-index=2} | [_"What does this tell me about the [world]{.green}?"_]{.fragment fragment-index=2} |
+| [**A&nbsp;significance&nbsp;test**]{.fragment fragment-index=3} | [an [imagined world]{.red} with nothing going on]{.fragment fragment-index=3} | [_"How surprising would my [data]{.blue} be there?"_]{.fragment fragment-index=3} |
 :::
 
 ::: {.incremental}
@@ -415,10 +415,9 @@ Instead of a flowchart of tests, updating is [**one rule for all of statistics**
 [**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
 
 ::: {.incremental}
-- [**Prior**]{.red}: what we believe about the world _before_ seeing the new data
-- [**Likelihood**]{.blue}: how likely the data we saw would be, under _each_ possible answer
-- [**Posterior**]{.green}: what we believe _after_ combining the two. It challenges the
-  prior, or makes it stronger
+- [**Prior**]{.red}: what we believed _before_ the new data
+- [**Likelihood**]{.blue}: for _each_ possible answer, how expected were the data we saw?
+- [**Posterior**]{.green}: what we believe _now_, with the new data taken into account
 :::
 
 ::: {.fragment .callout-tip title="Example: will the mayor win?"}
