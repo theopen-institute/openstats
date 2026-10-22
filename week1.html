@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4498391a75a2d1d8b75d033352919b1c.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-6ecdc8f0cc2c76c553ae6b15a65c76c6.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -212,7 +212,7 @@
 
 <section id="title-slide" class="center">
   <h1 class="title">Data for Decision Making</h1>
-  <p class="subtitle">Week 1: All of Statistics in One Formula</p>
+  <p class="subtitle">Week 1: Updating</p>
   <div class="footer">The Open Institute For Social Science</div>
   <aside class="notes">
 <ul>
@@ -298,16 +298,15 @@ the goal of this course.</p></li>
 <section id="this-weeks-goals" class="title-slide slide level1 center">
 <h1>This week’s goals</h1>
 <ul>
-<li class="fragment">See why “hard data” isn’t the same as truth, using three ideas:
+<li class="fragment">Learn the three concepts behind Ioannidis’s claim:
 <ul>
 <li class="fragment">Probability</li>
 <li class="fragment">The base rate paradox</li>
 <li class="fragment">Statistical significance</li>
 </ul></li>
 <li class="fragment">Understand why most research is wrong (and why that’s okay)</li>
-<li class="fragment">Learn all of statistics (in just one formula)</li>
-<li class="fragment">Rethink objectivity and subjectivity in research</li>
-<li class="fragment">Appendix: election polling (a worked example)</li>
+<li class="fragment">Learn updating, the one formula for all of statistics</li>
+<li class="fragment">Worked example: election polling</li>
 </ul>
 </section>
 
@@ -355,17 +354,22 @@ unintuitive.</li>
 </section>
 
 <section>
-<section id="probability" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#probability">
-<h1>Probability</h1>
+<section id="you-already-understand-probability" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#probability">
+<h1>You already understand probability</h1>
 <aside class="notes">
 <ul>
-<li>Imagine asking a friend if it will rain tomorrow. They say,
-“Probably”. What does that word “probably” mean?</li>
+<li>The message for this whole section: they already understand
+probability. They use it every day; nobody has told them that’s what it
+is. The next few slides only give it notation, and then show the one
+place intuition slips.</li>
+<li>Ask the room: will it rain tomorrow? Someone will say “probably” or
+“probably not.” That word is a probability: a statement about how sure
+they are.</li>
 <li>Intuitively, probability is a way of talking about uncertainty.</li>
 <li>To frequentists, it’s a way of talking about the long run outcome of
 repeated measurements. Strange.</li>
-<li>We’re going to build statistics using a more intuitive set of
-concepts.</li>
+<li>We’re going to build statistics on the intuitions they already
+have.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -378,9 +382,9 @@ concepts.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>So what is probability?</p>
+<p><em>“Will it rain tomorrow?”</em> <span class="fragment"><em>“Probably not.”</em></span></p>
 <div class="fragment">
-<p>It’s a way of talking about uncertainty.</p>
+<p>That word, <em>probably</em>, is a probability. It’s a way of talking about uncertainty, and you use it every day.</p>
 </div>
 <ul>
 <li class="fragment">I don’t know if it’s going to rain tomorrow…</li>
@@ -445,7 +449,7 @@ HIV table counts 100,000 people. The published-research picture counts
 </ul>
 </div>
 <div class="fragment">
-<p>Every analysis we do in this course will come down to counting, exactly like this.</p>
+<p>You already knew how to do all three. Every analysis in this course comes down to counting, exactly like this.</p>
 </div>
 </section>
 <section id="counting-the-ways-a-thing-could-happen" class="slide level2" data-notes="notes/week1_notes.md#counting-ways">
@@ -550,12 +554,14 @@ introduces it in <em>Statistical Rethinking</em>, ch.&nbsp;2.)</li>
 <span class="blue">We list all the ways the world could be, and count them.</span></p>
 </div>
 </section>
-<section id="describing-probability-convention-1" class="slide level2" data-notes="notes/week1_notes.md#convention-1">
-<h2>Describing Probability: Convention 1</h2>
+<section id="writing-it-down-0-to-1" class="slide level2" data-notes="notes/week1_notes.md#convention-1">
+<h2>Writing it down: 0 to 1</h2>
 <aside class="notes">
 <ul>
-<li>The format part is quick: 0 is impossible, 1 is certain, and
-percentages are the same numbers times 100.</li>
+<li>New notation, not new ideas: everything on the next three slides is
+something they already know, written down. The format part is quick: 0
+is impossible, 1 is certain, and percentages are the same numbers times
+100.</li>
 <li>Spend the time on the nuance. Ask: what does “a 31% chance of rain
 tomorrow” actually mean? Is the weather random?</li>
 <li>Most people will say no, or not really. Tomorrow’s weather is
@@ -584,7 +590,7 @@ don’t know.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>We write a probability as a number between 0 and 1, or as a percentage.</em></p>
+<p><em>New notation, not new ideas: a number from 0 to 1, or a percentage.</em></p>
 <div class="fragment">
 <table class="caption-top">
 <thead>
@@ -632,8 +638,8 @@ don’t know.</li>
 <p>To convert between the two, move the decimal point two places right or left.</p>
 </div>
 <aside><ol class="aside-footnotes"><li id="fn1"><p>Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month’s average rate.</p></li></ol></aside></section>
-<section id="describing-probability-convention-2" class="slide level2" data-notes="notes/week1_notes.md#convention-2">
-<h2>Describing Probability: Convention 2</h2>
+<section id="writing-it-down-pevent" class="slide level2" data-notes="notes/week1_notes.md#convention-2">
+<h2>Writing it down: P(event)</h2>
 <aside class="notes">
 <ul>
 <li>Pure notation. P( something ) is read “the probability of
@@ -655,7 +661,7 @@ hypothesis.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>We write the probability of an event as P( event ).</em></p>
+<p><em>We write the probability of an event as</em> P( event ).</p>
 <div class="fragment">
 <table class="caption-top">
 <thead>
@@ -693,19 +699,22 @@ hypothesis.</li>
 <p>It’s just shorthand. Everything inside the brackets is the thing we’re unsure about.</p>
 </div>
 </section>
-<section id="describing-probability-convention-3" class="slide level2" data-notes="notes/week1_notes.md#rain">
-<h2>Describing Probability: Convention 3</h2>
+<section id="writing-it-down-pevent-condition" class="slide level2" data-notes="notes/week1_notes.md#rain">
+<h2>Writing it down: P(event | condition)</h2>
 <aside class="notes">
 <ul>
 <li><p>The bar is read “given.” P( rain | July ) is “the probability of
 rain, given that it’s July.”</p></li>
+<li><p>The umbrella line: they already condition without thinking about
+it. Nobody plans a December day like a July day. The notation only
+writes that down.</p></li>
 <li><p>A condition narrows down which cases we count. P( rain ) counts
 all days. P( rain | July ) counts only July days.</p></li>
 <li><p>Adding information changes the probability, sometimes a lot: from
 31% overall to 81% in July and 3% in December. Same city, same
 sky.</p></li>
-<li><p>This is also the Convention 1 point again: the more we know about
-a day, the less uncertain we are.</p></li>
+<li><p>This is also the 0-to-1 slide’s point again: the more we know
+about a day, the less uncertain we are.</p></li>
 <li><p>These numbers come from the past: the last five years (2021–2025)
 of daily records from the Kathmandu Airport weather station. We’re using
 history as a guide to what’s likely in a given month. Say the assumption
@@ -735,9 +744,9 @@ we’ll just treat historical data as our basis for prediction.</p></li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>We make a probability more specific by adding a condition: P( event | condition ).</em></p>
+<p><em>We make a probability more specific by adding a condition.</em></p>
 <ul>
-<li>P( rain | July ) means <span class="blue"><em>“the probability of rain, given that it’s July.”</em></span></li>
+<li>P( rain | July ) means <span class="blue"><em>“the probability of rain, given that it’s July.”</em></span> You already think this way: you carry an umbrella in July, not in December.</li>
 </ul>
 <div class="fragment">
 <table class="caption-top">
@@ -885,16 +894,13 @@ week 3, where we draw the story as a DAG and simulate data from it.</li>
 <li class="fragment">It becomes a <strong>probability</strong> when we use it to say something we <em>don’t</em> know:
 <ul>
 <li class="fragment"><em>“If we pick one student at random, how likely is it they had tea?”</em><br>
-<span class="blue">(Exactly <span class="count-k-out"></span> in <span class="count-n-out"></span>)</span></li>
+<span class="blue">(You just worked it out: <span class="count-k-out"></span> in <span class="count-n-out"></span>)</span></li>
 <li class="fragment"><em>“If we poll a random person on the street, how likely is it that they had tea?”</em><br>
 <span class="blue">(Possibly similar, if we’re willing to make a few assumptions.)</span></li>
 </ul></li>
 </ul>
 <div class="fragment">
 <p>Every prediction needs assumptions. <span class="blue">Interesting predictions need strong assumptions.</span></p>
-</div>
-<div class="fragment">
-<p>Those assumptions are a <span class="blue"><strong>model</strong></span>: a claim about how the data came to be. Our conclusions are only as good as that claim.</p>
 </div>
 </section></section>
 <section>
@@ -938,11 +944,11 @@ medical exam.</p>
 </ul></li>
 </ul>
 <div class="fragment">
-<p><span class="source">Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested have a much higher prevalence than 0.1%.</span></p>
+<p><span class="source">Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested aren’t randomly selected.</span></p>
 </div>
 </section>
-<section id="probability-for-decision-making-continued" class="slide level2" data-notes="notes/week1_notes.md#base-rate">
-<h2>Probability for Decision Making (continued)</h2>
+<section id="prediction-for-decision-making" class="slide level2" data-notes="notes/week1_notes.md#base-rate">
+<h2>Prediction for Decision Making</h2>
 <aside class="notes">
 <ul>
 <li><p>This, as we can see, an imperfect but reasonably good test.
@@ -1025,9 +1031,34 @@ unintuitive.</p></li>
 </table>
 </div>
 </section>
-<section id="direction-of-conditions" class="slide level2">
+<section id="direction-of-conditions" class="slide level2" data-notes="notes/week1_notes.md#direction">
 <h2>Direction of conditions</h2>
-<p>P(A|B) <em>is not the same as</em> P(B|A)</p>
+<aside class="notes">
+<ul>
+<li>The turn in the section. Their intuitions have been right so far:
+counting, rain by month, the xkcd joke. They slip in one place, and the
+HIV table just showed it: which way the condition runs.</li>
+<li>Read the two results under the table. With the starting numbers, 80%
+of rural students study sociology, but only 25% of sociology students
+are rural. Same people, same table, different question.</li>
+<li>Let students change the numbers and watch the two drift apart.
+They’re only equal when the two groups are the same size.</li>
+<li>Nothing is wrong with their intuition, only with which question it
+answers. The same slip turns “99% sensitive” into “99% sure”, and a
+p-value into “the chance the hypothesis is true.”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Your intuitions about probability are good. They slip in one place: which way the condition runs.</em> P(A|B) is not the same as P(B|A).</p>
 <!-- Week 1, "Direction of conditions": an editable 2x2 table. Behavior in
      js/cond-table.js, styles in css/deck.scss (#cond-table). -->
 
@@ -1108,7 +1139,7 @@ accuracy and watch this happen.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>When something is rare, most positive results are false, even from an accurate test.</em></p>
+<p><em>When something is rare, most positive results are false, even from an “accurate” test.</em></p>
 <div class="columns">
 <div class="column" style="width:58%;">
 <div class="r-stack">
@@ -1199,7 +1230,7 @@ Only 1 is real.</p>
 <span id="cb1-47"><a aria-label="47"></a>    width = 400,</span>
 <span id="cb1-48"><a aria-label="48"></a>    tags$h2("The Base Rate Paradox"),</span>
 <span id="cb1-49"><a aria-label="49"></a>    p(</span>
-<span id="cb1-50"><a aria-label="50"></a>      "Statistical tests help us evaluate the accuracy of prediction models. We often use tests to identify individuals with certain conditions or characteristics prevalent in our population."</span>
+<span id="cb1-50"><a aria-label="50"></a>      "Diagnostic tests are usually judged by their sensitivity and specificity. But both describe people whose condition we already know, and neither takes the base rate into account: how common the condition is among the people being tested. When it's rare, even an accurate test can be wrong about most of the people it flags."</span>
 <span id="cb1-51"><a aria-label="51"></a>    ),</span>
 <span id="cb1-52"><a aria-label="52"></a>    tags$div(</span>
 <span id="cb1-53"><a aria-label="53"></a>      tags$div(</span>
@@ -1567,7 +1598,7 @@ observe.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>If statistics has ever made you feel dumb or intimidated, <span class="blue">it’s not you</span>. Significance testing imagines the world in a very <span class="red">strange way</span>.</p>
+<p>If statistics has ever made you feel dumb or intimidated, <span class="blue">it’s not you</span>. Significance testing imagines the world <span class="red">backwards</span> from our intuitions.</p>
 <div class="fragment" data-fragment-index="1">
 <table class="caption-top">
 <thead>
@@ -1593,8 +1624,8 @@ observe.</li>
 </div>
 <ul>
 <li class="fragment">A p-value doesn’t tell you if a hypothesis is true.</li>
-<li class="fragment">It tells you how unlikely data this extreme would be if the null hypothesis were true.</li>
-<li class="fragment">Those aren’t the same thing. P(A | B) ≠ P(B | A)</li>
+<li class="fragment">It tells you how unlikely this data would be if the null hypothesis were true.</li>
+<li class="fragment">Those aren’t the same thing. P(A|B) ≠ P(B|A)</li>
 </ul>
 <div class="fragment">
 <p>Statistical significance works the opposite way that our intuitions do.</p>
@@ -1631,7 +1662,7 @@ just one simple idea:</p>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>Instead of a flowchart of tests, <span class="blue"><strong>one rule for all of statistics</strong></span>:</p>
+<p>Instead of a flowchart of tests, updating is <span class="blue"><strong>one rule for all of statistics</strong></span>:</p>
 <p><span class="red"><strong>Prior</strong></span> × <span class="blue"><strong>Likelihood</strong></span> → <span class="green"><strong>Posterior</strong></span></p>
 <ul>
 <li class="fragment"><span class="red"><strong>Prior</strong></span>: what we believe about the world <em>before</em> seeing the new data</li>
@@ -2402,7 +2433,7 @@ becomes data, term for term, and the colors appear.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>The one rule, written as a formula.</em></p>
+<p><em>All of statistics in one formula.</em></p>
 <!-- Week 1, "Bayes' theorem": the textbook formula, then the belief/data version, with
      one more term colored at each click (prior, likelihood, posterior, data). Clicks 2-5
      line up with the definitions on the slide (fragment-index 2-5). The copies are
@@ -2857,8 +2888,8 @@ It’s the debates we have about them.</p>
 </div>
 </div>
 </section>
-<section id="the-deeper-problem" class="slide level2" data-notes="notes/week1_notes.md#best-case">
-<h2>The deeper problem</h2>
+<section id="is-noise-the-only-problem" class="slide level2" data-notes="notes/week1_notes.md#best-case">
+<h2>Is noise the only problem?</h2>
 <aside class="notes">
 <ul>
 <li>Everything today has been about noise: chance results, small
@@ -2867,18 +2898,12 @@ trust in “hard data” breaks first, so it’s where we started.</li>
 <li>Noise has a cure, at least in principle: more data, bigger samples,
 replication. The 1,000-ideas table gets better as studies get
 larger.</li>
-<li>The deeper problem doesn’t. If the study answers a different
-question than it thinks, more data only make it more confident. A common
-cause nobody drew (a fork) makes two things move together with no effect
-between them. Controlling for the wrong variable (a pipe or a collider)
-can hide a real effect or invent a fake one. A confounded study of
-100,000 people has huge power and a tiny p-value, and it is still
-wrong.</li>
-<li>This is the turn in the course: from “data are noisy, so science is
-updating” to doing that updating well. Week 2 ends with a first example
-(ice cream and drowning), week 3 draws the causal story as a DAG, week 4
-covers forks, pipes and colliders, and week 5 asks what a study left
-out.</li>
+<li>Then the turn: a pattern can be real, show up in every new dataset,
+and still not mean what it seems. Don’t explain how yet. That’s the end
+of week 2 (ice cream and drowning), and it lands better if they’ve been
+wondering for a week.</li>
+<li>If someone asks: the other problem is the causal story, and more
+data don’t fix it. Weeks 3 to 5 are about getting that story right.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2891,17 +2916,15 @@ out.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>Everything today has been about <span class="blue">noise</span>: chance results, small samples, false positives.</p>
+<p>Everything today has been about <span class="blue">noise</span>: chance results, small samples, false positives. Noise is the problem <span class="blue">more data can fix</span>.</p>
 <div class="fragment">
-<p>Noise is the problem <span class="blue">more data can fix</span>.</p>
+<p>But a pattern can be real, show up again in every new dataset, and still not mean what it seems.</p>
 </div>
 <div class="fragment">
-<p>The deeper problem, which <span class="red">more data can’t fix</span>, is the causal story:</p>
+<div class="big-statement">
+<p>Next week: the other way data mislead.</p>
 </div>
-<ul>
-<li class="fragment">a <span class="red">common cause</span> nobody drew</li>
-<li class="fragment">a variable that <span class="red">shouldn’t have been controlled</span></li>
-</ul>
+</div>
 </section></section>
 <section id="doing-science" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#doing-science">
 <h1>Doing science</h1>
@@ -2916,13 +2939,46 @@ calculation comes last, and it’s the part a computer does.</li>
 arguments without the mechanics. Ask what a study assumes, how its data
 were made, and what else could explain the result. Those questions don’t
 need a formula.</li>
-<li>The week list is a map, not a lesson: about 30 seconds. The order is
-the point. We learn to describe data (week 2), then spend two whole
-weeks on causal thinking (weeks 3 and 4) before we lean on any model,
-then practice using all of it on real studies and their own questions
-(week 5).</li>
+<li>The science comes first; the statistics serve it.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>The math is the least interesting part of statistics.</em></p>
+<ul>
+<li class="fragment">Nearly every important choice happens before any numbers: what to ask, what to observe, who to include, what to assume.</li>
+<li class="fragment">After we’ve gathered our data, they never speak for themselves. We interpret them in terms of what we already know.</li>
+<li class="fragment">So we can interpret and critique a statistical argument without the statistical mechanics.</li>
+</ul>
+<div class="fragment">
+<div class="big-statement">
+<p>The science comes first.</p>
+</div>
+</div>
+</section>
+
+<section id="whats-ahead" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#whats-ahead">
+<h1>What’s ahead</h1>
+<aside class="notes">
+<ul>
+<li>One row per week, and each has one punchline. Read the punchlines,
+not the topics: if students remember five sentences from this course,
+these are the five.</li>
+<li>The order is the argument. Week 1: data are noisy, so science is
+updating. Week 2: describe variation as distributions, then meet the two
+ways a pattern misleads, chance and hidden causes. Weeks 3 and 4: draw
+the causal story and use it to decide what to control for. Week 5: use
+all of it on real studies and their own questions.</li>
 <li>Most stats courses go tests first, science later. We’re doing it the
-other way round. The science comes first; the statistics serve it.</li>
+other way round.</li>
 <li>That’s the end of the main lecture. What follows is the appendix:
 the mayor poll, which they’ll work through with the TA in the second
 class.</li>
@@ -2938,21 +2994,42 @@ class.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>The math is the least interesting part of statistics.</em></p>
-<p>Nearly every important choice happens before any numbers: what to ask, what to observe, who to include, what to assume. Those choices are what this course is about.</p>
-<div class="fragment">
-<ul>
-<li><strong>Week 2</strong>: Distributions: A different way to think about numbers, for populations, for uncertainty and for relationships.</li>
-<li><strong>Week 3</strong>: Causal modeling: using diagrams (DAGs) to map assumptions.</li>
-<li><strong>Week 4</strong>: Causal pitfalls: forks, pipes and colliders. What to control for, and what not to.</li>
-<li><strong>Week 5</strong>: Evaluating research: what did the authors leave out? Unobserved forks, pipes and colliders.</li>
-</ul>
-</div>
-<div class="fragment">
-<div class="big-statement">
-<p>The science comes first.</p>
-</div>
-</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Week</th>
+<th>Topic</th>
+<th>Punchline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>1</strong></td>
+<td>Updating</td>
+<td>Data are noisy. Science is updating.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>2</strong></td>
+<td>Distributions</td>
+<td><span class="line">Think in distributions.</span> <span class="line">A pattern can mislead by chance, or by a hidden cause.</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>3</strong></td>
+<td>Models</td>
+<td><span class="line">Draw your assumptions.</span> <span class="line">What you include can flip the answer.</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>4</strong></td>
+<td>Confounders</td>
+<td>What to control for depends on the causal story, not the data.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>5</strong></td>
+<td>Evaluating&nbsp;research</td>
+<td>Ask what’s in the world that isn’t in their model.</td>
+</tr>
+</tbody>
+</table>
 </section>
 
 <section>
@@ -3289,6 +3366,338 @@ narrow curve, but it shows the idea.</li>
   </div>
 </div>
 <script type="module" src="js/poll-posterior.js"></script>
+</section>
+<section id="survey-1-by-hand" class="slide level2" data-notes="notes/week1_notes.md#poll-by-hand">
+<h2>Survey 1, by hand</h2>
+<aside class="notes">
+<ul>
+<li>The widgets did this for whatever prior students drew. Now one fixed
+prior, so everyone sees the same numbers: about 60%, as in the last
+election, and fairly sure of it.</li>
+<li>The plot shows the three curves from Step 3. The dotted lines mark
+the three values of θ in the table.</li>
+<li>Read the table one column at a time. At 20%, the data fit well
+(0.22), but the prior gives it no height at all, so the product is zero.
+At 60%, the prior loves it (99), but 4 of 20 would be very unlikely if
+60% of voters backed him (0.00027), so the product is tiny. At 40%, both
+are lukewarm, and lukewarm × lukewarm wins (0.21).</li>
+<li>The likelihood row is the coin-flip model from the formal-model
+slide: the chance of exactly 4 “mayor” answers out of 20, if each person
+says “mayor” with chance θ. It’s only right if the 20 were picked at
+random. That’s the model’s assumption, and it’s as much an assumption as
+the prior.</li>
+<li>First click: that’s the whole of Bayes’ theorem. Do the same
+multiplication at every θ, not just three, then rescale so the curve
+adds up to 100%. The rescaling is the P(data) at the bottom of the
+formula.</li>
+<li>Second click: the posterior is a compromise, and its shape shows
+where the compromise sits. It is also narrower than the prior: we know
+more than we did.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>A worked example with one fixed prior: about 60%, as in the last election. Then survey 1: 4 of 20 say “mayor”.</em></p>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week1_files/figure-revealjs/poll-update-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:54%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>θ</th>
+<th style="text-align: right;">20%</th>
+<th style="text-align: right;">40%</th>
+<th style="text-align: right;">60%</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="red"><strong>Prior</strong></span> (height)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">99</td>
+</tr>
+<tr class="even">
+<td><span class="blue"><strong>Likelihood</strong></span></td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.035</td>
+<td style="text-align: right;">0.00027</td>
+</tr>
+<tr class="odd">
+<td>Prior × likelihood</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;"><span class="green"><strong>0.21</strong></span></td>
+<td style="text-align: right;">0.03</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Do this at every θ, then rescale so the total is 100%. That’s the <span class="green"><strong>posterior</strong></span>.</p>
+</div>
+<div class="fragment">
+<p>It lands where both find θ plausible: not 20% (the prior rules it out), not 60% (the data do).</p>
+</div>
+</div></div>
+</section>
+<section id="todays-posterior-is-tomorrows-prior" class="slide level2" data-notes="notes/week1_notes.md#poll-sequence">
+<h2>Today’s posterior is tomorrow’s prior</h2>
+<aside class="notes">
+<ul>
+<li>A worked version of what the widgets do, with a fixed prior so
+everyone sees the same numbers. The prior is “about 60%, as in the last
+election”, and fairly confident about it.</li>
+<li>Read the curves left to right in time. Survey 1 (4 of 20) pulls the
+belief down and makes it narrower. Survey 2 (7 of 20) pulls a little
+further and narrows it again. It moves us less: we’re more sure by then,
+and 35% is closer to what we already believed.</li>
+<li>Click: every step is the same formula from the Bayes’ theorem slide.
+The prior is P(θ), the survey’s likelihood is P(survey | θ), and the
+posterior is P(θ | survey). The ∝ means “proportional to”: multiply,
+then rescale so the curve adds up to 1, which is the P(data) we said
+wasn’t interesting.</li>
+<li>Click: the posterior from survey 1 is the prior for survey 2.
+Updating twice gives exactly the same answer as updating once on all 40
+people. It doesn’t matter whether the data arrive in one batch or two,
+or in which order. That’s what makes “science is updating” work: each
+new study can start from where the last one left off.</li>
+<li>If asked about the prior: it’s a Beta(20, 13) distribution, which
+makes the arithmetic exact. Students don’t need the name.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week1_files/figure-revealjs/poll-sequence-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Survey 1: 4 of 20 said “mayor”. Survey 2: 7 of 20.</p>
+</div><div class="column" style="width:54%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Best&nbsp;guess</th>
+<th style="text-align: right;">90%&nbsp;range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="red"><strong>Prior</strong></span></td>
+<td style="text-align: right;">61%</td>
+<td style="text-align: right;">46–74%</td>
+</tr>
+<tr class="even">
+<td>After&nbsp;survey&nbsp;1</td>
+<td style="text-align: right;">45%</td>
+<td style="text-align: right;">34–57%</td>
+</tr>
+<tr class="odd">
+<td>After&nbsp;survey&nbsp;2</td>
+<td style="text-align: right;"><span class="green"><strong>42%</strong></span></td>
+<td style="text-align: right;">33–52%</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Each row is Bayes’ theorem:<br>
+<span class="math inline">\(\class{green}{P(\theta \mid \text{survey})} \propto \class{blue}{P(\text{survey} \mid \theta)} \times \class{red}{P(\theta)}\)</span></p>
+</div>
+<div class="fragment">
+<p>Survey 1’s posterior is survey 2’s prior. Updating once on all 40 people (11 of 40) gives the same answer.</p>
+</div>
+</div></div>
+</section>
+<section id="different-priors-same-data" class="slide level2" data-notes="notes/week1_notes.md#poll-converge">
+<h2>Different priors, same data</h2>
+<aside class="notes">
+<ul>
+<li>This answers the objection students will have been holding since the
+prior was introduced: if the prior is subjective, can’t anyone get any
+answer they want?</li>
+<li>Two people. The supporter thinks about 60%, as in the last election.
+The skeptic thinks about 30%. Both are equally confident: each prior is
+worth about 33 earlier voters.</li>
+<li>They see the same three surveys: the two small ones, then a big poll
+of 360. The panels show their beliefs before any data, after the 40
+people of the first two surveys, and after all 400.</li>
+<li>After 40 people they’re still far apart: the skeptic hasn’t moved
+much, because the data (20% and 35%) were close to what they already
+believed. After 400 people, they nearly agree. The data have outweighed
+both priors.</li>
+<li>That’s the answer to the objection. A prior matters when data are
+scarce, which is exactly when it should. With enough shared evidence,
+people who start in different places end up in the same place. This is
+the “science is updating” slide in numbers.</li>
+<li>The one exception is certainty. If someone’s prior gives a value
+zero weight, the posterior there is prior × likelihood = zero, whatever
+the data say. Someone certain it’s exactly 60% never moves. Dogmatism is
+a prior of zero.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week1_files/figure-revealjs/poll-converge-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:54%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Best guess</th>
+<th style="text-align: right;"><span class="orange"><strong>Supporter</strong></span></th>
+<th style="text-align: right;"><strong>Skeptic</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Before any data</td>
+<td style="text-align: right;">61%</td>
+<td style="text-align: right;">30%</td>
+</tr>
+<tr class="even">
+<td>After 40 people</td>
+<td style="text-align: right;">42%</td>
+<td style="text-align: right;">29%</td>
+</tr>
+<tr class="odd">
+<td>After 400 people</td>
+<td style="text-align: right;">41%</td>
+<td style="text-align: right;">39%</td>
+</tr>
+</tbody>
+</table>
+<p>Survey 3 is a bigger poll: 148 of 360 say “mayor”.</p>
+<div class="fragment">
+<p>They start 31 points apart and end 2 apart. A prior is where you start, not where you end up.</p>
+</div>
+<div class="fragment">
+<p>Except for certainty: if you rule a value out (a prior of 0), no data can bring it back.</p>
+</div>
+</div></div>
+</section>
+<section id="answering-the-question" class="slide level2" data-notes="notes/week1_notes.md#poll-answer">
+<h2>Answering the question</h2>
+<aside class="notes">
+<ul>
+<li>The posterior is a whole distribution, so we can ask it any
+question. The one we care about here: will he get more than half the
+vote? The answer is the share of the posterior above 50%: the dark green
+area.</li>
+<li>Read down the table: 89% before any surveys, 24% after the first,
+10% after the second. Each survey changes the answer to the question we
+actually asked.</li>
+<li>First click: this is P(hypothesis | data), the direction we wanted
+all along, and the one a p-value can’t give. Compare the significance
+slides: a test would only tell us how surprising 11 of 40 would be if
+his support were exactly 50%.</li>
+<li>Second click: and the answer carries its own uncertainty. Not a yes
+or no, but about a 1 in 10 chance.</li>
+<li>If someone asks: this is the “P( mayor wins )” row on the Step 3
+widget. Strictly it’s “more than half the vote”. In an election with
+several candidates, the mayor can win with less than half, and modelling
+that would need every candidate’s share, not just his.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week1_files/figure-revealjs/poll-majority-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:54%;">
+<p><em>Will he get more than half the vote?</em> Add up the belief above 50%.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">P( more than half )</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="red"><strong>Prior</strong></span></td>
+<td style="text-align: right;">89%</td>
+</tr>
+<tr class="even">
+<td>After survey 1</td>
+<td style="text-align: right;">24%</td>
+</tr>
+<tr class="odd">
+<td>After survey 2</td>
+<td style="text-align: right;"><span class="green"><strong>10%</strong></span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>That’s P( <span class="red">hypothesis</span> | <span class="blue">data</span> ): the question a p-value can’t answer.</p>
+</div>
+<div class="fragment">
+<p>And it says how sure we are: not “he’ll lose”, but about a 1 in 10 chance of a majority.</p>
+</div>
+</div></div>
 </section>
 <section id="what-to-try" class="slide level2" data-notes="notes/week1_notes.md#poll-try">
 <h2>What to try</h2>
