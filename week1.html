@@ -298,7 +298,7 @@ the goal of this course.</p></li>
 <section id="this-weeks-goals" class="title-slide slide level1 center">
 <h1>This week’s goals</h1>
 <ul>
-<li class="fragment">Explore the key concepts underlying Ioannidis’s claim
+<li class="fragment">See why “hard data” isn’t the same as truth, using three ideas:
 <ul>
 <li class="fragment">Probability</li>
 <li class="fragment">The base rate paradox</li>
@@ -847,8 +847,15 @@ probability, and they built it from the count.</li>
 Probabilities are statements about what we don’t know: the next person,
 the whole population, next year’s rain, whether a hypothesis is
 true.</li>
-<li>Bridge: the next two slides are just conventions for writing these
-counts down.</li>
+<li>The street question needs assumptions the room question doesn’t:
+that this room is like the street, that tea habits don’t depend on who
+comes to a statistics lunch. Say them out loud. Together they’re a story
+about how the data came to be, and that story is what we’ll call a
+model.</li>
+<li>Last click, the line to remember: a model is a claim about how the
+data came to be, and the conclusions are only as good as that claim. It
+comes back in the mayor appendix (each answer is a coin flip) and in
+week 3, where we draw the story as a DAG and simulate data from it.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -885,6 +892,9 @@ counts down.</li>
 </ul>
 <div class="fragment">
 <p>Every prediction needs assumptions. <span class="blue">Interesting predictions need strong assumptions.</span></p>
+</div>
+<div class="fragment">
+<p>Those assumptions are a <span class="blue"><strong>model</strong></span>: a claim about how the data came to be. Our conclusions are only as good as that claim.</p>
 </div>
 </section></section>
 <section>
@@ -1468,7 +1478,7 @@ the structure is important: In frequentist analysis, We’re treating our
 hypothesis as a fixed assumption and our data as a probability.</p>
 <p>That’s fine, but it’s not how we actually experience the practice of
 science most of the time. It’s not how we think about uncertainty. More
-often, our data is the thing we know, and our hypothesis is the thing
+often, our data are the thing we know, and our hypothesis is the thing
 we’re unsure of.</p>
 <p>What we’re usually actually trying to figure out is the reverse
 conditional dependency: P( hypothesis | data ) i.e., given the data we
@@ -2695,7 +2705,7 @@ nudges it, a little or a lot.</li>
 <li>No single observation gives us the answer. We use observations to
 support or challenge what we think we already know.</li>
 <li>The last bullet is the strong claim, so slow down: without prior
-assumptions, data is meaningless. A number only tells us something
+assumptions, data are meaningless. A number only tells us something
 against a background of what we expected. Ethnographers know this
 already: an interview means something because of everything else the
 researcher knows about the place and the people.</li>
@@ -2716,59 +2726,8 @@ researcher knows about the place and the people.</li>
 <li class="fragment">A single study was never supposed to be the answer. It’s just one observation.</li>
 <li class="fragment">Each observation joins what we already know and nudges it, a little or a lot.</li>
 <li class="fragment">We use observation to support or challenge what we think we already know.</li>
-<li class="fragment">Without these prior assumptions, data is meaningless. Interesting claims need strong assumptions.</li>
+<li class="fragment">Without these prior assumptions, data are meaningless. Interesting claims need strong assumptions.</li>
 </ul>
-</section>
-<section id="science-is-updating" class="slide level2" data-notes="notes/week1_notes.md#science-is-updating">
-<h2>Science is updating</h2>
-<aside class="notes">
-<ul>
-<li>Ask the room: what makes science work? Most people say experiments,
-or careful observation.</li>
-<li>Push back. Single observations are messy, and they often contradict
-each other. What makes science work is people: groups of scientists
-arguing about how to fit many observations together.</li>
-<li>The three steps are Bayesian updating in plain words, in the same
-colors as prior × likelihood → posterior. Assume: a prior is an
-assumption we write down, so others can see it and argue with it.
-Assumptions we hide can’t be checked. Look: new data test it; if what we
-saw fits what we assumed, confidence grows, and if not, the assumption
-moves. Update: the posterior is the improved assumption, and tomorrow
-it’s the prior. No single step has to be right. The process gets
-better.</li>
-<li>The big statement: science isn’t the experiments we do, it’s the
-debates we have about them. Over time, those debates make us less, and
-less, and less wrong.</li>
-<li>“Written down where others can argue with it” sets up the next
-slide: the difference between fields is whether assumptions are stated
-openly.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p>What makes science work isn’t experiments or observations.</p>
-<div class="fragment">
-<p>It’s <span class="blue">groups of scientists arguing</span> about how to fit many (often contradictory) experiments and observations together.</p>
-</div>
-<ul>
-<li class="fragment"><span class="red"><strong>Assume</strong></span>: a prior, written down where others can argue with it.</li>
-<li class="fragment"><span class="blue"><strong>Look</strong></span>: new data test it.</li>
-<li class="fragment"><span class="green"><strong>Update</strong></span>: the posterior, which is the starting point next time.</li>
-</ul>
-<div class="fragment">
-<div class="big-statement">
-<p>Science isn’t the experiments we do.<br>
-It’s the debates we have about them.</p>
-</div>
-</div>
 </section>
 <section id="hard-data" class="slide level2" data-notes="notes/week1_notes.md#objective-subjective">
 <h2>Hard data?</h2>
@@ -2776,6 +2735,9 @@ It’s the debates we have about them.</p>
 <ul>
 <li>Read the quote. Students will have heard it, and some will half
 believe it.</li>
+<li>The first thing in the quantitative row is today’s lecture: even a
+perfect measurement is one draw, and deciding that a pattern isn’t just
+chance is an inference, not an observation.</li>
 </ul>
 <p>Updating is the foundation of our statistics: We believed something,
 we saw something, and we now believe something slightly or significantly
@@ -2834,7 +2796,7 @@ others can challenge them.</p>
 <tr class="even">
 <td><strong>Quantitative</strong></td>
 <td>surveys, records, measurements</td>
-<td>what causes what; how the data were generated</td>
+<td>that the pattern isn’t just chance; what causes what; how the data were generated</td>
 </tr>
 </tbody>
 </table>
@@ -2844,21 +2806,29 @@ others can challenge them.</p>
 <li class="fragment">In both qualitative and quantitative work, we need strong assumptions to make interesting claims.</li>
 </ul>
 </section>
-<section id="doing-science" class="slide level2" data-notes="notes/week1_notes.md#doing-science">
-<h2>Doing science</h2>
+<section id="science-is-updating" class="slide level2" data-notes="notes/week1_notes.md#science-is-updating">
+<h2>Science is updating</h2>
 <aside class="notes">
 <ul>
-<li>The math is the least interesting part of using statistics for
-science. Say it plainly; it’s a relief for many students.</li>
-<li>Nearly every important choice happens before any numbers: what
-question to ask, what to observe, who to include, what to assume. The
-calculation comes last, and it’s the part a computer does.</li>
-<li>That means students can already interpret and critique statistical
-arguments without the mechanics. Ask what a study assumes, how its data
-were made, and what else could explain the result. Those questions don’t
-need a formula.</li>
-<li>This is what “doing science” means in this course. The science comes
-first; the statistics serve it.</li>
+<li>Ask the room: what makes science work? Most people say experiments,
+or careful observation.</li>
+<li>Push back. Single observations are messy, and they often contradict
+each other. What makes science work is people: groups of scientists
+arguing about how to fit many observations together.</li>
+<li>The three steps are Bayesian updating in plain words, in the same
+colors as prior × likelihood → posterior. Assume: a prior is an
+assumption we write down, so others can see it and argue with it.
+Assumptions we hide can’t be checked. Look: new data test it; if what we
+saw fits what we assumed, confidence grows, and if not, the assumption
+moves. Update: the posterior is the improved assumption, and tomorrow
+it’s the prior. No single step has to be right. The process gets
+better.</li>
+<li>The big statement: science isn’t the experiments we do, it’s the
+debates we have about them. Over time, those debates make us less, and
+less, and less wrong.</li>
+<li>“Written down where others can argue with it” picks up the last
+slide: in every field, what separates good work is whether its
+assumptions are stated openly, where others can challenge them.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2871,31 +2841,88 @@ first; the statistics serve it.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>The math is the least interesting part of statistics.</em></p>
+<p>What makes science work isn’t experiments or observations.</p>
+<div class="fragment">
+<p>It’s <span class="blue">groups of scientists arguing</span> about how to fit many (often contradictory) experiments and observations together.</p>
+</div>
 <ul>
-<li class="fragment">Nearly every important choice happens before any numbers: what to ask, what to observe, who to include, what to assume.</li>
-<li class="fragment">After we’ve gathered our data, it never speaks for itself. We have to interpret it in<br>
-terms of what we already know.</li>
-<li class="fragment">So we can interpret and critique a statistical argument without needing the statistical mechanics.</li>
-<li class="fragment">In this five-week course, we’re going to talk about those choices: what a study assumes, how the data were made, and what else could explain it. The statistical mechanics can come later.</li>
+<li class="fragment"><span class="red"><strong>Assume</strong></span>: a prior, written down where others can argue with it.</li>
+<li class="fragment"><span class="blue"><strong>Look</strong></span>: new data test it.</li>
+<li class="fragment"><span class="green"><strong>Update</strong></span>: the posterior, which is the starting point next time.</li>
 </ul>
 <div class="fragment">
 <div class="big-statement">
-<p>The science comes first.</p>
+<p>Science isn’t the experiments we do.<br>
+It’s the debates we have about them.</p>
 </div>
 </div>
-</section></section>
-<section id="whats-ahead" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#whats-ahead">
-<h1>What’s ahead</h1>
+</section>
+<section id="the-deeper-problem" class="slide level2" data-notes="notes/week1_notes.md#best-case">
+<h2>The deeper problem</h2>
 <aside class="notes">
 <ul>
-<li>Keep this quick, about 30 seconds. It’s a map, not a lesson.</li>
-<li>The order is the point. We learn to describe data (week 2), then
-spend two whole weeks on causal thinking (weeks 3 and 4) before we lean
-on any model, then practice using all of it on real studies and their
-own questions (week 5).</li>
+<li>Everything today has been about noise: chance results, small
+samples, tests that are sometimes wrong. That’s where most people’s
+trust in “hard data” breaks first, so it’s where we started.</li>
+<li>Noise has a cure, at least in principle: more data, bigger samples,
+replication. The 1,000-ideas table gets better as studies get
+larger.</li>
+<li>The deeper problem doesn’t. If the study answers a different
+question than it thinks, more data only make it more confident. A common
+cause nobody drew (a fork) makes two things move together with no effect
+between them. Controlling for the wrong variable (a pipe or a collider)
+can hide a real effect or invent a fake one. A confounded study of
+100,000 people has huge power and a tiny p-value, and it is still
+wrong.</li>
+<li>This is the turn in the course: from “data are noisy, so science is
+updating” to doing that updating well. Week 2 ends with a first example
+(ice cream and drowning), week 3 draws the causal story as a DAG, week 4
+covers forks, pipes and colliders, and week 5 asks what a study left
+out.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p>Everything today has been about <span class="blue">noise</span>: chance results, small samples, false positives.</p>
+<div class="fragment">
+<p>Noise is the problem <span class="blue">more data can fix</span>.</p>
+</div>
+<div class="fragment">
+<p>The deeper problem, which <span class="red">more data can’t fix</span>, is the causal story:</p>
+</div>
+<ul>
+<li class="fragment">a <span class="red">common cause</span> nobody drew</li>
+<li class="fragment">a variable that <span class="red">shouldn’t have been controlled</span></li>
+</ul>
+</section></section>
+<section id="doing-science" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#doing-science">
+<h1>Doing science</h1>
+<aside class="notes">
+<ul>
+<li>The math is the least interesting part of using statistics for
+science. Say it plainly; it’s a relief for many students.</li>
+<li>Nearly every important choice happens before any numbers: what
+question to ask, what to observe, who to include, what to assume. The
+calculation comes last, and it’s the part a computer does.</li>
+<li>That means students can already interpret and critique statistical
+arguments without the mechanics. Ask what a study assumes, how its data
+were made, and what else could explain the result. Those questions don’t
+need a formula.</li>
+<li>The week list is a map, not a lesson: about 30 seconds. The order is
+the point. We learn to describe data (week 2), then spend two whole
+weeks on causal thinking (weeks 3 and 4) before we lean on any model,
+then practice using all of it on real studies and their own questions
+(week 5).</li>
 <li>Most stats courses go tests first, science later. We’re doing it the
-other way round.</li>
+other way round. The science comes first; the statistics serve it.</li>
 <li>That’s the end of the main lecture. What follows is the appendix:
 the mayor poll, which they’ll work through with the TA in the second
 class.</li>
@@ -2911,39 +2938,21 @@ class.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>That’s what we’re going to do here: <span class="blue">put the science first</span>.</p>
+<p><em>The math is the least interesting part of statistics.</em></p>
+<p>Nearly every important choice happens before any numbers: what to ask, what to observe, who to include, what to assume. Those choices are what this course is about.</p>
+<div class="fragment">
 <ul>
 <li><strong>Week 2</strong>: Distributions: A different way to think about numbers, for populations, for uncertainty and for relationships.</li>
 <li><strong>Week 3</strong>: Causal modeling: using diagrams (DAGs) to map assumptions.</li>
 <li><strong>Week 4</strong>: Causal pitfalls: forks, pipes and colliders. What to control for, and what not to.</li>
 <li><strong>Week 5</strong>: Evaluating research: what did the authors leave out? Unobserved forks, pipes and colliders.</li>
 </ul>
-</section>
-
-<section id="the-bayesian-workflow" class="title-slide slide level1 smaller mechanics center">
-<h1>The Bayesian workflow</h1>
-<!-- The ten-step workflow, shared by workflow.qmd and the week 1 deck. -->
-<ul>
-<li><strong>Scientific model:</strong> what we believe about the world, before any statistics.
-<ol type="1">
-<li><strong>Ask the question.</strong> Say in plain words what you want to know, and picture what the answer would look like.</li>
-<li><strong>Draw the causal model (DAG).</strong> Write down what you assume causes what, based on what you know about the domain.</li>
-<li><strong>Define the estimand.</strong> Use the DAG to turn your question into one exact number, before you touch the data.</li>
-<li><strong>Simulate the population.</strong> Write a simulation that could produce data like yours.</li>
-</ol></li>
-<li><strong>Statistical model:</strong> the machinery that turns data into an estimate, tested where we already know the truth.
-<ol start="5" type="1">
-<li><strong>Write the formal model.</strong> Derive the statistical model from the DAG, in math notation.</li>
-<li><strong>Write the Stan code.</strong> Translate the formal model into a program.</li>
-<li><strong>Test on simulated data.</strong> Check that the priors imply plausible data and that the model recovers parameters we already know.</li>
-</ol></li>
-<li><strong>Analysis:</strong> the real data, the estimate, and how far to trust it.
-<ol start="8" type="1">
-<li><strong>Fit and validate the model.</strong> Run the sampler, check its diagnostics, and run posterior predictive checks. Can we trust the model?</li>
-<li><strong>Compute the estimate.</strong> Use the fitted model to estimate the estimand from step 3.</li>
-<li><strong>Test its robustness.</strong> How much does the estimate depend on our assumptions?</li>
-</ol></li>
-</ul>
+</div>
+<div class="fragment">
+<div class="big-statement">
+<p>The science comes first.</p>
+</div>
+</div>
 </section>
 
 <section>
@@ -2971,7 +2980,7 @@ we’ll build them later. Today the point is the logic of updating.</li>
           display:block!important;
       }</style></aside>
 <p><em>Appendix: we’ll work through this together with the TA in our second class.</em></p>
-<p>Let’s walk through the simplest possible version of this workflow.</p>
+<p>Let’s walk through the simplest possible version of the full Bayesian workflow (next slide).</p>
 <ul>
 <li><strong>Estimand</strong>: θ, the share of Kathmandu voters who will vote for the current mayor.</li>
 <li><strong>Background</strong>: in the last election, the mayor got 60% of the vote.</li>
@@ -2992,6 +3001,31 @@ we’ll build them later. Today the point is the logic of updating.</li>
 </div>
 </div>
 </div>
+</section>
+<section id="the-bayesian-workflow" class="slide level2 smaller mechanics">
+<h2>The Bayesian workflow</h2>
+<!-- The ten-step workflow, shared by workflow.qmd and the week 1 deck. -->
+<ul>
+<li><strong>Scientific model:</strong> what we believe about the world, before any statistics.
+<ol type="1">
+<li><strong>Ask the question.</strong> Say in plain words what you want to know, and picture what the answer would look like.</li>
+<li><strong>Draw the causal model (DAG).</strong> Write down what you assume causes what, based on what you know about the domain.</li>
+<li><strong>Define the estimand.</strong> Use the DAG to turn your question into one exact number, before you touch the data.</li>
+<li><strong>Simulate the population.</strong> Write a simulation that could produce data like yours.</li>
+</ol></li>
+<li><strong>Statistical model:</strong> the machinery that turns data into an estimate, tested where we already know the truth.
+<ol start="5" type="1">
+<li><strong>Write the formal model.</strong> Derive the statistical model from the DAG, in math notation.</li>
+<li><strong>Write the Stan code.</strong> Translate the formal model into a program.</li>
+<li><strong>Test on simulated data.</strong> Check that the priors imply plausible data and that the model recovers parameters we already know.</li>
+</ol></li>
+<li><strong>Analysis:</strong> the real data, the estimate, and how far to trust it.
+<ol start="8" type="1">
+<li><strong>Fit and validate the model.</strong> Run the sampler, check its diagnostics, and run posterior predictive checks. Can we trust the model?</li>
+<li><strong>Compute the estimate.</strong> Use the fitted model to estimate the estimand from step 3.</li>
+<li><strong>Test its robustness.</strong> How much does the estimate depend on our assumptions?</li>
+</ol></li>
+</ul>
 </section>
 <section id="the-model-written-formally" class="slide level2 mechanics" data-notes="notes/week1_notes.md#poll-model">
 <h2>The model, written formally</h2>
@@ -3118,7 +3152,7 @@ here is what gets updated.</li>
 people we asked, and what share said “mayor”. It starts at 4 of 20
 (20%), the survey in the mayor example.</li>
 <li>Same question we asked about the HIV test, turned around: for each
-possible θ, how likely is the data we saw?</li>
+possible θ, how likely are the data we saw?</li>
 <li>Read the table: 4 of 20 is quite likely if θ is 20% (0.22), much
 less so at 40% (0.035), unlikely at 60%, and almost impossible at
 80%.</li>
@@ -3285,9 +3319,38 @@ building.</li>
 <li><strong>Answering the real question.</strong> P( mayor wins ) is a direct statement about the hypothesis given the data: <span class="green">P( hypothesis | data )</span>, not a p-value.</li>
 </ul>
 <p><em>What is the result, and how much does it depend on our assumptions?</em> This is that question, in miniature.</p>
-
-
 </section></section>
+<section id="more-resources" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#more-resources">
+<h1>More resources</h1>
+<aside class="notes">
+<ul>
+<li>For students who want to go further. The book is where this course’s
+approach comes from: Bayesian, causal models first, built up from simple
+counting.</li>
+<li>The YouTube lectures cover the whole book, for free. They’re a good
+way in for anyone who’d rather watch than read, and the early lectures
+line up well with Weeks 1 to 3.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p>This course draws heavily on the work of Richard McElreath, a statistician working out of the Max Planck Institute. If you want a deeper dive into statistical mechanics, consider the resources below.</p>
+<ul>
+<li><strong>The book:</strong> Richard McElreath, <a href="https://xcelab.net/rm/"><em>Statistical Rethinking: A Bayesian Course with Examples in R and Stan</em></a> (2nd edition, 2020). This course follows its approach.</li>
+<li><strong>The lectures:</strong> McElreath’s <a href="https://github.com/rmcelreath/stat_rethinking_2026">Statistical Rethinking 2026</a> series on YouTube. Twenty free lectures that follow the book.</li>
+</ul>
+
+
+</section>
+
 
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">

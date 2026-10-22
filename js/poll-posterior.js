@@ -133,7 +133,7 @@ if (graphEl && !graphEl.dataset.initialized) {
   }
 
   // Today's posterior is tomorrow's prior: sample it back onto the 21 draggable
-  // points, then clear the survey so the data isn't counted twice
+  // points, then clear the survey so the data aren't counted twice
   $('poll-carry').addEventListener('click', () => {
     if (!posteriorMass) return;
     const coarse = Array.from({ length: POINTS }, (_, i) => posteriorMass[i * PER_POINT]);
