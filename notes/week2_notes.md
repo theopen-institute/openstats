@@ -17,6 +17,7 @@
 
 ## Last week → this week {#last-week}
 
+- Start from Week 1's thesis: a study is one observation, and a number means nothing without the assumptions we read it through. This week adds that a single number also hides variation and uncertainty, which is what the opening slide showed.
 - The bridge from Week 1: the mayor's answer wasn't a number, it was a curve. Students already drew one when they made their prior.
 - Name the key word and give the plain definition: every value a number could take, and how common or plausible each one is.
 - Then name the three kinds, one per part. Distributions of data come first. Belief, the kind they met with the mayor, is second. Relationships are third.
@@ -220,6 +221,7 @@
 - Walk the table row by row. The most important row: would more data help? For chance, yes. For confounding, no.
 - What helps against chance: bigger samples, deciding what to test before looking, replication. All things from Week 1.
 - What helps against confounding: thinking about causes. Nothing in the data alone can do it. That's why next week is about causal models.
+- The last bullet picks up how Week 1 ended: there are more fundamental ways to question our assumptions than the base rate paradox. Chance is Week 1's problem, and more data helps. Confounding is the first of the deeper ones, and more data doesn't.
 - Week 5 comes back to this hard: more data won't save you from a confounder.
 
 ## Summary: three kinds of distribution {#summary}

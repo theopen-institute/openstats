@@ -74,6 +74,8 @@ This week: think in distributions, not single numbers.
 
 # Last week → this week {notes="notes/week2_notes.md#last-week"}
 
+- Last week: a number is one observation, read through what we already assume.
+  This week: a single number also hides how much things vary, and how sure we are.
 - Last week, our answer to "will the mayor win?" was not a number.
 - It was a **distribution**: a whole curve of more and less plausible values.
 - That's this week's key word. A distribution describes a number by **every value it
@@ -669,10 +671,10 @@ noise_dist_plot(r_small, n_vars)
   "significant." The base rate of real relationships here is zero.
 
 
-## Telling the two apart {notes="notes/week2_notes.md#telling-apart"}
+## Telling the two apart {.smaller notes="notes/week2_notes.md#telling-apart"}
 
 | | Confounding | Chance |
-|-|-------------|--------|
+|------|-------|-------|
 | What's going on? | A third variable drives both | Noise happened to line up |
 | Shows up in new data? | Yes | No |
 | Would more data help? | **No** | **Yes** |
@@ -683,7 +685,8 @@ noise_dist_plot(r_small, n_vars)
   was wide, saying "I'm not sure."
 - Nothing in the data alone protects us against confounding. For that we need a
   **causal model**.
-- We'll come back to this in Week 5: more data won't save you from a confounder.
+- Week 1 ended with more fundamental ways to question our assumptions. This is the
+  first: more data won't save you from a confounder.
 :::
 
 

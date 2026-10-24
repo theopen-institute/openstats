@@ -1,15 +1,24 @@
 import { brand } from './palette.js';
 import { clearCanvas, drawPercentAxes, font } from './canvas-axes.js';
+import { animate, onCurrentSlide, whenShown } from './tween.js';
 
 // Read-only canvas plot of one or more curves over x in [0, 1], used to show
 // prior, likelihood and posterior together. Styled to match LineGraphWidget.
+//
+// Changes are animated: each curve, and the height of the y axis, eases from what's on
+// screen to the new values. A plot changed while its slide is hidden waits, and
+// animates when the slide comes into view; the first time, its curves grow from zero.
 export class PosteriorPlot {
   constructor({ container, xLabel = "Percent of Voters", yLabel = "Plausibility" } = {}) {
     if (!container) throw new Error("PosteriorPlot: container is required");
     this.container = container;
     this.xLabel = xLabel;
     this.yLabel = yLabel;
-    this.series = [];
+    this.series = []; // the curves to show
+    this._shown = null; // the curves on screen now, partway through a transition
+    this._shownMax = null;
+    this._pending = false; // changed while hidden
+    this._cancel = () => {};
 
     this.padding = { left: 24, right: 16, top: 16, bottom: 46 };
 
@@ -26,6 +35,9 @@ export class PosteriorPlot {
     this._resizeObserver.observe(container);
 
     this._onResize();
+    whenShown(container, () => {
+      if (this._pending) this._transition();
+    });
   }
 
   destroy() {
@@ -34,10 +46,12 @@ export class PosteriorPlot {
     this.canvas.remove();
   }
 
-  // series: [{ label, color, xs, ys, dash?: number[], fill?: string }]
+  // series: [{ label, color, xs, ys, dash?: number[], fill?: string, line?: false }]
+  // (line: false draws only the fill, e.g. to shade part of another curve)
   setSeries(series) {
     this.series = Array.isArray(series) ? series : [];
-    this._draw();
+    this._pending = true;
+    if (onCurrentSlide(this.container)) this._transition();
   }
 
   // -------- internal --------
@@ -70,12 +84,33 @@ export class PosteriorPlot {
     return m > 0 ? m * 1.08 : 1;
   }
 
+  // Ease from the curves on screen to this.series. A curve matches the one in the same
+  // position; a new one (or the first time) grows from zero.
+  _transition() {
+    this._pending = false;
+    this._cancel();
+    const to = this.series;
+    const toMax = this._yMax();
+    const from = to.map((s, i) => {
+      const prev = this._shown?.[i]?.ys;
+      return prev && prev.length === s.ys.length ? prev : s.ys.map(() => 0);
+    });
+    const fromMax = this._shownMax ?? toMax;
+    this._cancel = animate((e) => {
+      this._shown = to.map((s, i) => ({
+        ...s,
+        ys: s.ys.map((y, j) => from[i][j] + ((Number.isFinite(y) ? y : 0) - from[i][j]) * e),
+      }));
+      this._shownMax = fromMax + (toMax - fromMax) * e;
+      this._draw();
+    });
+  }
+
   _draw() {
     if (!this.dpr) return;
     clearCanvas(this.canvas, this.ctx);
     this._drawAxesAndGrid();
-    const yMax = this._yMax();
-    for (const s of this.series) this._drawSeries(s, yMax);
+    for (const s of this._shown ?? []) this._drawSeries(s, this._shownMax);
     this._drawLegend();
   }
 
@@ -124,6 +159,11 @@ export class PosteriorPlot {
       ctx.lineTo(toX(s.xs[s.xs.length - 1]), toY(0));
       ctx.closePath();
       ctx.fill();
+    }
+
+    if (s.line === false) {
+      ctx.restore();
+      return;
     }
 
     ctx.strokeStyle = s.color;

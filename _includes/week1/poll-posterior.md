@@ -2,7 +2,7 @@
 <!-- Week 1, "Step 3": the prior from Step 1 times the likelihood of the survey set on
      Step 2. Behavior in js/poll-posterior.js, styles in css/deck.scss. -->
 <div class="widget-layout">
-  <div id="poll-post-graph" class="widget-graph"></div>
+  <div id="poll-post-graph" class="widget-graph poll-graph"></div>
   <div class="poll-side">
     <p class="poll-survey">Survey: <b id="poll-survey-out"></b><br><small>Change it on Step 2.</small></p>
     <table class="poll-stats">

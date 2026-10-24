@@ -10,9 +10,13 @@ week1.qmd	_includes/bayesian-workflow.md	fdd1c71da06d34acf9b04e189340f829
 week1.qmd	_includes/week1/bayes-steps.md	0614ab119a8595eb8544110a9482e267
 week1.qmd	_includes/week1/cond-table.md	ce34f44e4fad6f9c6dd0dfc63ce2fac0
 week1.qmd	_includes/week1/count-demo.md	be78d6fab0203b01d0d8572362cf411f
-week1.qmd	_includes/week1/poll-likelihood.md	93b703b6a75e3c1b968d77920741aec6
-week1.qmd	_includes/week1/poll-posterior.md	d5dcb7e4d7b19c44fd5ce8335a1d2d6f
+week1.qmd	_includes/week1/poll-answer.md	5b01bbdf82738b30674537a737488454
+week1.qmd	_includes/week1/poll-likelihood.md	9182ff3fbfdfa5d5c1d9d7bcbab60eb5
+week1.qmd	_includes/week1/poll-posterior.md	4d96d8202cd9616fcb518622184522d2
 week1.qmd	_includes/week1/poll-prior.md	b940d37d81fbbf301ed01e612eed9282
+week1.qmd	_includes/week1/poll-whatif-prior.md	43e302a583c0339f923d705ac2d87402
+week1.qmd	_includes/week1/poll-whatif-result.md	2ab372c129abfca852ce50b901d510a2
+week1.qmd	_includes/week1/poll-whatif-size.md	13c6e84fb10c9bc1954e5522236e9eee
 week1.qmd	css/deck.scss	5592ecf67ca1d30dd586fcec41dd739a
 week1.qmd	datasets/ames.csv	49e516290210a3227d30ede3f6875cef
 week1.qmd	datasets/berkeley.csv	38d4083ba32c2ea5727f6ff9ebfa458d
@@ -22,7 +26,7 @@ week1.qmd	datasets/wb2022.csv	0453ba3f319b384b049dd1c844d1dd1e
 week1.qmd	r/data.R	7292cdba6f8c32914d83fef128e01929
 week1.qmd	r/deck-setup.R	238885271e646d424f24e4e750fb1d2a
 week1.qmd	r/rlib.R	5d48b7a934f59fde562c86a13a21ff29
-week1.qmd	r/week1.R	7457516b94f6c4ddb8fafca84585bfd2
+week1.qmd	r/week1.R	6e5a80d04346b61135b3a164d5f83ea1
 week1.qmd	shiny/baserate.R	3b5eaae6f736aabaebb440017be3171c
 week1.qmd	shiny/updating.R	c1c0860c9f115dd2fde42ede0552c923
 week2.qmd	_includes/week2/three-kinds.md	ddc7e6705dcdf17357d64a9ae83a3835

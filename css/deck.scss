@@ -514,12 +514,11 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   pointer-events: none !important;
 }
 
-/* "Step 2: The likelihood" (js/poll-likelihood.js) and "Step 3: Prior x likelihood ->
-   posterior" (js/poll-posterior.js) share the graph-plus-side-panel layout */
-#poll-lik-graph,
-#poll-post-graph {
+/* The poll slides from "Step 2: The likelihood" on (js/poll-likelihood.js,
+   poll-posterior.js, poll-answer.js) share the graph-plus-side-panel layout */
+.poll-graph {
   flex: 0 0 64%;
-  margin-right: 8px; /* a little more room before the controls */
+  margin-right: 8px; /* a little more room before the side panel */
 }
 
 .poll-side {
@@ -556,6 +555,24 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
 
 #poll-carry {
   align-self: flex-end;
+}
+
+/* The "What if" slides (js/poll-whatif.js): preset buttons under the sliders */
+.whatif-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.whatif-note {
+  margin: 0;
+}
+
+.whatif-hint {
+  color: $brand-gray;
+  font-size: 15pt;
+  margin: 0;
 }
 
 /* The workflow as a row of boxes with arrows between them (week 3) */
@@ -628,10 +645,40 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   font-size: 150%;
   font-weight: bold;
   margin-top: 1em;
+}
 
-  /* placed with Quarto's {.absolute top=... left=...}: the position is exact */
-  &.absolute {
-    margin-top: 0;
+/* Week 1's opening slide: the capybara and "...and that's okay." stand on the bottom
+   edge of the Ioannidis article. They're placed against the article image, not the
+   slide, so they stay flush with it whatever the title height or slide size. */
+.reveal .slides .ioannidis {
+  position: relative;
+
+  p {
+    margin: 0;
+  }
+
+  /* block: no gap under the image for text descenders */
+  img {
+    display: block;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+  }
+
+  .capybara {
+    position: absolute;
+    left: 59%;
+    bottom: 0;
+    width: 33.5%;
+  }
+
+  .big-statement {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+    white-space: nowrap;
   }
 }
 

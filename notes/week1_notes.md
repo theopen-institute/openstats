@@ -88,9 +88,9 @@
 # Writing it down: P( event | condition ) {#rain}
 
 - The bar is read "given." P( rain | July ) is "the probability of rain, given that it's July."
-- The umbrella line: they already condition without thinking about it. Nobody plans a December day like a July day. The notation only writes that down.
+- The umbrella line: they already condition without thinking about it. Nobody plans a January day like a July day. The notation only writes that down.
 - A condition narrows down which cases we count. P( rain ) counts all days. P( rain | July ) counts only July days.
-- Adding information changes the probability, sometimes a lot: from 31% overall to 81% in July and 3% in December. Same city, same sky.
+- Adding information changes the probability, sometimes a lot: from 31% overall to 81% in July and 2% in January. Same city, same sky.
 - This is also the 0-to-1 slide's point again: the more we know about a day, the less uncertain we are.
 
 - These numbers come from the past: the last five years (2021–2025) of daily records from the Kathmandu Airport weather station. We're using history as a guide to what's likely in a given month. Say the assumption out loud: next year will be like the average of the last five.
@@ -194,7 +194,7 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - Click. 58 discoveries, and only 8 are real: about 14%. Let that land before moving on.
 - The point isn't that scientists are dishonest or bad at math. The math is fine. A significant result answers P(data | hypothesis), and when true ideas are rare, P(hypothesis | data) is very different.
 - 1 in 100 is one scenario, realistic for exploratory work. Confirmatory research can be closer to 50%, and then most discoveries are real. The table at the end of this section shows the range, if there's time.
-- This is why it's okay. Once you expect most single findings to be noise, you stop treating one p < 0.05 as truth and start treating each one as a nudge to what we already know, not the final word.
+- This is why it's okay. Once you expect many single findings to be wrong, you stop treating one p < 0.05 as truth and start treating each one as a nudge to what we already know, not the final word.
 
 # How far can we trust a "discovery"? {#research-math}
 
@@ -208,18 +208,13 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - If asked about fixes: a stricter threshold (p < 0.005, Benjamin et al. 2018) helps but needs much bigger samples. Replication works better: a finding that keeps holding up in new studies earns trust no threshold can give it.
 - Ask the room: which row does your own field live in?
 
-# Is noise the only problem? {#best-case}
-
-- Everything today has been about noise: chance results, small samples, tests that are sometimes wrong. That's where most people's trust in "hard data" breaks first, so it's where we started.
-- Noise has a cure, at least in principle: more data, bigger samples, replication. The 1,000-ideas table gets better as studies get larger.
-- Then the turn: a pattern can be real, show up in every new dataset, and still not mean what it seems. Don't explain how yet. That's the end of week 2 (ice cream and drowning), and it lands better if they've been wondering for a week.
-- If someone asks: the other problem is the causal story, and more data don't fix it. Weeks 3 to 5 are about getting that story right.
-
 # Bayesian Updating: What it is {#bayesian-updating}
 
 So I said that we were going to derive our entire statistics from first principles, and I meant it. Instead of a million pre-built tests, we have one process: Bayesian updating
 
 A million tests. We have one process, called Bayesian updating. Everything we build will be an application of that same logic.
+
+Frame it as science first: this is how a community of researchers changes its mind, and the formula is just that process written down. We come back to this after the 1,000 ideas ("done by people instead of a formula").
 
 For those interested in math, I definitely encourage you to where the theorem comes from and how it's derived, but for our purposes, we need just one simple idea:
 
@@ -231,135 +226,122 @@ For those interested in math, I definitely encourage you to where the theorem co
 - Two things worth noticing. First, the formula reverses a conditional: it turns P(data | belief), which is what a test or study gives us, into P(belief | data), which is what we want. That's the HIV test again. Second, it describes updating: we believed something, we saw something, and now we believe something slightly or very different.
 - It opens in the textbook form, P(A | B) = P(B | A) P(A) / P(B), which some students will have seen. Click: A becomes belief and B becomes data, term for term, and the colors appear.
 
-# Most studies are wrong. Is that a problem? {#is-that-a-problem}
+# Most studies are wrong... and that's okay {#is-that-a-problem}
 
 - Back to the capybara: most published research is wrong, and that's okay.
-- It's okay because a study was never supposed to be a verdict. It's one observation, and each observation joins what we already know and nudges it, a little or a lot.
-- No single observation gives us the answer. We use observations to support or challenge what we think we already know.
-- The last bullet is the strong claim, so slow down: without prior assumptions, data are meaningless. A number only tells us something against a background of what we expected. Ethnographers know this already: an interview means something because of everything else the researcher knows about the place and the people.
-
-# Science is updating {#science-is-updating}
-
-- Ask the room: what makes science work? Most people say experiments, or careful observation.
-- Push back. Single observations are messy, and they often contradict each other. What makes science work is people: groups of scientists arguing about how to fit many observations together.
+- It's okay because a study was never supposed to be a verdict. It's one observation. Single observations are messy, and they often contradict each other.
+- Ask the room: what makes science work? Most people say experiments, or careful observation. Push back: what makes science work is people, groups of scientists arguing about how to fit many observations together.
 - The three steps are Bayesian updating in plain words, in the same colors as prior × likelihood → posterior. Assume: a prior is an assumption we write down, so others can see it and argue with it. Assumptions we hide can't be checked. Look: new data test it; if what we saw fits what we assumed, confidence grows, and if not, the assumption moves. Update: the posterior is the improved assumption, and tomorrow it's the prior. No single step has to be right. The process gets better.
+- Then the line that ties it to the formula: prior × likelihood → posterior, done by people instead of a formula. The formula is a model of how science already works, not the other way round. That's why we can be relaxed about any single study being wrong.
 - The big statement: science isn't the experiments we do, it's the debates we have about them. Over time, those debates make us less, and less, and less wrong.
-- "Written down where others can argue with it" picks up the last slide: in every field, what separates good work is whether its assumptions are stated openly, where others can challenge them.
 
-# Objective or subjective? {#objective-subjective}
+# Numbers don't speak for themselves {#objective-subjective}
 
 - Read the quote. Students will have heard it, and some will half believe it.
-- The first thing in the quantitative row is today's lecture: even a perfect measurement is one draw, and deciding that a pattern isn't just chance is an inference, not an observation.
+- Both kinds of work have an observational part and an inferential part. We can call the observation "objective" if we want: the survey responses are what they are, just like the interview transcript is what it is.
+- The first thing in the quantitative row is today's lecture: even a perfect measurement is one draw, and deciding that a pattern isn't just chance is an inference, not an observation. The rest of the row is the rest of the course.
+- Some inferences are almost mechanical. But the interesting ones, about causes, about people we didn't observe, about what would happen if, are always built on strong assumptions: what causes what, how the data were generated, which priors are reasonable. Those are as subjective as the ethnographer's assumptions about what people meant. A number only tells us something against a background of what we expected.
+- So the difference isn't between objective and subjective fields. The job in both is the "written down where others can argue with it" from the last slide: state the assumptions openly so others can challenge them.
+- Nearly every important choice happens before any numbers: what question to ask, what to observe, who to include, what to assume. The calculation comes last.
+- That means students can already critique statistical arguments without the mechanics. Ask what a study assumes, how its data were made, and what else could explain the result. Those questions don't need a formula.
 
-Updating is the foundation of our statistics: We believed something, we saw something, and we now believe something slightly or significantly different from what we believed before.
+# The science comes first {#science-first}
 
-What does that mean?
-
-It's why it's okay that most published research is false.
-
-Observation is messy. We love the mess. We live in the mess. Observation doesn't give us simple answers, but it continuously challenges and reshapes our assumptions.
-
-Science is not the experiments we do. Rather, it's the debates we have about the experiments we do. Over time, we can become less, and less, and less, and less, and less, and less wrong.
-
-This is why I'm always confused when people say statistics is "objective" or "more concrete", and ethnography is "subjective". I don't know what that means. Both have an observational part and an inferential part. We can call the observation part "objective" if we want: the survey responses are what they are, just like the interview transcript is what it is. Inference isn't necessarily subjective. Some inferences are almost mechanical. But the interesting ones, the ones that say something about causes, about people we didn't observe, about what would happen if, are always built on strong assumptions. What causes what, how the data were generated, which priors are reasonable: those assumptions are subjective, just like the ethnographer's assumptions about what people meant are subjective. The difference isn't between objective and subjective fields. The job in both is to state our assumptions openly so others can challenge them.
-
-# Doing science {#doing-science}
-
-- The math is the least interesting part of using statistics for science. Say it plainly; it's a relief for many students.
-- Nearly every important choice happens before any numbers: what question to ask, what to observe, who to include, what to assume. The calculation comes last, and it's the part a computer does.
-- That means students can already interpret and critique statistical arguments without the mechanics. Ask what a study assumes, how its data were made, and what else could explain the result. Those questions don't need a formula.
-- The science comes first; the statistics serve it.
+- The closing idea of the lecture. The goal of statistics is the same as the goal of any research: put new observations (the data) together with what we already know (our assumptions). Same colors as Assume and Look.
+- The base rate paradox was today's challenge to that: a number can look simple and solid and still mislead. An accurate HIV test, and most positives are wrong. A significant result, and most discoveries aren't real.
+- But that's only one way to question what a number tells us. There are more fundamental ones: what causes what, how the data were made, who is missing. Don't explain them yet. Week 2 starts on them (a pattern that's real and still doesn't mean what it seems), and Weeks 3 to 5 build on that.
+- The math is the least interesting part of statistics. Say it plainly; it's a relief for many students. The calculation comes last, and it's the part a computer does. The rest of the course is about the parts that matter more: the question, the assumptions, and how the data came to be.
 
 # What's ahead {#whats-ahead}
 
 - One row per week, and each has one punchline. Read the punchlines, not the topics: if students remember five sentences from this course, these are the five.
-- The order is the argument. Week 1: data are noisy, so science is updating. Week 2: describe variation as distributions, then meet the two ways a pattern misleads, chance and hidden causes. Weeks 3 and 4: draw the causal story and use it to decide what to control for. Week 5: use all of it on real studies and their own questions.
+- The order is the argument. Week 1: a study is one observation, not the truth, so science is updating. Week 2: describe variation as distributions, then meet the two ways a pattern misleads, chance and hidden causes. Weeks 3 and 4: draw the causal story and use it to decide what to control for. Week 5: use all of it on real studies and their own questions.
 - Most stats courses go tests first, science later. We're doing it the other way round.
 - That's the end of the main lecture. What follows is the appendix: the mayor poll, which they'll work through with the TA in the second class.
-
-# Summary {#summary}
-
-- Three ideas. Read them slowly.
-- Probability is counting, and the direction of a conditional matters.
-- Statistics, like ethnography, joins objective observation with subjective assumptions. A study is one observation, not an answer.
-- Bayesian updating is how we improve those assumptions.
-- End on the big statement: the science always comes first. Statistics serves the question, the theory and the knowledge of the context; it never replaces them.
 
 # Demonstration: Will the mayor win? {#poll-demo}
 
 - We're going to run the whole prior → likelihood → posterior loop on one concrete question: what share of voters will choose the current mayor?
 - Be upfront that this model is too simple for a real poll. Real surveys aren't random samples: some groups answer more than others, and not everyone votes. Post-stratification and turnout models fix that, and we'll build them later. Today the point is the logic of updating.
+- The order: how to read the graphs, the three steps on the class's own prior and survey, then three "What if" slides that change one input at a time, and one slide that reads the class's posterior to answer the question. The full workflow and the formal model are at the end, for anyone who wants them.
 
-# The model, written formally {#poll-model}
+# Reading these graphs {#poll-graphs}
 
-- Mechanics slide. The formal model is two lines. The first line is the likelihood (how data are generated given θ), and the second is the prior (what we believe about θ before data).
-- Nobody needs to read Binomial notation fluently yet. The point is that the whole model is just a likelihood and a prior.
-- Read the two lines aloud: "k is drawn from a binomial with n and θ; θ is drawn from your prior." The table is the key: n and k are data we know, θ is the one thing we don't.
-- "Binomial" just means counting coin flips, the garden of forking paths from earlier with more flips. If asked: the chance of k "mayor" answers is (the number of ways to get k) × θ^k (1 − θ)^(n−k). For 4 of 20 at θ = 20% that's about 0.22, the number Step 2 shows.
-- The coin-flip picture carries the assumptions: everyone answers independently, with the same chance θ. A real survey breaks both (households, neighborhoods, who picks up the phone), which is what the later weeks are about.
+- Every graph from here on has the same shape as the bag-of-stones demo, so start there: three draws, blue, black, blue.
+- Left: the 10 possible bags, 0 to 9 blue stones. Each point is how plausible that bag is, after counting the ways it could have produced blue, black, blue. A bag with no blue stones, or no black ones, couldn't have, so it's at zero.
+- Right: the mayor's share has 101 possible answers instead of 10 (0%, 1%, …, 100%). Same counting, with three voters: two said "mayor", one didn't. Same shape; the points are so close together they join up into a curve.
+- How to read any of them: the possible answers along the bottom, how plausible each one is up the side. Higher means more plausible. The height itself doesn't matter, only the shape.
+- Name it, lightly: this is a distribution, the subject of Week 2. No need to define it more today.
 
 # Step 1: The prior {#poll-prior}
 
 - Ask the room to draw their own prior. Someone who remembers the 60% result from last election might pile weight around 60%. Someone with no opinion might leave it flat.
-- Dragging a point pulls its neighbors along, less and less farther out, so one drag makes a smooth hump. Drag several points to shape it further.
+- The prior is red here and on every slide after, like the "prior" in prior × likelihood → posterior.
+- Two ways to shape it, no switching. Press anywhere on the plot (not on a point) and sweep across it: the curve follows, freehand. It's the quickest way to sketch a whole prior.
+- Grab a point and move it up or down to fine-tune. Its neighbors follow, less and less farther out, so one drag makes a smooth hump. It pulls but never pushes: raising a point lifts the lower points around it, but leaves higher ones alone until you pass them. So you can shape one side of a hump without moving the peak. A drag that moves sideways off its point's column turns into freehand drawing.
 - The "Score" column is just the height you drew. "Probability" rescales the scores so they add up to 1. Only the *shape* matters.
-- This prior carries over to the posterior slide, so whatever is drawn here is what gets updated.
+- This prior carries over to every slide after it, so whatever is drawn here is what gets updated.
 
 # Step 2: The likelihood {#poll-likelihood}
 
-- This is where the data come in. The sliders set the survey: how many people we asked, and what share said "mayor". It starts at 4 of 20 (20%), the survey in the mayor example.
+- This is where the data come in. The sliders set the survey: how many people we asked, and what share said "mayor". It starts at 4 of 20 (20%).
+- The red curve is the prior from Step 1, for comparison. The new thing is the dashed blue curve.
 - Same question we asked about the HIV test, turned around: for each possible θ, how likely are the data we saw?
 - Read the table: 4 of 20 is quite likely if θ is 20% (0.22), much less so at 40% (0.035), unlikely at 60%, and almost impossible at 80%.
 - Move the survey size up to a few hundred at the same 20%: the curve gets much narrower. More data rule out more values of θ.
-- Point out that the likelihood curve is not a probability distribution over θ. It's a set of answers to "P(data | θ)" for many θs.
-- Whatever survey is set here is the one Step 3 uses.
+- Point out that the likelihood curve is not a probability distribution over θ. It's a set of answers to "P(data | θ)" for many θs. It's drawn at the same scale as the prior only so the two can be compared.
+- Whatever survey is set here is the one Step 3 and the slides after it use.
 
 # Step 3: Prior × likelihood → posterior {#poll-posterior}
 
-- At each value of θ, multiply the prior's height by the likelihood's height, then rescale so the total is 1. That's the posterior. Nothing else is going on.
-- The survey comes from Step 2 (it starts at 4 of 20). With a flat prior, the green curve sits right on the dashed blue one. With a 60% prior, it lands in between.
+- At each value of θ, multiply the prior's height by the likelihood's height, then rescale so the total is 1. That's the posterior. Nothing else is going on. Where the prior is zero, the posterior is zero, however well the data fit.
+- With a flat prior, the green curve sits right on the dashed blue one. With a 60% prior, it lands in between.
 - Go back to Step 2 and raise the survey size to a few hundred. Back here, the likelihood is narrower, and the prior matters less and less.
-- "P( mayor wins )" is the share of the posterior above 50%. That's the answer people actually want, and it's the P(hypothesis | data) we couldn't get from a significance test.
-- "Make this posterior my new prior" copies the posterior back onto the 21 draggable points and clears the survey on Step 2. Then set a "second poll" there. It's coarse, since 21 points can't capture a very narrow curve, but it shows the idea.
+- "P( mayor wins )" is the share of the posterior above 50%. The next slide, "Answering the question", shows it.
+- "Make this posterior my new prior" copies the posterior back onto the 21 draggable points, sets the survey back to 20 people, and goes to Step 1 so everyone sees the new prior. Change the survey on Step 2 for a "second poll". It's coarse, since 21 points can't capture a very narrow curve, but it shows the idea.
 
-# Survey 1, by hand {#poll-by-hand}
+# What if I'd started from a different prior? {#whatif-prior}
 
-- The widgets did this for whatever prior students drew. Now one fixed prior, so everyone sees the same numbers: about 60%, as in the last election, and fairly sure of it.
-- The plot shows the three curves from Step 3. The dotted lines mark the three values of θ in the table.
-- Read the table one column at a time. At 20%, the data fit well (0.22), but the prior gives it no height at all, so the product is zero. At 60%, the prior loves it (99), but 4 of 20 would be very unlikely if 60% of voters backed him (0.00027), so the product is tiny. At 40%, both are lukewarm, and lukewarm × lukewarm wins (0.21).
-- The likelihood row is the coin-flip model from the formal-model slide: the chance of exactly 4 "mayor" answers out of 20, if each person says "mayor" with chance θ. It's only right if the 20 were picked at random. That's the model's assumption, and it's as much an assumption as the prior.
-- First click: that's the whole of Bayes' theorem. Do the same multiplication at every θ, not just three, then rescale so the curve adds up to 100%. The rescaling is the P(data) at the bottom of the formula.
-- Second click: the posterior is a compromise, and its shape shows where the compromise sits. It is also narrower than the prior: we know more than we did.
+- From here, three slides each change one input and keep the others as the class set them. The gray dotted curve is the class's own posterior from Step 3, so there's always something to compare with. The table puts the two side by side.
+- This one changes the prior. "Move it" slides the class's prior left or right; "How sure" makes it flatter or sharper. The buttons are a few ready-made versions: no opinion at all, less sure, surer, and the same shape 20 points lower or higher.
+- Things to point out: with 20 people, a different prior moves the answer noticeably. A flat prior ("No opinion") puts the posterior right on the likelihood. A surer prior drags the posterior toward itself.
+- This is the honest answer to "isn't the prior subjective?": yes, so show how much it matters. If the answer barely moves across reasonable priors, the data are doing the work. If it moves a lot, say so.
+- If the class left its prior flat, moving or sharpening it changes nothing, and the slide says so. Draw a hump around 60% on Step 1 first.
+- Changing the prior or survey on Steps 1–3 resets all three slides to the class's own inputs.
 
-# Today's posterior is tomorrow's prior {#poll-sequence}
+# What if I'd asked more (or fewer) people? {#whatif-size}
 
-- A worked version of what the widgets do, with a fixed prior so everyone sees the same numbers. The prior is "about 60%, as in the last election", and fairly confident about it.
-- Read the curves left to right in time. Survey 1 (4 of 20) pulls the belief down and makes it narrower. Survey 2 (7 of 20) pulls a little further and narrows it again. It moves us less: we're more sure by then, and 35% is closer to what we already believed.
-- Click: every step is the same formula from the Bayes' theorem slide. The prior is P(θ), the survey's likelihood is P(survey | θ), and the posterior is P(θ | survey). The ∝ means "proportional to": multiply, then rescale so the curve adds up to 1, which is the P(data) we said wasn't interesting.
-- Click: the posterior from survey 1 is the prior for survey 2. Updating twice gives exactly the same answer as updating once on all 40 people. It doesn't matter whether the data arrive in one batch or two, or in which order. That's what makes "science is updating" work: each new study can start from where the last one left off.
-- If asked about the prior: it's a Beta(20, 13) distribution, which makes the arithmetic exact. Students don't need the name.
+- Same prior, same share saying "mayor", different survey size. The slider runs from nobody to 2,000 people, on a scale that gives small surveys as much room as big ones.
+- "Nobody": no data, so the posterior is just the prior. Five people: it barely moves. A thousand: the likelihood is a narrow spike, and the posterior sits on it whatever the prior was.
+- The 90% range shrinks as the survey grows. That's how sure we are, and it's what more data buy.
+- Tie it back to the start of the lecture: this is why one small study shouldn't settle anything, and why many studies together can.
 
-# Different priors, same data {#poll-converge}
+# What if the survey had come out differently? {#whatif-result}
 
-- This answers the objection students will have been holding since the prior was introduced: if the prior is subjective, can't anyone get any answer they want?
-- Two people. The supporter thinks about 60%, as in the last election. The skeptic thinks about 30%. Both are equally confident: each prior is worth about 33 earlier voters.
-- They see the same three surveys: the two small ones, then a big poll of 360. The panels show their beliefs before any data, after the 40 people of the first two surveys, and after all 400.
-- After 40 people they're still far apart: the skeptic hasn't moved much, because the data (20% and 35%) were close to what they already believed. After 400 people, they nearly agree. The data have outweighed both priors.
-- That's the answer to the objection. A prior matters when data are scarce, which is exactly when it should. With enough shared evidence, people who start in different places end up in the same place. This is the "science is updating" slide in numbers.
-- The one exception is certainty. If someone's prior gives a value zero weight, the posterior there is prior × likelihood = zero, whatever the data say. Someone certain it's exactly 60% never moves. Dogmatism is a prior of zero.
+- Same prior, same number of people, different answer. Slide the share saying "mayor" from 0% to 100%.
+- Watch the posterior follow the data, but not all the way: it stays between the prior and the likelihood. With a strong prior and a small survey, a surprising result moves it only part of the way.
+- A good question for the room: what result would it take to make P( more than half ) better than even? That's a question about the data we'd need, asked before collecting it.
 
 # Answering the question {#poll-answer}
 
 - The posterior is a whole distribution, so we can ask it any question. The one we care about here: will he get more than half the vote? The answer is the share of the posterior above 50%: the dark green area.
-- Read down the table: 89% before any surveys, 24% after the first, 10% after the second. Each survey changes the answer to the question we actually asked.
-- First click: this is P(hypothesis | data), the direction we wanted all along, and the one a p-value can't give. Compare the significance slides: a test would only tell us how surprising 11 of 40 would be if his support were exactly 50%.
-- Second click: and the answer carries its own uncertainty. Not a yes or no, but about a 1 in 10 chance.
-- If someone asks: this is the "P( mayor wins )" row on the Step 3 widget. Strictly it's "more than half the vote". In an election with several candidates, the mayor can win with less than half, and modelling that would need every candidate's share, not just his.
+- The table compares it with the prior's answer, before the survey. The survey changes the answer to the question we actually asked.
+- This is P(hypothesis | data), the direction we wanted all along, and the one a p-value can't give. A test would only tell us how surprising the survey would be if his support were exactly 50%.
+- And the answer carries its own uncertainty: not a yes or no, but a chance.
+- If someone asks: strictly this is "more than half the vote". In an election with several candidates, the mayor can win with less than half, and modelling that would need every candidate's share, not just his.
 
 # What to try {#poll-try}
 
 - Let students drive. Good pairs to compare: flat vs. strong prior at n = 20, then the same two at n = 500.
-- Close by tying this back to the workflow slide: even this toy model raises the question of how much the answer depends on our assumptions (here, the prior). Answering that honestly is the habit we're building.
+- Close by tying this back to the workflow slide that follows: even this toy model raises the question of how much the answer depends on our assumptions (here, the prior). Answering that honestly is the habit we're building.
+
+# The model, written formally {#poll-model}
+
+- Mechanics slide, for anyone who wants the notation behind the widgets. The formal model is two lines. The first line is the likelihood (how data are generated given θ), and the second is the prior (what we believe about θ before data).
+- Nobody needs to read Binomial notation fluently yet. The point is that the whole model is just a likelihood and a prior.
+- Read the two lines aloud: "k is drawn from a binomial with n and θ; θ is drawn from your prior." The table is the key: n and k are data we know, θ is the one thing we don't.
+- "Binomial" just means counting coin flips, the garden of forking paths from earlier with more flips. If asked: the chance of k "mayor" answers is (the number of ways to get k) × θ^k (1 − θ)^(n−k). For 4 of 20 at θ = 20% that's about 0.22, the number Step 2 shows.
+- The coin-flip picture carries the assumptions: everyone answers independently, with the same chance θ. A real survey breaks both (households, neighborhoods, who picks up the phone), which is what the later weeks are about.
 
 # More resources {#more-resources}
 

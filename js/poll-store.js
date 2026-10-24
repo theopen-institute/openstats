@@ -1,7 +1,7 @@
-// State shared by week 1's poll slides: the prior drawn on "Step 1: The prior" and
-// the survey set on "Step 2: The likelihood", both used by "Step 3: Prior ×
-// likelihood → posterior". Each lives on window for the current session and in
-// localStorage across reloads.
+// State shared by week 1's poll slides: the prior drawn on "Step 1: The prior" and the
+// survey set on "Step 2: The likelihood", used by Step 3 and the slides after it. Each
+// lives on window for the current session and in localStorage across reloads. The math
+// is in poll-math.js.
 
 export const POINTS = 21; // draggable prior points, at θ = 0, 0.05, ..., 1
 export const STEP = 1 / (POINTS - 1);
@@ -64,3 +64,8 @@ export function saveSurvey(survey, event = 'poll-survey:change') {
   }
   window.dispatchEvent(new CustomEvent(event, { detail: { ...survey } }));
 }
+
+// Every event that changes what the poll slides show
+export const POLL_EVENTS = [
+  'poll-prior:change', 'poll-prior:set', 'poll-survey:change', 'poll-survey:set',
+];

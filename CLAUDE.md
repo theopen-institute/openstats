@@ -255,6 +255,9 @@ The `weekN.qmd` files should read as slides. Things that aren't content live els
 Week 1's widgets are one include line each in the deck. Their HTML markup is in
 `_includes/week1/`, their behavior in `js/` (`count-demo.js`, `cond-table.js`, and the
 ES modules `poll-prior.js` (Step 1: draw the prior), `poll-likelihood.js` (Step 2: set
-the survey) and `poll-posterior.js` (Step 3), which share the prior and the survey through
-`poll-store.js`; the canvas plots share axes and styling through `canvas-axes.js`), and their styles in `deck.scss`. jspreadsheet comes from a pinned CDN version via
+the survey), `poll-posterior.js` (Step 3), `poll-whatif.js` (the three "What if"
+slides, which change one input at a time) and `poll-answer.js` (answering the question
+from the class's own posterior). They share the prior and the survey through
+`poll-store.js`, and the math through `poll-math.js`; the canvas plots share axes and
+styling through `canvas-axes.js`, and their animated transitions through `tween.js`), and their styles in `deck.scss`. jspreadsheet comes from a pinned CDN version via
 `_build/jspreadsheet.html`.

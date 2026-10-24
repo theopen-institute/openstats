@@ -19,29 +19,30 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 
 # Most published research is false {notes="notes/week1_notes.md#published-research"}
 
-::: {.r-stack}
-![](images/week1/ioannidis.png){width="100%"}
-[https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124)
+::: {.ioannidis}
+![](images/week1/ioannidis.png)
 
-::: {.fragment}
-![](images/week1/capybara.png){.absolute left=900 top=390}
+::: {.fragment .capybara}
+![](images/week1/capybara.png)
 
-::: {.big-statement .absolute left=900 top=780}
+::: {.big-statement}
 ...and that's okay.
 :::
 :::
 :::
 
+[https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124)
+
 # This week's goals
 
 ::: {.incremental}
-- Learn the three concepts behind Ioannidis's claim:
+- Review the three concepts behind Ioannidis's claim:
   - Probability
   - The base rate paradox
   - Statistical significance
 - Understand why most research is wrong (and why that's okay)
-- Learn updating, the one formula for all of statistics
-- Worked example: election polling
+- Discover updating, the one rule for all of statistics
+- Work through an example: election polling
 :::
 
 
@@ -73,14 +74,13 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 _"Will it rain tomorrow?"_ [_"Probably not."_]{.fragment}
 
 ::: {.fragment}
-That word, _probably_, is a probability. It's a way of talking about uncertainty, and
-you use it every day.
+That word, _probably_, is a probability. It's a way of talking about uncertainty.
 :::
 
 ::: {.incremental}
 - I don't know if it's going to rain tomorrow...
 - ...but that doesn't mean I don't know anything.
-- In Nepal, rain works differently in June than in January.
+- In Nepal, rain works differently in July than in January.
 :::
 
 ::: {.fragment}
@@ -90,7 +90,7 @@ But what does _"a 31% chance of rain"_ actually mean?
 ::: {.incremental}
 - Tomorrow's weather isn't a lottery. Specific physical factors decide it.
 - The day isn't random [...but _**we**_ are uncertain about it.]{.blue} 
-- 31% describes how certain we are about an uncertain fact.
+- 31% describes our certainty about an uncertain fact.
 :::
 
 ## Probability is just counting {notes="notes/week1_notes.md#counting"}
@@ -180,12 +180,6 @@ _New notation, not new ideas: a number from 0 to 1, or a percentage._
 [^rain-1]: Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month's average rate.
 :::
 
-
-::: {.fragment}
-To convert between the two, move the decimal point two places right or left.
-:::
-
-
 ## Writing it down: P(event) {notes="notes/week1_notes.md#convention-2"}
 
 _We write the probability of an event as_ P( event ).
@@ -199,33 +193,23 @@ _We write the probability of an event as_ P( event ).
 | P( winning the raffle ) | "the probability of winning the raffle" | 10 ÷ 500 = 0.02 |
 :::
 
-::: {.fragment}
-It's just shorthand. Everything inside the brackets is the thing we're unsure about.
-:::
-
 ## Writing it down: P(event | condition) {notes="notes/week1_notes.md#rain"}
 
 _We make a probability more specific by adding a condition._
 
 - P( rain | July ) means [_"the probability of rain, given that it's July."_]{.blue}
-  You already think this way: you carry an umbrella in July, not in December.
+  You already think this way: you carry an umbrella in July, not in January.
 
 ::: {.fragment}
 |  | Rainy days[^rain-3] | Days counted | Probability | % |
 |---|--:|--:|--:|--:|
 | P( rain ) | 565 | 1,825 | **0.31** | (31%) |
 | P( rain \| Apr ) | 35 | 150 | **0.23** | (23%) |
-| P( rain \| Dec ) | 5 | 155 | **0.03** | (3%) |
+| P( rain \| Jan ) | 3 | 155 | **0.02** | (2%) |
 | P( rain \| Jul ) | 126 | 155 | **0.81** | (81%) |
 | P( rain \| Feb ) | 8 | 140 | **0.06** | (6%) |
 
 [^rain-3]: Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month's average rate.
-:::
-
-
-
-::: {.fragment}
-Can data from the past five years help predict tomorrow? [Maybe, maybe not.]{.blue .fragment}
 :::
 
 
@@ -251,7 +235,7 @@ _Hands up if you had tea this morning._
 :::
 
 ::: {.fragment}
-Every prediction needs assumptions. [Interesting predictions need strong assumptions.]{.blue}
+Every prediction needs assumptions.<br />[Interesting predictions need strong assumptions.]{.blue .fragment}
 :::
 
 # Probability for Decision Making {notes="notes/week1_notes.md#applied-probability"}
@@ -285,11 +269,11 @@ With statistical tests and predictions, we talk about two kinds of accuracy:
 - Specificity P( test– | HIV– ): 97%
 
 ::: {.fragment fragment-index=0}
-But there's something strange here...[it assumes the thing we want to know.]{.fragment fragment-index=1 .blue}
+But there's something strange here...[they assume exactly what we want to know.]{.fragment fragment-index=1 .blue}
 :::
 
 ::: {.fragment fragment-index=2}
-What we really want is P( HIV+ | test+): [3.2%]{.fragment fragment-index=3 .red}
+The real question is usually P( HIV+ | test+): [3.2%]{.fragment fragment-index=3 .red}
 :::
 
 ::: {.fragment fragment-index=4}
@@ -376,7 +360,7 @@ How this frames statistical significance: P( [data]{.blue} | [hypothesis]{.red} 
 :::
 
 ::: {.fragment}
-How we intuitively think about data: P( [hypothesis]{.red} | [data]{.blue} )
+How we actually think about data: P( [hypothesis]{.red} | [data]{.blue} )
 :::
 
 
@@ -449,7 +433,7 @@ _All of statistics in one formula._
 - [[**P( belief )**]{.red}: the **prior**. What we believed before.]{.fragment fragment-index=2}
 - [[**P( data | belief )**]{.blue}: the **likelihood**. How likely the data are, if the belief is true.]{.fragment fragment-index=3}
 - [[**P( belief | data )**]{.green}: the **posterior**. What we believe now.]{.fragment fragment-index=4}
-- [[**P( data )**]{.gray}: Needed to rescale total possibilities to 100%. (Usually not interesting)]{.fragment fragment-index=5}
+- [[**P( data )**]{.gray}: Rescales total possibilities to 100%. (Usually not interesting)]{.fragment fragment-index=5}
 
 ::: {.fragment fragment-index=6}
 Conceptually:
@@ -522,14 +506,30 @@ _**Specificity**, or 1 − the **significance level** α: if the idea is false, 
 
 [...and that's okay.]{.fragment .blue}
 
-::: {.incremental}
-- A single study was never supposed to be the answer. It's just one observation.
-- Each observation joins what we already know and nudges it, a little or a lot.
-- We use observation to support or challenge what we think we already know.
-- Without these prior assumptions, data are meaningless. Interesting claims need strong assumptions.
+::: {.fragment}
+A study was never supposed to be the answer. It's one observation. What makes science
+work is [groups of scientists arguing]{.blue} about how to fit many contradictory observations together.
 :::
 
-## Hard data? {notes="notes/week1_notes.md#objective-subjective"}
+::: {.incremental}
+- [**Assume**]{.red} a prior belief, written down where others can argue with it.
+- [**Look**]{.blue} at new data to challenge those prior assumptions.
+- [**Update**]{.green} our beliefs to incorporate the new information, and use this posterior as the starting point next time.
+:::
+
+::: {.fragment}
+That's [prior]{.red} × [likelihood]{.blue} → [posterior]{.green}, done by people
+instead of a formula.
+:::
+
+::: {.fragment}
+::: {.big-statement}
+Science isn't the experiments we do.\
+It's the debates we have about them.
+:::
+:::
+
+## Numbers don't speak for themselves {notes="notes/week1_notes.md#objective-subjective"}
 
 > _"Qualitative research is subjective. Statistics is objective."_
 
@@ -541,82 +541,37 @@ _**Specificity**, or 1 − the **significance level** α: if the idea is false, 
 :::
 
 ::: {.incremental}
-- Observation gathers objective facts, but the way we gather those facts and interpret them is directly tied to assumptions.
-- In both qualitative and quantitative work, we need strong assumptions to make interesting claims.
+- The observation can be objective. The interpretation never is.
+- Key choices come before the data: what to ask, who to observe, how to assume that the data is generated.
+- Math won't tell us how to make these choices. Instead, we have to do science.
 :::
 
-## Science is updating {notes="notes/week1_notes.md#science-is-updating"}
+## The science comes first {notes="notes/week1_notes.md#science-first"}
 
-What makes science work isn't experiments or observations.
-
-::: {.fragment}
-It's [groups of scientists arguing]{.blue} about how to fit many (often contradictory)
-experiments and observations together.
-:::
+Science is about questioning how [new observations]{.red} (data) disrupt what we
+[already know]{.blue} (assumptions).
 
 ::: {.incremental}
-- [**Assume**]{.red}: a prior, written down where others can argue with it.
-- [**Look**]{.blue}: new data test it.
-- [**Update**]{.green}: the posterior, which is the starting point next time.
-:::
-
-::: {.fragment}
-::: {.big-statement}
-Science isn't the experiments we do.\
-It's the debates we have about them.
-:::
-:::
-
-## Is noise the only problem? {notes="notes/week1_notes.md#best-case"}
-
-Everything today has been about [noise]{.blue}: chance results, small samples, false
-positives. Noise is the problem [more data can fix]{.blue}.
-
-::: {.fragment}
-But a pattern can be real, show up again in every new dataset, and still not mean what
-it seems.
-:::
-
-::: {.fragment}
-::: {.big-statement}
-Next week: the other way data mislead.
-:::
-:::
-
-# Doing science {notes="notes/week1_notes.md#doing-science"}
-
-_The math is the least interesting part of statistics._
-
-::: {.incremental}
-- Nearly every important choice happens before any numbers: what to ask, what to
-  observe, who to include, what to assume.
-- After we've gathered our data, they never speak for themselves. We interpret them in
-  terms of what we already know.
-- So we can interpret and critique a statistical argument without the statistical
-  mechanics.
-:::
-
-::: {.fragment}
-::: {.big-statement}
-The science comes first.
-:::
+- The base rate paradox showed one challenge: numbers can mislead.
+- The problem goes deeper: statistical interpretation requires strong assumptions about how the world works.
+- Math is the least interesting part of statistics. This five-week course is about everything else.
 :::
 
 # What's ahead {notes="notes/week1_notes.md#whats-ahead"}
 
 | Week | Topic | Punchline |
 |:-:|---|---|
-| **1** | Updating | Data are noisy. Science is updating. |
-| **2** | Distributions | [Think in distributions.]{.line} [A pattern can mislead by chance, or by a hidden cause.]{.line} |
-| **3** | Models | [Draw your assumptions.]{.line} [What you include can flip the answer.]{.line} |
-| **4** | Confounders | What to control for depends on the causal story, not the data. |
-| **5** | Evaluating&nbsp;research | Ask what's in the world that isn't in their model. |
+| **1** | Updating | Do science, not statistics. |
+| **2** | Distributions | Change how you think about numbers. |
+| **3** | Models | Draw your assumptions and make them explicit. |
+| **4** | Confounders | Tell the story you want to tell. |
+| **5** | Interpretation | Ask what's missing and what's hidden. |
 
-# Practical work: Will the mayor win? {notes="notes/week1_notes.md#poll-demo"}
+# Practical work: Election polling {notes="notes/week1_notes.md#poll-demo"}
 
 _Appendix: we'll work through this together with the TA in our second class._
 
-Let's walk through the simplest possible version of the full Bayesian workflow (next slide).
+Let's walk through the simplest possible version of the Bayesian workflow.
 
 - **Estimand**: θ, the share of Kathmandu voters who will vote for the current mayor.
 - **Background**: in the last election, the mayor got 60% of the vote.
@@ -626,6 +581,86 @@ Let's walk through the simplest possible version of the full Bayesian workflow (
 Each respondent is like a coin flip that comes up "mayor" with probability θ. No weighting,
 no turnout, no non-response, no post-stratification. We'll add those later.
 :::
+
+## Reading these graphs {notes="notes/week1_notes.md#poll-graphs"}
+
+_Back to the bag of stones: we drew [blue]{.blue}, black, [blue]{.blue}._
+
+::: {.columns}
+::: {.column width="50%"}
+**The bag:** 10 possible answers
+
+```{r stones, opts.label = "half_short"}
+stones_plot()
+```
+:::
+
+::: {.column width="50%"}
+**The mayor:** 101 possible answers
+
+```{r share, opts.label = "half_short"}
+share_plot()
+```
+:::
+:::
+
+- Along the bottom: every possible answer. Up the side: how plausible each one is.
+- Same counting, finer steps: we asked 3 voters, and 2 said "mayor". With 101 answers,
+  the points join up into a curve. Next week we'll call this a **distribution**.
+
+## Step 1: The prior {notes="notes/week1_notes.md#poll-prior"}
+
+_Before any survey, what do you believe about θ? Drag the points, or draw._
+
+{{< include _includes/week1/poll-prior.md >}}
+
+## Step 2: The likelihood {notes="notes/week1_notes.md#poll-likelihood"}
+
+_Set the survey. How likely is that result, for each possible value of θ?_
+
+{{< include _includes/week1/poll-likelihood.md >}}
+
+The likelihood is **not** a belief. It's what our model of the survey (each answer like a coin flip) says about our data, one candidate value of θ at a time.
+
+## Step 3: Prior × likelihood → posterior {notes="notes/week1_notes.md#poll-posterior"}
+
+{{< include _includes/week1/poll-posterior.md >}}
+
+## What if I'd started from a different prior? {notes="notes/week1_notes.md#whatif-prior"}
+
+_Same survey. Move your prior, or make it more or less sure._
+
+{{< include _includes/week1/poll-whatif-prior.md >}}
+
+## What if I'd asked more (or fewer) people? {notes="notes/week1_notes.md#whatif-size"}
+
+_Same prior, same share saying "mayor". Change how many people we asked._
+
+{{< include _includes/week1/poll-whatif-size.md >}}
+
+## What if the survey had come out differently? {notes="notes/week1_notes.md#whatif-result"}
+
+_Same prior, same number of people. Change what they said._
+
+{{< include _includes/week1/poll-whatif-result.md >}}
+
+## Answering the question {notes="notes/week1_notes.md#poll-answer"}
+
+{{< include _includes/week1/poll-answer.md >}}
+
+## What to try {notes="notes/week1_notes.md#poll-try"}
+
+- **Flat prior vs. strong prior.** Draw a flat prior, then a narrow one around 60% (last
+  election). With the same survey, how far apart are the posteriors?
+- **More data.** On Step 2, keep the survey at 20% but raise *n* from 20 to 500. What happens
+  to the prior's influence?
+- **Updating in sequence.** Make the posterior your new prior, then set a second survey on
+  Step 2. Yesterday's posterior is today's prior.
+- **Answering the real question.** P( mayor wins ) is a direct statement about the hypothesis
+  given the data: [P( hypothesis | data )]{.green}, not a p-value.
+
+*What is the result, and how much does it depend on our assumptions?* This is that question,
+in miniature.
 
 ## The Bayesian workflow {.smaller .mechanics}
 
@@ -647,177 +682,9 @@ $$
 | $\theta$ | the mayor's share among all voters | unknown: what we want to learn |
 | $\sim$ | "is drawn from" | |
 
-::: {.incremental}
 - [**Line 1**]{.blue}: each person we ask is a coin flip that lands "mayor" with chance θ.
 - [**Line 2**]{.red}: what we believe about θ before asking anyone.
 - From Week 3 on, we'll build models like this visually.
-:::
-
-## Step 1: The prior {notes="notes/week1_notes.md#poll-prior"}
-
-_Before seeing any survey, what do you believe about θ? Drag the points._
-
-{{< include _includes/week1/poll-prior.md >}}
-
-## Step 2: The likelihood {notes="notes/week1_notes.md#poll-likelihood"}
-
-_Set the survey. How likely is that result, for each possible value of θ?_
-
-{{< include _includes/week1/poll-likelihood.md >}}
-
-The likelihood is **not** a belief. It's what our model of the survey (each answer like a coin flip) says about our data, one candidate value of θ at a time.
-
-## Step 3: Prior × likelihood → posterior {notes="notes/week1_notes.md#poll-posterior"}
-
-{{< include _includes/week1/poll-posterior.md >}}
-
-## Survey 1, by hand {notes="notes/week1_notes.md#poll-by-hand"}
-
-```{r poll-demo, include=FALSE}
-steps <- poll_sequence()
-s1 <- POLL_SURVEYS[[1]]
-s2 <- POLL_SURVEYS[[2]]
-s3 <- POLL_BIG_SURVEY
-hand <- poll_by_hand()
-```
-
-_A worked example with one fixed prior: about `r pct(round(steps$guess[1], 1))`, as in the last
-election. Then survey 1: `r s1[["k"]]` of `r s1[["n"]]` say "mayor"._
-
-::: {.columns}
-::: {.column width="46%"}
-```{r poll-update, opts.label = "half"}
-poll_update_plot()
-```
-:::
-
-::: {.column width="54%"}
-| θ | `r hand$theta[1]` | `r hand$theta[2]` | `r hand$theta[3]` |
-|---|--:|--:|--:|
-| [**Prior**]{.red} (height) | `r hand$prior[1]` | `r hand$prior[2]` | `r hand$prior[3]` |
-| [**Likelihood**]{.blue} | `r hand$likelihood[1]` | `r hand$likelihood[2]` | `r hand$likelihood[3]` |
-| Prior × likelihood | `r hand$product[1]` | [**`r hand$product[2]`**]{.green} | `r hand$product[3]` |
-
-::: {.fragment}
-Do this at every θ, then rescale so the total is 100%. That's the
-[**posterior**]{.green}.
-:::
-
-::: {.fragment}
-It lands where both find θ plausible: not `r hand$theta[1]` (the prior rules it
-out), not `r hand$theta[3]` (the data do).
-:::
-:::
-:::
-
-## Today's posterior is tomorrow's prior {notes="notes/week1_notes.md#poll-sequence"}
-
-::: {.columns}
-::: {.column width="46%"}
-```{r poll-sequence, opts.label = "half"}
-poll_sequence_plot(steps)
-```
-
-Survey 1: `r s1[["k"]]` of `r s1[["n"]]` said "mayor". Survey 2: `r s2[["k"]]` of `r s2[["n"]]`.
-:::
-
-::: {.column width="54%"}
-| | Best&nbsp;guess | 90%&nbsp;range |
-|---|--:|--:|
-| [**Prior**]{.red} | `r pct(steps$guess[1])` | `r steps$range[1]` |
-| After&nbsp;survey&nbsp;1 | `r pct(steps$guess[2])` | `r steps$range[2]` |
-| After&nbsp;survey&nbsp;2 | [**`r pct(steps$guess[3])`**]{.green} | `r steps$range[3]` |
-
-::: {.fragment}
-Each row is Bayes' theorem:\
-$\class{green}{P(\theta \mid \text{survey})} \propto \class{blue}{P(\text{survey} \mid \theta)} \times \class{red}{P(\theta)}$
-:::
-
-::: {.fragment}
-Survey 1's posterior is survey 2's prior. Updating once on all
-`r s1[["n"]] + s2[["n"]]` people (`r s1[["k"]] + s2[["k"]]` of `r s1[["n"]] + s2[["n"]]`) gives the same answer.
-:::
-:::
-:::
-
-## Different priors, same data {notes="notes/week1_notes.md#poll-converge"}
-
-```{r poll-converge-numbers, include=FALSE}
-beliefs <- poll_converge()
-supporter <- beliefs$guess[beliefs$who == "Supporter"]
-skeptic <- beliefs$guess[beliefs$who == "Skeptic"]
-gap <- round(100 * supporter) - round(100 * skeptic) # as the table shows them
-```
-
-::: {.columns}
-::: {.column width="46%"}
-```{r poll-converge, opts.label = "half_tall"}
-poll_converge_plot(beliefs)
-```
-:::
-
-::: {.column width="54%"}
-| Best guess | [**Supporter**]{.orange} | **Skeptic** |
-|---|--:|--:|
-| `r levels(beliefs$stage)[1]` | `r pct(supporter[1])` | `r pct(skeptic[1])` |
-| `r levels(beliefs$stage)[2]` | `r pct(supporter[2])` | `r pct(skeptic[2])` |
-| `r levels(beliefs$stage)[3]` | `r pct(supporter[3])` | `r pct(skeptic[3])` |
-
-Survey 3 is a bigger poll: `r s3[["k"]]` of `r s3[["n"]]` say "mayor".
-
-::: {.fragment}
-They start `r gap[1]` points apart and end `r gap[3]` apart. A prior is where you start,
-not where you end up.
-:::
-
-::: {.fragment}
-Except for certainty: if you rule a value out (a prior of 0), no data can bring it back.
-:::
-:::
-:::
-
-## Answering the question {notes="notes/week1_notes.md#poll-answer"}
-
-::: {.columns}
-::: {.column width="46%"}
-```{r poll-majority, opts.label = "half"}
-poll_majority_plot(steps)
-```
-:::
-
-::: {.column width="54%"}
-_Will he get more than half the vote?_ Add up the belief above 50%.
-
-| | P( more than half ) |
-|---|--:|
-| [**Prior**]{.red} | `r pct(steps$majority[1])` |
-| After survey 1 | `r pct(steps$majority[2])` |
-| After survey 2 | [**`r pct(steps$majority[3])`**]{.green} |
-
-::: {.fragment}
-That's P( [hypothesis]{.red} | [data]{.blue} ): the question a p-value can't answer.
-:::
-
-::: {.fragment}
-And it says how sure we are: not "he'll lose", but about a 1 in
-`r round(1 / steps$majority[3])` chance of a majority.
-:::
-:::
-:::
-
-## What to try {notes="notes/week1_notes.md#poll-try"}
-
-- **Flat prior vs. strong prior.** Draw a flat prior, then a narrow one around 60% (last
-  election). With the same survey, how far apart are the posteriors?
-- **More data.** On Step 2, keep the survey at 20% but raise *n* from 20 to 500. What happens
-  to the prior's influence?
-- **Updating in sequence.** Make the posterior your new prior, then set a second survey on
-  Step 2. Yesterday's posterior is today's prior.
-- **Answering the real question.** P( mayor wins ) is a direct statement about the hypothesis
-  given the data: [P( hypothesis | data )]{.green}, not a p-value.
-
-*What is the result, and how much does it depend on our assumptions?* This is that question,
-in miniature.
 
 
 # More resources {notes="notes/week1_notes.md#more-resources"}

@@ -181,7 +181,7 @@ check_stated_numbers <- function() {
   expect(conv1, 1 / 6, 0.17, 2)
   expect(rain, 565 / (5 * 365), 0.31, 2)
   expect(rain, 35 / (5 * 30), 0.23, 2)
-  expect(rain, 5 / (5 * 31), 0.03, 2)
+  expect(rain, 3 / (5 * 31), 0.02, 2)
   expect(rain, 126 / (5 * 31), 0.81, 2)
   expect(rain, 8 / (5 * 28), 0.06, 2)
 
@@ -218,155 +218,31 @@ check_stated_numbers <- function() {
   }
 }
 
-# ---- The mayor poll, worked by hand (appendix) -----------------------------------
-# The worked demo after the poll widgets. Every belief is a Beta(a, b) distribution, so
-# each update is exact: add the "mayor" answers to a and the rest to b. Best guess is
-# the mean, the range is the middle 90%, and "more than half" is the share of the
-# belief above 50%, as on the Step 3 widget.
-POLL_PRIOR <- c(20, 13) # a supporter: about 60%, as in the last election
-POLL_SKEPTIC <- c(10, 23) # a skeptic: about 30%, and just as sure
-POLL_SURVEYS <- list(c(k = 4, n = 20), c(k = 7, n = 20))
-POLL_BIG_SURVEY <- c(k = 148, n = 360)
+# ---- Reading the poll graphs (appendix) -------------------------------------------
+# Before the poll widgets: the bag of stones from the updating demo (shiny/updating.R)
+# next to the mayor's share, after the same three observations (blue, black, blue; or
+# "mayor", not, "mayor"). The same counting gives the same shape: 10 possible answers
+# become 101, and the points join up into a curve.
 
-beta_update <- function(ab, survey) ab + c(survey[["k"]], survey[["n"]] - survey[["k"]])
-
-# One row per belief: the prior, then the posterior after each survey in turn
-poll_sequence <- function(prior = POLL_PRIOR, surveys = POLL_SURVEYS) {
-  steps <- Reduce(beta_update, surveys, accumulate = TRUE, init = prior)
-  tibble(
-    step = c("Prior", paste("After survey", seq_along(surveys))),
-    a = map_dbl(steps, 1),
-    b = map_dbl(steps, 2),
-    guess = a / (a + b),
-    range = paste0(round(100 * qbeta(0.05, a, b)), "–", pct(qbeta(0.95, a, b))),
-    majority = 1 - pbeta(0.5, a, b)
-  )
-}
-
-# Bayes' theorem at a few values of θ, as numbers to multiply by hand. The prior is
-# its height on the Step 1 scale (peak = 100); the product uses the rounded height, so
-# the slide's arithmetic checks out.
-poll_by_hand <- function(prior = POLL_PRIOR, survey = POLL_SURVEYS[[1]],
-                         thetas = c(0.2, 0.4, 0.6)) {
-  peak <- dbeta((prior[1] - 1) / (sum(prior) - 2), prior[1], prior[2])
-  height <- round(100 * dbeta(thetas, prior[1], prior[2]) / peak)
-  lik <- dbinom(survey[["k"]], survey[["n"]], thetas)
-  tibble(
-    theta = pct(thetas),
-    prior = as.character(height),
-    likelihood = formatC(lik, digits = 2, format = "fg"),
-    product = formatC(height * lik, digits = 2, format = "f")
-  )
-}
-
-# A Beta belief as a curve over θ
-beta_curve <- function(a, b, label, theta = seq(0, 1, length.out = 401)) {
-  tibble(label = label, theta = theta, density = dbeta(theta, a, b))
-}
-
-poll_axis <- function() {
-  list(
-    scale_x_continuous(labels = scales::percent, breaks = seq(0, 1, 0.2)),
-    scale_y_continuous(expand = expansion(mult = c(0, 0.15))),
-    labs(x = "θ, the mayor's share of the vote", y = NULL),
+reading_plot <- function(answers, x_label, points = TRUE) {
+  share <- answers / max(answers)
+  belief <- tibble(answer = answers, plausibility = share^2 * (1 - share))
+  ggplot(belief, aes(answer, plausibility)) +
+    geom_area(fill = tint(GREEN, 0.12)) +
+    geom_line(color = GREEN, linewidth = 1.6) +
+    (if (points) geom_point(color = GREEN, size = 4)) +
+    scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
+    labs(x = x_label, y = "Plausibility") +
     theme(axis.text.y = element_blank(), panel.grid.major.y = element_blank(),
           panel.grid.minor = element_blank())
-  )
 }
 
-# One update: the prior, the survey's likelihood (rescaled to the same area) and the
-# posterior, with dotted guides at the values of θ worked by hand
-poll_update_plot <- function(prior = POLL_PRIOR, survey = POLL_SURVEYS[[1]],
-                             marks = c(0.2, 0.4, 0.6)) {
-  k <- survey[["k"]]
-  n <- survey[["n"]]
-  post <- beta_update(prior, survey)
-  curves <- bind_rows(
-    beta_curve(prior[1], prior[2], "Prior"),
-    beta_curve(k + 1, n - k + 1, "Likelihood"),
-    beta_curve(post[1], post[2], "Posterior")
-  )
-  peaks <- curves |> group_by(label) |> slice_max(density, n = 1) |> ungroup()
-  colors <- c(Prior = RED, Likelihood = BLUE, Posterior = GREEN)
-
-  ggplot(curves, aes(theta, density, color = label)) +
-    geom_vline(xintercept = marks, color = GRAY, linetype = "dotted", linewidth = 1) +
-    geom_area(data = curves[curves$label == "Posterior", ], fill = tint(GREEN, 0.12),
-              color = NA) +
-    geom_line(aes(linetype = label), linewidth = 1.6) +
-    geom_text(data = peaks, aes(label = label), vjust = -0.6, size = 6.5, fontface = "bold") +
-    scale_color_manual(values = colors, guide = "none") +
-    scale_linetype_manual(values = c(Prior = "solid", Likelihood = "dashed",
-                                     Posterior = "solid"), guide = "none") +
-    poll_axis()
+stones_plot <- function() {
+  reading_plot(0:9, "Blue stones in the bag (of 9)") +
+    scale_x_continuous(breaks = 0:9)
 }
 
-# The prior and each posterior as curves: red to green, the last one filled
-poll_sequence_plot <- function(steps = poll_sequence()) {
-  curves <- bind_rows(lapply(seq_len(nrow(steps)), function(i) {
-    beta_curve(steps$a[i], steps$b[i], steps$step[i])
-  }))
-  curves$label <- factor(curves$label, levels = steps$step)
-  colors <- setNames(c(RED, tint(GREEN, 0.45), GREEN), steps$step)
-  # Each label beside its peak: the two posteriors overlap, so one goes left, one right
-  peaks <- curves |> group_by(label) |> slice_max(density, n = 1) |> ungroup()
-  peaks$hjust <- c(0.5, 0, 1)[seq_len(nrow(peaks))]
-  peaks$x <- peaks$theta + c(0, 0.05, -0.03)[seq_len(nrow(peaks))]
-
-  ggplot(curves, aes(theta, density, color = label)) +
-    geom_area(data = curves[curves$label == last(steps$step), ], fill = tint(GREEN, 0.12),
-              color = NA) +
-    geom_line(linewidth = 1.6) +
-    geom_text(data = peaks, aes(x, label = label, hjust = hjust), vjust = -0.6, size = 6.5,
-              fontface = "bold") +
-    scale_color_manual(values = colors, guide = "none") +
-    poll_axis()
-}
-
-# Two people who start far apart see the same surveys: their beliefs before any data,
-# after the two small surveys, and after a big one, one panel each
-poll_converge <- function(surveys = c(POLL_SURVEYS, list(POLL_BIG_SURVEY))) {
-  people <- list(Supporter = POLL_PRIOR, Skeptic = POLL_SKEPTIC)
-  # The beliefs to show: before any data, after the small surveys, after all of them
-  shown <- c(1, length(surveys), length(surveys) + 1)
-  seen <- cumsum(c(0, map_dbl(surveys, ~ .x[["n"]])))[shown]
-  stage <- ifelse(seen == 0, "Before any data", paste("After", fmt(seen, 0), "people"))
-  bind_rows(lapply(names(people), function(who) {
-    steps <- poll_sequence(people[[who]], surveys)[shown, ]
-    tibble(who = who, stage = factor(stage, levels = stage), people = seen,
-           a = steps$a, b = steps$b, guess = steps$guess)
-  }))
-}
-
-poll_converge_plot <- function(beliefs = poll_converge()) {
-  curves <- bind_rows(lapply(seq_len(nrow(beliefs)), function(i) {
-    beta_curve(beliefs$a[i], beliefs$b[i], beliefs$who[i]) |>
-      mutate(stage = beliefs$stage[i])
-  }))
-  first <- levels(beliefs$stage)[1]
-  peaks <- curves |> filter(stage == first) |> group_by(label) |>
-    slice_max(density, n = 1) |> ungroup()
-
-  ggplot(curves, aes(theta, density, color = label)) +
-    geom_line(linewidth = 1.4) +
-    geom_text(data = peaks, aes(label = label), vjust = -0.5, size = 5.5, fontface = "bold") +
-    facet_wrap(~stage, ncol = 1, scales = "free_y") +
-    scale_color_manual(values = c(Supporter = ORANGE, Skeptic = INK), guide = "none") +
-    poll_axis() +
-    scale_y_continuous(expand = expansion(mult = c(0, 0.35))) +
-    theme(strip.text = element_text(hjust = 0, size = 18, color = INK))
-}
-
-# The answer to the question: the share of the belief above 50%, shaded
-poll_majority_plot <- function(steps = poll_sequence()) {
-  last <- steps[nrow(steps), ]
-  curve <- beta_curve(last$a, last$b, last$step)
-  ggplot(curve, aes(theta, density)) +
-    geom_area(fill = tint(GREEN, 0.12)) +
-    geom_area(data = curve[curve$theta >= 0.5, ], fill = tint(GREEN, 0.6)) +
-    geom_line(color = GREEN, linewidth = 1.6) +
-    geom_vline(xintercept = 0.5, color = INK, linetype = "dashed", linewidth = 1) +
-    annotate("text", x = 0.52, y = max(curve$density) * 0.9, hjust = 0, size = 6.5,
-             color = INK, label = "more than half") +
-    poll_axis()
+share_plot <- function() {
+  reading_plot(0:100, "Percent of voters for the mayor", points = FALSE) +
+    scale_x_continuous(breaks = seq(0, 100, 20))
 }

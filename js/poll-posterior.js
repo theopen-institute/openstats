@@ -2,71 +2,20 @@
 // Step 1 slide with the likelihood of the survey set on Step 2, and plots all three
 // curves.
 import { PosteriorPlot } from './posterior.js';
-import { POINTS, STEP, loadPrior, loadSurvey, savePrior, saveSurvey, surveyCount } from './poll-store.js';
+import { DEFAULT_SURVEY, loadPrior, loadSurvey, savePrior, saveSurvey } from './poll-store.js';
+import {
+  density, pct, prob, range, summarize, surveyText, toPoints, update as bayes, xs,
+} from './poll-math.js';
 import { brand, withAlpha } from './palette.js';
-
-// Fine grid over θ; the 21 prior points are interpolated onto it
-const G = 201;
-const xs = Array.from({ length: G }, (_, i) => i / (G - 1));
-const dx = 1 / (G - 1);
-const PER_POINT = (G - 1) / (POINTS - 1); // grid steps between prior points
+import { tweenText } from './tween.js';
 
 const $ = (id) => document.getElementById(id);
 const graphEl = $('poll-post-graph');
 
-function interpolate(points) {
-  return xs.map((x) => {
-    const p = x / STEP;
-    const i = Math.min(POINTS - 2, Math.floor(p));
-    const t = p - i;
-    return points[i] * (1 - t) + points[i + 1] * t;
-  });
-}
-
-// Probability mass on each grid point (sums to 1), or null if all zero
-function toMass(v) {
-  const s = v.reduce((a, b) => a + b, 0);
-  return s > 0 ? v.map((a) => a / s) : null;
-}
-
-// Binomial likelihood up to a constant, computed on the log scale so large
-// surveys don't underflow
-function likelihood(k, n) {
-  const ll = xs.map((x) => {
-    let l = 0;
-    if (k > 0) l += k * Math.log(x);
-    if (n - k > 0) l += (n - k) * Math.log(1 - x);
-    return l;
-  });
-  const m = Math.max(...ll.filter(Number.isFinite));
-  return ll.map((l) => (Number.isFinite(l) ? Math.exp(l - m) : 0));
-}
-
-function summarize(mass) {
-  const mean = mass.reduce((a, w, i) => a + w * xs[i], 0);
-  const quantile = (q) => {
-    let cum = 0;
-    for (let i = 0; i < G; i++) {
-      cum += mass[i];
-      if (cum >= q) return xs[i];
-    }
-    return 1;
-  };
-  let win = 0;
-  for (let i = 0; i < G; i++) {
-    if (xs[i] > 0.5) win += mass[i];
-    else if (xs[i] === 0.5) win += mass[i] / 2;
-  }
-  return { mean, lo: quantile(0.05), hi: quantile(0.95), win };
-}
-
-const pct = (x) => `${Math.round(x * 100)}%`;
-const prob = (x) => (x < 0.01 ? '< 1%' : x > 0.99 ? '> 99%' : pct(x));
-
 function showStats(prefix, s) {
-  $(`poll-${prefix}-mean`).textContent = s ? pct(s.mean) : '—';
-  $(`poll-${prefix}-range`).textContent = s ? `${pct(s.lo)} – ${pct(s.hi)}` : '—';
-  $(`poll-${prefix}-win`).textContent = s ? prob(s.win) : '—';
+  tweenText($(`poll-${prefix}-mean`), s?.mean, pct);
+  tweenText($(`poll-${prefix}-range`), s && [s.lo, s.hi], ([lo, hi]) => range({ lo, hi }));
+  tweenText($(`poll-${prefix}-win`), s?.win, prob);
 }
 
 if (graphEl && !graphEl.dataset.initialized) {
@@ -79,14 +28,10 @@ if (graphEl && !graphEl.dataset.initialized) {
   let posteriorMass = null;
 
   function update() {
-    const { n } = survey;
-    const k = surveyCount(survey);
     $('poll-survey-out').textContent =
-      n > 0 ? `${k} of ${n} said "mayor" (${pct(k / n)})` : 'none yet';
+      survey.n > 0 ? `${surveyText(survey)} said "mayor"` : 'none yet';
 
-    const prior = toMass(interpolate(priorPoints));
-    const lik = toMass(likelihood(k, n));
-    const post = prior ? toMass(prior.map((p, i) => p * lik[i])) : null;
+    const { prior, lik, post } = bayes(priorPoints, survey);
     posteriorMass = post;
 
     showStats('prior', prior && summarize(prior));
@@ -98,7 +43,6 @@ if (graphEl && !graphEl.dataset.initialized) {
         : '';
     $('poll-carry').disabled = !post;
 
-    const density = (m) => (m ? m.map((w) => w / dx) : xs.map(() => 0));
     plot.setSeries([
       { label: 'Prior', color: colors.prior, xs, ys: density(prior) },
       { label: 'Likelihood', color: colors.likelihood, xs, ys: density(lik), dash: [8, 6] },
@@ -132,16 +76,14 @@ if (graphEl && !graphEl.dataset.initialized) {
     }
   }
 
-  // Today's posterior is tomorrow's prior: sample it back onto the 21 draggable
-  // points, then clear the survey so the data aren't counted twice
+  // Today's posterior is tomorrow's prior: sample the posterior back onto the 21
+  // draggable points, and start a new survey of the usual size
   $('poll-carry').addEventListener('click', () => {
-    if (!posteriorMass) return;
-    const coarse = Array.from({ length: POINTS }, (_, i) => posteriorMass[i * PER_POINT]);
-    const max = Math.max(...coarse);
-    if (!(max > 0)) return;
-    priorPoints = coarse.map((v) => (v / max) * 100);
+    const points = posteriorMass && toPoints(posteriorMass);
+    if (!points) return;
+    priorPoints = points;
     savePrior(priorPoints, 'poll-prior:set');
-    survey = { ...survey, n: 0 };
+    survey = { ...survey, n: DEFAULT_SURVEY.n };
     saveSurvey(survey, 'poll-survey:set');
     update();
     goToPrior();

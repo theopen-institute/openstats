@@ -1,9 +1,9 @@
 ```{=html}
 <!-- Week 1, "Step 2: The likelihood": sliders for the survey, with the likelihood curve
-     and its value at a few θs. Behavior in js/poll-likelihood.js (the survey is shared
+     (and the prior from Step 1, for comparison) and its value at a few θs. Behavior in js/poll-likelihood.js (the survey is shared
      with Step 3 through js/poll-store.js), styles in css/deck.scss. -->
 <div class="widget-layout">
-  <div id="poll-lik-graph" class="widget-graph"></div>
+  <div id="poll-lik-graph" class="widget-graph poll-graph"></div>
   <div class="poll-side">
     <label for="poll-n">People surveyed: <b id="poll-n-out"></b></label>
     <input type="range" id="poll-n" min="0" max="500" step="1" value="20">
