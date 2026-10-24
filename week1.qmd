@@ -645,11 +645,7 @@ _Three questions to explore. The next three slides are a tool for each, in this 
 - **A different result.** Same number of people, different answers. How much does what
   they said change the answer?
 
-And back on Step 3: make the posterior your new prior, then set a second survey on Step 2.
-Yesterday's posterior is today's prior.
-
-*What is the result, and how much does it depend on our assumptions?* This is that question,
-in miniature.
+*What is the result, and how much does it depend on our assumptions?*
 
 ## What if I'd started from a different prior? {notes="notes/week1_notes.md#whatif-prior"}
 
