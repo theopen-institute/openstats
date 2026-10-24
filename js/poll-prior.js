@@ -1,8 +1,9 @@
-// Week 1, "Step 1: The prior": drag 21 points to draw a prior for θ, mirrored in a
-// read-only jspreadsheet table. The prior is shared with the posterior slide
-// through js/poll-store.js.
+// Week 1, "Step 1: The prior": drag 21 points (or sketch the curve freehand) to draw a
+// prior for θ, mirrored in a read-only jspreadsheet table. The
+// prior is shared with the slides after it through js/poll-store.js.
 import { LineGraphWidget } from './graph.js';
 import { POINTS, STEP, flatPrior, loadPrior, savePrior } from './poll-store.js';
+import { brand } from './palette.js';
 
 const graphEl = document.getElementById('poll-prior-graph');
 const sheetEl = document.getElementById('poll-prior-sheet');
@@ -39,6 +40,7 @@ if (graphEl && sheetEl && !graphEl.dataset.initialized) {
       container: graphEl,
       count: POINTS,
       yValues: loadPrior(),
+      color: brand('red'), // the prior's color on Steps 2 and 3
       falloff: 1.5, // dragging one point pulls its neighbors along, for a smooth curve
       onChange: (points) => {
         updateSheet(points);

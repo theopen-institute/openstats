@@ -1,22 +1,32 @@
 // Draggable line graph over x in [0, 1]: `count` evenly spaced points whose
-// heights (0-100) the user drags. Used for the week 1 poll prior (poll-prior.js).
+// heights (0-100) the user sets. Used for the week 1 poll prior (poll-prior.js).
 //
-// `falloff` (in points) makes a drag pull the neighbors along, less and less with
+// Two gestures, no modes. Grab a point and move it up or down to drag it. Press
+// anywhere else and sweep across the plot to draw the curve freehand (like the NYT's
+// "You Draw It"): every point the pointer passes takes its height. A drag that moves
+// sideways out of its point's column turns into a drawing stroke.
+//
+// When dragging, `falloff` (in points) makes a drag pull the neighbors along, less and less with
 // distance (a Gaussian: at distance d a neighbor moves by exp(-d^2 / (2 falloff^2)) of
 // the dragged point's change), so a single drag keeps the curve smooth. 0 moves only
-// the dragged point.
+// the dragged point. Neighbors are pulled, never pushed: like lifting a sheet, raising
+// a point lifts the lower points around it but leaves higher ones (and everything
+// beyond them) where they are until the dragged point passes them. The same, mirrored,
+// when pulling a point down.
 import { brand } from './palette.js';
 import { clearCanvas, drawPercentAxes } from './canvas-axes.js';
 
 export class LineGraphWidget {
   constructor({
     container, yValues, onChange, count = 21, xLabel = "Percent of Voters", falloff = 0,
+    color = brand("blue"),
   } = {}) {
     if (!container) throw new Error("LineGraphWidget: container is required");
     this.container = container;
     this.onChange = typeof onChange === "function" ? onChange : null;
     this.xLabel = xLabel;
     this.falloff = falloff;
+    this.color = color;
 
     // Fixed x positions: count points from 0 to 1
     this.count = count;
@@ -42,6 +52,7 @@ export class LineGraphWidget {
 
     this._dragIndex = null;
     this._hoverIndex = null;
+    this._lastDraw = null; // the previous pointer position while drawing
     this._needsRedraw = true;
 
     // Only emit changes on pointer up/cancel
@@ -148,50 +159,67 @@ export class LineGraphWidget {
 
   _onPointerDown(e) {
     const p = this._eventToCanvas(e);
+    const at = this._canvasToValues(p);
+    this._dragStart = this.yValues.slice(); // neighbors move relative to these
+    this._pressAt = at;
+    this._changedDuringDrag = false;
+
+    // On a point: drag it. Anywhere else: start drawing.
     const idx = this._hitTestPoint(p.x, p.y);
     if (idx != null) {
       this._dragIndex = idx;
-      this._dragStart = this.yValues.slice(); // neighbors move relative to these
-      this._changedDuringDrag = false;
-
-      // Capture pointer so dragging continues even if pointer leaves canvas
-      this.canvas.setPointerCapture?.(e.pointerId);
-
-      e.preventDefault();
+      this.canvas.style.cursor = "grabbing";
+    } else {
+      this._startStroke(at);
     }
+
+    // Capture pointer so dragging continues even if pointer leaves canvas
+    this.canvas.setPointerCapture?.(e.pointerId);
+    this._invalidate();
+    e.preventDefault();
   }
 
   _onPointerMove(e) {
     const p = this._eventToCanvas(e);
-    const hitIndex = this._hitTestPoint(p.x, p.y);
+    const at = this._canvasToValues(p);
 
-    if (this._dragIndex == null) {
-      if (hitIndex !== this._hoverIndex) {
-        this._hoverIndex = hitIndex;
-        this.canvas.style.cursor = hitIndex == null ? "default" : "pointer";
-        this._invalidate();
-      }
+    if (this._lastDraw) {
+      if (this._paint(this._lastDraw, at)) this._changedDuringDrag = true;
+      this._lastDraw = at;
+      this._invalidate(); // redraw live, but do not emit yet
+      e.preventDefault();
       return;
     }
 
-    const yVal = this._canvasYToValue(p.y);
-    const clamped = this._clamp(yVal, this.yMin, this.yMax);
-
-    if (clamped !== this.yValues[this._dragIndex]) {
-      this._dragTo(clamped);
-      this._changedDuringDrag = true;
+    if (this._dragIndex != null) {
+      // Moving sideways out of the grabbed point's column turns the drag into a stroke
+      if (Math.abs(at.x - this._dragIndex * this.step) > this.step / 2) {
+        this._startStroke(at);
+      } else if (at.y !== this.yValues[this._dragIndex]) {
+        this._dragTo(at.y);
+        this._changedDuringDrag = true;
+      }
       this._invalidate(); // redraw live, but do not emit yet
+      e.preventDefault();
+      return;
     }
 
-    e.preventDefault();
+    // Hovering: a point can be grabbed; anywhere else draws
+    const hitIndex = this._hitTestPoint(p.x, p.y);
+    this.canvas.style.cursor = hitIndex == null ? "crosshair" : "grab";
+    if (hitIndex !== this._hoverIndex) {
+      this._hoverIndex = hitIndex;
+      this._invalidate();
+    }
   }
 
   _onPointerUp(e) {
-    if (this._dragIndex != null) {
+    if (this._lastDraw || this._dragIndex != null) {
       const shouldEmit = this._changedDuringDrag;
+      this._lastDraw = null;
       this._dragIndex = null;
       this._changedDuringDrag = false;
-
+      this.canvas.style.cursor = "default";
       this._invalidate();
 
       // Emit only on release/cancel, and only if something changed
@@ -201,18 +229,75 @@ export class LineGraphWidget {
     }
   }
 
-  // Move the dragged point to `value`, and its neighbors by a share of the same change
+  // Start a drawing stroke from where the pointer was pressed to `at`, undoing any drag
+  // so far
+  _startStroke(at) {
+    this._dragIndex = null;
+    this.yValues = this._dragStart.slice();
+    this._paint(this._pressAt, this._pressAt);
+    this._paint(this._pressAt, at);
+    this._changedDuringDrag = this.yValues.some((y, i) => y !== this._dragStart[i]);
+    this._lastDraw = at;
+    this.canvas.style.cursor = "crosshair";
+  }
+
+  // Move the dragged point to `value`, and pull its neighbors along by a share of the
+  // change. A neighbor only follows the part of the drag that goes past the highest
+  // point between it and the dragged one (the lowest, when pulling down): raising a
+  // point from 8 to 9 lifts a neighbor at 6, but not one at 10, or anything past the 10.
   _dragTo(value) {
     const i = this._dragIndex;
     const start = this._dragStart;
-    const delta = value - start[i];
+    const from = start[i];
+    const up = value > from;
     const f = this.falloff;
-    for (let j = 0; j < this.count; j++) {
-      const d = j - i;
-      const weight = j === i ? 1 : f > 0 ? Math.exp(-(d * d) / (2 * f * f)) : 0;
-      if (weight < 0.01) continue; // too far out to matter
-      this.yValues[j] = this._clamp(start[j] + delta * weight, this.yMin, this.yMax);
+    this.yValues[i] = value;
+    if (!(f > 0)) return;
+    for (const dir of [-1, 1]) {
+      let barrier = from; // the highest (lowest) start height passed so far
+      for (let j = i + dir; j >= 0 && j < this.count; j += dir) {
+        const d = j - i;
+        const weight = Math.exp(-(d * d) / (2 * f * f));
+        if (weight < 0.01) break; // too far out to matter
+        barrier = up ? Math.max(barrier, start[j]) : Math.min(barrier, start[j]);
+        const pull = up ? Math.max(0, value - barrier) : Math.min(0, value - barrier);
+        this.yValues[j] = this._clamp(start[j] + weight * pull, this.yMin, this.yMax);
+      }
     }
+  }
+
+  // Drawing, from pointer position a to b: every point between them takes the height of
+  // the line joining them, so a quick sweep doesn't skip any, and the point nearest b
+  // takes b's height, so a stroke that stops just short of a point still moves it.
+  // Returns whether anything changed.
+  _paint(a, b) {
+    const [lo, hi] = a.x <= b.x ? [a, b] : [b, a];
+    const heights = new Map();
+    const first = Math.max(0, Math.ceil(lo.x / this.step));
+    const last = Math.min(this.count - 1, Math.floor(hi.x / this.step));
+    for (let i = first; i <= last; i++) {
+      const t = hi.x > lo.x ? (i * this.step - lo.x) / (hi.x - lo.x) : 1;
+      heights.set(i, lo.y + t * (hi.y - lo.y));
+    }
+    const near = Math.round(b.x / this.step);
+    if (!heights.has(near)) heights.set(near, b.y);
+
+    let changed = false;
+    for (const [i, h] of heights) {
+      const y = this._clamp(h, this.yMin, this.yMax);
+      if (y !== this.yValues[i]) changed = true;
+      this.yValues[i] = y;
+    }
+    return changed;
+  }
+
+  // A canvas position as plot values: x in [0, 1], y in [yMin, yMax]
+  _canvasToValues(p) {
+    const pr = this._plotRect();
+    return {
+      x: this._clamp((p.x - pr.x) / pr.w, 0, 1),
+      y: this._clamp(this._canvasYToValue(p.y), this.yMin, this.yMax),
+    };
   }
 
   _eventToCanvas(e) {
@@ -282,7 +367,7 @@ export class LineGraphWidget {
     const ctx = this.ctx;
 
     ctx.save();
-    ctx.strokeStyle = brand("blue");
+    ctx.strokeStyle = this.color;
     ctx.lineWidth = 2 * this.dpr;
 
     ctx.beginPath();
@@ -302,8 +387,8 @@ export class LineGraphWidget {
 
       ctx.beginPath();
       const isActive = i === this._dragIndex || i === this._hoverIndex;
-      ctx.fillStyle = isActive ? brand("red") : "#ffffff";
-      ctx.strokeStyle = brand("blue");
+      ctx.fillStyle = isActive ? this.color : "#ffffff";
+      ctx.strokeStyle = this.color;
       ctx.lineWidth = 2 * this.dpr;
       ctx.arc(x, y, this.pointRadius * this.dpr, 0, Math.PI * 2);
       ctx.fill();
@@ -320,7 +405,6 @@ export class LineGraphWidget {
   _onPointerLeave() {
     if (this._hoverIndex != null) {
       this._hoverIndex = null;
-      this.canvas.style.cursor = "default";
       this._invalidate();
     }
   }
