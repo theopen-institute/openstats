@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-19626c201fe31ee98fbd828e29018e95.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-e00ae34ad56ee75669e0d6ee3e181de5.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -264,13 +264,13 @@ wrong, and that’s okay.</p></li>
 <li><p>In some fields, published research findings may be wrong most of
 the time, but science still works. It works really, really
 well.</p></li>
-<li><p>Thats a paradox.</p></li>
+<li><p>That’s a paradox.</p></li>
 <li><p>It’s okay for a very simple reason. Statistics is observation,
 and observation is always messy. It’s only a problem if we expect it to
 be tidy.</p></li>
 <li><p>To make sense of it, we need to understand what statistics is. We
-need to stop treating statistics as mathmatical rituals and start
-treating it like a way to reflect on and update our own thinking. Thats
+need to stop treating statistics as mathematical rituals and start
+treating it like a way to reflect on and update our own thinking. That’s
 the goal of this course.</p></li>
 </ul>
 <style type="text/css">
@@ -299,14 +299,14 @@ the goal of this course.</p></li>
 <section id="this-weeks-goals" class="title-slide slide level1 center">
 <h1>This week’s goals</h1>
 <ul>
-<li class="fragment">Review the three concepts behind Ioannidis’s claim:
+<li class="fragment">Learn the three concepts behind Ioannidis’s claim:
 <ul>
 <li class="fragment">Probability</li>
 <li class="fragment">The base rate paradox</li>
 <li class="fragment">Statistical significance</li>
 </ul></li>
-<li class="fragment">Understand why most research is wrong (and why that’s okay)</li>
-<li class="fragment">Discover updating, the one rule for all of statistics</li>
+<li class="fragment">Understand why most research is wrong</li>
+<li class="fragment">Discover updating, the one rule for all of statistics that makes everything okay</li>
 <li class="fragment">Work through an example: election polling</li>
 </ul>
 </section>
@@ -350,7 +350,8 @@ unintuitive.</li>
 </div></div>
 <ul>
 <li class="fragment" data-fragment-index="2">If this confuses you, you’re not alone. It is deeply unintuitive.</li>
-<li class="fragment">We are going to scrap all of this conceptual baggage and start over.</li>
+<li class="fragment">We are going to scrap all of this complexity to build something more
+intuitive.</li>
 </ul>
 </section>
 
@@ -367,8 +368,23 @@ place intuition slips.</li>
 “probably not.” That word is a probability: a statement about how sure
 they are.</li>
 <li>Intuitively, probability is a way of talking about uncertainty.</li>
-<li>To frequentists, it’s a way of talking about the long run outcome of
-repeated measurements. Strange.</li>
+<li>Second half of the slide: what does “a 31% chance of rain” actually
+mean? Is the weather random? Most people will say no, or not really.
+Tomorrow’s weather is decided by physics: wind, pressure, moisture, the
+monsoon. If we knew everything, there’d be nothing random about it.</li>
+<li>So the randomness isn’t in the sky. It’s in us. “31%” describes how
+uncertain we are about a day when all we know is that it’s a day in
+Kathmandu. It’s as if we picked a date from the calendar without
+looking.</li>
+<li>This is the Bayesian way of thinking about probability, and it’s the
+one we’ll use all course: probability describes our knowledge, not a
+property of the world. A coin flip is the same: a perfect physicist
+could predict it. We call it 50% because we can’t.</li>
+<li>If someone asks: the textbook (“frequentist”) view defines
+probability as the long-run frequency of an outcome over many
+repetitions. It’s a valid view and the math is sound, but it isn’t how
+anyone uses “probably” in daily life, and it makes a statement like “a
+31% chance of rain tomorrow” awkward to explain.</li>
 <li>We’re going to build statistics on the intuitions they already
 have.</li>
 </ul>
@@ -385,7 +401,7 @@ have.</li>
       }</style></aside>
 <p><em>“Will it rain tomorrow?”</em> <span class="fragment"><em>“Probably not.”</em></span></p>
 <div class="fragment">
-<p>That word, <em>probably</em>, is a probability. It’s a way of talking about uncertainty.</p>
+<p>That word — <em>“probably”</em> — is a probability. It’s a way of talking about uncertainty.</p>
 </div>
 <ul>
 <li class="fragment">I don’t know if it’s going to rain tomorrow…</li>
@@ -393,12 +409,12 @@ have.</li>
 <li class="fragment">I know that rain works differently in July than in January.</li>
 </ul>
 <div class="fragment">
-<p>But what does <em>“a 31% chance of rain”</em> actually mean?</p>
+<p>So what does <em>“a 31% chance of rain”</em> actually mean?</p>
 </div>
 <ul>
-<li class="fragment">Tomorrow’s weather isn’t a lottery. Specific physical factors decide it.</li>
-<li class="fragment">The day isn’t random <span class="blue">…but <em><strong>we</strong></em> are uncertain about it.</span></li>
-<li class="fragment">31% describes our certainty about an uncertain fact.</li>
+<li class="fragment">Tomorrow’s weather isn’t a lottery. The universe is not random.</li>
+<li class="fragment"><span class="blue">…but <em><strong>we</strong></em> are uncertain about it.</span></li>
+<li class="fragment">31% describes how sure we are about an uncertain fact.</li>
 </ul>
 </section>
 <section id="probability-is-just-counting" class="slide level2" data-notes="notes/week1_notes.md#counting">
@@ -469,9 +485,10 @@ third.</li>
 <li>Ask the room first: what would you guess? A common answer is 1 in 5,
 because there are five possible head counts (0 to 4). But those five
 aren’t equally likely: there’s only one way to get 0 heads and six ways
-to get 2. Count paths, not outcomes. d’Alembert made the same mistake
-with two coins in 1754, arguing that one head out of two flips was 1 in
-3.</li>
+to get 2. Count paths, not outcomes. Even d’Alembert slipped on this, in
+1754: he argued that the chance of at least one head in two flips was 2
+in 3, treating H, TH and TT as equally likely. Counting paths gives 3 in
+4.</li>
 <li>The row of counts (1, 4, 6, 4, 1) is worth pausing on. It’s the
 shape of a distribution, and it comes back in Week 2.</li>
 <li>Foreshadow the bag-of-stones demo. Bayesian updating is the same
@@ -559,26 +576,16 @@ introduces it in <em>Statistical Rethinking</em>, ch.&nbsp;2.)</li>
 <h2>Writing it down: 0 to 1</h2>
 <aside class="notes">
 <ul>
-<li>New notation, not new ideas: everything on the next three slides is
-something they already know, written down. The format part is quick: 0
-is impossible, 1 is certain, and percentages are the same numbers times
+<li>New notation, not new ideas: this slide and the next two are things
+they already know, written down. The format part is quick: 0 is
+impossible, 1 is certain, and percentages are the same numbers times
 100.</li>
-<li>Spend the time on the nuance. Ask: what does “a 31% chance of rain
-tomorrow” actually mean? Is the weather random?</li>
-<li>Most people will say no, or not really. Tomorrow’s weather is
-decided by physics: wind, pressure, moisture, the monsoon. If we knew
-everything, there’d be nothing random about it.</li>
-<li>So the randomness isn’t in the sky. It’s in us. “31%” describes how
-uncertain we are about a day when all we know is that it’s a day in
-Kathmandu. It’s as if we picked a date from the calendar without
-looking.</li>
-<li>This is the Bayesian way of thinking about probability, and it’s the
-one we’ll use all course: probability describes our knowledge, not a
-property of the world. A coin flip is the same: a perfect physicist
-could predict it. We call it 50% because we can’t.</li>
-<li>Connect back to “Let’s count”: the count (about 113 rainy days a
-year) is a fact. The probability (0.31) is what we say about a day we
-don’t know.</li>
+<li>Keep it short. The examples are the ones from “Probability is just
+counting”, plus the 31% rain from the first slide of the section.</li>
+<li>The footnote: 113 rainy days a year is a count from five years of
+Kathmandu weather records. The count is a fact. The probability (0.31)
+is what we say about a day we don’t know, which is the “31% describes
+how sure we are” from the start of the section.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -643,7 +650,7 @@ don’t know.</li>
 <li>Pure notation. P( something ) is read “the probability of
 something.”</li>
 <li>The examples are deliberately ones they’ve already worked out: rain,
-coins, the die and the raffle from “Probability is counting.”</li>
+coins, the die and the raffle from “Probability is just counting.”</li>
 <li>Emphasize that whatever goes inside the brackets is the thing we’re
 unsure about. That habit matters later, when the thing inside is a
 hypothesis.</li>
@@ -708,8 +715,8 @@ all days. P( rain | July ) counts only July days.</p></li>
 <li><p>Adding information changes the probability, sometimes a lot: from
 31% overall to 81% in July and 2% in January. Same city, same
 sky.</p></li>
-<li><p>This is also the 0-to-1 slide’s point again: the more we know
-about a day, the less uncertain we are.</p></li>
+<li><p>This is also the point of “You already understand probability”
+again: the more we know about a day, the less uncertain we are.</p></li>
 <li><p>These numbers come from the past: the last five years (2021–2025)
 of daily records from the Kathmandu Airport weather station. We’re using
 history as a guide to what’s likely in a given month. Say the assumption
@@ -794,250 +801,23 @@ we’ll just treat historical data as our basis for prediction.</p></li>
 </table>
 </div>
 <aside><ol class="aside-footnotes"><li id="fn2"><p>Kathmandu Airport weather station (NP000444540), NOAA GHCN-Daily, 2021–2025. A rainy day has at least 1 mm of rain. Days missing from the record are filled in at that month’s average rate.</p></li></ol></aside></section>
-<section id="conditional-risk" class="slide level2" data-notes="notes/week1_notes.md#conditional-risk">
-<h2>Conditional risk</h2>
-<aside class="notes">
-<ul>
-<li>Give people a moment to read it. Let the laugh happen.</li>
-<li>The joke is about conditioning. “One in 7,000,000” is P(killed by
-lightning) for an average American over a year. Almost none of those
-people were standing outside in a thunderstorm at the time.</li>
-<li>The two people in the comic aren’t average. They’re outside, in a
-storm, right now. The number that matters for them is P(killed by
-lightning | outside in a storm), which is far higher.</li>
-<li>The “one in six” in the caption is a joke, not a statistic. Don’t
-defend the number; the point is the conditioning.</li>
-<li>Takeaway: an unconditional probability can be correct and still be
-the wrong number for your situation. Always ask: conditional on what?
-This sets up the HIV example, where the condition is a positive
-test.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/week1/conditional_risk.png" class="quarto-figure quarto-figure-center" height="800"></p>
-</figure>
-</div>
-<p><span class="source">xkcd 795, “Conditional Risk,” by Randall Munroe (CC BY-NC 2.5)</span></p>
-</section>
-<section id="probability-lets-us-ask-questions" class="slide level2" data-notes="notes/week1_notes.md#lets-count">
-<h2>Probability lets us ask questions</h2>
-<aside class="notes">
-<ul>
-<li>Actually do it. Count the room, type it into “People here,” ask for
-hands, type the count into “Hands up.” The dots fill in live.</li>
-<li>Swap the question for anything quick: came by bus, has a sibling
-abroad, slept less than six hours.</li>
-<li>Make the distinction explicit. “9 out of 25 had tea” is a count, a
-fact about the room. Nothing about it is uncertain.</li>
-<li>It becomes a probability when we use it to say something we don’t
-know. Ask: if I picked one of you at random, without looking, what’s the
-chance they had tea? They’ll answer without thinking. That answer is a
-probability, and they built it from the count.</li>
-<li>This distinction matters later. Data are counts and measurements.
-Probabilities are statements about what we don’t know: the next person,
-the whole population, next year’s rain, whether a hypothesis is
-true.</li>
-<li>The street question needs assumptions the room question doesn’t:
-that this room is like the street, that tea habits don’t depend on who
-comes to a statistics lunch. Say them out loud. Together they’re a story
-about how the data came to be, and that story is what we’ll call a
-model.</li>
-<li>Last click, the line to remember: a model is a claim about how the
-data came to be, and the conclusions are only as good as that claim. It
-comes back in the mayor appendix (each answer is a coin flip) and in
-week 3, where we draw the story as a DAG and simulate data from it.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p><em>Hands up if you had tea this morning.</em></p>
-<!-- Week 1, "Probability lets us ask questions": a live hand count. Behavior in
-     js/count-demo.js, styles in css/deck.scss (#count-demo). -->
-<div id="count-demo">
-  <div class="count-inputs">
-    <label>People here: <input class="num-input" type="number" min="0" max="200" step="1" value="25" id="count-n"></label>
-    <label>Hands up: <input class="num-input key" type="number" min="0" max="200" step="1" value="0" id="count-k"></label>
-  </div>
-  <div id="count-dots"></div>
-  <p id="count-result"></p>
-</div>
-<script src="js/count-demo.js"></script>
-<ul>
-<li class="fragment">That’s not really a probability yet. It’s just a fact about this group.</li>
-<li class="fragment">It becomes a <strong>probability</strong> when we use it to say something we <em>don’t</em> know:
-<ul>
-<li class="fragment"><em>“If we pick one student at random, how likely is it they had tea?”</em><br>
-<span class="blue">(You just worked it out: <span class="count-k-out"></span> in <span class="count-n-out"></span>)</span></li>
-<li class="fragment"><em>“If we poll a random person on the street, how likely is it that they had tea?”</em><br>
-<span class="blue">(Possibly similar, if we’re willing to make a few assumptions.)</span></li>
-</ul></li>
-</ul>
-<div class="fragment">
-<p>Every prediction makes assumptions.<br><span class="blue fragment">(Interesting predictions make big assumptions.) <img data-src="images/week1/success-kid.jpg" class="reaction"></span></p>
-</div>
-</section></section>
-<section>
-<section id="probability-for-decision-making" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#applied-probability">
-<h1>Probability for Decision Making</h1>
-<aside class="notes">
-<p>One common use of statistics is to evaluate the accuracy of
-predictive tests.</p>
-<p>I want to illustrate a very famous example involving HIV testing.
-This is relevant because, until 2010, anyone from Nepal applying for an
-immigrant visa to the US had to take an HIV test as part of the required
-medical exam.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<div class="fragment">
-<p>In Nepal, HIV has a prevalence of about 0.1%. We can write that as:</p>
-</div>
-<ul>
-<li class="fragment">P( HIV+ ) = 0.001 (0.1%)</li>
-</ul>
-<div class="fragment">
-<p>With statistical tests and predictions, we talk about two kinds of accuracy:</p>
-</div>
-<ul>
-<li class="fragment"><strong>Sensitivity</strong>: of the people who <strong>have</strong> HIV, the share who test positive.
-<ul>
-<li class="fragment">P( test+ | HIV+ ) = <strong>0.99</strong> (true positive)</li>
-</ul></li>
-<li class="fragment"><strong>Specificity</strong>: of the people who <strong>don’t have</strong> HIV, the share who test negative.
-<ul>
-<li class="fragment">P( test– | HIV– ) = <strong>0.97</strong> (true negative)</li>
-</ul></li>
-</ul>
-<div class="fragment">
-<p><span class="source">Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested aren’t randomly selected.</span></p>
-</div>
-</section>
-<section id="prediction-for-decision-making" class="slide level2" data-notes="notes/week1_notes.md#base-rate">
-<h2>Prediction for Decision Making</h2>
-<aside class="notes">
-<ul>
-<li><p>This, as we can see, an imperfect but reasonably good test.
-There’s a problem, though. Can anybody spot it?</p></li>
-<li><p>If we already know somebody’s HIV status, why would be bother
-giving them a test? Far, far more often, when we think about the
-accuracy of a test, we are actually interested in the reverse
-question:</p></li>
-<li><p>Sensitivity and Specificity describe a situation where we already
-know somebody’s HIV status. Why test if we already know? What we usually
-really want a different thing</p></li>
-</ul>
-<p>-Think about that. If you pick a person at random, give them an HIV
-test and it comes back positive, there is only about a 3% chance that
-they actually have HIV. 97% of them are getting a positive test (and,
-likely, quite a scare) erroneously.</p>
-<ul>
-<li><p>This goes against most people’s expectations. Why this happens
-actually isn’t that hard to understand. Of people with HIV, 99% will get
-a positive test result.</p></li>
-<li><p>Of people who don’t have HIV, only 3% will get a positive test
-result.</p></li>
-<li><p>But, the important fact is that HIV is actually quite rare. 3% of
-a big population is bigger than 99% of a very small population.</p></li>
-<li><p>So, this test is 99% accurate at detecting HIV among people who
-have it, but for a random person getting a test, a positive test result
-is only accurate 3.2% of the time.</p></li>
-<li><p>These are historical numbers, from older screening tests. Modern
-tests are much better (around 99.8% specificity), but even then only
-about 1 in 3 positive screens is a true positive at 0.1% prevalence: 99
-true positives vs.&nbsp;about 200 false positives per 100,000. That’s why a
-positive screen is always followed by a confirmatory test before anyone
-is diagnosed.</p></li>
-<li><p>My point here is not that these tests are worthless. Rather what
-I want to point out is that probability is often unpredictable and
-unintuitive.</p></li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<ul>
-<li>Sensitivity P( test+ | HIV+ ): 99%</li>
-<li>Specificity P( test– | HIV– ): 97%</li>
-</ul>
-<div class="fragment" data-fragment-index="0">
-<p>But there’s something strange here…<span class="fragment blue" data-fragment-index="1">they assume exactly what we want to know.</span></p>
-</div>
-<div class="fragment" data-fragment-index="2">
-<p>The real question is usually P( HIV+ | test+): <span class="fragment red" data-fragment-index="3">🚨 3.2% 🚨</span></p>
-</div>
-<div class="fragment" data-fragment-index="4">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th><span class="fragment blue" data-fragment-index="5">(pop: 100,000)</span></th>
-<th>Test+</th>
-<th>Test–</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>HIV+</strong><br><span class="fragment blue" data-fragment-index="5">(0.1%&nbsp;=&nbsp;100)</span></td>
-<td>P( Test+ | HIV+ ): <strong>99%</strong><br><em>Sensitivity (True Positive)</em><br><span class="fragment blue" data-fragment-index="6">(99)</span></td>
-<td>P( Test– | HIV+ ): <strong>1%</strong><br><em>Type II Error (False Negative)</em><br><span class="fragment blue" data-fragment-index="6">(1)</span></td>
-</tr>
-<tr class="even">
-<td><strong>HIV–</strong><br><span class="fragment blue" data-fragment-index="5">(99.9%&nbsp;=&nbsp;99,900)</span></td>
-<td>P( Test+ | HIV– ): <strong>3%</strong><br><em>Type I Error (False Positive)</em><br><span class="fragment blue" data-fragment-index="6">(2,997)</span></td>
-<td>P( Test– | HIV– ): <strong>97%</strong><br><em>Specificity (True Negative)</em><br><span class="fragment blue" data-fragment-index="6">(96,903)</span></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
 <section id="direction-of-conditions" class="slide level2" data-notes="notes/week1_notes.md#direction">
 <h2>Direction of conditions</h2>
 <aside class="notes">
 <ul>
-<li>The turn in the section. Their intuitions have been right so far:
-counting, rain by month, the xkcd joke. They slip in one place, and the
-HIV table just showed it: which way the condition runs.</li>
+<li>The second thing to know about the bar. The last slide: a condition
+narrows down what we count. This one: which side of the bar a thing is
+on matters. Their intuitions have been right so far, rain by month
+included. This is the one place they slip.</li>
 <li>Read the two results under the table. With the starting numbers, 80%
 of rural students study sociology, but only 25% of sociology students
 are rural. Same people, same table, different question.</li>
 <li>Let students change the numbers and watch the two drift apart.
 They’re only equal when the two groups are the same size.</li>
 <li>Nothing is wrong with their intuition, only with which question it
-answers. The same slip turns “99% sensitive” into “99% sure”, and a
-p-value into “the chance the hypothesis is true.”</li>
+answers. Plant it and move on: this slip comes back twice today. It
+turns “99% sensitive” into “99% sure” (the HIV test), and a p-value into
+“the chance the hypothesis is true.”</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1099,16 +879,275 @@ Reset
   <p><span class="blue">P( Rural | Sociology )</span> = <span id="cond-p2"></span></p>
 </div>
 <script src="js/cond-table.js"></script>
-</section></section>
-<section>
-<section id="the-base-rate-paradox" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#base-rate-paradox">
-<h1>The base rate paradox</h1>
+</section>
+<section id="conditional-risk" class="slide level2" data-notes="notes/week1_notes.md#conditional-risk">
+<h2>Conditional risk</h2>
 <aside class="notes">
 <ul>
-<li>Name the thing we just saw. The base rate paradox: when something is
-rare, most positive results are false, even from an accurate test.</li>
-<li>First frame: 1,000 people. HIV prevalence is 0.1%, so one of them
-has it. Point at the single blue square. That’s the base rate.</li>
+<li>Give people a moment to read it. Let the laugh happen.</li>
+<li>The joke is about conditioning. “One in 7,000,000” is P(killed by
+lightning) for an average American over a year. Almost none of those
+people were standing outside in a thunderstorm at the time.</li>
+<li>The two people in the comic aren’t average. They’re outside, in a
+storm, right now. The number that matters for them is P(killed by
+lightning | outside in a storm), which is far higher.</li>
+<li>The “one in six” in the caption is a joke, not a statistic. Don’t
+defend the number; the point is the conditioning.</li>
+<li>Takeaway: an unconditional probability can be correct and still be
+the wrong number for your situation. Always ask: conditional on what?
+This sets up the HIV example, where the condition is a positive
+test.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/week1/conditional_risk.png" class="quarto-figure quarto-figure-center" height="800"></p>
+</figure>
+</div>
+<p><span class="source">xkcd 795, “Conditional Risk,” by Randall Munroe (CC BY-NC 2.5)</span></p>
+</section>
+<section id="probability-lets-us-ask-questions" class="slide level2" data-notes="notes/week1_notes.md#lets-count">
+<h2>Probability lets us ask questions</h2>
+<aside class="notes">
+<ul>
+<li>Actually do it. Count the room, type it into “People here,” ask for
+hands, type the count into “Hands up.” The dots fill in live.</li>
+<li>Swap the question for anything quick: came by bus, has a sibling
+abroad, slept less than six hours.</li>
+<li>Make the distinction explicit. “9 out of 25 had tea” is a count, a
+fact about the room. Nothing about it is uncertain.</li>
+<li>It becomes a probability when we use it to say something we don’t
+know. Ask: if I picked one of you at random, without looking, what’s the
+chance they had tea? They’ll answer without thinking. That answer is a
+probability, and they built it from the count.</li>
+<li>This distinction matters later. Data are counts and measurements.
+Probabilities are statements about what we don’t know: the next person,
+the whole population, next year’s rain, whether a hypothesis is
+true.</li>
+<li>The street question needs assumptions the room question doesn’t:
+that this room is like the street, that tea habits don’t depend on who
+comes to a statistics lunch. Say them out loud.</li>
+<li>Last clicks: every prediction makes assumptions, and interesting
+predictions make big ones. Say the idea behind it aloud, because it
+isn’t written on the slide: together, those assumptions are a story
+about how the data came to be. That story is what we’ll call a model,
+and the conclusions are only as good as it is. It comes back in the
+mayor appendix (each answer is a coin flip) and in week 3, where we draw
+the story as a DAG and simulate data from it.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Hands up if you had tea this morning.</em></p>
+<!-- Week 1, "Probability lets us ask questions": a live hand count. Behavior in
+     js/count-demo.js, styles in css/deck.scss (#count-demo). -->
+<div id="count-demo">
+  <div class="count-inputs">
+    <label>People here: <input class="num-input" type="number" min="0" max="200" step="1" value="25" id="count-n"></label>
+    <label>Hands up: <input class="num-input key" type="number" min="0" max="200" step="1" value="0" id="count-k"></label>
+  </div>
+  <div id="count-dots"></div>
+  <p id="count-result"></p>
+</div>
+<script src="js/count-demo.js"></script>
+<ul>
+<li class="fragment">That’s not really a probability yet. It’s just a fact about this group.</li>
+<li class="fragment">It becomes a <strong>probability</strong> when we use it to say something we <em>don’t</em> know:
+<ul>
+<li class="fragment"><em>“If we pick one student at random, how likely is it they had tea?”</em><br>
+<span class="blue">(You just worked it out: <span class="count-k-out"></span> in <span class="count-n-out"></span>)</span></li>
+<li class="fragment"><em>“If we poll a random person on the street, how likely is it that they had tea?”</em><br>
+<span class="blue">(Possibly similar, if we’re willing to make a few assumptions.)</span></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<p>Every prediction makes assumptions.<br>
+<span class="blue fragment">(Interesting predictions make big assumptions.) <img data-src="images/week1/success-kid.jpg" class="reaction"></span></p>
+</div>
+</section></section>
+<section>
+<section id="probability-for-decision-making" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#applied-probability">
+<h1>Probability for Decision Making</h1>
+<aside class="notes">
+<p>One common use of statistics is to evaluate the accuracy of
+predictive tests.</p>
+<p>I want to illustrate a very famous example involving HIV testing.
+This is relevant because, until 2010, anyone from Nepal applying for an
+immigrant visa to the US had to take an HIV test as part of the required
+medical exam.</p>
+<ul>
+<li><p>After sensitivity and specificity: this is, as we can see, an
+imperfect but reasonably good test. There’s a problem, though. Can
+anybody spot it?</p></li>
+<li><p>Click: “But there’s something strange here…” Then, in blue: if we
+already knew whether someone has HIV, there’d be no point testing them.
+Sensitivity and specificity describe a situation where we already know
+somebody’s HIV status. Far more often, when we think about the accuracy
+of a test, we’re interested in the reverse question.</p></li>
+<li><p>Click: the real question is almost always P( HIV+ | test+ ). This
+is the slip from “Direction of conditions”, now with real stakes:
+sensitivity is P( test+ | HIV+ ), and the question is P( HIV+ | test+
+).</p></li>
+<li><p>Before the next click, ask the room to guess P( HIV+ | test+ ).
+Most guesses will be near 97% or 99%.</p></li>
+<li><p>Click: 3.2%, on its own. Let it sit.</p></li>
+<li><p>Click: the words around it, “in a random screening, only 3.2% of
+positive tests will be accurate”. Don’t explain it yet; let them puzzle
+over how a 99%-accurate test can be right only 3% of the time. The next
+two slides count it out.</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="fragment">
+<p>In Nepal, HIV has a prevalence of about 0.1%. We can write that as:</p>
+</div>
+<ul>
+<li class="fragment">P( HIV+ ) = 0.001 (0.1%)</li>
+</ul>
+<div class="fragment">
+<p>With statistical tests and predictions, we talk about two kinds of accuracy:</p>
+</div>
+<ul>
+<li class="fragment"><strong>Sensitivity</strong>: of the people who <strong>have</strong> HIV, the share who test positive.
+<ul>
+<li class="fragment">P( test+ | HIV+ ) = <strong>0.99</strong> (true positive)</li>
+</ul></li>
+<li class="fragment"><strong>Specificity</strong>: of the people who <strong>don’t have</strong> HIV, the share who test negative.
+<ul>
+<li class="fragment">P( test– | HIV– ) = <strong>0.97</strong> (true negative)</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<p>But there’s something strange here…</p>
+</div>
+<div class="fragment blue">
+<p>If we already knew whether someone has HIV, there’d be no point testing them.</p>
+</div>
+<div class="fragment">
+<p>The real question is almost always P( HIV+ | test+ ):</p>
+</div>
+<div class="fragment fade-up">
+<div class="stat-reveal">
+<p><span class="stat-number">3.2%</span> <span class="stat-captions fragment"><span class="stat-caption stat-before">in a random screening, only</span> <span class="stat-caption">of positive tests will be accurate</span></span></p>
+</div>
+</div>
+</section>
+<section id="what-a-positive-test-means" class="slide level2" data-notes="notes/week1_notes.md#base-rate">
+<h2>What a positive test means</h2>
+<aside class="notes">
+<ul>
+<li><p>Where the 3.2% comes from. The table starts with what they
+already know: sensitivity, specificity and the two error rates, with the
+names papers use for them. The counts are what’s new.</p></li>
+<li><p>Clicks: (1) the table of probabilities. (2) The population:
+100,000 people, so every cell is a whole number. 100 have HIV, 99,900
+don’t. (3) The counts at the bottom of each cell. (4) The 3.2%. If
+anyone asks where it comes from: 99 real positives out of 99 + 2,997
+positives. The fine print appears with it.</p></li>
+<li><p>Think about that. If you pick a person at random, give them an
+HIV test and it comes back positive, there is only about a 3% chance
+that they actually have HIV. 97% of them are getting a positive test
+(and, likely, quite a scare) erroneously.</p></li>
+<li><p>This goes against most people’s expectations. Why this happens
+actually isn’t that hard to understand. Of people with HIV, 99% will get
+a positive test result.</p></li>
+<li><p>Of people who don’t have HIV, only 3% will get a positive test
+result.</p></li>
+<li><p>But, the important fact is that HIV is actually quite rare. 3% of
+a big population is bigger than 99% of a very small population.</p></li>
+<li><p>So, this test is 99% accurate at detecting HIV among people who
+have it, but for a random person getting a test, a positive test result
+is only accurate 3.2% of the time.</p></li>
+<li><p>These are historical numbers, from older screening tests. Modern
+tests are much better (around 99.8% specificity), but even then only
+about 1 in 3 positive screens is a true positive at 0.1% prevalence: 99
+true positives vs.&nbsp;about 200 false positives per 100,000. That’s why a
+positive screen is always followed by a confirmatory test before anyone
+is diagnosed.</p></li>
+<li><p>My point here is not that these tests are worthless (two slides
+on, “Does this mean tests are useless?” takes that up). Rather, what I
+want to point out is that probability is often unpredictable and
+unintuitive.</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Where does 3.2% come from? Count 100,000 people.</em></p>
+<div class="fragment" data-fragment-index="1">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="fragment blue" data-fragment-index="2">(100,000 people)</span></th>
+<th>Test+</th>
+<th>Test–</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>HIV+</strong><br><span class="fragment blue" data-fragment-index="2">(0.1%&nbsp;=&nbsp;100)</span></td>
+<td>P( Test+ | HIV+ ): <strong>99%</strong><br><em>Sensitivity (True Positive)</em><br><span class="fragment blue" data-fragment-index="3"><strong>99</strong></span></td>
+<td>P( Test– | HIV+ ): <strong>1%</strong><br><em>Type II Error (False Negative)</em><br><span class="fragment" data-fragment-index="3"><strong>1</strong></span></td>
+</tr>
+<tr class="even">
+<td><strong>HIV–</strong><br><span class="fragment blue" data-fragment-index="2">(99.9%&nbsp;=&nbsp;99,900)</span></td>
+<td>P( Test+ | HIV– ): <strong>3%</strong><br><em>Type I Error (False Positive)</em><br><span class="fragment red" data-fragment-index="3"><strong>2,997</strong></span></td>
+<td>P( Test– | HIV– ): <strong>97%</strong><br><em>Specificity (True Negative)</em><br><span class="fragment" data-fragment-index="3"><strong>96,903</strong></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment" data-fragment-index="4">
+<p>P( HIV+ | test+ ) = <span class="red"><strong>3.2%</strong></span></p>
+</div>
+<div class="fragment" data-fragment-index="4">
+<p><span class="source">Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests.</span></p>
+</div>
+</section>
+<section id="the-base-rate-paradox" class="slide level2" data-notes="notes/week1_notes.md#base-rate-paradox">
+<h2>The base rate paradox</h2>
+<aside class="notes">
+<ul>
+<li>Name the thing we just counted. The base rate paradox: when
+something is rare, most positive results are false, even from an
+accurate test.</li>
+<li>The same count as the table, as a picture, with 1,000 people. First
+frame: HIV prevalence is 0.1%, so one of them has it. Point at the
+single blue square. That’s the base rate.</li>
 <li>Click. The test catches that one person. But it also wrongly flags
 3% of the other 999: about 30 red squares.</li>
 <li>Click. 31 positive results, and only 1 is real. About 3%, the same
@@ -1118,7 +1157,8 @@ bigger that even a small error rate in it swamps the one true case.</li>
 <li>Keep this picture in mind. It comes back, almost square for square,
 when we ask why most published research is wrong.</li>
 <li>Next: the app lets students change the prevalence and the test
-accuracy and watch this happen.</li>
+accuracy and watch this happen. Then the obvious question: does this
+mean tests are useless?</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1171,8 +1211,37 @@ Only 1 is real.</p>
 </div>
 </div></div>
 </section>
-<section id="base-rate-paradox-demo" class="slide level2 no-title">
+<section id="base-rate-paradox-demo" class="slide level2 no-title" data-notes="notes/week1_notes.md#baserate-demo">
 <h2>Base Rate Paradox Demo</h2>
+<aside class="notes">
+<ul>
+<li>The same calculation, with sliders. Left: prevalence (0–10%),
+sensitivity and specificity, starting at today’s numbers (0.1%, 99%,
+97%). Top: P( condition+ | test+ ), the positive predictive value, the
+number papers use for “the chance a positive is real”. Bottom: 100,000
+people flowing into the four cells of the table.</li>
+<li>It starts at 3.2%, the number from the last two slides.</li>
+<li>Things to try, in this order. (1) Push sensitivity to 100%: the
+answer barely moves. Catching every true case doesn’t help when there
+are so few. (2) Push specificity from 97% to 99%: the false positives
+shrink to a third, and the answer roughly triples, to about 9%. (The
+modern tests’ 99.8% from the table’s fine print would give 33%, but the
+slider moves in whole percents.) (3) Raise prevalence to 1%, then 10%:
+the biggest change of all.</li>
+<li>Stop on the third one. Same test, very different answer, just from
+who is being tested. That’s the next slide.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a aria-label="1"></a>#| standalone: true</span>
 <span id="cb1-2"><a aria-label="2"></a># app.R</span>
 <span id="cb1-3"><a aria-label="3"></a>library(shiny)</span>
@@ -1488,8 +1557,293 @@ Only 1 is real.</p>
 <span id="cb1-313"><a aria-label="313"></a>}</span>
 <span id="cb1-314"><a aria-label="314"></a></span>
 <span id="cb1-315"><a aria-label="315"></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="does-this-mean-tests-are-useless" class="slide level2" data-notes="notes/week1_notes.md#who-gets-tested">
+<h2>Does this mean tests are useless?</h2>
+<aside class="notes">
+<ul>
+<li>Before the first click, ask the room: who actually gets an HIV test?
+Someone with symptoms, a known exposure, a partner who tested positive,
+a pregnancy check-up, a visa medical.</li>
+<li>Click: “Not at all, because they’re not administered randomly.”</li>
+<li>Click: the table, with its first row: everyone, tested at random.
+That’s the 3% we counted. Visa screening (the US did it for immigrant
+visas until 2010) is close to this row: nobody was tested because they
+seemed at risk.</li>
+<li>Click: a group with higher risk, where 1 in 100 has HIV. The same
+positive result now means 25%. The fine print appears with it: every row
+uses the same test.</li>
+<li>Click: a group with even higher risk, say people who come in with
+symptoms or a known exposure, where 1 in 10 has HIV: 79%.</li>
+<li>The shares are illustrative, not measured. Don’t defend them; the
+point is the direction and the size.</li>
+<li>Last two clicks: results are meaningful only relative to what we
+already know, and the same test gives the same result but is 3% accurate
+for one person and 79% for another.</li>
+<li>Same test, same result. The answer went from 3% to 79% because of
+what we knew before the test: who this person is, and why they came in.
+A test result is never read on its own; it changes what we already
+believed.</li>
+<li>“What we already know” is in red because it’s the prior. Don’t name
+it yet; the updating section does (“You already understand Bayesian
+updating”). It comes back on “Numbers don’t speak for themselves” and
+“The science comes first”.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="fragment" data-fragment-index="1">
+<p><em>Not at all, because they’re not administered randomly.</em></p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Who’s being tested</th>
+<th style="text-align: right;">Prevalence of HIV</th>
+<th style="text-align: right;">Chance a positive is real</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Everyone, tested at random</td>
+<td style="text-align: right;">0.1%</td>
+<td style="text-align: right;"><strong>3%</strong></td>
+</tr>
+<tr class="even">
+<td><span class="fragment" data-fragment-index="3">A group with higher risk</span></td>
+<td style="text-align: right;"><span class="fragment" data-fragment-index="3">1%</span></td>
+<td style="text-align: right;"><span class="fragment" data-fragment-index="3"><strong>25%</strong></span></td>
+</tr>
+<tr class="odd">
+<td><span class="fragment" data-fragment-index="4">A group with even higher risk</span></td>
+<td style="text-align: right;"><span class="fragment" data-fragment-index="4">10%</span></td>
+<td style="text-align: right;"><span class="fragment" data-fragment-index="4"><strong>79%</strong></span></td>
+</tr>
+</tbody>
+</table>
+<div class="source fragment" data-fragment-index="3">
+<p>Every row uses the same test: 99% sensitivity, 97% specificity.</p>
+</div>
+</div>
+<div class="fragment" data-fragment-index="5">
+<p>Results are meaningful only relative to <span class="red">what we already know</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="6">
+<p>Same test, same result: <span class="blue">3% accurate for one person, 79% for another</span>.</p>
+</div>
 </section></section>
 <section>
+<section id="so-why-is-most-published-research-wrong" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#why-research-wrong">
+<h1>So why is most published research wrong?</h1>
+<aside class="notes">
+<ul>
+<li>Now we close the loop on Ioannidis. His argument is the HIV example
+in disguise: “has HIV” becomes “the idea is true,” and “tests positive”
+becomes “gets a significant result.”</li>
+<li>First frame: 1,000 ideas that researchers test. Most new ideas are
+wrong, so only 10 are true (the blue squares). That’s the “HIV is rare”
+part.</li>
+<li>Click. Good studies catch most true ideas: 8 of the 10. But they
+also get a significant result for about 5% of the false ones, purely by
+chance: about 50 red squares, scattered everywhere.</li>
+<li>Click. 58 discoveries, and only 8 are real: about 14%. Let that land
+before moving on.</li>
+<li>The point isn’t that scientists are dishonest or bad at math. The
+math is fine. A significant result answers P(data | hypothesis), and
+when true ideas are rare, P(hypothesis | data) is very different.
+(That’s where we go in two slides.)</li>
+<li>1 in 100 is one scenario, realistic for exploratory work.
+Confirmatory research can be closer to 50%, and then most discoveries
+are real. The next slide’s table shows the range, if there’s time.</li>
+<li>Don’t resolve it yet. First: why do smart people get fooled? Then
+updating, and why it’s okay: once you expect many single findings to be
+wrong, you stop treating one p &lt; 0.05 as truth and start treating
+each one as a nudge to what we already know, not the final word.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>It’s the HIV test again.</em></p>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="r-stack">
+<div class="fragment fade-out" data-fragment-index="1">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week1_files/figure-revealjs/ideas-all-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week1_files/figure-revealjs/ideas-significant-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:42%;">
+<p>1,000 ideas get tested. Most are wrong: only <span class="blue">10 are true</span>.</p>
+<div class="fragment" data-fragment-index="1">
+<p>Good studies find <span class="blue">8</span> of the true ones.</p>
+<p>They also “find” <span class="red">50</span> false ones, by chance.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div class="big-statement">
+<p>58 discoveries.<br>
+Only 8 are real.</p>
+</div>
+</div>
+</div></div>
+</section>
+<section id="types-of-research-by-the-numbers" class="slide level2 mechanics smaller" data-notes="notes/week1_notes.md#research-math">
+<h2>Types of research, by the numbers</h2>
+<aside class="notes">
+<ul>
+<li>First “Mechanics” slide: point out the tag in the corner. It means
+this is the machinery under the hood. Nice to follow, not necessary for
+the big picture. Optional: it generalizes the 1,000-ideas picture to
+other kinds of study.</li>
+<li>A study is a test of an idea, so it has the same two kinds of
+accuracy as the HIV test. Sensitivity: of the true ideas, the share it
+finds. Specificity: of the false ideas, the share it correctly
+rejects.</li>
+<li>Papers use different names for the same two numbers, which is the
+second half of each definition line. Sensitivity is called power.
+Specificity is 1 − the significance level α. α = 1 − specificity is the
+false-positive rate, usually set at 5%. β = 1 − sensitivity is the miss
+rate. Power, a term students will meet in papers, is just sensitivity (1
+− β). Same idea as the HIV test, counted from the other side.</li>
+<li>Every cell is the same calculation as the HIV table: (true share ×
+sensitivity) / (true share × sensitivity + (1 − true share) × (1 −
+specificity)).</li>
+<li>Read down the rows. A large trial of a treatment with strong earlier
+evidence is usually right (94%). A plausible new idea is right more
+often than not in a large study (64%), but not in a small one (31%). The
+search for new effects, our 1,000 ideas, is usually wrong (14%), and
+worse with small samples (4%). Same sensitivity, same specificity; the
+difference is how many tested ideas were true to begin with. That’s the
+takeaway line.</li>
+<li>Sensitivity of 20% (β = 80%) isn’t a strawman. Median power is
+around 20% in fields like neuroscience (Button et al. 2013) and
+economics (Ioannidis, Stanley &amp; Doucouliagos 2017).</li>
+<li>The p-hacked row: α = 5% assumes one pre-planned test. Trying
+several outcomes, subgroups or controls until something works pushes the
+real false-positive rate up; 20% is illustrative, and Simmons, Nelson
+&amp; Simonsohn (2011) showed common choices can push it past 60%. When
+sensitivity equals 1 − specificity (20% each), a significant result is
+equally likely whether the idea is true or false, so the chance stays at
+the starting 1%. The study taught us nothing.</li>
+<li>If asked about fixes: a stricter threshold (p &lt; 0.005, Benjamin
+et al. 2018) helps but needs much bigger samples. Replication works
+better: a finding that keeps holding up in new studies earns trust no
+threshold can give it.</li>
+<li>Ask the room: which row does your own field live in?</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em><strong>Sensitivity</strong>: if the idea is true, what is the chance of getting a significant result.</em><br>
+<em><strong>Specificity</strong>: if the idea is false, what is the chance of getting a non-significant result.</em></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Type of study</th>
+<th style="text-align: center;">Base Rate</th>
+<th style="text-align: center;">Sensitivity</th>
+<th style="text-align: center;">Specificity</th>
+<th style="text-align: center;">Chance a discovery is true</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Large trial of a treatment with strong earlier evidence</td>
+<td style="text-align: center;">50%</td>
+<td style="text-align: center;">80%</td>
+<td style="text-align: center;">95%</td>
+<td style="text-align: center;">94%</td>
+</tr>
+<tr class="even">
+<td>Small trial of a treatment with strong earlier evidence</td>
+<td style="text-align: center;">50%</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">95%</td>
+<td style="text-align: center;">80%</td>
+</tr>
+<tr class="odd">
+<td>Large study of a plausible new idea</td>
+<td style="text-align: center;">10%</td>
+<td style="text-align: center;">80%</td>
+<td style="text-align: center;">95%</td>
+<td style="text-align: center;">64%</td>
+</tr>
+<tr class="even">
+<td>Small study of a plausible new idea</td>
+<td style="text-align: center;">10%</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">95%</td>
+<td style="text-align: center;"><span class="red">31%</span></td>
+</tr>
+<tr class="odd">
+<td>Large search for surprising new effects</td>
+<td style="text-align: center;">1%</td>
+<td style="text-align: center;">80%</td>
+<td style="text-align: center;">95%</td>
+<td style="text-align: center;"><span class="red">14%</span></td>
+</tr>
+<tr class="even">
+<td>Small search for surprising new effects</td>
+<td style="text-align: center;">1%</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">95%</td>
+<td style="text-align: center;"><span class="red">4%</span></td>
+</tr>
+<tr class="odd">
+<td>Small search, re-analysed until something is significant (p-hacked)</td>
+<td style="text-align: center;">1%</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">80%</td>
+<td style="text-align: center;"><span class="red">1%</span></td>
+</tr>
+</tbody>
+</table>
+<div class="source">
+<p>In technical terms: sensitivity is <strong>statistical power</strong>, <span class="math inline">\(1 - \beta\)</span>. Specificity is <span class="math inline">\(1 - \alpha\)</span>, where <span class="math inline">\(\alpha\)</span> is the <strong>significance level</strong> (often 5%).</p>
+</div>
+</section></section>
 <section id="statistical-significance-revisited" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#statistical-significance-revisited">
 <h1>Statistical significance (revisited)</h1>
 <aside class="notes">
@@ -1497,13 +1851,13 @@ Only 1 is real.</p>
 <li>Clicks: (1) the red phrase lights up, (2) then the blue one. (3)
 They turn into P( data | hypothesis ), each phrase sitting under the
 part it becomes. (4) The reverse appears beside it, P( hypothesis | data
-): the same two words, swapped.</li>
+): the same two words, swapped. (5) The closing line.</li>
 </ul>
 <p>There’s a lot of very dense jargon here, but we don’t need to unpack
-it all. let’s just take a minute to think about what is being measured
+it all. Let’s just take a minute to think about what is being measured
 here.</p>
 <p>I don’t want to get bogged down at this point in the specifics, but
-the structure is important: In frequentist analysis, We’re treating our
+the structure is important: In frequentist analysis, we’re treating our
 hypothesis as a fixed assumption and our data as a probability.</p>
 <p>That’s fine, but it’s not how we actually experience the practice of
 science most of the time. It’s not how we think about uncertainty. More
@@ -1535,8 +1889,30 @@ observations. If we visited the store in a million parallel universes
 governed by rules similar to this one, the store would be open in most
 of them. This is a valid way to think about things, but I want to
 suggest that it’s a bit unintuitive. If you’ve ever heard somebody say
-that p-value is the probability that an hypothesis is true, they are
+that a p-value is the probability that a hypothesis is true, they are
 making a serious mistake.</p>
+<ul>
+<li>The closing line (click 5). Reassure people first. Lots of smart
+people find p-values confusing, and the reason is structural, not
+personal.</li>
+<li>Observation runs from data to the world. You see something and ask
+what it tells you. That’s how we reason in daily life, and how
+ethnographers reason about an interview.</li>
+<li>A p-value runs the other way. It starts from a world we usually
+don’t believe in (the null: nothing is going on), and asks how
+surprising our data would be there. It’s a statement about the data,
+given an imagined world.</li>
+<li>The significance level α is the study’s false-positive rate, the
+same kind of number as the HIV test’s 3% (the trust table’s footnote:
+specificity is 1 − α). It’s true, and it controls something worth
+controlling, but it isn’t P( hypothesis | data ). Treating p &lt; 0.05
+as “95% likely true” is the same mistake as treating a 97%-specific test
+as a 97% diagnosis. We just saw how wrong that can be.</li>
+<li>Call back to “Direction of conditions”: it’s the same slip as
+reading P( Rural | Sociology ) off P( Sociology | Rural ).</li>
+<li>Bayesian updating is the fix: it runs in the direction we actually
+observe.</li>
+</ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1579,25 +1955,31 @@ making a serious mistake.</p>
     </div>
   </div>
 </div>
+<div class="fragment" data-fragment-index="5">
+<p>If statistics has ever made you feel dumb or intimidated, <span class="blue">it’s not you</span>. Significance testing controls something like the HIV test’s 3% false-positive rate. That number is true, and it still isn’t the one we want.</p>
+</div>
 </section>
-<section id="the-problem-with-p-values" class="slide level2" data-notes="notes/week1_notes.md#pvalue-direction">
-<h2>The problem with p-values</h2>
+
+<section>
+<section id="bayesian-updating" class="title-slide slide level1 center">
+<h1>Bayesian Updating</h1>
+
+</section>
+<section id="bayesian-updating-what-it-is-not" class="slide level2" data-notes="notes/week1_notes.md#what-it-is-not">
+<h2>Bayesian Updating: What it is not</h2>
 <aside class="notes">
 <ul>
-<li>Reassure people first. Lots of smart people find p-values confusing,
-and the reason is structural, not personal.</li>
-<li>Observation runs from data to the world. You see something and ask
-what it tells you. That’s how we reason in daily life, and how
-ethnographers reason about an interview.</li>
-<li>A p-value runs the other way. It starts from a world we usually
-don’t believe in (the null: nothing is going on), and asks how
-surprising our data would be there. It’s a statement about the data,
-given an imagined world.</li>
-<li>So it can’t tell you how likely your hypothesis is. Treating p &lt;
-0.05 as “95% likely true” is the same mistake as treating a 97%-specific
-test as a 97% diagnosis. We just saw how wrong that can be.</li>
-<li>Bayesian updating is the fix: it runs in the direction we actually
-observe.</li>
+<li>McElreath’s flowchart (<em>Statistical Rethinking</em>, Figure 1.1):
+pick the right statistical test by answering questions about your data.
+Many students met statistics exactly this way, as a decision tree that
+ends in the name of a test.</li>
+<li>Don’t read it. Let it look overwhelming; that’s the point. Each box
+is a special-purpose procedure with its own assumptions, and choosing
+among them becomes a ritual. McElreath calls these procedures “golems”:
+powerful, but mindless, and they do exactly what they’re told even when
+it’s the wrong thing.</li>
+<li>The contrast for the next slide: instead of a tree of tests, one
+rule.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1610,45 +1992,6 @@ observe.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>If statistics has ever made you feel dumb or intimidated, <span class="blue">it’s not you</span>. Significance testing imagines the world <span class="red">backwards</span> from our intuitions.</p>
-<div class="fragment" data-fragment-index="1">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th></th>
-<th>Starts from</th>
-<th>Asks</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="fragment" data-fragment-index="2"><strong>How&nbsp;we&nbsp;observe</strong></span></td>
-<td><span class="fragment" data-fragment-index="2">what we <span class="blue">saw</span></span></td>
-<td><span class="fragment" data-fragment-index="2"><em>“What does this tell me about the <span class="green">world</span>?”</em></span></td>
-</tr>
-<tr class="even">
-<td><span class="fragment" data-fragment-index="3"><strong>A&nbsp;significance&nbsp;test</strong></span></td>
-<td><span class="fragment" data-fragment-index="3">an <span class="red">imagined world</span> with nothing going on</span></td>
-<td><span class="fragment" data-fragment-index="3"><em>“How surprising would my <span class="blue">data</span> be there?”</em></span></td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li class="fragment">A p-value doesn’t tell you if a hypothesis is true. It tells you how unlikely this data would be if the null hypothesis were true.</li>
-<li class="fragment">Those aren’t the same thing. P(A|B) ≠ P(B|A)</li>
-</ul>
-<div class="fragment blue">
-<p>Statistical significance works the opposite way that our intuitions do.</p>
-</div>
-</section></section>
-<section>
-<section id="bayesian-updating" class="title-slide slide level1 center">
-<h1>Bayesian Updating</h1>
-
-</section>
-<section id="bayesian-updating-what-it-is-not" class="slide level2">
-<h2>Bayesian Updating: What it is not</h2>
 
 <img data-src="images/week1/mcelreath-2.png" style="width:100.0%" class="r-stretch quarto-figure-center"><p class="caption"><em>Statistical Rethinking</em>, p.2 (Richard McElreath, 2020)</p></section>
 <section id="bayesian-updating-what-it-is" class="slide level2" data-notes="notes/week1_notes.md#bayesian-updating">
@@ -1656,16 +1999,24 @@ observe.</li>
 <aside class="notes">
 <p>So I said that we were going to derive our entire statistics from
 first principles, and I meant it. Instead of a million pre-built tests,
-we have one process: Bayesian updating</p>
-<p>A million tests. We have one process, called Bayesian updating.
-Everything we build will be an application of that same logic.</p>
+we have one process, called Bayesian updating. Everything we build will
+be an application of that same logic.</p>
 <p>Frame it as science first: this is how a community of researchers
 changes its mind, and the formula is just that process written down. We
-come back to this after the 1,000 ideas (“done by people instead of a
-formula”).</p>
-<p>For those interested in math, I definitely encourage you to where the
-theorem comes from and how it’s derived, but for our purposes, we need
-just one simple idea:</p>
+come back to this at the end of the section (“done by people instead of
+a formula”).</p>
+<p>For those interested in math, I definitely encourage you to look into
+where the theorem comes from and how it’s derived, but for our purposes,
+we need just one simple idea: prior × likelihood → posterior.</p>
+<ul>
+<li>The mayor example is the appendix’s poll in miniature: a prior from
+the last election, a small survey as the data, and a belief that moves
+between them. The TA session works through it with the class’s own
+prior.</li>
+<li>Last click: if we gather more data, today’s posterior becomes the
+prior. Plant it; don’t develop it.</li>
+<li>Next: they’ve already done this, twice.</li>
+</ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1695,20 +2046,151 @@ just one simple idea:</p>
 </div>
 <div class="callout-content">
 <ul>
-<li class="fragment"><span class="red"><strong>Prior</strong></span>: <em>“The mayor got 60% last time, so I think about 60% of Kathmandu will vote for the mayor again.”</em></li>
-<li class="fragment"><span class="blue"><strong>Likelihood</strong></span>: <em>“Only 20% of my small survey said they’ll vote for the mayor. That would be surprising if the mayor’s true support were 60%, but quite likely if it were around 20–30%.”</em></li>
-<li class="fragment"><span class="green"><strong>Posterior</strong></span>: <em>“I now think about 45% of people will vote for the mayor.”</em></li>
+<li class="fragment"><span class="red"><strong>Prior</strong></span>: <em>“The mayor got 60% of the vote last time, so I think about 60% will vote for them again.”</em></li>
+<li class="fragment"><span class="blue"><strong>Likelihood</strong></span>: <em>“In my small survey, only 20% of people said they’ll vote for the mayor. That would be surprising if the mayor’s true support were 60%, but quite likely if it were around 20–30%.”</em></li>
+<li class="fragment"><span class="green"><strong>Posterior</strong></span>: <em>“Based on this new data, I now think it’s probably around 40–50%.”</em></li>
 </ul>
 <div class="fragment">
-<p>Our posterior then becomes our prior for future observations.</p>
+<p>If we decide to gather more data, our posterior becomes the prior for future observations.</p>
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="bayesian-updating-example" class="slide level2 no-title">
+<section id="you-already-understand-bayesian-updating" class="slide level2" data-notes="notes/week1_notes.md#already-updated">
+<h2>You already understand Bayesian updating</h2>
+<aside class="notes">
+<ul>
+<li>The payoff: nothing on this slide is new. Every number is one they
+counted earlier. The rule only gives the parts names.</li>
+<li>Prior row (visible from the start): the base rate. “Does this mean
+tests are useless?” showed it’s the number that matters most, and it’s
+the one that comes from knowing about the world.</li>
+<li>Click: the likelihood. How expected the result is, for each
+possibility: two numbers, one if the person has HIV (or the idea is
+true) and one if not. That’s the “for each possible answer” from the
+last slide.</li>
+<li>Click: the posterior, what the counting gave: 3% and 14%.</li>
+<li>Click: a different prior. Same test, same study, so the likelihood
+row doesn’t change. Start where 10% of those tested have HIV (the “even
+higher risk” group from “Does this mean tests are useless?”) and a
+positive means 79%, not 3%. Start where 10% of ideas are true (the
+“plausible new idea” in the research table) and a discovery is true 64%
+of the time, not 14%.</li>
+<li>Same evidence, different starting point, very different answer.
+That’s why the prior is worth arguing about, and why it has to be
+written down where others can see it (“Most studies are wrong…” comes
+back to this). The poll’s “What if I’d started from a different prior?”
+slide lets them try it.</li>
+<li>Click: the umbrella. Back to the rain slides: July is the prior
+(rain is likely), the clouds are the data, and grabbing the umbrella is
+acting on the posterior. Nobody needs a formula for that.</li>
+<li>Click: the point of the slide. Updating isn’t something this course
+invented; it’s how everyone learns from experience. Ask the room for
+something they changed their mind about this week, and what made them
+change it: that’s a prior, some evidence and a posterior. What
+statistics adds is doing it out loud, with the prior written down where
+others can check it. “Most studies are wrong…” picks that up.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Both of today’s examples were updates. We just hadn’t named the parts.</em></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 40%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>The HIV test</th>
+<th>1,000 ideas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="red"><strong>Prior</strong></span></td>
+<td>Before the test:<br>0.1% chance of HIV</td>
+<td>Before the study:<br>1% chance it’s true</td>
+</tr>
+<tr class="even">
+<td><span class="fragment" data-fragment-index="1"><span class="blue"><strong>Likelihood</strong></span></span></td>
+<td><span class="fragment" data-fragment-index="1">Positive:<br>99% if HIV+, 3% if HIV–</span></td>
+<td><span class="fragment" data-fragment-index="1">Significant:<br>80% if true, 5% if false</span></td>
+</tr>
+<tr class="odd">
+<td><span class="fragment" data-fragment-index="2"><span class="green"><strong>Posterior</strong></span></span></td>
+<td><span class="fragment" data-fragment-index="2">After a positive: 3%</span></td>
+<td><span class="fragment" data-fragment-index="2">After a significant result: 14%</span></td>
+</tr>
+<tr class="even">
+<td><span class="fragment" data-fragment-index="3"><span class="red"><strong>A different prior</strong></span></span></td>
+<td><span class="fragment" data-fragment-index="3">Start at 10% → 79%</span></td>
+<td><span class="fragment" data-fragment-index="3">Start at 10% → 64%</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment" data-fragment-index="4">
+<p>Clouds in July? You grab an umbrella. That’s updating.</p>
+</div>
+<div class="fragment" data-fragment-index="5">
+<p>You’ve updated all your life. Statistics does it out loud, so others can check.</p>
+</div>
+</section>
+<section id="bayesian-updating-example" class="slide level2 no-title" data-notes="notes/week1_notes.md#stones-demo">
 <h2>Bayesian Updating Example</h2>
+<aside class="notes">
+<ul>
+<li>The same rule, run one observation at a time. A bag holds 9 stones,
+each blue or black. We don’t know how many are blue, so there are 10
+possible bags: 0 blue, 1 blue, …, 9 blue.</li>
+<li>Leave “Contents of the bag” on Hidden: the app picks a bag at
+random, and nobody knows which. (Picking one instead lets you show that
+the posterior homes in on the truth.)</li>
+<li>Before any draws, the graph is flat. That’s the prior: no bag is
+more plausible than another.</li>
+<li>Draw a stone (it goes back in the bag). The table counts, for each
+possible bag, the ways it could have produced what we’ve drawn so far: a
+bag with 3 blue stones has 3 ways to give a blue one and 6 ways to give
+a black one. Multiply across the draws. That’s the garden of forking
+paths from “Counting the ways a thing could happen”, one branch per
+draw.</li>
+<li>The ways, rescaled to add up to 1, are the posterior: the graph. The
+gray ghosts are the earlier posteriors, so the room can watch belief
+move with each draw.</li>
+<li>The thing to say out loud: after each draw, the last posterior is
+the starting point for the next. Prior × likelihood → posterior, again
+and again.</li>
+<li>“Random” draws one stone; shift-click draws ten. After many draws
+the graph narrows around one or two bags: more data, more sure. “Reset”
+clears the draws.</li>
+<li>If someone asks why some bars drop to zero: the all-black bag can’t
+produce a blue stone, so it’s ruled out by the first blue draw, and the
+all-blue bag by the first black one. A possibility that can’t produce
+the data gets no ways at all.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-engine="r"><pre class="sourceCode numberSource shinylive-r number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a aria-label="1"></a>#| standalone: true</span>
 <span id="cb2-2"><a aria-label="2"></a>library(shiny)</span>
 <span id="cb2-3"><a aria-label="3"></a>library(bslib)</span>
@@ -2417,10 +2899,8 @@ just one simple idea:</p>
 <h2>Bayes’ theorem</h2>
 <aside class="notes">
 <ul>
-<li>First “Mechanics” slide: point out the tag in the corner. It means
-this is the machinery under the hood. Nice to follow, not necessary for
-the big picture. If you only remember “prior × likelihood → posterior”,
-you’re fine.</li>
+<li>Another “Mechanics” slide. If you only remember “prior × likelihood
+→ posterior”, you’re fine.</li>
 <li>After the click, it’s the same rule as before, written as a formula,
 in the same colors. Walk through the terms in order: the prior (what we
 believed), the likelihood (how well the data fit each belief), the
@@ -2539,206 +3019,6 @@ possibilities to 100%. (Usually not interesting)</li>
 </ul>
 <div class="fragment" data-fragment-index="6">
 <p>Conceptually: <span class="red"><strong>Prior</strong></span> × <span class="blue"><strong>Likelihood</strong></span> → <span class="green"><strong>Posterior</strong></span></p>
-</div>
-</section></section>
-<section>
-<section id="so-why-is-most-published-research-wrong" class="title-slide slide level1 center" data-notes="notes/week1_notes.md#why-research-wrong">
-<h1>So why is most published research wrong?</h1>
-<aside class="notes">
-<ul>
-<li>Now we close the loop on Ioannidis. His argument is the HIV example
-in disguise: “has HIV” becomes “the idea is true,” and “tests positive”
-becomes “gets a significant result.”</li>
-<li>First frame: 1,000 ideas that researchers test. Most new ideas are
-wrong, so only 10 are true (the blue squares). That’s the “HIV is rare”
-part.</li>
-<li>Click. Good studies catch most true ideas: 8 of the 10. But they
-also get a significant result for about 5% of the false ones, purely by
-chance: about 50 red squares, scattered everywhere.</li>
-<li>Click. 58 discoveries, and only 8 are real: about 14%. Let that land
-before moving on.</li>
-<li>The point isn’t that scientists are dishonest or bad at math. The
-math is fine. A significant result answers P(data | hypothesis), and
-when true ideas are rare, P(hypothesis | data) is very different.</li>
-<li>1 in 100 is one scenario, realistic for exploratory work.
-Confirmatory research can be closer to 50%, and then most discoveries
-are real. The table at the end of this section shows the range, if
-there’s time.</li>
-<li>This is why it’s okay. Once you expect many single findings to be
-wrong, you stop treating one p &lt; 0.05 as truth and start treating
-each one as a nudge to what we already know, not the final word.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p><em>It’s the HIV test again.</em></p>
-<div class="columns">
-<div class="column" style="width:58%;">
-<div class="r-stack">
-<div class="fragment fade-out" data-fragment-index="1">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week1_files/figure-revealjs/ideas-all-1.png" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment" data-fragment-index="1">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week1_files/figure-revealjs/ideas-significant-1.png" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:42%;">
-<p>1,000 ideas get tested. Most are wrong: only <span class="blue">10 are true</span>.</p>
-<div class="fragment" data-fragment-index="1">
-<p>Good studies find <span class="blue">8</span> of the true ones.</p>
-<p>They also “find” <span class="red">50</span> false ones, by chance.</p>
-</div>
-<div class="fragment" data-fragment-index="2">
-<div class="big-statement">
-<p>58 discoveries.<br>
-Only 8 are real.</p>
-</div>
-</div>
-</div></div>
-</section>
-<section id="how-far-can-we-trust-data" class="slide level2 mechanics smaller" data-notes="notes/week1_notes.md#research-math">
-<h2>How far can we trust data?</h2>
-<aside class="notes">
-<ul>
-<li>Mechanics slide, optional. It generalizes the 1,000-ideas picture to
-other kinds of study.</li>
-<li>A study is a test of an idea, so it has the same two kinds of
-accuracy as the HIV test. Sensitivity: of the true ideas, the share it
-finds. Specificity: of the false ideas, the share it correctly
-rejects.</li>
-<li>Papers use different names for the same two numbers, which is the
-second half of each definition line. Sensitivity is called power.
-Specificity is 1 − the significance level α. α = 1 − specificity is the
-false-positive rate, usually set at 5%. β = 1 − sensitivity is the miss
-rate. Power, a term students will meet in papers, is just sensitivity (1
-− β). Same idea as the HIV test, counted from the other side.</li>
-<li>Every cell is the same calculation as the HIV table: (true share ×
-sensitivity) / (true share × sensitivity + (1 − true share) × (1 −
-specificity)).</li>
-<li>Read down the rows. A large trial of a treatment with strong earlier
-evidence is usually right (94%). A plausible new idea is right more
-often than not in a large study (64%), but not in a small one (31%). The
-search for new effects, our 1,000 ideas, is usually wrong (14%), and
-worse with small samples (4%). Same sensitivity, same specificity; the
-difference is how many tested ideas were true to begin with. That’s the
-takeaway line.</li>
-<li>Sensitivity of 20% (β = 80%) isn’t a strawman. Median power is
-around 20% in fields like neuroscience (Button et al. 2013) and
-economics (Ioannidis, Stanley &amp; Doucouliagos 2017).</li>
-<li>The p-hacked row: α = 5% assumes one pre-planned test. Trying
-several outcomes, subgroups or controls until something works pushes the
-real false-positive rate up; 20% is illustrative, and Simmons, Nelson
-&amp; Simonsohn (2011) showed common choices can push it past 60%. When
-sensitivity equals 1 − specificity (20% each), a significant result is
-equally likely whether the idea is true or false, so the chance stays at
-the starting 1%. The study taught us nothing.</li>
-<li>If asked about fixes: a stricter threshold (p &lt; 0.005, Benjamin
-et al. 2018) helps but needs much bigger samples. Replication works
-better: a finding that keeps holding up in new studies earns trust no
-threshold can give it.</li>
-<li>Ask the room: which row does your own field live in?</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p><em><strong>Sensitivity</strong>: if the idea is true, what is the chance of getting a significant result.</em><br>
-<em><strong>Specificity</strong>: if the idea is false, what is the chance of getting a non-significant result.</em></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Type of study</th>
-<th style="text-align: center;">Base Rate</th>
-<th style="text-align: center;">Sensitivity</th>
-<th style="text-align: center;">Specificity</th>
-<th style="text-align: center;">Chance a discovery is true</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Large trial of a treatment with strong earlier evidence</td>
-<td style="text-align: center;">50%</td>
-<td style="text-align: center;">80%</td>
-<td style="text-align: center;">95%</td>
-<td style="text-align: center;">94%</td>
-</tr>
-<tr class="even">
-<td>Small trial of a treatment with strong earlier evidence</td>
-<td style="text-align: center;">50%</td>
-<td style="text-align: center;">20%</td>
-<td style="text-align: center;">95%</td>
-<td style="text-align: center;">80%</td>
-</tr>
-<tr class="odd">
-<td>Large study of a plausible new idea</td>
-<td style="text-align: center;">10%</td>
-<td style="text-align: center;">80%</td>
-<td style="text-align: center;">95%</td>
-<td style="text-align: center;">64%</td>
-</tr>
-<tr class="even">
-<td>Small study of a plausible new idea</td>
-<td style="text-align: center;">10%</td>
-<td style="text-align: center;">20%</td>
-<td style="text-align: center;">95%</td>
-<td style="text-align: center;"><span class="red">31%</span></td>
-</tr>
-<tr class="odd">
-<td>Large search for surprising new effects</td>
-<td style="text-align: center;">1%</td>
-<td style="text-align: center;">80%</td>
-<td style="text-align: center;">95%</td>
-<td style="text-align: center;"><span class="red">14%</span></td>
-</tr>
-<tr class="even">
-<td>Small search for surprising new effects</td>
-<td style="text-align: center;">1%</td>
-<td style="text-align: center;">20%</td>
-<td style="text-align: center;">95%</td>
-<td style="text-align: center;"><span class="red">4%</span></td>
-</tr>
-<tr class="odd">
-<td>Small search, re-analysed until something is significant (p-hacked)</td>
-<td style="text-align: center;">1%</td>
-<td style="text-align: center;">20%</td>
-<td style="text-align: center;">80%</td>
-<td style="text-align: center;"><span class="red">1%</span></td>
-</tr>
-</tbody>
-</table>
-<div class="source">
-<p>In technical terms: sensitivity is <strong>statistical power</strong>, <span class="math inline">\(1 - \beta\)</span>. Specificity is <span class="math inline">\(1 - \alpha\)</span>, where <span class="math inline">\(\alpha\)</span> is the <strong>significance level</strong> (often 5%).</p>
 </div>
 </section></section>
 <section>
@@ -2894,14 +3174,14 @@ formula.</li>
 <tr class="even">
 <td><strong>Quantitative</strong></td>
 <td>surveys, records, measurements</td>
-<td>that the pattern isn’t just chance; what causes what; how the data were generated</td>
+<td>that the pattern isn’t just chance; what causes what; how the data came to be</td>
 </tr>
 </tbody>
 </table>
 </div>
 <ul>
 <li class="fragment">The observation can be objective. The interpretation never is.</li>
-<li class="fragment">Key choices come before the data: what to ask, who to observe, how to assume that the data is generated.</li>
+<li class="fragment">Key choices come before the data: <em>what to ask, who to observe, how to interpret the data.</em></li>
 <li class="fragment">Math won’t tell us how to make these choices. Instead, we have to do science.</li>
 </ul>
 </section>
@@ -2919,7 +3199,7 @@ without it and an accurate HIV test points the wrong way; read a
 significant result without it and most “discoveries” aren’t real. Data
 without assumptions don’t just say less, they mislead.</li>
 <li>Second bullet: the callback to the tea slide, “interesting
-predictions need strong assumptions”. Every model that says something
+predictions make big assumptions”. Every model that says something
 interesting assumes things: who answered, what causes what, how the data
 were made. Don’t explain them yet. Week 2 starts on them (a pattern
 that’s real and still doesn’t mean what it seems), and Weeks 3 to 5
@@ -2928,13 +3208,13 @@ build on that.</li>
 about the world. “Each answer is an independent coin flip” is a claim
 about how people answer surveys. That’s why ethnographers, economists
 and doctors can all question them.</li>
-<li>The big statement is the takeaway: a question students can ask of
-any study, without the math. Week 5 comes back to it (“Ask what’s
-missing and what’s hidden”).</li>
-<li>Say it out loud here: the math is the least interesting part of
-statistics. It’s a relief for many students. The calculation comes last,
-and it’s the part a computer does. This course puts everything else
-first: the question, the assumptions, and how the data came to be.</li>
+<li>The big statement: the math is the least interesting part of
+statistics, and the course looks at everything else. Week 5 comes back
+to it (“Ask what’s missing and what’s hidden”).</li>
+<li>Say it out loud here: It’s a relief for many students. The
+calculation comes last, and it’s the part a computer does. This course
+puts everything else first: the question, the assumptions, and how the
+data came to be.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3017,7 +3297,7 @@ class.</li>
 <tr class="even">
 <td style="text-align: center;"><strong>4</strong></td>
 <td>Confounders</td>
-<td>Tell the story you want to tell.</td>
+<td>Look behind every pattern.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><strong>5</strong></td>
@@ -3061,7 +3341,7 @@ wants them.</li>
 <p><em>Appendix: we’ll work through this together with the TA in our second class.</em></p>
 <p>Let’s walk through the simplest possible version of the Bayesian workflow.</p>
 <ul>
-<li><strong>Estimand</strong>: θ, the share of Kathmandu voters who will vote for the current mayor.</li>
+<li><strong>What we want to know</strong>: θ (theta), the share of voters who will vote for the current mayor.</li>
 <li><strong>Background</strong>: in the last election, the mayor got 60% of the vote.</li>
 <li><strong>Data</strong>: we survey <em>n</em> voters at random, and <em>k</em> of them say they will vote for the mayor.</li>
 </ul>
@@ -3146,7 +3426,7 @@ just need to read the picture.</li>
 </ul>
 </div></div>
 <div class="source">
-<p>Like the bag of stones, with 21 possible answers instead of 11. Next week: much more on this.</p>
+<p>Like the bag of stones, with 21 possible answers instead of 10. Next week: much more on this.</p>
 </div>
 </section>
 <section id="step-1-the-prior" class="slide level2" data-notes="notes/week1_notes.md#poll-prior">
@@ -3445,12 +3725,15 @@ different prior, a different survey size, a different result. Read the
 questions, let students guess, then go to the slides to check.</li>
 <li>Let students drive. Good pairs to compare: a flat vs.&nbsp;a strong prior
 with 20 people, then the same two with 1,000.</li>
-<li>The Step 3 line is for later: carrying the posterior forward and
-adding a second survey shows today’s posterior becoming tomorrow’s
-prior.</li>
-<li>The closing question is the habit we’re building: how much does the
-answer depend on our assumptions (here, the prior)? Answering that
-honestly is what the next three slides make concrete.</li>
+<li>For later, if there’s time: Step 3’s “Make this posterior my new
+prior” button, then a second survey on Step 2, shows today’s posterior
+becoming tomorrow’s prior.</li>
+<li>The closing question is the habit we’re building, in two halves.
+First: how much does the answer depend on the assumptions we can change
+here (the prior, the survey)? The next three slides make that concrete.
+Second: which assumptions can’t these sliders touch? The coin-flip model
+assumes a random sample, independent answers, and people voting the way
+they said. Weeks 2 to 5 are about those.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3469,7 +3752,7 @@ honestly is what the next three slides make concrete.</li>
 <li><strong>More (or fewer) people.</strong> Keep the result at 20% but ask 5 people, or 1,000. What happens to the prior’s influence?</li>
 <li><strong>A different result.</strong> Same number of people, different answers. How much does what they said change the answer?</li>
 </ul>
-<p><em>What is the result, and how much does it depend on our assumptions?</em></p>
+<p><em>How much does the result depend on the assumptions we can change? (And, what assumptions remain hidden?)</em></p>
 </section>
 <section id="what-if-id-started-from-a-different-prior" class="slide level2" data-notes="notes/week1_notes.md#whatif-prior">
 <h2>What if I’d started from a different prior?</h2>
@@ -3821,8 +4104,30 @@ line up well with Weeks 1 to 3.</li>
 <li><strong>The lectures:</strong> McElreath’s <a href="https://github.com/rmcelreath/stat_rethinking_2026">Statistical Rethinking 2026</a> series on YouTube. Twenty free lectures that follow the book.</li>
 </ul>
 </section>
-<section id="the-bayesian-workflow" class="slide level2 smaller mechanics">
+<section id="the-bayesian-workflow" class="slide level2 smaller mechanics" data-notes="notes/week1_notes.md#workflow">
 <h2>The Bayesian workflow</h2>
+<aside class="notes">
+<ul>
+<li>Reference slide, for anyone who wants the whole road map. Don’t
+teach it today; Week 3 does, and workflow.qmd works through all ten
+steps on a real question.</li>
+<li>The mayor poll touched a few of the steps: asking the question,
+writing the formal model, computing the estimate, and the “What if”
+slides, which are step 10 (how much does the estimate depend on our
+assumptions?). It skipped the causal model and the simulation, which is
+where Week 3 starts.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <!-- The ten-step workflow, shared by workflow.qmd and the week 1 deck. -->
 <ul>
 <li><strong>Scientific model:</strong> what we believe about the world, before any statistics.
