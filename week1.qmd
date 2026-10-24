@@ -279,8 +279,8 @@ The real question is usually P( HIV+ | test+): [🚨 3.2% 🚨]{.fragment fragme
 
 |[(pop: 100,000)]{.fragment fragment-index=5 .blue}           | Test+                                                            | Test–                                                             |
 |----------|------------------------------------------------------------------|-------------------------------------------------------------------|
-| **HIV+**<br>[(0.1%&nbsp;=&nbsp;100)]{.fragment fragment-index=6 .blue}| P( Test+ \| HIV+ ): **99%**<br>_Sensitivity (True Positive)_<br>[(99)]{.fragment fragment-index=7 .blue}| P( Test– \| HIV+ ): **1%**<br>_Type II Error (False Negative)_<br>[(1)]{.fragment fragment-index=7 .blue}|
-| **HIV–**<br>[(99.9%&nbsp;=&nbsp;99,900)]{.fragment fragment-index=6 .blue} | P( Test+ \| HIV– ): **3%**<br>_Type I Error (False Positive)_<br>[(2,997)]{.fragment fragment-index=7 .blue}| P( Test– \| HIV– ): **97%**<br>_Specificity (True Negative)_<br>[(96,903)]{.fragment fragment-index=7 .blue}|
+| **HIV+**<br>[(0.1%&nbsp;=&nbsp;100)]{.fragment fragment-index=5 .blue}| P( Test+ \| HIV+ ): **99%**<br>_Sensitivity (True Positive)_<br>[(99)]{.fragment fragment-index=6 .blue}| P( Test– \| HIV+ ): **1%**<br>_Type II Error (False Negative)_<br>[(1)]{.fragment fragment-index=6 .blue}|
+| **HIV–**<br>[(99.9%&nbsp;=&nbsp;99,900)]{.fragment fragment-index=5 .blue} | P( Test+ \| HIV– ): **3%**<br>_Type I Error (False Positive)_<br>[(2,997)]{.fragment fragment-index=6 .blue}| P( Test– \| HIV– ): **97%**<br>_Specificity (True Negative)_<br>[(96,903)]{.fragment fragment-index=6 .blue}|
 :::
 
 ## Direction of conditions {notes="notes/week1_notes.md#direction"}
@@ -634,6 +634,23 @@ The likelihood is **not** a belief. It's what our model of the survey (each answ
 
 {{< include _includes/week1/poll-answer.md >}}
 
+## What to try {notes="notes/week1_notes.md#poll-try"}
+
+_Three questions to explore. The next three slides are a tool for each, in this order._
+
+- **A different prior.** What if we'd started somewhere else, or been more or less sure?
+  How far does the posterior move?
+- **More (or fewer) people.** Keep the result at 20% but ask 5 people, or 1,000. What
+  happens to the prior's influence?
+- **A different result.** Same number of people, different answers. How much does what
+  they said change the answer?
+
+And back on Step 3: make the posterior your new prior, then set a second survey on Step 2.
+Yesterday's posterior is today's prior.
+
+*What is the result, and how much does it depend on our assumptions?* This is that question,
+in miniature.
+
 ## What if I'd started from a different prior? {notes="notes/week1_notes.md#whatif-prior"}
 
 _Same survey. Move your prior, or make it more or less sure._
@@ -652,20 +669,6 @@ _Same prior, same number of people. Change what they said._
 
 {{< include _includes/week1/poll-whatif-result.md >}}
 
-## What to try {notes="notes/week1_notes.md#poll-try"}
-
-- **Flat prior vs. strong prior.** Draw a flat prior, then a narrow one around 60% (last
-  election). With the same survey, how far apart are the posteriors?
-- **More data.** On Step 2, keep the survey at 20% but raise *n* from 20 to 500. What happens
-  to the prior's influence?
-- **Updating in sequence.** Make the posterior your new prior, then set a second survey on
-  Step 2. Yesterday's posterior is today's prior.
-- **Answering the real question.** P( mayor wins ) is a direct statement about the hypothesis
-  given the data: [P( hypothesis | data )]{.green}, not a p-value.
-
-*What is the result, and how much does it depend on our assumptions?* This is that question,
-in miniature.
-
 ## The model, written formally {.mechanics .smaller notes="notes/week1_notes.md#poll-model"}
 
 $$
@@ -682,12 +685,9 @@ $$
 | $\theta$ | the mayor's share among all voters | what we want to learn, unknown |
 | $\sim$ | "is drawn from" | |
 
-- We've talked about how priors and posteriors are made, but what about likelihoods?
-- The math behind likelihoods can get technical, and we won't get too deep into that in this part of the course. In the advanced section, we'll go into detail.
-- Briefly: it comes from [line 1]{.blue}. The binomial counts coin flips: if each of the
-  $n$ people surveyed has a $\theta$ chance of saying "mayor", independently of the others,
-  Binomial($n$, $\theta$) gives the chance of every possible $k$. Work that out at each
-  value of $\theta$ and you get the likelihood curve from Step 2.
+- We've talked about how priors and posteriors are made, but what about [likelihoods]{.blue}?
+- The math behind likelihoods can get technical beyond what we need for these 5 weeks.
+- Briefly: likelihood comes from [line 1]{.blue}. The binomial counts coin flips: if each of the $n$ people surveyed has a $\theta$ chance of saying "mayor", independently of the others, Binomial($n$, $\theta$) gives the chance of every possible $k$. Work that out at each value of $\theta$ and you get the likelihood curve from Step 2.
 
 # More resources {notes="notes/week1_notes.md#more-resources"}
 

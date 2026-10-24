@@ -268,7 +268,7 @@ For those interested in math, I definitely encourage you to where the theorem co
 
 - We're going to run the whole prior → likelihood → posterior loop on one concrete question: what share of voters will choose the current mayor?
 - Be upfront that this model is too simple for a real poll. Real surveys aren't random samples: some groups answer more than others, and not everyone votes. Post-stratification and turnout models fix that, and we'll build them later. Today the point is the logic of updating.
-- The order: how to read the graphs, the three steps on the class's own prior and survey, then one slide that reads the class's posterior to answer the question, and three "What if" slides that change one input at a time. The full workflow and the formal model are at the end, for anyone who wants them.
+- The order: how to read the graphs, the three steps on the class's own prior and survey, then one slide that reads the class's posterior to answer the question, "What to try" (three questions to explore), and three "What if" slides that answer them, changing one input at a time. The full workflow and the formal model are at the end, for anyone who wants them.
 
 # Reading these graphs {#poll-graphs}
 
@@ -319,6 +319,13 @@ For those interested in math, I definitely encourage you to where the theorem co
 - The footnote is the slide's fine print, and the course's point in miniature: the model only knows what share of people say "mayor". Calling that "the mayor wins" assumes the survey represents the people who'll actually vote, that they vote the way they said, and that more than half wins. The number is only as good as those assumptions.
 - If someone asks: strictly this is "more than half the vote". In an election with several candidates, the mayor can win with less than half, and modelling that would need every candidate's share, not just the mayor's.
 
+# What to try {#poll-try}
+
+- This slide sets up the next three. Each question has its own tool: a different prior, a different survey size, a different result. Read the questions, let students guess, then go to the slides to check.
+- Let students drive. Good pairs to compare: a flat vs. a strong prior with 20 people, then the same two with 1,000.
+- The Step 3 line is for later: carrying the posterior forward and adding a second survey shows today's posterior becoming tomorrow's prior.
+- The closing question is the habit we're building: how much does the answer depend on our assumptions (here, the prior)? Answering that honestly is what the next three slides make concrete.
+
 # What if I'd started from a different prior? {#whatif-prior}
 
 - From here, three slides each change one input and keep the others as the class set them. The gray dotted curve is the class's own posterior from Step 3, so there's always something to compare with. The table puts the two side by side.
@@ -340,11 +347,6 @@ For those interested in math, I definitely encourage you to where the theorem co
 - Same prior, same number of people, different answer. Slide the share saying "mayor" from 0% to 100%.
 - Watch the posterior follow the data, but not all the way: it stays between the prior and the likelihood. With a strong prior and a small survey, a surprising result moves it only part of the way.
 - A good question for the room: what result would it take to make P( mayor wins ) better than even? That's a question about the data we'd need, asked before collecting it.
-
-# What to try {#poll-try}
-
-- Let students drive. Good pairs to compare: flat vs. strong prior at n = 20, then the same two at n = 500.
-- Close by tying this back to the workflow slide that follows: even this toy model raises the question of how much the answer depends on our assumptions (here, the prior). Answering that honestly is the habit we're building.
 
 # The model, written formally {#poll-model}
 
