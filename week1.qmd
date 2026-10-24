@@ -36,7 +36,7 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 # This week's goals
 
 ::: {.incremental}
-- Review the three concepts behind Ioannidis's claim:
+- Learn the three concepts behind Ioannidis's claim:
   - Probability
   - The base rate paradox
   - Statistical significance
@@ -65,7 +65,7 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 :::
 
 - [If this confuses you, you're not alone. It is deeply unintuitive.]{.fragment fragment-index=2}
-- [We are going to scrap all of this conceptual baggage and start over.]{.fragment}
+- [We are going to scrap all of this complexity and start over to build something more intuitive.]{.fragment}
 
 
 
@@ -90,7 +90,7 @@ But what does _"a 31% chance of rain"_ actually mean?
 ::: {.incremental}
 - Tomorrow's weather isn't a lottery. Specific physical factors decide it.
 - The day isn't random [...but _**we**_ are uncertain about it.]{.blue} 
-- 31% describes our certainty about an uncertain fact.
+- 31% describes how sure we are about an uncertain fact.
 :::
 
 ## Probability is just counting {notes="notes/week1_notes.md#counting"}
@@ -258,10 +258,6 @@ With statistical tests and predictions, we talk about two kinds of accuracy:
   - P( test– | HIV– ) = **0.97** (true negative)
 :::
 
-::: {.fragment}
-[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested aren't randomly selected.]{.source}
-:::
-
 ## Prediction for Decision Making {notes="notes/week1_notes.md#base-rate"}
 
 - Sensitivity P( test+ | HIV+ ): 99%
@@ -272,7 +268,7 @@ But there's something strange here...[they assume exactly what we want to know.]
 :::
 
 ::: {.fragment fragment-index=2}
-The real question is usually P( HIV+ | test+): [🚨 3.2% 🚨]{.fragment fragment-index=3 .red}
+The real question is usually P( HIV+ | test+): [🚨👉 3.2% 👈🚨]{.fragment fragment-index=3 .red}
 :::
 
 ::: {.fragment fragment-index=4}
@@ -281,6 +277,10 @@ The real question is usually P( HIV+ | test+): [🚨 3.2% 🚨]{.fragment fragme
 |----------|------------------------------------------------------------------|-------------------------------------------------------------------|
 | **HIV+**<br>[(0.1%&nbsp;=&nbsp;100)]{.fragment fragment-index=5 .blue}| P( Test+ \| HIV+ ): **99%**<br>_Sensitivity (True Positive)_<br>[(99)]{.fragment fragment-index=6 .blue}| P( Test– \| HIV+ ): **1%**<br>_Type II Error (False Negative)_<br>[(1)]{.fragment fragment-index=6 .blue}|
 | **HIV–**<br>[(99.9%&nbsp;=&nbsp;99,900)]{.fragment fragment-index=5 .blue} | P( Test+ \| HIV– ): **3%**<br>_Type I Error (False Positive)_<br>[(2,997)]{.fragment fragment-index=6 .blue}| P( Test– \| HIV– ): **97%**<br>_Specificity (True Negative)_<br>[(96,903)]{.fragment fragment-index=6 .blue}|
+:::
+
+::: {.fragment fragment-index=7}
+[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested aren't randomly selected.]{.source}
 :::
 
 ## Direction of conditions {notes="notes/week1_notes.md#direction"}
@@ -389,10 +389,10 @@ Instead of a flowchart of tests, updating is [**one rule for all of statistics**
 - [**Posterior**]{.green}: what we believe _now_, with the new data taken into account
 :::
 
-::: {.fragment .callout-tip title="Example: will the mayor win?"}
+::: {.fragment .callout-tip title="Example (made up): will the mayor win?"}
 ::: {.incremental}
-- [**Prior**]{.red}: _"The mayor got 60% last time, so I think about 60% of Kathmandu
-  will vote for the mayor again."_
+- [**Prior**]{.red}: _"The mayor got 60% last time, so I think about 60% will vote for
+  the mayor again."_
 - [**Likelihood**]{.blue}: _"Only 20% of my small survey said they'll vote for the mayor. That would be surprising if the mayor's true support were 60%, but quite likely if it were around 20–30%."_
 - [**Posterior**]{.green}: _"I now think about 45% of people will vote for the mayor."_
 :::
@@ -532,7 +532,7 @@ It's the debates we have about them.
 |                 | Observation                    | Interpretation assumes…                          |
 |-----------------|--------------------------------|--------------------------------------------------|
 | **Qualitative** | interviews, field notes        | what people meant; where we chose to look; whose voices stand for others |
-| **Quantitative**  | surveys, records, measurements | that the pattern isn't just chance; what causes what; how the data were generated |
+| **Quantitative**  | surveys, records, measurements | that the pattern isn't just chance; what causes what; how the data came to be |
 :::
 
 ::: {.incremental}
@@ -566,7 +566,7 @@ In this five-week course, we'll look at everything else.
 | **1** | Updating | Do science, not statistics. |
 | **2** | Distributions | Change how you think about numbers. |
 | **3** | Models | Draw your assumptions and make them explicit. |
-| **4** | Confounders | Tell the story you want to tell. |
+| **4** | Confounders | Look behind every pattern. |
 | **5** | Interpretation | Ask what's missing and what's hidden. |
 
 # Practical work: Election polling {notes="notes/week1_notes.md#poll-demo"}
@@ -575,7 +575,7 @@ _Appendix: we'll work through this together with the TA in our second class._
 
 Let's walk through the simplest possible version of the Bayesian workflow.
 
-- **Estimand**: θ, the share of Kathmandu voters who will vote for the current mayor.
+- **What we want to know**: θ (theta), the share of voters in a made-up city who will vote for the current mayor.
 - **Background**: in the last election, the mayor got 60% of the vote.
 - **Data**: we survey *n* voters at random, and *k* of them say they will vote for the mayor.
 
@@ -608,7 +608,7 @@ reading_plot()
 :::
 
 ::: {.source}
-Like the bag of stones, with 21 possible answers instead of 11. Next week: much more on
+Like the bag of stones, with 21 possible answers instead of 10. Next week: much more on
 this.
 :::
 
@@ -645,7 +645,7 @@ _Three questions to explore. The next three slides are a tool for each, in this 
 - **A different result.** Same number of people, different answers. How much does what
   they said change the answer?
 
-*What is the result, and how much does it depend on our assumptions?*
+*How much does the result depend on the assumptions we can change? (And, what assumptions remain hidden?)*
 
 ## What if I'd started from a different prior? {notes="notes/week1_notes.md#whatif-prior"}
 
