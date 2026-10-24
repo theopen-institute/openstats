@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-74fe3ac09cec4a727c4fa2db7a48adcb.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-477a0965a884cbdef8563c3e49af2b88.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -1131,7 +1131,7 @@ accuracy and watch this happen.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>When something is rare, most positive results are false, even from an “accurate” test.</em></p>
+<p><em>If something is rare, most positive results are false, even from an “accurate” test.</em></p>
 <div class="columns">
 <div class="column" style="width:58%;">
 <div class="r-stack">
@@ -2785,6 +2785,9 @@ It’s the debates we have about them.</p>
 <ul>
 <li>Read the quote. Students will have heard it, and some will half
 believe it.</li>
+<li>Click: the Spider-Men. Let the laugh happen. Both camps have said
+this about the other, and both are a little right, which is the point of
+the table that comes next.</li>
 <li>Both kinds of work have an observational part and an inferential
 part. We can call the observation “objective” if we want: the survey
 responses are what they are, just like the interview transcript is what
@@ -2826,6 +2829,20 @@ formula.</li>
 <blockquote>
 <p><em>“Qualitative research is subjective. Statistics is objective.”</em></p>
 </blockquote>
+<div class="meme-anchor">
+<div class="fragment fade-in-then-out">
+<!-- Week 1, "Numbers don't speak for themselves": the Spider-Man pointing meme
+     (Spider-Man, 1967, "Double Identity"), qualitative and quantitative research each
+     calling the other subjective. The captions are text over the image, styled and
+     placed in css/deck.scss (.meme), so they can be edited here. -->
+<div class="meme spiderman-meme">
+  <img src="images/week1/spiderman.jpg" alt="Two identical Spider-Men pointing at each other">
+  <span class="meme-text meme-left">Qual</span>
+  <span class="meme-text meme-right">Quant</span>
+  <span class="meme-text meme-bottom">No, <em>you're</em> the subjective one</span>
+</div>
+</div>
+</div>
 <div class="fragment">
 <table class="caption-top">
 <thead>
@@ -3020,21 +3037,29 @@ anyone who wants them.</li>
 <h2>Reading these graphs</h2>
 <aside class="notes">
 <ul>
-<li>Every graph from here on has the same shape as the bag-of-stones
-demo, so start there: three draws, blue, black, blue.</li>
-<li>Left: the 10 possible bags, 0 to 9 blue stones. Each point is how
-plausible that bag is, after counting the ways it could have produced
-blue, black, blue. A bag with no blue stones, or no black ones, couldn’t
-have, so it’s at zero.</li>
-<li>Right: the mayor’s share has 101 possible answers instead of 10 (0%,
-1%, …, 100%). Same counting, with three voters: two said “mayor”, one
-didn’t. Same shape; the points are so close together they join up into a
-curve.</li>
-<li>How to read any of them: the possible answers along the bottom, how
-plausible each one is up the side. Higher means more plausible. The
-height itself doesn’t matter, only the shape.</li>
-<li>Name it, lightly: this is a distribution, the subject of Week 2. No
-need to define it more today.</li>
+<li>One idea on this slide, and it’s the one that disorients people at
+first: these graphs don’t show an answer. They show every possible
+answer at once, each compared with the others.</li>
+<li>Point at the spikes. There’s one for each value of the mayor’s share
+in steps of 5: 0%, 5%, 10%, all the way to 100%. These are the same 21
+points they’ll drag on Step 1, and the same 21 rows in its table. Each
+spike’s height is how plausible that value is; the curve runs through
+their tops.</li>
+<li>If someone asks about 37%: the real share can be anything in
+between. Twenty-one points are enough to draw a shape, and Steps 2 and 3
+fill in the values between them when they calculate.</li>
+<li>The height has no units, and the actual numbers don’t matter. What
+matters is how the heights compare: 40% is about 3 times as plausible as
+20%, and about 7 times as plausible as 70%. Rescale the whole graph and
+nothing changes.</li>
+<li>The prior, the likelihood and the posterior are all drawn this way.
+They’re the same kind of map, the relative plausibility of every value,
+built from different things: what we believed before, what the survey
+says, and both together.</li>
+<li>Students have seen this already: the bag of stones had 10 possible
+answers, one point each. Here there are 21.</li>
+<li>Don’t define “distribution” yet. Week 2 is all about it; today they
+just need to read the picture.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3047,35 +3072,29 @@ need to define it more today.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>Back to the bag of stones: we drew <span class="blue">blue</span>, black, <span class="blue">blue</span>.</em></p>
+<p><em>Not one answer: every possible answer, side by side.</em></p>
 <div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>The bag:</strong> 10 possible answers</p>
+<div class="column" style="width:55%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="week1_files/figure-revealjs/stones-1.png" width="1050"></p>
+<p><img data-src="week1_files/figure-revealjs/reading-1.png" width="1050"></p>
 </figure>
 </div>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
-<p><strong>The mayor:</strong> 101 possible answers</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week1_files/figure-revealjs/share-1.png" width="1050"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
+</div><div class="column" style="width:45%;">
 <ul>
-<li>Along the bottom: every possible answer. Up the side: how plausible each one is.</li>
-<li>Same counting, finer steps: we asked 3 voters, and 2 said “mayor”. With 101 answers, the points join up into a curve. Next week we’ll call this a <strong>distribution</strong>.</li>
+<li><strong>Along the bottom:</strong> the values θ could take, from 0% to 100% in steps of 5.</li>
+<li><strong>Up the side:</strong> how plausible each value is, <em>compared with the others</em>. The height has no units. Only the comparisons matter.</li>
+<li>Here, <span class="orange">40%</span> is about 3 times as plausible as <span class="orange">20%</span>, and about 7 times as plausible as <span class="orange">70%</span>.</li>
+<li>The <span class="red">prior</span>, the <span class="blue">likelihood</span> and the <span class="green">posterior</span> are all maps like this one.</li>
 </ul>
+</div></div>
+<div class="source">
+<p>Like the bag of stones, with 21 possible answers instead of 10. Next week: much more on this.</p>
+</div>
 </section>
 <section id="step-1-the-prior" class="slide level2" data-notes="notes/week1_notes.md#poll-prior">
 <h2>Step 1: The prior</h2>
