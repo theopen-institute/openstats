@@ -294,7 +294,7 @@ condition runs._ P(A|B) is not the same as P(B|A).
 
 # The base rate paradox {notes="notes/week1_notes.md#base-rate-paradox"}
 
-_When something is rare, most positive results are false, even from an "accurate" test._
+_If something is rare, most positive results are false, even from an "accurate" test._
 
 ::: {.columns}
 ::: {.column width="58%"}
@@ -533,6 +533,12 @@ It's the debates we have about them.
 
 > _"Qualitative research is subjective. Statistics is objective."_
 
+::: {.meme-anchor}
+::: {.fragment .fade-in-then-out}
+{{< include _includes/week1/spiderman-meme.md >}}
+:::
+:::
+
 ::: {.fragment}
 |                 | Observation                    | Interpretation assumes…                          |
 |-----------------|--------------------------------|--------------------------------------------------|
@@ -584,29 +590,31 @@ no turnout, no non-response, no post-stratification. We'll add those later.
 
 ## Reading these graphs {notes="notes/week1_notes.md#poll-graphs"}
 
-_Back to the bag of stones: we drew [blue]{.blue}, black, [blue]{.blue}._
+_Not one answer: every possible answer, side by side._
 
 ::: {.columns}
-::: {.column width="50%"}
-**The bag:** 10 possible answers
-
-```{r stones, opts.label = "half_short"}
-stones_plot()
+::: {.column width="55%"}
+```{r reading, opts.label = "half"}
+reading_plot()
 ```
 :::
 
-::: {.column width="50%"}
-**The mayor:** 101 possible answers
-
-```{r share, opts.label = "half_short"}
-share_plot()
-```
+::: {.column width="45%"}
+- **Along the bottom:** the values θ could take, from 0% to 100% in steps of 5.
+- **Up the side:** how plausible each value is, _compared with the others_. The height
+  has no units. Only the comparisons matter.
+- Here, [40%]{.orange} is about `r fmt(reading_ratio(0.4, 0.2), 0)` times as plausible as
+  [20%]{.orange}, and about `r fmt(reading_ratio(0.4, 0.7), 0)` times as plausible as
+  [70%]{.orange}.
+- The [prior]{.red}, the [likelihood]{.blue} and the [posterior]{.green} are all maps
+  like this one.
 :::
 :::
 
-- Along the bottom: every possible answer. Up the side: how plausible each one is.
-- Same counting, finer steps: we asked 3 voters, and 2 said "mayor". With 101 answers,
-  the points join up into a curve. Next week we'll call this a **distribution**.
+::: {.source}
+Like the bag of stones, with 21 possible answers instead of 10. Next week: much more on
+this.
+:::
 
 ## Step 1: The prior {notes="notes/week1_notes.md#poll-prior"}
 

@@ -219,30 +219,39 @@ check_stated_numbers <- function() {
 }
 
 # ---- Reading the poll graphs (appendix) -------------------------------------------
-# Before the poll widgets: the bag of stones from the updating demo (shiny/updating.R)
-# next to the mayor's share, after the same three observations (blue, black, blue; or
-# "mayor", not, "mayor"). The same counting gives the same shape: 10 possible answers
-# become 101, and the points join up into a curve.
+# Before the poll widgets: what every curve on them shows. One spike for each of the 21
+# values of the mayor's share that Step 1's prior is drawn at (0%, 5%, ..., 100%), as
+# tall as that value is plausible compared with the others; the curve runs through
+# their tops. Three are picked out to compare.
 
-reading_plot <- function(answers, x_label, points = TRUE) {
-  share <- answers / max(answers)
-  belief <- tibble(answer = answers, plausibility = share^2 * (1 - share))
-  ggplot(belief, aes(answer, plausibility)) +
-    geom_area(fill = tint(GREEN, 0.12)) +
-    geom_line(color = GREEN, linewidth = 1.6) +
-    (if (points) geom_point(color = GREEN, size = 4)) +
-    scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
-    labs(x = x_label, y = "Plausibility") +
+READING_MARKS <- c(0.2, 0.4, 0.7)
+
+# An example belief, peaking near 40%; the values to compare, with their heights
+plausibility <- function(theta) theta^4 * (1 - theta)^6
+
+reading_ratio <- function(a, b) plausibility(a) / plausibility(b)
+
+reading_plot <- function(marks = READING_MARKS) {
+  values <- tibble(theta = seq(0, 1, 0.05), height = plausibility(theta))
+  curve <- tibble(theta = seq(0, 1, 0.005), height = plausibility(theta))
+  # Labels clear of the curve: beside a point on a slope, above the one at the peak
+  peak <- marks == marks[which.max(plausibility(marks))]
+  picked <- tibble(
+    theta = marks, height = plausibility(marks),
+    hjust = ifelse(peak, 0.5, ifelse(marks < marks[peak], 1.4, -0.4)),
+    vjust = ifelse(peak, -1, 0.5)
+  )
+  ggplot(values, aes(theta, height)) +
+    geom_line(data = curve, color = tint(INK, 0.6), linewidth = 1.2) +
+    geom_segment(aes(xend = theta, yend = 0), color = INK, linewidth = 1.4) +
+    geom_point(color = INK, size = 3) +
+    geom_segment(data = picked, aes(xend = theta, yend = 0), color = ORANGE, linewidth = 2) +
+    geom_point(data = picked, color = ORANGE, size = 5) +
+    geom_text(data = picked, aes(label = pct(theta), hjust = hjust, vjust = vjust),
+              size = 7, fontface = "bold", color = ORANGE) +
+    scale_x_continuous(labels = scales::percent, breaks = seq(0, 1, 0.2)) +
+    scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+    labs(x = "θ, the mayor's share of the vote", y = "Plausibility") +
     theme(axis.text.y = element_blank(), panel.grid.major.y = element_blank(),
           panel.grid.minor = element_blank())
-}
-
-stones_plot <- function() {
-  reading_plot(0:9, "Blue stones in the bag (of 9)") +
-    scale_x_continuous(breaks = 0:9)
-}
-
-share_plot <- function() {
-  reading_plot(0:100, "Percent of voters for the mayor", points = FALSE) +
-    scale_x_continuous(breaks = seq(0, 100, 20))
 }

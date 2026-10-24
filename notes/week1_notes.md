@@ -238,6 +238,7 @@ For those interested in math, I definitely encourage you to where the theorem co
 # Numbers don't speak for themselves {#objective-subjective}
 
 - Read the quote. Students will have heard it, and some will half believe it.
+- Click: the Spider-Men. Let the laugh happen. Both camps have said this about the other, and both are a little right, which is the point of the table that comes next.
 - Both kinds of work have an observational part and an inferential part. We can call the observation "objective" if we want: the survey responses are what they are, just like the interview transcript is what it is.
 - The first thing in the quantitative row is today's lecture: even a perfect measurement is one draw, and deciding that a pattern isn't just chance is an inference, not an observation. The rest of the row is the rest of the course.
 - Some inferences are almost mechanical. But the interesting ones, about causes, about people we didn't observe, about what would happen if, are always built on strong assumptions: what causes what, how the data were generated, which priors are reasonable. Those are as subjective as the ethnographer's assumptions about what people meant. A number only tells us something against a background of what we expected.
@@ -267,11 +268,13 @@ For those interested in math, I definitely encourage you to where the theorem co
 
 # Reading these graphs {#poll-graphs}
 
-- Every graph from here on has the same shape as the bag-of-stones demo, so start there: three draws, blue, black, blue.
-- Left: the 10 possible bags, 0 to 9 blue stones. Each point is how plausible that bag is, after counting the ways it could have produced blue, black, blue. A bag with no blue stones, or no black ones, couldn't have, so it's at zero.
-- Right: the mayor's share has 101 possible answers instead of 10 (0%, 1%, …, 100%). Same counting, with three voters: two said "mayor", one didn't. Same shape; the points are so close together they join up into a curve.
-- How to read any of them: the possible answers along the bottom, how plausible each one is up the side. Higher means more plausible. The height itself doesn't matter, only the shape.
-- Name it, lightly: this is a distribution, the subject of Week 2. No need to define it more today.
+- One idea on this slide, and it's the one that disorients people at first: these graphs don't show an answer. They show every possible answer at once, each compared with the others.
+- Point at the spikes. There's one for each value of the mayor's share in steps of 5: 0%, 5%, 10%, all the way to 100%. These are the same 21 points they'll drag on Step 1, and the same 21 rows in its table. Each spike's height is how plausible that value is; the curve runs through their tops.
+- If someone asks about 37%: the real share can be anything in between. Twenty-one points are enough to draw a shape, and Steps 2 and 3 fill in the values between them when they calculate.
+- The height has no units, and the actual numbers don't matter. What matters is how the heights compare: 40% is about 3 times as plausible as 20%, and about 7 times as plausible as 70%. Rescale the whole graph and nothing changes.
+- The prior, the likelihood and the posterior are all drawn this way. They're the same kind of map, the relative plausibility of every value, built from different things: what we believed before, what the survey says, and both together.
+- Students have seen this already: the bag of stones had 10 possible answers, one point each. Here there are 21.
+- Don't define "distribution" yet. Week 2 is all about it; today they just need to read the picture.
 
 # Step 1: The prior {#poll-prior}
 

@@ -647,6 +647,82 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   margin-top: 1em;
 }
 
+/* A meme with its captions as text over the image, in the classic style: white capitals
+   with a dark outline. Each meme places its captions (week 1's Spider-Man,
+   _includes/week1/spiderman-meme.md). */
+
+/* A meme that pops up for one click and then gives way to what follows: it floats just
+   below the content above it, over the space the next items will fill, without taking
+   any room itself. Wrap its .fragment.fade-in-then-out in a .meme-anchor div. */
+.reveal .slides .meme-anchor {
+  position: relative;
+  height: 0;
+
+  .meme {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+}
+
+.reveal .slides .meme {
+  position: relative;
+  display: inline-block;
+
+  img {
+    display: block;
+    margin: 0;
+    max-width: none;
+    max-height: none;
+  }
+
+  .meme-text {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    font-family: Impact, "Arial Narrow Bold", sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: white;
+    text-shadow:
+      2px 2px 0 $brand-ink, -2px 2px 0 $brand-ink, 2px -2px 0 $brand-ink,
+      -2px -2px 0 $brand-ink, 0 2px 0 $brand-ink, 0 -2px 0 $brand-ink,
+      2px 0 0 $brand-ink, -2px 0 0 $brand-ink;
+
+    em {
+      margin-right: 0.2em; /* italic capitals lean into the next word */
+    }
+  }
+}
+
+.reveal .slides .spiderman-meme {
+  img {
+    height: 560px;
+  }
+
+  .meme-text {
+    font-size: 46pt;
+  }
+
+  .meme-left {
+    left: 27%;
+    top: 50%;
+  }
+
+  .meme-right {
+    left: 74%;
+    top: 50%;
+  }
+
+  .meme-bottom {
+    left: 50%;
+    top: 88%;
+    font-size: 42pt;
+  }
+}
+
 /* Week 1's opening slide: the capybara and "...and that's okay." stand on the bottom
    edge of the Ioannidis article. They're placed against the article image, not the
    slide, so they stay flush with it whatever the title height or slide size. */
