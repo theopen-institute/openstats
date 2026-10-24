@@ -63,3 +63,17 @@ export function drawPercentAxes(ctx, pr, dpr, { xLabel, yTicks = [], yToCanvas }
 
   ctx.restore();
 }
+
+// The y axis's label, running up the axis in muted gray, `gap` (in CSS px) to the left
+// of the plot
+export function drawYLabel(ctx, pr, dpr, text, gap = 8) {
+  ctx.save();
+  ctx.fillStyle = brand('gray');
+  ctx.font = font(12, dpr);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.translate(pr.x - gap * dpr, pr.y + pr.h / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText(text, 0, 0);
+  ctx.restore();
+}

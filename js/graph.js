@@ -14,17 +14,19 @@
 // beyond them) where they are until the dragged point passes them. The same, mirrored,
 // when pulling a point down.
 import { brand } from './palette.js';
-import { clearCanvas, drawPercentAxes } from './canvas-axes.js';
+import { clearCanvas, drawPercentAxes, drawYLabel } from './canvas-axes.js';
+import { smoothCurve } from './smooth.js';
 
 export class LineGraphWidget {
   constructor({
     container, yValues, onChange, count = 21, xLabel = "Percent of Voters", falloff = 0,
-    color = brand("blue"),
+    color = brand("blue"), yLabel = "Relative plausibility",
   } = {}) {
     if (!container) throw new Error("LineGraphWidget: container is required");
     this.container = container;
     this.onChange = typeof onChange === "function" ? onChange : null;
     this.xLabel = xLabel;
+    this.yLabel = yLabel;
     this.falloff = falloff;
     this.color = color;
 
@@ -35,7 +37,7 @@ export class LineGraphWidget {
     this.yMin = 0;
     this.yMax = 100;
 
-    this.padding = { left: 44, right: 16, top: 16, bottom: 46 };
+    this.padding = { left: 64, right: 16, top: 16, bottom: 46 }; // room for y ticks and label
     this.pointRadius = 7; // slightly bigger for touch
     this.hitRadius = 18;  // touch-friendly hit area
 
@@ -360,6 +362,7 @@ export class LineGraphWidget {
       yTicks,
       yToCanvas: (y) => this._valueToCanvasY(y),
     });
+    drawYLabel(this.ctx, this._plotRect(), this.dpr, this.yLabel, 44); // clear of the tick labels
     this._drawLineAndPoints();
   }
 
@@ -370,12 +373,15 @@ export class LineGraphWidget {
     ctx.strokeStyle = this.color;
     ctx.lineWidth = 2 * this.dpr;
 
+    // A smooth curve through the points (smooth.js), the same one later slides use
+    const curve = smoothCurve(this.yValues);
+    const SUBSTEPS = 12; // drawn segments between neighboring points
     ctx.beginPath();
-    for (let i = 0; i < this.count; i++) {
-      const xVal = i * this.step;
-      const x = this._valueToCanvasX(xVal);
-      const y = this._valueToCanvasY(this.yValues[i]);
-      if (i === 0) ctx.moveTo(x, y);
+    for (let j = 0; j <= (this.count - 1) * SUBSTEPS; j++) {
+      const p = j / SUBSTEPS; // in points
+      const x = this._valueToCanvasX(p * this.step);
+      const y = this._valueToCanvasY(this._clamp(curve(p), this.yMin, this.yMax));
+      if (j === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     }
     ctx.stroke();

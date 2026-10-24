@@ -3,13 +3,17 @@
 // _includes/week1/poll-answer.md.
 import { PosteriorPlot } from './posterior.js';
 import { POLL_EVENTS, loadPrior, loadSurvey } from './poll-store.js';
-import { chance, density, majority, prob, update, xs } from './poll-math.js';
+import { density, majority, pct, prob, update, xs } from './poll-math.js';
 import { brand, withAlpha } from './palette.js';
 import { tweenText } from './tween.js';
 
 const $ = (id) => document.getElementById(id);
 const graphEl = $('poll-answer-graph');
 const GREEN = brand('green');
+
+// How sure, in words: "about 13% sure", or "less than 1% sure" at the extremes
+const sure = (p) => (p < 0.01 ? 'less than 1% sure' : p > 0.99 ? 'more than 99% sure'
+  : `about ${pct(p)} sure`);
 
 if (graphEl && !graphEl.dataset.initialized) {
   graphEl.dataset.initialized = 'true';
@@ -19,15 +23,17 @@ if (graphEl && !graphEl.dataset.initialized) {
     const { prior, post } = update(loadPrior(), loadSurvey());
     tweenText($('poll-answer-prior'), prior && majority(prior), prob);
     tweenText($('poll-answer-post'), post && majority(post), prob);
-    tweenText($('poll-answer-chance'), post && majority(post),
-      (p) => `Not a yes or no, but ${chance(p)} of a majority.`);
+    tweenText($('poll-answer-chance'), post && majority(post), (p) => `So we're ${sure(p)} the mayor will get a majority.`);
 
     const ys = density(post);
+    const half = xs.findIndex((x) => x >= 0.5); // the grid has a point at exactly 50%
     plot.setSeries([
-      { label: 'Posterior', color: GREEN, xs, ys, fill: withAlpha(GREEN, 0.12) },
-      // the share above 50%, shaded darker
-      { color: GREEN, xs, ys: ys.map((y, i) => (xs[i] >= 0.5 ? y : 0)),
-        fill: withAlpha(GREEN, 0.5), line: false },
+      // the posterior was on Step 3, so it's simply there; the shading grows in
+      { label: 'Posterior', color: GREEN, xs, ys, fill: withAlpha(GREEN, 0.12), grow: false },
+      // the share above 50%, shaded darker, scaled like the whole posterior. Only the
+      // part from 50% up, so its edge is a straight vertical line at 50%.
+      { color: GREEN, xs: xs.slice(half), ys: ys.slice(half),
+        fill: withAlpha(GREEN, 0.5), line: false, peak: Math.max(...ys) },
     ]);
   }
 

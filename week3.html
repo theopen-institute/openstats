@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-477a0965a884cbdef8563c3e49af2b88.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-19626c201fe31ee98fbd828e29018e95.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -1758,7 +1758,7 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -2069,6 +2069,59 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
         } else {
           document.addEventListener("DOMContentLoaded", addControls);
         }
+      })();
+    </script>
+
+    <script>
+      // Slide titles stay on one line: a title that would wrap is shrunk until it fits, but
+      // never below MIN of its usual size (a longer one wraps as before). Measured on each
+      // slide as it's shown, since hidden slides have no size, and again on resize.
+      (function () {
+        const MIN = 0.75;
+        const titles = (slide) => slide.querySelectorAll(":scope > h1:first-child, :scope > h2:first-child");
+
+        function fit(h) {
+          if (!h.clientWidth) return; // not laid out yet
+          h.style.fontSize = "";
+          h.style.whiteSpace = "nowrap";
+          const base = parseFloat(getComputedStyle(h).fontSize);
+          if (h.scrollWidth <= h.clientWidth) return;
+          const size = Math.max(MIN * base, (base * h.clientWidth) / h.scrollWidth);
+          h.style.fontSize = `${Math.floor(size)}px`;
+          if (h.scrollWidth > h.clientWidth) h.style.whiteSpace = ""; // too long: let it wrap
+        }
+
+        function fitCurrent() {
+          const slide = Reveal.getCurrentSlide();
+          if (slide) titles(slide).forEach(fit);
+        }
+
+        function start() {
+          (document.fonts ? document.fonts.ready : Promise.resolve()).then(fitCurrent);
+          Reveal.on("slidechanged", fitCurrent);
+          Reveal.on("resize", fitCurrent);
+        }
+
+        if (window.Reveal) Reveal.on("ready", start);
+      })();
+    </script>
+
+    <script>
+      // Mechanics slides fade into (and out of) their blueprint backdrop. The blueprint is
+      // applied by a class (css/deck.scss), so to reveal every slide's background looks the
+      // same, and it skips the fade between identical backgrounds. Giving mechanics slides
+      // their own data-background-transition makes their backgrounds count as different.
+      (function () {
+        function markMechanics() {
+          let changed = false;
+          document.querySelectorAll(".reveal .slides section.mechanics").forEach((s) => {
+            if (s.hasAttribute("data-background-transition")) return;
+            s.setAttribute("data-background-transition", "fade");
+            changed = true;
+          });
+          if (changed) Reveal.sync();
+        }
+        if (window.Reveal) Reveal.on("ready", markMechanics);
       })();
     </script>
     

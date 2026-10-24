@@ -44,8 +44,12 @@ if (graphEl && !graphEl.dataset.initialized) {
     $('poll-carry').disabled = !post;
 
     plot.setSeries([
-      { label: 'Prior', color: colors.prior, xs, ys: density(prior) },
-      { label: 'Likelihood', color: colors.likelihood, xs, ys: density(lik), dash: [8, 6] },
+      // prior and likelihood were on Step 2, so they're simply there; the posterior is new
+      { label: 'Prior', color: colors.prior, xs, ys: density(prior), grow: false },
+      {
+        label: 'Likelihood', color: colors.likelihood, xs, ys: density(lik), dash: [8, 6],
+        grow: false,
+      },
       {
         label: 'Posterior', color: colors.posterior, xs, ys: density(post),
         fill: withAlpha(colors.posterior, 0.12),

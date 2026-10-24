@@ -1,23 +1,35 @@
 import { brand } from './palette.js';
-import { clearCanvas, drawPercentAxes, font } from './canvas-axes.js';
-import { animate, onCurrentSlide, whenShown } from './tween.js';
+import { clearCanvas, drawPercentAxes, drawYLabel, font } from './canvas-axes.js';
+import { animate, onArrival, onCurrentSlide } from './tween.js';
 
 // Read-only canvas plot of one or more curves over x in [0, 1], used to show
 // prior, likelihood and posterior together. Styled to match LineGraphWidget.
 //
-// Changes are animated: each curve, and the height of the y axis, eases from what's on
-// screen to the new values. A plot changed while its slide is hidden waits, and
-// animates when the slide comes into view; the first time, its curves grow from zero.
+// Each curve is scaled to its own peak, so they all reach the same height and only
+// their shapes compare: a prior keeps its shape however tall or flat the posterior
+// next to it gets. (Their heights aren't comparable across curves, and the y axis says
+// so.) A series can give `peak` to be scaled by something else, e.g. a shaded part of
+// another curve scaled like the whole curve.
+//
+// Changes are animated. Each time its slide is activated, a plot starts with the curves
+// students already saw on an earlier slide (marked `grow: false`) in place, drawn the
+// moment the slide starts coming in, and grows the new curves from zero once the slide
+// has landed. Changes made on the slide itself (a slider, say) ease each curve from
+// what's on screen to its new shape.
+const Y_MAX = 1.08; // every curve peaks at 1, a little below the top
+
 export class PosteriorPlot {
-  constructor({ container, xLabel = "Percent of Voters", yLabel = "Plausibility" } = {}) {
+  constructor({
+    container, xLabel = "Percent of Voters",
+    yLabel = "Relative plausibility (each curve scaled to its peak)",
+  } = {}) {
     if (!container) throw new Error("PosteriorPlot: container is required");
     this.container = container;
     this.xLabel = xLabel;
     this.yLabel = yLabel;
     this.series = []; // the curves to show
     this._shown = null; // the curves on screen now, partway through a transition
-    this._shownMax = null;
-    this._pending = false; // changed while hidden
+    this._arriving = false; // between the slide starting to come in and landing
     this._cancel = () => {};
 
     this.padding = { left: 24, right: 16, top: 16, bottom: 46 };
@@ -35,8 +47,17 @@ export class PosteriorPlot {
     this._resizeObserver.observe(container);
 
     this._onResize();
-    whenShown(container, () => {
-      if (this._pending) this._transition();
+    onArrival(container, {
+      // familiar curves in place, new ones flat, before the slide slides in
+      starting: () => {
+        this._arriving = true;
+        this._showStart();
+      },
+      // then grow the new ones
+      arrived: () => {
+        this._arriving = false;
+        this._transition();
+      },
     });
   }
 
@@ -46,12 +67,14 @@ export class PosteriorPlot {
     this.canvas.remove();
   }
 
-  // series: [{ label, color, xs, ys, dash?: number[], fill?: string, line?: false }]
-  // (line: false draws only the fill, e.g. to shade part of another curve)
+  // series: [{ label, color, xs, ys, dash?: number[], fill?: string, line?: false,
+  //   peak?: number, grow?: false }]
+  // (line: false draws only the fill, e.g. to shade part of another curve; peak is what
+  // to scale the curve by, its own highest value unless given)
   setSeries(series) {
     this.series = Array.isArray(series) ? series : [];
-    this._pending = true;
-    if (onCurrentSlide(this.container)) this._transition();
+    if (onCurrentSlide(this.container) && !this._arriving) this._transition();
+    else this._showStart(); // ready for the next time the slide comes in
   }
 
   // -------- internal --------
@@ -76,32 +99,39 @@ export class PosteriorPlot {
     };
   }
 
-  _yMax() {
-    let m = 0;
-    for (const s of this.series) {
-      for (const y of s.ys) if (Number.isFinite(y) && y > m) m = y;
-    }
-    return m > 0 ? m * 1.08 : 1;
+  // A curve's heights as a share of its peak (0 to 1)
+  static _scaled(s) {
+    const ys = s.ys.map((y) => (Number.isFinite(y) ? y : 0));
+    const peak = s.peak ?? Math.max(0, ...ys);
+    return peak > 0 ? ys.map((y) => y / peak) : ys.map(() => 0);
+  }
+
+  // Where a plot starts each time its slide comes in: curves with grow: false at their
+  // final shape, the others flat
+  _showStart() {
+    this._cancel();
+    this._shown = this.series.map((s) => {
+      const ys = PosteriorPlot._scaled(s);
+      return { ...s, ys: s.grow === false ? ys : ys.map(() => 0) };
+    });
+    this._draw();
   }
 
   // Ease from the curves on screen to this.series. A curve matches the one in the same
-  // position; a new one (or the first time) grows from zero.
+  // position; a new one grows from zero, or with grow: false starts where it ends.
   _transition() {
-    this._pending = false;
     this._cancel();
-    const to = this.series;
-    const toMax = this._yMax();
+    const to = this.series.map((s) => ({ ...s, ys: PosteriorPlot._scaled(s) }));
     const from = to.map((s, i) => {
       const prev = this._shown?.[i]?.ys;
-      return prev && prev.length === s.ys.length ? prev : s.ys.map(() => 0);
+      if (prev && prev.length === s.ys.length) return prev;
+      return s.grow === false ? s.ys : s.ys.map(() => 0);
     });
-    const fromMax = this._shownMax ?? toMax;
     this._cancel = animate((e) => {
       this._shown = to.map((s, i) => ({
         ...s,
-        ys: s.ys.map((y, j) => from[i][j] + ((Number.isFinite(y) ? y : 0) - from[i][j]) * e),
+        ys: s.ys.map((y, j) => from[i][j] + (y - from[i][j]) * e),
       }));
-      this._shownMax = fromMax + (toMax - fromMax) * e;
       this._draw();
     });
   }
@@ -110,7 +140,7 @@ export class PosteriorPlot {
     if (!this.dpr) return;
     clearCanvas(this.canvas, this.ctx);
     this._drawAxesAndGrid();
-    for (const s of this._shown ?? []) this._drawSeries(s, this._shownMax);
+    for (const s of this._shown ?? []) this._drawSeries(s, Y_MAX);
     this._drawLegend();
   }
 
@@ -130,17 +160,10 @@ export class PosteriorPlot {
     ctx.lineTo(pr.x + 0.5 * pr.w, pr.y + pr.h);
     ctx.stroke();
     ctx.setLineDash([]);
+    ctx.restore();
 
     // Y axis is relative (plausibility or likelihood); absolute values aren't shown
-    ctx.fillStyle = brand("ink");
-    ctx.font = font(12, this.dpr);
-    ctx.textAlign = "center";
-    ctx.translate(pr.x - 8 * this.dpr, pr.y + pr.h / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.textBaseline = "bottom";
-    ctx.fillText(this.yLabel, 0, 0);
-
-    ctx.restore();
+    drawYLabel(ctx, pr, this.dpr, this.yLabel);
   }
 
   _drawSeries(s, yMax) {
