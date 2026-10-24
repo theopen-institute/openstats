@@ -20,7 +20,7 @@ Each week is a slide deck. Most weeks have a concepts part and an applied part.
 
 | Week | Topic | What you'll learn |
 |:-----|:------|:------------------|
-| [Week 1](week1.qmd) | A fresh start | Why most published research is false: statistical significance, the base rate paradox, and Bayesian updating. |
+| [Week 1](week1.qmd) | Updating | Why most published research is false: statistical significance, the base rate paradox, and Bayesian updating. |
 | [Week 2](week2.qmd) | Describing data | Probability distributions, z-scores, correlation, and our first regression coefficient. Applied: what makes a house expensive? |
 | [Week 3](week3.qmd) | Causes and DAGs | Drawing what causes what, what "cause" means in statistics, and the workflow from estimand to estimate. Worked example: does sex affect weight? |
 | [Week 4](week4.qmd) | Confounding | The three building blocks of every DAG (fork, pipe, collider), the paradoxes each one creates, and how to decide what to control for. |

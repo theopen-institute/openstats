@@ -40,8 +40,8 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
   - Probability
   - The base rate paradox
   - Statistical significance
-- Understand why most research is wrong (and why that's okay)
-- Discover updating, the one rule for all of statistics
+- Understand why most research is wrong
+- Discover updating, the one rule for all of statistics that makes everything okay
 - Work through an example: election polling
 :::
 
@@ -65,7 +65,7 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 :::
 
 - [If this confuses you, you're not alone. It is deeply unintuitive.]{.fragment fragment-index=2}
-- [We are going to scrap all of this complexity and start over to build something more intuitive.]{.fragment}
+- [We are going to scrap all of this complexity to build something more intuitive.]{.fragment}
 
 
 
@@ -74,7 +74,7 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 _"Will it rain tomorrow?"_ [_"Probably not."_]{.fragment}
 
 ::: {.fragment}
-That word, _probably_, is a probability. It's a way of talking about uncertainty.
+That word — _"probably"_ — is a probability. It's a way of talking about uncertainty.
 :::
 
 ::: {.incremental}
@@ -84,12 +84,12 @@ That word, _probably_, is a probability. It's a way of talking about uncertainty
 :::
 
 ::: {.fragment}
-But what does _"a 31% chance of rain"_ actually mean? 
+So what does _"a 31% chance of rain"_ actually mean? 
 :::
 
 ::: {.incremental}
-- Tomorrow's weather isn't a lottery. Specific physical factors decide it.
-- The day isn't random [...but _**we**_ are uncertain about it.]{.blue} 
+- Tomorrow's weather isn't a lottery. The universe is not random.
+- [...but _**we**_ are uncertain about it.]{.blue} 
 - 31% describes how sure we are about an uncertain fact.
 :::
 
@@ -212,6 +212,13 @@ _We make a probability more specific by adding a condition._
 :::
 
 
+## Direction of conditions {notes="notes/week1_notes.md#direction"}
+
+_Your intuitions about probability are good. They slip in one place: which way the
+condition runs._ P(A|B) is not the same as P(B|A).
+
+{{< include _includes/week1/cond-table.md >}}
+
 ## Conditional risk {notes="notes/week1_notes.md#conditional-risk"}
 
 ![](images/week1/conditional_risk.png){fig-align="center" height="800px"}
@@ -234,7 +241,8 @@ _Hands up if you had tea this morning._
 :::
 
 ::: {.fragment}
-Every prediction makes assumptions.<br />[(Interesting predictions make big assumptions.) ![](images/week1/success-kid.jpg){.reaction}]{.blue .fragment}
+Every prediction makes assumptions.\
+[(Interesting predictions make big assumptions.) ![](images/week1/success-kid.jpg){.reaction}]{.blue .fragment}
 :::
 
 # Probability for Decision Making {notes="notes/week1_notes.md#applied-probability"}
@@ -258,40 +266,46 @@ With statistical tests and predictions, we talk about two kinds of accuracy:
   - P( test– | HIV– ) = **0.97** (true negative)
 :::
 
-## Prediction for Decision Making {notes="notes/week1_notes.md#base-rate"}
-
-- Sensitivity P( test+ | HIV+ ): 99%
-- Specificity P( test– | HIV– ): 97%
-
-::: {.fragment fragment-index=0}
-But there's something strange here...[they assume exactly what we want to know.]{.fragment fragment-index=1 .blue}
+::: {.fragment}
+But there's something strange here...
 :::
 
-::: {.fragment fragment-index=2}
-The real question is usually P( HIV+ | test+): [🚨👉 3.2% 👈🚨]{.fragment fragment-index=3 .red}
+::: {.fragment .blue}
+If we already knew whether someone has HIV, there'd be no point testing them.
+:::
+
+::: {.fragment}
+The real question is almost always P( HIV+ | test+ ):
+:::
+
+::: {.fragment .fade-up}
+::: {.stat-reveal}
+[3.2%]{.stat-number}
+[[in a random screening, only]{.stat-caption .stat-before} [of positive tests will be accurate]{.stat-caption}]{.stat-captions .fragment}
+:::
+:::
+
+## What a positive test means {notes="notes/week1_notes.md#base-rate"}
+
+_Where does 3.2% come from? Count 100,000 people._
+
+::: {.fragment fragment-index=1}
+
+|[(100,000 people)]{.fragment fragment-index=2 .blue} | Test+ | Test– |
+|----------|------------------------------------------------------------------|-------------------------------------------------------------------|
+| **HIV+**<br>[(0.1%&nbsp;=&nbsp;100)]{.fragment fragment-index=2 .blue} | P( Test+ \| HIV+ ): **99%**<br>_Sensitivity (True Positive)_<br>[**99**]{.fragment fragment-index=3 .blue} | P( Test– \| HIV+ ): **1%**<br>_Type II Error (False Negative)_<br>[**1**]{.fragment fragment-index=3} |
+| **HIV–**<br>[(99.9%&nbsp;=&nbsp;99,900)]{.fragment fragment-index=2 .blue} | P( Test+ \| HIV– ): **3%**<br>_Type I Error (False Positive)_<br>[**2,997**]{.fragment fragment-index=3 .red} | P( Test– \| HIV– ): **97%**<br>_Specificity (True Negative)_<br>[**96,903**]{.fragment fragment-index=3} |
 :::
 
 ::: {.fragment fragment-index=4}
-
-|[(pop: 100,000)]{.fragment fragment-index=5 .blue}           | Test+                                                            | Test–                                                             |
-|----------|------------------------------------------------------------------|-------------------------------------------------------------------|
-| **HIV+**<br>[(0.1%&nbsp;=&nbsp;100)]{.fragment fragment-index=5 .blue}| P( Test+ \| HIV+ ): **99%**<br>_Sensitivity (True Positive)_<br>[(99)]{.fragment fragment-index=6 .blue}| P( Test– \| HIV+ ): **1%**<br>_Type II Error (False Negative)_<br>[(1)]{.fragment fragment-index=6 .blue}|
-| **HIV–**<br>[(99.9%&nbsp;=&nbsp;99,900)]{.fragment fragment-index=5 .blue} | P( Test+ \| HIV– ): **3%**<br>_Type I Error (False Positive)_<br>[(2,997)]{.fragment fragment-index=6 .blue}| P( Test– \| HIV– ): **97%**<br>_Specificity (True Negative)_<br>[(96,903)]{.fragment fragment-index=6 .blue}|
+P( HIV+ | test+ ) = [**3.2%**]{.red}
 :::
 
-::: {.fragment fragment-index=7}
-[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests, and the people who get tested aren't randomly selected.]{.source}
+::: {.fragment fragment-index=4}
+[Historical figures for older screening tests. Modern tests reach about 99.8% specificity, which still gives P( HIV+ | test+ ) of only about 33%. In practice, a positive screen is always confirmed with further tests.]{.source}
 :::
 
-## Direction of conditions {notes="notes/week1_notes.md#direction"}
-
-_Your intuitions about probability are good. They slip in one place: which way the
-condition runs._ P(A|B) is not the same as P(B|A).
-
-{{< include _includes/week1/cond-table.md >}}
-
-
-# The base rate paradox {notes="notes/week1_notes.md#base-rate-paradox"}
+## The base rate paradox {notes="notes/week1_notes.md#base-rate-paradox"}
 
 _If something is rare, most positive results are false, even from an "accurate" test._
 
@@ -318,7 +332,7 @@ base_rate_plot(
 :::
 
 ::: {.column width="42%"}
-1,000 people get tested at random. Only [1 person has HIV]{.blue}. The test identifies them. 
+1,000 people get tested at random. Only [1 person has HIV]{.blue}. The test identifies them.
 
 ::: {.fragment fragment-index=1}
 It also flags [30 people who don't have HIV]{.red}.
@@ -333,97 +347,40 @@ Only 1 is real.
 :::
 :::
 
-## Base Rate Paradox Demo {.no-title}
+## Base Rate Paradox Demo {.no-title notes="notes/week1_notes.md#baserate-demo"}
 ```{shinylive-r}
 #| standalone: true
 {{< include shiny/baserate.R >}}
 ```
 
-
-
-# Statistical significance (revisited) {notes="notes/week1_notes.md#statistical-significance-revisited"}
-
-Let's look at that quote again:
-
-> A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=1 .highlight-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=2 .highlight-blue} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
-
-{{< include _includes/week1/significance-direction.md >}}
-
-
-## The problem with p-values {notes="notes/week1_notes.md#pvalue-direction"}
-
-If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}. Significance testing imagines the world [backwards]{.red} from our intuitions.
+## Does this mean tests are useless? {notes="notes/week1_notes.md#who-gets-tested"}
 
 ::: {.fragment fragment-index=1}
-
-|  | Starts from | Asks |
-|---|---|---|
-| [**How&nbsp;we&nbsp;observe**]{.fragment fragment-index=2} | [what we [saw]{.blue}]{.fragment fragment-index=2} | [_"What does this tell me about the [world]{.green}?"_]{.fragment fragment-index=2} |
-| [**A&nbsp;significance&nbsp;test**]{.fragment fragment-index=3} | [an [imagined world]{.red} with nothing going on]{.fragment fragment-index=3} | [_"How surprising would my [data]{.blue} be there?"_]{.fragment fragment-index=3} |
+_Not at all, because they're not administered randomly._
 :::
 
-::: {.incremental}
-- A p-value doesn't tell you if a hypothesis is true. It tells you how unlikely this data would be if the null hypothesis were true.
-- Those aren't the same thing. P(A|B) ≠ P(B|A)
-:::
+::: {.fragment fragment-index=2}
+| Who's being tested | Prevalence of HIV | Chance a positive is real |
+|---|--:|--:|
+| Everyone, tested at random | 0.1% | **3%** |
+| [A group with higher risk]{.fragment fragment-index=3} | [1%]{.fragment fragment-index=3} | [**25%**]{.fragment fragment-index=3} |
+| [A group with even higher risk]{.fragment fragment-index=4} | [10%]{.fragment fragment-index=4} | [**79%**]{.fragment fragment-index=4} |
 
-::: {.fragment .blue}
-Statistical significance works the opposite way that our intuitions do.
-:::
-
-
-# Bayesian Updating
-
-## Bayesian Updating: What it is not
-![*Statistical Rethinking*, p.2 (Richard McElreath, 2020)](images/week1/mcelreath-2.png){fig-align="center" width="100%"}
-
-## Bayesian Updating: What it is {notes="notes/week1_notes.md#bayesian-updating"}
-
-Instead of a flowchart of tests, updating is [**one rule for all of statistics**]{.blue}:
-
-[**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
-
-::: {.incremental}
-- [**Prior**]{.red}: what we believed _before_ the new data
-- [**Likelihood**]{.blue}: for _each_ possible answer, how expected were the data we saw?
-- [**Posterior**]{.green}: what we believe _now_, with the new data taken into account
-:::
-
-::: {.fragment .callout-tip title="Example (made up): will the mayor win?"}
-::: {.incremental}
-- [**Prior**]{.red}: _"The mayor got 60% last time, so I think about 60% will vote for
-  the mayor again."_
-- [**Likelihood**]{.blue}: _"Only 20% of my small survey said they'll vote for the mayor. That would be surprising if the mayor's true support were 60%, but quite likely if it were around 20–30%."_
-- [**Posterior**]{.green}: _"I now think about 45% of people will vote for the mayor."_
-:::
-::: {.fragment }
-Our posterior then becomes our prior for future observations.
+::: {.source .fragment fragment-index=3}
+Every row uses the same test: 99% sensitivity, 97% specificity.
 :::
 :::
 
 
-## Bayesian Updating Example {.no-title}
-```{shinylive-r}
-#| standalone: true
-{{< include shiny/updating.R >}}
-```
-
-
-## Bayes' theorem {.mechanics notes="notes/week1_notes.md#bayes-theorem"}
-
-_All of statistics in one formula._
-
-{{< include _includes/week1/bayes-steps.md >}}
-
-- [[**P( belief )**]{.red}: the **prior**. What we believed before.]{.fragment fragment-index=2}
-- [[**P( data | belief )**]{.blue}: the **likelihood**. How likely the data are, if the belief is true.]{.fragment fragment-index=3}
-- [[**P( belief | data )**]{.green}: the **posterior**. What we believe now.]{.fragment fragment-index=4}
-- [[**P( data )**]{.gray}: Rescales total possibilities to 100%. (Usually not interesting)]{.fragment fragment-index=5}
+::: {.fragment fragment-index=5}
+Results are meaningful only relative to [what we already know]{.red}.
+:::
 
 ::: {.fragment fragment-index=6}
-Conceptually:
-[**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
+Same test, same result: [3% accurate for one person, 79% for another]{.blue}.
 :::
+
+
 
 
 # So why is most published research wrong? {notes="notes/week1_notes.md#why-research-wrong"}
@@ -470,7 +427,7 @@ Only 8 are real.
 :::
 :::
 
-## How far can we trust data? {.mechanics .smaller notes="notes/week1_notes.md#research-math"}
+## Types of research, by the numbers {.mechanics .smaller notes="notes/week1_notes.md#research-math"}
 
 _**Sensitivity**: if the idea is true, what is the chance of getting a significant result._\
 _**Specificity**: if the idea is false, what is the chance of getting a non-significant result._
@@ -488,6 +445,94 @@ _**Specificity**: if the idea is false, what is the chance of getting a non-sign
 ::: {.source}
 In technical terms: sensitivity is **statistical power**, $1 - \beta$. Specificity is
 $1 - \alpha$, where $\alpha$ is the **significance level** (often 5%).
+:::
+
+
+# Statistical significance (revisited) {notes="notes/week1_notes.md#statistical-significance-revisited"}
+
+Let's look at that quote again:
+
+> A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=1 .highlight-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=2 .highlight-blue} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
+
+{{< include _includes/week1/significance-direction.md >}}
+
+::: {.fragment fragment-index=5}
+If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}.
+Significance testing controls something like the HIV test's 3% false-positive rate. That
+number is true, and it still isn't the one we want.
+:::
+
+
+# Bayesian Updating
+
+## Bayesian Updating: What it is not {notes="notes/week1_notes.md#what-it-is-not"}
+![*Statistical Rethinking*, p.2 (Richard McElreath, 2020)](images/week1/mcelreath-2.png){fig-align="center" width="100%"}
+
+## Bayesian Updating: What it is {notes="notes/week1_notes.md#bayesian-updating"}
+
+Instead of a flowchart of tests, updating is [**one rule for all of statistics**]{.blue}:
+
+[**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
+
+::: {.incremental}
+- [**Prior**]{.red}: what we believed _before_ the new data
+- [**Likelihood**]{.blue}: for _each_ possible answer, how expected were the data we saw?
+- [**Posterior**]{.green}: what we believe _now_, with the new data taken into account
+:::
+
+::: {.fragment .callout-tip title="Example: will the mayor win?"}
+::: {.incremental}
+- [**Prior**]{.red}: _"The mayor got 60% of the vote last time, so I think about 60% will vote for them again."_
+- [**Likelihood**]{.blue}: _"In my small survey, only 20% of people said they'll vote for the mayor. That would be surprising if the mayor's true support were 60%, but quite likely if it were around 20–30%."_
+- [**Posterior**]{.green}: _"Based on this new data, I now think it's probably around 40–50%."_
+:::
+::: {.fragment }
+If we decide to gather more data, our posterior becomes the prior for future observations.
+:::
+:::
+
+## You already understand Bayesian updating {notes="notes/week1_notes.md#already-updated"}
+
+_Both of today's examples were updates. We just hadn't named the parts._
+
+|  | The HIV test | 1,000 ideas |
+|---|---|---|
+| [**Prior**]{.red} | Before the test:<br>0.1% chance of HIV | Before the study:<br>1% chance it's true |
+| [[**Likelihood**]{.blue}]{.fragment fragment-index=1} | [Positive:<br>99% if HIV+, 3% if HIV–]{.fragment fragment-index=1} | [Significant:<br>80% if true, 5% if false]{.fragment fragment-index=1} |
+| [[**Posterior**]{.green}]{.fragment fragment-index=2} | [After a positive: 3%]{.fragment fragment-index=2} | [After a significant result: 14%]{.fragment fragment-index=2} |
+| [[**A different prior**]{.red}]{.fragment fragment-index=3} | [Start at 10% → 79%]{.fragment fragment-index=3} | [Start at 10% → 64%]{.fragment fragment-index=3} |
+
+: {tbl-colwidths="[20,40,40]"}
+
+::: {.fragment fragment-index=4}
+Clouds in July? You grab an umbrella. That's updating.
+:::
+
+::: {.fragment fragment-index=5}
+You've updated all your life. Statistics does it out loud, so others can check.
+:::
+
+## Bayesian Updating Example {.no-title notes="notes/week1_notes.md#stones-demo"}
+```{shinylive-r}
+#| standalone: true
+{{< include shiny/updating.R >}}
+```
+
+
+## Bayes' theorem {.mechanics notes="notes/week1_notes.md#bayes-theorem"}
+
+_All of statistics in one formula._
+
+{{< include _includes/week1/bayes-steps.md >}}
+
+- [[**P( belief )**]{.red}: the **prior**. What we believed before.]{.fragment fragment-index=2}
+- [[**P( data | belief )**]{.blue}: the **likelihood**. How likely the data are, if the belief is true.]{.fragment fragment-index=3}
+- [[**P( belief | data )**]{.green}: the **posterior**. What we believe now.]{.fragment fragment-index=4}
+- [[**P( data )**]{.gray}: Rescales total possibilities to 100%. (Usually not interesting)]{.fragment fragment-index=5}
+
+::: {.fragment fragment-index=6}
+Conceptually:
+[**Prior**]{.red} × [**Likelihood**]{.blue} → [**Posterior**]{.green}
 :::
 
 
@@ -537,7 +582,7 @@ It's the debates we have about them.
 
 ::: {.incremental}
 - The observation can be objective. The interpretation never is.
-- Key choices come before the data: what to ask, who to observe, how to assume that the data is generated.
+- Key choices come before the data: _what to ask, who to observe, how to interpret the data._
 - Math won't tell us how to make these choices. Instead, we have to do science.
 :::
 
@@ -575,7 +620,7 @@ _Appendix: we'll work through this together with the TA in our second class._
 
 Let's walk through the simplest possible version of the Bayesian workflow.
 
-- **What we want to know**: θ (theta), the share of voters in a made-up city who will vote for the current mayor.
+- **What we want to know**: θ (theta), the share of voters who will vote for the current mayor.
 - **Background**: in the last election, the mayor got 60% of the vote.
 - **Data**: we survey *n* voters at random, and *k* of them say they will vote for the mayor.
 
@@ -696,6 +741,6 @@ This course draws heavily on the work of Richard McElreath, a statistician worki
   [Statistical Rethinking 2026](https://github.com/rmcelreath/stat_rethinking_2026)
   series on YouTube. Twenty free lectures that follow the book.
 
-## The Bayesian workflow {.smaller .mechanics}
+## The Bayesian workflow {.smaller .mechanics notes="notes/week1_notes.md#workflow"}
 
 {{< include _includes/bayesian-workflow.md >}}

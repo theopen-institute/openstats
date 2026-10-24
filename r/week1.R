@@ -186,13 +186,20 @@ check_stated_numbers <- function() {
   expect(rain, 8 / (5 * 28), 0.06, 2)
 
   # HIV test: prevalence 0.1%, sensitivity 99%, specificity 97%, 100,000 people
-  hiv <- "Probability for Decision Making (continued)"
+  expect("Probability for Decision Making", pct(ppv(0.001, 0.99, 0.03)), 3.2, 1)
+  hiv <- "What a positive test means"
   expect(hiv, pct(ppv(0.001, 0.99, 0.03)), 3.2, 1)
   expect(hiv, 1e5 * 0.001 * 0.99, 99)
   expect(hiv, 1e5 * 0.001 * 0.01, 1)
   expect(hiv, 1e5 * 0.999 * 0.03, 2997)
   expect(hiv, 1e5 * 0.999 * 0.97, 96903)
   expect(hiv, pct(ppv(0.001, 0.99, 0.002)), 33) # modern tests: 99.8% specificity
+
+  # The same test on groups with different shares who have HIV
+  who <- "Does this mean tests are useless?"
+  expect(who, pct(ppv(0.001, 0.99, 0.03)), 3)
+  expect(who, pct(ppv(0.01, 0.99, 0.03)), 25)
+  expect(who, pct(ppv(0.1, 0.99, 0.03)), 79)
 
   # The base rate paradox: the HIV test on 1,000 people (drawn with base_rate_plot())
   paradox <- "The base rate paradox"
@@ -210,12 +217,19 @@ check_stated_numbers <- function() {
   expect(research, 8 + 50, 58)
   # The table of study types: true-idea share, sensitivity, specificity -> chance a
   # discovery is true
-  trust <- "How far can we trust data?"
+  trust <- "Types of research, by the numbers"
   for (row in list(c(0.5, 0.8, 0.95, 94), c(0.5, 0.2, 0.95, 80), c(0.1, 0.8, 0.95, 64),
                    c(0.1, 0.2, 0.95, 31), c(0.01, 0.8, 0.95, 14), c(0.01, 0.2, 0.95, 4),
                    c(0.01, 0.2, 0.8, 1))) {
     expect(trust, pct(ppv(row[1], row[2], 1 - row[3])), row[4])
   }
+
+  # Both examples as updates, then the same evidence from a different prior
+  done <- "You already understand Bayesian updating"
+  expect(done, pct(ppv(0.001, 0.99, 0.03)), 3)
+  expect(done, pct(ppv(0.01, 0.8, 0.05)), 14)
+  expect(done, pct(ppv(0.1, 0.99, 0.03)), 79)
+  expect(done, pct(ppv(0.1, 0.8, 0.05)), 64)
 }
 
 # ---- Reading the poll graphs (appendix) -------------------------------------------

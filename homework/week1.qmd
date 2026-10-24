@@ -33,8 +33,8 @@ Every type comes in **three levels**:
 # T1. Counting outcomes
 
 **Skill.** Probability is counting: count everything that could happen, count the ways
-we care about, and compare. *(Lecture: "Probability is counting", "Counting the ways a
-thing could happen".)*
+we care about, and compare. *(Lecture: "Probability is just counting", "Counting the
+ways a thing could happen".)*
 
 **Parameters.** `n` outcomes or trials, `k` outcomes of interest, the kind of event
 (single draw, repeated coin flips, dice).
@@ -59,7 +59,7 @@ different paths; adding paths for "at least" but leaving out the top case.
 
 **Skill.** A probability is a number from 0 to 1 or a percentage; the two convert by
 moving the decimal point two places. Probabilities can be ordered from impossible to
-certain. *(Lecture: "Describing Probability: Convention 1".)*
+certain. *(Lecture: "Writing it down: 0 to 1".)*
 
 **Parameters.** A count ratio or a probability in one form; for Level 2, a set of 3–5
 events to compare; for Level 3, very small probabilities or complements.
@@ -81,8 +81,9 @@ lottery).
 # T3. Probability notation
 
 **Skill.** Write a statement as P( event ) or P( event | condition ), and see that
-P( A | B ) and P( B | A ) describe different groups. *(Lecture: "Describing
-Probability: Conventions 2 and 3".)*
+P( A | B ) and P( B | A ) describe different groups. *(Lecture: "Writing it
+down: P(event)", "Writing it down: P(event | condition)", "Direction of
+conditions".)*
 
 **Parameters.** A sentence about a share of some group; for Level 3, a pair of
 sentences about the same two things in opposite directions.
@@ -105,8 +106,9 @@ condition; assuming the two directions must be equal.
 # T4. Conditional probability from a table
 
 **Skill.** Read a conditional probability from a table of counts by choosing the right
-denominator, and compute both directions. *(Lecture: "Describing Probability:
-Convention 3" (rain by month), "Direction of conditions" (the urban/rural table).)*
+denominator, and compute both directions. *(Lecture: "Writing it down:
+P(event | condition)" (rain by month), "Direction of conditions" (the urban/rural
+table).)*
 
 **Parameters.** A 2×2 (or 2×*m*) table of counts; which margins are shown; for Level 3,
 partial information to rebuild the table from.
@@ -131,7 +133,8 @@ by symptom and diagnosis.
 **Skill.** When a condition is rare, most positive results can be false even from an
 accurate test. Build a table of counts from prevalence, sensitivity and specificity, and
 find the chance that a positive result is real. *(Lecture: "Probability for Decision
-Making", "The base rate paradox" and its app.)*
+Making", "What a positive test means", "The base rate paradox" and its app, "Does this
+mean tests are useless?")*
 
 **Parameters.** Prevalence (base rate), sensitivity = P( positive | has it ),
 specificity = P( negative | doesn't have it ), population size *N*.
@@ -157,7 +160,7 @@ security, fraud alerts.
 **Skill.** A study is a test of an idea: its sensitivity is the chance it finds a true
 idea, and its specificity is the chance it correctly finds nothing when the idea is
 false. When true ideas are rare, most "discoveries" are false. *(Lecture: "So why is most
-published research wrong?" and the table of study types.)*
+published research wrong?", "Types of research, by the numbers".)*
 
 **Parameters.** Number of ideas tested, share that are true (base rate), sensitivity
 (1 − β, also called power), specificity (1 − α).
@@ -206,7 +209,7 @@ reports.
 
 **Skill.** Find the three parts of Bayesian updating in an everyday story: what we
 believed before, what we observed, and what we believe now. *(Lecture: "Bayesian
-Updating: What it is", "Updating improves our assumptions".)*
+Updating: What it is", "You already understand Bayesian updating".)*
 
 **Parameters.** A story template with a starting belief, an observation and (for
 Levels 1–2) an updated belief; for Level 3, a second observer or a change in the
@@ -256,8 +259,8 @@ share of supporters among a few households.
 
 **Skill.** Separate the observed part of a claim (what was counted, measured or
 recorded) from the interpretation built on it (the assumptions), in both statistical
-and ethnographic work. *(Lecture: "Objective or subjective?", "Doing science", "Science
-is updating".)*
+and ethnographic work. *(Lecture: "Most studies are wrong...", "Numbers don't speak for
+themselves", "The science comes first".)*
 
 **Parameters.** A claim (statistical, ethnographic, or one of each); for Levels 2–3, an
 alternative assumption that would change the conclusion.

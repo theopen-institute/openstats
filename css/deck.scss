@@ -725,6 +725,47 @@ $bp-orange: mix($brand-orange, white, 70%);
   margin-top: 1em;
 }
 
+/* One number revealed on its own, centered, with what it means beside it on one line,
+   sharing its baseline (week 1, "Probability for Decision Making": the 3.2%). The two
+   spans arrive wrapped in one <p>, so that's the flex row. */
+.stat-reveal > p {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.4em;
+  margin-top: 0.2em;
+  white-space: nowrap;
+}
+
+.stat-reveal .stat-number {
+  font-family: $headingFont;
+  font-size: 260%;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: $brand-red;
+}
+
+/* Captions on both sides of the number that build in together, after it: one fragment
+   holds both. display: contents makes them flex items of the row, so .stat-before can
+   move to the left of the number. Reveal hides a fragment with visibility, which the
+   captions inherit, and fades it with opacity, which they don't, so they fade here. */
+.stat-reveal .stat-captions {
+  display: contents;
+
+  > * {
+    transition: opacity 0.2s ease;
+  }
+
+  &:not(.visible) > * {
+    opacity: 0;
+  }
+}
+
+.stat-reveal .stat-before {
+  order: -1;
+}
+
 /* "Statistical significance (revisited)": two conditional probabilities side by side,
    each part labelled underneath (_includes/week1/significance-direction.md). Labels
    hang below their word without changing the formula's spacing. */
