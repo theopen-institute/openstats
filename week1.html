@@ -1010,14 +1010,14 @@ unintuitive.</p></li>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>HIV+</strong><br><span class="fragment blue" data-fragment-index="6">(0.1%&nbsp;=&nbsp;100)</span></td>
-<td>P( Test+ | HIV+ ): <strong>99%</strong><br><em>Sensitivity (True Positive)</em><br><span class="fragment blue" data-fragment-index="7">(99)</span></td>
-<td>P( Test– | HIV+ ): <strong>1%</strong><br><em>Type II Error (False Negative)</em><br><span class="fragment blue" data-fragment-index="7">(1)</span></td>
+<td><strong>HIV+</strong><br><span class="fragment blue" data-fragment-index="5">(0.1%&nbsp;=&nbsp;100)</span></td>
+<td>P( Test+ | HIV+ ): <strong>99%</strong><br><em>Sensitivity (True Positive)</em><br><span class="fragment blue" data-fragment-index="6">(99)</span></td>
+<td>P( Test– | HIV+ ): <strong>1%</strong><br><em>Type II Error (False Negative)</em><br><span class="fragment blue" data-fragment-index="6">(1)</span></td>
 </tr>
 <tr class="even">
-<td><strong>HIV–</strong><br><span class="fragment blue" data-fragment-index="6">(99.9%&nbsp;=&nbsp;99,900)</span></td>
-<td>P( Test+ | HIV– ): <strong>3%</strong><br><em>Type I Error (False Positive)</em><br><span class="fragment blue" data-fragment-index="7">(2,997)</span></td>
-<td>P( Test– | HIV– ): <strong>97%</strong><br><em>Specificity (True Negative)</em><br><span class="fragment blue" data-fragment-index="7">(96,903)</span></td>
+<td><strong>HIV–</strong><br><span class="fragment blue" data-fragment-index="5">(99.9%&nbsp;=&nbsp;99,900)</span></td>
+<td>P( Test+ | HIV– ): <strong>3%</strong><br><em>Type I Error (False Positive)</em><br><span class="fragment blue" data-fragment-index="6">(2,997)</span></td>
+<td>P( Test– | HIV– ): <strong>97%</strong><br><em>Specificity (True Negative)</em><br><span class="fragment blue" data-fragment-index="6">(96,903)</span></td>
 </tr>
 </tbody>
 </table>
@@ -3042,9 +3042,10 @@ not everyone votes. Post-stratification and turnout models fix that, and
 we’ll build them later. Today the point is the logic of updating.</li>
 <li>The order: how to read the graphs, the three steps on the class’s
 own prior and survey, then one slide that reads the class’s posterior to
-answer the question, and three “What if” slides that change one input at
-a time. The full workflow and the formal model are at the end, for
-anyone who wants them.</li>
+answer the question, “What to try” (three questions to explore), and
+three “What if” slides that answer them, changing one input at a time.
+The full workflow and the formal model are at the end, for anyone who
+wants them.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3435,6 +3436,41 @@ mayor’s.</li>
 </div>
 <script type="module" src="js/poll-answer.js"></script>
 </section>
+<section id="what-to-try" class="slide level2" data-notes="notes/week1_notes.md#poll-try">
+<h2>What to try</h2>
+<aside class="notes">
+<ul>
+<li>This slide sets up the next three. Each question has its own tool: a
+different prior, a different survey size, a different result. Read the
+questions, let students guess, then go to the slides to check.</li>
+<li>Let students drive. Good pairs to compare: a flat vs.&nbsp;a strong prior
+with 20 people, then the same two with 1,000.</li>
+<li>The Step 3 line is for later: carrying the posterior forward and
+adding a second survey shows today’s posterior becoming tomorrow’s
+prior.</li>
+<li>The closing question is the habit we’re building: how much does the
+answer depend on our assumptions (here, the prior)? Answering that
+honestly is what the next three slides make concrete.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Three questions to explore. The next three slides are a tool for each, in this order.</em></p>
+<ul>
+<li><strong>A different prior.</strong> What if we’d started somewhere else, or been more or less sure? How far does the posterior move?</li>
+<li><strong>More (or fewer) people.</strong> Keep the result at 20% but ask 5 people, or 1,000. What happens to the prior’s influence?</li>
+<li><strong>A different result.</strong> Same number of people, different answers. How much does what they said change the answer?</li>
+</ul>
+<p><em>What is the result, and how much does it depend on our assumptions?</em></p>
+</section>
 <section id="what-if-id-started-from-a-different-prior" class="slide level2" data-notes="notes/week1_notes.md#whatif-prior">
 <h2>What if I’d started from a different prior?</h2>
 <aside class="notes">
@@ -3670,36 +3706,6 @@ need, asked before collecting it.</li>
 </div>
 <script type="module" src="js/poll-whatif.js"></script>
 </section>
-<section id="what-to-try" class="slide level2" data-notes="notes/week1_notes.md#poll-try">
-<h2>What to try</h2>
-<aside class="notes">
-<ul>
-<li>Let students drive. Good pairs to compare: flat vs.&nbsp;strong prior at
-n = 20, then the same two at n = 500.</li>
-<li>Close by tying this back to the workflow slide that follows: even
-this toy model raises the question of how much the answer depends on our
-assumptions (here, the prior). Answering that honestly is the habit
-we’re building.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<ul>
-<li><strong>Flat prior vs.&nbsp;strong prior.</strong> Draw a flat prior, then a narrow one around 60% (last election). With the same survey, how far apart are the posteriors?</li>
-<li><strong>More data.</strong> On Step 2, keep the survey at 20% but raise <em>n</em> from 20 to 500. What happens to the prior’s influence?</li>
-<li><strong>Updating in sequence.</strong> Make the posterior your new prior, then set a second survey on Step 2. Yesterday’s posterior is today’s prior.</li>
-<li><strong>Answering the real question.</strong> P( mayor wins ) is a direct statement about the hypothesis given the data: <span class="green">P( hypothesis | data )</span>, not a p-value.</li>
-</ul>
-<p><em>What is the result, and how much does it depend on our assumptions?</em> This is that question, in miniature.</p>
-</section>
 <section id="the-model-written-formally" class="slide level2 mechanics smaller" data-notes="notes/week1_notes.md#poll-model">
 <h2>The model, written formally</h2>
 <aside class="notes">
@@ -3781,9 +3787,9 @@ k &amp;\sim \text{Binomial}(n,\ \theta) &amp;&amp; \class{blue}{\text{likelihood
 </tbody>
 </table>
 <ul>
-<li>We’ve talked about how priors and posteriors are made, but what about likelihoods?</li>
-<li>The math behind likelihoods can get technical, and we won’t get too deep into that in this part of the course. In the advanced section, we’ll go into detail.</li>
-<li>Briefly: it comes from <span class="blue">line 1</span>. The binomial counts coin flips: if each of the <span class="math inline">\(n\)</span> people surveyed has a <span class="math inline">\(\theta\)</span> chance of saying “mayor”, independently of the others, Binomial(<span class="math inline">\(n\)</span>, <span class="math inline">\(\theta\)</span>) gives the chance of every possible <span class="math inline">\(k\)</span>. Work that out at each value of <span class="math inline">\(\theta\)</span> and you get the likelihood curve from Step 2.</li>
+<li>We’ve talked about how priors and posteriors are made, but what about <span class="blue">likelihoods</span>?</li>
+<li>The math behind likelihoods can get technical beyond what we need for these 5 weeks.</li>
+<li>Briefly: likelihood comes from <span class="blue">line 1</span>. The binomial counts coin flips: if each of the <span class="math inline">\(n\)</span> people surveyed has a <span class="math inline">\(\theta\)</span> chance of saying “mayor”, independently of the others, Binomial(<span class="math inline">\(n\)</span>, <span class="math inline">\(\theta\)</span>) gives the chance of every possible <span class="math inline">\(k\)</span>. Work that out at each value of <span class="math inline">\(\theta\)</span> and you get the likelihood curve from Step 2.</li>
 </ul>
 </section></section>
 <section>
