@@ -13,20 +13,20 @@
       <button type="button" class="widget-btn" data-shift="0" data-strength="50">As drawn</button>
       <button type="button" class="widget-btn" data-shift="0" data-strength="0">No opinion</button>
       <button type="button" class="widget-btn" data-shift="0" data-strength="30">Less sure</button>
-      <button type="button" class="widget-btn" data-shift="0" data-strength="85">Surer</button>
+      <button type="button" class="widget-btn" data-shift="0" data-strength="85">More sure</button>
       <button type="button" class="widget-btn" data-shift="-20" data-strength="50">20 points lower</button>
       <button type="button" class="widget-btn" data-shift="20" data-strength="50">20 points higher</button>
     </div>
     <p id="whatif-prior-flat" class="whatif-hint" hidden>Your prior is flat, so moving it or
-      making it surer changes nothing. Draw a hump on Step 1 to try it.</p>
+      making it more sure changes nothing. Draw a hump on Step 1 to try it.</p>
     <table class="poll-stats">
       <thead>
-        <tr><th></th><th class="gray">Yours</th><th class="green">What if</th></tr>
+        <tr><th></th><th class="gray">Original</th><th class="green">What if</th></tr>
       </thead>
       <tbody>
         <tr><td>Best guess</td><td id="whatif-prior-mean-base"></td><td id="whatif-prior-mean"></td></tr>
         <tr><td>90% range</td><td id="whatif-prior-range-base"></td><td id="whatif-prior-range"></td></tr>
-        <tr><td>P( more than half )</td><td id="whatif-prior-win-base"></td><td id="whatif-prior-win"></td></tr>
+        <tr><td>P( mayor wins )</td><td id="whatif-prior-win-base"></td><td id="whatif-prior-win"></td></tr>
       </tbody>
     </table>
   </div>

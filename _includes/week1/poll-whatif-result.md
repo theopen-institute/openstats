@@ -15,12 +15,12 @@
     </div>
     <table class="poll-stats">
       <thead>
-        <tr><th></th><th class="gray">Yours</th><th class="green">What if</th></tr>
+        <tr><th></th><th class="gray">Original</th><th class="green">What if</th></tr>
       </thead>
       <tbody>
         <tr><td>Best guess</td><td id="whatif-result-mean-base"></td><td id="whatif-result-mean"></td></tr>
         <tr><td>90% range</td><td id="whatif-result-range-base"></td><td id="whatif-result-range"></td></tr>
-        <tr><td>P( more than half )</td><td id="whatif-result-win-base"></td><td id="whatif-result-win"></td></tr>
+        <tr><td>P( mayor wins )</td><td id="whatif-result-win-base"></td><td id="whatif-result-win"></td></tr>
       </tbody>
     </table>
   </div>

@@ -2,8 +2,9 @@
 // (poll-whatif.js) and "Answering the question" (poll-answer.js): the drawn prior as a distribution over θ, the survey's
 // likelihood, the posterior, and the numbers we read off them.
 import { POINTS, STEP, surveyCount } from './poll-store.js';
+import { smoothCurve } from './smooth.js';
 
-// Fine grid over θ; the 21 drawn prior points are interpolated onto it
+// Fine grid over θ; the 21 drawn prior points are joined by a smooth curve on it
 export const G = 201;
 export const xs = Array.from({ length: G }, (_, i) => i / (G - 1));
 const dx = 1 / (G - 1);
@@ -15,14 +16,11 @@ export function toMass(v) {
   return s > 0 ? v.map((a) => a / s) : null;
 }
 
-// The drawn prior (21 heights) as a distribution over the grid
+// The drawn prior (21 heights) as a distribution over the grid: the same smooth curve
+// through the points that Step 1 draws (smooth.js), never below zero
 export function priorMass(points) {
-  return toMass(xs.map((x) => {
-    const p = x / STEP;
-    const i = Math.min(POINTS - 2, Math.floor(p));
-    const t = p - i;
-    return points[i] * (1 - t) + points[i + 1] * t;
-  }));
+  const curve = smoothCurve(points);
+  return toMass(xs.map((x) => Math.max(0, curve(x / STEP))));
 }
 
 // The survey's binomial likelihood over the grid, rescaled to sum to 1. Computed on the
@@ -106,9 +104,6 @@ export function binomial(k, n, theta) {
 
 export const pct = (x) => `${Math.round(x * 100)}%`;
 export const prob = (x) => (x < 0.01 ? '< 1%' : x > 0.99 ? '> 99%' : pct(x));
-// The same in words, for a sentence: "less than a 1% chance"
-export const chance = (x) => (x < 0.01 ? 'less than a 1% chance'
-  : x > 0.99 ? 'more than a 99% chance' : `a ${pct(x)} chance`);
 export const range = (s) => `${pct(s.lo)} – ${pct(s.hi)}`;
 
 // Small numbers written out in full (0.0000017), like the lecture's examples

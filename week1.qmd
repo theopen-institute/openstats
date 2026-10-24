@@ -80,7 +80,7 @@ That word, _probably_, is a probability. It's a way of talking about uncertainty
 ::: {.incremental}
 - I don't know if it's going to rain tomorrow...
 - ...but that doesn't mean I don't know anything.
-- In Nepal, rain works differently in July than in January.
+- I know that rain works differently in July than in January.
 :::
 
 ::: {.fragment}
@@ -116,8 +116,7 @@ _Count everything that could happen. Count the ones you care about. Compare._
 :::
 
 ::: {.fragment}
-You already knew how to do all three. Every analysis in this course comes down to
-counting, exactly like this.
+Every analysis in this course comes down to counting, exactly like this.
 :::
 
 ## Counting the ways a thing could happen {notes="notes/week1_notes.md#counting-ways"}
@@ -235,7 +234,7 @@ _Hands up if you had tea this morning._
 :::
 
 ::: {.fragment}
-Every prediction needs assumptions.<br />[Interesting predictions need strong assumptions.]{.blue .fragment}
+Every prediction makes assumptions.<br />[(Interesting predictions make big assumptions.) ![](images/week1/success-kid.jpg){.reaction}]{.blue .fragment}
 :::
 
 # Probability for Decision Making {notes="notes/week1_notes.md#applied-probability"}
@@ -273,7 +272,7 @@ But there's something strange here...[they assume exactly what we want to know.]
 :::
 
 ::: {.fragment fragment-index=2}
-The real question is usually P( HIV+ | test+): [3.2%]{.fragment fragment-index=3 .red}
+The real question is usually P( HIV+ | test+): [🚨 3.2% 🚨]{.fragment fragment-index=3 .red}
 :::
 
 ::: {.fragment fragment-index=4}
@@ -346,22 +345,9 @@ Only 1 is real.
 
 Let's look at that quote again:
 
-> A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=2 .highlight-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=3 .highlight-blue} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
+> A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=1 .highlight-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=2 .highlight-blue} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
 
-::: {.fragment fragment-index=1}
-Two key phrases: 
-:::
-
-- ["assuming the null hypothesis is true"]{.fragment .red fragment-index=2}
-- ["the probability of...data..."]{.fragment .blue fragment-index=3}
-
-::: {.fragment}
-How this frames statistical significance: P( [data]{.blue} | [hypothesis]{.red} )
-:::
-
-::: {.fragment}
-How we actually think about data: P( [hypothesis]{.red} | [data]{.blue} )
-:::
+{{< include _includes/week1/significance-direction.md >}}
 
 
 ## The problem with p-values {notes="notes/week1_notes.md#pvalue-direction"}
@@ -377,12 +363,11 @@ If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}.
 :::
 
 ::: {.incremental}
-- A p-value doesn't tell you if a hypothesis is true.
-- It tells you how unlikely this data would be if the null hypothesis were true.
+- A p-value doesn't tell you if a hypothesis is true. It tells you how unlikely this data would be if the null hypothesis were true.
 - Those aren't the same thing. P(A|B) ≠ P(B|A)
 :::
 
-::: {.fragment}
+::: {.fragment .blue}
 Statistical significance works the opposite way that our intuitions do.
 :::
 
@@ -406,10 +391,10 @@ Instead of a flowchart of tests, updating is [**one rule for all of statistics**
 
 ::: {.fragment .callout-tip title="Example: will the mayor win?"}
 ::: {.incremental}
-- [**Prior**]{.red}: _"He got 60% last time, so I think about 60% of Kathmandu will vote
-  for him."_
-- [**Likelihood**]{.blue}: _"Only 20% of my small survey said they'll vote for him. That would be surprising if his true support were 60%, but quite likely if it were around 20–30%."_
-- [**Posterior**]{.green}: _"I now think about 45% of people will vote for him."_
+- [**Prior**]{.red}: _"The mayor got 60% last time, so I think about 60% of Kathmandu
+  will vote for the mayor again."_
+- [**Likelihood**]{.blue}: _"Only 20% of my small survey said they'll vote for the mayor. That would be surprising if the mayor's true support were 60%, but quite likely if it were around 20–30%."_
+- [**Posterior**]{.green}: _"I now think about 45% of people will vote for the mayor."_
 :::
 ::: {.fragment }
 Our posterior then becomes our prior for future observations.
@@ -487,8 +472,8 @@ Only 8 are real.
 
 ## How far can we trust data? {.mechanics .smaller notes="notes/week1_notes.md#research-math"}
 
-_**Sensitivity**, or **power**: if the idea is true, what is the chance of getting a significant result._\
-_**Specificity**, or 1 − the **significance level** α: if the idea is false, what is the chance of not getting a significant result._
+_**Sensitivity**: if the idea is true, what is the chance of getting a significant result._\
+_**Specificity**: if the idea is false, what is the chance of getting a non-significant result._
 
 | Type of study | Base Rate | Sensitivity | Specificity | Chance a discovery is true |
 |--------------------------------|:--------:|:-----:|:-----:|:------------:|
@@ -500,15 +485,19 @@ _**Specificity**, or 1 − the **significance level** α: if the idea is false, 
 | Small search for surprising new effects | 1% | 20% | 95% | [4%]{.red} |
 | Small search, re-analysed until something is significant (p-hacked) | 1% | 20% | 80% | [1%]{.red} |
 
+::: {.source}
+In technical terms: sensitivity is **statistical power**, $1 - \beta$. Specificity is
+$1 - \alpha$, where $\alpha$ is the **significance level** (often 5%).
+:::
 
 
 # Most studies are wrong... {notes="notes/week1_notes.md#is-that-a-problem"}
 
-[...and that's okay.]{.fragment .blue}
-
-::: {.fragment}
-A study was never supposed to be the answer. It's one observation. What makes science
-work is [groups of scientists arguing]{.blue} about how to fit many contradictory observations together.
+::: {.fragment .callout-note title="...and that's okay" icon=false}
+::: {.incremental}
+- A study was never supposed to be the answer. It's one observation of the world. 
+- What makes science work is [groups of scientists arguing]{.blue} about how contradictory observations fit together.
+:::
 :::
 
 ::: {.incremental}
@@ -554,13 +543,20 @@ It's the debates we have about them.
 
 ## The science comes first {notes="notes/week1_notes.md#science-first"}
 
-Science is about questioning how [new observations]{.red} (data) disrupt what we
-[already know]{.blue} (assumptions).
+Statistics weighs [new observations]{.blue} against what we [already assume we know]{.red}.
 
 ::: {.incremental}
-- The base rate paradox showed one challenge: numbers can mislead.
-- The problem goes deeper: statistical interpretation requires strong assumptions about how the world works.
-- Math is the least interesting part of statistics. This five-week course is about everything else.
+- Leave out the assumptions and numbers mislead: that's the base rate paradox.
+- Every interesting model assumes things about the world: _who responded, what causes
+  what, how the data came to be._
+- Those are claims about the world, not math, and anyone who knows something about the world can question them.
+:::
+
+::: {.fragment}
+::: {.big-statement}
+[Math is the least interesting part of statistics.]{.blue}\
+In this five-week course, we'll look at everything else.
+:::
 :::
 
 # What's ahead {notes="notes/week1_notes.md#whats-ahead"}
@@ -603,16 +599,16 @@ reading_plot()
 - **Along the bottom:** the values θ could take, from 0% to 100% in steps of 5.
 - **Up the side:** how plausible each value is, _compared with the others_. The height
   has no units. Only the comparisons matter.
-- Here, [40%]{.orange} is about `r fmt(reading_ratio(0.4, 0.2), 0)` times as plausible as
-  [20%]{.orange}, and about `r fmt(reading_ratio(0.4, 0.7), 0)` times as plausible as
-  [70%]{.orange}.
+- Here, [40%]{.blue} is about `r fmt(reading_ratio(0.4, 0.2), 0)` times as plausible as
+  [20%]{.blue}, and about `r fmt(reading_ratio(0.4, 0.7), 0)` times as plausible as
+  [70%]{.blue}.
 - The [prior]{.red}, the [likelihood]{.blue} and the [posterior]{.green} are all maps
   like this one.
 :::
 :::
 
 ::: {.source}
-Like the bag of stones, with 21 possible answers instead of 10. Next week: much more on
+Like the bag of stones, with 21 possible answers instead of 11. Next week: much more on
 this.
 :::
 
@@ -634,6 +630,10 @@ The likelihood is **not** a belief. It's what our model of the survey (each answ
 
 {{< include _includes/week1/poll-posterior.md >}}
 
+## Answering the question {notes="notes/week1_notes.md#poll-answer"}
+
+{{< include _includes/week1/poll-answer.md >}}
+
 ## What if I'd started from a different prior? {notes="notes/week1_notes.md#whatif-prior"}
 
 _Same survey. Move your prior, or make it more or less sure._
@@ -646,15 +646,11 @@ _Same prior, same share saying "mayor". Change how many people we asked._
 
 {{< include _includes/week1/poll-whatif-size.md >}}
 
-## What if the survey had come out differently? {notes="notes/week1_notes.md#whatif-result"}
+## What if the survey had been different? {notes="notes/week1_notes.md#whatif-result"}
 
 _Same prior, same number of people. Change what they said._
 
 {{< include _includes/week1/poll-whatif-result.md >}}
-
-## Answering the question {notes="notes/week1_notes.md#poll-answer"}
-
-{{< include _includes/week1/poll-answer.md >}}
 
 ## What to try {notes="notes/week1_notes.md#poll-try"}
 
@@ -670,30 +666,28 @@ _Same prior, same number of people. Change what they said._
 *What is the result, and how much does it depend on our assumptions?* This is that question,
 in miniature.
 
-## The Bayesian workflow {.smaller .mechanics}
-
-{{< include _includes/bayesian-workflow.md >}}
-
-## The model, written formally {.mechanics notes="notes/week1_notes.md#poll-model"}
+## The model, written formally {.mechanics .smaller notes="notes/week1_notes.md#poll-model"}
 
 $$
 \begin{aligned}
 k &\sim \text{Binomial}(n,\ \theta) && \class{blue}{\text{likelihood}} \\
-\theta &\sim \text{your prior} && \class{red}{\text{prior}}
+\theta &\sim \text{[our prior curve]} && \class{red}{\text{prior}}
 \end{aligned}
 $$
 
 | Symbol | Read it as | In our survey |
 |---|---|---|
-| $n$ | the number of people surveyed | 20: data, we know it |
-| $k$ | how many of them said "mayor" | 4: data, we know it |
-| $\theta$ | the mayor's share among all voters | unknown: what we want to learn |
+| $n$ | the number of people surveyed | data, known (e.g., 20) |
+| $k$ | how many of them said "mayor" | data, known (e.g., 4) |
+| $\theta$ | the mayor's share among all voters | what we want to learn, unknown |
 | $\sim$ | "is drawn from" | |
 
-- [**Line 1**]{.blue}: each person we ask is a coin flip that lands "mayor" with chance θ.
-- [**Line 2**]{.red}: what we believe about θ before asking anyone.
-- From Week 3 on, we'll build models like this visually.
-
+- We've talked about how priors and posteriors are made, but what about likelihoods?
+- The math behind likelihoods can get technical, and we won't get too deep into that in this part of the course. In the advanced section, we'll go into detail.
+- Briefly: it comes from [line 1]{.blue}. The binomial counts coin flips: if each of the
+  $n$ people surveyed has a $\theta$ chance of saying "mayor", independently of the others,
+  Binomial($n$, $\theta$) gives the chance of every possible $k$. Work that out at each
+  value of $\theta$ and you get the likelihood curve from Step 2.
 
 # More resources {notes="notes/week1_notes.md#more-resources"}
 
@@ -705,3 +699,7 @@ This course draws heavily on the work of Richard McElreath, a statistician worki
 - **The lectures:** McElreath's
   [Statistical Rethinking 2026](https://github.com/rmcelreath/stat_rethinking_2026)
   series on YouTube. Twenty free lectures that follow the book.
+
+## The Bayesian workflow {.smaller .mechanics}
+
+{{< include _includes/bayesian-workflow.md >}}

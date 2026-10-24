@@ -30,11 +30,44 @@ export function onCurrentSlide(el) {
   return !current || current.contains(el);
 }
 
-// Call fn each time the slide holding el has finished coming into view
-export function whenShown(el, fn) {
-  window.Reveal?.on?.('slidetransitionend', (e) => {
-    if (e.currentSlide?.contains(el)) fn();
+// Each time the slide holding el is activated: starting() as it begins to come into
+// view, then arrived() once it has landed (after the slide transition, or at once when
+// the deck opens on it). A fallback timer covers decks with transitions turned off,
+// where reveal never reports the end of one.
+const ARRIVAL_FALLBACK = 1200; // ms, a little longer than reveal's slide transition
+
+export function onArrival(el, { starting, arrived }) {
+  const R = window.Reveal;
+  if (!R?.on) return;
+  let waiting = false;
+  let timer = null;
+  const land = () => {
+    if (!waiting) return;
+    waiting = false;
+    clearTimeout(timer);
+    arrived();
+  };
+  const begin = () => {
+    waiting = true;
+    starting();
+    clearTimeout(timer);
+    timer = setTimeout(land, ARRIVAL_FALLBACK);
+  };
+  R.on('slidechanged', (e) => {
+    if (e.currentSlide?.contains(el)) begin();
   });
+  R.on('slidetransitionend', (e) => {
+    if (e.currentSlide?.contains(el)) land();
+  });
+  // The deck opened on this slide: no transition to wait for
+  const openedHere = () => {
+    if (R.getCurrentSlide?.()?.contains(el)) {
+      begin();
+      land();
+    }
+  };
+  if (R.isReady?.()) openedHere();
+  else R.on('ready', openedHere);
 }
 
 // ---- Numbers in text ------------------------------------------------------------------

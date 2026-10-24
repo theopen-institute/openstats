@@ -27,7 +27,8 @@ if (graphEl && !graphEl.dataset.initialized) {
 
   function draw(survey) {
     plot.setSeries([
-      { label: 'Prior', color: brand('red'), xs, ys: density(priorMass(loadPrior())) },
+      // the prior was on Step 1, so it's simply there; the likelihood is new
+      { label: 'Prior', color: brand('red'), xs, ys: density(priorMass(loadPrior())), grow: false },
       {
         label: 'Likelihood', color: brand('blue'), xs, ys: density(likelihoodMass(survey)),
         dash: [8, 6],

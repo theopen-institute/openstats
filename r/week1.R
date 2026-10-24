@@ -245,10 +245,10 @@ reading_plot <- function(marks = READING_MARKS) {
     geom_line(data = curve, color = tint(INK, 0.6), linewidth = 1.2) +
     geom_segment(aes(xend = theta, yend = 0), color = INK, linewidth = 1.4) +
     geom_point(color = INK, size = 3) +
-    geom_segment(data = picked, aes(xend = theta, yend = 0), color = ORANGE, linewidth = 2) +
-    geom_point(data = picked, color = ORANGE, size = 5) +
+    geom_segment(data = picked, aes(xend = theta, yend = 0), color = BLUE, linewidth = 2) +
+    geom_point(data = picked, color = BLUE, size = 5) +
     geom_text(data = picked, aes(label = pct(theta), hjust = hjust, vjust = vjust),
-              size = 7, fontface = "bold", color = ORANGE) +
+              size = 7, fontface = "bold", color = BLUE) +
     scale_x_continuous(labels = scales::percent, breaks = seq(0, 1, 0.2)) +
     scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
     labs(x = "θ, the mayor's share of the vote", y = "Plausibility") +

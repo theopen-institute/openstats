@@ -37,12 +37,20 @@ function makeView(prefix) {
     const post = posteriorMass(prior, lik);
     stats('-base', base.post);
     stats('', post);
-    // Always the same four curves in the same order, so each eases into its next shape
+    // Always the same four curves in the same order (also the legend's order), so each
+    // eases into its next shape. The first three were on Step 3, so they're simply there;
+    // only the what-if posterior grows in, drawn last so it sits on top.
     plot.setSeries([
-      { label: 'Your posterior', color: brand('gray'), xs, ys: density(base.post), dash: [3, 5] },
-      { label: 'Prior', color: brand('red'), xs, ys: density(prior) },
-      { label: 'Likelihood', color: brand('blue'), xs, ys: density(lik), dash: [8, 6] },
-      { label: 'What if', color: GREEN, xs, ys: density(post), fill: withAlpha(GREEN, 0.12) },
+      { label: 'Prior', color: brand('red'), xs, ys: density(prior), grow: false },
+      { label: 'Likelihood', color: brand('blue'), xs, ys: density(lik), dash: [8, 6], grow: false },
+      {
+        label: 'Original posterior', color: brand('gray'), xs, ys: density(base.post),
+        dash: [3, 5], grow: false,
+      },
+      {
+        label: '"What if" posterior', color: GREEN, xs, ys: density(post),
+        fill: withAlpha(GREEN, 0.12),
+      },
     ]);
   };
 }
@@ -59,7 +67,7 @@ const parts = []; // each part's reset-and-redraw, run when Steps 1–3 change
 // ---- A different prior ------------------------------------------------------------------
 
 // The drawn prior moved by `shift` (a share, -0.4 to 0.4) and raised to `power`: 0 is
-// flat (no opinion), 1 as drawn, more than 1 surer. Past the ends, it keeps its edge value.
+// flat (no opinion), 1 as drawn, more than 1 more sure. Past the ends, it keeps its edge value.
 function reshape(mass, shift, power) {
   if (!mass) return null;
   const last = xs.length - 1;
@@ -78,7 +86,7 @@ function sureText(v) {
   if (p === 0) return 'no opinion';
   if (p < 0.85) return 'less sure';
   if (p <= 1.2) return 'as drawn';
-  return 'surer';
+  return 'more sure';
 }
 
 if ($('whatif-prior-graph')) {

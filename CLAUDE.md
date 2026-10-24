@@ -181,7 +181,8 @@ lines, `.big-statement`, `.small-caption`, the week 1 widgets, week 2's `.kinds`
 Keep `style=` attributes and `<style>` blocks out of the decks; add a class here.
 Footnotes (`[^id]`, with the note defined below the table or paragraph) build in with
 the fragment their reference sits in, and the marker is light gray; both come from a
-small script in `_build/_reveal.html`.
+small script in `_build/_reveal.html`. Another script there keeps slide titles on one
+line, shrinking a title that would wrap (to no less than 75% of its size).
 
 **The palette is defined once**, as the `$brand-*` lines at the top of `deck.scss`.
 The theme re-exports them as CSS variables (`var(--brand-blue)`) for scripts
@@ -191,11 +192,13 @@ shades. Change a color there and everything follows; don't hard-code hex values
 anywhere else. In MathJax, color with the same classes: `\class{blue}{...}`.
 
 Slides that go deeper into the math than the big picture needs (formulas, derivations,
-unit conversions, formal model notation) are marked `## Title {.mechanics}`. This puts
-the whole screen on bordered slate graph paper (the class is copied onto reveal's
-background element), with a small "Mechanics" tag in the
-top-right corner and a dotted title underline. The class only
-works on a slide heading, not on a heading inside a callout or other div.
+unit conversions, formal model notation) are marked `## Title {.mechanics}`. This turns
+the whole screen into a blueprint (the class is copied onto reveal's background
+element): a navy sheet (`$brand-blueprint`) with a faint white grid, white text,
+lighter versions of the red/blue/green classes, tables drawn in white lines, plots on
+white cards, and a "Mechanics" title block in the top-right corner. The logo and corner
+buttons turn white while it shows. The class only works on a slide heading, not on a
+heading inside a callout or other div.
 
 ### Title slides (YAML, not a heading)
 Each deck's title slide comes from YAML: `title:`, `subtitle:`, and optionally
@@ -258,6 +261,7 @@ ES modules `poll-prior.js` (Step 1: draw the prior), `poll-likelihood.js` (Step 
 the survey), `poll-posterior.js` (Step 3), `poll-whatif.js` (the three "What if"
 slides, which change one input at a time) and `poll-answer.js` (answering the question
 from the class's own posterior). They share the prior and the survey through
-`poll-store.js`, and the math through `poll-math.js`; the canvas plots share axes and
+`poll-store.js`, and the math through `poll-math.js`; the drawn prior is a smooth
+curve through its 21 points (`smooth.js`), on Step 1 and in the math alike; the canvas plots share axes and
 styling through `canvas-axes.js`, and their animated transitions through `tween.js`), and their styles in `deck.scss`. jspreadsheet comes from a pinned CDN version via
 `_build/jspreadsheet.html`.

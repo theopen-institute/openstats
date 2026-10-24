@@ -1,5 +1,5 @@
 /*-- scss:defaults --*/
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
 
 // Course palette: the single source for every color in the course.
 //   - SCSS: these variables
@@ -15,6 +15,7 @@ $brand-green:     #008000; // posterior
 $brand-gray:      #999999; // muted text, reference lines
 $brand-orange:    #e69f00; // extra category colors, for plots with
 $brand-teal:      #009e73; //   more groups than red/blue can carry
+$brand-blueprint: #123a66; // mechanics slides' blueprint sheet
 
 // YAML title slide: left-aligned like the content slides (Quarto centers it by default)
 $presentation-title-slide-text-align: left;
@@ -98,21 +99,31 @@ $selectionColor:            $brand-ink-head;
 
 /* ------------------------------------------------------------------ */
 /* Mechanics slides — technical exposition students can skim.         */
-/* Mark with {.mechanics}: swaps the whole screen's backdrop for slate */
-/* graph paper with a border, adds a small corner tag, and swaps the  */
-/* title underline for a muted dotted rule. Content is left alone.    */
+/* Mark with {.mechanics}: the whole screen becomes a blueprint. A    */
+/* navy sheet with a faint white grid, white text, lighter            */
+/* versions of the prior/likelihood/posterior colors, and a title     */
+/* block in the corner. Plots sit on white cards, like drawings       */
+/* pinned to the sheet.                                               */
 /* ------------------------------------------------------------------ */
-$c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
+$bp-ink: mix(white, $brand-blueprint, 94%); // text on the sheet
+$bp-line: rgba(white, 0.75); // rules: tables, title underline, title block
+$bp-red: mix($brand-red, white, 60%);
+$bp-blue: mix($brand-blue, white, 55%);
+$bp-green: mix(lighten($brand-green, 15%), white, 55%);
+$bp-gray: mix($brand-gray, white, 60%);
+$bp-orange: mix($brand-orange, white, 70%);
 
-/* The backdrop. Reveal copies each slide's classes onto its full-screen background
-   element, so .mechanics lands there too and the backdrop transitions with the slide.
+/* The sheet. Reveal copies each slide's classes onto its full-screen background
+   element, so .mechanics lands there too and the sheet transitions with the slide.
    !important beats the backdrop image reveal sets inline and the rules above. */
 .reveal .slide-background.mechanics .slide-background-content {
-  background-color: mix($c-mech, white, 18%) !important;
+  background-color: $brand-blueprint !important;
   background-image:
-    linear-gradient(rgba($c-mech, 0.13) 1px, transparent 1px),
-    linear-gradient(90deg, rgba($c-mech, 0.13) 1px, transparent 1px) !important;
-  background-size: 40px 40px !important;
+    linear-gradient(rgba(white, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(white, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(white, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(white, 0.03) 1px, transparent 1px) !important;
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px !important;
   background-repeat: repeat !important;
   background-position: 0 0 !important;
 
@@ -121,40 +132,21 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   }
 }
 
-/* the border, just inside the edge of the screen, fading out over the bottom 30% so
-   it stays clear of the menu buttons and logo */
-.reveal .slide-background.mechanics::after {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border: 3px solid rgba($c-mech, 0.7);
-  border-radius: 20px;
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-}
-
+/* the title block in the corner */
 .reveal .slides section.mechanics::before {
   content: "Mechanics";
   position: absolute;
   top: 0;
   right: 0;
   z-index: 1;
-  padding: 0.3em 0.9em 0.3em 2.1em;
-  font-family: $headingFont;
-  font-size: 0.5em;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  padding: 0.35em 0.9em;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.42em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: $c-mech;
-  border: 1.5px solid rgba($c-mech, 0.45);
-  border-radius: 999px;
-  background:
-    // three short bars, like an equalizer/slider: "under the hood"
-    linear-gradient($c-mech, $c-mech) 0.85em 0.62em / 0.75em 2px no-repeat,
-    linear-gradient($c-mech, $c-mech) 0.85em 0.92em / 0.45em 2px no-repeat,
-    linear-gradient($c-mech, $c-mech) 0.85em 1.22em / 0.6em 2px no-repeat,
-    white;
+  color: $bp-ink;
+  border: 1.5px solid $bp-line;
 }
 
 /* untitled slides have no heading row for the tag to sit beside */
@@ -164,7 +156,88 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
 
 .reveal .slides section.mechanics > h1:first-child::after,
 .reveal .slides section.mechanics > h2:first-child::after {
-  background: radial-gradient(circle, $c-mech 2px, transparent 2.5px) 0 50% / 10px 5px repeat-x;
+  background: $bp-line;
+  height: 2px;
+  border-radius: 0;
+  width: 6rem;
+}
+
+/* Everything on the sheet in light colors */
+.reveal .slides section.mechanics {
+  color: $bp-ink;
+
+  /* headings have their own color; bold text just inherits, so it can take a .red etc. */
+  h1, h2, h3, h4 {
+    color: $bp-ink;
+  }
+
+  .red { color: $bp-red; }
+  .blue { color: $bp-blue; }
+  .green { color: $bp-green; }
+  .gray, .source { color: $bp-gray; }
+  .orange { color: $bp-orange; }
+
+  a {
+    color: $bp-blue;
+  }
+
+  ul > li::before {
+    background: $bp-ink;
+  }
+
+  ul ul > li::before {
+    background: transparent;
+    border-color: rgba(white, 0.7);
+  }
+
+  /* tables: drawn in white lines on a solid fill, so no grid shows through */
+  table {
+    background: mix(white, $brand-blueprint, 6%);
+    border: 1.5px solid $bp-line;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  table th,
+  table td {
+    color: $bp-ink;
+    border-bottom-color: rgba(white, 0.2);
+  }
+
+  table thead th {
+    background: mix(white, $brand-blueprint, 14%);
+    color: $bp-ink;
+    border-bottom: 2px solid $bp-line;
+  }
+
+  table tbody tr:hover td {
+    background: rgba(white, 0.06);
+  }
+
+  /* plots: on white cards, so their dark ink stays readable */
+  .cell-output-display img,
+  .quarto-figure img {
+    background: white;
+    border-radius: 6px;
+    padding: 8px;
+  }
+}
+
+/* The logo and the corner buttons are dark blue: white while a mechanics slide shows,
+   fading along with the backdrop */
+.reveal .slide-logo,
+.reveal .slide-menu-button,
+.reveal .slide-chalkboard-buttons {
+  transition: filter 0.8s ease;
+}
+
+.reveal:has(.slides section.present.mechanics) {
+  .slide-logo,
+  .slide-menu-button,
+  .slide-chalkboard-buttons {
+    filter: brightness(0) invert(1);
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -565,6 +638,11 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   margin-top: 6px;
 }
 
+/* "Answering the question": the answer, in words */
+.poll-answer-key {
+  font-weight: 600;
+}
+
 .whatif-note {
   margin: 0;
 }
@@ -645,6 +723,69 @@ $c-mech: #6b7f99; // muted slate, deliberately quieter than the brand blue
   font-size: 150%;
   font-weight: bold;
   margin-top: 1em;
+}
+
+/* "Statistical significance (revisited)": two conditional probabilities side by side,
+   each part labelled underneath (_includes/week1/significance-direction.md). Labels
+   hang below their word without changing the formula's spacing. */
+.direction {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.direction-side {
+  text-align: center;
+}
+
+.direction-head {
+  font-size: 0.7em;
+  color: $brand-gray;
+  margin-bottom: 8px;
+}
+
+.direction-formula {
+  font-size: 1.3em;
+  font-weight: 600;
+  white-space: nowrap;
+  padding-bottom: 2.2em; /* room for the labels */
+}
+
+.direction-part {
+  position: relative;
+}
+
+.direction-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10em;
+  margin-top: 6px;
+  font-size: 0.42em;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: normal;
+}
+
+.direction-neq {
+  align-self: center;
+  font-size: 2.2em;
+  font-weight: 700;
+  color: $brand-gray;
+}
+
+/* A reaction image that pops up in the slide's bottom-right corner, e.g. with the line
+   it reacts to: put it inside that line's fragment, `[text ![](img){.reaction}]{.fragment}` */
+.reveal .slides img.reaction {
+  position: absolute;
+  bottom: 24px; /* clear of the progress bar and logo */
+  right: 0;
+  width: 15%;
+  margin: 0;
+  border-radius: 8px;
 }
 
 /* A meme with its captions as text over the image, in the classic style: white capitals

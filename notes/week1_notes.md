@@ -153,6 +153,8 @@ I want to illustrate a very famous example involving HIV testing. This is releva
 
 # Statistical Significance (revisited) {#statistical-significance-revisited}
 
+- Clicks: (1) the red phrase lights up, (2) then the blue one. (3) They turn into P( data | hypothesis ), each phrase sitting under the part it becomes. (4) The reverse appears beside it, P( hypothesis | data ): the same two words, swapped.
+
 There's a lot of very dense jargon here, but we don't need to unpack it all. let's just take a minute to think about what is being measured here.
 
 I don't want to get bogged down at this point in the specifics, but the structure is important: In frequentist analysis, We're treating our hypothesis as a fixed assumption and our data as a probability.
@@ -248,10 +250,12 @@ For those interested in math, I definitely encourage you to where the theorem co
 
 # The science comes first {#science-first}
 
-- The closing idea of the lecture. The goal of statistics is the same as the goal of any research: put new observations (the data) together with what we already know (our assumptions). Same colors as Assume and Look.
-- The base rate paradox was today's challenge to that: a number can look simple and solid and still mislead. An accurate HIV test, and most positives are wrong. A significant result, and most discoveries aren't real.
-- But that's only one way to question what a number tells us. There are more fundamental ones: what causes what, how the data were made, who is missing. Don't explain them yet. Week 2 starts on them (a pattern that's real and still doesn't mean what it seems), and Weeks 3 to 5 build on that.
-- The math is the least interesting part of statistics. Say it plainly; it's a relief for many students. The calculation comes last, and it's the part a computer does. The rest of the course is about the parts that matter more: the question, the assumptions, and how the data came to be.
+- The closing idea of the lecture. Statistics, like any research, weighs new observations (the data, in blue, like "Look") against what we already assume (in red, like "Assume"). Sometimes the data confirm what we thought; sometimes they challenge it.
+- First bullet: the base rate paradox is this slide's point, already demonstrated. The base rate is prior knowledge. Read the test result without it and an accurate HIV test points the wrong way; read a significant result without it and most "discoveries" aren't real. Data without assumptions don't just say less, they mislead.
+- Second bullet: the callback to the tea slide, "interesting predictions need strong assumptions". Every model that says something interesting assumes things: who answered, what causes what, how the data were made. Don't explain them yet. Week 2 starts on them (a pattern that's real and still doesn't mean what it seems), and Weeks 3 to 5 build on that.
+- Third bullet: even when they're written in math, these are claims about the world. "Each answer is an independent coin flip" is a claim about how people answer surveys. That's why ethnographers, economists and doctors can all question them.
+- The big statement is the takeaway: a question students can ask of any study, without the math. Week 5 comes back to it ("Ask what's missing and what's hidden").
+- Say it out loud here: the math is the least interesting part of statistics. It's a relief for many students. The calculation comes last, and it's the part a computer does. This course puts everything else first: the question, the assumptions, and how the data came to be.
 
 # What's ahead {#whats-ahead}
 
@@ -264,7 +268,7 @@ For those interested in math, I definitely encourage you to where the theorem co
 
 - We're going to run the whole prior → likelihood → posterior loop on one concrete question: what share of voters will choose the current mayor?
 - Be upfront that this model is too simple for a real poll. Real surveys aren't random samples: some groups answer more than others, and not everyone votes. Post-stratification and turnout models fix that, and we'll build them later. Today the point is the logic of updating.
-- The order: how to read the graphs, the three steps on the class's own prior and survey, then three "What if" slides that change one input at a time, and one slide that reads the class's posterior to answer the question. The full workflow and the formal model are at the end, for anyone who wants them.
+- The order: how to read the graphs, the three steps on the class's own prior and survey, then one slide that reads the class's posterior to answer the question, and three "What if" slides that change one input at a time. The full workflow and the formal model are at the end, for anyone who wants them.
 
 # Reading these graphs {#poll-graphs}
 
@@ -274,6 +278,7 @@ For those interested in math, I definitely encourage you to where the theorem co
 - The height has no units, and the actual numbers don't matter. What matters is how the heights compare: 40% is about 3 times as plausible as 20%, and about 7 times as plausible as 70%. Rescale the whole graph and nothing changes.
 - The prior, the likelihood and the posterior are all drawn this way. They're the same kind of map, the relative plausibility of every value, built from different things: what we believed before, what the survey says, and both together.
 - Students have seen this already: the bag of stones had 10 possible answers, one point each. Here there are 21.
+- From here on, every curve on the poll slides is scaled to its own peak, so they all reach the same height (the y axis says so). That keeps the prior the shape the class drew, however tall or flat the other curves get. Compare shapes, positions and widths; don't compare heights between curves.
 - Don't define "distribution" yet. Week 2 is all about it; today they just need to read the picture.
 
 # Step 1: The prior {#poll-prior}
@@ -282,6 +287,7 @@ For those interested in math, I definitely encourage you to where the theorem co
 - The prior is red here and on every slide after, like the "prior" in prior × likelihood → posterior.
 - Two ways to shape it, no switching. Press anywhere on the plot (not on a point) and sweep across it: the curve follows, freehand. It's the quickest way to sketch a whole prior.
 - Grab a point and move it up or down to fine-tune. Its neighbors follow, less and less farther out, so one drag makes a smooth hump. It pulls but never pushes: raising a point lifts the lower points around it, but leaves higher ones alone until you pass them. So you can shape one side of a hump without moving the peak. A drag that moves sideways off its point's column turns into freehand drawing.
+- The line through the points is a smooth curve, not straight segments, and every later slide uses the same curve. It's an assumption about what you meant between the points, a gentle one: it passes through every point and never adds a bump. That's fine for a deliberately rough way of drawing a belief.
 - The "Score" column is just the height you drew. "Probability" rescales the scores so they add up to 1. Only the *shape* matters.
 - This prior carries over to every slide after it, so whatever is drawn here is what gets updated.
 
@@ -292,22 +298,32 @@ For those interested in math, I definitely encourage you to where the theorem co
 - Same question we asked about the HIV test, turned around: for each possible θ, how likely are the data we saw?
 - Read the table: 4 of 20 is quite likely if θ is 20% (0.22), much less so at 40% (0.035), unlikely at 60%, and almost impossible at 80%.
 - Move the survey size up to a few hundred at the same 20%: the curve gets much narrower. More data rule out more values of θ.
-- Point out that the likelihood curve is not a probability distribution over θ. It's a set of answers to "P(data | θ)" for many θs. It's drawn at the same scale as the prior only so the two can be compared.
+- Point out that the likelihood curve is not a probability distribution over θ. It's a set of answers to "P(data | θ)" for many θs, and only its shape means anything.
 - Whatever survey is set here is the one Step 3 and the slides after it use.
 
 # Step 3: Prior × likelihood → posterior {#poll-posterior}
 
-- At each value of θ, multiply the prior's height by the likelihood's height, then rescale so the total is 1. That's the posterior. Nothing else is going on. Where the prior is zero, the posterior is zero, however well the data fit.
+- At each value of θ, multiply the prior's height by the likelihood's height, then rescale so the total is 1. That's the posterior. (On the plot each curve is scaled to its own peak, so read where the posterior sits and how wide it is, not how tall: narrower means more sure.) Nothing else is going on. Where the prior is zero, the posterior is zero, however well the data fit.
 - With a flat prior, the green curve sits right on the dashed blue one. With a 60% prior, it lands in between.
 - Go back to Step 2 and raise the survey size to a few hundred. Back here, the likelihood is narrower, and the prior matters less and less.
 - "P( mayor wins )" is the share of the posterior above 50%. The next slide, "Answering the question", shows it.
 - "Make this posterior my new prior" copies the posterior back onto the 21 draggable points, sets the survey back to 20 people, and goes to Step 1 so everyone sees the new prior. Change the survey on Step 2 for a "second poll". It's coarse, since 21 points can't capture a very narrow curve, but it shows the idea.
 
+# Answering the question {#poll-answer}
+
+- The posterior is a whole distribution, so we can ask it any question. The one we care about here: will the mayor get more than half the vote? The answer is the share of the posterior above 50%: the dark green area.
+- The table compares it with the prior's answer, before the survey. The survey changes the answer to the question we actually asked.
+- The key idea: the posterior doesn't predict a result. It's a distribution, our belief spread over every possible result, and the answer to "will the mayor win?" is how much of that belief sits above 50%.
+- The bold line turns it into words: we're about this sure the mayor will get a majority. Not a yes or no.
+- Connect it back to the rain slide. "A 31% chance of rain" didn't mean the weather was random; physics decides it. It meant we were uncertain. Same here: the election isn't a lottery, and the percentage describes how sure we are about it, given what we assumed and what we saw.
+- The footnote is the slide's fine print, and the course's point in miniature: the model only knows what share of people say "mayor". Calling that "the mayor wins" assumes the survey represents the people who'll actually vote, that they vote the way they said, and that more than half wins. The number is only as good as those assumptions.
+- If someone asks: strictly this is "more than half the vote". In an election with several candidates, the mayor can win with less than half, and modelling that would need every candidate's share, not just the mayor's.
+
 # What if I'd started from a different prior? {#whatif-prior}
 
 - From here, three slides each change one input and keep the others as the class set them. The gray dotted curve is the class's own posterior from Step 3, so there's always something to compare with. The table puts the two side by side.
-- This one changes the prior. "Move it" slides the class's prior left or right; "How sure" makes it flatter or sharper. The buttons are a few ready-made versions: no opinion at all, less sure, surer, and the same shape 20 points lower or higher.
-- Things to point out: with 20 people, a different prior moves the answer noticeably. A flat prior ("No opinion") puts the posterior right on the likelihood. A surer prior drags the posterior toward itself.
+- This one changes the prior. "Move it" slides the class's prior left or right; "How sure" makes it flatter or sharper. The buttons are a few ready-made versions: no opinion at all, less sure, more sure, and the same shape 20 points lower or higher.
+- Things to point out: with 20 people, a different prior moves the answer noticeably. A flat prior ("No opinion") puts the posterior right on the likelihood. A more sure prior drags the posterior toward itself.
 - This is the honest answer to "isn't the prior subjective?": yes, so show how much it matters. If the answer barely moves across reasonable priors, the data are doing the work. If it moves a lot, say so.
 - If the class left its prior flat, moving or sharpening it changes nothing, and the slide says so. Draw a hump around 60% on Step 1 first.
 - Changing the prior or survey on Steps 1–3 resets all three slides to the class's own inputs.
@@ -319,19 +335,11 @@ For those interested in math, I definitely encourage you to where the theorem co
 - The 90% range shrinks as the survey grows. That's how sure we are, and it's what more data buy.
 - Tie it back to the start of the lecture: this is why one small study shouldn't settle anything, and why many studies together can.
 
-# What if the survey had come out differently? {#whatif-result}
+# What if the survey had been different? {#whatif-result}
 
 - Same prior, same number of people, different answer. Slide the share saying "mayor" from 0% to 100%.
 - Watch the posterior follow the data, but not all the way: it stays between the prior and the likelihood. With a strong prior and a small survey, a surprising result moves it only part of the way.
-- A good question for the room: what result would it take to make P( more than half ) better than even? That's a question about the data we'd need, asked before collecting it.
-
-# Answering the question {#poll-answer}
-
-- The posterior is a whole distribution, so we can ask it any question. The one we care about here: will he get more than half the vote? The answer is the share of the posterior above 50%: the dark green area.
-- The table compares it with the prior's answer, before the survey. The survey changes the answer to the question we actually asked.
-- This is P(hypothesis | data), the direction we wanted all along, and the one a p-value can't give. A test would only tell us how surprising the survey would be if his support were exactly 50%.
-- And the answer carries its own uncertainty: not a yes or no, but a chance.
-- If someone asks: strictly this is "more than half the vote". In an election with several candidates, the mayor can win with less than half, and modelling that would need every candidate's share, not just his.
+- A good question for the room: what result would it take to make P( mayor wins ) better than even? That's a question about the data we'd need, asked before collecting it.
 
 # What to try {#poll-try}
 
@@ -340,11 +348,12 @@ For those interested in math, I definitely encourage you to where the theorem co
 
 # The model, written formally {#poll-model}
 
-- Mechanics slide, for anyone who wants the notation behind the widgets. The formal model is two lines. The first line is the likelihood (how data are generated given θ), and the second is the prior (what we believe about θ before data).
-- Nobody needs to read Binomial notation fluently yet. The point is that the whole model is just a likelihood and a prior.
-- Read the two lines aloud: "k is drawn from a binomial with n and θ; θ is drawn from your prior." The table is the key: n and k are data we know, θ is the one thing we don't.
-- "Binomial" just means counting coin flips, the garden of forking paths from earlier with more flips. If asked: the chance of k "mayor" answers is (the number of ways to get k) × θ^k (1 − θ)^(n−k). For 4 of 20 at θ = 20% that's about 0.22, the number Step 2 shows.
-- The coin-flip picture carries the assumptions: everyone answers independently, with the same chance θ. A real survey breaks both (households, neighborhoods, who picks up the phone), which is what the later weeks are about.
+- Mechanics slide, for anyone who wants the notation behind the widgets. The formal model is two lines. The first line is the likelihood (how the data are generated, given θ), and the second is the prior (what we believe about θ before any data: here, whatever the class drew on Step 1).
+- Nobody needs to read Binomial notation fluently yet. The point is that the whole model is just a likelihood and a prior. The table is the key: n and k are data we know, θ is the one thing we don't.
+- The question students may be sitting on: where did Step 2's likelihood curve come from? From line 1. Once we say how the data were made, the chance of our survey at any θ follows. Writing that down is one of the main jobs of a model.
+- The slide's answer: Binomial(n, θ) gives the chance of every possible k, and working that out at each θ gives Step 2's curve. That's the step from "a statement about k" to "a curve over θ", which is what usually puzzles people.
+- If someone asks how the binomial gets its numbers, say it aloud rather than writing it: the chance that k particular people say "mayor" is θ^k, the chance everyone else doesn't is (1 − θ)^(n−k), and there are "n choose k" different groups of k people who could have been the ones (4,845 ways to pick 4 of 20). Multiply them. It's the garden of forking paths from earlier, with more flips. At θ = 20%, 4 of 20 comes out at about 0.22, the number in Step 2's table.
+- The coin-flip picture carries assumptions: everyone answers independently, with the same chance θ. A real survey breaks both (households, neighborhoods, who picks up the phone), which is what the later weeks are about.
 
 # More resources {#more-resources}
 

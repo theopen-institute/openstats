@@ -32,6 +32,7 @@ format:
     chalkboard: true
     multiplex: false
     transition: slide
+    background-transition: fade # only real background changes fade (e.g. into a mechanics slide)
     fragments: true
     incremental: true
   html:
