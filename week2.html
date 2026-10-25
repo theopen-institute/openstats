@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-b417f201fb157137486b685d23a23209.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-94961225a04d95b014d6325c8d85d401.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -215,14 +215,20 @@ the end, students should reach for it without being asked.</li>
 <li>A distribution is a different way to think about a number. Instead
 of one value, it’s every value the number could take, and how common or
 plausible each one is.</li>
-<li>The week has three parts, one per kind of distribution: data (how
-values vary across cases), belief (how sure we are about an unknown),
-and relationships (how two variables vary together). The third uses the
-first two: a relationship is a pattern in the data, and we can be more
-or less sure about it.</li>
-<li>Each kind has its own color on the cards (blue, green, orange), and
-the same three cards come back at every part break and in the summary.
+<li>Three kinds, one per part: population distributions (how cases
+vary), certainty distributions (how sure we are about something we don’t
+know), and correlative distributions (how one thing’s distribution moves
+with another). Each has its own color, all week: blue, green, orange.
+The same three cards come back at every part break and in the summary.
 Point at them.</li>
+<li>The thread from Week 1: randomness and uncertainty aren’t a nuisance
+to get rid of. They’re what statistics is about. Last week: a
+probability measures how sure we are. This week: a single number hides a
+crowd, and how sure we are about it is a distribution too.</li>
+<li>The deck ends with a preview of Week 3: add one variable to a model,
+and the coefficients for the others change. It appears twice: sex,
+height and weight at the end of Part 3, and bedrooms in the house
+prices.</li>
 </ul>
   <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -236,25 +242,34 @@ Point at them.</li>
           display:block!important;
       }</style></aside>
 </section>
-<section id="think-in-distributions" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#think-in-distributions">
-<h1>Think in distributions</h1>
+<section id="the-average-pilot" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#average-pilot">
+<h1>The average pilot</h1>
 <aside class="notes">
 <ul>
-<li>Read the sentence. It’s true, and it’s the kind of number a report
-would print.</li>
-<li>Then ask what it leaves out. Let students find answers before the
-cards appear.</li>
-<li>First, a population: real adults differ, from about 137 to 179 cm.
-“Average” describes the middle of a spread, not a person. How the
-heights vary is a distribution of data.</li>
-<li>Second, uncertainty: we measured 352 people. A different 352 would
-give a slightly different average. How sure we are about the true
-average is a distribution of belief.</li>
-<li>Third, a relationship: height doesn’t vary on its own. Taller people
-tend to be heavier, but with plenty of exceptions. How the two vary
-together is the third kind.</li>
-<li>These are the three parts of today, in order. The big statement is
-the week in one line.</li>
+<li>Tell it as a story. Around 1950, US Air Force pilots kept losing
+control of their planes. It wasn’t pilot error, and it wasn’t the
+machines.</li>
+<li>Click: the cockpits had been designed in 1926, to fit the average
+pilot of the time. The first theory was that pilots had grown since
+then.</li>
+<li>Click: so a young lieutenant, Gilbert Daniels, measured 4,063 pilots
+on 140 body dimensions, and picked the ten that mattered most for a
+cockpit. The plan was to find the new average and rebuild for it.</li>
+<li>Click: ask the room before the reveal. How many pilots were within
+the middle 30% on all ten? Take guesses. Most people say a few hundred,
+or ten percent.</li>
+<li>Click, click: zero. Not one of 4,063. Even on just three dimensions,
+fewer than 3.5% were average on all three.</li>
+<li>The cockpit for the average pilot fit nobody. The average describes
+the crowd, but nobody in the crowd has to match it.</li>
+<li>Click: the fix. The Air Force made the manufacturers build cockpits
+that fit the range of pilots, not the middle: adjustable seats, pedals
+and helmet straps. That’s thinking in distributions instead of averages.
+Every car has an adjustable seat now.</li>
+<li>If someone asks how “average” was defined: Daniels counted a pilot
+as average on a dimension if they fell in the middle 30% of the range.
+The story is from his 1952 technical note, and Todd Rose tells it at the
+start of <em>The End of Average</em> (2016).</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -267,137 +282,136 @@ the week in one line.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p><em>“The average !Kung adult is 155 cm tall.”</em></p>
-<div class="fragment">
-<p>True. But that one number hides three things.</p>
+<p><em>Around 1950, US Air Force pilots kept losing control of their planes.</em></p>
+<ul>
+<li class="fragment">The cockpits had been designed in 1926 to fit the <strong>average
+pilot</strong>.</li>
+<li class="fragment">So the Air Force measured 4,063 pilots on the ten body sizes that matter
+most in a cockpit: height, chest, arm length…</li>
+<li class="fragment">How many were close to average (the middle 30%) on all ten?</li>
+</ul>
+<div class="fragment stat-reveal">
+<p><span class="stat-number">0</span> <span class="stat-captions fragment"><span class="stat-caption">out of 4,063 pilots</span></span></p>
+</div>
+<div class="fragment big-statement">
+<p>The fix: adjustable seats.<br>
+Design for the distribution, not the average.</p>
+</div>
+<p><span class="source">Gilbert S. Daniels, <em>The “Average Man”?</em> (Wright Air Development Center, 1952); retold in Todd Rose, <em>The End of Average</em> (2016).</span></p>
+</section>
+
+<section id="you-already-think-in-distributions" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#commute">
+<h1>You already think in distributions</h1>
+<aside class="notes">
+<ul>
+<li>Same move as Week 1’s “You already understand probability”: they
+already do this, nobody has told them what it’s called.</li>
+<li>Ask someone in the room how long their trip here takes. Someone will
+say “usually about 30 minutes,” or “it depends.”</li>
+<li>Click: “Usually 30 minutes.” That’s not one number. It’s a summary
+of a lot of trips.</li>
+<li>Click, first card: “usually” means not every trip. Some take 20
+minutes, some 45. How trips vary is a population distribution: many
+cases, each different.</li>
+<li>Click, second card: how do you know? You’ve done it a hundred times.
+Someone who’s done it twice would say “about half an hour, I think,” and
+could be quite wrong. How sure you are is a certainty distribution.</li>
+<li>Click, third card: what if it rains? Then the whole spread shifts:
+everything gets slower, and less predictable. A distribution that moves
+with something else is a correlative distribution.</li>
+<li>Click: they already think in all three. This week we draw them, and
+use them.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="exchange">
+<p><span class="exchange-q"><em>“How long is your trip here?”</em></span> <span class="exchange-a fragment"><em>“Usually 30 minutes.”</em></span></p>
 </div>
 <div class="kinds">
-<div class="kind kind-data fragment">
-<p><span class="kind-title">A population</span></p>
-<p>Not everyone is 155 cm. The adults range from 137 to 179 cm.</p>
-<p>How do heights <strong>vary across people</strong>? That’s a <strong>distribution of data</strong>.</p>
+<div class="kind kind-population fragment">
+<p><span class="kind-title"><em>“Usually”</em></span></p>
+<p>Not every trip: some take 20 minutes, some 45.</p>
+<p>How trips <strong>vary</strong>: a <span class="blue">population distribution</span>.</p>
 </div>
-<div class="kind kind-belief fragment">
-<p><span class="kind-title">Uncertainty</span></p>
-<p>We measured 352 adults, not every one. The true average could be a little higher or lower.</p>
-<p>How <strong>sure</strong> are we about the average? That’s a <strong>distribution of belief</strong>.</p>
+<div class="kind kind-certainty fragment">
+<p><span class="kind-title"><em>“How do you know?”</em></span></p>
+<p>You’ve made the trip a hundred times. A newcomer couldn’t be so sure.</p>
+<p>How <strong>sure</strong> you are: a <span class="green">certainty distribution</span>.</p>
 </div>
-<div class="kind kind-relationship fragment">
-<p><span class="kind-title">A relationship</span></p>
-<p>Height doesn’t vary on its own. Taller adults tend to be heavier, but not always.</p>
-<p>How do height and weight <strong>vary together</strong>? That’s a <strong>distribution of a relationship</strong>.</p>
+<div class="kind kind-correlative fragment">
+<p><span class="kind-title"><em>“What if it rains?”</em></span></p>
+<p>Rain, traffic, the hour you leave: each one shifts the whole spread.</p>
+<p>How it changes <strong>with</strong> something else: a <span class="orange">correlative distribution</span>.</p>
 </div>
 </div>
+<div class="fragment big-statement">
+<p>You already think in distributions.<br>
+This week, we draw them.</p>
+</div>
+</section>
+
+<section id="this-weeks-goals" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#goals">
+<h1>This week’s goals</h1>
+<aside class="notes">
+<ul>
+<li>Three kinds of distribution, one per part. Population first, then
+certainty (they met one last week: the mayor’s posterior), then
+correlative.</li>
+<li>The second goal is the preview of next week: adding a variable to a
+model changes what the other numbers mean. It comes at the end of Part 3
+and again in the house prices.</li>
+<li>The house-price example is the appendix, for the TA session.</li>
+<li>Last click: the definition. Every value a number could take, and how
+common or plausible each one is. “Common” is for population
+distributions, “plausible” for certainty distributions.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<ul>
+<li class="fragment">Learn three ways to think with distributions:
+<ul>
+<li><span class="blue"><strong>Population</strong></span>: how cases
+vary</li>
+<li><span class="green"><strong>Certainty</strong></span>: how sure we
+are</li>
+<li><span class="orange"><strong>Correlative</strong></span>: how two
+things vary together</li>
+</ul></li>
+<li class="fragment">See why adding one variable to a model changes what the others mean</li>
+<li class="fragment">Work through an example: what makes a house expensive?</li>
+</ul>
 <div class="fragment">
-<div class="big-statement">
-<p>This week: think in distributions, not single numbers.</p>
-</div>
+<p>A distribution is a different way to think about a number: <span class="blue">every value it could take, and how common or plausible each one is</span>.</p>
 </div>
 </section>
 
-<section id="last-week-this-week" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#last-week">
-<h1>Last week → this week</h1>
-<aside class="notes">
-<ul>
-<li>Start from Week 1’s thesis: a study is one observation, and a number
-means nothing without the assumptions we read it through. This week adds
-that a single number also hides variation and uncertainty, which is what
-the opening slide showed.</li>
-<li>The bridge from Week 1: the mayor’s answer wasn’t a number, it was a
-curve. Students already drew one when they made their prior.</li>
-<li>Name the key word and give the plain definition: every value a
-number could take, and how common or plausible each one is.</li>
-<li>Then name the three kinds, one per part. Distributions of data come
-first. Belief, the kind they met with the mayor, is second.
-Relationships are third.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<ul>
-<li class="fragment">Last week: a number is one observation, read through what we already assume. This week: a single number also hides how much things vary, and how sure we are.</li>
-<li class="fragment">Last week, our answer to “will the mayor win?” was not a number.</li>
-<li class="fragment">It was a <strong>distribution</strong>: a whole curve of more and less plausible values.</li>
-<li class="fragment">That’s this week’s key word. A distribution describes a number by <strong>every value it could take</strong>, and how common or plausible each one is.</li>
-<li class="fragment">We’ll meet three kinds: distributions of <span class="blue">data</span> (how values vary across cases), of <span class="green">belief</span> (how sure we are about something we don’t know), and of <span class="orange">relationships</span> (how two variables vary together).</li>
-</ul>
-</section>
-
-<section id="goals-this-week-three-kinds-of-distribution" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#goals">
-<h1>Goals this week: three kinds of distribution</h1>
-<aside class="notes">
-<ul>
-<li>Three parts, one per card. Parts 1 and 2 are the two basic kinds:
-data and belief. Part 3 puts two variables together and uses both: the
-pattern is in the data, and β gets a distribution of belief. Part 3 ends
-with how relationships mislead.</li>
-<li>These cards come back at every part break, with the current part
-highlighted.</li>
-<li>The house-price exercise is the appendix. They’ll do it with the TA
-in the second session, using all three kinds.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<!-- Week 2's map: the three kinds of distribution, one card each. Used on "Goals this
-     week" and on each part divider, where a .part-N class on the slide heading fades
-     the other two cards back. Styles in css/deck.scss (.kinds). -->
-<div class="kinds">
-<div class="kind kind-data">
-<p><span class="kind-part">Part 1</span> <span class="kind-title">Distributions of data</span></p>
-<p>How values <strong>vary across cases</strong></p>
-<ul>
-<li>Center, spread and shape</li>
-<li>The Normal distribution</li>
-<li>z-scores: where one case sits</li>
-</ul>
-</div>
-<div class="kind kind-belief">
-<p><span class="kind-part">Part 2</span> <span class="kind-title">Distributions of belief</span></p>
-<p>How <strong>sure</strong> we are about something we don’t know</p>
-<ul>
-<li>From “no idea” to “quite sure”</li>
-<li>Same shapes, different meaning</li>
-</ul>
-</div>
-<div class="kind kind-relationship">
-<p><span class="kind-part">Part 3</span> <span class="kind-title">Distributions of relationships</span></p>
-<p>How two variables <strong>vary together</strong></p>
-<ul>
-<li>Correlation and our first coefficient</li>
-<li>How sure we are about a relationship</li>
-<li>When relationships mislead</li>
-</ul>
-</div>
-</div>
-<p>Appendix: What makes a house expensive? All three kinds at work on real data, with the TA in our second session.</p>
-</section>
-
-<section id="part-1-distributions-of-data" class="title-slide slide level1 center part-1" data-notes="notes/week2_notes.md#part1">
-<h1>Part 1: Distributions of data</h1>
+<section id="part-1-population-distributions" class="title-slide slide level1 center part-1" data-notes="notes/week2_notes.md#part1">
+<h1>Part 1: Population distributions</h1>
 <aside class="notes">
 <ul>
 <li>Section break. The first card: how a quantity varies across real
 cases.</li>
-<li>The tools in this part (center, spread, shape, the Normal, z-scores)
-are all ways of describing one distribution, or one case’s place in
-it.</li>
+<li>Everything in this part (the Galton board, center, spread and shape,
+the Normal, z-scores) is a way of describing one population
+distribution, or one case’s place in it.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -410,53 +424,65 @@ it.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<!-- Week 2's map: the three kinds of distribution, one card each. Used on "Goals this
-     week" and on each part divider, where a .part-N class on the slide heading fades
-     the other two cards back. Styles in css/deck.scss (.kinds). -->
+<!-- Week 2's map: the three kinds of distribution, one card each. Used on each part
+     divider, where a .part-N class on the slide heading fades the other two cards
+     back. Styles in css/deck.scss (.kinds). -->
 <div class="kinds">
-<div class="kind kind-data">
-<p><span class="kind-part">Part 1</span> <span class="kind-title">Distributions of data</span></p>
-<p>How values <strong>vary across cases</strong></p>
+<div class="kind kind-population">
+<p><span class="kind-part">Part 1</span> <span class="kind-title">Population distributions</span></p>
+<p>How cases <strong>vary</strong></p>
 <ul>
+<li>Random individuals, predictable crowds</li>
 <li>Center, spread and shape</li>
-<li>The Normal distribution</li>
 <li>z-scores: where one case sits</li>
 </ul>
 </div>
-<div class="kind kind-belief">
-<p><span class="kind-part">Part 2</span> <span class="kind-title">Distributions of belief</span></p>
-<p>How <strong>sure</strong> we are about something we don’t know</p>
+<div class="kind kind-certainty">
+<p><span class="kind-part">Part 2</span> <span class="kind-title">Certainty distributions</span></p>
+<p>How <strong>sure</strong> we are</p>
 <ul>
 <li>From “no idea” to “quite sure”</li>
-<li>Same shapes, different meaning</li>
+<li>More data: same variation, more certainty</li>
 </ul>
 </div>
-<div class="kind kind-relationship">
-<p><span class="kind-part">Part 3</span> <span class="kind-title">Distributions of relationships</span></p>
-<p>How two variables <strong>vary together</strong></p>
+<div class="kind kind-correlative">
+<p><span class="kind-part">Part 3</span> <span class="kind-title">Correlative distributions</span></p>
+<p>How two things <strong>vary together</strong></p>
 <ul>
-<li>Correlation and our first coefficient</li>
-<li>How sure we are about a relationship</li>
-<li>When relationships mislead</li>
+<li>A distribution that moves</li>
+<li>Correlation and coefficients</li>
+<li>Add a variable, and the others change</li>
 </ul>
 </div>
 </div>
 </section>
 
-<section id="randomness-has-patterns" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#randomness">
-<h1>Randomness has patterns</h1>
+<section>
+<section id="random-individuals-predictable-crowds" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#galton">
+<h1>Random individuals, predictable crowds</h1>
 <aside class="notes">
 <ul>
-<li>The admissions example is a framing device, not a dataset we’ll
-analyze. It names three ideas every statistical question has.</li>
-<li>Population: we’re never asking about one application. We’re asking
-about a group, and we have to say which group.</li>
-<li>Variation: the cases differ in ways we care about. Without variation
-there’s nothing to explain.</li>
-<li>Randomness: we will never predict one admission decision perfectly.
-But a coin flipped 1,000 times is very predictable in aggregate. Random
-individuals, predictable populations. That’s why distributions
-work.</li>
+<li>This is a Galton board, after Francis Galton, who built one in the
+1870s. At every peg, a ball bounces left or right with equal chance: a
+coin flip.</li>
+<li>Start with 4 rows. Drop one ball. Ask: where will the next one land?
+Nobody knows. Drop a few more, one at a time.</li>
+<li>Tick “Count the paths.” The numbers under the bins, 1, 4, 6, 4, 1,
+are the garden of forking paths from Week 1: four coin flips, and the
+number of ways to get each number of heads. A ball that bounces right
+twice can do it 6 ways; all the way right, only 1. The middle bins have
+more paths, so more balls end up there.</li>
+<li>Drop 100, then 1,000. The bars fill in the dashed outline: the shape
+the counting predicts.</li>
+<li>Now set 12 or 14 rows, empty the bins, and drop 1,000. A bell. Drop
+another 1,000: the same bell.</li>
+<li>The line on the slide is the week’s foundation: one ball is anyone’s
+guess, a thousand make the same shape every time. Random individuals,
+predictable crowds. That’s why statistics works at all. We can’t predict
+one admission, one patient, one voter. We can describe the crowd,
+sometimes very precisely.</li>
+<li>Say it once: randomness isn’t the opposite of pattern. Randomness
+has patterns.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -469,78 +495,42 @@ work.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>Problem: we want to understand how the admissions process works at a university.</p>
-<div class="fragment" title="Population: This isn't about one individual case but rather a group of cases">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p><em>At every peg, a ball bounces left or right: a coin flip. Drop some balls.</em></p>
+<!-- Week 2, "Random individuals, predictable crowds": a Galton board. Behavior in
+     js/galton.js, styles in css/deck.scss (.w2-*). -->
+<div class="widget-layout galton">
+  <div class="w2-graph"></div>
+  <div class="w2-side">
+    <label>Rows of pegs: <b class="galton-rows-out"></b>
+      <input type="range" class="galton-rows" min="1" max="14" step="1" value="4">
+    </label>
+    <div class="w2-buttons">
+      <button type="button" class="widget-btn" data-drop="1">Drop 1</button>
+      <button type="button" class="widget-btn" data-drop="10">10</button>
+      <button type="button" class="widget-btn" data-drop="100">100</button>
+      <button type="button" class="widget-btn" data-drop="1000">1,000</button>
+    </div>
+    <p class="w2-readout">Balls dropped: <b class="galton-n">0</b></p>
+    <label class="w2-check"><input type="checkbox" class="galton-paths"> Count the paths</label>
+    <button type="button" class="widget-btn galton-reset">Empty the bins</button>
+  </div>
 </div>
-<p><strong>Population: This isn’t about one individual case but rather a group of cases</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li class="fragment">“Applications to this university last year”</li>
-<li class="fragment">“Applications to this university in the last ten years”</li>
-<li class="fragment">“Applications to all state-run universities in this country last year”</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment" title="Variation: These cases are different from each other in ways that interest us">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Variation: These cases are different from each other in ways that interest us</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li class="fragment">“Exam results”</li>
-<li class="fragment">“Family wealth”</li>
-<li class="fragment">“Gender”</li>
-<li class="fragment">“Department”</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment" title="Randomness: Reality is messy, and we'll never predict admission perfectly. But, randomness has patterns. We can describe how it was generated.">
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Randomness: Reality is messy, and we’ll never predict admission perfectly. But, randomness has patterns. We can describe how it was generated.</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li class="fragment">If I flip a coin 1 time, I can’t say what will happen.</li>
-<li class="fragment">If I flip a coin 1000 times, I can say a lot more.</li>
-<li class="fragment">Random individuals → Predictable populations</li>
-</ul>
-</div>
-</div>
-</div>
+<script type="module" src="js/galton.js"></script>
+<div class="fragment">
+<p>One ball: anyone’s guess. A thousand balls: <span class="blue">the same shape, every time</span>.</p>
 </div>
 </section>
-
-<section id="a-distribution-of-data-nepals-population" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#nepal-population">
-<h1>A distribution of data: Nepal’s population</h1>
+<section id="a-shape-tells-a-story" class="slide level2" data-notes="notes/week2_notes.md#nepal-population">
+<h2>A shape tells a story</h2>
 <aside class="notes">
 <ul>
-<li>A familiar data distribution: the age pyramid. Ask: what do you
-notice? Why the bumps?</li>
+<li>A familiar population distribution: Nepal’s age pyramid. Ask: what
+do you notice? Why the bumps?</li>
 <li>Likely discussion points: the base is narrowing because birth rates
 have fallen a lot. And there are fewer men than women in the working
 ages, because so many men work abroad. Let students propose these.</li>
-<li>The point is that a distribution’s shape carries history. Reading
-shapes is a skill.</li>
+<li>The point is that a distribution’s shape carries history. A single
+number, the average age, would hide all of it.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -556,9 +546,8 @@ shapes is a skill.</li>
 <!-- TODO: Add NLSS age data. Why the bumps? -->
 
 <img data-src="images/week2/population.svg" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Population of Nepal</p></section>
-
-<section id="our-running-example-the-kung-san" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#kung">
-<h1>Our running example: the !Kung San</h1>
+<section id="our-running-example-the-kung-san" class="slide level2" data-notes="notes/week2_notes.md#kung">
+<h2>Our running example: the !Kung San</h2>
 <aside class="notes">
 <ul>
 <li>Introduce the data: Nancy Howell’s census of the !Kung San, late
@@ -584,10 +573,10 @@ research was never sharp.</li>
 <div class="columns">
 <div class="column" style="width:45%;">
 <ul>
-<li class="fragment">Census data collected by anthropologist <strong>Nancy Howell</strong> in the late 1960s among the !Kung San of the Kalahari.</li>
-<li class="fragment">352 adults (18+).</li>
-<li class="fragment">Height (cm), weight (kg), age, sex.</li>
-<li class="fragment">The same data McElreath uses in <em>Statistical Rethinking</em>.</li>
+<li>Census data collected by anthropologist <strong>Nancy Howell</strong> in the late 1960s among the !Kung San of the Kalahari.</li>
+<li>352 adults (18+).</li>
+<li>Height (cm), weight (kg), age, sex.</li>
+<li>The same data McElreath uses in <em>Statistical Rethinking</em>.</li>
 </ul>
 </div><div class="column" style="width:55%;">
 <div class="cell">
@@ -643,19 +632,23 @@ research was never sharp.</li>
 </div>
 </div>
 </div></div>
+<div class="cell">
+<div class="cell-output-display">
+<script type="application/json" id="kung-data">{"height":[151.8,139.7,136.5,156.8,145.4,163.8,149.2,168.9,148,165.1,154.3,151.1,144.8,149.9,150.5,163.2,157.5,143.9,161.3,156.2,146.4,148.6,147.3,148,161.9,146.1,146.1,152.7,142.9,142.9,148,160.7,151.8,162.9,171.4,147.3,148,154.3,143.5,146.7,157.5,165.7,152.4,141.6,158.8,155.6,164.5,151.8,161.3,154.3,145.4,145.4,152.4,163.8,144.1,153.7,142.9,167,158.4,165.7,149.9,154.9,161,161.9,148,159.4,148.6,136.5,158.1,144.8,156.8,179.1,170.2,146.1,147.3,162.6,152.4,160,149.9,142.9,167,159.4,154.9,162.6,152.4,170.2,146.1,159.4,151.1,160.7,169.5,158.8,149.9,153,161.9,162.6,149.2,163.2,161.9,145.4,163.2,151.1,150.5,170.8,157.5,152.4,147.3,145.4,157.5,154.3,167,142.9,152.4,160,159.4,149.9,160.7,160.7,149.2,141,154.9,141.6,160,150.2,155.6,156.2,153,167,149.9,148,159.4,161.9,155.6,159.4,146.7,172.7,166.4,141.6,151.8,156.8,148.6,157.5,149.9,148,153,160.7,149.2,138.4,162.6,149.2,158.8,149.9,158.1,156.2,148.6,143.5,154.3,157.5,157.5,154.3,168.3,145.4,149.2,154.9,162.6,156.8,161,144.8,143.5,149.2,149.9,165.7,144.1,157.5,154.3,163.8,156.2,144.1,162.6,146.1,154.9,144.8,146.7,152.4,163.8,165.7,156.2,152.4,140.3,163.2,151.1,171.1,149.9,163.8,141.6,149.2,146.1,161.3,162.6,145.4,170.8,159.4,159.4,153.7,160,150.5,149.2,142.9,142.1,147.3,162.6,164.5,160,153.7,167,151.1,153,139.1,152.4,154.9,148,144.1,155.6,150.5,155.6,154.3,157.5,168.9,150.5,160,167.6,144.1,145.4,160,164.5,153,149.2,160,149.2,153.7,150.5,151.8,158.1,149.2,151.8,154.9,161.3,148.6,160.7,157.5,167,157.5,152.4,152.4,161.9,152.4,159.4,142.2,168.9,160,158.1,152.4,155.6,154.3,156.8,156.2,168.3,148,157.5,160.7,161.3,150.5,163.2,148.6,148.6,161.9,153.7,151.1,163.8,153,151.8,156.2,140.3,158.8,142.9,151.9,161.3,161,144.8,160,161,166,158,154.9,160.7,147.3,146.7,147.3,173,158.1,147.3,166,149.9,161.9,163.8,160,154.9,152.4,146.1,152,151.8,144.8,160.7,151.1,153.7,147.3,139.7,157.5,154.9,143.5,158.1,147.3,160,165.1,154.9,153.7,141.6,163.8,161.3,154.9,161.3,170.2,149.9,160.7,154.9,166.4,148.3,151.8,148.6,153.7,146.7,154.9,156.2,160.7,146.1,156.2,152.4,162.6,142.9,162.6,156.2,158.8],"weight":[47.8,36.5,31.9,53,41.3,63,38.2,55.5,34.9,54.5,49.9,41.2,36,47.7,33.8,48.6,42.3,38.4,49,42.7,35.5,37.9,35.5,40.3,55.1,37.5,38.5,46.6,38.8,35.6,47.4,47.9,49.4,49.4,56.6,39.1,49.9,41.2,38.6,42.4,44.7,58.6,46.7,44.2,50.9,54.3,45.9,48,52.2,47.6,45.6,42.4,36.5,55.9,37.2,48.3,37.3,47.2,47.3,57.5,37.9,47.2,43.2,50.3,39.4,50.7,39.4,36.3,46.3,42.3,47.6,55.7,48.6,42.8,35.1,56.8,51.3,47.2,40.9,32.7,57.1,43,39.9,46,41.1,47.6,37.5,45,42.3,54.9,53.5,52.2,42.4,49.6,41.7,56,42.2,53.1,50.2,42.5,49.1,38.5,49.8,59.8,47.9,39.3,36.9,42.1,44.6,47.9,55.2,33,40.9,51.2,49,53.4,54.1,55.4,42.2,40.9,49.7,44.3,46,42,51.5,44.1,32.2,56.8,52.7,36.5,48.8,57,42.1,50.2,46.5,61.8,49,31.5,35.3,45.6,43.9,45.6,39,41.2,45.2,53.6,52.3,39.1,45.7,40.4,51.5,38.7,39.2,44.3,39.5,31.1,46.8,40.6,50.2,41.3,54.6,45,35.8,45.2,48.1,45.7,48.4,41.2,38.4,42.1,38.2,48.3,38.9,40,50.2,54.3,45.6,39.4,43.2,31.9,45.4,38,36.1,40.9,47.9,47.7,46.4,41.2,36.6,48.1,36.7,56.6,38.7,47.5,36.2,41.3,44.8,50.4,55.3,37.9,58.5,44.4,44.4,44.6,44.6,40.5,44.1,34.4,32.8,35.9,49.6,53.2,37.1,40.5,50.6,44,49.9,33.6,43.9,48.1,42.8,33.9,39.7,35.9,50.9,45.8,49.2,58.8,43.5,52,50.7,34.2,39.4,59.6,52.2,40,43.9,54.6,45.1,41.3,41.9,42.5,43.1,40.8,42.9,46.2,47.9,42.5,48.5,45.9,52.9,47.6,43.5,43.4,53.2,44.7,47.2,31.7,56.4,55.8,47.5,45.2,45.5,48.9,46.6,43.9,56,40.1,50.8,46.3,49.4,44.1,51,40.8,37.6,51.6,44.8,43.4,46.7,39.5,34.8,39.3,37.4,48.7,35.6,43.7,48.2,51,44,48.2,46.7,56.4,48.6,48.2,47.5,35.6,36.6,49,51.3,46.5,37,48.6,38,47.3,55.4,54.2,48.5,43.1,34.2,50,44.3,33.5,47.3,46.1,47.4,40.9,50.3,45.1,42.2,41.6,45.2,51.3,49.3,51.2,43.9,35.5,42.9,46.8,41.9,38.2,43.3,53.6,43,39.8,43.3,52.7,38.4,42.8,35.9,44.2,38.1,44.1,44,47.9,39.4,41.1,40.8,47,34.2,52.2,54.1,52.5],"male":[1,0,0,1,0,1,0,1,0,1,0,1,0,0,0,1,1,0,1,0,1,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0,0,1,0,1,1,1,0,0,0,0,1,0,1,0,0,0,1,1,0,1,0,1,0,1,0,0,1,1,0,1,0,0,1,0,1,1,1,0,0,0,0,1,0,0,1,1,0,1,0,1,0,1,0,1,1,1,0,0,1,1,0,1,1,0,1,0,0,1,1,0,0,0,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,0,0,0,0,1,0,0,1,1,0,1,0,1,1,1,0,1,0,0,0,0,0,1,0,0,1,0,1,0,1,0,1,0,0,1,1,0,1,0,1,1,1,0,1,0,0,0,0,1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,1,0,1,0,1,0,1,0,0,0,1,1,0,1,0,1,0,1,0,0,0,0,0,1,1,1,0,1,1,1,0,1,0,0,0,1,0,1,0,0,1,0,1,1,0,0,1,1,0,1,0,0,0,0,1,1,0,1,0,1,0,1,1,1,1,0,0,0,0,1,0,1,1,1,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,0,0,1,0,0,1,0,1,0,1,1,1,0,1,1,1,1,0,1,0,0,0,1,1,0,1,0,1,1,1,1,0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,1,1,0,0,0,1,1,1,1,1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,0,0,0,1,0,1],"line":{"intercept":-52.3162,"slope":0.6294},"sex_line":{"intercept":-52.9543,"male":-0.0979,"slope":0.6338},"sex_gap":6.7761}</script>
+</div>
+</div>
 </section>
-
-<section id="describing-a-distribution" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#describing">
-<h1>Describing a distribution</h1>
+<section id="center-spread-shape" class="slide level2" data-notes="notes/week2_notes.md#describing">
+<h2>Center, spread, shape</h2>
 <aside class="notes">
 <ul>
-<li>Three words that describe any distribution: center, spread,
-shape.</li>
+<li>Three words that describe any population distribution: center,
+spread, shape.</li>
 <li>Center: the mean, about 155 cm. Spread: the standard deviation,
 about 7.7 cm, the shaded band. A typical adult is within about 8 cm of
 average.</li>
 <li>Shape: one hump, roughly symmetric. Ask: what would two humps mean
-here? (Probably mixing men and women.) What would a long tail mean?</li>
+here? Hold the answer for the next slide.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -670,25 +663,56 @@ here? (Probably mixing men and women.) What would a long tail mean?</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/height-hist-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment"><span class="red"><strong>Center</strong></span>: where is a typical value? (mean)</li>
-<li class="fragment"><span class="blue"><strong>Spread</strong></span>: how far is a typical case from the center? (standard deviation)</li>
-<li class="fragment"><strong>Shape</strong>: one hump or two? Symmetric, or a long tail?</li>
+<li><span class="red"><strong>Center</strong></span>: where is a typical value? (the mean)</li>
+<li><span class="blue"><strong>Spread</strong></span>: how far is a typical case from the center? (the standard deviation)</li>
+<li><strong>Shape</strong>: one hump or two? Symmetric, or a long tail?</li>
 </ul>
 </section>
+<section id="one-hump-or-two" class="slide level2" data-notes="notes/week2_notes.md#two-humps">
+<h2>One hump or two?</h2>
+<aside class="notes">
+<ul>
+<li>The answer to the last question: this one distribution is really
+two, women and men. The dashed line is everyone; the colors are the two
+groups inside it.</li>
+<li>Click: the men are about 11 cm taller on average. But look at the
+overlap. Many women are taller than many men. “Men are taller” is a
+statement about two distributions, not about every man and every
+woman.</li>
+<li>Flag it: this comes back at the end of Part 3. Men are also heavier.
+The question there is whether that’s because they’re men or because
+they’re taller.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>The !Kung heights are two crowds, not one.</em></p>
 
-<section id="the-normal-distribution" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#normal">
-<h1>The Normal distribution</h1>
+<img data-src="week2_files/figure-revealjs/height-sex-1.png" width="1800" class="r-stretch"><div class="fragment">
+<p>Women average 149.5 cm, men 160.4 cm. But the crowds overlap: <span class="blue">plenty of women are taller than plenty of men</span>. (Hold on to this. It comes back.)</p>
+</div>
+</section>
+<section id="the-normal-distribution" class="slide level2" data-notes="notes/week2_notes.md#normal">
+<h2>The Normal distribution</h2>
 <aside class="notes">
 <ul>
 <li>The blue curve is a Normal distribution with the same mean and SD as
 the data. It fits well.</li>
-<li>Two numbers describe the whole shape. That’s the Normal’s main
-attraction.</li>
-<li>Real data are never perfectly Normal. The Normal is a description, a
-useful approximation, not a law. We’ll see a clearly non-Normal
-distribution in the house prices.</li>
-<li>The formula on the slide is just notation for “height follows a
-Normal with this mean and SD.” Same notation as the mayor’s model.</li>
+<li>Click: two numbers describe the whole shape. That’s the Normal’s
+main attraction.</li>
+<li>Connect it to the Galton board: when many small, random pushes add
+up (genes, nutrition, childhood illness, all nudging height up or down),
+you tend to get a bell. That’s why the Normal turns up so often.</li>
+<li>Real data are never perfectly Normal. The Normal is a description,
+not a law. The house prices in the appendix are clearly not Normal.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -713,34 +737,27 @@ Normal with this mean and SD.” Same notation as the mayor’s model.</li>
 </div>
 </div>
 </div><div class="column" style="width:40%;">
+<p>The blue curve is a Normal distribution with the same center and spread as the data:</p>
 <ul>
-<li class="fragment">The blue curve is a Normal distribution with
-<ul>
-<li class="fragment">mean = 154.6</li>
-<li class="fragment">SD = 7.7</li>
-</ul></li>
-<li class="fragment"><strong>Two numbers</strong> describe the whole shape.</li>
-<li class="fragment">Real data are never perfectly Normal, but many things are close.</li>
+<li>mean = 154.6 cm</li>
+<li>SD = 7.7 cm</li>
 </ul>
-</div></div>
 <div class="fragment">
-<p><span class="math display">\[
-\text{height} \sim \text{Normal}(\mu = 154.6,\ \sigma = 7.7)
-\]</span></p>
+<p><strong>Two numbers</strong> describe the whole shape.</p>
+<p>Real data are never perfectly Normal, but many things come close. Like the Galton board: many small, random pushes add up to a bell.</p>
 </div>
+</div></div>
 </section>
-
-<section id="the-689599.7-rule" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#rule-68-95">
-<h1>The 68–95–99.7 rule</h1>
+<section id="the-689599.7-rule" class="slide level2" data-notes="notes/week2_notes.md#rule-68-95">
+<h2>The 68–95–99.7 rule</h2>
 <aside class="notes">
 <ul>
 <li>For a Normal distribution: about 68% of cases within 1 SD, 95%
 within 2 SD, 99.7% within 3 SD.</li>
-<li>Check it against the !Kung data. It’s close. That’s a good habit:
-check a rule of thumb against your actual data.</li>
-<li>This rule is why “2 standard deviations” comes up so often,
-including in the “estimate ± 2 × standard error” rule students will meet
-in Week 5.</li>
+<li>Click: check it against the !Kung data. It’s close. That’s a good
+habit: check a rule of thumb against your actual data.</li>
+<li>“Within 2 SD” comes back in Part 2: it’s how we’ll say how sure we
+are.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -755,13 +772,14 @@ in Week 5.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/normal-rule-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">For a Normal distribution, about <strong>68%</strong> of cases fall within 1 SD of the mean, <strong>95%</strong> within 2 SD.</li>
-<li class="fragment">Check: 65% of !Kung adults are within 1 SD of the average height, and 96% within 2 SD.</li>
+<li>For a Normal distribution, about <strong>68%</strong> of cases fall
+within 1 SD of the mean, and <strong>95%</strong> within 2 SD.</li>
+<li class="fragment">Check: 65% of !Kung adults are within 1 SD of the average height, and
+96% within 2 SD.</li>
 </ul>
 </section>
-
-<section id="distributions-demo" class="title-slide slide level1 no-title center" data-notes="notes/week2_notes.md#dist-demo">
-<h1>Distributions Demo</h1>
+<section id="distributions-demo" class="slide level2 no-title" data-notes="notes/week2_notes.md#dist-demo">
+<h2>Distributions Demo</h2>
 <aside class="notes">
 <ul>
 <li>Interactive. Pick a distribution family and move the sliders. Start
@@ -1654,18 +1672,18 @@ shape, and different situations call for different shapes.</li>
 <span id="cb1-869"><a aria-label="869"></a></span>
 <span id="cb1-870"><a aria-label="870"></a>shinyApp(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-
-<section>
-<section id="standardized-values-z-scores" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#z-scores">
-<h1>Standardized values (z-scores)</h1>
+<section id="taller-or-heavier" class="slide level2" data-notes="notes/week2_notes.md#z-scores">
+<h2>Taller or heavier?</h2>
 <aside class="notes">
 <ul>
-<li>Pose the puzzle: is this man more unusually tall or more unusually
-heavy? Let them try. Centimeters and kilograms can’t be compared
-directly.</li>
-<li>The trick: measure both in “standard deviations from average.” Now
-they’re on the same ruler.</li>
-<li>He is more unusually heavy than tall.</li>
+<li>Pose the puzzle and let them try. Centimeters and kilograms can’t be
+compared directly.</li>
+<li>Click: the trick is to measure both in “standard deviations from
+average.” Now they’re on the same ruler.</li>
+<li>Click: the arithmetic. Click: he is more unusually heavy than
+tall.</li>
+<li>A z-score is a population-distribution idea: it places one case in
+the crowd.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1678,22 +1696,25 @@ they’re on the same ruler.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>A !Kung man is <strong>165 cm</strong> tall and weighs <strong>58 kg</strong>. Is he more unusually <em>tall</em> or more unusually <em>heavy</em>?</p>
+<p><em>A !Kung man is <strong>165 cm</strong> tall and weighs <strong>58 kg</strong>. Is he more unusually tall, or more unusually heavy?</em></p>
 <ul>
-<li class="fragment">We can’t compare centimeters to kilograms.</li>
-<li class="fragment">But we can ask of each: <strong>how many standard deviations from average is this?</strong></li>
+<li>We can’t compare centimeters to kilograms.</li>
+<li class="fragment" data-fragment-index="1">But we can ask of each: <strong>how many standard deviations from
+average is this?</strong></li>
 </ul>
-<div class="fragment">
+<div class="fragment" data-fragment-index="1">
 <p><span class="math display">\[
 z = \frac{x - \text{mean}}{\text{SD}}
 \]</span></p>
 </div>
-<div class="fragment">
+<div class="fragment" data-fragment-index="2">
 <ul>
 <li>Height: (165 − 154.6) / 7.7 = <span class="blue"><strong>1.34</strong></span></li>
 <li>Weight: (58 − 45.0) / 6.5 = <span class="red"><strong>2.01</strong></span></li>
-<li>He is more unusually heavy than he is tall.</li>
 </ul>
+</div>
+<div class="fragment" data-fragment-index="3">
+<p>He is more unusually heavy than he is tall. A <strong>z-score</strong> says where one case sits in the crowd.</p>
 </div>
 </section>
 <section id="same-data-new-ruler" class="slide level2" data-notes="notes/week2_notes.md#new-ruler">
@@ -1738,9 +1759,9 @@ Standardizing doesn’t change the data, only the units.</li>
 </div>
 </div></div>
 <ul>
-<li class="fragment">The <strong>shape</strong> doesn’t change at all. Only the labels on the axis.</li>
-<li class="fragment">The mean becomes <strong>0</strong>. The standard deviation becomes <strong>1</strong>.</li>
-<li class="fragment">The units disappear: a z-score is measured in “standard deviations”.</li>
+<li>The <strong>shape</strong> doesn’t change at all. Only the labels on the axis.</li>
+<li>The mean becomes <strong>0</strong>. The standard deviation becomes <strong>1</strong>.</li>
+<li>The units disappear: a z-score is measured in “standard deviations”.</li>
 </ul>
 </section>
 <section id="reading-z-scores" class="slide level2" data-notes="notes/week2_notes.md#reading-z">
@@ -1749,9 +1770,11 @@ Standardizing doesn’t change the data, only the units.</li>
 <ul>
 <li>A quick reference table. 0 is average, ±1 is ordinary, ±2 is unusual
 (about 1 in 20), ±3 is rare (about 1 in 370).</li>
-<li>The R code is one line. Students don’t need to memorize it.</li>
-<li>Real uses: comparing exam marks on different scales, or prices in
-different currencies.</li>
+<li>The R code is one line per variable. Students don’t need to memorize
+it; the homework uses it.</li>
+<li>Click: the takeaway of Part 1, back to the pilots. An average is one
+point, the center of a distribution. The distribution describes
+everyone.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1802,19 +1825,21 @@ different currencies.</li>
 <span id="cb2-5"><a aria-label="5"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div></div>
-<ul>
-<li class="fragment">z-scores let us compare things measured on completely different scales: exam marks out of 50 vs.&nbsp;out of 100, rupees vs.&nbsp;dollars, cm vs.&nbsp;kg.</li>
-</ul>
+<p>z-scores compare things measured on different scales: exam marks out of 50 and out of 100, rupees and dollars, centimeters and kilograms.</p>
+<div class="fragment big-statement">
+<p>An average describes the crowd.<br>
+The distribution describes everyone in it.</p>
+</div>
 </section></section>
-<section id="part-2-distributions-of-belief" class="title-slide slide level1 center part-2" data-notes="notes/week2_notes.md#part2">
-<h1>Part 2: Distributions of belief</h1>
+<section id="part-2-certainty-distributions" class="title-slide slide level1 center part-2" data-notes="notes/week2_notes.md#part2">
+<h1>Part 2: Certainty distributions</h1>
 <aside class="notes">
 <ul>
 <li>Section break. The second card: not how real cases vary, but how
-plausible each value of something unknown is.</li>
-<li>Students met this kind last week with the mayor. This part shows
-it’s an everyday way of talking, and that it uses the same shapes as
-Part 1.</li>
+sure we are about something we don’t know.</li>
+<li>Students met this kind last week: the mayor’s prior and posterior
+were certainty distributions. This part shows it’s an everyday way of
+talking, and how it differs from Part 1.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1827,56 +1852,57 @@ Part 1.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<!-- Week 2's map: the three kinds of distribution, one card each. Used on "Goals this
-     week" and on each part divider, where a .part-N class on the slide heading fades
-     the other two cards back. Styles in css/deck.scss (.kinds). -->
+<!-- Week 2's map: the three kinds of distribution, one card each. Used on each part
+     divider, where a .part-N class on the slide heading fades the other two cards
+     back. Styles in css/deck.scss (.kinds). -->
 <div class="kinds">
-<div class="kind kind-data">
-<p><span class="kind-part">Part 1</span> <span class="kind-title">Distributions of data</span></p>
-<p>How values <strong>vary across cases</strong></p>
+<div class="kind kind-population">
+<p><span class="kind-part">Part 1</span> <span class="kind-title">Population distributions</span></p>
+<p>How cases <strong>vary</strong></p>
 <ul>
+<li>Random individuals, predictable crowds</li>
 <li>Center, spread and shape</li>
-<li>The Normal distribution</li>
 <li>z-scores: where one case sits</li>
 </ul>
 </div>
-<div class="kind kind-belief">
-<p><span class="kind-part">Part 2</span> <span class="kind-title">Distributions of belief</span></p>
-<p>How <strong>sure</strong> we are about something we don’t know</p>
+<div class="kind kind-certainty">
+<p><span class="kind-part">Part 2</span> <span class="kind-title">Certainty distributions</span></p>
+<p>How <strong>sure</strong> we are</p>
 <ul>
 <li>From “no idea” to “quite sure”</li>
-<li>Same shapes, different meaning</li>
+<li>More data: same variation, more certainty</li>
 </ul>
 </div>
-<div class="kind kind-relationship">
-<p><span class="kind-part">Part 3</span> <span class="kind-title">Distributions of relationships</span></p>
-<p>How two variables <strong>vary together</strong></p>
+<div class="kind kind-correlative">
+<p><span class="kind-part">Part 3</span> <span class="kind-title">Correlative distributions</span></p>
+<p>How two things <strong>vary together</strong></p>
 <ul>
-<li>Correlation and our first coefficient</li>
-<li>How sure we are about a relationship</li>
-<li>When relationships mislead</li>
+<li>A distribution that moves</li>
+<li>Correlation and coefficients</li>
+<li>Add a variable, and the others change</li>
 </ul>
 </div>
 </div>
 </section>
 
-<section id="how-old-is-he-a-distribution-of-belief" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#belief-distributions">
-<h1>How old is he? A distribution of belief</h1>
+<section>
+<section id="how-old-is-he" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#belief-distributions">
+<h1>How old is he?</h1>
 <aside class="notes">
 <ul>
 <li>Start with the photo. Ask the room: how old is he? Collect a few
 guesses. Nobody says one number with certainty. They say “about 40,
 maybe older.” That sentence is a distribution.</li>
-<li>Walk through the four shapes. Uninformed: flat, every age equally
-plausible. Weakly informed: a wide hump around 40. Strongly informed: a
-narrow hump. Domain-specific: a plateau between 30 and 50, dropping off
-outside.</li>
-<li>The point: a distribution is just a picture of “how plausible is
-each value?” People reason this way all the time. We’re drawing it.</li>
-<li>This is exactly what students did with the mayor’s prior last
-week.</li>
-<li>Contrast with Part 1: there’s only one man and one true age. Nothing
-varies here except how sure we are.</li>
+<li>Walk through the four shapes, one click each. Uninformed: flat,
+every age equally plausible. Weakly informed: a wide hump around 40.
+Strongly informed: a narrow hump. Domain-specific: a plateau between 30
+and 50, dropping off outside.</li>
+<li>The point: a certainty distribution is a picture of “how plausible
+is each value?” People reason this way all the time. We’re drawing it,
+exactly as students drew the mayor’s prior last week.</li>
+<li>Contrast with Part 1, and say it slowly: there’s only one man and
+one true age. Nothing varies here except how sure we are. The curves are
+in green for that reason.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1889,24 +1915,7 @@ varies here except how sure we are.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<div class="fragment">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li>We talk about probability distributions all the time: “He’s probably about 40, but he could be quite a bit older”.</li>
-<li>Here, we’re just visualizing that kind of description over the range of all possible values.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
+<p><em>One man, one true age. The only thing that varies is how sure we are.</em></p>
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="fragment">
@@ -1938,13 +1947,10 @@ varies here except how sure we are.</li>
 </div>
 </div>
 </div><div class="column" style="width:40%;">
-<div class="fragment" data-fragment-index="1">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/week2/man.png" height="550"></p>
-<figcaption>Parameter: How old is this person?</figcaption>
+<p><img data-src="images/week2/man.png" class="quarto-figure quarto-figure-center" height="550"></p>
 </figure>
-</div>
 </div>
 </div><div class="column" style="width:30%;">
 <div class="fragment">
@@ -1963,7 +1969,7 @@ varies here except how sure we are.</li>
 </div>
 <div class="fragment">
 <div class="small-caption">
-<p><strong>Domain-specific distributions</strong> I’m relatively certain he’s between 30 and 50, but I have really no idea where in that range he lands. Older or younger than that seems unlikely, though.</p>
+<p><strong>Domain-specific</strong> I’m fairly sure he’s between 30 and 50, but I have no idea where in that range he lands. Older or younger than that seems unlikely, though.</p>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -1977,22 +1983,171 @@ varies here except how sure we are.</li>
 </div>
 </div></div>
 </section>
-
-<section id="data-or-belief" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#two-kinds">
-<h1>Data or belief?</h1>
+<section id="how-sure-can-a-few-people-make-us" class="slide level2" data-notes="notes/week2_notes.md#sample-mean">
+<h2>How sure can a few people make us?</h2>
 <aside class="notes">
 <ul>
-<li>An important distinction that trips people up later. Distributions
-of data describe how a quantity varies across real cases: the heights of
-actual people. Distributions of belief describe how plausible each value
-of an unknown is: the mayor’s vote share. There’s one true value; we
-just don’t know it.</li>
-<li>A quick test: is there one true answer we’re unsure about (belief),
-or many cases that really differ (data)? Try it on the examples.</li>
+<li>The key slide of Part 2: the two kinds side by side, on one
+axis.</li>
+<li>Set it up: pretend these 352 adults are everyone, and we can only
+afford to measure a few. What’s the average height?</li>
+<li>Start with 5. The top shows the five people we measured (blue dots),
+against everyone (gray). That’s a population distribution: how the
+people we measured vary. The bottom shows how sure we are about the
+average height: a certainty distribution.</li>
+<li>Click “Measure new people” a few times. Each sample gives a slightly
+different guess, and the green curve jumps around. The old curves stay
+behind, faint. The curve is honest: it’s about as wide as the
+jumps.</li>
+<li>Now 20, then 100. Ask them to watch both rows. The dots on top
+spread just as wide: people are as different as ever. The green curve
+gets narrow, fast.</li>
+<li>Tick “Show everyone’s average.” With 100 people, the curve sits
+right on it.</li>
+<li>If someone asks how the green curve is made: it’s the posterior for
+the average with a flat prior, a Normal centered on the sample’s average
+with spread SD / √n. They don’t need the formula; the next slide has the
+numbers.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Pretend these 352 adults are everyone. We can only afford to measure a few.</em></p>
+<!-- Week 2, "How sure can a few people make us?": measure a random few of the !Kung
+     adults, and compare how much they vary with how sure we are about their average.
+     Data from the deck's kung-data block, behavior in js/sample-mean.js, styles in
+     css/deck.scss (.w2-*). -->
+<div class="widget-layout sample-mean">
+  <div class="w2-graph"></div>
+  <div class="w2-side">
+    <label>Adults measured: <b class="sample-size-out"></b>
+      <input type="range" class="sample-size" min="3" max="100" step="1" value="5">
+    </label>
+    <div class="w2-buttons">
+      <button type="button" class="widget-btn" data-n="5">5</button>
+      <button type="button" class="widget-btn" data-n="20">20</button>
+      <button type="button" class="widget-btn" data-n="100">100</button>
+    </div>
+    <button type="button" class="widget-btn sample-again">Measure new people</button>
+    
+<table class="w2-stats caption-top">
+<tbody>
+<tr class="odd">
+<td>Best guess for the average</td>
+<td class="sample-guess"></td>
+</tr>
+<tr class="even">
+<td class="blue">Most of these adults are within</td>
+<td class="sample-spread"></td>
+</tr>
+<tr class="odd">
+<td class="green">95% sure the average is within</td>
+<td class="sample-sure"></td>
+</tr>
+</tbody>
+</table>
+
+    <label class="w2-check"><input type="checkbox" class="sample-truth"> Show everyone's average</label>
+  </div>
+</div>
+<script type="module" src="js/sample-mean.js"></script>
+</section>
+<section id="two-spreads" class="slide level2" data-notes="notes/week2_notes.md#two-spreads">
+<h2>Two spreads</h2>
+<aside class="notes">
+<ul>
+<li>The widget’s lesson in numbers. Same population, different sample
+sizes.</li>
+<li>The blue column never changes: most adults are within about 15 cm of
+average, however many we measure. That’s the population
+distribution.</li>
+<li>The green column shrinks: with 5 people we’re 95% sure the average
+is within about 7 cm; with 352, within less than 1 cm. That’s the
+certainty distribution.</li>
+<li>The width shrinks with the square root of the number of people: four
+times the data halves the uncertainty. Mention it, don’t derive it.</li>
+<li>Click: more data doesn’t make people less different. It makes us
+more sure.</li>
+<li>Click: the line to remember, and a callback to Week 1’s “the
+uncertainty is in us.” Variation is a fact about the world: people
+really differ. Uncertainty is a fact about us: what we know. Statistics
+needs both, and confusing them is one of the most common mistakes in
+reading research.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>If we measured n adults, from a much bigger population:</em></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Adults measured</th>
+<th style="text-align: right;"><span class="blue">Most adults are within</span></th>
+<th style="text-align: right;"><span class="green">95% sure the average is within</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">± 15.5 cm</td>
+<td style="text-align: right;">± 6.9 cm</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">± 15.5 cm</td>
+<td style="text-align: right;">± 3.5 cm</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">± 15.5 cm</td>
+<td style="text-align: right;">± 1.5 cm</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">352</td>
+<td style="text-align: right;">± 15.5 cm</td>
+<td style="text-align: right;">± 0.8 cm</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>More data doesn’t make people any less different. <span class="green">It makes us more sure.</span></p>
+</div>
+<div class="fragment big-statement">
+<p>Variation is in the world.<br>
+Uncertainty is in us.</p>
+</div>
+</section>
+<section id="population-or-certainty" class="slide level2" data-notes="notes/week2_notes.md#two-kinds">
+<h2>Population or certainty?</h2>
+<aside class="notes">
+<ul>
+<li>An important distinction that trips people up later. Population
+distributions describe how a quantity varies across real cases.
+Certainty distributions describe how plausible each value of an unknown
+is. There’s one true value; we just don’t know it.</li>
+<li>Click: the quick test. Many cases that really differ, or one answer
+we’re unsure about? Try it on the examples on the cards, then on a few
+of the students’ own.</li>
 <li>Same shapes, same vocabulary, same math. That’s convenient, and also
 why they get confused.</li>
-<li>Part 3 needs both: a pattern in the data, and then how sure we are
-about it.</li>
+<li>Part 3 needs both: a pattern in the data, and how sure we are about
+it.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2006,8 +2161,8 @@ about it.</li>
           display:block!important;
       }</style></aside>
 <div class="kinds">
-<div class="kind kind-data">
-<p><span class="kind-title">Distributions of data</span></p>
+<div class="kind kind-population">
+<p><span class="kind-title">Population distributions</span></p>
 <p>How a quantity <strong>varies across cases</strong>. Many cases, each with its own value.</p>
 <ul>
 <li>Heights of the adults in a village</li>
@@ -2015,33 +2170,32 @@ about it.</li>
 <li>Ages of everyone in Nepal</li>
 </ul>
 </div>
-<div class="kind kind-belief">
-<p><span class="kind-title">Distributions of belief</span></p>
+<div class="kind kind-certainty">
+<p><span class="kind-title">Certainty distributions</span></p>
 <p>How <strong>plausible</strong> each value of an unknown is. One true value; we’re unsure which.</p>
 <ul>
-<li>The mayor’s share of the vote</li>
+<li>The mayor’s share of the vote (Week 1)</li>
 <li>The age of the man in the photo</li>
 <li>The average height of all !Kung adults</li>
 </ul>
 </div>
 </div>
 <div class="fragment">
-<p>Same shapes, same vocabulary, same math. Part 3 needs both: a pattern in the data, and how sure we are about it.</p>
+<p>Quick test: <span class="blue">many cases that really differ</span>, or <span class="green">one answer we’re unsure about</span>? Same shapes, same vocabulary, different questions.</p>
 </div>
-</section>
-
-<section id="part-3-distributions-of-relationships" class="title-slide slide level1 center part-3" data-notes="notes/week2_notes.md#part3">
-<h1>Part 3: Distributions of relationships</h1>
+</section></section>
+<section id="part-3-correlative-distributions" class="title-slide slide level1 center part-3" data-notes="notes/week2_notes.md#part3">
+<h1>Part 3: Correlative distributions</h1>
 <aside class="notes">
 <ul>
-<li>Section break. The third card. So far, one variable at a time. Now
-two: how do height and weight vary together?</li>
-<li>This kind is built from the first two. The scatterplot is a
-distribution of data with two variables. Correlation and regression
-summarize it with one number. That number is unknown, so it gets a
-distribution of belief.</li>
-<li>The part ends with the ways relationships mislead: confounding and
-chance.</li>
+<li>Section break. The third card. So far, one variable at a time. Now:
+how does one variable’s distribution move with another?</li>
+<li>This kind uses the first two. The scatterplot is a population
+distribution with two variables. A coefficient summarizes how one moves
+with the other. That coefficient is unknown, so it gets a certainty
+distribution.</li>
+<li>The part ends with the preview of next week: add a variable to a
+model, and a coefficient changes.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2054,34 +2208,34 @@ chance.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<!-- Week 2's map: the three kinds of distribution, one card each. Used on "Goals this
-     week" and on each part divider, where a .part-N class on the slide heading fades
-     the other two cards back. Styles in css/deck.scss (.kinds). -->
+<!-- Week 2's map: the three kinds of distribution, one card each. Used on each part
+     divider, where a .part-N class on the slide heading fades the other two cards
+     back. Styles in css/deck.scss (.kinds). -->
 <div class="kinds">
-<div class="kind kind-data">
-<p><span class="kind-part">Part 1</span> <span class="kind-title">Distributions of data</span></p>
-<p>How values <strong>vary across cases</strong></p>
+<div class="kind kind-population">
+<p><span class="kind-part">Part 1</span> <span class="kind-title">Population distributions</span></p>
+<p>How cases <strong>vary</strong></p>
 <ul>
+<li>Random individuals, predictable crowds</li>
 <li>Center, spread and shape</li>
-<li>The Normal distribution</li>
 <li>z-scores: where one case sits</li>
 </ul>
 </div>
-<div class="kind kind-belief">
-<p><span class="kind-part">Part 2</span> <span class="kind-title">Distributions of belief</span></p>
-<p>How <strong>sure</strong> we are about something we don’t know</p>
+<div class="kind kind-certainty">
+<p><span class="kind-part">Part 2</span> <span class="kind-title">Certainty distributions</span></p>
+<p>How <strong>sure</strong> we are</p>
 <ul>
 <li>From “no idea” to “quite sure”</li>
-<li>Same shapes, different meaning</li>
+<li>More data: same variation, more certainty</li>
 </ul>
 </div>
-<div class="kind kind-relationship">
-<p><span class="kind-part">Part 3</span> <span class="kind-title">Distributions of relationships</span></p>
-<p>How two variables <strong>vary together</strong></p>
+<div class="kind kind-correlative">
+<p><span class="kind-part">Part 3</span> <span class="kind-title">Correlative distributions</span></p>
+<p>How two things <strong>vary together</strong></p>
 <ul>
-<li>Correlation and our first coefficient</li>
-<li>How sure we are about a relationship</li>
-<li>When relationships mislead</li>
+<li>A distribution that moves</li>
+<li>Correlation and coefficients</li>
+<li>Add a variable, and the others change</li>
 </ul>
 </div>
 </div>
@@ -2092,11 +2246,10 @@ chance.</li>
 <h1>Two variables at once</h1>
 <aside class="notes">
 <ul>
-<li>Each variable has its own distribution of data, which Part 1
+<li>Each variable has its own population distribution, which Part 1
 described. A scatterplot shows both at once: one dot per adult.</li>
-<li>Taller people tend to be heavier. The question is how strongly.</li>
-<li>Ask the room to guess a number from 0 to 1 before we compute
-it.</li>
+<li>Click: taller people tend to be heavier. But what does “tend to”
+mean, exactly? That’s the next slide.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2111,9 +2264,79 @@ it.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/scatter-raw-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">Height and weight each have their own <span class="blue">distribution of data</span>, from Part 1. The scatterplot shows the two <strong>together</strong>: each dot is one adult.</li>
-<li class="fragment">Taller people tend to be heavier. But <strong>how strongly</strong> do they go together?</li>
+<li>Height and weight each have their own <span class="blue">population
+distribution</span>. The scatterplot shows them
+<strong>together</strong>: each dot is one adult.</li>
+<li class="fragment">Taller people tend to be heavier. But what does “tend to” look like?</li>
 </ul>
+</section>
+<section id="a-relationship-is-a-distribution-that-moves" class="slide level2" data-notes="notes/week2_notes.md#conditional">
+<h2>A relationship is a distribution that moves</h2>
+<aside class="notes">
+<ul>
+<li>Interactive. The orange band picks out adults of about the same
+height. On the right, sideways, is the distribution of their weights,
+against everyone’s in gray.</li>
+<li>Start at a short height. Ask: how much do people this tall weigh?
+Look at the orange distribution: not one weight, a spread.</li>
+<li>Drag the band slowly to the right (or use the slider). The whole
+orange distribution slides up. That’s what a relationship is: not a
+line, a distribution that moves.</li>
+<li>Each band leaves a dark mark at its average weight. Sweep across:
+the marks line up. Tick “Show the line”: the regression line runs
+through the middles of the moving distributions. That’s all a regression
+line is.</li>
+<li>Point out what the line doesn’t show: the spread around it. At any
+height, weights still vary by several kilograms.</li>
+<li>Click: in Week 1’s notation, this is P( weight | height ). The bar
+means the same thing as P( rain | July ): narrow down which cases we
+count. Last week the answer was one probability; now it’s a whole
+distribution.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Pick a height. How do the weights of adults that tall vary?</em></p>
+<!-- Week 2, "A relationship is a distribution that moves": the weights of adults of
+     about the same height, against everyone's. Data from the deck's kung-data block,
+     behavior in js/conditional.js, styles in css/deck.scss (.w2-*). -->
+<div class="widget-layout conditional">
+  <div class="w2-graph"></div>
+  <div class="w2-side">
+    <label>Height: <b class="cond-height-out"></b> <small class="gray">± 2.5 cm</small>
+      <input type="range" class="cond-height" min="140" max="172" step="0.5" value="145">
+    </label>
+    <p class="w2-hint">Or drag across the plot.</p>
+    
+<table class="w2-stats caption-top">
+<tbody>
+<tr class="odd">
+<td>Adults this tall</td>
+<td class="cond-n"></td>
+</tr>
+<tr class="even">
+<td class="orange">Their average weight</td>
+<td class="cond-avg"></td>
+</tr>
+</tbody>
+</table>
+
+    <label class="w2-check"><input type="checkbox" class="cond-line"> Show the line</label>
+    <button type="button" class="widget-btn cond-clear">Clear the marks</button>
+  </div>
+</div>
+<script type="module" src="js/conditional.js"></script>
+<div class="fragment">
+<p>That’s <span class="orange">P( weight | height )</span>: Week 1’s bar, for a whole distribution.</p>
+</div>
 </section>
 <section id="standardize-both-variables" class="slide level2" data-notes="notes/week2_notes.md#standardize-both">
 <h2>Standardize both variables</h2>
@@ -2138,6 +2361,7 @@ relationship looks like.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+<p><em>Each adult votes: on the same side of average for both, or on opposite sides?</em></p>
 
 <img data-src="week2_files/figure-revealjs/scatter-z-1.png" width="1800" class="r-stretch"></section>
 <section id="correlation-is-average-agreement" class="slide level2 mechanics" data-notes="notes/week2_notes.md#average-agreement">
@@ -2169,26 +2393,24 @@ and it doesn’t care whether you measure in cm or inches.</li>
 r = \frac{1}{n-1} \sum_{i=1}^{n} z_{\text{height},i} \times z_{\text{weight},i}
 \]</span></p>
 <ul>
-<li class="fragment">Each person “votes”:
+<li>Each person “votes”:
 <ul>
-<li class="fragment"><span class="blue">Same side of average on both → <strong>positive</strong> vote</span></li>
-<li class="fragment"><span class="red">Opposite sides → <strong>negative</strong> vote</span></li>
+<li><span class="blue">Same side of average on both → <strong>positive</strong> vote</span></li>
+<li><span class="red">Opposite sides → <strong>negative</strong> vote</span></li>
 </ul></li>
-<li class="fragment"><em>r</em> is the average vote.</li>
+<li><em>r</em> is the average vote.</li>
 </ul>
 </div><div class="column" style="width:45%;">
-<div class="fragment">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="fu">cor</span>(howell<span class="sc">$</span>height, howell<span class="sc">$</span>weight)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7547479</code></pre>
 </div>
 </div>
-</div>
 <ul>
-<li class="fragment"><em>r</em> is always between <strong>−1</strong> and <strong>+1</strong>.</li>
-<li class="fragment"><em>r</em> has no units.</li>
-<li class="fragment">Standardizing changes nothing: <em>r</em> in cm/kg = <em>r</em> in z-scores.</li>
+<li><em>r</em> is always between <strong>−1</strong> and <strong>+1</strong>.</li>
+<li><em>r</em> has no units.</li>
+<li>Standardizing changes nothing: <em>r</em> in cm/kg = <em>r</em> in z-scores.</li>
 </ul>
 </div></div>
 </section>
@@ -2199,7 +2421,7 @@ r = \frac{1}{n-1} \sum_{i=1}^{n} z_{\text{height},i} \times z_{\text{weight},i}
 <li>Build intuition. Six scatterplots from r = −0.8 to 0.9.</li>
 <li>Ask: where would our height and weight (r = 0.75) sit? Strong, but
 far from perfect.</li>
-<li>Note that r = 0.3 looks like almost nothing to the eye, yet it’s a
+<li>Click: r = 0.3 looks like almost nothing to the eye, yet it’s a
 relationship many papers would report.</li>
 </ul>
 <style type="text/css">
@@ -2215,7 +2437,10 @@ relationship many papers would report.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/cor-gallery-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">Our height and weight: <em>r</em> = 0.75. A strong relationship, but far from perfect.</li>
+<li>Our height and weight: <em>r</em> = 0.75. A strong relationship, but far
+from perfect.</li>
+<li class="fragment"><em>r</em> = 0.3 looks like almost nothing. Many published papers report
+less.</li>
 </ul>
 </section>
 <section id="what-correlation-misses" class="slide level2" data-notes="notes/week2_notes.md#cor-misses">
@@ -2228,10 +2453,9 @@ measures straight-line agreement.</li>
 <li>One extreme point: 30 unrelated points plus a single outlier, and
 the outlier alone creates a large r.</li>
 <li>Two groups: inside each group the relationship runs downhill, but
-the overall r is positive. Flag this one; it’s the same shape as the
-bedrooms puzzle in the house exercise, and as confounding at the end of
-Part 3.</li>
-<li>The lesson: always plot your data before trusting one number.</li>
+the overall r is positive. Flag this one; it’s the shape of the bedrooms
+puzzle in the house exercise.</li>
+<li>Click: always plot your data before trusting one number.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2246,18 +2470,17 @@ Part 3.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/cor-misses-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment"><em>r</em> only measures <strong>straight-line</strong> agreement.</li>
+<li><em>r</em> only measures <strong>straight-line</strong> agreement.</li>
 <li class="fragment"><strong>Always plot your data</strong> before trusting a single number.</li>
 </ul>
-</section></section>
-<section>
-<section id="regression-our-first-coefficient" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#regression">
-<h1>Regression: our first coefficient</h1>
+</section>
+<section id="regression-our-first-coefficient" class="slide level2" data-notes="notes/week2_notes.md#regression">
+<h2>Regression: our first coefficient</h2>
 <aside class="notes">
 <ul>
-<li>In z-space, a line through the middle of the cloud needs one
-parameter: its slope, β.</li>
-<li>Show the candidate lines. Ask: which describes the data best?
+<li>Back to the moving distribution: we want a line through its middles.
+In z-space it needs one number: its slope, β.</li>
+<li>Show the candidate lines. Click: which describes the data best?
 Students will pick the right one by eye. Then ask: what does “best”
 mean?</li>
 </ul>
@@ -2284,25 +2507,25 @@ mean?</li>
 </div>
 </div>
 </div><div class="column" style="width:45%;">
-<p>In z-space, both variables have mean 0, so a line through the middle of the cloud needs only <strong>one parameter</strong>: its slope, β.</p>
+<p>A line through the middle of the moving distribution. In z-scores, both variables have mean 0, so the line needs only <strong>one number</strong>: its slope, β.</p>
 <p><span class="math display">\[
 z_{\text{weight}} = \beta \times z_{\text{height}}
 \]</span></p>
-<ul>
-<li class="fragment">Which line describes the data best?</li>
-</ul>
+<div class="fragment">
+<p>Which line describes the data best?</p>
+</div>
 </div></div>
 </section>
 <section id="the-best-line" class="slide level2" data-notes="notes/week2_notes.md#best-line">
 <h2>The best line</h2>
 <aside class="notes">
 <ul>
-<li>The red segments are the errors: how far each person is from the
+<li>The red segments are the misses: how far each person is from the
 line.</li>
-<li>The best line makes the errors as small as possible overall
-(technically, the sum of squared errors).</li>
-<li>The neat fact: with standardized data and one predictor, the best
-slope is exactly the correlation. β = r.</li>
+<li>The best line makes the misses as small as possible overall
+(technically, the sum of squared misses).</li>
+<li>Click: the neat fact. With standardized data and one predictor, the
+best slope is exactly the correlation. β = r.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2328,9 +2551,11 @@ slope is exactly the correlation. β = r.</li>
 </div>
 </div><div class="column" style="width:45%;">
 <ul>
-<li class="fragment">The <span class="red">red lines</span> are the <strong>errors</strong>: how far each person is from the line.</li>
-<li class="fragment">The best line makes the errors as small as possible overall.</li>
-<li class="fragment">With standardized data and one predictor, the best β is exactly the correlation: <strong>β = r = 0.75</strong>.</li>
+<li>The <span class="red">red lines</span> are the <strong>misses</strong>:
+how far each person is from the line.</li>
+<li>The best line makes the misses as small as possible overall.</li>
+<li class="fragment">With standardized data and one predictor, the best β is exactly the
+correlation: <strong>β = r = 0.75</strong>.</li>
 </ul>
 </div></div>
 </section>
@@ -2342,8 +2567,8 @@ slope is exactly the correlation. β = r.</li>
 <li>In z-scores: one SD taller goes with r SDs heavier.</li>
 <li>In real units: convert back by multiplying by SD of weight and
 dividing by SD of height. About 0.6 kg per cm.</li>
-<li>Watch the wording: “goes with,” not “causes.” That word choice comes
-back at the end of Part 3.</li>
+<li>Watch the wording: “goes with,” not “causes.” It matters in a few
+slides.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2359,14 +2584,14 @@ back at the end of Part 3.</li>
 <div class="columns">
 <div class="column" style="width:45%;">
 <ul>
-<li class="fragment">In z-scores: <strong>β = 0.75</strong>
+<li>In z-scores: <strong>β = 0.75</strong>
 <ul>
-<li class="fragment">“An adult 1 SD taller than average is, on average, 0.75 SD heavier.”</li>
+<li>“An adult 1 SD taller than average is, on average, 0.75 SD heavier.”</li>
 </ul></li>
-<li class="fragment">Back in real units: β × SD<sub>weight</sub> / SD<sub>height</sub>
+<li>Back in real units: β × SD<sub>weight</sub> / SD<sub>height</sub>
 <ul>
-<li class="fragment">0.75 × 6.5 / 7.7 = <strong>0.63 kg per cm</strong></li>
-<li class="fragment">“Each extra centimeter of height goes with about 0.63 kg more weight.”</li>
+<li>0.75 × 6.5 / 7.7 = <strong>0.63 kg per cm</strong></li>
+<li>“Each extra centimeter of height goes with about 0.63 kg more weight.”</li>
 </ul></li>
 </ul>
 </div><div class="column" style="width:55%;">
@@ -2392,17 +2617,14 @@ back at the end of Part 3.</li>
 <h2>How sure are we about β?</h2>
 <aside class="notes">
 <ul>
-<li>β is an unknown, like the mayor’s vote share. So we can have a prior
-and a posterior for it. This is the second card again, applied to a
-relationship.</li>
-<li>Two posteriors: one from 20 adults (wide) and one from all 352
-(narrow). Same rule as last week: prior × likelihood → posterior.</li>
-<li>Small samples aren’t invalid, they’re just honest about being
-unsure. Keep this in mind for the noise example coming up.</li>
-<li>Part 3 now uses both kinds: the scatterplot is a distribution of
-data, and β has a distribution of belief.</li>
-<li>Pivot: these descriptions are real patterns. Next, how real patterns
-can still mislead.</li>
+<li>β is an unknown, like the mayor’s vote share. So it gets a certainty
+distribution: a prior and a posterior. This is the second card again,
+applied to a relationship.</li>
+<li>Click: two posteriors, one from 20 adults (wide, light) and one from
+all 352 (narrow, dark). The same lesson as the sampling widget: more
+people, more sure.</li>
+<li>Small samples aren’t invalid. They’re honest about being unsure.
+Keep that in mind for the next slide.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2417,199 +2639,22 @@ can still mislead.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/beta-posterior-1.png" width="1800" class="r-stretch"><ul>
-<li>β is a number we don’t know, so it gets a <span class="green">distribution of belief</span>. Just like the mayor’s popularity last week: <strong>prior × likelihood → posterior</strong>.</li>
-<li>With 20 people we’re unsure about β. With 352, much less so.</li>
-</ul>
-</section></section>
-<section>
-<section id="when-patterns-mislead-two-headlines" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#headlines">
-<h1>When patterns mislead: two headlines</h1>
-<aside class="notes">
-<ul>
-<li>Everything so far describes relationships accurately. That’s exactly
-the danger: an accurate description can still be read the wrong
-way.</li>
-<li>Read both headlines out loud, like a news anchor. Ask: do you
-believe them? Would you act on them?</li>
-<li>Both numbers are real: they come straight from the data in the next
-few slides. Nobody made an arithmetic mistake.</li>
-<li>If someone already spots the ice cream answer (hot weather), great.
-Ask about the second one instead. Nobody will have an answer for that
-one yet.</li>
-<li>By the end of Part 3, students should be able to say exactly why
-each one misleads.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<div class="fragment">
-<blockquote>
-<p><em>“Ice cream sales linked to drownings”</em> (<em>r</em> = 0.43, one year of daily data)</p>
-</blockquote>
-</div>
-<div class="fragment">
-<blockquote>
-<p><em>“Countries that spend more on [one thing] have more [another]”</em> (<em>r</em> = 0.70, 20 countries)</p>
-</blockquote>
-</div>
-<div class="fragment">
-<ul>
-<li>Both patterns are really there in the data.</li>
-<li>Neither one means what the headline says.</li>
-</ul>
-</div>
-<div class="fragment">
-<p>Let’s see why, and how to tell the two apart.</p>
-</div>
-</section>
-<section id="spurious-correlations" class="slide level2" data-notes="notes/week2_notes.md#spurious">
-<h2>Spurious correlations</h2>
-<aside class="notes">
-<ul>
-<li>Definition: a real pattern in the data that does not mean one
-variable affects the other.</li>
-<li>Two ways to get one. Confounding: a third variable drives both.
-Chance: noise happens to line up.</li>
-<li>They behave very differently, and they have different fixes. That
-difference is the core of today.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<p>A <strong>spurious correlation</strong> is a real pattern in the data that does <em>not</em> mean one variable affects the other. There are two common ways to get one:</p>
-<div class="columns">
-<div class="column">
-<div class="fragment" title="1. Confounding">
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Confounding</strong></p>
-</div>
-<div class="callout-content">
-<p>A <strong>third variable</strong> drives both. The pattern is real and will show up again in new data, but it isn’t about the two variables themselves.</p>
-</div>
-</div>
-</div>
-</div>
-</div><div class="column">
-<div class="fragment" title="2. Chance">
-<div class="callout callout-warning callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Chance</strong></p>
-</div>
-<div class="callout-content">
-<p><strong>Random noise</strong> happens to line up. The pattern is a fluke of this particular sample and will disappear in new data.</p>
-</div>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="kind-1-does-ice-cream-cause-drowning" class="slide level2" data-notes="notes/week2_notes.md#ice-cream">
-<h2>Kind 1: Does ice cream cause drowning?</h2>
-<aside class="notes">
-<ul>
-<li>First headline. One year of simulated daily data. More ice cream
-sales go with more drownings.</li>
-<li>Ask: should the town ban ice cream? Let them laugh, then ask what’s
-really going on.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<div class="columns">
-<div class="column" style="width:55%;">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="week2_files/figure-revealjs/icecream-scatter-1.png" width="1050"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:45%;">
-<ul>
-<li class="fragment">One year of (simulated) daily data from a beach town.</li>
-<li class="fragment"><em>r</em> = 0.43: days with more ice cream sales have more drownings.</li>
-<li class="fragment">Should the town ban ice cream?</li>
-</ul>
-</div></div>
-</section>
-<section id="the-confounder-temperature" class="slide level2" data-notes="notes/week2_notes.md#temperature">
-<h2>The confounder: temperature</h2>
-<aside class="notes">
-<ul>
-<li>Hot days bring both ice cream and swimmers. Temperature is the
-confounder.</li>
-<li>Split the days by temperature and the relationship mostly
-disappears. Comparing like with like is the basic move against
-confounding.</li>
-<li>The key line: more data would not help. A million days would show
-the same strong r. The pattern is stable; it’s just not about ice
-cream.</li>
-<li>Mention that a confounder can also hide or flip a relationship.
-They’ll see a flip in the house exercise.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-
-<img data-src="week2_files/figure-revealjs/icecream-strata-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment"><span class="blue">ice cream</span> ← <strong>temperature</strong> → <span class="blue">drownings</span></li>
-<li class="fragment">Compare days with <strong>similar temperatures</strong>, and the relationship mostly disappears.</li>
-<li class="fragment">More data would not help: a million days would show the same strong <em>r</em>.</li>
-<li class="fragment">A confounder can hide a relationship, invent one, or even flip its sign. You’ll see a sign flip in the house-price exercise.</li>
+<li>β is a number we don’t know, so it gets a <span class="green">certainty
+distribution</span>: prior × likelihood → posterior, like the mayor’s
+vote share last week.</li>
+<li class="fragment">With 20 adults we’re unsure about β. With 352, much less so.</li>
 </ul>
 </section>
-<section id="kind-2-correlations-from-pure-noise" class="slide level2" data-notes="notes/week2_notes.md#noise">
-<h2>Kind 2: Correlations from pure noise</h2>
+<section id="a-headline-from-pure-noise" class="slide level2" data-notes="notes/week2_notes.md#noise">
+<h2>A headline from pure noise</h2>
 <aside class="notes">
 <ul>
-<li>Second headline. Reveal: it was pure noise. 50 made-up variables for
-20 made-up countries, every value random. Nothing is related to
-anything.</li>
-<li>With 1,225 possible pairs, the strongest one has r = 0.70. Put names
-on those two variables and it’s a headline.</li>
+<li>Read the headline out loud, like a news anchor. Ask: do you believe
+it? Would you act on it?</li>
+<li>Click: it was pure noise. 50 made-up variables for 20 made-up
+countries, every value random. Nothing is related to anything.</li>
+<li>With 1,225 possible pairs, the strongest one has a large r. Put
+names on those two variables and it’s a headline.</li>
 <li>Ask: how many real studies look at many variables and report the
 strongest?</li>
 </ul>
@@ -2636,28 +2681,33 @@ strongest?</li>
 </div>
 </div>
 </div><div class="column" style="width:45%;">
+<blockquote>
+<p><em>“Countries that spend more on [one thing] have more [another]”</em> (<em>r</em> = 0.70)</p>
+</blockquote>
+<div class="fragment">
 <ul>
-<li class="fragment">I made up 50 variables for 20 “countries”. Every value is drawn at random with <code>rnorm()</code>: nothing is related to anything.</li>
-<li class="fragment">That’s 1225 possible pairs.</li>
-<li class="fragment">The strongest pair: <em>r</em> = 0.70.</li>
-<li class="fragment">Give these two variables names, and it would make a convincing headline.</li>
+<li>I made up 50 variables for 20 “countries”, every value drawn at random: nothing is related to anything.</li>
+<li>That’s 1225 possible pairs. This is the strongest.</li>
+<li>Give these two variables names, and it’s a headline.</li>
 </ul>
+</div>
 </div></div>
 </section>
-<section id="small-samples-and-many-comparisons" class="slide level2" data-notes="notes/week2_notes.md#small-samples">
-<h2>Small samples and many comparisons</h2>
+<section id="how-much-r-varies-by-chance" class="slide level2" data-notes="notes/week2_notes.md#small-samples">
+<h2>How much <em>r</em> varies by chance</h2>
 <aside class="notes">
 <ul>
-<li>Point out that this histogram is itself a distribution: a
-distribution of r, showing how much a correlation varies by chance
-alone. It’s the same uncertainty the wide β posterior showed with 20
-adults.</li>
-<li>The histogram shows r for every pair of unrelated variables. With 20
-cases, chance alone gives r values of ±0.5 and beyond. With 500 cases,
-they stay near 0.</li>
-<li>This is Week 1’s problem again. Try enough comparisons and some will
-look significant. The base rate of real relationships in this dataset is
-zero, so every “discovery” is false.</li>
+<li>This histogram is itself a distribution: how much r varies by chance
+alone, when nothing is going on. With 20 cases, chance alone gives r
+values of ±0.5 and beyond. With 500 cases, they stay near 0.</li>
+<li>It’s the same lesson as the sampling widget and the β posterior,
+from another angle: with little data, numbers jump around.</li>
+<li>Click: this is Week 1’s problem again. Try enough comparisons and
+some will look significant. The base rate of real relationships here is
+zero, so every “discovery” is false. A wide certainty distribution is
+the honest response.</li>
+<li>Chance is one way a correlation misleads, and more data helps. The
+next few slides show a way that more data doesn’t fix.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2672,28 +2722,29 @@ zero, so every “discovery” is false.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/noise-dist-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">Each histogram is a <strong>distribution of <em>r</em></strong>: how much a correlation varies by chance alone, when nothing is going on. With <span class="red">20 cases</span>, chance alone produces values of ±0.5 and beyond. With <span class="blue">500 cases</span>, they stay close to 0.</li>
-<li class="fragment">Search through enough pairs and you’re guaranteed to find something “interesting”.</li>
-<li class="fragment">This is Week 1’s problem again: try enough comparisons and some will look “significant.” The base rate of real relationships here is zero.</li>
+<li>Each histogram shows how much <em>r</em> varies by chance alone, when
+nothing is going on. With <span class="green">20 cases</span>, chance
+alone produces values of ±0.5 and beyond. With <span class="green">500
+cases</span>, they stay close to 0.</li>
+<li class="fragment">It’s Week 1’s problem again: search enough pairs, and some will look
+“significant.” A wide certainty distribution is the honest answer:
+<em>“I’m not sure yet.”</em></li>
 </ul>
-</section>
-<section id="telling-the-two-apart" class="slide level2 smaller" data-notes="notes/week2_notes.md#telling-apart">
-<h2>Telling the two apart</h2>
+</section></section>
+<section>
+<section id="do-men-weigh-more" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#sex-weight">
+<h1>Do men weigh more?</h1>
 <aside class="notes">
 <ul>
-<li>Walk the table row by row. The most important row: would more data
-help? For chance, yes. For confounding, no.</li>
-<li>What helps against chance: bigger samples, deciding what to test
-before looking, replication. All things from Week 1.</li>
-<li>What helps against confounding: thinking about causes. Nothing in
-the data alone can do it. That’s why next week is about causal
-models.</li>
-<li>The last bullet picks up how Week 1 ended: there are more
-fundamental ways to question our assumptions than the base rate paradox.
-Chance is Week 1’s problem, and more data helps. Confounding is the
-first of the deeper ones, and more data doesn’t.</li>
-<li>Week 5 comes back to this hard: more data won’t save you from a
-confounder.</li>
+<li>The preview of next week begins. Back to the two crowds from Part 1:
+men are taller. Now weight.</li>
+<li>The two weight distributions: men are heavier, with plenty of
+overlap.</li>
+<li>Click: fit weight on sex alone, the same kind of line as before with
+sex as the predictor, and the coefficient for sex is about 6.8 kg. Men
+weigh 6.8 kg more, on average.</li>
+<li>Click: the question. Is that because they’re men, or because they’re
+taller? Let students argue. Some will say both.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2706,62 +2757,245 @@ confounder.</li>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<table class="caption-top" style="width:100%;">
-<colgroup>
-<col style="width: 30%">
-<col style="width: 35%">
-<col style="width: 35%">
-</colgroup>
+<p><em>Back to the two crowds from Part 1.</em></p>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/sex-weight-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:42%;">
+<ul>
+<li>Women average 41.8 kg, men 48.6 kg.</li>
+<li class="fragment">Fit weight on sex alone, and the coefficient for sex is <span class="orange"><strong>+6.8 kg</strong></span>.</li>
+</ul>
+<div class="fragment">
+<p>Is that because they’re men, or because they’re taller?</p>
+</div>
+</div></div>
+</section>
+<section id="compare-adults-of-the-same-height" class="slide level2" data-notes="notes/week2_notes.md#same-height">
+<h2>Compare adults of the same height</h2>
+<aside class="notes">
+<ul>
+<li>Interactive, same widget as before, now with women in red and men in
+blue. The band picks out adults of about the same height (±3 cm), and
+compares the women’s and men’s weights inside it.</li>
+<li>Start in the middle, around 155 cm, where there are plenty of both.
+The gap: essentially zero.</li>
+<li>Slide around. At 150, 155, 160 cm the gap stays small, sometimes
+slightly positive, sometimes slightly negative. Overall, men were 6.8 kg
+heavier. At the same height, hardly at all.</li>
+<li>At the extremes there are too few of one sex to compare: few men
+below about 148 cm, few women above about 165 cm. The widget says so.
+That’s honest too.</li>
+<li>Tick “Show the lines”: one line for women, one for men, from the
+model with both sex and height. They lie almost on top of each
+other.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Pick a height. Compare only the women and men that tall.</em></p>
+<!-- Week 2, "Compare adults of the same height": women's and men's weights, among
+     adults of about the same height. Data from the deck's kung-data block, behavior in
+     js/conditional.js (data-split="sex"), styles in css/deck.scss (.w2-*). -->
+<div class="widget-layout conditional" data-split="sex">
+  <div class="w2-graph"></div>
+  <div class="w2-side">
+    <label>Height: <b class="cond-height-out"></b> <small class="gray">± 3 cm</small>
+      <input type="range" class="cond-height" min="140" max="172" step="0.5" value="155">
+    </label>
+    <p class="w2-hint">Or drag across the plot.</p>
+    
+<table class="w2-stats caption-top">
+<tbody>
+<tr class="odd">
+<td class="red">Women this tall</td>
+<td class="cond-women"></td>
+</tr>
+<tr class="even">
+<td class="blue">Men this tall</td>
+<td class="cond-men"></td>
+</tr>
+<tr class="odd">
+<td>Men's average, minus women's</td>
+<td class="cond-gap"></td>
+</tr>
+</tbody>
+</table>
+
+    <label class="w2-check"><input type="checkbox" class="cond-line"> Show the lines</label>
+  </div>
+</div>
+<script type="module" src="js/conditional.js"></script>
+</section>
+<section id="add-height-and-sex-stops-predicting-weight" class="slide level2" data-notes="notes/week2_notes.md#sex-height">
+<h2>Add height, and sex stops predicting weight</h2>
+<aside class="notes">
+<ul>
+<li>The same thing in two models. Weight on sex alone: +6.8 kg.</li>
+<li>Click: weight on sex and height. Sex: about −0.1 kg. Height: about
+0.63 kg per cm. Adding one variable changed the coefficient for the
+other, from 6.8 to roughly nothing.</li>
+<li>Click: where did the 6.8 kg go? Men are about 10.8 cm taller, and
+each cm goes with about 0.63 kg. 10.8 × 0.63 ≈ 6.9 kg. Almost exactly
+the gap. The DAG draws it: sex affects height, height affects weight.
+The direct arrow from sex to weight is gray: in these data it carries
+almost nothing.</li>
+<li>Click: the effect of sex passes through height. The direct effect is
+about zero, and the interval (a certainty distribution again) runs from
+about −1 to +1 kg.</li>
+<li>Click: the big statement. This is next week’s central idea. The
+coefficient for sex didn’t change because the data changed. It changed
+because the question changed.</li>
+<li>Don’t say “sex doesn’t affect weight.” It does, through height. Week
+3 makes this precise: total effect versus direct effect.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="columns">
+<div class="column" style="width:55%;">
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
-<th>Confounding</th>
-<th>Chance</th>
+<th style="text-align: right;">weight ~ sex</th>
+<th style="text-align: right;"><span class="fragment" data-fragment-index="1">weight ~ sex + height</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>What’s going on?</td>
-<td>A third variable drives both</td>
-<td>Noise happened to line up</td>
+<td><strong>Sex</strong> (men − women)</td>
+<td style="text-align: right;"><span class="orange">+6.8 kg</span></td>
+<td style="text-align: right;"><span class="fragment" data-fragment-index="1"><span class="orange">-0.1 kg</span></span></td>
 </tr>
 <tr class="even">
-<td>Shows up in new data?</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr class="odd">
-<td>Would more data help?</td>
-<td><strong>No</strong></td>
-<td><strong>Yes</strong></td>
-</tr>
-<tr class="even">
-<td>What helps?</td>
-<td>Thinking about causes; comparing like with like</td>
-<td>Bigger samples; deciding what to test <em>before</em> looking; replication</td>
+<td><strong>Height</strong> (per cm)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span class="fragment" data-fragment-index="1">+0.63 kg</span></td>
 </tr>
 </tbody>
 </table>
-<div class="fragment">
+<div class="fragment" data-fragment-index="2">
+<p>Men are 10.8 cm taller. At 0.63 kg per cm:<br>
+10.8 × 0.63 = <span class="orange"><strong>6.9 kg</strong></span>.</p>
+</div>
+<div class="fragment" data-fragment-index="3">
+<p>The effect of sex on weight passes <strong>through height</strong>. The direct effect is about zero (somewhere between -1.1 and +0.9 kg).</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div class="fragment" data-fragment-index="2">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="week2_files/figure-revealjs/sex-dag-1.png" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+<div class="fragment big-statement" data-fragment-index="4">
+<p>Adding one variable changed the answer for another.</p>
+</div>
+</section>
+<section id="which-number-is-right" class="slide level2" data-notes="notes/week2_notes.md#which-right">
+<h2>Which number is right?</h2>
+<aside class="notes">
 <ul>
-<li class="fragment">The posterior for β already protects us a little against chance: with 20 adults it was wide, saying “I’m not sure.”</li>
-<li class="fragment">Nothing in the data alone protects us against confounding. For that we need a <strong>causal model</strong>.</li>
-<li class="fragment">Week 1 ended with more fundamental ways to question our assumptions. This is the first: more data won’t save you from a confounder.</li>
+<li>Both numbers are calculated correctly from the same data. They
+answer different questions.</li>
+<li>“Do men weigh more than women?” Yes, 6.8 kg. “Do men weigh more than
+women of the same height?” No.</li>
+<li>Click: a coefficient’s meaning depends on what else is in the model.
+In the second model, “sex” means “sex, comparing people of the same
+height.”</li>
+<li>Click: it can change, vanish, or even flip sign. The house prices
+show a flip.</li>
+<li>Click: which question should we ask? The data can’t say. It depends
+on what we want to know and what we think causes what. That’s next
+week.</li>
 </ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Both. They answer different questions.</em></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Model</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Do men weigh more than women?</td>
+<td>weight ~ sex</td>
+<td>Yes: <span class="orange">6.8 kg more</span></td>
+</tr>
+<tr class="even">
+<td>Do men weigh more than women <span class="blue">of the same height</span>?</td>
+<td>weight ~ sex + height</td>
+<td>No: <span class="orange">about the same</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li class="fragment">A coefficient’s meaning depends on what else is in the model.</li>
+<li class="fragment">Add a variable, and it can change, vanish or even flip. You’ll see a
+flip in the house prices.</li>
+</ul>
+<div class="fragment big-statement">
+<p>The data can’t tell us which question to ask.<br>
+That’s next week.</p>
 </div>
 </section></section>
-<section id="summary-three-kinds-of-distribution" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#summary">
-<h1>Summary: three kinds of distribution</h1>
+<section id="summary-three-ways-to-think-with-distributions" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#summary">
+<h1>Summary: three ways to think with distributions</h1>
 <aside class="notes">
 <ul>
 <li>The definition, then one card per part. Read them slowly.</li>
 <li>Ask students to name the three kinds without looking, and give an
-example of each.</li>
-<li>The line to remember is the big statement: think in distributions,
-not single numbers.</li>
-<li>The relationships card’s last line, a pattern is a description, not
-an explanation, ties back to last week (statistics is observation) and
-forward to next week’s causal models.</li>
+example of each from their own work.</li>
+<li>Each card ends with this week’s line for that kind: the pilots (an
+average describes the crowd), the sampling widget (variation is in the
+world, uncertainty is in us), and sex and height (a coefficient depends
+on what else is in the model).</li>
+<li>Click: the line to remember. Think in distributions, not single
+numbers.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2776,23 +3010,24 @@ forward to next week’s causal models.</li>
       }</style></aside>
 <p>A <strong>distribution</strong> is a different way to think about a number: every value it could take, and how common or plausible each one is.</p>
 <div class="kinds">
-<div class="kind kind-data">
-<p><span class="kind-title">Data</span></p>
-<p>How values vary across cases. Center, spread, shape. A z-score places one case.</p>
+<div class="kind kind-population">
+<p><span class="kind-title">Population</span></p>
+<p>How cases vary: center, spread and shape. A z-score places one case.</p>
+<p>An average describes the crowd, not anyone in it.</p>
 </div>
-<div class="kind kind-belief">
-<p><span class="kind-title">Belief</span></p>
-<p>How sure we are about an unknown. Wide when we know little, narrow when data are many.</p>
+<div class="kind kind-certainty">
+<p><span class="kind-title">Certainty</span></p>
+<p>How sure we are about something we don’t know. Wide when we know little, narrow with more data.</p>
+<p>Variation is in the world. Uncertainty is in us.</p>
 </div>
-<div class="kind kind-relationship">
-<p><span class="kind-title">Relationships</span></p>
-<p>How two variables vary together: <em>r</em> and β. A pattern is a description, not an explanation: chance and confounding both mislead.</p>
+<div class="kind kind-correlative">
+<p><span class="kind-title">Correlative</span></p>
+<p>How one distribution moves with something else: <em>r</em> and β.</p>
+<p>A coefficient’s meaning depends on what else is in the model.</p>
 </div>
 </div>
-<div class="fragment">
-<div class="big-statement">
+<div class="fragment big-statement">
 <p>Think in distributions, not single numbers.</p>
-</div>
 </div>
 </section>
 
@@ -2800,11 +3035,13 @@ forward to next week’s causal models.</li>
 <h1>Next week</h1>
 <aside class="notes">
 <ul>
-<li>Correlation and regression describe how things move together. They
+<li>Correlation and regression describe how things vary together. They
 don’t say why.</li>
-<li>To answer a causal question, like whether banning ice cream would
-prevent drownings, we need to write down what we think causes what.
-That’s a DAG, next week.</li>
+<li>Adding height made sex’s coefficient vanish. In the appendix, adding
+living area flips bedrooms’. Which model answers our question?</li>
+<li>Click: the data can’t decide. We need to write down what we think
+causes what. That’s a DAG, next week.</li>
+<li>The table is Week 1’s course map, with this week in bold.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2818,11 +3055,49 @@ That’s a DAG, next week.</li>
           display:block!important;
       }</style></aside>
 <ul>
-<li class="fragment">Correlation and regression describe <strong>how</strong> things move together.</li>
-<li class="fragment">They don’t tell us <strong>why</strong>.</li>
-<li class="fragment">To answer “would banning ice cream prevent drownings?”, we need to say what we think causes what.</li>
-<li class="fragment">Next week: <strong>DAGs</strong> and <strong>causal models</strong>.</li>
+<li>Correlation and regression describe <strong>how</strong> things vary
+together. They don’t say <strong>why</strong>.</li>
+<li>Adding height made sex’s coefficient vanish. Adding living area will
+flip bedrooms’. Which models answer the questions we care about?</li>
+<li class="fragment">The data can’t decide. We have to say what we think causes what:
+<strong>DAGs</strong> and <strong>causal models</strong>, next week.</li>
 </ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Week</th>
+<th>Topic</th>
+<th>Punchline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td>Updating</td>
+<td>Do science, not statistics.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>2</strong></td>
+<td><strong>Distributions</strong></td>
+<td><strong>Change how you think about numbers.</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td>Models</td>
+<td>Draw your assumptions and make them explicit.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td>Confounders</td>
+<td>Look behind every pattern.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td>Interpretation</td>
+<td>Ask what’s missing and what’s hidden.</td>
+</tr>
+</tbody>
+</table>
 </section>
 
 <section>
@@ -2830,12 +3105,16 @@ That’s a DAG, next week.</li>
 <h1>Practical work: What makes a house expensive?</h1>
 <aside class="notes">
 <ul>
-<li>Appendix for the TA session. It uses all three kinds on real data.
-Steps 1 and 2 are Part 1 (a distribution of data, and z-scores). Steps 3
-to 5 are Part 3 (relationships), and it ends with a confounder like the
-ice cream example.</li>
+<li>Appendix for the TA session. It uses all three kinds on real data: a
+population distribution of prices (Steps 1 and 2), correlative
+distributions of price with each feature (Steps 3 to 5), and certainty
+distributions for the coefficients (the intervals in Step 7). Steps 6
+and 7 repeat the week’s preview: add a variable, and the others
+change.</li>
 <li>Let students drive. Each step has a question to answer before the
 reveal.</li>
+<li>The callout is the same idea as Week 1’s “deliberately simple
+model”: we leave a lot out, on purpose, and say so.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -2849,6 +3128,27 @@ reveal.</li>
           display:block!important;
       }</style></aside>
 <p><em>Appendix: we’ll work through this together with the TA in our second session.</em></p>
+<p>All three kinds of distribution, on real data:</p>
+<ul>
+<li><strong>The question</strong>: which features of a house go with a higher price, and how much?</li>
+<li><strong>The data</strong>: 2,930 house sales in Ames, a US college town.</li>
+<li><strong>The tools</strong>: a <span class="blue">population distribution</span> of prices, <span class="orange">correlative distributions</span> of price with each feature, and <span class="green">certainty distributions</span> for each coefficient.</li>
+</ul>
+<div title="A deliberately simple model">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>A deliberately simple model</strong></p>
+</div>
+<div class="callout-content">
+<p>Straight lines, one coefficient per feature. No neighborhoods, no house condition, no year of sale. We’ll add the thinking behind those choices next week.</p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="the-data-house-sales-in-ames-iowa" class="slide level2" data-notes="notes/week2_notes.md#houses-data">
 <h2>The data: house sales in Ames, Iowa</h2>
@@ -2871,7 +3171,7 @@ different about a housing market here.</li>
           display:block!important;
       }</style></aside>
 <ul>
-<li class="fragment">2,930 houses sold 2006–2010 in Ames, a US college town (De Cock, 2011). Prices in US dollars; areas converted to m².</li>
+<li>2,930 houses sold 2006–2010 in Ames, a US college town (De Cock, 2011). Prices in US dollars; areas converted to m².</li>
 </ul>
 <div class="cell">
 <div class="cell-output-display">
@@ -2940,8 +3240,8 @@ different about a housing market here.</li>
 </div>
 </div>
 </section>
-<section id="step-1-look-at-the-distribution" class="slide level2" data-notes="notes/week2_notes.md#houses-step1">
-<h2>Step 1: Look at the distribution</h2>
+<section id="step-1-the-distribution-of-prices" class="slide level2" data-notes="notes/week2_notes.md#houses-step1">
+<h2>Step 1: The distribution of prices</h2>
 <aside class="notes">
 <ul>
 <li>Not Normal: a long right tail of a few very expensive houses.</li>
@@ -2964,8 +3264,8 @@ hide the tail.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/price-hist-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">Not Normal: a <strong>long right tail</strong> of a few very expensive houses.</li>
-<li class="fragment">The tail pulls the <span class="red">mean</span> above the <span class="blue">median</span>. Which is the “typical” price?</li>
+<li>Not Normal: a <strong>long right tail</strong> of a few very expensive houses.</li>
+<li>The tail pulls the <span class="red">mean</span> above the <span class="blue">median</span>. Which is the “typical” price?</li>
 </ul>
 </section>
 <section id="step-2-how-unusual-is-this-house" class="slide level2" data-notes="notes/week2_notes.md#houses-step2">
@@ -3069,38 +3369,8 @@ ordinary in price but extreme in size.</li>
 </div>
 </div>
 </section>
-<section id="step-3-price-and-living-area" class="slide level2" data-notes="notes/week2_notes.md#houses-step3">
-<h2>Step 3: Price and living area</h2>
-<aside class="notes">
-<ul>
-<li>r is about 0.71. Bigger houses sell for more, with plenty of
-scatter.</li>
-<li>House B, the largest, sits far below the pattern. Ask what might
-explain it. Good guesses: an unusual sale, a family sale, a house sold
-unfinished. De Cock’s documentation flags the very largest houses as
-unusual sales that don’t reflect market value.</li>
-<li>Lesson: an outlier is a question about how the data were made, not
-just a nuisance.</li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-
-<img data-src="week2_files/figure-revealjs/price-area-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment"><em>r</em> = 0.71. Bigger houses sell for more, but with lots of scatter.</li>
-<li class="fragment">House B is far off the pattern. What might be going on?</li>
-</ul>
-</section>
-<section id="step-4-guess-first" class="slide level2" data-notes="notes/week2_notes.md#houses-guess">
-<h2>Step 4: Guess first</h2>
+<section id="step-3-guess-first" class="slide level2" data-notes="notes/week2_notes.md#houses-guess">
+<h2>Step 3: Guess first</h2>
 <aside class="notes">
 <ul>
 <li>Have everyone rank the six features before looking. Write a few
@@ -3129,15 +3399,15 @@ bad their intuitions are.</li>
 <li>Year built</li>
 </ul>
 </section>
-<section id="step-4-the-correlations" class="slide level2" data-notes="notes/week2_notes.md#houses-correlations">
-<h2>Step 4: The correlations</h2>
+<section id="step-3-the-correlations" class="slide level2" data-notes="notes/week2_notes.md#houses-correlations">
+<h2>Step 3: The correlations</h2>
 <aside class="notes">
 <ul>
 <li>Living area is strongest (about 0.71), then garage size (0.65), year
 built (0.56), bathrooms (0.55), lot area (0.27), and bedrooms last
 (0.14).</li>
 <li>Bedrooms near the bottom usually surprises people. Hold that thought
-for the puzzle.</li>
+for Step 6.</li>
 <li>Because r has no units, we can compare m², cars, years and rooms on
 one scale.</li>
 </ul>
@@ -3154,7 +3424,37 @@ one scale.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/cor-bars-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">Because <em>r</em> has no units, we can compare m², cars, years, and rooms on one scale.</li>
+<li>Because <em>r</em> has no units, we can compare m², cars, years, and rooms on one scale.</li>
+</ul>
+</section>
+<section id="step-4-price-and-living-area" class="slide level2" data-notes="notes/week2_notes.md#houses-step4">
+<h2>Step 4: Price and living area</h2>
+<aside class="notes">
+<ul>
+<li>r is about 0.71. Bigger houses sell for more, with plenty of
+scatter.</li>
+<li>House B, the largest, sits far below the pattern. Ask what might
+explain it. Good guesses: an unusual sale, a family sale, a house sold
+unfinished. De Cock’s documentation flags the very largest houses as
+unusual sales that don’t reflect market value.</li>
+<li>Lesson: an outlier is a question about how the data were made, not
+just a nuisance.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+<img data-src="week2_files/figure-revealjs/price-area-1.png" width="1800" class="r-stretch"><ul>
+<li><em>r</em> = 0.71. Bigger houses sell for more, but with lots of scatter.</li>
+<li>House B is far off the pattern. What might be going on?</li>
 </ul>
 </section>
 <section id="step-5-one-coefficient" class="slide level2 mechanics" data-notes="notes/week2_notes.md#houses-coef">
@@ -3165,8 +3465,7 @@ one scale.</li>
 price and living area.</li>
 <li>In z-scores: one SD more space goes with about 0.71 SD higher price.
 In dollars per m², convert with the SDs.</li>
-<li>Again: “goes with,” not “adds.” That distinction is the next
-slide.</li>
+<li>Again: “goes with,” not “adds.”</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3185,13 +3484,13 @@ slide.</li>
 z_{\text{price}} = \beta \times z_{\text{area}}
 \]</span></p>
 <ul>
-<li class="fragment">In z-scores: <strong>β = 0.71</strong>
+<li>In z-scores: <strong>β = 0.71</strong>
 <ul>
-<li class="fragment">“A house 1 SD larger than average sells, on average, for 0.71 SD more.”</li>
+<li>“A house 1 SD larger than average sells, on average, for 0.71 SD more.”</li>
 </ul></li>
-<li class="fragment">In real units: 0.71 × $79,887 / 47.0 m² ≈ <strong>$1,202 per m²</strong>
+<li>In real units: 0.71 × $79,887 / 47.0 m² ≈ <strong>$1,202 per m²</strong>
 <ul>
-<li class="fragment">“Each extra square meter of living space goes with about $1,202 more in price.”</li>
+<li>“Each extra square meter of living space goes with about $1,202 more in price.”</li>
 </ul></li>
 </ul>
 </div><div class="column" style="width:45%;">
@@ -3206,13 +3505,15 @@ z_{\text{price}} = \beta \times z_{\text{area}}
 </div>
 </div></div>
 </section>
-<section id="a-puzzle-bedrooms" class="slide level2" data-notes="notes/week2_notes.md#bedrooms-puzzle">
-<h2>A puzzle: bedrooms</h2>
+<section id="step-6-a-puzzle-bedrooms" class="slide level2" data-notes="notes/week2_notes.md#bedrooms-puzzle">
+<h2>Step 6: A puzzle: bedrooms</h2>
 <aside class="notes">
 <ul>
-<li>Overall, more bedrooms go with a higher price. But among medium and
-large houses of similar size, more bedrooms go with a lower price.</li>
-<li>Let students argue about how both can be true before moving on.</li>
+<li>Overall, more bedrooms go with a higher price. Click: but among
+medium and large houses of similar size, more bedrooms go with a lower
+price.</li>
+<li>Let students argue about how both can be true before moving on. It’s
+the “two groups” shape from “What correlation misses.”</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3227,24 +3528,237 @@ large houses of similar size, more bedrooms go with a lower price.</li>
       }</style></aside>
 
 <img data-src="week2_files/figure-revealjs/bedrooms-puzzle-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">Overall, more bedrooms go with a <em>higher</em> price (<em>r</em> = 0.14).</li>
-<li class="fragment">But among medium and large houses of <strong>similar size</strong>, more bedrooms go with a <em>lower</em> price.</li>
-<li class="fragment">How can both be true?</li>
+<li>Overall, more bedrooms go with a <em>higher</em> price (<em>r</em> =
+0.14).</li>
+<li class="fragment">But among houses of <strong>similar size</strong>, more bedrooms go with
+a <em>lower</em> price. How can both be true?</li>
 </ul>
 </section>
-<section id="solving-the-bedrooms-puzzle" class="slide level2" data-notes="notes/week2_notes.md#bedrooms-solved">
-<h2>Solving the bedrooms puzzle</h2>
+<section id="step-6-two-models-two-answers" class="slide level2" data-notes="notes/week2_notes.md#bedrooms-solved">
+<h2>Step 6: Two models, two answers</h2>
 <aside class="notes">
 <ul>
-<li>It’s a confounder, exactly like temperature. Living area drives both
-bedrooms and price.</li>
-<li>Holding size fixed, an extra bedroom means smaller rooms, which
-buyers pay less for.</li>
-<li>A confounder flipped the sign of a relationship. That’s the
-strongest version of “a pattern is a description, not an
-explanation.”</li>
-<li>The causal question, whether adding a bedroom makes a house more
-valuable, needs a causal model. That’s Week 3.</li>
+<li>The puzzle as two models. Bedrooms alone: +0.14. Click: add living
+area, and bedrooms flips to about −0.30.</li>
+<li>Click: big houses have more bedrooms and sell for more, so bedrooms
+alone picks up some of the value of size.</li>
+<li>Click: holding size fixed, an extra bedroom means smaller rooms,
+which buyers pay less for.</li>
+<li>Click: the same move as height and sex. There, adding a variable
+made a coefficient vanish; here, it flips one. Week 3 explains the
+difference: height sat between sex and weight, while living area drives
+both bedrooms and price.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<table class="caption-top">
+<caption>Coefficients in SDs of price per SD of the feature</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">price ~ bedrooms</th>
+<th style="text-align: right;"><span class="fragment" data-fragment-index="1">price ~ bedrooms + area</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Bedrooms</strong></td>
+<td style="text-align: right;"><span class="orange">+0.14</span></td>
+<td style="text-align: right;"><span class="fragment" data-fragment-index="1"><span class="orange">-0.30</span></span></td>
+</tr>
+<tr class="even">
+<td><strong>Living area</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span class="fragment" data-fragment-index="1">+0.86</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li class="fragment" data-fragment-index="2">Big houses have more bedrooms <em>and</em> sell for more. Bedrooms alone
+picks up some of that.</li>
+<li class="fragment" data-fragment-index="3">Hold size fixed, and an extra bedroom means smaller rooms: the sign
+flips.</li>
+<li class="fragment" data-fragment-index="4">Same move as height and sex: add one variable, and another’s coefficient
+changes.</li>
+</ul>
+</section>
+<section id="step-7-every-coefficient-moves" class="slide level2" data-notes="notes/week2_notes.md#model-builder">
+<h2>Step 7: Every coefficient moves</h2>
+<aside class="notes">
+<ul>
+<li>Interactive. Tick features to put them in the model. Each bar is a
+coefficient, in SDs of price per SD of the feature. The black lines are
+90% intervals: the certainty distribution for each coefficient. With
+2,930 houses they’re narrow.</li>
+<li>After each change, a dashed gray mark shows where a coefficient was
+before. Most of them move every time.</li>
+<li>Start with bedrooms alone, then add living area: the bedrooms bar
+crosses zero.</li>
+<li>The bottom shows the typical miss: how far a typical price is from
+the model’s prediction. With no features, prices spread by about $80,000
+around the average. Each feature narrows the price distribution for
+houses like this one. That’s a correlative distribution: the price
+distribution, given the features.</li>
+<li>All 64 possible models are fit in advance in R, with lm(). With this
+much data, a Bayesian fit with weak priors gives essentially the same
+numbers (Week 3 fits the bedrooms models in Stan).</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Choose what goes into the model. Watch all the coefficients.</em></p>
+<div class="cell">
+<div class="cell-output-display">
+<script type="application/json" id="house-models">{"features":[{"key":"bedrooms","label":"Bedrooms"},{"key":"area_m2","label":"Living area"},{"key":"bathrooms","label":"Bathrooms"},{"key":"year_built","label":"Year built"},{"key":"garage_cars","label":"Garage size"},{"key":"lot_m2","label":"Lot area"}],"models":{"none":{"beta":{},"sigma":79886.6924},"bedrooms":{"beta":{"bedrooms":[0.1439,0.1138,0.174]},"sigma":79068.5931},"area_m2":{"beta":{"area_m2":[0.7068,0.6853,0.7283]},"sigma":56524.117},"bathrooms":{"beta":{"bathrooms":[0.5456,0.5201,0.5711]},"sigma":66959.9298},"year_built":{"beta":{"year_built":[0.5584,0.5332,0.5837]},"sigma":66281.6623},"garage_cars":{"beta":{"garage_cars":[0.6476,0.6244,0.6707]},"sigma":60885.1001},"lot_m2":{"beta":{"lot_m2":[0.2666,0.2372,0.2959]},"sigma":77009.5062},"bedrooms+area_m2":{"beta":{"bedrooms":[-0.302,-0.3254,-0.2786],"area_m2":[0.8629,0.8395,0.8863]},"sigma":52622.306},"bedrooms+bathrooms":{"beta":{"bedrooms":[-0.06,-0.0872,-0.0327],"bathrooms":[0.5672,0.5399,0.5944]},"sigma":66821.8563},"bedrooms+year_built":{"beta":{"bedrooms":[0.1752,0.1505,0.1999],"year_built":[0.5681,0.5434,0.5928]},"sigma":64802.0425},"bedrooms+garage_cars":{"beta":{"bedrooms":[0.0856,0.0625,0.1087],"garage_cars":[0.6398,0.6166,0.6629]},"sigma":60513.1909},"bedrooms+lot_m2":{"beta":{"bedrooms":[0.1096,0.0802,0.139],"lot_m2":[0.2516,0.2222,0.281]},"sigma":76532.8297},"area_m2+bathrooms":{"beta":{"area_m2":[0.6021,0.5748,0.6293],"bathrooms":[0.1661,0.1388,0.1933]},"sigma":55586.8379},"area_m2+year_built":{"beta":{"area_m2":[0.6073,0.589,0.6256],"year_built":[0.4116,0.3933,0.4299]},"sigma":46661.3703},"area_m2+garage_cars":{"beta":{"area_m2":[0.5129,0.4915,0.5344],"garage_cars":[0.3973,0.3758,0.4188]},"sigma":49273.3533},"area_m2+lot_m2":{"beta":{"area_m2":[0.6867,0.6643,0.709],"lot_m2":[0.0705,0.0481,0.0928]},"sigma":56275.6305},"bathrooms+year_built":{"beta":{"bathrooms":[0.3636,0.3372,0.3899],"year_built":[0.3878,0.3614,0.4141]},"sigma":61127.2339},"bathrooms+garage_cars":{"beta":{"bathrooms":[0.3064,0.2817,0.3311],"garage_cars":[0.5014,0.4767,0.5261]},"sigma":56966.1516},"bathrooms+lot_m2":{"beta":{"bathrooms":[0.5201,0.4951,0.545],"lot_m2":[0.2003,0.1753,0.2252]},"sigma":65062.7714},"year_built+garage_cars":{"beta":{"year_built":[0.2956,0.2696,0.3216],"garage_cars":[0.4885,0.4626,0.5145]},"sigma":57547.6196},"year_built+lot_m2":{"beta":{"year_built":[0.5525,0.5285,0.5766],"lot_m2":[0.2537,0.2297,0.2777]},"sigma":63118.4473},"garage_cars+lot_m2":{"beta":{"garage_cars":[0.6197,0.5966,0.6428],"lot_m2":[0.1553,0.1323,0.1784]},"sigma":59658.2812},"bedrooms+area_m2+bathrooms":{"beta":{"bedrooms":[-0.3105,-0.3333,-0.2876],"area_m2":[0.7516,0.7241,0.7791],"bathrooms":[0.1835,0.1582,0.2087]},"sigma":51388.6844},"bedrooms+area_m2+year_built":{"beta":{"bedrooms":[-0.2108,-0.2311,-0.1906],"area_m2":[0.726,0.7051,0.7468],"year_built":[0.3713,0.3534,0.3892]},"sigma":44493.8874},"bedrooms+area_m2+garage_cars":{"beta":{"bedrooms":[-0.2252,-0.2466,-0.2038],"area_m2":[0.6525,0.6282,0.6769],"garage_cars":[0.3497,0.3288,0.3707]},"sigma":46928.1792},"bedrooms+area_m2+lot_m2":{"beta":{"bedrooms":[-0.301,-0.3243,-0.2777],"area_m2":[0.8433,0.8192,0.8673],"lot_m2":[0.0669,0.046,0.0877]},"sigma":52381.6392},"bedrooms+bathrooms+year_built":{"beta":{"bedrooms":[0.0429,0.017,0.0687],"bathrooms":[0.3424,0.3131,0.3717],"year_built":[0.4001,0.3727,0.4274]},"sigma":61060.2121},"bedrooms+bathrooms+garage_cars":{"beta":{"bedrooms":[-0.0138,-0.0372,0.0095],"bathrooms":[0.3121,0.2856,0.3385],"garage_cars":[0.4999,0.4752,0.5247]},"sigma":56966.6312},"bedrooms+bathrooms+lot_m2":{"beta":{"bedrooms":[-0.0816,-0.1082,-0.0551],"bathrooms":[0.5485,0.5219,0.575],"lot_m2":[0.2078,0.1828,0.2328]},"sigma":64791.1544},"bedrooms+year_built+garage_cars":{"beta":{"bedrooms":[0.1185,0.0966,0.1403],"year_built":[0.313,0.2871,0.3388],"garage_cars":[0.4684,0.4425,0.4943]},"sigma":56791.8361},"bedrooms+year_built+lot_m2":{"beta":{"bedrooms":[0.1429,0.119,0.1668],"year_built":[0.5609,0.5372,0.5845],"lot_m2":[0.234,0.2101,0.2579]},"sigma":62111.2147},"bedrooms+garage_cars+lot_m2":{"beta":{"bedrooms":[0.0678,0.0449,0.0907],"garage_cars":[0.615,0.592,0.6381],"lot_m2":[0.1469,0.1238,0.1701]},"sigma":59427.639},"area_m2+bathrooms+year_built":{"beta":{"area_m2":[0.6409,0.618,0.6638],"bathrooms":[-0.0613,-0.0864,-0.0361],"year_built":[0.4323,0.4121,0.4524]},"sigma":46541.6669},"area_m2+bathrooms+garage_cars":{"beta":{"area_m2":[0.4827,0.4577,0.5078],"bathrooms":[0.0579,0.033,0.0828],"garage_cars":[0.3844,0.3623,0.4066]},"sigma":49158.7304},"area_m2+bathrooms+lot_m2":{"beta":{"area_m2":[0.5747,0.5466,0.6028],"bathrooms":[0.1731,0.1459,0.2003],"lot_m2":[0.0804,0.0584,0.1024]},"sigma":55256.1546},"area_m2+year_built+garage_cars":{"beta":{"area_m2":[0.5214,0.5019,0.5409],"year_built":[0.3108,0.2906,0.3309],"garage_cars":[0.226,0.2036,0.2484]},"sigma":44615.5318},"area_m2+year_built+lot_m2":{"beta":{"area_m2":[0.5802,0.5613,0.5991],"year_built":[0.4161,0.3979,0.4342],"lot_m2":[0.0912,0.0728,0.1095]},"sigma":46144.8596},"area_m2+garage_cars+lot_m2":{"beta":{"area_m2":[0.4991,0.4771,0.5211],"garage_cars":[0.3945,0.3731,0.416],"lot_m2":[0.0532,0.0337,0.0727]},"sigma":49113.2727},"bathrooms+year_built+garage_cars":{"beta":{"bathrooms":[0.2452,0.2203,0.2701],"year_built":[0.2222,0.1962,0.2482],"garage_cars":[0.411,0.3849,0.4372]},"sigma":55141.9216},"bathrooms+year_built+lot_m2":{"beta":{"bathrooms":[0.3314,0.3059,0.357],"year_built":[0.3978,0.3725,0.4232],"lot_m2":[0.2151,0.1925,0.2376]},"sigma":58716.6899},"bathrooms+garage_cars+lot_m2":{"beta":{"bathrooms":[0.2987,0.2745,0.3229],"garage_cars":[0.4795,0.4551,0.5039],"lot_m2":[0.1424,0.1208,0.1641]},"sigma":55866.8661},"year_built+garage_cars+lot_m2":{"beta":{"year_built":[0.3141,0.2888,0.3394],"garage_cars":[0.4464,0.4207,0.4722],"lot_m2":[0.1791,0.1574,0.2008]},"sigma":55821.3865},"bedrooms+area_m2+bathrooms+year_built":{"beta":{"bedrooms":[-0.2079,-0.2284,-0.1874],"area_m2":[0.7363,0.7124,0.7601],"bathrooms":[-0.0217,-0.0461,0.0026],"year_built":[0.3792,0.3593,0.3991]},"sigma":44485.0888},"bedrooms+area_m2+bathrooms+garage_cars":{"beta":{"bedrooms":[-0.2338,-0.2552,-0.2125],"area_m2":[0.6126,0.5861,0.6392],"bathrooms":[0.0867,0.063,0.1105],"garage_cars":[0.3286,0.307,0.3502]},"sigma":46649.6424},"bedrooms+area_m2+bathrooms+lot_m2":{"beta":{"bedrooms":[-0.3096,-0.3323,-0.2869],"area_m2":[0.7247,0.6965,0.7529],"bathrooms":[0.1902,0.1651,0.2153],"lot_m2":[0.0776,0.0573,0.098]},"sigma":51053.934},"bedrooms+area_m2+year_built+garage_cars":{"beta":{"bedrooms":[-0.1878,-0.2074,-0.1681],"area_m2":[0.6371,0.6148,0.6594],"year_built":[0.2867,0.2671,0.3062],"garage_cars":[0.1996,0.1779,0.2213]},"sigma":42853.3935},"bedrooms+area_m2+year_built+lot_m2":{"beta":{"bedrooms":[-0.2084,-0.2284,-0.1883],"area_m2":[0.6988,0.6775,0.7201],"year_built":[0.376,0.3583,0.3937],"lot_m2":[0.0867,0.0692,0.1042]},"sigma":44004.5001},"bedrooms+area_m2+garage_cars+lot_m2":{"beta":{"bedrooms":[-0.225,-0.2463,-0.2037],"area_m2":[0.6388,0.614,0.6635],"garage_cars":[0.347,0.3261,0.3679],"lot_m2":[0.0526,0.034,0.0712]},"sigma":46763.3125},"bedrooms+bathrooms+year_built+garage_cars":{"beta":{"bedrooms":[0.0379,0.0145,0.0612],"bathrooms":[0.2267,0.1993,0.2541],"year_built":[0.2333,0.2064,0.2601],"garage_cars":[0.4105,0.3844,0.4366]},"sigma":55084.2754},"bedrooms+bathrooms+year_built+lot_m2":{"beta":{"bedrooms":[0.0216,-0.0033,0.0466],"bathrooms":[0.321,0.2928,0.3492],"year_built":[0.404,0.3777,0.4303],"lot_m2":[0.2133,0.1907,0.2359]},"sigma":58706.3485},"bedrooms+bathrooms+garage_cars+lot_m2":{"beta":{"bedrooms":[-0.0313,-0.0543,-0.0082],"bathrooms":[0.3113,0.2854,0.3372],"garage_cars":[0.4757,0.4512,0.5003],"lot_m2":[0.1458,0.124,0.1675]},"sigma":55828.8086},"bedrooms+year_built+garage_cars+lot_m2":{"beta":{"bedrooms":[0.0997,0.0782,0.1211],"year_built":[0.3275,0.3023,0.3527],"garage_cars":[0.4322,0.4065,0.4578],"lot_m2":[0.1678,0.1462,0.1894]},"sigma":55280.2877},"area_m2+bathrooms+year_built+garage_cars":{"beta":{"area_m2":[0.5608,0.5376,0.584],"bathrooms":[-0.0743,-0.0984,-0.0503],"year_built":[0.3342,0.3128,0.3556],"garage_cars":[0.2296,0.2073,0.252]},"sigma":44427.1538},"area_m2+bathrooms+year_built+lot_m2":{"beta":{"area_m2":[0.6108,0.5873,0.6343],"bathrooms":[-0.0546,-0.0795,-0.0297],"year_built":[0.4343,0.4144,0.4542],"lot_m2":[0.089,0.0706,0.1073]},"sigma":46050.506},"area_m2+bathrooms+garage_cars+lot_m2":{"beta":{"area_m2":[0.4645,0.4388,0.4902],"bathrooms":[0.0642,0.0393,0.0891],"garage_cars":[0.38,0.3579,0.4021],"lot_m2":[0.0575,0.038,0.0771]},"sigma":48971.1047},"area_m2+year_built+garage_cars+lot_m2":{"beta":{"area_m2":[0.5016,0.4818,0.5215],"year_built":[0.3181,0.2981,0.3382],"garage_cars":[0.2179,0.1956,0.2402],"lot_m2":[0.0768,0.0591,0.0944]},"sigma":44237.2879},"bathrooms+year_built+garage_cars+lot_m2":{"beta":{"bathrooms":[0.2305,0.2061,0.2548],"year_built":[0.2435,0.2181,0.2689],"garage_cars":[0.3772,0.3514,0.403],"lot_m2":[0.1638,0.1429,0.1847]},"sigma":53646.6375},"bedrooms+area_m2+bathrooms+year_built+garage_cars":{"beta":{"bedrooms":[-0.1823,-0.2023,-0.1624],"area_m2":[0.654,0.6294,0.6785],"bathrooms":[-0.0381,-0.0616,-0.0146],"year_built":[0.2993,0.2783,0.3204],"garage_cars":[0.2023,0.1805,0.224]},"sigma":42808.73},"bedrooms+area_m2+bathrooms+year_built+lot_m2":{"beta":{"bedrooms":[-0.2063,-0.2266,-0.186],"area_m2":[0.7064,0.682,0.7307],"bathrooms":[-0.0156,-0.0397,0.0085],"year_built":[0.3816,0.3619,0.4013],"lot_m2":[0.0861,0.0686,0.1036]},"sigma":44003.5112},"bedrooms+area_m2+bathrooms+garage_cars+lot_m2":{"beta":{"bedrooms":[-0.2343,-0.2555,-0.213],"area_m2":[0.5943,0.5672,0.6213],"bathrooms":[0.0932,0.0694,0.1169],"garage_cars":[0.324,0.3024,0.3456],"lot_m2":[0.0588,0.0403,0.0774]},"sigma":46441.4893},"bedrooms+area_m2+year_built+garage_cars+lot_m2":{"beta":{"bedrooms":[-0.1865,-0.206,-0.167],"area_m2":[0.6172,0.5947,0.6398],"year_built":[0.2939,0.2745,0.3134],"garage_cars":[0.192,0.1704,0.2135],"lot_m2":[0.0745,0.0575,0.0914]},"sigma":42482.6978},"bedrooms+bathrooms+year_built+garage_cars+lot_m2":{"beta":{"bedrooms":[0.0222,-0.0007,0.045],"bathrooms":[0.2198,0.1931,0.2465],"year_built":[0.2498,0.2235,0.276],"garage_cars":[0.3773,0.3515,0.403],"lot_m2":[0.162,0.141,0.183]},"sigma":53632.4073},"area_m2+bathrooms+year_built+garage_cars+lot_m2":{"beta":{"area_m2":[0.5386,0.515,0.5623],"bathrooms":[-0.0683,-0.0922,-0.0444],"year_built":[0.3394,0.3181,0.3607],"garage_cars":[0.2216,0.1993,0.2438],"lot_m2":[0.0738,0.0562,0.0914]},"sigma":44078.3284},"bedrooms+area_m2+bathrooms+year_built+garage_cars+lot_m2":{"beta":{"bedrooms":[-0.182,-0.2017,-0.1622],"area_m2":[0.6318,0.6069,0.6567],"bathrooms":[-0.0322,-0.0556,-0.0089],"year_built":[0.3045,0.2837,0.3254],"garage_cars":[0.1943,0.1727,0.2159],"lot_m2":[0.0731,0.0562,0.0901]},"sigma":42452.5416}}}</script>
+</div>
+</div>
+<!-- Week 2, practical work, "Step 7: Every coefficient moves": choose the features in
+     a model of house prices. Models from the deck's house-models block, behavior in
+     js/model-builder.js, styles in css/deck.scss (.w2-*). -->
+<div class="widget-layout model-builder">
+  <div class="w2-graph"></div>
+  <div class="w2-side">
+    <p class="w2-hint">In the model:</p>
+    <div class="mb-features"></div>
+    <div class="w2-buttons">
+      <button type="button" class="widget-btn mb-clear">None</button>
+      <button type="button" class="widget-btn mb-all">All</button>
+    </div>
+    <p class="w2-readout">Typical miss: <b class="mb-sigma"></b></p>
+    <p class="w2-hint">Bars: each coefficient. Lines: 90% intervals.</p>
+  </div>
+</div>
+<script type="module" src="js/model-builder.js"></script>
+</section>
+<section id="what-to-try" class="slide level2" data-notes="notes/week2_notes.md#houses-try">
+<h2>What to try</h2>
+<aside class="notes">
+<ul>
+<li>Bedrooms, then living area: bedrooms flips. One sentence: at the
+same size, more bedrooms means smaller rooms.</li>
+<li>Bathrooms, then year built: bathrooms is clearly positive (about
++0.18 with bedrooms and area), then drops to about zero once year built
+is in. Newer houses have more bathrooms, and newer houses sell for more.
+Bathrooms was partly standing in for “new.”</li>
+<li>Everything: compare each bar with that feature’s correlation from
+Step 3. Living area barely moves. Bathrooms moves from 0.55 to about
+zero.</li>
+<li>The typical miss: living area narrows it the most, then year built.
+Lot area hardly at all.</li>
+<li>The closing question: which coefficient is the value of a bathroom?
+Each model gives a different answer, and the data alone can’t choose.
+That’s next week: DAGs.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><em>Four questions for the model builder on the last slide.</em></p>
+<ul>
+<li><strong>Bedrooms, then living area.</strong> Bedrooms flips. Can you explain why, in one sentence?</li>
+<li><strong>Bathrooms, then year built.</strong> What happens to bathrooms? What do new houses have more of?</li>
+<li><strong>Everything.</strong> Which coefficient moved furthest from its correlation? Which barely moved?</li>
+<li><strong>The typical miss.</strong> Which feature narrows the spread of prices the most? Which hardly at all?</li>
+</ul>
+<p><em>Which coefficient is “the” value of a bathroom? The data can’t say. That’s next week.</em></p>
+</section>
+<section id="the-model-written-formally" class="slide level2 mechanics smaller" data-notes="notes/week2_notes.md#houses-model">
+<h2>The model, written formally</h2>
+<aside class="notes">
+<ul>
+<li>Mechanics slide. The same notation as the mayor’s model last week:
+“∼” reads “is drawn from.”</li>
+<li>Line 1: prices spread around a center. Line 2: the center moves with
+the features.</li>
+<li>Walk the table against the model builder: μ is the prediction, the
+βs are the bars, σ is the typical miss.</li>
+<li>The last bullets tie the week together: every line of a model is a
+distribution, and the three kinds all appear. “The others held fixed” is
+the part to underline. It’s why every coefficient depends on what else
+is in the model.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<p><span class="math display">\[
+\begin{aligned}
+z_{\text{price},i} &amp;\sim \text{Normal}(\mu_i,\ \sigma) &amp;&amp; \class{blue}{\text{how prices vary around the prediction}} \\
+\mu_i &amp;= \beta_1 z_{\text{bedrooms},i} + \beta_2 z_{\text{area},i} + \dots &amp;&amp; \class{orange}{\text{how the center moves with each feature}}
+\end{aligned}
+\]</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Read it as</th>
+<th>In the model builder</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\mu_i\)</span></td>
+<td>the center of the price distribution for houses like house <em>i</em></td>
+<td>the prediction</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\beta_1, \beta_2, \dots\)</span></td>
+<td>how far the center moves per SD of each feature, the others held fixed</td>
+<td>the bars</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\sigma\)</span></td>
+<td>how far prices spread around that center</td>
+<td>the typical miss</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Each line is a distribution: prices spread around a center (<span class="blue">population</span>), the center moves with the features (<span class="orange">correlative</span>), and every β is a number we’re unsure about (<span class="green">certainty</span>, the intervals).</li>
+<li>“The others held fixed” is why each coefficient depends on what else is in the model.</li>
+</ul>
+</section></section>
+<section id="more-resources" class="title-slide slide level1 center" data-notes="notes/week2_notes.md#more-resources">
+<h1>More resources</h1>
+<aside class="notes">
+<ul>
+<li>McElreath’s chapter 4 builds the Normal and the regression line from
+the same !Kung data, with priors and posteriors for every parameter.
+Chapter 5 is about adding variables, and why coefficients change when
+you do.</li>
+<li>The pilots story opens Todd Rose’s <em>The End of Average</em>. It’s
+short and very readable.</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -3258,16 +3772,13 @@ valuable, needs a causal model. That’s Week 3.</li>
           display:block!important;
       }</style></aside>
 <ul>
-<li class="fragment">The <strong>bedrooms puzzle</strong>: across all houses, more bedrooms go with higher prices.</li>
-<li class="fragment">It’s a confounder, like temperature for ice cream and drownings.</li>
-<li class="fragment">But <span class="blue">bedrooms</span> ← <strong>living area</strong> → <span class="blue">price</span>. Big houses have more bedrooms <em>and</em> sell for more.</li>
-<li class="fragment">Compare houses of <strong>similar size</strong>, and extra bedrooms go with a <em>lower</em> price (less space per room).</li>
-<li class="fragment">A confounder can hide a relationship, invent one, or even flip its sign.</li>
-<li class="fragment">To answer “does adding a bedroom make a house more valuable?”, we need to say what we think causes what. That’s Week 3.</li>
+<li><strong>The book:</strong> Richard McElreath, <a href="https://xcelab.net/rm/"><em>Statistical Rethinking</em></a> (2nd edition, 2020). Chapter 4 builds these ideas with the same !Kung data; chapter 5 adds a second variable, as we did with height and sex.</li>
+<li><strong>The lectures:</strong> McElreath’s <a href="https://github.com/rmcelreath/stat_rethinking_2026">Statistical Rethinking 2026</a> series on YouTube. Free lectures that follow the book.</li>
+<li><strong>The pilots:</strong> Todd Rose, <em>The End of Average</em> (2016), chapter 1.</li>
 </ul>
 
 
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="images/logo_compact_blue.svg" class="slide-logo"></p>
