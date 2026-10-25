@@ -125,15 +125,17 @@ I want to illustrate a very famous example involving HIV testing. This is releva
 - The colors are deliberate and stay unexplained for now: the base rate is red and the test's accuracy is blue. They come back as prior and likelihood on "You already understand Bayesian updating".
 - Last click: you test positive. How worried should you be? This is the decision in "decision making". Take a few guesses before moving on. Most will be near 97% or 99%: it sounds like an imperfect but reasonably good test.
 
-# The question that matters {#real-question}
+# Asking the right question {#real-question}
 
 - Sensitivity and specificity are back at the top as plain lines, in view from the start. The real question appears later on a line laid out the same way, so P( HIV+ | test+ ) sits directly under P( test+ | HIV+ ): the same two words, sides swapped.
 - Click: by most standards, that's a good test. Make the point honestly: 99% and 97% are good numbers, and plenty of tests in medicine and research do worse. The puzzle only works if they believe the test is good.
 - Then a question: is there a problem with judging the test by those two numbers? Can anybody spot it?
 
-- Click: the red callout, "But there's something strange here..." Click again for its answer: if we already knew whether someone has HIV, there'd be no point testing them. Sensitivity and specificity describe a situation where we already know somebody's HIV status. Far more often, when we think about the accuracy of a test, we're interested in the reverse question.
+- Click: "But there's something strange here..." Stop. Give the room a moment to find it themselves before the next click: look at the two lines above. What would you have to know to use those numbers?
+- Click: HIV+ and HIV– after the bar turn red, with the answer in the note: if we already know HIV status, why test? Sensitivity and specificity describe a situation where we already know somebody's HIV status.
+- Click: an asterisk lands on "good test", and the caveat appears under it: sensitivity and specificity work backwards. They assume the answer, HIV status, and tell us about the test result. The test is still good; the asterisk says good at what. Far more often, when we think about the accuracy of a test, we're interested in the reverse question.
 
-- Click: the real question, P( HIV+ | test+ ), with a red question mark where its number goes. Say it in full: the real question is almost always this one. This is the slip from "Direction of conditions", now with real stakes: sensitivity is P( test+ | HIV+ ), and the question is P( HIV+ | test+ ).
+- Click: the real question, P( HIV+ | test+ ), is what we actually want to know. HIV+ is still red, but now it's on the left of the bar: the thing we're asking about, not the thing we're assuming. Say it in full: the real question is almost always this one. This is the slip from "Direction of conditions", now with real stakes: sensitivity is P( test+ | HIV+ ), and the question is P( HIV+ | test+ ).
 - Before the next click, go back to the guesses from the last slide. Most were near 97% or 99%.
 - Click: 3.2%, on its own. Let it sit.
 - Click: the words around it, "in a random screening, only 3.2% of positive tests will be accurate". Don't explain it yet; let them puzzle over how a 99%-accurate test can be right only 3% of the time. The next two slides count it out.
@@ -164,14 +166,7 @@ I want to illustrate a very famous example involving HIV testing. This is releva
 - Click. 31 positive results, and only 1 is real. About 3%, the same 3.2% as the table.
 - The test isn't bad. The problem is that the healthy group is so much bigger that even a small error rate in it swamps the one true case.
 - Keep this picture in mind. It comes back, almost square for square, when we ask why most published research is wrong.
-- Next: the app lets students change the prevalence and the test accuracy and watch this happen. Then the obvious question: does this mean tests are useless?
-
-# Base Rate Paradox Demo {#baserate-demo}
-
-- The same calculation, with sliders. Left: prevalence (0–10%), sensitivity and specificity, starting at today's numbers (0.1%, 99%, 97%). Top: P( condition+ | test+ ), the positive predictive value, the number papers use for "the chance a positive is real". Bottom: 100,000 people flowing into the four cells of the table.
-- It starts at 3.2%, the number from the last two slides.
-- Things to try, in this order. (1) Push sensitivity to 100%: the answer barely moves. Catching every true case doesn't help when there are so few. (2) Push specificity from 97% to 99%: the false positives shrink to a third, and the answer roughly triples, to about 9%. (The modern tests' 99.8% from the table's fine print would give 33%, but the slider moves in whole percents.) (3) Raise prevalence to 1%, then 10%: the biggest change of all.
-- Stop on the third one. Same test, very different answer, just from who is being tested. That's the next slide.
+- Next, the obvious question: does this mean tests are useless? After that, the app lets students change the prevalence and the test accuracy and watch this happen.
 
 # Does this mean tests are useless? {#who-gets-tested}
 
@@ -185,6 +180,13 @@ I want to illustrate a very famous example involving HIV testing. This is releva
 - Same test, same result. The answer went from 3% to 79% because of what we knew before the test: who this person is, and why they came in. A test result is never read on its own; it changes what we already believed.
 - "What we already know" is in red because it's the prior. Don't name it yet; the updating section does ("You already understand Bayesian updating"). It comes back on "Numbers don't speak for themselves" and "The science comes first".
 
+# Base Rate Paradox Demo {#baserate-demo}
+
+- The same calculation, with sliders. Left: prevalence (0–10%), sensitivity and specificity, starting at today's numbers (0.1%, 99%, 97%). Top: P( condition+ | test+ ), the positive predictive value, the number papers use for "the chance a positive is real". Bottom: 100,000 people flowing into the four cells of the table.
+- It starts at 3.2%, the number from the table and the squares.
+- Things to try, in this order. (1) Push sensitivity to 100%: the answer barely moves. Catching every true case doesn't help when there are so few. (2) Push specificity from 97% to 99%: the false positives shrink to a third, and the answer roughly triples, to about 9%. (The modern tests' 99.8% from the table's fine print would give 33%, but the slider moves in whole percents.) (3) Raise prevalence to 1%, then 10%: the biggest change of all.
+- The third one is the last slide again, now with a slider: same test, very different answer, just from who is being tested. Let students find their own "higher-risk group" and read off the answer.
+
 # So why is most published research wrong? {#why-research-wrong}
 
 - Now we close the loop on Ioannidis. His argument is the HIV example in disguise: "has HIV" becomes "the idea is true," and "tests positive" becomes "gets a significant result."
@@ -192,6 +194,7 @@ I want to illustrate a very famous example involving HIV testing. This is releva
 - Click. Good studies catch most true ideas: 8 of the 10 light up.
 - Click. But they also get a significant result for about 5% of the false ones, purely by chance: about 50 red squares, scattered everywhere.
 - Click. 58 discoveries, and only 8 are real: about 14%. Let that land before moving on.
+- The gray line at the bottom gives the two settings behind the 8 and the 50: 80% power (β = 20%) and a 5% significance level (α = 5%). Don't define them here; the next slide's table does, as sensitivity and specificity.
 - The point isn't that scientists are dishonest or bad at math. The math is fine. A significant result answers P(data | hypothesis), and when true ideas are rare, P(hypothesis | data) is very different. (That's where we go in two slides.)
 - 1 in 100 is one scenario, realistic for exploratory work. Confirmatory research can be closer to 50%, and then most discoveries are real. The next slide's table shows the range, if there's time.
 - Don't resolve it yet. First: why do smart people get fooled? Then updating, and why it's okay: once you expect many single findings to be wrong, you stop treating one p < 0.05 as truth and start treating each one as a nudge to what we already know, not the final word.
@@ -240,9 +243,9 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - The closing line (click 5). Reassure people first. Lots of smart people find p-values confusing, and the reason is structural, not personal.
 - Observation runs from data to the world. You see something and ask what it tells you. That's how we reason in daily life, and how ethnographers reason about an interview.
 - A p-value runs the other way. It starts from a world we usually don't believe in (the null: nothing is going on), and asks how surprising our data would be there. It's a statement about the data, given an imagined world.
-- The significance level α is the study's false-positive rate, the same kind of number as the HIV test's 3% (the trust table's footnote: specificity is 1 − α). It's true, and it controls something worth controlling, but it isn't P( hypothesis | data ). Treating p < 0.05 as "95% likely true" is the same mistake as treating a 97%-specific test as a 97% diagnosis. We just saw how wrong that can be.
+- The closing line ties it to "Asking the right question": like sensitivity and specificity, a p-value works backwards. It's the right answer to the wrong question: P( data | hypothesis ) is correctly computed, but it isn't P( hypothesis | data ). (If asked about the details: the significance level α is the study's false-positive rate, the same kind of number as the HIV test's 3%; the research table's footnote says specificity is 1 − α.) Treating p < 0.05 as "95% likely true" is the same mistake as treating a 97%-specific test as a 97% diagnosis. We just saw how wrong that can be.
 - Call back to "Direction of conditions": it's the same slip as reading P( Rural | Sociology ) off P( Sociology | Rural ).
-- Bayesian updating is the fix: it runs in the direction we actually observe.
+- Click: to turn it around, we need one more ingredient, what we already believe. It's in red, like the prior. That's what the HIV test needed too: "who gets tested" changed a positive from 3% to 79%. For research, it's how plausible the idea was before the study. Bayesian updating is the fix: it puts that ingredient in and runs in the direction we actually observe. That's the next section.
 
 # Bayesian Updating: What it is not {#what-it-is-not}
 
@@ -259,7 +262,7 @@ Frame it as science first: this is how a community of researchers changes its mi
 For those interested in math, I definitely encourage you to look into where the theorem comes from and how it's derived, but for our purposes, we need just one simple idea: prior × likelihood → posterior.
 
 - The mayor example is the appendix's poll in miniature: a prior from the last election, a small survey as the data, and a belief that moves between them. The TA session works through it with the class's own prior.
-- Last click: if we gather more data, today's posterior becomes the prior. Plant it; don't develop it.
+- The callout's last line (it appears with the callout): if we gather more data, today's posterior becomes the prior. Plant it; don't develop it.
 - Next: they've already done this, twice.
 
 # You already understand Bayesian updating {#already-updated}
@@ -270,8 +273,8 @@ For those interested in math, I definitely encourage you to look into where the 
 - Click: the posterior, what the counting gave: 3% and 14%.
 - Click: a different prior. Same test, same study, so the likelihood row doesn't change. Start where 10% of those tested have HIV (the "even higher risk" group from "Does this mean tests are useless?") and a positive means 79%, not 3%. Start where 10% of ideas are true (the "plausible new idea" in the research table) and a discovery is true 64% of the time, not 14%.
 - Same evidence, different starting point, very different answer. That's why the prior is worth arguing about, and why it has to be written down where others can see it ("Most studies are wrong..." comes back to this). The poll's "What if I'd started from a different prior?" slide lets them try it.
-- Click: the umbrella. Back to the rain slides: July is the prior (rain is likely), the clouds are the data, and grabbing the umbrella is acting on the posterior. Nobody needs a formula for that.
-- Click: the point of the slide. Updating isn't something this course invented; it's how everyone learns from experience. Ask the room for something they changed their mind about this week, and what made them change it: that's a prior, some evidence and a posterior. What statistics adds is doing it out loud, with the prior written down where others can check it. "Most studies are wrong..." picks that up.
+- Click: tests aren't answers, and don't need to be. It never arrives alone: it updates what we already know (red, like the prior). That's why a single study being wrong isn't a disaster; it was only ever one input.
+- Click: we all do this every day. Ask the room for something they changed their mind about this week, and what made them change it: that's a prior, some evidence and a posterior. Clouds in July, and you grab an umbrella. Updating isn't something this course invented; it's how knowledge works. What statistics adds is doing it out loud, with the prior written down where others can check it. "Most studies are wrong..." picks that up.
 
 # Bayesian Updating Example {#stones-demo}
 

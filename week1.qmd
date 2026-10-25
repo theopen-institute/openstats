@@ -35,15 +35,13 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 
 # This week's goals
 
-::: {.incremental}
-- Learn the three concepts behind Ioannidis's claim:
+- [Learn the three concepts behind Ioannidis's claim:]{.fragment}
   - Probability
   - The base rate paradox
   - Statistical significance
-- Understand why most research is wrong
-- Discover updating, the one rule for all of statistics that makes everything okay
-- Work through an example: election polling
-:::
+- [Understand why most research is wrong]{.fragment}
+- [Discover updating, the one rule for all of statistics that makes everything okay]{.fragment}
+- [Work through an example: election polling]{.fragment}
 
 
 # Statistical significance {notes="notes/week1_notes.md#statistical-significance"}
@@ -298,32 +296,45 @@ P( test– | HIV– )
 How should we interpret a positive test result?
 :::
 
-## The question that matters {notes="notes/week1_notes.md#real-question"}
+## Asking the right question {notes="notes/week1_notes.md#real-question"}
 
+::: {.annotated}
 ::: {.compare}
-[Sensitivity]{.compare-label} [P( test+ | HIV+ )]{.compare-expr} [99%]{.compare-value .blue}
+[Sensitivity]{.compare-label} [P( test+ | [HIV+]{.fragment .highlight-red fragment-index=3} )]{.compare-expr} [99%]{.compare-value .blue}
 
-[Specificity]{.compare-label} [P( test– | HIV– )]{.compare-expr} [97%]{.compare-value .blue}
+[Specificity]{.compare-label} [P( test– | [HIV–]{.fragment .highlight-red fragment-index=3} )]{.compare-expr} [97%]{.compare-value .blue}
 :::
 
-::: {.fragment}
-By most standards, that's a **good test**.
+::: {.bracket .fragment fragment-index=2}
 :::
 
-::: {.fragment .callout-important title="But there's something strange here..."}
-::: {.fragment}
-If we already knew whether someone has HIV, there'd be no point testing them.
+::: {.annotation}
+::: {.fragment fragment-index=2 .annotation-q}
+But there's something strange here...
+:::
+
+::: {.fragment fragment-index=3}
+If we already know [HIV status]{.red}, why test?
+:::
 :::
 :::
 
-::: {.fragment .compare}
-[The real question:]{.compare-label} [P( HIV+ | test+ )]{.compare-expr} [is what we actually want to know]{.compare-label}
+::: {.fragment fragment-index=1}
+By most standards, that's a **good test.**[\*]{.caveat-mark .fragment fragment-index=4}
 :::
 
-::: {.fragment .fade-up}
+::: {.fragment fragment-index=4 .caveat}
+[\*]{.caveat-mark} Sensitivity and specificity work *backwards*: they assume the answer and measure the question.
+:::
+
+::: {.fragment fragment-index=5 .compare}
+[The real question:]{.compare-label} [P( [HIV+]{.red} | test+ )]{.compare-expr} [is what we actually want to know]{.compare-label}
+:::
+
+::: {.fragment fragment-index=6 .fade-up}
 ::: {.stat-reveal}
 [3.2%]{.stat-number}
-[[in a random screening, only]{.stat-caption .stat-before} [of positive tests will be accurate]{.stat-caption}]{.stat-captions .fragment}
+[[in a random screening, only]{.stat-caption .stat-before} [of positive tests will be accurate]{.stat-caption}]{.stat-captions .fragment fragment-index=7}
 :::
 :::
 
@@ -377,7 +388,7 @@ base_rate_plot(
 1,000 people get tested at random. Only [1 person has HIV]{.blue}. The test identifies them.
 
 ::: {.fragment fragment-index=1}
-It also flags [30 people who don't have HIV]{.red}.
+It also flags [30 people who don't have HIV]{.red} incorrectly.
 :::
 
 ::: {.fragment fragment-index=2}
@@ -388,12 +399,6 @@ Only 1 is real.
 :::
 :::
 :::
-
-## Base Rate Paradox Demo {.no-title notes="notes/week1_notes.md#baserate-demo"}
-```{shinylive-r}
-#| standalone: true
-{{< include shiny/baserate.R >}}
-```
 
 ## Does this mean tests are useless? {notes="notes/week1_notes.md#who-gets-tested"}
 
@@ -425,12 +430,18 @@ Same test, same result: [3% accurate for one person, 79% for another]{.blue}.
 
 
 
+## Base Rate Paradox Demo {.no-title notes="notes/week1_notes.md#baserate-demo"}
+```{shinylive-r}
+#| standalone: true
+{{< include shiny/baserate.R >}}
+```
+
 # So why is most published research wrong? {notes="notes/week1_notes.md#why-research-wrong"}
 
 _It's the HIV test again._
 
 ::: {.columns}
-::: {.column width="58%"}
+::: {.column width="54%"}
 ::: {.r-stack}
 ::: {.fragment .fade-out fragment-index=1}
 ```{r ideas-all, opts.label = "base_rate"}
@@ -462,16 +473,11 @@ base_rate_plot(
 :::
 :::
 
-::: {.column width="42%"}
+::: {.column width="46%"}
 1,000 ideas get tested. Most are wrong: only [10 are true]{.blue}.
 
-::: {.fragment fragment-index=1}
-- Good studies find [8]{.blue} of the true ones.
-:::
-
-::: {.fragment fragment-index=2}
-- They also "find" [50]{.red} false ones, just by chance.
-:::
+- [Good studies will find [8]{.blue} of them.]{.fragment fragment-index=1}
+- [They'll also "find" [50]{.red} false ones, just by random chance.]{.fragment fragment-index=2}
 
 ::: {.fragment fragment-index=3}
 ::: {.big-statement}
@@ -481,6 +487,8 @@ Only 8 are real.
 :::
 :::
 :::
+
+[Assuming 80% power (β = 0.20), and a 5% significance level (α = 0.05).]{.source .fragment fragment-index=2}
 
 ## Types of research, by the numbers {.mechanics .smaller notes="notes/week1_notes.md#research-math"}
 
@@ -507,14 +515,19 @@ $1 - \alpha$, where $\alpha$ is the **significance level** (often 5%).
 
 Let's look at that quote again:
 
+::: {.quote-small}
 > A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=1 .highlight-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=2 .highlight-blue} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
+:::
 
 {{< include _includes/week1/significance-direction.md >}}
 
 ::: {.fragment fragment-index=5}
 If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}.
-Significance testing controls something like the HIV test's 3% false-positive rate. That
-number is true, and it still isn't the one we want.
+P-values work *backwards*. They're the right answer to the the wrong question.
+:::
+
+::: {.fragment fragment-index=6}
+To turn it around, we need one more ingredient: [what we already know]{.red}.
 :::
 
 
@@ -536,14 +549,11 @@ Instead of a flowchart of tests, updating is [**one rule for all of statistics**
 :::
 
 ::: {.fragment .callout-tip title="Example: will the mayor win?"}
-::: {.incremental}
 - [**Prior**]{.red}: _"The mayor got 60% of the vote last time, so I think about 60% will vote for them again."_
 - [**Likelihood**]{.blue}: _"In my small survey, only 20% of people said they'll vote for the mayor. That would be surprising if the mayor's true support were 60%, but quite likely if it were around 20–30%."_
 - [**Posterior**]{.green}: _"Based on this new data, I now think it's probably around 40–50%."_
-:::
-::: {.fragment }
+
 If we decide to gather more data, our posterior becomes the prior for future observations.
-:::
 :::
 
 ## You already understand Bayesian updating {notes="notes/week1_notes.md#already-updated"}
@@ -555,16 +565,16 @@ _Both of today's examples were updates. We just hadn't named the parts._
 | [**Prior**]{.red} | Before the test:<br>0.1% chance of HIV | Before the study:<br>1% chance it's true |
 | [[**Likelihood**]{.blue}]{.fragment fragment-index=1} | [Positive:<br>99% if HIV+, 3% if HIV–]{.fragment fragment-index=1} | [Significant:<br>80% if true, 5% if false]{.fragment fragment-index=1} |
 | [[**Posterior**]{.green}]{.fragment fragment-index=2} | [After a positive: 3%]{.fragment fragment-index=2} | [After a significant result: 14%]{.fragment fragment-index=2} |
-| [[**A different prior**]{.red}]{.fragment fragment-index=3} | [Start at 10% → 79%]{.fragment fragment-index=3} | [Start at 10% → 64%]{.fragment fragment-index=3} |
+| [[**A different&nbsp;prior**]{.red}]{.fragment fragment-index=3} | [Start at 10% → 79%]{.fragment fragment-index=3} | [Start at 10% → 64%]{.fragment fragment-index=3} |
 
-: {tbl-colwidths="[20,40,40]"}
+: {tbl-colwidths="[25,36,39]"}
 
 ::: {.fragment fragment-index=4}
-Clouds in July? You grab an umbrella. That's updating.
+Tests aren't answers, and don't need to be: they update [what we already know]{.red}.
 :::
 
 ::: {.fragment fragment-index=5}
-You've updated all your life. Statistics does it out loud, so others can check.
+We all do this every day. **That's how knowledge works.**
 :::
 
 ## Bayesian Updating Example {.no-title notes="notes/week1_notes.md#stones-demo"}
@@ -637,7 +647,7 @@ It's the debates we have about them.
 
 ::: {.incremental}
 - The observation can be objective. The interpretation never is.
-- Key choices come before the data: _what to ask, who to observe, how to interpret the data._
+- Key choices come before the data: _what to ask, who to observe, how to interpret._
 - Math won't tell us how to make these choices. Instead, we have to do science.
 :::
 
@@ -759,7 +769,7 @@ _Same prior, same share saying "mayor". Change how many people we asked._
 
 {{< include _includes/week1/poll-whatif-size.md >}}
 
-## What if the survey had been different? {notes="notes/week1_notes.md#whatif-result"}
+## What if the results had been different? {notes="notes/week1_notes.md#whatif-result"}
 
 _Same prior, same number of people. Change what they said._
 

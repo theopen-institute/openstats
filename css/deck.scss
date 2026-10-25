@@ -725,6 +725,11 @@ $bp-orange: mix($brand-orange, white, 70%);
   margin-top: 1em;
 }
 
+// In a side column (the squares slides), it follows a short list: less space above
+.column .big-statement {
+  margin-top: 0.5em;
+}
+
 /* One number revealed on its own, centered, with what it means beside it on one line,
    sharing its baseline (week 1, "Probability for Decision Making": the 3.2%). The two
    spans arrive wrapped in one <p>, so that's the flex row. */
@@ -1054,6 +1059,64 @@ $bp-orange: mix($brand-orange, white, 70%);
 
 .compare .compare-value {
   font-weight: 700;
+}
+
+/* A note in the margin of some lines ("The question that matters"): the lines, a red
+   bracket that wraps them, and the note beside it. The bracket and the note are
+   fragments, so the lines show first and the note builds in next to them. */
+.annotated {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  column-gap: 0.7em;
+  align-items: stretch;
+
+  .bracket {
+    width: 0.45em;
+    border: 3px solid $brand-red;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    margin: 0.2em 0;
+  }
+
+  .annotation {
+    align-self: center;
+    font-size: 0.88em;
+    line-height: 1.3;
+
+    p {
+      margin: 0.15em 0;
+    }
+
+    .annotation-q {
+      font-family: $headingFont;
+      font-weight: 700;
+      color: $brand-ink-head;
+    }
+  }
+}
+
+/* A caveat on a claim just above it ("Asking the right question"): a red asterisk
+   appears on the claim, and the caveat sits indented under it, starting with the same
+   asterisk. */
+.caveat-mark {
+  color: $brand-red;
+  font-weight: 700;
+}
+
+.caveat {
+  margin-left: 1.2em;
+  font-size: 0.75em; // footnote-sized: it qualifies the line above
+
+  .caveat-mark {
+    margin-left: -0.8em;
+    margin-right: 0.3em;
+  }
+}
+
+/* A long quotation set a little smaller, to leave room for what the slide says about it
+   ("Statistical significance (revisited)") */
+.quote-small blockquote {
+  font-size: 0.75em;
 }
 
 /* Week 2's three kinds of distribution, as a row of cards, each with its own color:
