@@ -186,7 +186,7 @@ check_stated_numbers <- function() {
   expect(rain, 8 / (5 * 28), 0.06, 2)
 
   # HIV test: prevalence 0.1%, sensitivity 99%, specificity 97%, 100,000 people
-  expect("Probability for Decision Making", pct(ppv(0.001, 0.99, 0.03)), 3.2, 1)
+  expect("The question that matters", pct(ppv(0.001, 0.99, 0.03)), 3.2, 1)
   hiv <- "What a positive test means"
   expect(hiv, pct(ppv(0.001, 0.99, 0.03)), 3.2, 1)
   expect(hiv, 1e5 * 0.001 * 0.99, 99)

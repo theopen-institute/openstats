@@ -39,11 +39,12 @@
 # You already understand probability {#probability}
 
 - The message for this whole section: they already understand probability. They use it every day; nobody has told them that's what it is. The next few slides only give it notation, and then show the one place intuition slips.
-- Ask the room: will it rain tomorrow? Someone will say "probably" or "probably not." That word is a probability: a statement about how sure they are.
-- Intuitively, probability is a way of talking about uncertainty.
-- Second half of the slide: what does "a 31% chance of rain" actually mean? Is the weather random? Most people will say no, or not really. Tomorrow's weather is decided by physics: wind, pressure, moisture, the monsoon. If we knew everything, there'd be nothing random about it.
-- So the randomness isn't in the sky. It's in us. "31%" describes how uncertain we are about a day when all we know is that it's a day in Kathmandu. It's as if we picked a date from the calendar without looking.
-- This is the Bayesian way of thinking about probability, and it's the one we'll use all course: probability describes our knowledge, not a property of the world. A coin flip is the same: a perfect physicist could predict it. We call it 50% because we can't.
+- Before the first click, ask the room: will it rain tomorrow? Someone will say "probably" or "probably not."
+- Click: "Probably not." That word is a probability: a statement about how sure they are. Intuitively, probability is a way of talking about uncertainty.
+- Click: the "probably" card. Not knowing for sure isn't the same as knowing nothing.
+- Click: what I already know. They already use it without thinking: rain works differently in January than in July. Read the three cards as one sentence: I'm uncertain, but I know things, so I can put a number on it. That's a prior on its way to becoming a probability; don't name it yet.
+- Click: the "31%" card. Ask: what does "a 31% chance of rain" actually mean? Is the weather random? Most people will say no, or not really. Tomorrow's weather is decided by physics: wind, pressure, moisture, the monsoon. If we knew everything, there'd be nothing random about it. So the randomness isn't in the sky. It's in us. "31%" describes how uncertain we are about a day when all we know is that it's a day in Kathmandu, as if we picked a date from the calendar without looking.
+- Click: the takeaway. This is the Bayesian way of thinking about probability, and it's the one we'll use all course: probability describes our knowledge, not a property of the world. A coin flip is the same: a perfect physicist could predict it. We call it 50% because we can't.
 - If someone asks: the textbook ("frequentist") view defines probability as the long-run frequency of an outcome over many repetitions. It's a valid view and the math is sound, but it isn't how anyone uses "probably" in daily life, and it makes a statement like "a 31% chance of rain tomorrow" awkward to explain.
 - We're going to build statistics on the intuitions they already have.
 
@@ -67,7 +68,7 @@
 
 - New notation, not new ideas: this slide and the next two are things they already know, written down. The format part is quick: 0 is impossible, 1 is certain, and percentages are the same numbers times 100.
 - Keep it short. The examples are the ones from "Probability is just counting", plus the 31% rain from the first slide of the section.
-- The footnote: 113 rainy days a year is a count from five years of Kathmandu weather records. The count is a fact. The probability (0.31) is what we say about a day we don't know, which is the "31% describes how sure we are" from the start of the section.
+- The footnote: 113 rainy days a year is a count from five years of Kathmandu weather records. The count is a fact. The probability (0.31) is what we say about a day we don't know, which is the "a probability measures how sure we are" from the start of the section.
 
 # Writing it down: P(event) {#convention-2}
 
@@ -120,12 +121,20 @@ One common use of statistics is to evaluate the accuracy of predictive tests.
 
 I want to illustrate a very famous example involving HIV testing. This is relevant because, until 2010, anyone from Nepal applying for an immigrant visa to the US had to take an HIV test as part of the required medical exam.
 
-- After sensitivity and specificity: this is, as we can see, an imperfect but reasonably good test. There's a problem, though. Can anybody spot it?
+- Three tiles, one click each. Prevalence: how common HIV is, 1 person in 1,000. Then the test's two kinds of accuracy. Sensitivity: of the people who have HIV, the share it catches. Specificity: of the people who don't, the share it correctly clears. The notation under each tile is the "Writing it down" from earlier; point out which side of the bar HIV is on.
+- The colors are deliberate and stay unexplained for now: the base rate is red and the test's accuracy is blue. They come back as prior and likelihood on "You already understand Bayesian updating".
+- Last click: you test positive. How worried should you be? This is the decision in "decision making". Take a few guesses before moving on. Most will be near 97% or 99%: it sounds like an imperfect but reasonably good test.
 
-- Click: "But there's something strange here..." Then, in blue: if we already knew whether someone has HIV, there'd be no point testing them. Sensitivity and specificity describe a situation where we already know somebody's HIV status. Far more often, when we think about the accuracy of a test, we're interested in the reverse question.
+# The question that matters {#real-question}
 
-- Click: the real question is almost always P( HIV+ | test+ ). This is the slip from "Direction of conditions", now with real stakes: sensitivity is P( test+ | HIV+ ), and the question is P( HIV+ | test+ ).
-- Before the next click, ask the room to guess P( HIV+ | test+ ). Most guesses will be near 97% or 99%.
+- Sensitivity and specificity are back at the top as plain lines, in view from the start. The real question appears later on a line laid out the same way, so P( HIV+ | test+ ) sits directly under P( test+ | HIV+ ): the same two words, sides swapped.
+- Click: by most standards, that's a good test. Make the point honestly: 99% and 97% are good numbers, and plenty of tests in medicine and research do worse. The puzzle only works if they believe the test is good.
+- Then a question: is there a problem with judging the test by those two numbers? Can anybody spot it?
+
+- Click: the red callout, "But there's something strange here..." Click again for its answer: if we already knew whether someone has HIV, there'd be no point testing them. Sensitivity and specificity describe a situation where we already know somebody's HIV status. Far more often, when we think about the accuracy of a test, we're interested in the reverse question.
+
+- Click: the real question, P( HIV+ | test+ ), with a red question mark where its number goes. Say it in full: the real question is almost always this one. This is the slip from "Direction of conditions", now with real stakes: sensitivity is P( test+ | HIV+ ), and the question is P( HIV+ | test+ ).
+- Before the next click, go back to the guesses from the last slide. Most were near 97% or 99%.
 - Click: 3.2%, on its own. Let it sit.
 - Click: the words around it, "in a random screening, only 3.2% of positive tests will be accurate". Don't explain it yet; let them puzzle over how a 99%-accurate test can be right only 3% of the time. The next two slides count it out.
 
@@ -180,7 +189,8 @@ I want to illustrate a very famous example involving HIV testing. This is releva
 
 - Now we close the loop on Ioannidis. His argument is the HIV example in disguise: "has HIV" becomes "the idea is true," and "tests positive" becomes "gets a significant result."
 - First frame: 1,000 ideas that researchers test. Most new ideas are wrong, so only 10 are true (the blue squares). That's the "HIV is rare" part.
-- Click. Good studies catch most true ideas: 8 of the 10. But they also get a significant result for about 5% of the false ones, purely by chance: about 50 red squares, scattered everywhere.
+- Click. Good studies catch most true ideas: 8 of the 10 light up.
+- Click. But they also get a significant result for about 5% of the false ones, purely by chance: about 50 red squares, scattered everywhere.
 - Click. 58 discoveries, and only 8 are real: about 14%. Let that land before moving on.
 - The point isn't that scientists are dishonest or bad at math. The math is fine. A significant result answers P(data | hypothesis), and when true ideas are rare, P(hypothesis | data) is very different. (That's where we go in two slides.)
 - 1 in 100 is one scenario, realistic for exploratory work. Confirmatory research can be closer to 50%, and then most discoveries are real. The next slide's table shows the range, if there's time.

@@ -50,13 +50,13 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 
 ::: {.columns}
 
-::: {.column width="80%"}
+::: {.column width="82%"}
 ::: {.fragment fragment-index=1}
 > A result is statistically significant if, assuming the null hypothesis is true and the model assumptions hold, the probability of obtaining data at least as extreme as those observed (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α. (ChatGPT, 2026)
 :::
 :::
 
-::: {.column width="20%"}
+::: {.column width="18%"}
 ::: {.fragment fragment-index=2}
 ![](images/week1/reaction.jpg){.absolute top=0 right=0 width="15%"}
 :::
@@ -71,26 +71,33 @@ check_stated_numbers() # the base-rate numbers typed into the slides below
 
 # You already understand probability {notes="notes/week1_notes.md#probability"}
 
-_"Will it rain tomorrow?"_ [_"Probably not."_]{.fragment}
-
-::: {.fragment}
-That word — _"probably"_ — is a probability. It's a way of talking about uncertainty.
+::: {.exchange}
+[_"Will it rain tomorrow?"_]{.exchange-q} [_"Probably not."_]{.exchange-a .fragment}
 :::
 
-::: {.incremental}
-- I don't know if it's going to rain tomorrow...
-- ...but that doesn't mean I don't know anything.
-- I know that rain works differently in July than in January.
+::: {.ideas}
+::: {.idea .fragment}
+[_"Probably"_]{.idea-title}
+
+I don't know if it will rain, but that doesn't mean I know [nothing]{.red}.
 :::
 
-::: {.fragment}
-So what does _"a 31% chance of rain"_ actually mean? 
+::: {.idea .fragment}
+[What I already know]{.idea-title}
+
+Rain works differently in January than in July.
 :::
 
-::: {.incremental}
-- Tomorrow's weather isn't a lottery. The universe is not random.
-- [...but _**we**_ are uncertain about it.]{.blue} 
-- 31% describes how sure we are about an uncertain fact.
+::: {.idea .fragment}
+[_"A 31% chance of rain"_]{.idea-title}
+
+Tomorrow isn't a lottery: physics decides it.\
+[The uncertainty is in **us**.]{.blue}
+:::
+:::
+
+::: {.fragment .big-statement}
+A probability measures [how sure we are]{.blue}.
 :::
 
 ## Probability is just counting {notes="notes/week1_notes.md#counting"}
@@ -242,40 +249,75 @@ _Hands up if you had tea this morning._
 
 ::: {.fragment}
 Every prediction makes assumptions.\
-[(Interesting predictions make big assumptions.) ![](images/week1/success-kid.jpg){.reaction}]{.blue .fragment}
+[(...and interesting predictions make big assumptions.) ![](images/week1/success-kid.jpg){.reaction}]{.blue .fragment}
 :::
 
 # Probability for Decision Making {notes="notes/week1_notes.md#applied-probability"}
 
+_Example: the statistics of HIV testing in Nepal_
+
+::: {.ideas}
+::: {.idea .fragment}
+[Prevalence]{.idea-label}
+
+[0.1%]{.idea-number .red}
+
+The share of people who have HIV
+
+::: {.idea-notation}
+P( HIV+ )
+:::
+:::
+
+::: {.idea .fragment}
+[Test Sensitivity]{.idea-label}
+
+[99%]{.idea-number .blue}
+
+The share of people **with** HIV who test positive
+
+::: {.idea-notation}
+P( test+ | HIV+ )
+:::
+:::
+
+::: {.idea .fragment}
+[Test Specificity]{.idea-label}
+
+[97%]{.idea-number .blue}
+
+The share of people **without** HIV who test negative
+
+::: {.idea-notation}
+P( test– | HIV– )
+:::
+:::
+:::
+
+::: {.fragment .big-statement}
+How should we interpret a positive test result?
+:::
+
+## The question that matters {notes="notes/week1_notes.md#real-question"}
+
+::: {.compare}
+[Sensitivity]{.compare-label} [P( test+ | HIV+ )]{.compare-expr} [99%]{.compare-value .blue}
+
+[Specificity]{.compare-label} [P( test– | HIV– )]{.compare-expr} [97%]{.compare-value .blue}
+:::
+
 ::: {.fragment}
-In Nepal, HIV has a prevalence of about 0.1%. We can write that as:
+By most standards, that's a **good test**.
 :::
 
-::: {.incremental}
-- P( HIV+ ) = 0.001 (0.1%)
-:::
-
+::: {.fragment .callout-important title="But there's something strange here..."}
 ::: {.fragment}
-With statistical tests and predictions, we talk about two kinds of accuracy:
-:::
-
-::: {.incremental}
-- **Sensitivity**: of the people who **have** HIV, the share who test positive.
-  - P( test+ | HIV+ ) = **0.99** (true positive)
-- **Specificity**: of the people who **don't have** HIV, the share who test negative.
-  - P( test– | HIV– ) = **0.97** (true negative)
-:::
-
-::: {.fragment}
-But there's something strange here...
-:::
-
-::: {.fragment .blue}
 If we already knew whether someone has HIV, there'd be no point testing them.
 :::
+:::
 
-::: {.fragment}
-The real question is almost always P( HIV+ | test+ ):
+::: {.fragment .compare}
+[The real question:]{.compare-label} [P( HIV+ | test+ )]{.compare-expr} [is what we actually want to know]{.compare-label}
 :::
 
 ::: {.fragment .fade-up}
@@ -396,7 +438,18 @@ base_rate_plot(n_true = 10, true_positives = 8, false_positives = 50)
 ```
 :::
 
-::: {.fragment fragment-index=1}
+::: {.fragment .fade-in-then-out fragment-index=1}
+```{r ideas-found, opts.label = "base_rate"}
+base_rate_plot(
+  n_true = 10,
+  true_positives = 8,
+  false_positives = 0,
+  results = TRUE
+)
+```
+:::
+
+::: {.fragment fragment-index=2}
 ```{r ideas-significant, opts.label = "base_rate"}
 base_rate_plot(
   n_true = 10,
@@ -413,12 +466,14 @@ base_rate_plot(
 1,000 ideas get tested. Most are wrong: only [10 are true]{.blue}.
 
 ::: {.fragment fragment-index=1}
-Good studies find [8]{.blue} of the true ones.
-
-They also "find" [50]{.red} false ones, by chance.
+- Good studies find [8]{.blue} of the true ones.
 :::
 
 ::: {.fragment fragment-index=2}
+- They also "find" [50]{.red} false ones, just by chance.
+:::
+
+::: {.fragment fragment-index=3}
 ::: {.big-statement}
 58 discoveries.\
 Only 8 are real.

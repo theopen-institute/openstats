@@ -133,7 +133,7 @@ by symptom and diagnosis.
 **Skill.** When a condition is rare, most positive results can be false even from an
 accurate test. Build a table of counts from prevalence, sensitivity and specificity, and
 find the chance that a positive result is real. *(Lecture: "Probability for Decision
-Making", "What a positive test means", "The base rate paradox" and its app, "Does this
+Making", "The question that matters", "What a positive test means", "The base rate paradox" and its app, "Does this
 mean tests are useless?")*
 
 **Parameters.** Prevalence (base rate), sensitivity = P( positive | has it ),

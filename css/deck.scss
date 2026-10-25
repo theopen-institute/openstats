@@ -733,13 +733,13 @@ $bp-orange: mix($brand-orange, white, 70%);
   justify-content: center;
   align-items: baseline;
   gap: 0.4em;
-  margin-top: 0.2em;
+  margin-top: 1.4em;
   white-space: nowrap;
 }
 
 .stat-reveal .stat-number {
   font-family: $headingFont;
-  font-size: 260%;
+  font-size: 320%;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -943,6 +943,117 @@ $bp-orange: mix($brand-orange, white, 70%);
 /* Small caption text beside a figure (week 2) */
 .small-caption {
   font-size: 12pt;
+}
+
+/* Week 1, "You already understand probability": a spoken question and its answer, then
+   two cards that unpack them. Neutral colors, since week 2's colored cards (.kinds) each
+   stand for something. The exchange's two spans arrive wrapped in one <p>, so that's
+   the flex row. */
+.exchange > p {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  margin: 0.3em 0 0.6em;
+}
+
+.exchange .exchange-q {
+  color: $brand-gray;
+}
+
+.exchange .exchange-a {
+  font-family: $headingFont;
+  font-weight: 700;
+  font-size: 160%;
+  color: $brand-ink-head;
+}
+
+.ideas {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 24px;
+  margin: 0.4em 0;
+}
+
+.idea {
+  // A column, so a card's last block (.idea-notation) can sit at the bottom
+  display: flex;
+  flex-direction: column;
+  border-top: 6px solid mix($brand-ink, white, 25%);
+  border-radius: 10px;
+  background: mix($brand-ink, white, 4%);
+  padding: 18px 24px;
+  font-size: 0.85em;
+
+  p {
+    margin: 0.4em 0;
+  }
+
+  .idea-title {
+    display: block;
+    font-family: $headingFont;
+    font-weight: 700;
+    font-size: 1.25em;
+    color: $brand-ink-head;
+  }
+
+  // A number tile ("Probability for Decision Making"): small label, the number, what
+  // it means, and its notation. The number takes its color from .red / .blue.
+  .idea-label {
+    display: block;
+    color: $brand-gray;
+    font-size: 0.75em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .idea-number {
+    display: block;
+    font-family: $headingFont;
+    font-weight: 700;
+    font-size: 2.6em;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  // The notation being learned: pinned to the bottom of the card, so the three line
+  // up, and set apart by a rule
+  .idea-notation {
+    margin-top: auto;
+    padding-top: 0.5em;
+    border-top: 1px solid mix($brand-ink, white, 20%);
+    font-size: 1.15em;
+    font-weight: 600;
+    color: $brand-ink-head;
+
+    p {
+      margin: 0;
+    }
+  }
+}
+
+/* "The question that matters": probabilities as plain text in a fixed grid, one per line
+   (label, expression, value). The columns have fixed widths, so separate .compare blocks
+   on a slide line up and their expressions form one column. */
+.compare > p {
+  display: grid;
+  grid-template-columns: 9.5em 9em auto;
+  align-items: baseline;
+  margin: 0.25em 0;
+}
+
+.compare .compare-label {
+  color: $brand-gray;
+}
+
+.compare .compare-expr {
+  font-weight: 600;
+  color: $brand-ink-head;
+}
+
+.compare .compare-value {
+  font-weight: 700;
 }
 
 /* Week 2's three kinds of distribution, as a row of cards, each with its own color:
