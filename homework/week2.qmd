@@ -53,7 +53,7 @@ For each one, write one sentence in words (like the lecture's "He's probably abo
 but he could be quite a bit older") and draw a rough sketch of the curve. Label the
 x-axis with prices in rupees.
 
-**A3.** Is each of these a **distribution of data** or a **distribution of belief**?
+**A3.** Is each of these a **population distribution** or a **certainty distribution**?
 Give a one-line reason.
 
 a. The ages of everyone who voted in Pokhara in the last election.

@@ -3,7 +3,11 @@ title: "Data for Decision Making"
 subtitle: "Week 2: Distributions"
 title-notes: "notes/week2_notes.md#title"
 format:
-  revealjs: default
+  revealjs:
+    # Most lists here appear all at once; the few that build mark themselves .incremental
+    incremental: false
+    # Size table columns to their content, even when a row is long in the source
+    tbl-colwidths: false
 ---
 
 ```{r setup, include=FALSE}
@@ -13,7 +17,10 @@ source("r/week2.R")
 # !Kung San adults (Howell): our running example
 howell <- load_howell() |>
   mutate(
-    sex = if_else(male == 1, "male", "female"),
+    sex = factor(
+      if_else(male == 1, "male", "female"),
+      levels = c("female", "male")
+    ),
     z_height = standardize(height),
     z_weight = standardize(weight)
   )
@@ -23,111 +30,107 @@ h_sd <- sd(howell$height)
 w_mean <- mean(howell$weight)
 w_sd <- sd(howell$weight)
 r_hw <- cor(howell$height, howell$weight)
+h_women <- mean(howell$height[howell$male == 0])
+h_men <- mean(howell$height[howell$male == 1])
+spreads <- two_spreads(howell)
+sex_fit <- sex_weight_fits(howell)
 
 houses <- load_houses() |>
   mutate(z_price = standardize(price), z_area = standardize(area_m2))
 ```
 
-# Think in distributions {notes="notes/week2_notes.md#think-in-distributions"}
+# The average pilot {notes="notes/week2_notes.md#average-pilot"}
 
-_"The average !Kung adult is `r fmt(h_mean, 0)` cm tall."_
+_Around 1950, US Air Force pilots kept losing control of their planes._
 
-::: {.fragment}
-True. But that one number hides three things.
+- [The cockpits had been designed in 1926 to fit the **average pilot**.]{.fragment}
+- [So the Air Force measured 4,063 pilots on the ten body sizes that matter most in a
+  cockpit: height, chest, arm length…]{.fragment}
+- [How many were close to average (the middle 30%) on all ten?]{.fragment}
+
+::: {.fragment .stat-reveal}
+[0]{.stat-number} [[out of 4,063 pilots]{.stat-caption}]{.stat-captions .fragment}
+:::
+
+::: {.fragment .big-statement}
+The fix: adjustable seats.\
+Design for the distribution, not the average.
+:::
+
+[Gilbert S. Daniels, *The "Average Man"?* (Wright Air Development Center, 1952); retold
+in Todd Rose, *The End of Average* (2016).]{.source}
+
+# You already think in distributions {notes="notes/week2_notes.md#commute"}
+
+::: {.exchange}
+[_"How long is your trip here?"_]{.exchange-q} [_"Usually 30 minutes."_]{.exchange-a .fragment}
 :::
 
 ::: {.kinds}
-::: {.kind .kind-data .fragment}
-[A population]{.kind-title}
+::: {.kind .kind-population .fragment}
+[_"Usually"_]{.kind-title}
 
-Not everyone is `r fmt(h_mean, 0)` cm. The adults range from `r fmt(min(howell$height), 0)`
-to `r fmt(max(howell$height), 0)` cm.
+Not every trip: some take 20 minutes, some 45.
 
-How do heights **vary across people**? That's a **distribution of data**.
+How trips **vary**: a [population distribution]{.blue}.
 :::
 
-::: {.kind .kind-belief .fragment}
-[Uncertainty]{.kind-title}
+::: {.kind .kind-certainty .fragment}
+[_"How do you know?"_]{.kind-title}
 
-We measured `r nrow(howell)` adults, not every one. The true average could be a little
-higher or lower.
+You've made the trip a hundred times. A newcomer couldn't be so sure.
 
-How **sure** are we about the average? That's a **distribution of belief**.
+How **sure** you are: a [certainty distribution]{.green}.
 :::
 
-::: {.kind .kind-relationship .fragment}
-[A relationship]{.kind-title}
+::: {.kind .kind-correlative .fragment}
+[_"What if it rains?"_]{.kind-title}
 
-Height doesn't vary on its own. Taller adults tend to be heavier, but not always.
+Rain, traffic, the hour you leave: each one shifts the whole spread.
 
-How do height and weight **vary together**? That's a **distribution of a
-relationship**.
+How it changes **with** something else: a [correlative distribution]{.orange}.
 :::
 :::
+
+::: {.fragment .big-statement}
+You already think in distributions.\
+This week, we draw them.
+:::
+
+# This week's goals {notes="notes/week2_notes.md#goals"}
+
+- [Learn three ways to think with distributions:]{.fragment}
+  - [**Population**]{.blue}: how cases vary
+  - [**Certainty**]{.green}: how sure we are
+  - [**Correlative**]{.orange}: how two things vary together
+- [See why adding one variable to a model changes what the others mean]{.fragment}
+- [Work through an example: what makes a house expensive?]{.fragment}
 
 ::: {.fragment}
-::: {.big-statement}
-This week: think in distributions, not single numbers.
+A distribution is a different way to think about a number: [every value it could take,
+and how common or plausible each one is]{.blue}.
 :::
-:::
 
 
-# Last week → this week {notes="notes/week2_notes.md#last-week"}
-
-- Last week: a number is one observation, read through what we already assume.
-  This week: a single number also hides how much things vary, and how sure we are.
-- Last week, our answer to "will the mayor win?" was not a number.
-- It was a **distribution**: a whole curve of more and less plausible values.
-- That's this week's key word. A distribution describes a number by **every value it
-  could take**, and how common or plausible each one is.
-- We'll meet three kinds: distributions of [data]{.blue} (how values vary across
-  cases), of [belief]{.green} (how sure we are about something we don't know), and of
-  [relationships]{.orange} (how two variables vary together).
-
-
-# Goals this week: three kinds of distribution {notes="notes/week2_notes.md#goals"}
+# Part 1: Population distributions {.center .part-1 notes="notes/week2_notes.md#part1"}
 
 {{< include _includes/week2/three-kinds.md >}}
 
-Appendix: What makes a house expensive? All three kinds at work on real data, with the
-TA in our second session.
+# Random individuals, predictable crowds {notes="notes/week2_notes.md#galton"}
 
+_At every peg, a ball bounces left or right: a coin flip. Drop some balls._
 
-# Part 1: Distributions of data {.center .part-1 notes="notes/week2_notes.md#part1"}
+{{< include _includes/week2/galton.md >}}
 
-{{< include _includes/week2/three-kinds.md >}}
-
-
-# Randomness has patterns {notes="notes/week2_notes.md#randomness"}
-
-Problem: we want to understand how the admissions process works at a university. 
-
-::: {.fragment .callout-note title="Population: This isn't about one individual case but rather a group of cases"}
-- "Applications to this university last year"
-- "Applications to this university in the last ten years"
-- "Applications to all state-run universities in this country last year"
+::: {.fragment}
+One ball: anyone's guess. A thousand balls: [the same shape, every time]{.blue}.
 :::
 
-::: {.fragment .callout-tip title="Variation: These cases are different from each other in ways that interest us"}
-- "Exam results"
-- "Family wealth"
-- "Gender"
-- "Department"
-:::
-
-::: {.fragment .callout-important title="Randomness: Reality is messy, and we'll never predict admission perfectly. But, randomness has patterns. We can describe how it was generated."}
-- If I flip a coin 1 time, I can't say what will happen. 
-- If I flip a coin 1000 times, I can say a lot more. 
-- Random individuals → Predictable populations
-:::
-
-
-# A distribution of data: Nepal's population {notes="notes/week2_notes.md#nepal-population"}
+## A shape tells a story {notes="notes/week2_notes.md#nepal-population"}
 <!-- TODO: Add NLSS age data. Why the bumps? -->
 ![Population of Nepal](images/week2/population.svg){width="80%" fig-align="center"}
 
-
-# Our running example: the !Kung San {notes="notes/week2_notes.md#kung"}
+## Our running example: the !Kung San {notes="notes/week2_notes.md#kung"}
 
 ::: {.columns}
 ::: {.column width="45%"}
@@ -148,19 +151,34 @@ howell |>
 :::
 :::
 
+```{r kung-data}
+kung_widget_data(howell) # for the widgets later in the deck
+```
 
-# Describing a distribution {notes="notes/week2_notes.md#describing"}
+## Center, spread, shape {notes="notes/week2_notes.md#describing"}
 
 ```{r height-hist}
 height_hist_plot(howell)
 ```
 
-- [**Center**]{.red}: where is a typical value? (mean)
-- [**Spread**]{.blue}: how far is a typical case from the center? (standard deviation)
+- [**Center**]{.red}: where is a typical value? (the mean)
+- [**Spread**]{.blue}: how far is a typical case from the center? (the standard deviation)
 - **Shape**: one hump or two? Symmetric, or a long tail?
 
+## One hump or two? {notes="notes/week2_notes.md#two-humps"}
 
-# The Normal distribution {notes="notes/week2_notes.md#normal"}
+_The !Kung heights are two crowds, not one._
+
+```{r height-sex, fig.height = 5.4}
+height_sex_plot(howell)
+```
+
+::: {.fragment}
+Women average `r fmt(h_women)` cm, men `r fmt(h_men)` cm. But the crowds overlap: [plenty
+of women are taller than plenty of men]{.blue}. (Hold on to this. It comes back.)
+:::
+
+## The Normal distribution {notes="notes/week2_notes.md#normal"}
 
 ::: {.columns}
 ::: {.column width="60%"}
@@ -170,42 +188,40 @@ normal_overlay_plot(howell)
 :::
 
 ::: {.column width="40%"}
-- The blue curve is a Normal distribution with
-  - mean = `r fmt(h_mean)`
-  - SD = `r fmt(h_sd)`
-- **Two numbers** describe the whole shape.
-- Real data are never perfectly Normal, but many things are close.
-:::
-:::
+The blue curve is a Normal distribution with the same center and spread as the data:
+
+- mean = `r fmt(h_mean)` cm
+- SD = `r fmt(h_sd)` cm
 
 ::: {.fragment}
-$$
-\text{height} \sim \text{Normal}(\mu = `r fmt(h_mean)`,\ \sigma = `r fmt(h_sd)`)
-$$
+**Two numbers** describe the whole shape.
+
+Real data are never perfectly Normal, but many things come close. Like the Galton
+board: many small, random pushes add up to a bell.
+:::
+:::
 :::
 
+## The 68–95–99.7 rule {notes="notes/week2_notes.md#rule-68-95"}
 
-# The 68–95–99.7 rule {notes="notes/week2_notes.md#rule-68-95"}
-
-```{r normal-rule}
+```{r normal-rule, fig.height = 5.5}
 normal_rule_plot()
 ```
 
-- For a Normal distribution, about **68%** of cases fall within 1 SD of the mean,
+- For a Normal distribution, about **68%** of cases fall within 1 SD of the mean, and
   **95%** within 2 SD.
-- Check: `r fmt(100 * mean(abs(howell$z_height) < 1), 0)`% of !Kung adults are within 1 SD
-  of the average height, and `r fmt(100 * mean(abs(howell$z_height) < 2), 0)`% within 2 SD.
+- [Check: `r fmt(100 * mean(abs(howell$z_height) < 1), 0)`% of !Kung adults are within
+  1 SD of the average height, and `r fmt(100 * mean(abs(howell$z_height) < 2), 0)`%
+  within 2 SD.]{.fragment}
 
-
-# Distributions Demo {.no-title notes="notes/week2_notes.md#dist-demo"}
+## Distributions Demo {.no-title notes="notes/week2_notes.md#dist-demo"}
 
 ```{shinylive-r}
 #| standalone: true
 {{< include shiny/distributions.R >}}
 ```
 
-
-# Standardized values (z-scores) {notes="notes/week2_notes.md#z-scores"}
+## Taller or heavier? {notes="notes/week2_notes.md#z-scores"}
 
 ```{r z-example}
 ex_h <- 165
@@ -214,24 +230,27 @@ ex_zh <- (ex_h - h_mean) / h_sd
 ex_zw <- (ex_w - w_mean) / w_sd
 ```
 
-A !Kung man is **`r ex_h` cm** tall and weighs **`r ex_w` kg**.
-Is he more unusually *tall* or more unusually *heavy*?
+_A !Kung man is **`r ex_h` cm** tall and weighs **`r ex_w` kg**. Is he more unusually
+tall, or more unusually heavy?_
 
 - We can't compare centimeters to kilograms.
-- But we can ask of each: **how many standard deviations from average is this?**
+- [But we can ask of each: **how many standard deviations from average is this?**]{.fragment fragment-index=1}
 
-::: {.fragment}
+::: {.fragment fragment-index=1}
 $$
 z = \frac{x - \text{mean}}{\text{SD}}
 $$
 :::
 
-::: {.fragment .nonincremental}
+::: {.fragment fragment-index=2}
 - Height: (`r ex_h` − `r fmt(h_mean)`) / `r fmt(h_sd)` = [**`r fmt(ex_zh, 2)`**]{.blue}
 - Weight: (`r ex_w` − `r fmt(w_mean)`) / `r fmt(w_sd)` = [**`r fmt(ex_zw, 2)`**]{.red}
-- He is more unusually heavy than he is tall.
 :::
 
+::: {.fragment fragment-index=3}
+He is more unusually heavy than he is tall. A **z-score** says where one case sits in
+the crowd.
+:::
 
 ## Same data, new ruler {notes="notes/week2_notes.md#new-ruler"}
 
@@ -252,7 +271,6 @@ height_ruler_plot(howell, z = TRUE)
 - The **shape** doesn't change at all. Only the labels on the axis.
 - The mean becomes **0**. The standard deviation becomes **1**.
 - The units disappear: a z-score is measured in "standard deviations".
-
 
 ## Reading z-scores {notes="notes/week2_notes.md#reading-z"}
 
@@ -279,21 +297,22 @@ howell |>
 :::
 :::
 
-- z-scores let us compare things measured on completely different scales:
-  exam marks out of 50 vs. out of 100, rupees vs. dollars, cm vs. kg.
+z-scores compare things measured on different scales: exam marks out of 50 and out of
+100, rupees and dollars, centimeters and kilograms.
+
+::: {.fragment .big-statement}
+An average describes the crowd.\
+The distribution describes everyone in it.
+:::
 
 
-# Part 2: Distributions of belief {.center .part-2 notes="notes/week2_notes.md#part2"}
+# Part 2: Certainty distributions {.center .part-2 notes="notes/week2_notes.md#part2"}
 
 {{< include _includes/week2/three-kinds.md >}}
 
+# How old is he? {notes="notes/week2_notes.md#belief-distributions"}
 
-# How old is he? A distribution of belief {notes="notes/week2_notes.md#belief-distributions"}
-
-::: {.fragment .callout-note .nonincremental}
-- We talk about probability distributions all the time: "He's probably about 40, but he could be quite a bit older". 
-- Here, we're just visualizing that kind of description over the range of all possible values.
-:::
+_One man, one true age. The only thing that varies is how sure we are._
 
 ::: {.columns}
 
@@ -305,7 +324,6 @@ howell |>
 ```{r belief-uninformed, opts.label = "belief"}
 belief_plot(function(x) dunif(x, 0, 100))
 ```
-
 :::
 
 ::: {.fragment}
@@ -319,13 +337,11 @@ belief_plot(function(x) dnorm(x, 40, 15), ymax = 0.1)
 :::
 
 ::: {.column width="40%"}
-::: {.fragment fragment-index=1}
-![Parameter: How old is this person?](images/week2/man.png){height="550px" fig-align="center"}
-:::
+![](images/week2/man.png){height="550px" fig-align="center"}
 :::
 
 ::: {.column width="30%"}
-::: {.fragment }
+::: {.fragment}
 ::: {.small-caption}
 **Strongly informed** I'm quite certain that he's forty or relatively close to it.
 :::
@@ -336,24 +352,47 @@ belief_plot(function(x) dnorm(x, 40, 1))
 
 ::: {.fragment}
 ::: {.small-caption}
-**Domain-specific distributions** I'm relatively certain he's between 30 and 50, but I have really no idea where in that range he lands. Older or younger than that seems unlikely, though.
+**Domain-specific** I'm fairly sure he's between 30 and 50, but I have no idea where in that range he lands. Older or younger than that seems unlikely, though.
 :::
-
 ```{r belief-domain, opts.label = "belief"}
 belief_plot(plateau_density(center = 40, plateau = 20, taper = 15), ymax = 0.05)
 ```
-
 :::
 :::
 
 :::
 
+## How sure can a few people make us? {notes="notes/week2_notes.md#sample-mean"}
 
-# Data or belief? {notes="notes/week2_notes.md#two-kinds"}
+_Pretend these `r nrow(howell)` adults are everyone. We can only afford to measure a few._
 
-::: {.kinds .nonincremental}
-::: {.kind .kind-data}
-[Distributions of data]{.kind-title}
+{{< include _includes/week2/sample-mean.md >}}
+
+## Two spreads {notes="notes/week2_notes.md#two-spreads"}
+
+_If we measured n adults, from a much bigger population:_
+
+| Adults measured | [Most adults are within]{.blue} | [95% sure the average is within]{.green} |
+|--:|--:|--:|
+| `r spreads$n[1]` | ± `r fmt(spreads$population[1])` cm | ± `r fmt(spreads$certainty[1])` cm |
+| `r spreads$n[2]` | ± `r fmt(spreads$population[2])` cm | ± `r fmt(spreads$certainty[2])` cm |
+| `r spreads$n[3]` | ± `r fmt(spreads$population[3])` cm | ± `r fmt(spreads$certainty[3])` cm |
+| `r spreads$n[4]` | ± `r fmt(spreads$population[4])` cm | ± `r fmt(spreads$certainty[4])` cm |
+
+::: {.fragment}
+More data doesn't make people any less different. [It makes us more sure.]{.green}
+:::
+
+::: {.fragment .big-statement}
+Variation is in the world.\
+Uncertainty is in us.
+:::
+
+## Population or certainty? {notes="notes/week2_notes.md#two-kinds"}
+
+::: {.kinds}
+::: {.kind .kind-population}
+[Population distributions]{.kind-title}
 
 How a quantity **varies across cases**. Many cases, each with its own value.
 
@@ -362,47 +401,56 @@ How a quantity **varies across cases**. Many cases, each with its own value.
 - Ages of everyone in Nepal
 :::
 
-::: {.kind .kind-belief}
-[Distributions of belief]{.kind-title}
+::: {.kind .kind-certainty}
+[Certainty distributions]{.kind-title}
 
 How **plausible** each value of an unknown is. One true value; we're unsure which.
 
-- The mayor's share of the vote
+- The mayor's share of the vote (Week 1)
 - The age of the man in the photo
 - The average height of all !Kung adults
 :::
 :::
 
 ::: {.fragment}
-Same shapes, same vocabulary, same math. Part 3 needs both: a pattern in the data,
-and how sure we are about it.
+Quick test: [many cases that really differ]{.blue}, or [one answer we're unsure
+about]{.green}? Same shapes, same vocabulary, different questions.
 :::
 
 
-# Part 3: Distributions of relationships {.center .part-3 notes="notes/week2_notes.md#part3"}
+# Part 3: Correlative distributions {.center .part-3 notes="notes/week2_notes.md#part3"}
 
 {{< include _includes/week2/three-kinds.md >}}
 
-
 # Two variables at once {notes="notes/week2_notes.md#correlation"}
 
-```{r scatter-raw}
+```{r scatter-raw, fig.height = 5.8}
 ggplot(howell, aes(height, weight)) +
-  geom_point(color = BLUE, alpha = 0.6, size = 2.5) +
+  geom_point(color = ORANGE, alpha = 0.7, size = 2.5) +
   labs(x = "Height (cm)", y = "Weight (kg)")
 ```
 
-- Height and weight each have their own [distribution of data]{.blue}, from Part 1.
-  The scatterplot shows the two **together**: each dot is one adult.
-- Taller people tend to be heavier. But **how strongly** do they go together?
+- Height and weight each have their own [population distribution]{.blue}. The
+  scatterplot shows them **together**: each dot is one adult.
+- [Taller people tend to be heavier. But what does "tend to" look like?]{.fragment}
 
+## A relationship is a distribution that moves {notes="notes/week2_notes.md#conditional"}
+
+_Pick a height. How do the weights of adults that tall vary?_
+
+{{< include _includes/week2/conditional.md >}}
+
+::: {.fragment}
+That's [P( weight | height )]{.orange}: Week 1's bar, for a whole distribution.
+:::
 
 ## Standardize both variables {notes="notes/week2_notes.md#standardize-both"}
 
-```{r scatter-z}
+_Each adult votes: on the same side of average for both, or on opposite sides?_
+
+```{r scatter-z, fig.height = 6}
 agreement_plot(howell)
 ```
-
 
 ## Correlation is average agreement {.mechanics notes="notes/week2_notes.md#average-agreement"}
 
@@ -419,18 +467,15 @@ $$
 :::
 
 ::: {.column width="45%"}
-::: {.fragment}
 ```{r cor-code, echo = TRUE}
 cor(howell$height, howell$weight)
 ```
-:::
 
 - *r* is always between **−1** and **+1**.
 - *r* has no units.
 - Standardizing changes nothing: *r* in cm/kg = *r* in z-scores.
 :::
 :::
-
 
 ## What does *r* look like? {notes="notes/week2_notes.md#r-gallery"}
 
@@ -439,7 +484,7 @@ cor_gallery_plot()
 ```
 
 - Our height and weight: *r* = `r fmt(r_hw, 2)`. A strong relationship, but far from perfect.
-
+- [*r* = 0.3 looks like almost nothing. Many published papers report less.]{.fragment}
 
 ## What correlation misses {notes="notes/week2_notes.md#cor-misses"}
 
@@ -448,10 +493,9 @@ cor_misses_plot()
 ```
 
 - *r* only measures **straight-line** agreement.
-- **Always plot your data** before trusting a single number.
+- [**Always plot your data** before trusting a single number.]{.fragment}
 
-
-# Regression: our first coefficient {notes="notes/week2_notes.md#regression"}
+## Regression: our first coefficient {notes="notes/week2_notes.md#regression"}
 
 ::: {.columns}
 ::: {.column width="55%"}
@@ -461,17 +505,18 @@ candidate_lines_plot(howell, r_hw)
 :::
 
 ::: {.column width="45%"}
-In z-space, both variables have mean 0, so a line through the middle of the cloud
-needs only **one parameter**: its slope, β.
+A line through the middle of the moving distribution. In z-scores, both variables have
+mean 0, so the line needs only **one number**: its slope, β.
 
 $$
 z_{\text{weight}} = \beta \times z_{\text{height}}
 $$
 
-- Which line describes the data best?
+::: {.fragment}
+Which line describes the data best?
 :::
 :::
-
+:::
 
 ## The best line {notes="notes/week2_notes.md#best-line"}
 
@@ -483,13 +528,12 @@ residuals_plot(howell, r_hw)
 :::
 
 ::: {.column width="45%"}
-- The [red lines]{.red} are the **errors**: how far each person is from the line.
-- The best line makes the errors as small as possible overall.
-- With standardized data and one predictor, the best β is exactly the correlation:
-  **β = r = `r fmt(r_hw, 2)`**.
+- The [red lines]{.red} are the **misses**: how far each person is from the line.
+- The best line makes the misses as small as possible overall.
+- [With standardized data and one predictor, the best β is exactly the correlation:
+  **β = r = `r fmt(r_hw, 2)`**.]{.fragment}
 :::
 :::
-
 
 ## Reading the coefficient {.mechanics notes="notes/week2_notes.md#reading-coef"}
 
@@ -511,7 +555,7 @@ slope_kg_cm <- r_hw * w_sd / h_sd
 ```{r slope-plot, opts.label = "half"}
 ggplot(howell, aes(height, weight)) +
   geom_point(color = GRAY, alpha = 0.6, size = 2) +
-  geom_smooth(method = "lm", se = FALSE, color = BLUE, linewidth = 1.5) +
+  geom_smooth(method = "lm", se = FALSE, color = ORANGE, linewidth = 1.5) +
   labs(x = "Height (cm)", y = "Weight (kg)")
 ```
 
@@ -521,33 +565,17 @@ coef(lm(weight ~ height, data = howell))
 :::
 :::
 
-
 ## How sure are we about β? {notes="notes/week2_notes.md#beta-posterior"}
 
-```{r beta-posterior}
+```{r beta-posterior, fig.height = 5.5}
 beta_posterior_plot(howell)
 ```
 
-::: {.nonincremental}
-- β is a number we don't know, so it gets a [distribution of belief]{.green}. Just
-  like the mayor's popularity last week: **prior × likelihood → posterior**.
-- With 20 people we're unsure about β. With `r nrow(howell)`, much less so.
-:::
+- β is a number we don't know, so it gets a [certainty distribution]{.green}: prior ×
+  likelihood → posterior, like the mayor's vote share last week.
+- [With 20 adults we're unsure about β. With `r nrow(howell)`, much less so.]{.fragment}
 
-
-# When patterns mislead: two headlines {notes="notes/week2_notes.md#headlines"}
-
-```{r icecream-sim}
-# Simulated beach town: hot days bring both ice cream sales and swimmers
-set.seed(11)
-beach <- tibble(day = 1:365) |>
-  mutate(
-    temp = 18 + 8 * sin(2 * pi * (day - 100) / 365) + rnorm(n(), 0, 2.5),
-    ice_cream = 40 * temp + rnorm(n(), 0, 120),
-    drownings = rpois(n(), exp(-3 + 0.13 * temp))
-  )
-r_ice <- cor(beach$ice_cream, beach$drownings)
-```
+## A headline from pure noise {notes="notes/week2_notes.md#noise"}
 
 ```{r noise-sim}
 # 50 made-up "indicators" for 20 made-up "countries", all pure random noise
@@ -560,182 +588,192 @@ best <- which(abs(r_small) == max(abs(r_small), na.rm = TRUE), arr.ind = TRUE)
 r_best <- r_small[best]
 ```
 
-::: {.fragment}
-> _"Ice cream sales linked to drownings"_ (*r* = `r fmt(r_ice, 2)`, one year of daily data)
-:::
-
-::: {.fragment}
-> _"Countries that spend more on [one thing] have `r if (r_best > 0) "more" else "less"` [another]"_ (*r* = `r fmt(r_best, 2)`,
-> 20 countries)
-:::
-
-::: {.fragment .nonincremental}
-- Both patterns are really there in the data.
-- Neither one means what the headline says.
-:::
-
-::: {.fragment}
-Let's see why, and how to tell the two apart.
-:::
-
-
-## Spurious correlations {notes="notes/week2_notes.md#spurious"}
-
-A **spurious correlation** is a real pattern in the data that does *not* mean one
-variable affects the other. There are two common ways to get one:
-
-::: {.columns}
-::: {.column}
-::: {.fragment .callout-important .nonincremental title="1. Confounding"}
-A **third variable** drives both. The pattern is real and will show up again in new
-data, but it isn't about the two variables themselves.
-:::
-:::
-
-::: {.column}
-::: {.fragment .callout-warning .nonincremental title="2. Chance"}
-**Random noise** happens to line up. The pattern is a fluke of this particular sample
-and will disappear in new data.
-:::
-:::
-:::
-
-
-## Kind 1: Does ice cream cause drowning? {notes="notes/week2_notes.md#ice-cream"}
-
-::: {.columns}
-::: {.column width="55%"}
-```{r icecream-scatter, fig.width = 7, fig.height = 6}
-ggplot(beach, aes(ice_cream, drownings)) +
-  geom_jitter(color = BLUE, alpha = 0.6, size = 2.5, width = 0, height = 0.15) +
-  geom_smooth(method = "lm", se = FALSE, color = RED, linewidth = 1.5) +
-  labs(x = "Ice cream sales (cones per day)", y = "Drownings per day")
-```
-:::
-
-::: {.column width="45%"}
-- One year of (simulated) daily data from a beach town.
-- *r* = `r fmt(r_ice, 2)`: days with more ice cream sales have more drownings.
-- Should the town ban ice cream?
-:::
-:::
-
-
-## The confounder: temperature {notes="notes/week2_notes.md#temperature"}
-
-```{r icecream-strata, fig.height = 5}
-icecream_strata_plot(beach)
-```
-
-- [ice cream]{.blue} ← **temperature** → [drownings]{.blue}
-- Compare days with **similar temperatures**, and the relationship mostly disappears.
-- More data would not help: a million days would show the same strong *r*.
-- A confounder can hide a relationship, invent one, or even flip its sign. You'll see
-  a sign flip in the house-price exercise.
-
-
-## Kind 2: Correlations from pure noise {notes="notes/week2_notes.md#noise"}
-
 ::: {.columns}
 ::: {.column width="55%"}
 ```{r noise-best, fig.width = 7, fig.height = 6}
 tibble(x = noise_small[, best[1]], y = noise_small[, best[2]]) |>
   ggplot(aes(x, y)) +
-  geom_point(color = BLUE, size = 4) +
+  geom_point(color = ORANGE, size = 4) +
   geom_smooth(method = "lm", se = FALSE, color = RED, linewidth = 1.5) +
   labs(x = paste("Variable", best[1]), y = paste("Variable", best[2]))
 ```
 :::
 
 ::: {.column width="45%"}
-- I made up `r n_vars` variables for 20 "countries". Every value is drawn at
-  random with `rnorm()`: nothing is related to anything.
-- That's `r choose(n_vars, 2)` possible pairs.
-- The strongest pair: *r* = `r fmt(r_best, 2)`.
-- Give these two variables names, and it would make a convincing headline.
+> _"Countries that spend more on [one thing] have `r if (r_best > 0) "more" else "less"`
+> [another]"_ (*r* = `r fmt(r_best, 2)`)
+
+::: {.fragment}
+- I made up `r n_vars` variables for 20 "countries", every value drawn at random:
+  nothing is related to anything.
+- That's `r choose(n_vars, 2)` possible pairs. This is the strongest.
+- Give these two variables names, and it's a headline.
+:::
 :::
 :::
 
-
-## Small samples and many comparisons {notes="notes/week2_notes.md#small-samples"}
+## How much *r* varies by chance {notes="notes/week2_notes.md#small-samples"}
 
 ```{r noise-dist, fig.height = 5}
 noise_dist_plot(r_small, n_vars)
 ```
 
-- Each histogram is a **distribution of *r***: how much a correlation varies by chance
-  alone, when nothing is going on. With [20 cases]{.red}, chance alone produces values
-  of ±0.5 and beyond. With [500 cases]{.blue}, they stay close to 0.
-- Search through enough pairs and you're guaranteed to find something "interesting".
-- This is Week 1's problem again: try enough comparisons and some will look
-  "significant." The base rate of real relationships here is zero.
+- Each histogram shows how much *r* varies by chance alone, when nothing is going on.
+  With [20 cases]{.green}, chance alone produces values of ±0.5 and beyond. With
+  [500 cases]{.green}, they stay close to 0.
+- [It's Week 1's problem again: search enough pairs, and some will look "significant."
+  A wide certainty distribution is the honest answer: _"I'm not sure yet."_]{.fragment}
 
+# Do men weigh more? {notes="notes/week2_notes.md#sex-weight"}
 
-## Telling the two apart {.smaller notes="notes/week2_notes.md#telling-apart"}
+_Back to the two crowds from Part 1._
 
-| | Confounding | Chance |
-|------|-------|-------|
-| What's going on? | A third variable drives both | Noise happened to line up |
-| Shows up in new data? | Yes | No |
-| Would more data help? | **No** | **Yes** |
-| What helps? | Thinking about causes; comparing like with like | Bigger samples; deciding what to test *before* looking; replication |
+::: {.columns}
+::: {.column width="58%"}
+```{r sex-weight, opts.label = "half_tall"}
+sex_weight_plot(howell)
+```
+:::
+
+::: {.column width="42%"}
+- Women average `r fmt(sex_fit$weight_women)` kg, men `r fmt(sex_fit$weight_men)` kg.
+- [Fit weight on sex alone, and the coefficient for sex is [**+`r fmt(sex_fit$total)`
+  kg**]{.orange}.]{.fragment}
 
 ::: {.fragment}
-- The posterior for β already protects us a little against chance: with 20 adults it
-  was wide, saying "I'm not sure."
-- Nothing in the data alone protects us against confounding. For that we need a
-  **causal model**.
-- Week 1 ended with more fundamental ways to question our assumptions. This is the
-  first: more data won't save you from a confounder.
+Is that because they're men, or because they're taller?
+:::
+:::
+:::
+
+## Compare adults of the same height {notes="notes/week2_notes.md#same-height"}
+
+_Pick a height. Compare only the women and men that tall._
+
+{{< include _includes/week2/conditional-sex.md >}}
+
+## Add height, and sex stops predicting weight {notes="notes/week2_notes.md#sex-height"}
+
+::: {.columns}
+::: {.column width="55%"}
+|  | weight ~ sex | [weight ~ sex + height]{.fragment fragment-index=1} |
+|---|--:|--:|
+| **Sex** (men − women) | [+`r fmt(sex_fit$total)` kg]{.orange} | [[`r fmt(sex_fit$direct)` kg]{.orange}]{.fragment fragment-index=1} |
+| **Height** (per cm) |  | [+`r fmt(sex_fit$slope, 2)` kg]{.fragment fragment-index=1} |
+
+::: {.fragment fragment-index=2}
+Men are `r fmt(sex_fit$height_gap)` cm taller. At `r fmt(sex_fit$slope, 2)` kg per cm:\
+`r fmt(sex_fit$height_gap)` × `r fmt(sex_fit$slope, 2)` = [**`r fmt(sex_fit$height_gap * sex_fit$slope)` kg**]{.orange}.
+:::
+
+::: {.fragment fragment-index=3}
+The effect of sex on weight passes **through height**. The direct effect is about zero
+(somewhere between `r fmt(sex_fit$direct_lo)` and +`r fmt(sex_fit$direct_hi)` kg).
+:::
+:::
+
+::: {.column width="45%"}
+::: {.fragment fragment-index=2}
+```{r sex-dag, opts.label = "dag_half"}
+sex_path_dag()
+```
+:::
+:::
+:::
+
+::: {.fragment fragment-index=4 .big-statement}
+Adding one variable changed the answer for another.
+:::
+
+## Which number is right? {notes="notes/week2_notes.md#which-right"}
+
+_Both. They answer different questions._
+
+| Question | Model | Answer |
+|---|---|---|
+| Do men weigh more than women? | weight ~ sex | Yes: [`r fmt(sex_fit$total)` kg more]{.orange} |
+| Do men weigh more than women [of the same height]{.blue}? | weight ~ sex + height | No: [about the same]{.orange} |
+
+- [A coefficient's meaning depends on what else is in the model.]{.fragment}
+- [Add a variable, and it can change, vanish or even flip. You'll see a flip in the
+  house prices.]{.fragment}
+
+::: {.fragment .big-statement}
+The data can't tell us which question to ask.\
+That's next week.
 :::
 
 
-# Summary: three kinds of distribution {notes="notes/week2_notes.md#summary"}
+# Summary: three ways to think with distributions {notes="notes/week2_notes.md#summary"}
 
 A **distribution** is a different way to think about a number: every value it could
 take, and how common or plausible each one is.
 
-::: {.kinds .nonincremental}
-::: {.kind .kind-data}
-[Data]{.kind-title}
+::: {.kinds}
+::: {.kind .kind-population}
+[Population]{.kind-title}
 
-How values vary across cases. Center, spread, shape. A z-score places one case.
+How cases vary: center, spread and shape. A z-score places one case.
+
+An average describes the crowd, not anyone in it.
 :::
 
-::: {.kind .kind-belief}
-[Belief]{.kind-title}
+::: {.kind .kind-certainty}
+[Certainty]{.kind-title}
 
-How sure we are about an unknown. Wide when we know little, narrow when data are many.
+How sure we are about something we don't know. Wide when we know little, narrow with
+more data.
+
+Variation is in the world. Uncertainty is in us.
 :::
 
-::: {.kind .kind-relationship}
-[Relationships]{.kind-title}
+::: {.kind .kind-correlative}
+[Correlative]{.kind-title}
 
-How two variables vary together: *r* and β. A pattern is a description, not an
-explanation: chance and confounding both mislead.
+How one distribution moves with something else: *r* and β.
+
+A coefficient's meaning depends on what else is in the model.
 :::
 :::
 
-::: {.fragment}
-::: {.big-statement}
+::: {.fragment .big-statement}
 Think in distributions, not single numbers.
 :::
-:::
-
 
 # Next week {notes="notes/week2_notes.md#next-week"}
 
-- Correlation and regression describe **how** things move together.
-- They don't tell us **why**.
-- To answer "would banning ice cream prevent drownings?", we need to say what we think
-  causes what.
-- Next week: **DAGs** and **causal models**.
+- Correlation and regression describe **how** things vary together. They don't say
+  **why**.
+- Adding height made sex's coefficient vanish. Adding living area will flip bedrooms'.
+  Which models answer the questions we care about?
+- [The data can't decide. We have to say what we think causes what: **DAGs** and
+  **causal models**, next week.]{.fragment}
+
+| Week | Topic | Punchline |
+|:-:|---|---|
+| 1 | Updating | Do science, not statistics. |
+| **2** | **Distributions** | **Change how you think about numbers.** |
+| 3 | Models | Draw your assumptions and make them explicit. |
+| 4 | Confounders | Look behind every pattern. |
+| 5 | Interpretation | Ask what's missing and what's hidden. |
 
 
-# Practical work: What makes a house expensive? {.center notes="notes/week2_notes.md#houses"}
+# Practical work: What makes a house expensive? {notes="notes/week2_notes.md#houses"}
 
 _Appendix: we'll work through this together with the TA in our second session._
 
+All three kinds of distribution, on real data:
+
+- **The question**: which features of a house go with a higher price, and how much?
+- **The data**: `r fmt(nrow(houses), 0)` house sales in Ames, a US college town.
+- **The tools**: a [population distribution]{.blue} of prices, [correlative
+  distributions]{.orange} of price with each feature, and [certainty
+  distributions]{.green} for each coefficient.
+
+::: {.callout-note title="A deliberately simple model"}
+Straight lines, one coefficient per feature. No neighborhoods, no house condition, no
+year of sale. We'll add the thinking behind those choices next week.
+:::
 
 ## The data: house sales in Ames, Iowa {notes="notes/week2_notes.md#houses-data"}
 
@@ -750,8 +788,7 @@ houses |>
   knitr::kable(align = "r")
 ```
 
-
-## Step 1: Look at the distribution {notes="notes/week2_notes.md#houses-step1"}
+## Step 1: The distribution of prices {notes="notes/week2_notes.md#houses-step1"}
 
 ```{r price-hist, fig.height = 5.5}
 price_hist_plot(houses)
@@ -759,7 +796,6 @@ price_hist_plot(houses)
 
 - Not Normal: a **long right tail** of a few very expensive houses.
 - The tail pulls the [mean]{.red} above the [median]{.blue}. Which is the "typical" price?
-
 
 ## Step 2: How unusual is this house? {notes="notes/week2_notes.md#houses-step2"}
 
@@ -802,8 +838,26 @@ unusual |>
 ```
 :::
 
+## Step 3: Guess first {notes="notes/week2_notes.md#houses-guess"}
 
-## Step 3: Price and living area {notes="notes/week2_notes.md#houses-step3"}
+Before we look: **rank these from strongest to weakest correlation with price.**
+
+- Number of bedrooms
+- Number of bathrooms
+- Living area
+- Lot (land) area
+- Garage size (cars)
+- Year built
+
+## Step 3: The correlations {notes="notes/week2_notes.md#houses-correlations"}
+
+```{r cor-bars, fig.height = 6}
+price_cor_plot(houses)
+```
+
+- Because *r* has no units, we can compare m², cars, years, and rooms on one scale.
+
+## Step 4: Price and living area {notes="notes/week2_notes.md#houses-step4"}
 
 ```{r price-area, fig.height = 6}
 r_pa <- cor(houses$price, houses$area_m2)
@@ -812,30 +866,6 @@ price_area_plot(houses, unusual)
 
 - *r* = `r fmt(r_pa, 2)`. Bigger houses sell for more, but with lots of scatter.
 - House B is far off the pattern. What might be going on?
-
-
-## Step 4: Guess first {notes="notes/week2_notes.md#houses-guess"}
-
-Before we look: **rank these from strongest to weakest correlation with price.**
-
-::: {.nonincremental}
-- Number of bedrooms
-- Number of bathrooms
-- Living area
-- Lot (land) area
-- Garage size (cars)
-- Year built
-:::
-
-
-## Step 4: The correlations {notes="notes/week2_notes.md#houses-correlations"}
-
-```{r cor-bars, fig.height = 6}
-price_cor_plot(houses)
-```
-
-- Because *r* has no units, we can compare m², cars, years, and rooms on one scale.
-
 
 ## Step 5: One coefficient {.mechanics notes="notes/week2_notes.md#houses-coef"}
 
@@ -861,34 +891,96 @@ $$
 ```{r price-z, fig.width = 6, fig.height = 6}
 ggplot(houses, aes(z_area, z_price)) +
   geom_point(color = GRAY, alpha = 0.3, size = 1.5) +
-  geom_abline(slope = r_pa, intercept = 0, color = BLUE, linewidth = 1.5) +
+  geom_abline(slope = r_pa, intercept = 0, color = ORANGE, linewidth = 1.5) +
   coord_equal() +
   labs(x = "Living area (z)", y = "Price (z)")
 ```
 :::
 :::
 
+## Step 6: A puzzle: bedrooms {notes="notes/week2_notes.md#bedrooms-puzzle"}
 
-## A puzzle: bedrooms {notes="notes/week2_notes.md#bedrooms-puzzle"}
+```{r house-models}
+house_fits <- house_models(houses)
+b_alone <- house_fits[["bedrooms"]]$beta$bedrooms[1]
+b_with_area <- house_fits[["bedrooms+area_m2"]]$beta$bedrooms[1]
+```
 
 ```{r bedrooms-puzzle, fig.height = 5.5}
 bedrooms_puzzle_plot(houses)
 ```
 
-- Overall, more bedrooms go with a *higher* price (*r* = `r fmt(cor(houses$bedrooms, houses$price), 2)`).
-- But among medium and large houses of **similar size**, more bedrooms go with a
-  *lower* price.
-- How can both be true?
+- Overall, more bedrooms go with a *higher* price (*r* = `r fmt(b_alone, 2)`).
+- [But among houses of **similar size**, more bedrooms go with a *lower* price. How can
+  both be true?]{.fragment}
 
+## Step 6: Two models, two answers {notes="notes/week2_notes.md#bedrooms-solved"}
 
-## Solving the bedrooms puzzle {notes="notes/week2_notes.md#bedrooms-solved"}
+|  | price ~ bedrooms | [price ~ bedrooms + area]{.fragment fragment-index=1} |
+|---|--:|--:|
+| **Bedrooms** | [+`r fmt(b_alone, 2)`]{.orange} | [[`r fmt(b_with_area, 2)`]{.orange}]{.fragment fragment-index=1} |
+| **Living area** |  | [+`r fmt(house_fits[["bedrooms+area_m2"]]$beta$area_m2[1], 2)`]{.fragment fragment-index=1} |
 
-- The **bedrooms puzzle**: across all houses, more bedrooms go with higher prices.
-- It's a confounder, like temperature for ice cream and drownings.
-- But [bedrooms]{.blue} ← **living area** → [price]{.blue}. Big houses have more
-  bedrooms *and* sell for more.
-- Compare houses of **similar size**, and extra bedrooms go with a *lower* price
-  (less space per room).
-- A confounder can hide a relationship, invent one, or even flip its sign.
-- To answer "does adding a bedroom make a house more valuable?", we need to say what
-  we think causes what. That's Week 3.
+: Coefficients in SDs of price per SD of the feature
+
+- [Big houses have more bedrooms *and* sell for more. Bedrooms alone picks up some of
+  that.]{.fragment fragment-index=2}
+- [Hold size fixed, and an extra bedroom means smaller rooms: the sign
+  flips.]{.fragment fragment-index=3}
+- [Same move as height and sex: add one variable, and another's coefficient
+  changes.]{.fragment fragment-index=4}
+
+## Step 7: Every coefficient moves {notes="notes/week2_notes.md#model-builder"}
+
+_Choose what goes into the model. Watch all the coefficients._
+
+```{r house-models-data}
+house_models_data(houses)
+```
+
+{{< include _includes/week2/model-builder.md >}}
+
+## What to try {notes="notes/week2_notes.md#houses-try"}
+
+_Four questions for the model builder on the last slide._
+
+- **Bedrooms, then living area.** Bedrooms flips. Can you explain why, in one sentence?
+- **Bathrooms, then year built.** What happens to bathrooms? What do new houses have
+  more of?
+- **Everything.** Which coefficient moved furthest from its correlation? Which barely
+  moved?
+- **The typical miss.** Which feature narrows the spread of prices the most? Which
+  hardly at all?
+
+*Which coefficient is "the" value of a bathroom? The data can't say. That's next week.*
+
+## The model, written formally {.mechanics .smaller notes="notes/week2_notes.md#houses-model"}
+
+$$
+\begin{aligned}
+z_{\text{price},i} &\sim \text{Normal}(\mu_i,\ \sigma) && \class{blue}{\text{how prices vary around the prediction}} \\
+\mu_i &= \beta_1 z_{\text{bedrooms},i} + \beta_2 z_{\text{area},i} + \dots && \class{orange}{\text{how the center moves with each feature}}
+\end{aligned}
+$$
+
+| Symbol | Read it as | In the model builder |
+|---|---|---|
+| $\mu_i$ | the center of the price distribution for houses like house *i* | the prediction |
+| $\beta_1, \beta_2, \dots$ | how far the center moves per SD of each feature, the others held fixed | the bars |
+| $\sigma$ | how far prices spread around that center | the typical miss |
+
+- Each line is a distribution: prices spread around a center ([population]{.blue}), the
+  center moves with the features ([correlative]{.orange}), and every β is a number we're
+  unsure about ([certainty]{.green}, the intervals).
+- "The others held fixed" is why each coefficient depends on what else is in the model.
+
+# More resources {notes="notes/week2_notes.md#more-resources"}
+
+- **The book:** Richard McElreath,
+  [*Statistical Rethinking*](https://xcelab.net/rm/) (2nd edition, 2020).
+  Chapter 4 builds these ideas with the same !Kung data; chapter 5 adds a second
+  variable, as we did with height and sex.
+- **The lectures:** McElreath's
+  [Statistical Rethinking 2026](https://github.com/rmcelreath/stat_rethinking_2026)
+  series on YouTube. Free lectures that follow the book.
+- **The pilots:** Todd Rose, *The End of Average* (2016), chapter 1.

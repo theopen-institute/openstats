@@ -1120,8 +1120,9 @@ $bp-orange: mix($brand-orange, white, 70%);
 }
 
 /* Week 2's three kinds of distribution, as a row of cards, each with its own color:
-   data, belief, relationships (_includes/week2/three-kinds.md, and the opening and
-   summary slides). On a part divider, `# Part 2: ... {.part-2}` fades the other cards. */
+   population (blue), certainty (green), correlative (orange)
+   (_includes/week2/three-kinds.md, and the opening and summary slides). On a part
+   divider, `# Part 2: ... {.part-2}` fades the other cards. */
 .kinds {
   display: grid;
   grid-auto-flow: column;
@@ -1143,11 +1144,11 @@ $bp-orange: mix($brand-orange, white, 70%);
   transition: opacity 0.4s;
   @include kind-color($brand-blue);
 
-  &.kind-belief {
+  &.kind-certainty {
     @include kind-color($brand-green);
   }
 
-  &.kind-relationship {
+  &.kind-correlative {
     @include kind-color($brand-orange);
   }
 
@@ -1174,10 +1175,85 @@ $bp-orange: mix($brand-orange, white, 70%);
   }
 }
 
-.reveal .slides section.part-1 .kind:not(.kind-data),
-.reveal .slides section.part-2 .kind:not(.kind-belief),
-.reveal .slides section.part-3 .kind:not(.kind-relationship) {
+.reveal .slides section.part-1 .kind:not(.kind-population),
+.reveal .slides section.part-2 .kind:not(.kind-certainty),
+.reveal .slides section.part-3 .kind:not(.kind-correlative) {
   opacity: 0.3;
+}
+
+/* Week 2's canvas widgets (js/galton.js, sample-mean.js, conditional.js,
+   model-builder.js): the canvas on the left, its controls on the right, in week 1's
+   .widget-layout row */
+.w2-graph {
+  flex: 0 0 70%;
+  height: 640px;
+  background: white;
+  border-radius: 10px;
+  user-select: none;
+}
+
+.w2-side {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 18pt;
+
+  label {
+    display: block;
+  }
+
+  input[type="range"] {
+    width: 100%;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.w2-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.reveal .slides label.w2-check {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+
+  input {
+    width: 1.1em;
+    height: 1.1em;
+    accent-color: $brand-blue;
+  }
+}
+
+.w2-readout b {
+  font-family: $headingFont;
+  font-size: 1.2em;
+}
+
+.w2-hint {
+  color: $brand-gray;
+  font-size: 15pt;
+}
+
+.reveal .slides table.w2-stats {
+  font-size: 15pt;
+  width: 100%;
+
+  td {
+    padding: 5px 8px;
+  }
+
+  td:last-child {
+    text-align: right;
+    font-weight: 600;
+    white-space: nowrap;
+  }
 }
 
 /* Divider before a table's totals column (week 3). Scoped to outrank the table cell

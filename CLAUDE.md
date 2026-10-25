@@ -177,7 +177,7 @@ rendering (`!notes/**` in `_quarto.yml`) — it is a content source, not pages.
 Single SCSS theme layered on reveal's `simple` theme: Inter/Space Grotesk fonts, the
 semantic color spans used as `[text]{.red}`, `.blue`, `.green`, `.gray`, and shared
 classes for things decks would otherwise style inline (`.source` for small gray source
-lines, `.big-statement`, `.small-caption`, the week 1 widgets, week 2's `.kinds` cards, week 3's `.workflow`).
+lines, `.big-statement`, `.small-caption`, the week 1 widgets, week 2's `.kinds` cards (`.kind-population`, `.kind-certainty`, `.kind-correlative`), week 3's `.workflow`).
 Keep `style=` attributes and `<style>` blocks out of the decks; add a class here.
 Footnotes (`[^id]`, with the note defined below the table or paragraph) build in with
 the fragment their reference sits in, and the marker is light gray; both come from a
@@ -265,3 +265,13 @@ from the class's own posterior). They share the prior and the survey through
 curve through its 21 points (`smooth.js`), on Step 1 and in the math alike; the canvas plots share axes and
 styling through `canvas-axes.js`, and their animated transitions through `tween.js`), and their styles in `deck.scss`. jspreadsheet comes from a pinned CDN version via
 `_build/jspreadsheet.html`.
+
+Week 2's widgets follow the same pattern (markup in `_includes/week2/`): `galton.js`
+(a Galton board), `sample-mean.js` (a random few of the !Kung adults: how they vary
+against how sure we are of their average), `conditional.js` (weight within a band of
+heights; with `data-split="sex"`, women against men) and `model-builder.js` (house-price
+models with any set of features). They draw on canvases through `canvas-plot.js`, in
+the slide's own pixels. Their data comes from R, not from files in `js/`: a one-line
+chunk in the deck (`kung_widget_data()`, `house_models_data()` in `r/week2.R`) writes it
+into the page as a JSON block, which the scripts read by id. So the numbers they show
+are frozen with the deck, and freeze.R tracks the datasets behind them.

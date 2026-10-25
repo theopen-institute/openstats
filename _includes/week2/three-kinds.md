@@ -1,36 +1,36 @@
-<!-- Week 2's map: the three kinds of distribution, one card each. Used on "Goals this
-     week" and on each part divider, where a .part-N class on the slide heading fades
-     the other two cards back. Styles in css/deck.scss (.kinds). -->
-::: {.kinds .nonincremental}
-::: {.kind .kind-data}
+<!-- Week 2's map: the three kinds of distribution, one card each. Used on each part
+     divider, where a .part-N class on the slide heading fades the other two cards
+     back. Styles in css/deck.scss (.kinds). -->
+::: {.kinds}
+::: {.kind .kind-population}
 [Part 1]{.kind-part}
-[Distributions of data]{.kind-title}
+[Population distributions]{.kind-title}
 
-How values **vary across cases**
+How cases **vary**
 
+- Random individuals, predictable crowds
 - Center, spread and shape
-- The Normal distribution
 - z-scores: where one case sits
 :::
 
-::: {.kind .kind-belief}
+::: {.kind .kind-certainty}
 [Part 2]{.kind-part}
-[Distributions of belief]{.kind-title}
+[Certainty distributions]{.kind-title}
 
-How **sure** we are about something we don't know
+How **sure** we are
 
 - From "no idea" to "quite sure"
-- Same shapes, different meaning
+- More data: same variation, more certainty
 :::
 
-::: {.kind .kind-relationship}
+::: {.kind .kind-correlative}
 [Part 3]{.kind-part}
-[Distributions of relationships]{.kind-title}
+[Correlative distributions]{.kind-title}
 
-How two variables **vary together**
+How two things **vary together**
 
-- Correlation and our first coefficient
-- How sure we are about a relationship
-- When relationships mislead
+- A distribution that moves
+- Correlation and coefficients
+- Add a variable, and the others change
 :::
 :::
