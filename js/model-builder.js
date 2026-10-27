@@ -12,11 +12,11 @@ import { animate } from './tween.js';
 const X_RANGE = [-0.5, 1];
 const FIRST = ['bedrooms']; // the model it starts with
 
+const money = (v) => `$${Math.round(v).toLocaleString('en-US')}`;
+
 const root = document.querySelector('.model-builder');
 const data = pageData('house-models');
 if (root && data) init(root, data);
-
-const money = (v) => `$${Math.round(v).toLocaleString('en-US')}`;
 
 function init(root, data) {
   const $ = (sel) => root.querySelector(sel);
@@ -95,8 +95,8 @@ function init(root, data) {
     const gray = brand('gray');
     const orange = brand('orange');
     const blue = brand('blue');
-    const labelW = 190;
-    const plot = { left: labelW + 20, right: w - 30, top: 10, bottom: h - 190 };
+    const labelW = 200;
+    const plot = { left: labelW + 20, right: w - 40, top: 24, bottom: h - 210 };
     const x = scale(X_RANGE[0], X_RANGE[1], plot.left, plot.right);
     const rowH = (plot.bottom - plot.top) / features.length;
 
@@ -143,7 +143,7 @@ function init(root, data) {
 
     // The typical miss: with no features, and with these
     const s = scale(0, noFeatures, plot.left, plot.right - 160);
-    const missY = plot.bottom + 92;
+    const missY = plot.bottom + 104;
     text(ctx, 'How far a typical price is from the prediction', plot.left, missY - 10, {
       size: 17, weight: 600, color: ink,
     });
@@ -152,7 +152,7 @@ function init(root, data) {
       { label: 'This model', v: shown.sigma, color: blue },
     ];
     bars.forEach((b, i) => {
-      const y0 = missY + 6 + i * 34;
+      const y0 = missY + 10 + i * 38;
       text(ctx, b.label, labelW, y0 + 13, { size: 16, align: 'right', baseline: 'middle', color: ink });
       ctx.fillStyle = b.color;
       ctx.fillRect(plot.left, y0, s(b.v) - plot.left, 26);

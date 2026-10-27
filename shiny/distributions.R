@@ -63,6 +63,7 @@ ui <- page_sidebar(
             "Bernoulli",
             "Binomial",
             "Normal",
+            "Log-normal",
             "Uniform",
             "Exponential",
             "Poisson",
@@ -135,6 +136,27 @@ ui <- page_sidebar(
           ),
           p(tags$i(
             "Examples: (1) Measurement errors arising from many small sources of variation in a laboratory instrument. (2) Adult human heights within a homogeneous population. (3) Test scores on a well-designed exam taken by many students."
+          ))
+        ),
+
+        # LOG-NORMAL
+        conditionalPanel(
+          condition = "input.distType == 'Log-normal'",
+          numericInput("lnorm_meanlog", "Mean of the log", value = 0),
+          numericInput(
+            "lnorm_sdlog",
+            "SD of the log",
+            value = 0.5,
+            min = 0.0001
+          ),
+          p(
+            tags$b(
+              "Generating Process:"
+            ),
+            "A log-normal distribution is generated when many small and independent random influences multiply together, rather than add. Its values are always positive, with a long tail to the right."
+          ),
+          p(tags$i(
+            "Examples: (1) Monthly earnings, when raises come as a percentage of what you already earn. (2) House prices. (3) The populations of towns and cities."
           ))
         ),
 
@@ -297,6 +319,8 @@ server <- function(input, output, session) {
       input$distType,
       input$mean,
       input$sd,
+      input$lnorm_meanlog,
+      input$lnorm_sdlog,
       input$umin,
       input$umax,
       input$exp_rate,
@@ -336,6 +360,11 @@ server <- function(input, output, session) {
         prob = input$successRate / 100
       ),
       "Normal" = rnorm(k, mean = input$mean, sd = safe_pos(input$sd)),
+      "Log-normal" = rlnorm(
+        k,
+        meanlog = input$lnorm_meanlog,
+        sdlog = safe_pos(input$lnorm_sdlog)
+      ),
       "Uniform" = runif(k, min = input$umin, max = input$umax),
       "Exponential" = rexp(k, rate = safe_pos(input$exp_rate)),
       "Poisson" = rpois(k, lambda = safe_nonneg(input$poisson_lambda)),
@@ -372,6 +401,9 @@ server <- function(input, output, session) {
 
     updateNumericInput(session, "mean", value = 0)
     updateNumericInput(session, "sd", value = 1)
+
+    updateNumericInput(session, "lnorm_meanlog", value = 0)
+    updateNumericInput(session, "lnorm_sdlog", value = 0.5)
 
     updateNumericInput(session, "umin", value = 0)
     updateNumericInput(session, "umax", value = 1)
@@ -477,6 +509,28 @@ server <- function(input, output, session) {
         list(
           dist = "Normal",
           params = list(mu = mu, sd = sd),
+          type = "continuous",
+          theory = theory,
+          xlim = c(x_min, x_max),
+          ymax = max(theory$density),
+          xlabel = "Value",
+          ylabel = "Density"
+        )
+      } else if (dist == "Log-normal") {
+        # ---- LOG-NORMAL ----
+        meanlog <- input$lnorm_meanlog
+        sdlog <- safe_pos(input$lnorm_sdlog)
+
+        x_min <- 0
+        x_max <- qlnorm(.995, meanlog, sdlog)
+
+        xs <- seq(x_min, x_max, length.out = 400)
+        theory <- data.frame(
+          x = xs,
+          density = dlnorm(xs, meanlog, sdlog)
+        )
+
+        list(
           type = "continuous",
           theory = theory,
           xlim = c(x_min, x_max),

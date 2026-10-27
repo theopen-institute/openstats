@@ -7,16 +7,32 @@
 - The thread from Week 1: randomness and uncertainty aren't a nuisance to get rid of. They're what statistics is about. Last week: a probability measures how sure we are. This week: a single number hides a crowd, and how sure we are about it is a distribution too.
 - The deck ends with a preview of Week 3: add one variable to a model, and the coefficients for the others change. It appears twice: sex, height and weight at the end of Part 3, and bedrooms in the house prices.
 
-## The average pilot {#average-pilot}
+## Income in Nepal, 2008–2018 {#nepal-earnings}
 
-- Tell it as a story. Around 1950, US Air Force pilots kept losing control of their planes. It wasn't pilot error, and it wasn't the machines.
-- Click: the cockpits had been designed in 1926, to fit the average pilot of the time. The first theory was that pilots had grown since then.
-- Click: so a young lieutenant, Gilbert Daniels, measured 4,063 pilots on 140 body dimensions, and picked the ten that mattered most for a cockpit. The plan was to find the new average and rebuild for it.
-- Click: ask the room before the reveal. How many pilots were within the middle 30% on all ten? Take guesses. Most people say a few hundred, or ten percent.
-- Click, click: zero. Not one of 4,063. Even on just three dimensions, fewer than 3.5% were average on all three.
-- The cockpit for the average pilot fit nobody. The average describes the crowd, but nobody in the crowd has to match it.
-- Click: the fix. The Air Force made the manufacturers build cockpits that fit the range of pilots, not the middle: adjustable seats, pedals and helmet straps. That's thinking in distributions instead of averages. Every car has an adjustable seat now.
-- If someone asks how "average" was defined: Daniels counted a pilot as average on a dimension if they fell in the middle 30% of the range. The story is from his 1952 technical note, and Todd Rose tells it at the start of *The End of Average* (2016).
+- Week 1 opened with a claim that sounded wrong and turned out true. This week opens with a puzzle from Nepal's own data, solved on the next slide. The title is deliberately neutral: let them find the puzzle.
+- Set it up. The Nepal Labour Force Survey, 2008 and 2017/18, as tabulated by the ILO (ILOSTAT): average monthly earnings in the main job. Prices roughly doubled between the two surveys (×2.1, about 8% a year), so every rupee figure is converted to 2025/26 rupees with the Nepal Rastra Bank's consumer price index. The bars are the change after inflation; the rupee amounts are written in them.
+- Who's counted: paid employees only, people working for a wage or salary. That leaves out most of Nepal's workers: farmers on their own land, shopkeepers and other self-employed people, and family members working unpaid. In 2008 paid employees were about 2 million people; by 2017/18, about 3.8 million.
+- Two groups, as the ILO's published tables draw them: secondary education or less, and post-secondary. Each group's average is built from the ILO's averages for each education level, weighted by how many employees have it. Both groups' real earnings rose a lot, 67% and 58%.
+- Ask: what happened to both groups together, all paid employees? Most people will say somewhere between 58% and 67%.
+- Click: 55%. Less than either group. Ask the room how that's possible. An average of two groups should land between them.
+- Click: the question, on the slide.
+- Someone may get there: the mix changed. The lower-paid group grew from 74% to 86% of employees, which pulls the overall average down. True, but why did it grow so fast? Leave it open: the next slide.
+- A caution if anyone checks the ILO's website: the ILO also publishes an all-employee average for 2008 (Rs 6,287) that is higher than its own education rows add up to (Rs 5,412). In 2017/18 they match. 2008's earnings data probably missed some employees, likely rural and less educated ones. Grown from the published total, all employees' real gain is 34%, not 55%. We build every average here from the same rows, so the groups and the total agree with each other.
+
+## The distributions behind the averages {#nepal-reclass}
+
+- The answer, and our first look at this week's subject: a distribution. Each hump shows how one group's earnings spread out: how many employees earn each amount. Top, secondary or less; bottom, post-secondary, the same order as the last slide. The area under a hump is the number of employees, on one scale. The thick lines are each group's average, starting at the last slide's 2008 numbers: Rs 14,640 and Rs 24,180, with both groups together at Rs 17,070.
+- Say up front that the shapes are made up. The survey tables give each education level's size and average, not its spread, so each level is drawn as a smooth curve with its real average and an invented spread, and the humps add them up. The sizes and averages are real; the exact shapes aren't, because the survey's microdata (which would give them) isn't publicly available. The footnote says so.
+- Click: ten years pass, and we keep counting the groups the way 2008 did, with grades 11–12 (the old Intermediate and Proficiency Certificate) as post-secondary. Both humps grow (many more paid employees) and move right. Post-secondary's average reaches Rs 32,350, up 34%; secondary or less reaches Rs 24,330, up 66%; both groups together Rs 26,430, up 55%, in between, as an average should be. No puzzle yet.
+- Click: the green part of the post-secondary hump is grades 11–12: 463,000 employees in 2017/18, almost half the group. Point out where they sit: at the low end of post-secondary, below its average, but just above the secondary group's average.
+- Click, and let the animation run. The 2017/18 tables count grades 11–12 as secondary. Same people, same pay: watch them rise out of post-secondary and push up the secondary curve from underneath. Post-secondary lost its lowest earners, so its average jumps from Rs 32,350 to Rs 38,260. Secondary or less gained people who earn a bit more than its average, so its average rises too, from Rs 24,330 to Rs 24,500. Both groups together: unchanged. Those are the published 2017/18 numbers from the last slide.
+- This is the Will Rogers paradox, after his joke that when the Okies left Oklahoma for California, they raised the average intelligence of both states. Medicine has a famous version: better scans move patients with small tumours from "early stage" to "late stage", and survival improves in both stages while no patient lives longer.
+- That solves the puzzle. The published growth compares 2008's groups, with grades 11–12 counted as post-secondary, to 2017/18's, with them counted as secondary. Of post-secondary's published rise of Rs 14,080, Rs 5,910 (42%) is the move. Count both years the same way and there's no paradox: both groups together land between the two groups.
+- If someone asks why 42% here and "most of it" elsewhere: it depends which year's grouping you hold fixed. Counting both years the 2017/18 way (degrees only), post-secondary grew just 10% and the move is three quarters of the published rise. Either way, a big share of the published gain is the label.
+- Be honest about the source: the ILO doesn't document the change. It's inferred from the ILO's own detailed counts: grades 11–12 appear as short-cycle tertiary (ISCED 5) only in 2008, and the post-secondary non-tertiary level (ISCED 4) appears only in 2017/18, which fits Nepal's 2016 education reform making grades 9–12 secondary school.
+- And the real story is the opposite of the published one: degree holders doubled, from 7% to 14% of paid employees, and their real pay barely grew. Economists call it graduate premium compression.
+- Caveats, if asked: these are survey estimates, so differences of a percent or so are noise. Only two survey rounds have earnings by education (the ILO hasn't tabulated the 1998/99 one). Settling it properly takes the survey's microdata from the National Statistics Office.
+- Click: the lesson for the week, in one line. Distributions reveal what averages hide. An average summarizes a crowd, a distribution. Change who's in the crowd and the average changes, even when nobody's situation does. Before comparing averages, ask who's in each group, and look at the whole distribution when you can.
 
 ## You already think in distributions {#commute}
 
@@ -31,30 +47,27 @@
 ## This week's goals {#goals}
 
 - Three kinds of distribution, one per part. Population first, then certainty (they met one last week: the mayor's posterior), then correlative.
-- The second goal is the preview of next week: adding a variable to a model changes what the other numbers mean. It comes at the end of Part 3 and again in the house prices.
+- The second goal: two tools that every model from here on uses. z-scores come at the end of Part 1 (and why we always standardize, in Part 3); the named distributions at the end of Part 2. Both are mechanics, not ideas, so they get their own slides, but each sits where it's needed.
+- The third goal is the preview of next week: adding a variable to a model changes what the other numbers mean. It comes at the end of Part 3 and again in the house prices.
 - The house-price example is the appendix, for the TA session.
 - Last click: the definition. Every value a number could take, and how common or plausible each one is. "Common" is for population distributions, "plausible" for certainty distributions.
 
 ## Part 1: Population distributions {#part1}
 
 - Section break. The first card: how a quantity varies across real cases.
-- Everything in this part (the Galton board, center, spread and shape, the Normal, z-scores) is a way of describing one population distribution, or one case's place in it.
+- The theme of the part: different distributions tell different stories. Read the shape first. The named numbers (mean, SD, z-scores) are labels on the shape, not the point.
+- The order: a warm-up, reading the shapes of income in six imagined places; then the !Kung adults' heights, a bell with its labels; one man's place in it (z-scores); then a look inside the bell (women and men), and shapes that tell stories about generations: Nepal, Japan. It ends on the part's closing line.
 
-## Random individuals, predictable crowds {#galton}
+## What does income look like? {#incomes}
 
-- This is a Galton board, after Francis Galton, who built one in the 1870s. At every peg, a ball bounces left or right with equal chance: a coin flip.
-- Start with 4 rows. Drop one ball. Ask: where will the next one land? Nobody knows. Drop a few more, one at a time.
-- Tick "Count the paths." The numbers under the bins, 1, 4, 6, 4, 1, are the garden of forking paths from Week 1: four coin flips, and the number of ways to get each number of heads. A ball that bounces right twice can do it 6 ways; all the way right, only 1. The middle bins have more paths, so more balls end up there.
-- Drop 100, then 1,000. The bars fill in the dashed outline: the shape the counting predicts.
-- Now set 12 or 14 rows, empty the bins, and drop 1,000. A bell. Drop another 1,000: the same bell.
-- The line on the slide is the week's foundation: one ball is anyone's guess, a thousand make the same shape every time. Random individuals, predictable crowds. That's why statistics works at all. We can't predict one admission, one patient, one voter. We can describe the crowd, sometimes very precisely.
-- Say it once: randomness isn't the opposite of pattern. Randomness has patterns.
-
-## A shape tells a story {#nepal-population}
-
-- A familiar population distribution: Nepal's age pyramid. Ask: what do you notice? Why the bumps?
-- Likely discussion points: the base is narrowing because birth rates have fallen a lot. And there are fewer men than women in the working ages, because so many men work abroad. Let students propose these.
-- The point is that a distribution's shape carries history. A single number, the average age, would hide all of it.
+- A warm-up before any real data, the population version of "How old is he?" in Part 2. These are imagined places, not data: plausible shapes for monthly income.
+- All six share one axis, 0 to 100 thousand rupees a month, and none is labelled yet. For each, ask the room first: what kind of place makes this shape? Who earns what? Then click: the place, and its shape in words. Read the shape before reaching for any number.
+- The top row is three countries with the same most common income (the peak is in the same spot); only the spread changes. A typical country: skewed right, the usual shape of income: the log-normal, which Part 2 names. A more equal country: the same peak, a short tail. A very unequal country: the same peak, a very long tail. Ask: where would the average be in each? The longer the tail, the further the few at the top pull the average above what most people earn.
+- The bottom row is three places whose shape tells a story.
+- One pay scale: a government office, say. Narrow and symmetric, everyone near the middle.
+- Farms and offices: two humps. Two kinds of household, each with its own typical income. A single average falls in the gap, where almost nobody is.
+- A minimum wage: nobody paid below the floor, a crowd paid exactly it, and fewer the further above. The solid bar is a share of people at exactly one value. A rule, not a natural process, made this shape.
+- The takeaway: the same question, "what do people earn here?", has very different answers in different places, and the shape tells you which story you're in. Next, the vocabulary for describing a shape, on real data.
 
 ## Our running example: the !Kung San {#kung}
 
@@ -62,54 +75,62 @@
 - We use it because it's small, clean and about people, and height and weight are easy to reason about.
 - Worth a sentence of context: this is ethnographic fieldwork producing numbers. The line between "qualitative" and "quantitative" research was never sharp.
 
-## Center, spread, shape {#describing}
+## Describing distributions: center, spread, shape {#describing}
 
-- Three words that describe any population distribution: center, spread, shape.
-- Center: the mean, about 155 cm. Spread: the standard deviation, about 7.7 cm, the shaded band. A typical adult is within about 8 cm of average.
-- Shape: one hump, roughly symmetric. Ask: what would two humps mean here? Hold the answer for the next slide.
-
-## One hump or two? {#two-humps}
-
-- The answer to the last question: this one distribution is really two, women and men. The dashed line is everyone; the colors are the two groups inside it.
-- Click: the men are about 11 cm taller on average. But look at the overlap. Many women are taller than many men. "Men are taller" is a statement about two distributions, not about every man and every woman.
-- Flag it: this comes back at the end of Part 3. Men are also heavier. The question there is whether that's because they're men or because they're taller.
+- Read the shape first: one hump, roughly symmetric. A bell, which the next slide names.
+- The bars are one inch wide. Howell measured heights in quarter inches, so each bar holds four of those steps. With 2 cm bars, some hold three steps and some four, and the four-step bars stand a third taller for no reason but the bin edges: lumps that aren't in the people.
+- Then the two labels on the plot. Center: the mean, about 155 cm (the red line). Spread: the standard deviation, about 7.7 cm (the shaded band). A typical adult is within about 8 cm of average.
+- These two numbers are annotations: they label a shape, they don't replace it. Hold on to "one hump": two slides on, we look inside it.
 
 ## The Normal distribution {#normal}
 
-- The blue curve is a Normal distribution with the same mean and SD as the data. It fits well.
-- Click: two numbers describe the whole shape. That's the Normal's main attraction.
-- Connect it to the Galton board: when many small, random pushes add up (genes, nutrition, childhood illness, all nudging height up or down), you tend to get a bell. That's why the Normal turns up so often.
-- Real data are never perfectly Normal. The Normal is a description, not a law. The house prices in the appendix are clearly not Normal.
-
-## The 68–95–99.7 rule {#rule-68-95}
-
-- For a Normal distribution: about 68% of cases within 1 SD, 95% within 2 SD, 99.7% within 3 SD.
-- Click: check it against the !Kung data. It's close. That's a good habit: check a rule of thumb against your actual data.
+- The blue curve is a Normal distribution with the same mean and SD as the data. It fits well: two numbers describe the whole shape. That's the Normal's main attraction.
+- The Normal is a shape that turns up everywhere, in math and in nature. Don't explain why yet: what makes it special comes later (Part 2's Galton board shows where it comes from). For now it's enough that the heights in a population often take this shape.
+- Click: the bands. Every Normal has the same landmarks, whatever its center and spread: about 68% of cases within 1 SD, 95% within 2 SD. The right column checks them against the !Kung adults: close. That's a good habit: check a rule of thumb against your actual data.
 - "Within 2 SD" comes back in Part 2: it's how we'll say how sure we are.
+- Real data are never perfectly Normal. The Normal is a description, not a law. The next slide looks closer at this one, and the rest of this part is shapes that aren't bells.
 
-## Distributions Demo {#dist-demo}
+## One hump, or two? {#two-humps}
 
-- Interactive. Pick a distribution family and move the sliders. Start with the Normal: change the mean (the curve slides), change the SD (it stretches).
-- Then show one or two other shapes so students see that not everything is a bell curve: a skewed one, a bounded one.
-- Don't teach the families. The point is that a few numbers control a shape, and different situations call for different shapes.
+- The same heights, in the same bars.
+- Ask: what do you see in the middle? The shaded band, around 155–160 cm, holds fewer adults than the bars on either side. Why would there be a dip? Let the room guess before clicking.
+- Click: women and men. The same bars, colored by sex, women at the bottom, so the outline doesn't change. Most of the shorter adults are women, most of the taller ones men, and the middle is where they overlap.
+- Click: the bars separate, women's half of each bar on the left and men's on the right, and each sex gets its own Normal (its own mean and SD). Each fits well on its own.
+- Click: they stack back up, and the dashed line is the two Normals added together. It has no dip: two bells this close, about two SDs apart, with more women than men, add up to one lopsided hump.
+- So where did the dip come from? Mostly from its neighbor. The dip's two bars hold 35 adults each, about what the two Normals together expect there (38 and 34). The bar just past them holds 43, 41 of them men, where the Normals expect about 31: a tall bar, about as far off as chance alone puts a bar or two in groups this small, and it makes the bars beside it look low. Women and men really are two crowds, and they're why the shape is wide and lopsided. They aren't a reason for a gap.
+- The lesson: don't over-read the lumps in a histogram. Before explaining a bump or a dip, ask whether it's bigger than chance, and whether it came from how the data were measured. Nepal's ages, at the end of this part, come back to that.
 
 ## Taller or heavier? {#z-scores}
 
-- Pose the puzzle and let them try. Centimeters and kilograms can't be compared directly.
+- Pose the puzzle and let them try. The plots show where he sits in each crowd: far out on both. But which is further? Centimeters and kilograms can't be compared directly.
 - Click: the trick is to measure both in "standard deviations from average." Now they're on the same ruler.
-- Click: the arithmetic. Click: he is more unusually heavy than tall.
+- Click: the arithmetic, and the plots label each line with its z-score. Click: he is more unusually heavy than tall.
 - A z-score is a population-distribution idea: it places one case in the crowd.
 
 ## Same data, new ruler {#new-ruler}
 
-- The two histograms have the same shape. Only the axis labels change. Standardizing doesn't change the data, only the units.
-- The mean becomes 0 and the SD becomes 1. The units disappear.
+- One histogram, two rulers: centimeters along the bottom, z-scores in blue along the top. Standardizing doesn't move a single person. It only relabels the axis.
+- The mean becomes 0 and the SD becomes 1. The units disappear: a z-score is measured in standard deviations.
+- The table is a quick reference. 0 is average, ±1 is ordinary, ±2 is unusual (about 1 in 20), ±3 is rare (about 1 in 370). It's the 68–95–99.7 rule read the other way.
+- z-scores will come back in every model from here on. Part 3 says why.
 
-## Reading z-scores {#reading-z}
+## Nepal, age by age {#nepal-population}
 
-- A quick reference table. 0 is average, ±1 is ordinary, ±2 is unusual (about 1 in 20), ±3 is rare (about 1 in 370).
-- The R code is one line per variable. Students don't need to memorize it; the homework uses it.
-- Click: the takeaway of Part 1, back to the pilots. An average is one point, the center of a distribution. The distribution describes everyone.
+- The same idea at the scale of a country. The share of Nepal's residents at each age, from the Nepal Living Standards Survey (2022/23), weighted to the whole population.
+- Ask: what do you notice? Let them look before clicking.
+- Click: the shape. More teenagers than toddlers: the youngest ages are smaller than the ages around 10 to 20. Births have been falling, so each new generation is a little smaller than the one before.
+- If someone asks about the working ages: these are residents. About 2.5 million Nepali men (and 0.5 million women) are living abroad, so among residents aged 20 to 39 there are about 5.2 million women and 3.6 million men. The dataset has the people abroad too (status "abroad"), if you want to show it.
+- Click: the spikes, in red. Ages ending in 0 or 5 hold far more people than the ages beside them: 40 holds twice as many as 41. Nobody was born in a boom every five years. Many people don't know their exact age, and when asked they round it: "about 40." Demographers call it age heaping.
+- It's a survey artifact: a pattern made by how the data was collected, not by the world. Smaller spikes at 12 and 18 are probably the same thing. The lesson: a shape can tell a story about the measurement, too. Always ask which.
+
+## Two countries, two stories {#two-countries}
+
+- The same plot for Japan, on the same scale. Two countries, two shapes, two histories.
+- Nepal is young: half its residents are 26 or younger. Its shape slopes down from the youngest ages: lots of children, fewer old people.
+- Click: Japan is old: half its people are 49 or older, and nearly 3 in 10 are over 65. Its bulges are generations. The baby boom after the war (born 1947–49, now in their mid-70s), and their children, the second baby boom (born 1971–74, now about 50). The bulge echoes a generation later.
+- The labels are worth a story each. 1966 was a "fire horse" year in the old calendar, said to be unlucky for girls born in it; births fell by about a quarter, and came back the next year. The dip just past the baby boom (about age 77) is the war's last years, when few children were born.
+- Click: no spikes in Japan. Its ages come from registered birth dates, so nobody needs to round. The two shapes differ in their history, and also in how they were measured.
+- Click: the takeaway of Part 1. An average is one point, the center of a distribution. It depends on who's in the crowd, as the opening puzzle showed and the !Kung weights showed again. The distribution describes everyone.
 
 ## Part 2: Certainty distributions {#part2}
 
@@ -148,6 +169,57 @@
 - Click: the quick test. Many cases that really differ, or one answer we're unsure about? Try it on the examples on the cards, then on a few of the students' own.
 - Same shapes, same vocabulary, same math. That's convenient, and also why they get confused.
 - Part 3 needs both: a pattern in the data, and how sure we are about it.
+- Before Part 3: the shapes themselves. Same shapes for both kinds, so this is the place to name them, starting with where a shape comes from: the Galton board.
+
+## Random individuals, predictable crowds {#galton}
+
+- This is a Galton board, after Francis Galton, who built one in the 1870s. At every peg, a ball bounces left or right with equal chance: a coin flip.
+- Start with 4 rows. Drop one ball. Ask: where will the next one land? Nobody knows. Drop a few more, one at a time.
+- Tick "Count the paths." The numbers under the bins, 1, 4, 6, 4, 1, are the garden of forking paths from Week 1: four coin flips, and the number of ways to get each number of heads. A ball that bounces right twice can do it 6 ways; all the way right, only 1. The middle bins have more paths, so more balls end up there.
+- Drop 100, then 1,000. The bars fill in the dashed outline: the shape the counting predicts.
+- Now set 12 or 14 rows, empty the bins, and drop 1,000. A bell. Drop another 1,000: the same bell.
+- The line on the slide: one ball is anyone's guess, a thousand make the same shape every time. Random individuals, predictable crowds. That's why statistics works at all. We can't predict one admission, one patient, one voter. We can describe the crowd, sometimes very precisely.
+- Say it once: randomness isn't the opposite of pattern. Randomness has patterns.
+- The bridge to the next slide: this is where named shapes come from. A process, repeated many times, makes a predictable shape. The Galton board's process (coin flips, added up) makes a bell, the Normal, like the !Kung heights in Part 1. Other processes make other shapes, and the next slide names them.
+
+## Every named distribution is a story {#named-shapes}
+
+- The goal is to demystify the names. Normal, Poisson, Beta sound like jargon. Each one is just the shape a particular process produces, and the process is something students already understand.
+- Walk the six, briefly, with the process first:
+  - Normal: many small pushes added up. The Galton board on the last slide, the !Kung heights.
+  - Log-normal: many small pushes multiplied. A raise is a percentage of what you already earn, so earnings spread out at the top. The made-up curves in the opening puzzle were log-normal.
+  - Exponential: waiting until something happens. Most waits are short; a few are long.
+  - Binomial: counting yeses out of n tries. Week 1's poll: of 20 people asked, how many say "mayor"? The Galton board is one too: a count of rightward bounces out of n pegs.
+  - Poisson: counting events with no maximum. Births in a day at a health post: usually 2 or 3, sometimes 8.
+  - Beta: a share between 0 and 1. Literacy rates across districts.
+- These are population distributions, so they're blue. Only the !Kung heights are real; the other knobs are made up for the example.
+- Click: know the process, and you know the shape. The knobs (parameters) slide and stretch it. That's all a "parameter" is.
+
+## Distributions Demo {#dist-demo}
+
+- Interactive. Pick a family and move its knobs. Use "Run" to draw random values, and watch the histogram fill in the curve: the Galton board again, for any shape.
+- Normal: change the mean (the curve slides), change the SD (it stretches).
+- Binomial: 20 trials at 30% is the poll on the last slide. Then 1,000 trials: a bell. Lots of small coin flips added up is the Normal's story.
+- Poisson: rate 3, then rate 30. It also turns into a bell.
+- Beta: try 1 and 1 (flat), then 3 and 7, then 30 and 70. Same center, narrower: a and b work like yeses and noes, so more of them means more certainty. That's Part 2's lesson, in a shape.
+- Log-normal: an SD of the log of 0.5, then 1. The tail stretches out to the right.
+- Don't drill the formulas. The point: a few knobs control a shape, and the situation decides which shape.
+
+## Pick the shape by the kind of number {#pick-shape}
+
+- Mechanics slide, a reference to come back to. The question to ask first is: what kind of number is this? Any value? Only positive? A count? A share?
+- That rules out most shapes. A count can't be Normal (no 2.7 births), a share can't go past 100%, a spread can't be negative. The process picks among what's left.
+- Beta's knobs: roughly the yeses and noes you've seen (plus one each). Beta(1, 1) is flat: no information.
+- In R, every family has the same pair of functions: r for random draws, d for the curve. The deck uses them: the belief curves for the man's age were drawn with dnorm() and dunif().
+- The ~ notation is the same as the mayor's model last week: "is drawn from." Every line of a model is one of these shapes.
+
+## The same shapes, for certainty {#certainty-shapes}
+
+- The same families, now in green: they describe how sure we are, not how cases vary.
+- θ ~ Beta(3, 7): the mayor's vote share. A share, so a Beta. Like having seen about 2 people say "mayor" and 6 say someone else. The hand-drawn prior from Week 1 could have been written as one of these.
+- β ~ Normal(0, 1): a coefficient. It could be negative or positive, so a Normal. Centered on 0: we don't assume a direction.
+- σ ~ Exponential(1): a spread. It can't be negative, so an Exponential: small spreads plausible, big ones less so.
+- The last two are exactly the priors behind the posterior for β in Part 3. That slide, and "Why we always standardize", explain why Normal(0, 1) is a sensible choice.
 
 ## Part 3: Correlative distributions {#part3}
 
@@ -217,7 +289,16 @@
 
 - β is an unknown, like the mayor's vote share. So it gets a certainty distribution: a prior and a posterior. This is the second card again, applied to a relationship.
 - Click: two posteriors, one from 20 adults (wide, light) and one from all 352 (narrow, dark). The same lesson as the sampling widget: more people, more sure.
-- Small samples aren't invalid. They're honest about being unsure. Keep that in mind for the next slide.
+- Small samples aren't invalid. They're honest about being unsure. Keep that in mind for the noise slides.
+
+## Why we always standardize {#why-standardize}
+
+- Mechanics slide, and a rule for the rest of the course: every regression is fit in z-scores. Three reasons.
+- No intercept: both variables have mean 0, so the line goes through the middle. One fewer number to estimate, and to set a prior for.
+- Coefficients compare: every β is in SDs per SD, so living area and bedrooms, or height and age, sit on one scale. The houses' model builder relies on this.
+- One prior fits every β: Normal(0, 1) says we're 95% sure a 1 SD change in the predictor moves the outcome by less than 2 SD. That's generous: with one predictor, β is the correlation, which can't pass 1.
+- The table: the same relationship in four units. In kg per cm, kg per inch and lb per inch the number changes, so a sensible prior in one unit is wrong in the next. In SDs it's the same number, whatever the units.
+- At the end, convert back to real units, as on "Reading the coefficient." The R code is one line per variable; the homework uses it.
 
 ## A headline from pure noise {#noise}
 
@@ -235,7 +316,7 @@
 
 ## Do men weigh more? {#sex-weight}
 
-- The preview of next week begins. Back to the two crowds from Part 1: men are taller. Now weight.
+- The preview of next week begins. The subtitle: !Kung men are taller than the women, on average. Are they heavier, too?
 - The two weight distributions: men are heavier, with plenty of overlap.
 - Click: fit weight on sex alone, the same kind of line as before with sex as the predictor, and the coefficient for sex is about 6.8 kg. Men weigh 6.8 kg more, on average.
 - Click: the question. Is that because they're men, or because they're taller? Let students argue. Some will say both.
@@ -269,7 +350,7 @@
 
 - The definition, then one card per part. Read them slowly.
 - Ask students to name the three kinds without looking, and give an example of each from their own work.
-- Each card ends with this week's line for that kind: the pilots (an average describes the crowd), the sampling widget (variation is in the world, uncertainty is in us), and sex and height (a coefficient depends on what else is in the model).
+- Each card ends with this week's line for that kind: the opening puzzle (change the crowd, and the average changes), the sampling widget (variation is in the world, uncertainty is in us), and sex and height (a coefficient depends on what else is in the model).
 - Click: the line to remember. Think in distributions, not single numbers.
 
 ## Next week {#next-week}
@@ -292,7 +373,7 @@
 
 ## Step 1: The distribution of prices {#houses-step1}
 
-- Not Normal: a long right tail of a few very expensive houses.
+- Not Normal: a long right tail of a few very expensive houses. Ask which named shape it looks like: the log-normal from Part 2. Prices, like earnings, grow by percentages (a nicer kitchen adds a share of the price, not a fixed sum), and pushes that multiply give a long right tail.
 - The tail pulls the mean (about $181,000) above the median ($160,000). Ask: which is the typical price? For skewed data, usually the median.
 - This is why "always plot first" matters. A mean and SD alone would hide the tail.
 
@@ -363,4 +444,4 @@
 ## More resources {#more-resources}
 
 - McElreath's chapter 4 builds the Normal and the regression line from the same !Kung data, with priors and posteriors for every parameter. Chapter 5 is about adding variables, and why coefficients change when you do.
-- The pilots story opens Todd Rose's *The End of Average*. It's short and very readable.
+- The US wages example is the opening puzzle at national scale, with real data. Worth a mention for students who want proof it isn't just a classroom trick.

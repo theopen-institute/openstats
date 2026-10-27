@@ -84,7 +84,7 @@ function init(root, data) {
     const orange = brand('orange');
     const red = brand('red');
     const blue = brand('blue');
-    const plot = { left: 78, right: w * 0.7, top: 14, bottom: h - 66 };
+    const plot = { left: 90, right: w * 0.7, top: 14, bottom: h - 76 };
     const panel = { left: plot.right + 34, right: w - 12 };
     const x = scale(X_RANGE[0], X_RANGE[1], plot.left, plot.right);
     const y = scale(Y_RANGE[0], Y_RANGE[1], plot.bottom, plot.top);
@@ -162,10 +162,10 @@ function init(root, data) {
       });
     }
     line(ctx, panel.left, plot.top, panel.left, plot.bottom, { color: ink });
-    text(ctx, split ? 'Weights at this height' : 'Weights', panel.left, plot.bottom + 26, {
+    text(ctx, split ? 'Weights at this height' : 'Weights', panel.left, plot.bottom + 30, {
       size: 16, weight: 600, color: split ? ink : orange,
     });
-    text(ctx, split ? 'women and men' : 'at this height; gray: everyone', panel.left, plot.bottom + 48, {
+    text(ctx, split ? 'women and men' : 'at this height; gray: everyone', panel.left, plot.bottom + 56, {
       size: 15, color: gray,
     });
     if (!split) {

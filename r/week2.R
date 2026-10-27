@@ -84,11 +84,213 @@ house_models_data <- function(houses) {
   ))
 }
 
+# ---- The opening puzzle: Nepal's earnings by education ---------------------------
+
+# The opening puzzle's plot size: {r name, opts.label = "puzzle"}
+knitr::opts_template$set(puzzle = list(fig.width = 8.5, fig.height = 6.6, out.width = "100%"))
+
+
+# Rupees at 2025/26 prices per rupee at each survey's prices, from the Nepal Rastra Bank
+# index. The 2008 round ran through calendar 2008, half of each of two fiscal years;
+# the 2017/18 round matches its fiscal year. The index stops at 2022/23, so 2025/26 is
+# chained on from it with each later year's inflation.
+nepal_price_factors <- function(cpi = load_nepal_cpi()) {
+  index <- set_names(cpi$cpi_index, cpi$fiscal_year)
+  later <- cpi$infl_overall[is.na(cpi$cpi_index)]
+  now <- index[["2022/23"]] * prod(1 + later / 100)
+  c(`2008` = now / mean(index[c("2007/08", "2008/09")]), `2017` = now / index[["2017/18"]])
+}
+
+# The ILO's education levels (ISCED codes), lowest first. Grades 11–12 are coded 5
+# (short-cycle tertiary) in 2008 and 4 (post-secondary, non-tertiary) in 2017/18.
+NLFS_LEVELS <- c(
+  "9" = "Not stated", X = "No schooling", "0" = "Pre-primary", "1" = "Primary",
+  "2" = "Lower secondary", "3" = "Upper secondary", "5" = "Grades 11–12",
+  "4" = "Grades 11–12", "6" = "Bachelor's", "7" = "Master's"
+)
+
+# Paid employees of both sexes by education level: year (2017 is 2017/18), level,
+# employees (thousands) and average monthly earnings (thousand rupees, 2025/26 prices)
+nlfs_levels <- function() {
+  price <- nepal_price_factors()
+  load_nlfs() |>
+    filter(sex == "T", isced != "TOTAL") |>
+    transmute(
+      year, isced,
+      level = factor(NLFS_LEVELS[isced], levels = unique(NLFS_LEVELS)),
+      employees = employees_k,
+      earnings = earnings_npr * price[as.character(year)] / 1000
+    )
+}
+
+# Is a level post-secondary? coding "ilo": as the ILO's tables count it, with grades
+# 11–12 post-secondary in 2008 and secondary in 2017/18. "same": degrees only, in both
+# years.
+is_post <- function(isced, year, coding) {
+  isced %in% c("6", "7") | (coding == "ilo" & year == 2008 & isced == "5")
+}
+
+# Each group's average earnings and share of employees, by year, with the levels'
+# averages combined by their employee counts: coding ("ilo", "same", or "all" for
+# all employees), group ("secondary", "post", "all"), year, earnings, employees, share
+nlfs_groups <- function(levels = nlfs_levels()) {
+  grouped <- function(coding) {
+    mutate(levels, coding = coding, group = case_when(
+      coding == "all" ~ "all",
+      is_post(isced, year, coding) ~ "post",
+      .default = "secondary"
+    ))
+  }
+  map(c("ilo", "same", "all"), grouped) |>
+    list_rbind() |>
+    summarize(
+      earnings = weighted.mean(earnings, employees),
+      employees = sum(employees),
+      .by = c(coding, group, year)
+    ) |>
+    mutate(share = employees / sum(employees), .by = c(coding, year))
+}
+
+# 2008 to 2017/18, a row per coding and group: earnings_2008, employees_2017,
+# share_2017, ..., and
+# change, the real change in average earnings
+nlfs_growth <- function(groups = nlfs_groups()) {
+  groups |>
+    pivot_wider(id_cols = c(coding, group), names_from = year, values_from = c(earnings, employees, share)) |>
+    mutate(change = earnings_2017 / earnings_2008 - 1)
+}
+
+# One number from nlfs_growth(), for the text: nlfs_stat(edu, "same", "post", "share_2017")
+nlfs_stat <- function(growth, coding, group, what = "change") {
+  growth[[what]][growth$coding == coding & growth$group == group]
+}
+
+# Thousand rupees as rupees, to the nearest ten, the way the slides write them: "Rs 24,180"
+rupees <- function(x) paste("Rs", fmt(round(1000 * x, -1), 0))
+
+# The reclassification widget (js/reclass.js): paid employees by education level in 2008
+# and 2017/18, with each level's number (thousands), average earnings (thousand rupees,
+# 2025/26 prices) and group: "secondary", "post" (degrees), or "movers" (grades 11–12:
+# ISCED 5 in 2008, counted as post-secondary; ISCED 4 in 2017/18, counted as secondary,
+# which is inferred from those codes appearing in one round each). The tables
+# give each level's average, not its spread, so the widget draws each level as a
+# log-normal curve with that average and a made-up spread, RECLASS_SDLOG: the shapes
+# are hypothetical.
+RECLASS_SDLOG <- 0.5
+
+reclass_widget_data <- function(levels = nlfs_levels()) {
+  json_script("reclass-data", list(
+    sdlog = RECLASS_SDLOG,
+    levels = levels |>
+      transmute(
+        year, isced,
+        # precise enough that the widget's averages round to the same rupees as the table
+        employees = round(employees, 3),
+        earnings = round(earnings, 4),
+        group = case_when(
+          isced %in% c("4", "5") ~ "movers",
+          is_post(isced, year, "same") ~ "post",
+          .default = "secondary"
+        )
+      )
+  ))
+}
+
+# The reclassification slide's numbers. Each group's average (thousand rupees, rounded to
+# the nearest ten rupees as the slides show them) in 2008 as published (y2008), 2017/18
+# counted the 2008 way, with grades 11–12 still post-secondary (same), and 2017/18 as
+# published (y2017): post[["same"]], secondary[["y2008"]], ... And grades 11–12 in
+# 2017/18: movers (thousands of employees), and movers_share of the post-secondary
+# group counted the 2008 way.
+reclass_numbers <- function(levels = nlfs_levels()) {
+  post <- list(y2008 = c(2008, "5", "6", "7"), same = c(2017, "4", "6", "7"), y2017 = c(2017, "6", "7"))
+  average <- function(spec, in_post) {
+    d <- levels[levels$year == spec[1] & (levels$isced %in% spec[-1]) == in_post, ]
+    round(weighted.mean(d$earnings, d$employees), 2)
+  }
+  y2017 <- levels[levels$year == 2017, ]
+  movers <- y2017$employees[y2017$isced == "4"]
+  list(
+    post = sapply(post, average, in_post = TRUE),
+    secondary = sapply(post, average, in_post = FALSE),
+    movers = movers,
+    movers_share = movers / sum(y2017$employees[y2017$isced %in% c("4", "6", "7")])
+  )
+}
+
+EDU_COLORS <- c(secondary = INK, post = BLUE, all = GRAY)
+EDU_NAMES <- c(secondary = "Secondary\nor less", post = "Post-\nsecondary", all = "Both\ngroups")
+
+# "Income in Nepal, 2008–2018": each group's real change in average earnings, 2008 to
+# 2017/18, as bars, each with its average monthly earnings in both years written in it.
+# everyone = FALSE leaves out all employees' bar (an empty row, so the plot doesn't
+# move when it appears); with it, its change is carried up across the others. Step 2
+# (a parked slide): the published bars fade, and arrows run from them to the change
+# with grades 11–12 counted the same way in both years.
+edu_growth_plot <- function(step, everyone = TRUE, growth = nlfs_growth()) {
+  rows <- c(secondary = 3, post = 2, all = 1)
+  published <- growth |>
+    filter(coding %in% c("ilo", "all")) |>
+    mutate(y = rows[group], color = EDU_COLORS[group])
+  same <- growth |>
+    filter(coding == "same") |>
+    mutate(y = rows[group], color = EDU_COLORS[group], was = published$change[match(group, published$group)])
+  all_change <- nlfs_stat(growth, "all", "all")
+  if (!everyone) published <- filter(published, group != "all")
+  label <- function(x) paste0("+", round(100 * x), "%")
+  fade <- step >= 2 & published$group != "all"
+  names <- EDU_NAMES[names(rows)]
+  if (!everyone) names[["all"]] <- ""
+
+  p <- ggplot() +
+    geom_rect(
+      data = published,
+      aes(xmin = 0, xmax = change, ymin = y - 0.3, ymax = y + 0.3,
+          fill = I(if_else(fade, tint(color, 0.25), color)))
+    ) +
+    geom_text(
+      data = published, aes(change, y, label = label(change), color = I(if_else(fade, GRAY, color))),
+      hjust = -0.15, size = if_else(fade, 7, 9), fontface = "bold"
+    ) +
+    geom_text(
+      data = filter(published, !fade),
+      aes(0.015, y, label = paste(rupees(earnings_2008), "→", rupees(earnings_2017))),
+      hjust = 0, size = 6.5, fontface = "bold", color = "white"
+    )
+  if (everyone) {
+    p <- p + annotate(
+      "segment", x = all_change, xend = all_change, y = 1.3, yend = 3.3,
+      color = INK, linetype = "dashed", linewidth = 0.9
+    )
+  }
+  if (step >= 2) {
+    p <- p +
+      geom_segment(
+        data = same, aes(x = was, xend = change, y = y, yend = y, color = I(color)),
+        linewidth = 1.4, arrow = arrow(length = unit(0.14, "inches"), type = "closed")
+      ) +
+      geom_point(data = same, aes(change, y, color = I(color)), size = 6) +
+      geom_text(
+        data = same, aes(change, y + 0.3, label = label(change), color = I(color)),
+        hjust = 0.1, vjust = -0.35, size = 9, fontface = "bold"
+      )
+  }
+  p +
+    scale_x_continuous(
+      limits = c(0, 0.85), breaks = seq(0, 0.8, 0.2), labels = \(x) paste0(100 * x, "%"),
+      expand = expansion(0)
+    ) +
+    scale_y_continuous(breaks = rows, labels = names, limits = c(0.6, 3.85)) +
+    labs(x = "Change in average monthly earnings, after inflation", y = NULL) +
+    theme(panel.grid.major.y = element_blank(), panel.grid.minor = element_blank())
+}
+
 # ---- Part 1: population distributions ----------------------------------------------
 
 # A dashed vertical line at x, labelled at the top of the plot. line = FALSE gives
-# just the label. Smaller vjust puts the label higher.
-value_marker <- function(x, label, color, vjust = 1.5, line = TRUE) {
+# just the label. Smaller vjust puts the label higher; left = TRUE puts it left of the
+# line.
+value_marker <- function(x, label, color, vjust = 1.5, line = TRUE, left = FALSE) {
   list(
     if (line) geom_vline(xintercept = x, color = color, linewidth = 1.2, linetype = "dashed"),
     annotate(
@@ -96,7 +298,7 @@ value_marker <- function(x, label, color, vjust = 1.5, line = TRUE) {
       x = x,
       y = Inf,
       vjust = vjust,
-      hjust = -0.05,
+      hjust = if (left) 1.05 else -0.05,
       size = 7,
       color = color,
       label = label
@@ -104,7 +306,54 @@ value_marker <- function(x, label, color, vjust = 1.5, line = TRUE) {
   )
 }
 
-# "Center, spread, shape": height, with the mean and a band 1 SD either side
+# "What does income look like?": monthly incomes in six imagined places, in the style
+# of the named shapes (shape_panel(), below), all on one axis and untitled (the deck
+# names each place when it describes it). Made up, not data. In row order: three
+# countries (typical, then more and less equal), then three places with a story in
+# their shape. The share paid exactly the minimum wage is a solid bar, as tall as a bar
+# of that share would be in a 2,000-rupee-wide histogram.
+income_shape_plots <- function() {
+  x <- seq(0, 100, length.out = 501)
+  axis <- scale_x_continuous(limits = c(0, 100), breaks = seq(0, 100, 25))
+  panel <- function(y, ...) shape_panel(x, y, NULL, NULL, NULL, axis, ...)
+  minimum <- 17 # the floor, in thousand Rs (Nepal's was Rs 17,300 a month in 2023)
+  # The countries share their most common income (a log-normal's peak is at
+  # exp(meanlog - sdlog^2)) and differ only in spread
+  country <- function(spread) dlnorm(x, log(15) + spread^2, spread)
+
+  list(
+    panel(country(0.5)), # a typical country
+    panel(country(0.25)), # a more equal country
+    panel(country(0.8)), # a very unequal country
+    panel(dnorm(x, 40, 4)), # one pay scale
+    panel(0.6 * dnorm(x, 15, 5) + 0.4 * dnorm(x, 55, 10)), # farms and offices
+    panel(
+      if_else(x > minimum + 2, 0.8 * dexp(x - minimum - 2, 1 / 12), 0), # a minimum wage
+      annotate("rect", xmin = minimum, xmax = minimum + 2, ymin = 0, ymax = 0.2 / 2, fill = BLUE)
+    )
+  )
+}
+
+# Every histogram of the adults' heights has the same bars: one inch (2.54 cm) wide,
+# each from 1/8 inch below a whole inch. Howell measured in quarter inches, and recorded
+# more heights at whole inches than at the quarters between, so one-inch bars are the
+# narrowest that are fair: each holds one whole inch and its three quarters. (2 cm bars
+# hold three or four quarter-inch steps, and the four-step bars stand a third taller;
+# half- and three-quarter-inch bars alternate between holding a whole inch or not.)
+HEIGHT_BIN <- 2.54
+HEIGHT_EDGE <- -HEIGHT_BIN / 8 # one bar edge; the others are whole bars away
+height_bars <- function(...) {
+  geom_histogram(binwidth = HEIGHT_BIN, boundary = HEIGHT_EDGE, color = "white", ...)
+}
+# The bar an adult falls in, numbered from HEIGHT_EDGE
+height_bar <- function(height) floor((height - HEIGHT_EDGE) / HEIGHT_BIN)
+# The heights the plots show, and the count axis "Describing distributions" shares with
+# "One hump, or two?" (r/week2.R's sex_humps_widget_data(), js/sex-humps.js)
+height_xlim <- function(howell) range(howell$height) + c(-2, 2)
+height_ylim <- function(howell) c(0, 1.25 * max(table(height_bar(howell$height))))
+
+# "Describing distributions: center, spread, shape": height, with the mean and a band
+# 1 SD either side
 height_hist_plot <- function(howell) {
   h_mean <- mean(howell$height)
   h_sd <- sd(howell$height)
@@ -119,110 +368,239 @@ height_hist_plot <- function(howell) {
       fill = BLUE,
       alpha = 0.12
     ) +
-    geom_histogram(binwidth = 2, fill = GRAY, color = "white") +
+    height_bars(fill = GRAY) +
     value_marker(h_mean, paste0("mean = ", fmt(h_mean), " cm"), RED) +
     value_marker(h_mean + h_sd, paste0("± 1 SD = ", fmt(h_sd), " cm"), BLUE, vjust = 4, line = FALSE) +
+    scale_y_continuous(expand = expansion(mult = c(0, 0))) +
+    coord_cartesian(xlim = height_xlim(howell), ylim = height_ylim(howell)) +
     labs(x = "Height (cm)", y = "Number of adults")
 }
 
-# "One hump or two?": the women's and men's heights, overlapping, with everyone's
-# outline on top
-height_sex_plot <- function(howell) {
-  means <- howell |>
-    group_by(sex) |>
-    summarise(height = mean(height))
-
-  ggplot(howell, aes(height)) +
-    geom_histogram(
-      aes(fill = sex),
-      binwidth = 2,
-      boundary = 0,
-      position = "identity",
-      alpha = 0.55,
-      color = "white"
-    ) +
-    geom_freqpoly(binwidth = 2, boundary = 0, color = INK, linewidth = 1, linetype = "dashed") +
-    geom_vline(data = means, aes(xintercept = height, color = sex), linewidth = 1.2) +
-    scale_fill_manual(values = c(female = RED, male = BLUE), name = NULL) +
-    scale_color_manual(values = c(female = RED, male = BLUE), guide = "none") +
-    labs(x = "Height (cm)", y = "Number of adults")
-}
-
-# "The Normal distribution": the height histogram with a fitted Normal curve
-normal_overlay_plot <- function(howell) {
-  ggplot(howell, aes(height)) +
-    geom_histogram(
-      aes(y = after_stat(density)),
-      binwidth = 2,
-      fill = GRAY,
-      color = "white"
-    ) +
-    stat_function(
-      fun = dnorm,
-      args = list(mean = mean(howell$height), sd = sd(howell$height)),
-      color = BLUE,
-      linewidth = 1.5
-    ) +
-    labs(x = "Height (cm)", y = "Density")
-}
-
-# "The 68-95-99.7 rule": the standard Normal with 1, 2 and 3 SD bands shaded
-normal_rule_plot <- function() {
-  bands <- tibble(k = c(3, 2, 1), fill = c(tint(BLUE, 0.18), tint(BLUE, 0.5), BLUE))
-  shading <- lapply(seq_len(nrow(bands)), function(i) {
-    stat_function(
-      fun = dnorm,
-      geom = "area",
-      xlim = c(-bands$k[i], bands$k[i]),
-      fill = bands$fill[i]
+# "The Normal distribution": the height histogram with a Normal curve of the same mean
+# and SD, and the mean marked. bands = TRUE shades the curve within 1 and 2 SD of the
+# mean, over the bars, with the Normal's 68% and 95% above them. Both versions share
+# their y range, so the bars don't move when the bands appear.
+normal_overlay_plot <- function(howell, bands = FALSE) {
+  m <- mean(howell$height)
+  s <- sd(howell$height)
+  peak <- dnorm(m, m, s)
+  normal <- list(fun = dnorm, args = list(mean = m, sd = s))
+  band <- function(k, alpha) {
+    do.call(
+      stat_function,
+      c(normal, geom = "area", xlim = list(m + c(-k, k) * s), fill = BLUE, alpha = alpha)
     )
-  })
+  }
+  bracket <- function(k, y, label) {
+    list(
+      annotate(
+        "segment",
+        x = m - k * s, xend = m + k * s, y = y, yend = y,
+        color = BLUE, linewidth = 1,
+        arrow = arrow(ends = "both", length = unit(0.12, "inches"))
+      ),
+      annotate(
+        "label",
+        x = m, y = y, vjust = -0.35, label = label, color = BLUE, size = 7,
+        fill = "white", linewidth = 0
+      )
+    )
+  }
 
-  ggplot() +
-    xlim(-4, 4) +
+  shading <- if (bands) list(band(2, 0.2), band(1, 0.3))
+  brackets <- if (bands) {
+    list(
+      bracket(1, 1.12 * peak, paste0("68% within 1 SD (", fmt(s), " cm)")),
+      bracket(2, 1.32 * peak, "95% within 2 SD")
+    )
+  }
+
+  ggplot(howell, aes(height)) +
+    height_bars(aes(y = after_stat(density)), fill = GRAY) +
     shading +
-    stat_function(fun = dnorm, linewidth = 1.2, color = INK) +
-    annotate(
-      "text",
-      x = 0,
-      y = 0.18,
-      label = "68%",
-      size = 10,
-      color = "white",
-      fontface = "bold"
-    ) +
-    annotate("text", x = 1.5, y = 0.04, label = "95%", size = 8, color = INK) +
-    annotate("text", x = 2.5, y = 0.015, label = "99.7%", size = 7, color = INK) +
-    scale_x_continuous(
-      breaks = -3:3,
-      labels = c("-3 SD", "-2 SD", "-1 SD", "mean", "+1 SD", "+2 SD", "+3 SD")
-    ) +
-    labs(x = NULL, y = NULL) +
+    do.call(stat_function, c(normal, color = BLUE, linewidth = 1.5)) +
+    value_marker(m, paste0("mean = ", fmt(m), " cm"), RED) +
+    brackets +
+    scale_y_continuous(expand = expansion(mult = c(0, 0))) +
+    coord_cartesian(xlim = height_xlim(howell), ylim = c(0, 1.75 * peak)) +
+    labs(x = "Height (cm)", y = NULL) +
     theme(axis.text.y = element_blank())
 }
 
-# "Same data, new ruler": the height histogram in cm, or in z-scores (z = TRUE).
-# Bins anchored at the mean and a shared x-range, so each bar holds the same people
-# in both plots.
-height_ruler_plot <- function(howell, z = FALSE) {
+# "One hump, or two?": the adults' heights for js/sex-humps.js, in the same bars as the
+# plots before it: each bar's left edge and its women and men, each sex's mean and SD
+# (for its Normal) and number, the axes' ranges, and the dip to shade (the 61- and
+# 62-inch bars)
+sex_humps_widget_data <- function(howell) {
+  bar <- height_bar(howell$height)
+  bars <- seq(min(bar), max(bar))
+  count <- function(m) as.vector(table(factor(bar[howell$male == m], levels = bars)))
+  normal <- function(m) {
+    h <- howell$height[howell$male == m]
+    list(mean = mean(h), sd = sd(h), n = length(h))
+  }
+  json_script("sex-humps-data", list(
+    width = HEIGHT_BIN,
+    left = HEIGHT_EDGE + bars * HEIGHT_BIN,
+    women = count(0),
+    men = count(1),
+    normals = list(women = normal(0), men = normal(1)),
+    xlim = height_xlim(howell),
+    ylim = height_ylim(howell),
+    dip = HEIGHT_EDGE + (height_bar(156) + c(0, 2)) * HEIGHT_BIN
+  ))
+}
+
+# "Taller or heavier?": the adults' heights and weights, each with its mean (dashed)
+# and the man's value marked. z = TRUE labels his value with its z-score, blue for
+# height and red for weight.
+unusual_man_plot <- function(howell, height, weight, z = FALSE) {
+  vars <- c(height = "Height (cm)", weight = "Weight (kg)")
+  long <- howell |>
+    select(height, weight) |>
+    pivot_longer(everything(), names_to = "var") |>
+    mutate(panel = factor(vars[var], levels = vars))
+  him <- long |>
+    group_by(var, panel) |>
+    summarise(mean = mean(value), sd = sd(value), .groups = "drop") |>
+    mutate(
+      value = c(height = height, weight = weight)[var],
+      unit = c(height = "cm", weight = "kg")[var],
+      z_score = (value - mean) / sd,
+      color = if (z) c(height = BLUE, weight = RED)[var] else INK,
+      label = if (z) {
+        paste0(value, " ", unit, "\nz = ", sprintf("%+.2f", z_score))
+      } else {
+        paste(value, unit)
+      }
+    )
+
+  ggplot(long, aes(value)) +
+    geom_histogram(bins = 30, fill = GRAY, color = "white") +
+    geom_vline(data = him, aes(xintercept = mean), color = GRAY, linetype = "dashed", linewidth = 1) +
+    geom_vline(data = him, aes(xintercept = value), color = him$color, linewidth = 1.5) +
+    geom_label(
+      data = him,
+      aes(x = value, y = Inf, label = label),
+      color = him$color,
+      vjust = 1.2,
+      hjust = -0.08,
+      size = 6.5,
+      linewidth = 0,
+      fill = "white",
+      lineheight = 0.9
+    ) +
+    facet_wrap(~panel, ncol = 1, scales = "free", strip.position = "bottom") +
+    labs(x = NULL, y = NULL) +
+    theme(
+      strip.placement = "outside",
+      strip.text = element_text(size = 20, face = "plain"),
+      axis.text.y = element_blank()
+    )
+}
+
+# "Same data, new ruler": the height histogram with two rulers, centimeters along the
+# bottom and z-scores (blue) along the top
+height_ruler_plot <- function(howell) {
   h_mean <- mean(howell$height)
   h_sd <- sd(howell$height)
-  z_range <- c(-3, 3.5)
 
-  if (!z) {
-    ggplot(howell, aes(height)) +
-      geom_histogram(binwidth = 2, boundary = h_mean, fill = GRAY, color = "white") +
-      geom_vline(xintercept = h_mean, color = RED, linewidth = 1.2, linetype = "dashed") +
-      coord_cartesian(xlim = h_mean + z_range * h_sd) +
-      labs(x = "Height (cm)", y = NULL)
-  } else {
-    ggplot(howell, aes(z_height)) +
-      geom_histogram(binwidth = 2 / h_sd, boundary = 0, fill = BLUE, color = "white") +
-      geom_vline(xintercept = 0, color = RED, linewidth = 1.2, linetype = "dashed") +
-      scale_x_continuous(breaks = -3:3) +
-      coord_cartesian(xlim = z_range) +
-      labs(x = "Height (z-score, in SDs)", y = NULL)
+  ggplot(howell, aes(height)) +
+    height_bars(fill = GRAY) +
+    geom_vline(xintercept = h_mean, color = RED, linewidth = 1.2, linetype = "dashed") +
+    scale_x_continuous(
+      sec.axis = sec_axis(
+        ~ (.x - h_mean) / h_sd,
+        name = "Height (z-score, in SDs)",
+        breaks = -3:3
+      )
+    ) +
+    coord_cartesian(xlim = h_mean + c(-3, 3.5) * h_sd) +
+    labs(x = "Height (cm)", y = NULL) +
+    theme(
+      axis.title.x.top = element_text(color = BLUE, margin = margin(b = 8)),
+      axis.text.x.top = element_text(color = BLUE, face = "bold")
+    )
+}
+
+# ---- Part 1, the end: shapes that tell stories -------------------------------------
+
+# Each age's share of a population (%), from load_nepal_ages() or load_japan_ages():
+# Nepal's residents only
+age_shares <- function(ages) {
+  if ("status" %in% names(ages)) ages <- filter(ages, status == "resident")
+  ages |>
+    count(age, wt = people, name = "people") |>
+    mutate(share = 100 * people / sum(people))
+}
+
+# The median age: the first age at which age_shares() add up to half the people
+median_age <- function(shares) shares$age[which(cumsum(shares$share) >= 50)[1]]
+
+# Ages that collect people who round their age: ages ending in 0 or 5, from 30 on
+# (below 30, Nepal's ages ending in 0 and 5 don't stand out)
+rounded_age <- function(age) age >= 30 & age %% 5 == 0
+
+# "Nepal, age by age": the share of residents at each age. spikes = TRUE picks out the
+# ages ending in 0 or 5.
+nepal_age_plot <- function(nepal, spikes = FALSE) {
+  d <- age_shares(nepal) |>
+    filter(age <= 90) |>
+    mutate(fill = case_when(!spikes ~ "age", rounded_age(age) ~ "rounded", TRUE ~ "other"))
+
+  p <- ggplot(d, aes(age, share, fill = fill)) +
+    geom_col(width = 0.85, show.legend = FALSE) +
+    scale_fill_manual(values = c(age = BLUE, other = tint(BLUE, 0.4), rounded = RED)) +
+    scale_x_continuous(breaks = seq(0, 90, 10)) +
+    scale_y_continuous(labels = ~ paste0(.x, "%"), expand = expansion(mult = c(0, 0.08))) +
+    labs(x = "Age", y = "Share of residents")
+  if (spikes) {
+    p <- p +
+      annotate(
+        "text",
+        x = 90, y = max(d$share) * 0.95,
+        label = "ages ending in 0 or 5",
+        color = RED, size = 8, fontface = "bold", hjust = 1
+      )
   }
+  p
+}
+
+# "Two countries, two stories": the share of each country's people at each age, Nepal
+# above Japan, with Japan's generations labelled (and 1966, the "fire horse" year). Ages
+# run to 90 (Japan's 100 is 100 and over).
+age_compare_plot <- function(nepal, japan) {
+  countries <- c("Nepal, 2022/23", "Japan, 2022")
+  d <- bind_rows(
+    age_shares(nepal) |> mutate(country = countries[1]),
+    age_shares(japan) |> mutate(country = countries[2])
+  ) |>
+    filter(age <= 90) |>
+    mutate(country = factor(country, levels = countries))
+  # Japan's generations, by the age they were on 1 July 2022
+  japan_notes <- tibble(
+    country = factor(countries[2], levels = countries),
+    age = c(48.5, 73.5, 55.5),
+    label = c("second baby boom\n(born 1971–74)", "baby boom\n(born 1947–49)", "1966"),
+    y = c(2.25, 2.25, 1.6)
+  )
+
+  ggplot(d, aes(age, share)) +
+    geom_col(fill = BLUE, width = 0.85) +
+    geom_text(
+      data = japan_notes,
+      aes(y = y, label = label),
+      color = INK,
+      size = 6,
+      lineheight = 0.9,
+      vjust = 0
+    ) +
+    facet_wrap(~country, ncol = 1) +
+    scale_x_continuous(breaks = seq(0, 90, 10)) +
+    scale_y_continuous(labels = ~ paste0(.x, "%"), breaks = c(0, 1, 2)) +
+    coord_cartesian(ylim = c(0, 2.9)) +
+    labs(x = "Age", y = "Share of people") +
+    theme(strip.text = element_text(hjust = 0))
 }
 
 # ---- Part 2: certainty distributions -----------------------------------------------
@@ -265,6 +643,102 @@ two_spreads <- function(howell, sizes = c(5, 20, 100, nrow(howell))) {
     n = sizes,
     population = 2 * s,
     certainty = 2 * s / sqrt(sizes)
+  )
+}
+
+# ---- Part 2, the named shapes ------------------------------------------------------
+# Each named-shapes slide is a grid of small plots, one per family, laid out by the
+# chunk: {r name, opts.label = "shapes"} with the option line #| layout-ncol: 3
+knitr::opts_template$set(shapes = list(fig.width = 5, fig.height = 3))
+
+# One small plot of a named distribution: its curve (or bars, for a count) over x, a
+# title and subtitle, and what x measures. `...` adds layers (an x scale).
+shape_panel <- function(x, y, title, subtitle, xlab, ..., color = BLUE, discrete = FALSE) {
+  shape <- if (discrete) {
+    geom_col(fill = color, width = 0.7)
+  } else {
+    geom_area(fill = tint(color, 0.3), color = color, linewidth = 1.2)
+  }
+
+  ggplot(tibble(x, y), aes(x, y)) +
+    shape +
+    list(...) +
+    labs(title = title, subtitle = subtitle, x = xlab, y = NULL) +
+    theme(
+      axis.text.y = element_blank(),
+      panel.grid.major.y = element_blank(),
+      plot.subtitle = element_text(color = INK, margin = margin(b = 10))
+    )
+}
+
+# "Every named distribution is a story": six families, each drawn for an everyday
+# example. Population distributions, so blue. The !Kung heights are real; the other
+# knobs are made up (the earnings use the opening's log-normal spread, RECLASS_SDLOG).
+named_shape_plots <- function(howell) {
+  h_mean <- mean(howell$height)
+  h_sd <- sd(howell$height)
+  heights <- seq(h_mean - 3.5 * h_sd, h_mean + 3.5 * h_sd, length.out = 301)
+  earnings <- seq(0, 50, length.out = 301)
+  minutes <- seq(0, 40, length.out = 301)
+  shares <- seq(0, 1, length.out = 301)
+
+  list(
+    shape_panel(
+      heights, dnorm(heights, h_mean, h_sd),
+      "Normal", "small pushes, added up", "Height of an adult (cm)"
+    ),
+    shape_panel(
+      earnings, dlnorm(earnings, log(15), RECLASS_SDLOG),
+      "Log-normal", "small pushes, multiplied", "Monthly earnings (thousand Rs)"
+    ),
+    shape_panel(
+      minutes, dexp(minutes, 1 / 10),
+      "Exponential", "waiting for it to happen", "Minutes until the next bus"
+    ),
+    shape_panel(
+      0:20, dbinom(0:20, 20, 0.3),
+      "Binomial", "yeses out of n tries", "Of 20 asked, how many say \"mayor\"",
+      discrete = TRUE
+    ),
+    shape_panel(
+      0:12, dpois(0:12, 3),
+      "Poisson", "counting, with no maximum", "Births in a day at a health post",
+      discrete = TRUE, scale_x_continuous(breaks = seq(0, 12, 3))
+    ),
+    shape_panel(
+      shares, dbeta(shares, 8, 4),
+      "Beta", "a share, between 0 and 1", "Share of adults who can read",
+      scale_x_continuous(labels = scales::label_percent())
+    )
+  )
+}
+
+# "The same shapes, for certainty": a prior for each kind of unknown, in green. β and σ
+# are the priors behind beta_posterior() in Part 3. Each subtitle gives the 95% range.
+certainty_shape_plots <- function() {
+  shares <- seq(0, 1, length.out = 301)
+  betas <- seq(-3.5, 3.5, length.out = 301)
+  sigmas <- seq(0, 5, length.out = 301)
+  share_range <- qbeta(c(0.025, 0.975), 3, 7)
+
+  list(
+    shape_panel(
+      shares, dbeta(shares, 3, 7),
+      "θ ~ Beta(3, 7)", paste0("a share: ", pct(share_range[1]), " to ", pct(share_range[2])),
+      "The mayor's vote share",
+      color = GREEN, scale_x_continuous(labels = scales::label_percent())
+    ),
+    shape_panel(
+      betas, dnorm(betas, 0, 1),
+      "β ~ Normal(0, 1)", "a coefficient: within ±2", "β (SD per SD)",
+      color = GREEN
+    ),
+    shape_panel(
+      sigmas, dexp(sigmas, 1),
+      "σ ~ Exponential(1)", paste("a spread: below", fmt(qexp(0.95, 1), 0)),
+      "σ (in SDs)",
+      color = GREEN
+    )
   )
 }
 

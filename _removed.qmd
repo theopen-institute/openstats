@@ -1025,7 +1025,462 @@ framing of "Randomness has patterns" (now a Galton board), and the spurious-corr
 section (ice cream and temperature; confounding now waits for Weeks 3 and 4). The
 pure-noise slides stayed in the deck. Card classes were renamed since: .kind-data,
 .kind-belief and .kind-relationship are now .kind-population, .kind-certainty and
-.kind-correlative.
+.kind-correlative. The average pilot, then Nepal's LDC graduation, opened the reworked deck briefly,
+before the scanner puzzle replaced them. (The graduation is still in the deck, as the
+scanner puzzle's real-world case. Its opener needs `u5_shift`, each group's average under-5 mortality with and
+without the graduates (`before`/`after`, `ldc`/`other`), and `nepal_u5`, computed from
+`ldc_countries()` in r/week2.R.)
+
+The new-scanner puzzle (made-up hospital, both stages' survival falls), with its seesaw
+explanation, and Nepal's LDC graduation as the real-world case (widget:
+js/ldc-shift.js, _includes/week2/ldc-shift.md). Replaced by the village of ten
+households. Their R helpers were removed from r/week2.R; here they are:
+
+```{r eval = FALSE}
+# ---- The opening puzzle: Nepal leaves the least developed countries -----------------
+
+# The UN's least developed countries (44, as of 19 December 2024), by World Bank code
+LDC_CODES <- c(
+  "AFG", "AGO", "BGD", "BEN", "BFA", "BDI", "KHM", "CAF", "TCD", "COM", "COD", "DJI",
+  "ERI", "ETH", "GMB", "GIN", "GNB", "HTI", "KIR", "LAO", "LSO", "LBR", "MDG", "MWI",
+  "MLI", "MRT", "MOZ", "MMR", "NPL", "NER", "RWA", "SEN", "SLE", "SLB", "SOM", "SSD",
+  "SDN", "TLS", "TGO", "TUV", "UGA", "TZA", "YEM", "ZMB"
+)
+
+# Scheduled to graduate together on 24 November 2026 (A/RES/76/8). Nepal has since
+# asked to defer to 2029.
+LDC_GRADUATES <- c(BGD = "Bangladesh", LAO = "Laos", NPL = "Nepal")
+
+# Every developing country, 2022: the LDCs, and every other low- or middle-income
+# economy. Under-5 mortality (deaths per 1,000 children) and GNI per person (US$).
+# Membership of the LDCs comes from the UN list, not the World Bank's income groups
+# (which leave some countries, Ethiopia among them, unclassified).
+ldc_countries <- function() {
+  indicators <- load_wb(c("SH.DYN.MORT", "NY.GNP.PCAP.CD")) |>
+    rename(u5 = SH.DYN.MORT, gni = NY.GNP.PCAP.CD)
+  load_wb_countries() |>
+    select(code = Code, name = Economy, income = `Income group`) |>
+    filter(
+      code %in% LDC_CODES |
+        income %in% c("Low income", "Lower middle income", "Upper middle income")
+    ) |>
+    left_join(indicators, by = "code") |>
+    mutate(ldc = code %in% LDC_CODES, graduate = code %in% names(LDC_GRADUATES))
+}
+
+# For the widget on "The same puzzle, in Nepal" (js/ldc-shift.js)
+ldc_widget_data <- function(countries) {
+  json_script("ldc-data", countries |>
+    filter(!is.na(u5) | !is.na(gni)) |>
+    transmute(name = if_else(graduate, LDC_GRADUATES[code], name), ldc, graduate, u5, gni))
+}
+
+# ---- The opening puzzle: the new scanner -------------------------------------------
+
+# A made-up cancer hospital: how many years each patient lives after diagnosis, by
+# stage. The old scanner read Ram's swollen lymph node as spread, so he's counted in
+# stage 2. The new scanner shows his cancer hasn't spread, and moves him to stage 1.
+SCANNER <- list(
+  stage1 = c(7, 8, 9, 10, 11),
+  stage2 = c(1, 1.5, 2, 2.5, 5),
+  mover = 5,
+  name = "Ram"
+)
+
+# Each stage's average years of survival, with the old scanner and the new:
+# before[["stage1"]], after[["stage2"]], ...
+scanner_averages <- function(s = SCANNER) {
+  list(
+    before = c(stage1 = mean(s$stage1), stage2 = mean(s$stage2)),
+    after = c(stage1 = mean(c(s$stage1, s$mover)), stage2 = mean(setdiff(s$stage2, s$mover)))
+  )
+}
+
+# "The new scanner": the puzzle as a slope chart, old scanner to new. Step 1: each
+# stage's average years lived, with the old scanner. 2: with the new one, both averages
+# fall. 3: every patient's own years behind them, as thin lines, all flat.
+knitr::opts_template$set(slope = list(fig.width = 8.5, fig.height = 6.6, out.width = "100%"))
+
+scanner_slope_plot <- function(step, s = SCANNER) {
+  avg <- scanner_averages(s)
+  stages <- tibble(
+    stage = c("Stage 1", "Stage 2"),
+    before = avg$before,
+    after = avg$after,
+    color = c(BLUE, INK)
+  )
+  patients <- tibble(years = c(s$stage1, s$stage2))
+
+  p <- ggplot() +
+    scale_x_continuous(
+      breaks = 1:2, labels = c("Old scanner", "New scanner"),
+      limits = c(0.45, 2.55), position = "top"
+    ) +
+    scale_y_continuous(limits = c(0, 12), breaks = seq(0, 12, 2)) +
+    labs(x = NULL, y = "Years lived after diagnosis") +
+    theme(
+      panel.grid.major.x = element_blank(),
+      axis.text.x.top = element_text(size = 24, face = "bold", color = INK)
+    )
+  if (step >= 3) {
+    p <- p +
+      geom_segment(
+        data = patients, aes(x = 1, xend = 2, y = years, yend = years),
+        color = tint(GRAY, 0.55), linewidth = 1
+      ) +
+      geom_point(data = patients, aes(1, years), color = tint(GRAY, 0.55), size = 3) +
+      geom_point(data = patients, aes(2, years), color = tint(GRAY, 0.55), size = 3)
+  }
+  if (step >= 2) {
+    p <- p +
+      geom_segment(
+        data = stages, aes(x = 1, xend = 2, y = before, yend = after, color = I(color)),
+        linewidth = 2.5
+      ) +
+      geom_point(data = stages, aes(2, after, color = I(color)), size = 7) +
+      geom_text(
+        data = stages, aes(2, after, label = paste0(fmt(after), "  ▼")),
+        hjust = -0.25, size = 9, fontface = "bold", color = RED
+      )
+  }
+  p +
+    geom_point(data = stages, aes(1, before, color = I(color)), size = 7) +
+    geom_text(
+      data = stages, aes(1, before, label = paste0(stage, "  ", fmt(before)), color = I(color)),
+      hjust = 1.12, size = 8, fontface = "bold"
+    )
+}
+
+# "Why both averages fall": the scanner puzzle as two seesaws. Each stage's patients
+# sit on a beam that balances at the stage's average. Step 1: the two stages. 2: Ram is
+# on the long-lived side of stage 2's balance point, and would be on the short-lived
+# side of stage 1's. 3: the new scanner moves him, and both beams tip the same way.
+# 4: both balance points move toward shorter lives.
+knitr::opts_template$set(balance = list(fig.width = 10, fig.height = 6.2, out.width = "100%"))
+
+balance_plot <- function(step, s = SCANNER) {
+  num <- function(x) fmt(x, 1) # as the opening slide writes them: 9.0, 2.4
+  xmax <- 12.5
+  moved <- step >= 3
+  avg <- scanner_averages(s)
+  rows <- tibble(
+    group = c("stage1", "stage2"),
+    y = c(2.2, 0),
+    label = c("Stage 1: cancer only where it started", "Stage 2: cancer that has spread"),
+    before = avg$before,
+    after = avg$after
+  )
+  rows$pivot <- if (step >= 4) rows$after else rows$before
+  rows$slope <- if (step == 3) 0.05 else 0 # tipped toward the short-lived end
+  dots <- bind_rows(
+    tibble(group = "stage1", x = if (moved) c(s$stage1, s$mover) else s$stage1),
+    tibble(group = "stage2", x = if (moved) setdiff(s$stage2, s$mover) else s$stage2)
+  ) |>
+    left_join(rows, by = "group") |>
+    mutate(
+      mover = x == s$mover & ((group == "stage2") != moved),
+      yb = y + slope * (x - pivot) + 0.17
+    )
+  beams <- rows |>
+    mutate(x0 = 0, x1 = xmax, y0 = y + slope * (x0 - pivot), y1 = y + slope * (x1 - pivot))
+  w <- 0.027 * xmax # half the fulcrum's width
+  fulcrums <- rows |>
+    rowwise() |>
+    reframe(group, x = pivot + c(0, -w, w), yy = y + c(-0.03, -0.45, -0.45))
+
+  p <- ggplot() +
+    theme_void() +
+    coord_cartesian(xlim = c(-0.2, xmax + 0.2), ylim = c(-1.45, 3.1), clip = "off")
+  if (step == 2) {
+    p <- p +
+      annotate(
+        "rect",
+        xmin = avg$before[["stage2"]], xmax = avg$before[["stage1"]],
+        ymin = -0.7, ymax = 2.6, fill = tint(RED, 0.12)
+      ) +
+      annotate(
+        "text",
+        x = mean(avg$before), y = 1.1, label = "between the two averages",
+        color = RED, size = 7, fontface = "italic"
+      )
+  }
+  if (step >= 4) {
+    p <- p +
+      geom_segment(
+        data = rows, aes(x = before, xend = before, y = y - 0.1, yend = y + 0.55),
+        color = GRAY, linetype = "dashed", linewidth = 1
+      ) +
+      geom_segment(
+        data = rows, aes(x = before, xend = after, y = y - 0.95, yend = y - 0.95),
+        color = RED, linewidth = 1.3,
+        arrow = arrow(length = unit(0.12, "inches"), type = "closed")
+      ) +
+      geom_text(
+        data = rows, aes(x = after, y = y - 0.95, label = paste0("−", num(before - after))),
+        color = RED, size = 7, hjust = 1.25, fontface = "bold"
+      )
+  }
+  p <- p +
+    geom_segment(data = beams, aes(x = x0, xend = x1, y = y0, yend = y1), color = INK, linewidth = 2) +
+    geom_polygon(data = fulcrums, aes(x, yy, group = group), fill = INK) +
+    geom_text(
+      data = rows, aes(x = pivot, y = y - 0.62, label = paste("average", num(pivot), "years")),
+      size = 6.5, color = INK
+    ) +
+    geom_text(
+      data = rows, aes(x = 0, y = y + 0.72, label = label),
+      hjust = 0, size = 8, fontface = "bold", color = INK
+    ) +
+    geom_point(
+      data = dots, aes(x, yb),
+      color = if_else(dots$mover, RED, if_else(dots$group == "stage1", BLUE, GRAY)),
+      size = 9
+    ) +
+    geom_text(
+      data = filter(dots, mover), aes(x, yb + 0.32), label = s$name,
+      color = RED, size = 7, fontface = "bold"
+    )
+  if (step == 2) {
+    p <- p +
+      annotate("point", x = s$mover, y = 2.37, shape = 21, size = 9, stroke = 1.5, color = RED, fill = "white") +
+      annotate("text", x = s$mover, y = 1.8, label = "if the scanner rules out spread", color = RED, size = 6.5)
+  }
+  p + annotate(
+    "text",
+    x = xmax, y = -1.4, label = "Years each patient lives after diagnosis (made-up)  →  longer",
+    hjust = 1, size = 6, color = GRAY
+  )
+}
+```
+
+# The new scanner
+
+_A cancer hospital buys a sharper scanner. A year later, it checks its numbers._
+
+::: {.columns}
+::: {.column width="58%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r slope-1, opts.label = "slope"}
+scanner_slope_plot(1)
+```
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1}
+```{r slope-2, opts.label = "slope"}
+scanner_slope_plot(2)
+```
+:::
+
+::: {.fragment fragment-index=2}
+```{r slope-3, opts.label = "slope"}
+scanner_slope_plot(3)
+```
+:::
+:::
+:::
+
+::: {.column width="42%"}
+Average years lived after diagnosis, by stage.
+
+- [**Stage 1**, cancer only where it started: [down]{.red}, from
+  `r fmt(scan$before[["stage1"]])` to `r fmt(scan$after[["stage1"]])`.]{.fragment fragment-index=1}
+- [**Stage 2**, cancer that has spread: [down]{.red} too, from
+  `r fmt(scan$before[["stage2"]])` to `r fmt(scan$after[["stage2"]])`.]{.fragment fragment-index=1}
+- [Each gray line is one patient. Every line is flat: [nobody lives a day
+  less]{.blue}.]{.fragment fragment-index=2}
+
+::: {.fragment fragment-index=3 .big-statement}
+Both averages fall.\
+Nobody's line does.\
+How?
+:::
+:::
+:::
+
+[A made-up hospital. Real hospitals have seen this effect, usually in the opposite direction
+(scans that find more spread make both stages look better): Feinstein, Sosin and Wells, "The
+Will Rogers phenomenon," *New England Journal of Medicine* (1985).]{.source}
+
+::: {.notes}
+- Week 1 opened with a claim that sounded wrong and turned out true. This week opens with a puzzle. Don't solve it here: leave it open, and come back to it in Part 1, after "One hump or two?".
+- Set it up. A cancer hospital sorts its patients into two stages: stage 1, where the cancer is only where it started, and stage 2, where it has spread. Stage 1 patients live much longer. The hospital buys a sharper scanner, and a year later checks how long its patients live.
+- The chart: years lived after diagnosis, with the old scanner on the left and the new one on the right. First, each stage's average with the old scanner: stage 1 patients live 9 years on average, stage 2 patients 2.4.
+- Click: the new scanner. Both lines slope down: stage 1 to 8.3 years, stage 2 to 1.8.
+- Click: the gray lines behind are the patients, one line each, from their years with the old scanner to their years with the new. Every one is flat. A scanner doesn't treat anyone; it only changes what the hospital sees. Not one patient lives a day less.
+- Click: so how can both averages fall when every line is flat? Let the room argue. Someone may suspect the scanner is faulty, or that sicker patients started coming. Neither: same patients, same lives, a better picture.
+- Why it matters: hospitals, health ministries and donors compare survival by stage, between hospitals and over time. A hospital that buys better equipment can look worse on paper. One that has none can look better. The numbers are made up, but the effect is real and documented.
+- If someone knows the classic version: it usually runs the other way. Scans that find hidden spread move the sickest stage 1 patients into stage 2, and both stages look better. Feinstein and colleagues named it the Will Rogers phenomenon in 1985, after his joke that when Oklahomans moved to California, they raised the average intelligence of both states. Here the scanner rules spread out, so patients move the other way, and both stages look worse. Same mechanism.
+:::
+
+## Why both averages fall
+
+_Back to the hospital. An average is where a distribution balances._
+
+::: {.columns}
+::: {.column width="62%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r balance-1, opts.label = "balance"}
+balance_plot(1)
+```
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1}
+```{r balance-2, opts.label = "balance"}
+balance_plot(2)
+```
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=2}
+```{r balance-3, opts.label = "balance"}
+balance_plot(3)
+```
+:::
+
+::: {.fragment fragment-index=3}
+```{r balance-4, opts.label = "balance"}
+balance_plot(4)
+```
+:::
+:::
+:::
+
+::: {.column width="38%"}
+Each stage's patients sit on a seesaw. Its average is the balance point.
+
+- [The old scanner read Ram's swollen lymph node as spread. He's the longest-lived
+  patient in stage 2…]{.fragment fragment-index=1}
+- […and would be the shortest-lived in stage 1.]{.fragment fragment-index=1}
+- [The new scanner rules out spread, and moves him. Both seesaws tip the same
+  way.]{.fragment fragment-index=2}
+- [Both balance points move toward [shorter lives]{.red}. Ram lives exactly as long as
+  before.]{.fragment fragment-index=3}
+:::
+:::
+
+::: {.fragment fragment-index=4 .big-statement}
+Change who's in the crowd, and the average changes, even when nobody does.
+:::
+
+::: {.notes}
+- The opening puzzle, solved. The picture: each stage's patients sit on a seesaw. The average is the balance point, the one spot where the seesaw balances. That's a good way to think of any average: the center of a distribution.
+- Click: Ram (red) is in stage 2, because the old scanner read his swollen lymph node as spread. He sits right of stage 2's balance point: he lives longer than any other stage 2 patient. The shaded band is everything between the two averages. Ram is in it: in stage 1 (the hollow circle), he'd sit left of the balance point, the shortest-lived patient there.
+- Click: the new scanner shows the node is harmless, and Ram moves to stage 1. Stage 1 gains weight at its short-lived end, so it tips that way. Stage 2 loses its longest-lived patient, so it tips the same way. Both tip left.
+- Click: each seesaw finds its new balance point, further left. The dashed lines show where they were; the arrows show how far they moved. Both averages are worse, and every patient lives exactly as long as before.
+- The rule: a case between the two averages makes both averages worse when it moves up to the better group, and both better when it moves down. Ask: what would make both look better? (A scanner that finds hidden spread, moving patients down. That's the classic version.)
+- Click: the lesson. An average is a property of a group, so it changes when the group's membership changes, even if no member changes. That's why we look at the whole distribution, not just the average: it shows who's in the group, and where.
+:::
+
+## The same puzzle, in Nepal
+
+_Nepal, Bangladesh and Laos are due to leave the UN's list of Least Developed Countries.
+Predict: what happens to each group's average child mortality?_
+
+```{r ldc-data}
+ldc_widget_data(ldc)
+```
+
+{{< include _includes/week2/ldc-shift.md >}}
+
+[UN Committee for Development Policy, list of LDCs (as of 19 December 2024); World Bank,
+World Development Indicators, 2022. Averages across countries. Graduation was set for
+24 November 2026; Nepal has asked to defer it to 2029.]{.source}
+
+::: {.notes}
+- Now the real thing. Since 1971 the UN has kept a list of Least Developed Countries (LDCs), based on income, health and education, and on how exposed an economy is to shocks. Being on the list brings trade preferences, cheaper loans and aid. Nepal has been on it since the list began. It now meets the criteria to leave, and was due to graduate on 24 November 2026, together with Bangladesh and Laos.
+- Every developing country is a dot: the LDCs on top, the rest underneath. Each row's average child mortality is the black line.
+- Before clicking, ask the room to predict, using the seesaw. Where are Nepal, Bangladesh and Laos (red) in the top row? Near the healthy end: Nepal loses 27.5 children per 1,000, against an LDC average of about 66. Where would they sit in the bottom row? Above its average of 22: less healthy than the typical country they're joining. So they're between the two averages, like Ram. What happens when they move up?
+- Click "Graduate". Both averages get worse: the LDCs lose three of their healthiest members, and the others gain three below their average. The LDC average rises from about 66 to 69 deaths per 1,000; the others' from 22.1 to 22.5. No child's chances changed.
+- Switch to "Income per person" and graduate again. Same story: both averages get poorer. (Income is on a log scale, so the long right tail of richer countries fits on the screen.)
+- Why it matters: "Progress stalls in the least developed countries" is exactly the headline this produces, and aid, debt relief and UN reviews lean on group averages like these. One country's success can make its old group look worse.
+- The off-scale country on the right is the Central African Republic: 387 deaths per 1,000 in the World Bank's 2022 figure, a crisis-year spike (other years are closer to 100). One extreme value pulls an average a long way. The result doesn't depend on it.
+- If someone asks about the date: in May 2026 Nepal asked the UN to defer graduation to November 2029, citing remittances, supply chains and global uncertainty. In July the UN's Committee for Development Policy recommended granting the extension. Nepal still meets the criteria. Whether it should leave the list, and when, is a live debate. The averages behave the same whenever it happens.
+- The numbers are averages across countries, each country counting once (the "average LDC"). Population-weighted, Bangladesh would dominate. The data are 2022, the latest year in the course's World Bank file.
+:::
+
+# The day Nepal graduates
+
+_Nepal, Bangladesh and Laos are due to leave the UN's list of Least Developed Countries._
+
+::: {.ideas}
+::: {.idea .fragment}
+[Least developed countries]{.idea-label}
+
+[`r fmt(u5_shift$after[["ldc"]])`]{.idea-number .red}
+
+Average child deaths per 1,000 born: **up**, from `r fmt(u5_shift$before[["ldc"]])`
+:::
+
+::: {.idea .fragment}
+[The rest of the developing world]{.idea-label}
+
+[`r fmt(u5_shift$after[["other"]])`]{.idea-number .red}
+
+Average child deaths per 1,000 born: **up** too, from `r fmt(u5_shift$before[["other"]])`
+:::
+
+::: {.idea .fragment}
+[Nepal]{.idea-label}
+
+[`r fmt(nepal_u5)`]{.idea-number .blue}
+
+Nepal's own child deaths per 1,000: **unchanged**. So is every other country's.
+:::
+:::
+
+::: {.fragment .big-statement}
+Both averages get worse. Not one country does.\
+How?
+:::
+
+[UN Committee for Development Policy, list of LDCs (as of 19 December 2024); World Bank,
+World Development Indicators, 2022. Averages across countries. Graduation was set for
+24 November 2026; Nepal has asked to defer it to 2029.]{.source}
+
+::: {.notes}
+- Week 1 opened with a claim that sounded wrong and turned out true. This week opens with a puzzle. Don't solve it here: leave it open, and come back to it in Part 1, after "One hump or two?".
+- Set it up. Since 1971 the UN has kept a list of Least Developed Countries (LDCs), based on income, health and education, and on how exposed an economy is to shocks. Being on the list brings trade preferences, cheaper loans and aid. Nepal has been on it since the list began. It now meets the criteria to leave, and was due to graduate on 24 November 2026, together with Bangladesh and Laos.
+- Click: on that day, the average child mortality of the LDCs goes up, from about 66 to 69 deaths per 1,000 children born.
+- Click: and the average for the rest of the developing world goes up too, from 22.1 to 22.5.
+- Click: but Nepal's own number doesn't move, and neither does any other country's. Graduation is a change of label, on one day. Nobody's child is any more at risk.
+- Click: so how can both averages get worse when nothing got worse? Let the room argue. Someone may suspect a trick with the numbers. There isn't one: the averages are calculated correctly from the same World Bank data.
+- Why it matters: reports compare group averages all the time. "Progress stalls in the least developed countries" is exactly the headline this produces, and aid, debt relief and UN reviews lean on numbers like these. One country's success can make its old group look worse.
+- If someone asks about the date: in May 2026 Nepal asked the UN to defer graduation to November 2029, citing remittances, supply chains and global uncertainty. In July the UN's Committee for Development Policy recommended granting the extension. Nepal still meets the criteria. Whether it should leave the list, and when, is a live debate. The puzzle works the same whenever it happens.
+- The numbers are averages across countries, each country counting once (the "average LDC"). Population-weighted, Bangladesh would dominate. The data are 2022, the latest year in the course's World Bank file.
+:::
+
+# The average pilot
+
+_Around 1950, US Air Force pilots kept losing control of their planes._
+
+- [The cockpits had been designed in 1926 to fit the **average pilot**.]{.fragment}
+- [So the Air Force measured 4,063 pilots on the ten body sizes that matter most in a
+  cockpit: height, chest, arm length…]{.fragment}
+- [How many were close to average (the middle 30%) on all ten?]{.fragment}
+
+::: {.fragment .stat-reveal}
+[0]{.stat-number} [[out of 4,063 pilots]{.stat-caption}]{.stat-captions .fragment}
+:::
+
+::: {.fragment .big-statement}
+The fix: adjustable seats.\
+Design for the distribution, not the average.
+:::
+
+[Gilbert S. Daniels, *The "Average Man"?* (Wright Air Development Center, 1952); retold
+in Todd Rose, *The End of Average* (2016).]{.source}
+
+::: {.notes}
+- Tell it as a story. Around 1950, US Air Force pilots kept losing control of their planes. It wasn't pilot error, and it wasn't the machines.
+- Click: the cockpits had been designed in 1926, to fit the average pilot of the time. The first theory was that pilots had grown since then.
+- Click: so a young lieutenant, Gilbert Daniels, measured 4,063 pilots on 140 body dimensions, and picked the ten that mattered most for a cockpit. The plan was to find the new average and rebuild for it.
+- Click: ask the room before the reveal. How many pilots were within the middle 30% on all ten? Take guesses. Most people say a few hundred, or ten percent.
+- Click, click: zero. Not one of 4,063. Even on just three dimensions, fewer than 3.5% were average on all three.
+- The cockpit for the average pilot fit nobody. The average describes the crowd, but nobody in the crowd has to match it.
+- Click: the fix. The Air Force made the manufacturers build cockpits that fit the range of pilots, not the middle: adjustable seats, pedals and helmet straps. That's thinking in distributions instead of averages. Every car has an adjustable seat now.
+- If someone asks how "average" was defined: Daniels counted a pilot as average on a dimension if they fell in the middle 30% of the range. The story is from his 1952 technical note, and Todd Rose tells it at the start of *The End of Average* (2016).
+:::
 
 # Think in distributions
 
@@ -2080,4 +2535,694 @@ Part 3. The three-card summary at the end covers it.
 - Quick recap before Part 4. Check for questions.
 - The thread: every tool so far either describes a distribution (center, spread, shape, r, β) or places a case in one (z-scores), and unknowns get distributions of belief.
 - Pivot: these descriptions are real patterns. Next, how real patterns can still mislead.
+:::
+
+# From Week 2 (cut 2026-10-26) {.center}
+
+The made-up district opener ("The poor got poorer?": remittances lift families over the
+poverty line, and both group averages fall), and two slides that followed the Nepal
+earnings puzzle: the 2008 dot plot by education level, and "Counted the same way both
+years". The animated reclassification slide replaced them. The R below was in
+r/week2.R: to reuse these slides, source it after r/week2.R, and add
+`district <- district_summary()` to the setup chunk.
+
+```{r week2-parked-code, eval = FALSE}
+# ---- The opening puzzle: the poor got poorer? --------------------------------------
+
+# A made-up district of 10,000 households. Monthly incomes (thousand rupees) follow a
+# smooth, right-skewed distribution, split by a poverty line. This year, remittances
+# lift the families just under the line (from `from` up to the line) over it: they
+# land spread evenly across `land`, depending on how much is sent. Nobody else's
+# income changes.
+DISTRICT <- list(meanlog = log(30), sdlog = 0.55, line = 20, from = 18, land = c(21, 39))
+
+# The share of households remittances lift over the line
+lifted_share <- function(d = DISTRICT) {
+  plnorm(d$line, d$meanlog, d$sdlog) - plnorm(d$from, d$meanlog, d$sdlog)
+}
+
+# The distribution of income, last year and this year, on a fine grid: the share of
+# households per thousand rupees of income
+district_curves <- function(d = DISTRICT, to = 400) {
+  tibble(x = seq(0.005, to, by = 0.01)) |>
+    mutate(
+      before = dlnorm(x, d$meanlog, d$sdlog),
+      moved = if_else(x >= d$land[1] & x < d$land[2], lifted_share(d) / diff(d$land), 0),
+      after = if_else(x >= d$from & x < d$line, 0, before) + moved
+    )
+}
+
+# Each group's average income and the share of households that are poor, last year and
+# this year: before[["poor"]], after[["rich"]], after[["share"]], ...
+district_summary <- function(d = DISTRICT) {
+  g <- district_curves(d)
+  summarize <- function(dens) {
+    poor <- g$x < d$line
+    c(
+      poor = sum(g$x[poor] * dens[poor]) / sum(dens[poor]),
+      rich = sum(g$x[!poor] * dens[!poor]) / sum(dens[!poor]),
+      all = sum(g$x * dens) / sum(dens),
+      share = sum(dens[poor]) / sum(dens)
+    )
+  }
+  list(before = summarize(g$before), after = summarize(g$after))
+}
+
+# "The poor got poorer?": a slope chart, last year to this year. Step 1: each group's
+# average income last year. 2: this year, both averages fall. 3: fourteen households
+# behind them, evenly spread through the distribution, a line each: flat, except the
+# ones remittances lifted over the line.
+district_slope_plot <- function(step, d = DISTRICT) {
+  sm <- district_summary(d)
+  groups <- tibble(
+    group = c("Not poor", "Poor"),
+    before = sm$before[c("rich", "poor")],
+    after = sm$after[c("rich", "poor")],
+    color = c(BLUE, INK)
+  )
+  households <- tibble(before = qlnorm((1:14) / 15, d$meanlog, d$sdlog)) |>
+    mutate(
+      lifted = before >= d$from & before < d$line,
+      # where in the landing range: as far along it as they were along the lifted slice
+      after = if_else(lifted, d$land[1] + (before - d$from) / (d$line - d$from) * diff(d$land), before)
+    ) |>
+    filter(before < 70) # the richest few would stretch the axis
+
+  p <- ggplot() +
+    scale_x_continuous(
+      breaks = 1:2, labels = c("Last year", "This year"),
+      limits = c(0.25, 2.55), position = "top"
+    ) +
+    scale_y_continuous(limits = c(0, 70), breaks = seq(0, 60, 20)) +
+    labs(x = NULL, y = "Monthly income (thousand rupees)") +
+    theme(
+      panel.grid.major.x = element_blank(),
+      axis.text.x.top = element_text(size = 24, face = "bold", color = INK)
+    )
+  if (step >= 3) {
+    p <- p +
+      geom_segment(
+        data = households,
+        aes(x = 1, xend = 2, y = before, yend = after, color = I(if_else(lifted, GREEN, tint(GRAY, 0.55)))),
+        linewidth = 0.9
+      )
+  }
+  if (step >= 2) {
+    p <- p +
+      geom_segment(
+        data = groups, aes(x = 1, xend = 2, y = before, yend = after, color = I(color)),
+        linewidth = 2.5
+      ) +
+      geom_point(data = groups, aes(2, after, color = I(color)), size = 7) +
+      geom_text(
+        data = groups, aes(2, after, label = paste0(fmt(after), "  ▼")),
+        hjust = -0.25, size = 9, fontface = "bold", color = RED
+      )
+  }
+  p +
+    geom_point(data = groups, aes(1, before, color = I(color)), size = 7) +
+    geom_text(
+      data = groups,
+      aes(1, before, label = paste0(group, "  ", fmt(before)), color = I(color)),
+      hjust = 1.12, size = 8, fontface = "bold"
+    )
+}
+
+# "Why both averages fell": the distribution of income, split at the poverty line into
+# the poor and everyone else, with each group's average marked underneath. Step 1: last
+# year. 2: the families just under the line, the richest of the poor, get remittances.
+# 3: they land just over it, at the bottom of the other group: both averages fall.
+poverty_curves_plot <- function(step, d = DISTRICT) {
+  g <- district_curves(d, to = 80)
+  sm <- district_summary(d)
+  now <- if (step >= 3) sm$after else sm$before
+  g$y <- if (step >= 3) g$after else g$before
+  top <- max(g$before)
+  base <- -0.16 * top # room under the axis for the averages
+
+  marks <- tibble(
+    x = now[c("poor", "rich")],
+    was = sm$before[c("poor", "rich")],
+    label = paste("average", fmt(now[c("poor", "rich")])),
+    color = c(INK, BLUE)
+  )
+  w <- 1.4 # half a triangle's width
+  triangles <- marks |>
+    mutate(id = row_number()) |>
+    rowwise() |>
+    reframe(id, color, x = x + c(0, -w, w), y = c(-0.012, 0.42, 0.42) * base / 0.42 * 0.5)
+
+  p <- ggplot(g, aes(x)) +
+    geom_area(data = filter(g, x < d$line), aes(y = y), fill = tint(INK, 0.45)) +
+    geom_area(data = filter(g, x >= d$line), aes(y = y), fill = tint(BLUE, 0.5)) +
+    geom_line(aes(y = y), color = INK, linewidth = 0.8)
+  if (step == 2) {
+    slice <- filter(g, x >= d$from, x < d$line)
+    landing <- filter(g, x >= d$land[1], x < d$land[2])
+    p <- p +
+      geom_area(data = slice, aes(y = before), fill = GREEN) +
+      geom_ribbon(data = landing, aes(ymin = before, ymax = before + moved), fill = NA, color = GREEN, linetype = "dashed", linewidth = 1) +
+      annotate(
+        "curve", x = (d$from + d$line) / 2, xend = mean(d$land), y = top * 0.75, yend = top * 1.1,
+        curvature = -0.35, color = GREEN, linewidth = 1.3, arrow = arrow(length = unit(0.12, "inches"), type = "closed")
+      ) +
+      annotate("text", x = (d$from + d$line) / 2, y = top * 0.82, label = "remittances", color = GREEN, size = 7, fontface = "bold", hjust = 1.05)
+  }
+  if (step >= 3) {
+    p <- p +
+      geom_ribbon(
+        data = filter(g, moved > 0), aes(ymin = before, ymax = after),
+        fill = GREEN
+      ) +
+      geom_segment(
+        data = marks, aes(x = was, xend = x, y = base * 1.6, yend = base * 1.6),
+        color = RED, linewidth = 1.3, arrow = arrow(length = unit(0.1, "inches"), type = "closed")
+      ) +
+      geom_text(
+        data = marks, aes(x = x, y = base * 1.6, label = paste0("−", fmt(was - x))),
+        hjust = 1.3, color = RED, size = 6.5, fontface = "bold"
+      ) +
+      geom_segment(data = marks, aes(x = was, xend = was, y = 0, yend = base * 0.5), color = GRAY, linetype = "dashed")
+  }
+  share <- now[["share"]]
+  p +
+    geom_polygon(data = triangles, aes(x, y, group = id, fill = I(color))) +
+    geom_text(data = marks, aes(x, base * 1.05, label = label, color = I(color)), size = 6, fontface = "bold") +
+    annotate("segment", x = d$line, xend = d$line, y = base * 0.3, yend = top * 1.25, color = RED, linetype = "dashed", linewidth = 1.1) +
+    annotate("text", x = d$line, y = top * 1.31, label = "poverty line", color = RED, size = 6.5) +
+    annotate("text", x = 2, y = top * 1.2, label = paste0("Poor: ", round(100 * share), "%"), hjust = 0, size = 7, fontface = "bold", color = INK) +
+    annotate("text", x = 79, y = top * 1.2, label = paste0("Not poor: ", round(100 * (1 - share)), "%"), hjust = 1, size = 7, fontface = "bold", color = BLUE) +
+    scale_x_continuous(limits = c(0, 80), breaks = seq(0, 80, 10)) +
+    coord_cartesian(ylim = c(base * 1.85, top * 1.33), clip = "off") +
+    labs(x = "Monthly household income (thousand rupees, made-up)", y = NULL) +
+    theme(axis.text.y = element_blank(), panel.grid = element_blank())
+}
+
+# "Move one group, raise both averages": 2008's paid employees by education level, a
+# dot each at its average earnings, sized by how many there are, in two groups with
+# each group's average as a line. Step 1: grouped as the ILO's 2008 tables group them.
+# 2: grades 11–12, between the two averages. 3: counted as secondary, as in 2017/18.
+# Both averages rise (the old ones stay, dashed); all employees' doesn't move.
+edu_move_plot <- function(step, levels = nlfs_levels(), groups = nlfs_groups()) {
+  coding <- if (step >= 3) "same" else "ilo"
+  dots <- levels |>
+    filter(year == 2008) |>
+    mutate(row = as.integer(level), group = if_else(is_post(isced, year, coding), "post", "secondary"))
+  means <- groups |> filter(year == 2008)
+  was <- filter(means, coding == "ilo")
+  now <- filter(means, coding == !!coding) |>
+    left_join(summarize(dots, lo = min(row), hi = max(row), .by = group), by = "group") |>
+    mutate(was = was$earnings[match(group, was$group)], color = EDU_COLORS[group])
+  everyone <- means$earnings[means$coding == "all"]
+  movers <- filter(dots, isced == "5")
+  dot_color <- if_else(step >= 2 & dots$isced == "5", GREEN, EDU_COLORS[dots$group])
+
+  p <- ggplot() +
+    geom_rect(
+      data = now, aes(xmin = -Inf, xmax = Inf, ymin = lo - 0.5, ymax = hi + 0.5, fill = I(tint(color, 0.08)))
+    ) +
+    geom_hline(yintercept = now$lo[now$group == "post"] - 0.5, color = GRAY, linetype = "dashed")
+  if (step >= 3) {
+    p <- p +
+      geom_segment(
+        data = now, aes(x = was, xend = was, y = lo - 0.4, yend = hi + 0.4),
+        color = GRAY, linetype = "dashed", linewidth = 1
+      )
+  }
+  p <- p +
+    geom_segment(
+      data = now, aes(x = earnings, xend = earnings, y = lo - 0.4, yend = hi + 0.4, color = I(color)),
+      linewidth = 2.5
+    ) +
+    geom_point(data = dots, aes(earnings, row, size = employees, color = I(dot_color)), alpha = 0.85) +
+    scale_size_area(max_size = 17, guide = "none")
+  if (step == 2) {
+    p <- p + annotate(
+      "text", x = movers$earnings - 1.6, y = movers$row,
+      label = paste0(fmt(round(movers$employees, 0) * 1000, 0), "\nemployees"),
+      hjust = 1, lineheight = 0.9, size = 6, color = GREEN, fontface = "bold"
+    )
+  }
+  # Each group's name and average, in its band's free corner: post-secondary top left,
+  # secondary or less on the right
+  tags <- now |>
+    mutate(
+      post = group == "post",
+      x = if_else(post, 9.8, 49.2),
+      y = if_else(post, hi + 0.4, (lo + hi) / 2 + 1),
+      hjust = if_else(post, 0, 1),
+      label = paste0(if_else(post, "Post-secondary", "Secondary or less"), "\naverage ", fmt(earnings))
+    )
+  p <- p +
+    geom_text(
+      data = tags, aes(x, y, label = label, hjust = hjust, color = I(color)),
+      vjust = 1, lineheight = 0.95, size = 6.5, fontface = "bold"
+    ) +
+    annotate(
+      "text", x = 49.2, y = 1, label = paste("All employees:", fmt(everyone), "either way"),
+      hjust = 1, size = 6, color = GRAY
+    )
+  if (step >= 3) {
+    p <- p + geom_text(
+      data = tags, aes(x, y - 1, label = paste("▲", fmt(earnings - was)), hjust = hjust),
+      vjust = 1, size = 6.5, fontface = "bold", color = GREEN
+    )
+  }
+  p +
+    scale_x_continuous(limits = c(9.5, 49.5), breaks = seq(10, 50, 10), expand = expansion(0)) +
+    scale_y_continuous(breaks = seq_along(levels(dots$level)), labels = levels(dots$level), expand = expansion(add = 0.1)) +
+    coord_cartesian(clip = "off") +
+    labs(x = "Monthly earnings in 2008 (thousand rupees)", y = NULL) +
+    theme(panel.grid.major.y = element_blank(), panel.grid.minor = element_blank())
+}
+```
+
+# The poor got poorer?
+
+_A district of 10,000 households, a year apart._
+
+::: {.columns}
+::: {.column width="58%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r district-1, opts.label = "puzzle"}
+district_slope_plot(1)
+```
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1}
+```{r district-2, opts.label = "puzzle"}
+district_slope_plot(2)
+```
+:::
+
+::: {.fragment fragment-index=2}
+```{r district-3, opts.label = "puzzle"}
+district_slope_plot(3)
+```
+:::
+:::
+:::
+
+::: {.column width="42%"}
+Average monthly income, by group (thousand rupees).
+
+- [**Poor households**: [down]{.red}, from `r fmt(district$before[["poor"]])` to
+  `r fmt(district$after[["poor"]])`.]{.fragment fragment-index=1}
+- [**Everyone else**: [down]{.red} too, from `r fmt(district$before[["rich"]])` to
+  `r fmt(district$after[["rich"]])`.]{.fragment fragment-index=1}
+- [Each gray line is a household, picked from across the district. None fell. The
+  green one rose.]{.fragment fragment-index=2}
+
+::: {.fragment fragment-index=3 .big-statement}
+Both averages fell.\
+No family got poorer.\
+Good news or bad?
+:::
+:::
+:::
+
+[A made-up district.]{.source}
+
+::: {.notes}
+- Week 1 opened with a claim that sounded wrong and turned out true. This week opens with a puzzle, solved on the next slide.
+- Set it up. A district of 10,000 households, one year apart. The government counts a household as poor if its income is below a poverty line. The chart shows each group's average monthly income, in thousands of rupees.
+- Click: this year, the average poor household earns less than last year, about 13.8 thousand instead of 15.0. And the average household that isn't poor also earns less: 40.1 instead of 40.9.
+- Ask what a newspaper would write. "The poor are getting poorer, and so is everyone else." A minister would be asked to explain.
+- Click: the gray lines are households picked from across the district, one line each, from last year's income to this year's. They're flat: their income didn't change at all. One, in green, went up.
+- Click: so both averages fell, and no family got poorer. Is this good news or bad? Let the room argue before moving on. Some will guess it's a trick of the numbers. It is, sort of, and the trick is in the groups.
+- The district is made up, to keep the mechanism visible. The same thing happens with real data whenever cases cross a line between groups. Two slides on, Nepal's own earnings data does it. Another real example, if asked: from 2000 to 2013, the median US wage fell within every education group (dropouts, high-school graduates, some college, degree holders) while the overall median rose, because millions of people moved up into the better-paid groups (Floyd Norris, New York Times, 2013).
+:::
+
+## Why both averages fell
+
+_The district's incomes as a distribution, split at the poverty line._
+
+::: {.columns}
+::: {.column width="58%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r curves-1, opts.label = "puzzle"}
+poverty_curves_plot(1)
+```
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1}
+```{r curves-2, opts.label = "puzzle"}
+poverty_curves_plot(2)
+```
+:::
+
+::: {.fragment fragment-index=2}
+```{r curves-3, opts.label = "puzzle"}
+poverty_curves_plot(3)
+```
+:::
+:::
+:::
+
+::: {.column width="42%"}
+- [Remittances lift the families just under the line, the richest of the poor, across
+  it.]{.fragment fragment-index=1}
+- [The poor lose their right edge: their average falls.]{.fragment fragment-index=2}
+- [Everyone else gains households below their average: theirs falls
+  too.]{.fragment fragment-index=2}
+- [Poverty: [`r pct(district$before[["share"]])` → `r pct(district$after[["share"]])`]{.green}.
+  Average income: [up]{.green}.]{.fragment fragment-index=3}
+
+::: {.fragment fragment-index=4 .big-statement}
+Both fell because families escaped poverty.
+:::
+:::
+:::
+
+::: {.notes}
+- The puzzle, solved, and our first look at this week's subject: a distribution. The curve shows how the district's incomes spread out: how many households earn each amount. Most earn around 20 to 30 thousand; a long tail earns much more. The dashed red line is the poverty line. Everything to its left, in gray, is "poor": 23% of households. Everything to its right, in blue, is everyone else.
+- The triangles are each group's average: the point where that piece of the curve would balance. The poor average about 15 thousand, everyone else about 41.
+- Click: remittances reach the families just under the line, in green: the richest of the poor. A son or daughter abroad starts sending money home.
+- Click: they cross the line, and land spread across the bottom of the other group (the dashed outline, then the green bump). Now watch the triangles. The poor curve has lost its right edge, its richest households, so its balance point moves left: its average falls. The other curve has gained households below its average, so its balance point moves left too. The dashed gray ticks show where they were.
+- Click: the numbers that tell the real story. Poverty fell from 23% to 18% of households, and the district's average income rose. Nobody got poorer.
+- Click: both averages fell because families escaped poverty. Good news, reported as bad.
+- The general rule: whenever cases cross the line between two groups, both groups' averages can move the same way, even though nobody in either group got worse. Moving up out of the lower group pulls both averages down.
+- The deeper point: "poor" and "not poor" are a line someone drew. Draw it somewhere else and you get different averages from the same households. Group averages are only as meaningful as the groups. The whole distribution shows what really happened.
+- Remittances are a real part of Nepal's story, but don't claim the national figures behave like this district. Here, by design, remittances reach only the families just under the line. In reality they reach families at every income, and the national averages can go either way. The district illustrates the mechanism; it isn't a model of Nepal's economy.
+:::
+
+## Move one group, raise both averages
+
+_2008 only. Each dot is an education level, sized by how many employees have it._
+
+::: {.columns}
+::: {.column width="58%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r edu-move-1, opts.label = "puzzle"}
+edu_move_plot(1)
+```
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1}
+```{r edu-move-2, opts.label = "puzzle"}
+edu_move_plot(2)
+```
+:::
+
+::: {.fragment fragment-index=2}
+```{r edu-move-3, opts.label = "puzzle"}
+edu_move_plot(3)
+```
+:::
+:::
+:::
+
+::: {.column width="42%"}
+- [[Grades 11–12]{.green}: post-secondary in the 2008 tables, secondary in
+  2017/18's, after a 2016 school reform.]{.fragment fragment-index=1}
+- [They earn between the two averages.]{.fragment fragment-index=1}
+- [Count them as secondary in 2008 too: [both]{.green} averages rise.
+  Everyone's: no change.]{.fragment fragment-index=2}
+
+::: {.fragment fragment-index=3 .big-statement}
+Same people, same pay.\
+New label.
+:::
+:::
+:::
+
+[Thousand rupees a month, at 2025/26 prices. Source: ILOSTAT tabulations of the
+Nepal Labour Force Survey.]{.source}
+
+::: {.notes}
+- 2008 only, no change over time. Each dot is an education level at its average monthly earnings, sized by how many employees have it. The thick lines are each group's average.
+- Click: the green dot is grades 11–12, the old Intermediate and Proficiency Certificate. 367,000 employees. In 2008 the ILO coded them as short-cycle tertiary, so they count as post-secondary. In 2017/18 they're coded as secondary. That fits Nepal's 2016 education reform, which made grades 9–12 secondary school.
+- Be honest about the source: the ILO doesn't document this change. It's inferred from the ILO's own detailed counts (the short-cycle tertiary code, ISCED 5, appears only in 2008; the post-secondary non-tertiary code, ISCED 4, only in 2017/18) and from the reform.
+- Their earnings, about 20 thousand, sit between the two averages: more than the secondary average, less than the post-secondary one.
+- Click: count them as secondary in 2008 too. The post-secondary group loses its lowest earners, so its average jumps from 24.2 to 34.8. The secondary group gains people who earn more than its average, so its average rises too, from 14.6 to 15.7. All employees: 17.1, unchanged. Same people, same pay.
+- This is the Will Rogers paradox, after his joke that when the Okies left Oklahoma for California, they raised the average intelligence of both states. Medicine has a famous version: better scans move patients with small tumours from "early stage" to "late stage", and survival improves in both stages while no patient lives longer.
+- Click: same people, same pay, new label. And on the last slide's puzzle: the 2008 groups had both averages lower than they'd be under the 2017/18 coding, so both groups' growth looked bigger than it was.
+:::
+
+## Counted the same way both years
+
+_The same groups, with grades 11–12 counted as secondary in 2008 too._
+
+::: {.columns}
+::: {.column width="58%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r edu-same-1, opts.label = "puzzle"}
+edu_growth_plot(1)
+```
+:::
+
+::: {.fragment fragment-index=1}
+```{r edu-same-2, opts.label = "puzzle"}
+edu_growth_plot(2)
+```
+:::
+:::
+:::
+
+::: {.column width="42%"}
+- [**Secondary or less**: `r pct(nlfs_stat(edu, "same", "secondary"))`, not
+  `r pct(nlfs_stat(edu, "ilo", "secondary"))`.]{.fragment fragment-index=1}
+- [**Post-secondary**: `r pct(nlfs_stat(edu, "same", "post"))`, not
+  `r pct(nlfs_stat(edu, "ilo", "post"))`.]{.fragment fragment-index=1}
+- [Degree holders: `r pct(nlfs_stat(edu, "same", "post", "share_2008"))` →
+  `r pct(nlfs_stat(edu, "same", "post", "share_2017"))` of employees. Their pay
+  barely beat prices.]{.fragment fragment-index=2}
+
+::: {.fragment fragment-index=3 .big-statement}
+Ask who's in\
+each group.
+:::
+:::
+:::
+
+[Source: ILOSTAT tabulations of the Nepal Labour Force Survey, 2008 and 2017/18;
+deflated with the Nepal Rastra Bank CPI.]{.source}
+
+::: {.notes}
+- The fix: draw the groups the same way in both years, with grades 11–12 as secondary.
+- Click: the published bars fade, and the arrows show the growth on the consistent definition. Secondary or less: 56%, close to the 67% published. Post-secondary, now degree holders only: 10%, not 58%. All employees: 55%, between the two, as an average should be. No paradox.
+- Click: the real story is the opposite of the published one. Degree holders doubled, from 7% to 14% of paid employees, and their real pay barely grew. Everyone else's grew by more than half. Economists call it graduate premium compression; studies of returns to education in Nepal find it too.
+- Caveats, if asked: these are survey estimates, so differences of a percent or so are noise. Only two survey rounds have earnings by education (the ILO hasn't tabulated the 1998/99 one). Settling it properly takes the survey's microdata from the National Statistics Office.
+- Click: the lesson for the week. An average summarizes a crowd of people, a distribution. Change who's in the crowd and the average changes, even when nobody's situation does. So before comparing averages, ask who's in each group, and look at the whole distribution when you can. That's what the rest of today is about.
+:::
+
+# From Week 2 (cut 2026-10-26) {.center}
+
+Part 1 refocused on shapes, with the named numbers as labels on them. The 68–95–99.7
+rule became bands on "The Normal distribution". The women's and men's heights gave way
+to the "Why two humps?" mystery (children and adults); Part 3's "Do men weigh more?"
+now states the height gap itself. Nepal's age histogram (an image, NLSS IV with absent
+members counted) was redrawn from datasets/nepal_ages.csv, with Japan beside it. The
+image is still in images/week2/population.svg. Their R helpers were removed from
+r/week2.R; here they are (the slides also used `h_women` and `h_men`, the women's and
+men's mean heights, from the deck's setup chunk):
+
+```{r eval = FALSE}
+# "One hump or two?": the women's and men's heights, overlapping, with everyone's
+# outline on top
+height_sex_plot <- function(howell) {
+  means <- howell |>
+    group_by(sex) |>
+    summarise(height = mean(height))
+
+  ggplot(howell, aes(height)) +
+    geom_histogram(
+      aes(fill = sex),
+      binwidth = 2,
+      boundary = 0,
+      position = "identity",
+      alpha = 0.55,
+      color = "white"
+    ) +
+    geom_freqpoly(binwidth = 2, boundary = 0, color = INK, linewidth = 1, linetype = "dashed") +
+    geom_vline(data = means, aes(xintercept = height, color = sex), linewidth = 1.2) +
+    scale_fill_manual(values = c(female = RED, male = BLUE), name = NULL) +
+    scale_color_manual(values = c(female = RED, male = BLUE), guide = "none") +
+    labs(x = "Height (cm)", y = "Number of adults")
+}
+
+# "The 68-95-99.7 rule": the standard Normal with 1, 2 and 3 SD bands shaded
+normal_rule_plot <- function() {
+  bands <- tibble(k = c(3, 2, 1), fill = c(tint(BLUE, 0.18), tint(BLUE, 0.5), BLUE))
+  shading <- lapply(seq_len(nrow(bands)), function(i) {
+    stat_function(
+      fun = dnorm,
+      geom = "area",
+      xlim = c(-bands$k[i], bands$k[i]),
+      fill = bands$fill[i]
+    )
+  })
+
+  ggplot() +
+    xlim(-4, 4) +
+    shading +
+    stat_function(fun = dnorm, linewidth = 1.2, color = INK) +
+    annotate(
+      "text",
+      x = 0,
+      y = 0.18,
+      label = "68%",
+      size = 10,
+      color = "white",
+      fontface = "bold"
+    ) +
+    annotate("text", x = 1.5, y = 0.04, label = "95%", size = 8, color = INK) +
+    annotate("text", x = 2.5, y = 0.015, label = "99.7%", size = 7, color = INK) +
+    scale_x_continuous(
+      breaks = -3:3,
+      labels = c("-3 SD", "-2 SD", "-1 SD", "mean", "+1 SD", "+2 SD", "+3 SD")
+    ) +
+    labs(x = NULL, y = NULL) +
+    theme(axis.text.y = element_blank())
+}
+```
+
+## The 68–95–99.7 rule
+
+```{r normal-rule, fig.height = 5.5}
+normal_rule_plot()
+```
+
+- For a Normal distribution, about **68%** of cases fall within 1 SD of the mean, and
+  **95%** within 2 SD.
+- [Check: `r fmt(100 * mean(abs(howell$z_height) < 1), 0)`% of !Kung adults are within
+  1 SD of the average height, and `r fmt(100 * mean(abs(howell$z_height) < 2), 0)`%
+  within 2 SD.]{.fragment}
+
+::: {.notes}
+- For a Normal distribution: about 68% of cases within 1 SD, 95% within 2 SD, 99.7% within 3 SD.
+- Click: check it against the !Kung data. It's close. That's a good habit: check a rule of thumb against your actual data.
+- "Within 2 SD" comes back in Part 2: it's how we'll say how sure we are.
+:::
+
+## One hump or two?
+
+_One bell fits everyone. But inside it, the !Kung heights are two crowds._
+
+```{r height-sex, fig.height = 5.4}
+height_sex_plot(howell)
+```
+
+::: {.fragment}
+Women average `r fmt(h_women)` cm, men `r fmt(h_men)` cm. But the crowds overlap: [plenty
+of women are taller than plenty of men]{.blue}. (Hold on to this. It comes back.)
+:::
+
+::: {.notes}
+- A turn after the Normal: one bell fit everyone, but this one distribution is really two, women and men. The dashed line is everyone; the colors are the two groups inside it.
+- Each crowd is roughly a bell. They overlap so much that together they still look like one hump. Mean and SD described the whole crowd well, and hid what's inside it.
+- Click: the men are about 11 cm taller on average. But look at the overlap. Many women are taller than many men. "Men are taller" is a statement about two distributions, not about every man and every woman.
+- Flag it: this comes back at the end of Part 3. Men are also heavier. The question there is whether that's because they're men or because they're taller.
+:::
+
+## A shape tells a story
+<!-- TODO: Add NLSS age data. Why the bumps? -->
+![Population of Nepal](images/week2/population.svg){width="60%" fig-align="center"}
+
+::: {.fragment .big-statement}
+An average describes the crowd.\
+The distribution describes everyone in it.
+:::
+
+::: {.notes}
+- A familiar population distribution: Nepal's age pyramid. Ask: what do you notice? Why the bumps?
+- Likely discussion points: the base is narrowing because birth rates have fallen a lot. And there are fewer men than women in the working ages, because so many men work abroad. Let students propose these.
+- The point is that a distribution's shape carries history. A single number, the average age, would hide all of it.
+:::
+
+# From Week 2 (cut 2026-10-26, Part 1's ending) {.center}
+
+"Why two humps?": the weights of everyone Howell counted, children too, ending Part 1.
+Cut because the deck works with the adults only. To reuse it, add
+`kung_all <- load_howell(adults = FALSE)` to the setup chunk and source the R below
+after r/week2.R (it was there; the "puzzle" figure size still is).
+
+```{r eval = FALSE}
+# "Why two humps?": the weights of everyone in Howell's census. by_generation = TRUE
+# colors children (under 18, light blue) and adults, labels each hump, and marks
+# everyone's mean weight, which falls between them.
+generation_plot <- function(kung, by_generation = FALSE) {
+  kung <- kung |>
+    mutate(generation = factor(if_else(age < 18, "children", "adults"), c("children", "adults")))
+  humps <- kung |>
+    group_by(generation) |>
+    summarise(weight = median(weight), n = n()) |>
+    mutate(label = paste0(generation, " (", n, ")"))
+  colors <- c(children = tint(BLUE, 0.5), adults = BLUE)
+
+  p <- ggplot(kung, aes(weight)) +
+    scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+    labs(x = "Weight (kg)", y = "Number of people")
+  if (!by_generation) {
+    return(p + geom_histogram(binwidth = 2, boundary = 0, fill = GRAY, color = "white"))
+  }
+  p +
+    geom_histogram(
+      aes(fill = generation),
+      binwidth = 2,
+      boundary = 0,
+      color = "white",
+      show.legend = FALSE
+    ) +
+    geom_text(
+      data = humps,
+      aes(x = weight, y = Inf, label = label, color = generation),
+      vjust = 1.5,
+      size = 8,
+      fontface = "bold",
+      show.legend = FALSE
+    ) +
+    value_marker(
+      mean(kung$weight),
+      paste0("mean = ", fmt(mean(kung$weight)), " kg"),
+      RED,
+      vjust = 4,
+      left = TRUE
+    ) +
+    scale_fill_manual(values = colors) +
+    scale_color_manual(values = colors)
+}
+```
+
+## Why two humps?
+
+_Howell counted everyone, children too: the weights of all `r nrow(kung_all)` people._
+
+::: {.columns}
+::: {.column width="58%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r generations, opts.label = "puzzle"}
+generation_plot(kung_all)
+```
+:::
+
+::: {.fragment fragment-index=1}
+```{r generations-split, opts.label = "puzzle"}
+generation_plot(kung_all, by_generation = TRUE)
+```
+:::
+:::
+:::
+
+::: {.column width="42%"}
+::: {.fragment fragment-index=1}
+**Two generations.** Children and adults are two crowds, each with its own hump.
+
+The average weight, `r fmt(mean(kung_all$weight))` kg, falls between them. It describes
+almost nobody.
+:::
+:::
+:::
+
+::: {.notes}
+- A mystery to end the part. So far, only adults. Howell counted everyone, children too: here are all 544 weights. Two humps, about 17 kg and 45 kg (the medians). Ask: why? Let the room guess before clicking.
+- Likely guesses: men and women, after the heights (no: here they overlap within the right hump), rich and poor, two villages. Take a few.
+- Click: two generations. Children (under 18, light blue) and adults. Each is its own crowd with its own hump, and the full shape is the two added together.
+- The red line: everyone's average weight, about 36 kg, sits in the valley between the humps. Hardly anyone weighs that. An average of a two-humped shape describes almost nobody.
+- This is the opening puzzle again, from the other side: an average depends on who's in the crowd.
 :::

@@ -37,64 +37,120 @@ sex_fit <- sex_weight_fits(howell)
 
 houses <- load_houses() |>
   mutate(z_price = standardize(price), z_area = standardize(area_m2))
+
+# Part 1's warm-up: incomes in six imagined places
+incomes <- income_shape_plots()
+
+# Nepal's and Japan's ages (the end of Part 1)
+nepal_ages <- load_nepal_ages()
+japan_ages <- load_japan_ages()
+
+# The opening puzzle: Nepal's earnings by education, 2008 to 2017/18, and the numbers
+# behind its distributions
+edu <- nlfs_growth()
+rc <- reclass_numbers()
 ```
 
-# The average pilot {notes="notes/week2_notes.md#average-pilot"}
+# Income in Nepal, 2008–2018 {notes="notes/week2_notes.md#nepal-earnings"}
 
-_Around 1950, US Air Force pilots kept losing control of their planes._
+_Average monthly earnings by education level, inflation adjusted to 2026._
 
-- [The cockpits had been designed in 1926 to fit the **average pilot**.]{.fragment}
-- [So the Air Force measured 4,063 pilots on the ten body sizes that matter most in a
-  cockpit: height, chest, arm length…]{.fragment}
-- [How many were close to average (the middle 30%) on all ten?]{.fragment}
-
-::: {.fragment .stat-reveal}
-[0]{.stat-number} [[out of 4,063 pilots]{.stat-caption}]{.stat-captions .fragment}
+::: {.columns}
+::: {.column width="58%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r edu-growth, opts.label = "puzzle"}
+edu_growth_plot(1, everyone = FALSE)
+```
 :::
 
-::: {.fragment .big-statement}
-The fix: adjustable seats.\
-Design for the distribution, not the average.
+::: {.fragment fragment-index=1}
+```{r edu-growth-all, opts.label = "puzzle"}
+edu_growth_plot(1)
+```
+:::
+:::
 :::
 
-[Gilbert S. Daniels, *The "Average Man"?* (Wright Air Development Center, 1952); retold
-in Todd Rose, *The End of Average* (2016).]{.source}
+::: {.column width="42%"}
+**Who:** paid employees, main job.
+
+- **Each group**: strong growth, though less for post-secondary degree holders than others
+- [**Both groups together**: up `r pct(nlfs_stat(edu, "all", "all"))`, less than either group alone]{.fragment fragment-index=1}
+
+::: {.fragment fragment-index=2 .big-statement}
+How is this possible?
+:::
+:::
+:::
+
+[Source: ILOSTAT tabulations of the Nepal Labour Force Survey, 2008 and 2017/18;
+deflated with the Nepal Rastra Bank CPI.]{.source}
+
+## The distributions behind the averages {notes="notes/week2_notes.md#nepal-reclass"}
+
+```{r reclass-data}
+reclass_widget_data()
+```
+
+::: {.widget-layout .reclass}
+{{< include _includes/week2/reclass.md >}}
+
+::: {.w2-side}
+- **2008**: Averages:
+  `r rupees(rc$secondary[["y2008"]])` and `r rupees(rc$post[["y2008"]])`.
+- [**2017/18**: "Secondary or less" up
+  `r pct(rc$secondary[["same"]] / rc$secondary[["y2008"]] - 1)`, "Post-secondary" up
+  `r pct(rc$post[["same"]] / rc$post[["y2008"]] - 1)`.]{.fragment fragment-index=1}
+- [[Grades 11–12]{.green}: `r fmt(round(rc$movers) * 1000, 0)` employees,
+  `r pct(rc$movers_share)` of post-secondary, earning just above the secondary
+  average.]{.fragment fragment-index=2}
+- [In the 2017/18 survey, [grades 11-12 were reclassified as secondary]{.blue}. This caused [both]{.green} averages to rise further. Nobody's pay changed.]{.fragment fragment-index=3}
+- [**Distributions reveal what averages hide.**]{.fragment fragment-index=4}
+:::
+:::
+
+[Source: ILOSTAT tabulations of the Nepal Labour Force Survey, 2008 and 2017/18. Group
+sizes and average earnings are from the survey; the disaggregated data is not publicly available, so the shapes of the distributions are just illustrative.]{.source}
 
 # You already think in distributions {notes="notes/week2_notes.md#commute"}
 
 ::: {.exchange}
-[_"How long is your trip here?"_]{.exchange-q} [_"Usually 30 minutes."_]{.exchange-a .fragment}
+[_"How long is your commute to work?"_]{.exchange-q} [_"Usually 30 minutes."_]{.exchange-a .fragment}
 :::
 
 ::: {.kinds}
 ::: {.kind .kind-population .fragment}
-[_"Usually"_]{.kind-title}
+[_"Usually?"_]{.kind-title}
 
-Not every trip: some take 20 minutes, some 45.
+Not every trip is the same: some take 20 minutes, some 45.
 
-How trips **vary**: a [population distribution]{.blue}.
+How trips **vary** is a\
+[population distribution]{.blue}.
 :::
 
 ::: {.kind .kind-certainty .fragment}
-[_"How do you know?"_]{.kind-title}
+[_"And tomorrow?"_]{.kind-title}
 
-You've made the trip a hundred times. A newcomer couldn't be so sure.
+You've made the trip a hundred times, but you still can't be sure.
 
-How **sure** you are: a [certainty distribution]{.green}.
+How **sure** you are is a\
+[certainty distribution]{.green}.
 :::
 
 ::: {.kind .kind-correlative .fragment}
 [_"What if it rains?"_]{.kind-title}
 
-Rain, traffic, the hour you leave: each one shifts the whole spread.
+Rain, day of the week, the hour you leave: each one shifts the whole spread.
 
-How it changes **with** something else: a [correlative distribution]{.orange}.
+How length changes **with** something else is a\
+[correlative distribution]{.orange}.
 :::
 :::
 
-::: {.fragment .big-statement}
-You already think in distributions.\
-This week, we draw them.
+::: {.fragment}
+[Three kinds of distribution, one concept.]{.big-statement}\
+This week, we'll learn to read and draw them.
 :::
 
 # This week's goals {notes="notes/week2_notes.md#goals"}
@@ -103,12 +159,15 @@ This week, we draw them.
   - [**Population**]{.blue}: how cases vary
   - [**Certainty**]{.green}: how sure we are
   - [**Correlative**]{.orange}: how two things vary together
-- [See why adding one variable to a model changes what the others mean]{.fragment}
-- [Work through an example: what makes a house expensive?]{.fragment}
+- [Pick up two tools we'll use for models: **z-scores** and the
+  **named distributions**]{.fragment}
+- [Understand why adding one variable to a model changes what the others mean]{.fragment}
+- [Work through an example: housing prices]{.fragment}
 
 ::: {.fragment}
-A distribution is a different way to think about a number: [every value it could take,
-and how common or plausible each one is]{.blue}.
+[A new way to think about numbers]{.big-statement}\
+Instead of fixing on one value, a distribution considers [every possibility]{.blue}, showing
+how common or plausible each one is.
 :::
 
 
@@ -116,19 +175,65 @@ and how common or plausible each one is]{.blue}.
 
 {{< include _includes/week2/three-kinds.md >}}
 
-# Random individuals, predictable crowds {notes="notes/week2_notes.md#galton"}
+## What does income look like? {notes="notes/week2_notes.md#incomes"}
 
-_At every peg, a ball bounces left or right: a coin flip. Drop some balls._
+_Monthly income in six imagined places, in thousands of rupees. Describe each shape._
 
-{{< include _includes/week2/galton.md >}}
+::: {.columns .shape-grid}
+::: {.column width="33%"}
+```{r income-1, opts.label = "shapes"}
+incomes[[1]]
+```
 
-::: {.fragment}
-One ball: anyone's guess. A thousand balls: [the same shape, every time]{.blue}.
+::: {.fragment .small-caption fragment-index=1}
+**A typical country.** Skewed right: most earn a modest amount, and a long tail of higher earners stretches out to the right.
 :::
 
-## A shape tells a story {notes="notes/week2_notes.md#nepal-population"}
-<!-- TODO: Add NLSS age data. Why the bumps? -->
-![Population of Nepal](images/week2/population.svg){width="80%" fig-align="center"}
+```{r income-4, opts.label = "shapes"}
+incomes[[4]]
+```
+
+::: {.fragment .small-caption fragment-index=4}
+**One pay scale.** Narrow and symmetric, everyone close to the middle: the best-paid earn little more than the worst-paid.
+:::
+:::
+
+::: {.column width="33%"}
+```{r income-2, opts.label = "shapes"}
+incomes[[2]]
+```
+
+::: {.fragment .small-caption fragment-index=2}
+**A more equal country.** The same most common income, but a short tail: few people earn far more, or far less, than most.
+:::
+
+```{r income-5, opts.label = "shapes"}
+incomes[[5]]
+```
+
+::: {.fragment .small-caption fragment-index=5}
+**Farms and offices.** Two humps: two kinds of household, each with its own typical income, and few in between.
+:::
+:::
+
+::: {.column width="33%"}
+```{r income-3, opts.label = "shapes"}
+incomes[[3]]
+```
+
+::: {.fragment .small-caption fragment-index=3}
+**A very unequal country.** The same most common income, but a very long tail: a few earn many times more than most.
+:::
+
+```{r income-6, opts.label = "shapes"}
+incomes[[6]]
+```
+
+::: {.fragment .small-caption fragment-index=6}
+**A minimum wage.** A wall and a spike: nobody is paid below the floor, many are paid exactly it, and fewer the further above it. A rule made this shape.
+:::
+:::
+:::
 
 ## Our running example: the !Kung San {notes="notes/week2_notes.md#kung"}
 
@@ -155,71 +260,78 @@ howell |>
 kung_widget_data(howell) # for the widgets later in the deck
 ```
 
-## Center, spread, shape {notes="notes/week2_notes.md#describing"}
+## Describing distributions: center, spread, shape {notes="notes/week2_notes.md#describing"}
 
-```{r height-hist}
+```{r height-hist, fig.height = 5.4}
 height_hist_plot(howell)
 ```
 
-- [**Center**]{.red}: where is a typical value? (the mean)
-- [**Spread**]{.blue}: how far is a typical case from the center? (the standard deviation)
-- **Shape**: one hump or two? Symmetric, or a long tail?
-
-## One hump or two? {notes="notes/week2_notes.md#two-humps"}
-
-_The !Kung heights are two crowds, not one._
-
-```{r height-sex, fig.height = 5.4}
-height_sex_plot(howell)
-```
-
-::: {.fragment}
-Women average `r fmt(h_women)` cm, men `r fmt(h_men)` cm. But the crowds overlap: [plenty
-of women are taller than plenty of men]{.blue}. (Hold on to this. It comes back.)
-:::
+Read the **shape** first: one hump, roughly symmetric. Then label it: its
+[**center**]{.red} (the mean) and its [**spread**]{.blue} (the standard deviation).
 
 ## The Normal distribution {notes="notes/week2_notes.md#normal"}
 
 ::: {.columns}
 ::: {.column width="60%"}
-```{r normal-overlay}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r normal-overlay, opts.label = "half_tall"}
 normal_overlay_plot(howell)
 ```
 :::
 
+::: {.fragment fragment-index=1}
+```{r normal-bands, opts.label = "half_tall"}
+normal_overlay_plot(howell, bands = TRUE)
+```
+:::
+:::
+:::
+
 ::: {.column width="40%"}
-The blue curve is a Normal distribution with the same center and spread as the data:
+The blue curve is a **Normal distribution**, with the same center and spread as the
+data.
 
-- mean = `r fmt(h_mean)` cm
-- SD = `r fmt(h_sd)` cm
+It's a shape that turns up again and again, in math and in nature. What makes it
+special comes later. For now, it's enough that the heights in a population often take
+this shape.
 
-::: {.fragment}
-**Two numbers** describe the whole shape.
-
-Real data are never perfectly Normal, but many things come close. Like the Galton
-board: many small, random pushes add up to a bell.
+::: {.fragment fragment-index=1}
+Every Normal has the same landmarks: **68%** of cases within 1 SD of the mean, **95%**
+within 2 SD. The !Kung adults: `r fmt(100 * mean(abs(howell$z_height) < 1), 0)`% and
+`r fmt(100 * mean(abs(howell$z_height) < 2), 0)`%.
 :::
 :::
 :::
 
-## The 68–95–99.7 rule {notes="notes/week2_notes.md#rule-68-95"}
+## One hump, or two? {notes="notes/week2_notes.md#two-humps"}
 
-```{r normal-rule, fig.height = 5.5}
-normal_rule_plot()
+```{r sex-humps-data}
+sex_humps_widget_data(howell)
 ```
 
-- For a Normal distribution, about **68%** of cases fall within 1 SD of the mean, and
-  **95%** within 2 SD.
-- [Check: `r fmt(100 * mean(abs(howell$z_height) < 1), 0)`% of !Kung adults are within
-  1 SD of the average height, and `r fmt(100 * mean(abs(howell$z_height) < 2), 0)`%
-  within 2 SD.]{.fragment}
+::: {.widget-layout .sex-humps}
+{{< include _includes/week2/sex-humps.md >}}
 
-## Distributions Demo {.no-title notes="notes/week2_notes.md#dist-demo"}
+::: {.w2-side}
+The same heights. Look at the middle: **fewer adults around 155–160 cm** than on
+either side.
 
-```{shinylive-r}
-#| standalone: true
-{{< include shiny/distributions.R >}}
-```
+_Why a dip?_
+
+::: {.fragment fragment-index=1}
+**Women and men.** Two crowds, overlapping in the middle.
+:::
+
+::: {.fragment fragment-index=2}
+Each has its own Normal: women around `r fmt(h_women)` cm, men around `r fmt(h_men)` cm.
+:::
+
+::: {.fragment fragment-index=3}
+Added together (dashed), they make one lopsided bell, with no dip.
+:::
+:::
+:::
 
 ## Taller or heavier? {notes="notes/week2_notes.md#z-scores"}
 
@@ -230,11 +342,28 @@ ex_zh <- (ex_h - h_mean) / h_sd
 ex_zw <- (ex_w - w_mean) / w_sd
 ```
 
-_A !Kung man is **`r ex_h` cm** tall and weighs **`r ex_w` kg**. Is he more unusually
-tall, or more unusually heavy?_
+_A !Kung man is **`r ex_h` cm** and **`r ex_w` kg**. Is he more unusually tall, or heavy?_
 
+::: {.columns}
+::: {.column width="55%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=2}
+```{r man-plot, opts.label = "half"}
+unusual_man_plot(howell, ex_h, ex_w)
+```
+:::
+
+::: {.fragment fragment-index=2}
+```{r man-plot-z, opts.label = "half"}
+unusual_man_plot(howell, ex_h, ex_w, z = TRUE)
+```
+:::
+:::
+:::
+
+::: {.column width="45%"}
 - We can't compare centimeters to kilograms.
-- [But we can ask of each: **how many standard deviations from average is this?**]{.fragment fragment-index=1}
+- [But we can ask of each: **how many SDs from average?**]{.fragment fragment-index=1}
 
 ::: {.fragment fragment-index=1}
 $$
@@ -248,62 +377,89 @@ $$
 :::
 
 ::: {.fragment fragment-index=3}
-He is more unusually heavy than he is tall. A **z-score** says where one case sits in
-the crowd.
+More unusually heavy than tall. A **z‑score** places one case in its crowd.
+:::
+:::
 :::
 
 ## Same data, new ruler {notes="notes/week2_notes.md#new-ruler"}
 
 ::: {.columns}
-::: {.column}
-```{r hist-cm, opts.label = "half_short"}
+::: {.column width="58%"}
+```{r height-rulers, opts.label = "half"}
 height_ruler_plot(howell)
 ```
 :::
 
-::: {.column}
-```{r hist-z, opts.label = "half_short"}
-height_ruler_plot(howell, z = TRUE)
-```
+::: {.column width="42%"}
+| z      | Meaning                 |
+|--------|-------------------------|
+| 0      | exactly average         |
+| ±1     | ordinary                |
+| ±2     | unusual (about 1 in 20) |
+| ±3     | rare (about 1 in 370)   |
+
+- The **shape** doesn't change: only the ruler.
+- The mean becomes **0**, the SD **1**, and the units disappear.
 :::
 :::
 
-- The **shape** doesn't change at all. Only the labels on the axis.
-- The mean becomes **0**. The standard deviation becomes **1**.
-- The units disappear: a z-score is measured in "standard deviations".
-
-## Reading z-scores {notes="notes/week2_notes.md#reading-z"}
+## Nepal, age by age {notes="notes/week2_notes.md#nepal-population"}
 
 ::: {.columns}
-::: {.column width="45%"}
-| z      | Meaning                          |
-|--------|----------------------------------|
-| 0      | exactly average                  |
-| ±1     | ordinary                         |
-| ±2     | unusual (about 1 in 20)          |
-| ±3     | rare (about 1 in 370)            |
+::: {.column width="58%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=2}
+```{r nepal-ages, opts.label = "puzzle"}
+nepal_age_plot(nepal_ages)
+```
 :::
 
-::: {.column width="55%"}
-In R:
-
-```{r z-code, echo = TRUE, eval = FALSE}
-howell |>
-  mutate(
-    z_height = (height - mean(height)) / sd(height),
-    z_weight = (weight - mean(weight)) / sd(weight)
-  )
+::: {.fragment fragment-index=2}
+```{r nepal-spikes, opts.label = "puzzle"}
+nepal_age_plot(nepal_ages, spikes = TRUE)
 ```
 :::
 :::
+:::
 
-z-scores compare things measured on different scales: exam marks out of 50 and out of
-100, rupees and dollars, centimeters and kilograms.
+::: {.column width="42%"}
+_The share of Nepal's residents at each age._
+
+- [**The shape**: more teenagers than toddlers. Births have been falling, so each new
+  generation is smaller than the one before it.]{.fragment fragment-index=1}
+- [**The spikes**: ages ending in 0 or 5 hold far more people than the ages beside
+  them. Not a baby boom every five years: people who don't know their exact age round
+  it. A survey artifact.]{.fragment fragment-index=2}
+:::
+:::
+
+[Source: Nepal Living Standards Survey IV (2022/23), household members, weighted.]{.source}
+
+## Two countries, two stories {notes="notes/week2_notes.md#two-countries"}
+
+::: {.columns}
+::: {.column width="58%"}
+```{r age-compare, fig.width = 8.5, fig.height = 5.4, out.width = "100%"}
+age_compare_plot(nepal_ages, japan_ages)
+```
+:::
+
+::: {.column width="42%"}
+- **Nepal** is young: median age `r median_age(age_shares(nepal_ages))`.
+- [**Japan** is old: median age `r median_age(age_shares(japan_ages))`. Its bulges are
+  generations: a baby boom, then their children.]{.fragment}
+- [No spikes: Japan's ages come from registered birth dates.]{.fragment}
+:::
+:::
 
 ::: {.fragment .big-statement}
 An average describes the crowd.\
 The distribution describes everyone in it.
 :::
+
+[Sources: Nepal Living Standards Survey IV (2022/23); UN World Population Prospects 2024
+(Japan, 1 July 2022).]{.source}
 
 
 # Part 2: Certainty distributions {.center .part-2 notes="notes/week2_notes.md#part2"}
@@ -416,6 +572,67 @@ How **plausible** each value of an unknown is. One true value; we're unsure whic
 Quick test: [many cases that really differ]{.blue}, or [one answer we're unsure
 about]{.green}? Same shapes, same vocabulary, different questions.
 :::
+
+## Random individuals, predictable crowds {notes="notes/week2_notes.md#galton"}
+
+_At every peg, a ball bounces left or right randomly. Where will they land?_
+
+{{< include _includes/week2/galton.md >}}
+
+::: {.fragment}
+One ball: anyone's guess. A thousand balls: [the same shape, every time]{.blue}.
+:::
+
+## Every named distribution is a story {notes="notes/week2_notes.md#named-shapes"}
+
+_A named distribution is the shape a particular process produces._
+
+```{r named-shapes, opts.label = "shapes"}
+#| layout-ncol: 3
+walk(named_shape_plots(howell), print)
+```
+
+::: {.fragment}
+Know the process, and you know the shape. A few **knobs** (its parameters) slide it and
+stretch it.
+:::
+
+## Distributions Demo {.no-title notes="notes/week2_notes.md#dist-demo"}
+
+```{shinylive-r}
+#| standalone: true
+{{< include shiny/distributions.R >}}
+```
+
+## Pick the shape by the kind of number {.mechanics .smaller notes="notes/week2_notes.md#pick-shape"}
+
+| The number is… | Shape | Its knobs | In R |
+|---|---|---|---|
+| any value, above or below zero | Normal | mean, SD | `rnorm()` |
+| positive, with a long right tail | Log-normal | mean and SD of its log | `rlnorm()` |
+| positive: a wait, or a spread | Exponential | rate (1 / its average) | `rexp()` |
+| a count out of *n* | Binomial | *n*, chance of a yes | `rbinom()` |
+| a count with no maximum | Poisson | rate (its average) | `rpois()` |
+| a share between 0 and 1 | Beta | *a*, *b*: roughly the yeses and noes | `rbeta()` |
+
+- The kind of number rules out most shapes. The process picks among the rest.
+- Every family comes with the same functions in R: `rnorm()` draws random values,
+  `dnorm()` gives the curve. Swap `norm` for `binom`, `pois`, `exp`, `beta` or `lnorm`.
+- In a model, `~` reads "is drawn from": $x \sim \text{Normal}(0, 1)$.
+
+## The same shapes, for certainty {.mechanics notes="notes/week2_notes.md#certainty-shapes"}
+
+_A prior is a certainty distribution. We build it from the same named shapes._
+
+```{r certainty-shapes, opts.label = "shapes"}
+#| layout-ncol: 3
+walk(certainty_shape_plots(), print)
+```
+
+- Pick the shape by the kind of unknown: a share gets a [Beta]{.green}, a coefficient a
+  [Normal]{.green}, a spread (never negative) an [Exponential]{.green}.
+- Week 1's hand-drawn prior for the mayor was a shape like the first one. The other two
+  are the priors behind the coefficient in Part 3.
 
 
 # Part 3: Correlative distributions {.center .part-3 notes="notes/week2_notes.md#part3"}
@@ -575,6 +792,48 @@ beta_posterior_plot(howell)
   likelihood → posterior, like the mayor's vote share last week.
 - [With 20 adults we're unsure about β. With `r nrow(howell)`, much less so.]{.fragment}
 
+## Why we always standardize {.mechanics .smaller notes="notes/week2_notes.md#why-standardize"}
+
+```{r slope-rulers}
+cm_per_inch <- 2.54
+lb_per_kg <- 2.20462
+```
+
+::: {.columns}
+::: {.column width="55%"}
+From now on, we fit every regression in z-scores:
+
+1. **No intercept to guess.** Both averages are 0, so the line passes through (0, 0).
+2. **Coefficients compare.** Every β is "SDs of the outcome per SD of the predictor",
+   whether the predictor is in centimeters, rooms or rupees.
+3. **One prior fits every β.** β ~ Normal(0, 1): [95% sure]{.green} that a 1 SD change
+   moves the outcome by less than 2 SD. That's the prior behind the last slide.
+
+At the end, convert back to real units: β × SD~outcome~ / SD~predictor~.
+:::
+
+::: {.column width="45%"}
+_The same relationship, four rulers:_
+
+| Units | β |
+|---|--:|
+| kg per cm | `r fmt(slope_kg_cm, 2)` |
+| kg per inch | `r fmt(slope_kg_cm * cm_per_inch, 2)` |
+| lb per inch | `r fmt(slope_kg_cm * cm_per_inch * lb_per_kg, 2)` |
+| [SD per SD]{.blue} | [`r fmt(r_hw, 2)`]{.blue} |
+
+A prior for kg per cm would be wrong for lb per inch. In SDs, one prior fits all.
+
+```{r z-code, echo = TRUE, eval = FALSE}
+howell |>
+  mutate(
+    z_height = (height - mean(height)) / sd(height),
+    z_weight = (weight - mean(weight)) / sd(weight)
+  )
+```
+:::
+:::
+
 ## A headline from pure noise {notes="notes/week2_notes.md#noise"}
 
 ```{r noise-sim}
@@ -626,7 +885,7 @@ noise_dist_plot(r_small, n_vars)
 
 # Do men weigh more? {notes="notes/week2_notes.md#sex-weight"}
 
-_Back to the two crowds from Part 1._
+_!Kung men average `r fmt(h_men)` cm, women `r fmt(h_women)` cm. Are the men heavier, too?_
 
 ::: {.columns}
 ::: {.column width="58%"}
@@ -713,9 +972,10 @@ take, and how common or plausible each one is.
 ::: {.kind .kind-population}
 [Population]{.kind-title}
 
-How cases vary: center, spread and shape. A z-score places one case.
+How cases vary. The shape tells the story; center and spread label it. A z-score
+places one case.
 
-An average describes the crowd, not anyone in it.
+An average describes a crowd. Change the crowd, and the average changes.
 :::
 
 ::: {.kind .kind-certainty}
@@ -794,7 +1054,8 @@ houses |>
 price_hist_plot(houses)
 ```
 
-- Not Normal: a **long right tail** of a few very expensive houses.
+- Not Normal: a **long right tail** of a few very expensive houses. Which named shape
+  does it look like?
 - The tail pulls the [mean]{.red} above the [median]{.blue}. Which is the "typical" price?
 
 ## Step 2: How unusual is this house? {notes="notes/week2_notes.md#houses-step2"}
@@ -983,4 +1244,8 @@ $$
 - **The lectures:** McElreath's
   [Statistical Rethinking 2026](https://github.com/rmcelreath/stat_rethinking_2026)
   series on YouTube. Free lectures that follow the book.
-- **The pilots:** Todd Rose, *The End of Average* (2016), chapter 1.
+- **The same thing, nationwide:** from 2000 to 2013, the median US wage fell within
+  every education group while the overall median rose, because millions of people
+  moved up into better-paid groups. Floyd Norris reported it in the *New York Times*
+  (2013); Allen Downey's [Simpson's paradox and real wages](https://allendowney.com/blog/?p=555)
+  walks through the numbers.

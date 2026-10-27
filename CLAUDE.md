@@ -148,7 +148,10 @@ inline-glued models in `projects/`), named for what they fit: `weight_sex.stan`,
 `wb2022.csv` + `wb_country.csv` are the World Bank panel used by all projects (joined and
 pivoted long→wide in `_base.qmd`). `berkeley.csv` (admissions / Simpson's paradox),
 `kungsan.csv` (!Kung height/weight) back the week decks. Nepal is the recurring reference
-case highlighted in project plots.
+case highlighted in project plots. `nepal_ages.csv` (NLSS IV 2022/23, weighted, ages as
+reported, so with the survey's rounding to ages ending in 0 and 5) and `japan_ages.csv`
+(UN WPP 2024) are week 2's age distributions: small tabulations, not microdata. Their
+sources are described at their loaders in `r/data.R`.
 
 ### Speaker notes (`_build/notes.lua` + `notes/`)
 Slides reference external notes with an attribute on the slide heading:
@@ -266,12 +269,17 @@ curve through its 21 points (`smooth.js`), on Step 1 and in the math alike; the 
 styling through `canvas-axes.js`, and their animated transitions through `tween.js`), and their styles in `deck.scss`. jspreadsheet comes from a pinned CDN version via
 `_build/jspreadsheet.html`.
 
-Week 2's widgets follow the same pattern (markup in `_includes/week2/`): `galton.js`
-(a Galton board), `sample-mean.js` (a random few of the !Kung adults: how they vary
+Week 2's widgets follow the same pattern (markup in `_includes/week2/`): `galton.js` (a Galton board), `sample-mean.js` (a random few of the !Kung adults: how they vary
 against how sure we are of their average), `conditional.js` (weight within a band of
-heights; with `data-split="sex"`, women against men) and `model-builder.js` (house-price
-models with any set of features). They draw on canvases through `canvas-plot.js`, in
+heights; with `data-split="sex"`, women against men), `model-builder.js` (house-price
+models with any set of features) and `reclass.js` (the opening Will Rogers paradox:
+Nepal's 2008 grades 11–12 employees moving from post-secondary to secondary, raising
+both groups' averages; its steps follow the slide's fragments, and its curve shapes are
+hypothetical) and `sex-humps.js` (the adults' heights by sex: stacked, then
+separated with each sex's Normal, then stacked again under their sum). They draw on canvases through `canvas-plot.js`, in
 the slide's own pixels. Their data comes from R, not from files in `js/`: a one-line
-chunk in the deck (`kung_widget_data()`, `house_models_data()` in `r/week2.R`) writes it
+chunk in the deck (`kung_widget_data()`, `house_models_data()`, `reclass_widget_data()`,
+`sex_humps_widget_data()` in `r/week2.R`) writes it
 into the page as a JSON block, which the scripts read by id. So the numbers they show
-are frozen with the deck, and freeze.R tracks the datasets behind them.
+are frozen with the deck, and freeze.R tracks the datasets behind them. (`ldc-shift.js`
+belongs to a slide parked in `_removed.qmd`.)

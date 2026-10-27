@@ -70,7 +70,7 @@ function init(root, heights) {
     const blue = brand('blue');
     const green = brand('green');
     const ink = brand('ink');
-    const pad = { left: 20, right: 20, top: 8, bottom: 64 };
+    const pad = { left: 20, right: 20, top: 8, bottom: 76 };
     const x = scale(X_RANGE[0], X_RANGE[1], pad.left, w - pad.right);
     const plotH = h - pad.top - pad.bottom;
     const topBand = { y0: pad.top, y1: pad.top + plotH * 0.5 };
@@ -92,7 +92,7 @@ function init(root, heights) {
     const r = Math.min(binW * 0.45, (topBand.y1 - topBand.y0 - 34) / (2 * tallest));
     for (const [b, c] of everyone) {
       const bh = c * scaleToSample * 2 * r;
-      ctx.fillStyle = withAlpha(ink, 0.08);
+      ctx.fillStyle = withAlpha(ink, 0.16);
       ctx.fillRect(x(b) + 1, topBand.y1 - bh, binW - 2, bh);
     }
     for (const [b, c] of stacks) {
@@ -101,7 +101,7 @@ function init(root, heights) {
     text(ctx, `The ${sample.length} adults we measured`, pad.left, topBand.y0 + 20, {
       size: 19, weight: 600, color: blue,
     });
-    text(ctx, 'each dot is one person; gray: everyone', pad.left, topBand.y0 + 44, {
+    text(ctx, 'each dot is one person; gray: everyone', pad.left, topBand.y0 + 48, {
       size: 15, color: brand('gray'),
     });
     line(ctx, pad.left, topBand.y1, w - pad.right, topBand.y1, { color: withAlpha(ink, 0.3) });

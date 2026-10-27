@@ -215,6 +215,12 @@ $bp-orange: mix($brand-orange, white, 70%);
     background: rgba(white, 0.06);
   }
 
+  /* inline code in light ink (code blocks sit on their own white card) */
+  :not(pre) > code {
+    color: $bp-blue;
+    background: rgba(white, 0.1);
+  }
+
   /* plots: on white cards, so their dark ink stays readable */
   .cell-output-display img,
   .quarto-figure img {
@@ -950,6 +956,25 @@ $bp-orange: mix($brand-orange, white, 70%);
   font-size: 12pt;
 }
 
+/* Week 2, "What does income look like?": small plots in a grid, each with a caption
+   that builds in under it. The caption sits right under its own plot, and the gap goes
+   before the next one. */
+.reveal .slides .shape-grid {
+  figure,
+  figure p,
+  img {
+    margin: 0;
+  }
+
+  .small-caption {
+    margin: 4px 0 28px;
+
+    p {
+      margin: 0;
+    }
+  }
+}
+
 /* Week 1, "You already understand probability": a spoken question and its answer, then
    two cards that unpack them. Neutral colors, since week 2's colored cards (.kinds) each
    stand for something. The exchange's two spans arrive wrapped in one <p>, so that's
@@ -1142,6 +1167,8 @@ $bp-orange: mix($brand-orange, white, 70%);
   padding: 18px 24px;
   font-size: 0.8em;
   transition: opacity 0.4s;
+  display: flex;
+  flex-direction: column;
   @include kind-color($brand-blue);
 
   &.kind-certainty {
@@ -1154,6 +1181,12 @@ $bp-orange: mix($brand-orange, white, 70%);
 
   p {
     margin: 0.4em 0;
+  }
+
+  // A closing line (a definition, a takeaway) sits at the bottom of the card; the
+  // cards in a row are the same height, so those lines line up across it
+  > p:last-child {
+    margin-top: auto;
   }
 
   .kind-part {
@@ -1182,14 +1215,19 @@ $bp-orange: mix($brand-orange, white, 70%);
 }
 
 /* Week 2's canvas widgets (js/galton.js, sample-mean.js, conditional.js,
-   model-builder.js): the canvas on the left, its controls on the right, in week 1's
+   model-builder.js, reclass.js, sex-humps.js): the canvas on the left, its controls on the right, in week 1's
    .widget-layout row */
 .w2-graph {
   flex: 0 0 70%;
-  height: 640px;
+  height: 700px;
   background: white;
   border-radius: 10px;
   user-select: none;
+}
+
+/* shorter, for a slide with text under the widget */
+.w2-graph.w2-short {
+  height: 540px;
 }
 
 .w2-side {

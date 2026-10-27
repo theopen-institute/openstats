@@ -8,9 +8,9 @@
 
 How cases **vary**
 
-- Random individuals, predictable crowds
 - Center, spread and shape
 - z-scores: where one case sits
+- Shapes that tell stories
 :::
 
 ::: {.kind .kind-certainty}
@@ -21,6 +21,8 @@ How **sure** we are
 
 - From "no idea" to "quite sure"
 - More data: same variation, more certainty
+- Random individuals, predictable crowds
+- The named shapes: Normal, Beta, …
 :::
 
 ::: {.kind .kind-correlative}
@@ -30,7 +32,7 @@ How **sure** we are
 How two things **vary together**
 
 - A distribution that moves
-- Correlation and coefficients
+- Correlation and coefficients, in z-scores
 - Add a variable, and the others change
 :::
 :::
