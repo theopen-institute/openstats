@@ -37,6 +37,19 @@ STYLE <- HTML(
   h1 { margin-bottom: 0; }
   p { font-size: 90%; }
 
+  /* Reset only looks disabled before the first draw: a disabled button gets
+     no clicks, and shift-click there secretly stacks the bag */
+  #reset.looks-disabled,
+  #reset.looks-disabled:hover,
+  #reset.looks-disabled:active {
+    opacity: var(--bs-btn-disabled-opacity);
+    cursor: default;
+    color: var(--bs-btn-disabled-color);
+    background-color: var(--bs-btn-disabled-bg);
+    border-color: var(--bs-btn-disabled-border-color);
+    box-shadow: none;
+  }
+
   #resultTable.shiny-output-error,
   #resultTable.shiny-output-error-validation { color: inherit; }
 
@@ -196,7 +209,18 @@ ui <- page_sidebar(
         "
       )
     ),
-    actionButton("reset", "Reset", class = "btn-danger")
+    actionButton(
+      "reset",
+      "Reset",
+      class = "btn-danger",
+      onclick = "
+        Shiny.setInputValue(
+          'reset_click',
+          {shift: event.shiftKey},
+          {priority: 'event'}
+        );
+      "
+    )
   ),
 
   mainPanel(
@@ -222,11 +246,17 @@ server <- function(input, output, session) {
   lik_hist <- reactiveVal(list())
   max_hist <- 10L
 
+  # Stacking the deck for a demo: shift-click Reset before any draws, and the
+  # hidden bag holds exactly this many blue stones
+  STACKED_BLUE <- 3L
+  stack_next_hidden <- FALSE
+
   observeEvent(
     input$bagContents,
     {
       if (input$bagContents == "hidden") {
-        bag_blue(sample(0:TOTAL_STONES, 1))
+        bag_blue(if (stack_next_hidden) STACKED_BLUE else sample(0:TOTAL_STONES, 1))
+        stack_next_hidden <<- FALSE
       } else {
         bag_blue(as.integer(input$bagContents))
       }
@@ -248,7 +278,19 @@ server <- function(input, output, session) {
     ignoreInit = TRUE
   )
 
-  observeEvent(input$reset, {
+  observeEvent(input$reset_click, {
+    if (length(draws()) == 0) {
+      # Reset looks disabled until a stone is drawn; only shift-click does anything
+      req(isTRUE(input$reset_click$shift))
+      if (input$bagContents == "hidden") {
+        bag_blue(STACKED_BLUE)
+      } else {
+        # the bag is set when the menu switches back to hidden
+        stack_next_hidden <<- TRUE
+        updateSelectizeInput(session, "bagContents", selected = "hidden")
+      }
+      return()
+    }
     draws(character())
     lik_hist(list())
     # bag_blue(sample(0:TOTAL_STONES, 1))
@@ -259,11 +301,10 @@ server <- function(input, output, session) {
     has_draws <- length(draws()) > 0
     if (has_draws) {
       shinyjs::disable("bagContents")
-      shinyjs::enable("reset")
     } else {
       shinyjs::enable("bagContents")
-      shinyjs::disable("reset")
     }
+    shinyjs::toggleClass("reset", "looks-disabled", condition = !has_draws)
   })
 
   observe({

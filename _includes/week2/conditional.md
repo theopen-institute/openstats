@@ -1,12 +1,12 @@
 ```{=html}
 <!-- Week 2, "A relationship is a distribution that moves": the weights of adults of
-     about the same height, against everyone's. Data from the deck's kung-data block,
+     about the same height, against everyone's. Data from the deck's adults-data block,
      behavior in js/conditional.js, styles in css/deck.scss (.w2-*). -->
 <div class="widget-layout conditional">
   <div class="w2-graph"></div>
   <div class="w2-side">
     <label>Height: <b class="cond-height-out"></b> <small class="gray">± 2.5 cm</small>
-      <input type="range" class="cond-height" min="140" max="172" step="0.5" value="145">
+      <input type="range" class="cond-height" min="136" max="180" step="0.5" value="145">
     </label>
     <p class="w2-hint">Or drag across the plot.</p>
     <table class="w2-stats">

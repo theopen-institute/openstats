@@ -1,10 +1,14 @@
 # Dataset loaders shared by the decks. Each deck adds its own derived columns.
 
-# !Kung San adults (Nancy Howell's census, via McElreath's Statistical Rethinking).
-# adults = FALSE gives everyone she counted, children too.
-load_howell <- function(adults = TRUE) {
-  read_csv("datasets/kungsan.csv", show_col_types = FALSE) |>
-    select(-1) |>
+# Nepal's adults, measured: WHO STEPS survey 2019 (Nepal Health Research Council),
+# npl2019.dta. One row per respondent aged 15-69: height (cm, m11), weight (kg, m12),
+# age, male (sex) and svy_wt, the weight for its physical measurements (wstep2: how many
+# Nepalis each one stands for). Of the 5,593 respondents, 74 have no measurements (the
+# pregnant women among them, who weren't weighed) and 12 impossible ones are left out:
+# heights outside 120-200 cm, or a BMI below 12 or above 60 (mostly a height typed
+# into the weight). adults = FALSE keeps the 15-17-year-olds.
+load_steps <- function(adults = TRUE) {
+  read_csv("datasets/nepal_steps.csv", col_types = "ddiid") |>
     filter(!adults | age >= 18)
 }
 

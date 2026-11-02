@@ -93,8 +93,11 @@
 # Direction of conditions {#direction}
 
 - The second thing to know about the bar. The last slide: a condition narrows down what we count. This one: which side of the bar a thing is on matters. Their intuitions have been right so far, rain by month included. This is the one place they slip.
-- Read the two results under the table. With the starting numbers, 80% of rural students study sociology, but only 25% of sociology students are rural. Same people, same table, different question.
-- Let students change the numbers and watch the two drift apart. They're only equal when the two groups are the same size.
+- The table is the last slide's days again, split two ways: July or not, rain or not.
+- Click: P( rain | Jul ), 126 rainy days out of July's 155, 0.81. Most July days are rainy.
+- Click: P( Jul | rain ), the same 126 days, now out of all 565 rainy days, 0.22. Most rainy days fall in other months. Same top number, different bottom one.
+- Click: same days, same table, different question.
+- Let students change the numbers and watch the two drift apart. They're only equal when the two bottoms are equal: as many July days as rainy days.
 - Nothing is wrong with their intuition, only with which question it answers. Plant it and move on: this slip comes back twice today. It turns "99% sensitive" into "99% sure" (the HIV test), and a p-value into "the chance the hypothesis is true."
 
 # Conditional risk {#conditional-risk}
@@ -213,7 +216,7 @@ I want to illustrate a very famous example involving HIV testing. This is releva
 
 # Statistical significance (revisited) {#statistical-significance-revisited}
 
-- Clicks: (1) the red phrase lights up, (2) then the blue one. (3) They turn into P( data | hypothesis ), each phrase sitting under the part it becomes. (4) The reverse appears beside it, P( hypothesis | data ): the same two words, swapped. (5) The closing line.
+- Clicks: (1) the red phrase lights up, with a plain definition of the null hypothesis under the quote: nothing is going on. (2) The blue one, with the p-value: how surprising our data would be if nothing were going on. (3) They turn into P( data | hypothesis ), each phrase sitting under the part it becomes. (4) The reverse appears beside it, P( hypothesis | data ): the same two words, swapped. (5) The closing line.
 
 There's a lot of very dense jargon here, but we don't need to unpack it all. Let's just take a minute to think about what is being measured here.
 
@@ -244,7 +247,7 @@ For Frequentists, it's a bit more complicated. "Probably" here would refer to th
 - Observation runs from data to the world. You see something and ask what it tells you. That's how we reason in daily life, and how ethnographers reason about an interview.
 - A p-value runs the other way. It starts from a world we usually don't believe in (the null: nothing is going on), and asks how surprising our data would be there. It's a statement about the data, given an imagined world.
 - The closing line ties it to "Asking the right question": like sensitivity and specificity, a p-value works backwards. It's the right answer to the wrong question: P( data | hypothesis ) is correctly computed, but it isn't P( hypothesis | data ). (If asked about the details: the significance level α is the study's false-positive rate, the same kind of number as the HIV test's 3%; the research table's footnote says specificity is 1 − α.) Treating p < 0.05 as "95% likely true" is the same mistake as treating a 97%-specific test as a 97% diagnosis. We just saw how wrong that can be.
-- Call back to "Direction of conditions": it's the same slip as reading P( Rural | Sociology ) off P( Sociology | Rural ).
+- Call back to "Direction of conditions": it's the same slip as reading P( Jul | rain ) off P( rain | Jul ).
 - Click: to turn it around, we need one more ingredient, what we already believe. It's in red, like the prior. That's what the HIV test needed too: "who gets tested" changed a positive from 3% to 79%. For research, it's how plausible the idea was before the study. Bayesian updating is the fix: it puts that ingredient in and runs in the direction we actually observe. That's the next section.
 
 # Bayesian Updating: What it is not {#what-it-is-not}

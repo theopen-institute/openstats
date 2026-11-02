@@ -8,8 +8,9 @@ sex_difference <- function(fit) {
     transmute(difference = `alpha[2]` - `alpha[1]`)
 }
 
-# The !Kung DAG: sex, height, weight and age. `highlight` picks the path to show.
-howell_dag <- function(highlight = NULL) {
+# "Does sex affect weight?": sex, height, weight and age. `highlight` picks the path
+# to show.
+sex_weight_dag <- function(highlight = NULL) {
   dag_plot(
     c("S -> H", "S -> W", "H -> W", "A -> H", "A -> W"),
     list(S = c(0, 1), H = c(1, 0), W = c(2, 1), A = c(3, 0)),
@@ -21,11 +22,20 @@ howell_dag <- function(highlight = NULL) {
   )
 }
 
-# Height against weight, colored by sex (the !Kung adults, or a simulation of them)
-sex_scatter <- function(data, alpha = 0.7, size = 2.5) {
+# Height against weight, colored by sex (Nepal's adults, or a simulation of them).
+# The defaults suit thousands of points; xlim and ylim zoom in without dropping any.
+# Measured heights are mostly whole cm, so `jitter` spreads each column of dots over
+# its centimetre.
+sex_scatter <- function(data, alpha = 0.3, size = 1.2, jitter = 0.5, xlim = NULL, ylim = NULL) {
   ggplot(data, aes(height, weight, color = sex)) +
-    geom_point(alpha = alpha, size = size) +
+    geom_point(
+      alpha = alpha,
+      size = size,
+      position = position_jitter(width = jitter, height = 0, seed = 1)
+    ) +
     scale_color_manual(values = c(female = RED, male = BLUE), name = NULL) +
+    guides(color = guide_legend(override.aes = list(alpha = 1, size = 4))) +
+    coord_cartesian(xlim = xlim, ylim = ylim) +
     labs(x = "Height (cm)", y = "Weight (kg)")
 }
 

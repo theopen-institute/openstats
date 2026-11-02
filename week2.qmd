@@ -14,8 +14,8 @@ format:
 source("r/deck-setup.R")
 source("r/week2.R")
 
-# !Kung San adults (Howell): our running example
-howell <- load_howell() |>
+# Nepal's adults, measured by the WHO STEPS survey in 2019: our running example
+adults <- load_steps() |>
   mutate(
     sex = factor(
       if_else(male == 1, "male", "female"),
@@ -25,15 +25,17 @@ howell <- load_howell() |>
     z_weight = standardize(weight)
   )
 
-h_mean <- mean(howell$height)
-h_sd <- sd(howell$height)
-w_mean <- mean(howell$weight)
-w_sd <- sd(howell$weight)
-r_hw <- cor(howell$height, howell$weight)
-h_women <- mean(howell$height[howell$male == 0])
-h_men <- mean(howell$height[howell$male == 1])
-spreads <- two_spreads(howell)
-sex_fit <- sex_weight_fits(howell)
+h_mean <- mean(adults$height)
+h_sd <- sd(adults$height)
+w_mean <- mean(adults$weight)
+w_sd <- sd(adults$weight)
+r_hw <- cor(adults$height, adults$weight)
+h_women <- mean(adults$height[adults$male == 0])
+h_men <- mean(adults$height[adults$male == 1])
+h_sd_women <- sd(adults$height[adults$male == 0])
+h_sd_men <- sd(adults$height[adults$male == 1])
+spreads <- two_spreads(adults)
+sex_fit <- sex_weight_fits(adults)
 
 houses <- load_houses() |>
   mutate(z_price = standardize(price), z_area = standardize(area_m2))
@@ -235,20 +237,20 @@ incomes[[6]]
 :::
 :::
 
-## Our running example: the !Kung San {notes="notes/week2_notes.md#kung"}
+## Our running example: Nepal's adults {notes="notes/week2_notes.md#adults"}
 
 ::: {.columns}
 ::: {.column width="45%"}
-- Census data collected by anthropologist **Nancy Howell** in the late 1960s among
-  the !Kung San of the Kalahari.
-- `r nrow(howell)` adults (18+).
+- The WHO's **STEPS** survey of health risks, run in Nepal in 2019 by the Nepal Health
+  Research Council.
+- `r fmt(nrow(adults), 0)` adults (18–69), measured at home.
 - Height (cm), weight (kg), age, sex.
-- The same data McElreath uses in *Statistical Rethinking*.
+- Only `r pct(mean(adults$male))` are men: many young men were working abroad.
 :::
 
 ::: {.column width="55%"}
-```{r howell-table}
-howell |>
+```{r adults-table}
+adults |>
   select(height, weight, age, sex) |>
   head(6) |>
   knitr::kable(digits = 1)
@@ -256,14 +258,14 @@ howell |>
 :::
 :::
 
-```{r kung-data}
-kung_widget_data(howell) # for the widgets later in the deck
+```{r adults-data}
+adults_widget_data(adults) # for the widgets later in the deck
 ```
 
 ## Describing distributions: center, spread, shape {notes="notes/week2_notes.md#describing"}
 
 ```{r height-hist, fig.height = 5.4}
-height_hist_plot(howell)
+height_hist_plot(adults)
 ```
 
 Read the **shape** first: one hump, roughly symmetric. Then label it: its
@@ -276,13 +278,13 @@ Read the **shape** first: one hump, roughly symmetric. Then label it: its
 ::: {.r-stack}
 ::: {.fragment .fade-out fragment-index=1}
 ```{r normal-overlay, opts.label = "half_tall"}
-normal_overlay_plot(howell)
+normal_overlay_plot(adults)
 ```
 :::
 
 ::: {.fragment fragment-index=1}
 ```{r normal-bands, opts.label = "half_tall"}
-normal_overlay_plot(howell, bands = TRUE)
+normal_overlay_plot(adults, bands = TRUE)
 ```
 :::
 :::
@@ -298,8 +300,8 @@ this shape.
 
 ::: {.fragment fragment-index=1}
 Every Normal has the same landmarks: **68%** of cases within 1 SD of the mean, **95%**
-within 2 SD. The !Kung adults: `r fmt(100 * mean(abs(howell$z_height) < 1), 0)`% and
-`r fmt(100 * mean(abs(howell$z_height) < 2), 0)`%.
+within 2 SD. Nepal's adults: `r fmt(100 * mean(abs(adults$z_height) < 1), 0)`% and
+`r fmt(100 * mean(abs(adults$z_height) < 2), 0)`%.
 :::
 :::
 :::
@@ -307,28 +309,31 @@ within 2 SD. The !Kung adults: `r fmt(100 * mean(abs(howell$z_height) < 1), 0)`%
 ## One hump, or two? {notes="notes/week2_notes.md#two-humps"}
 
 ```{r sex-humps-data}
-sex_humps_widget_data(howell)
+sex_humps_widget_data(adults)
 ```
 
 ::: {.widget-layout .sex-humps}
 {{< include _includes/week2/sex-humps.md >}}
 
 ::: {.w2-side}
-The same heights. Look at the middle: **fewer adults around 155–160 cm** than on
-either side.
+The same heights. Men are about `r fmt(h_men - h_women, 0)` cm taller than women, on
+average.
 
-_Why a dip?_
+_So why only one hump?_
 
 ::: {.fragment fragment-index=1}
 **Women and men.** Two crowds, overlapping in the middle.
 :::
 
 ::: {.fragment fragment-index=2}
-Each has its own Normal: women around `r fmt(h_women)` cm, men around `r fmt(h_men)` cm.
+Each has its own Normal: women around `r fmt(h_women)` cm, men around `r fmt(h_men)` cm,
+each with an SD of about `r fmt((h_sd_women + h_sd_men) / 2, 0)` cm.
 :::
 
 ::: {.fragment fragment-index=3}
-Added together (dashed), they make one lopsided bell, with no dip.
+Added together (dashed), they make one lopsided bell. Two crowds only make two humps
+if they're more than about 2 SDs apart. These are
+`r fmt((h_men - h_women) / sqrt((h_sd_women^2 + h_sd_men^2) / 2))` SDs apart.
 :::
 :::
 :::
@@ -337,25 +342,26 @@ Added together (dashed), they make one lopsided bell, with no dip.
 
 ```{r z-example}
 ex_h <- 165
-ex_w <- 58
+ex_w <- 72
 ex_zh <- (ex_h - h_mean) / h_sd
 ex_zw <- (ex_w - w_mean) / w_sd
+stopifnot(ex_zw > ex_zh) # the slide says he's more unusually heavy than tall
 ```
 
-_A !Kung man is **`r ex_h` cm** and **`r ex_w` kg**. Is he more unusually tall, or heavy?_
+_A man is **`r ex_h` cm** and **`r ex_w` kg**. Is he more unusually tall, or heavy?_
 
 ::: {.columns}
 ::: {.column width="55%"}
 ::: {.r-stack}
 ::: {.fragment .fade-out fragment-index=2}
 ```{r man-plot, opts.label = "half"}
-unusual_man_plot(howell, ex_h, ex_w)
+unusual_man_plot(adults, ex_h, ex_w)
 ```
 :::
 
 ::: {.fragment fragment-index=2}
 ```{r man-plot-z, opts.label = "half"}
-unusual_man_plot(howell, ex_h, ex_w, z = TRUE)
+unusual_man_plot(adults, ex_h, ex_w, z = TRUE)
 ```
 :::
 :::
@@ -387,7 +393,7 @@ More unusually heavy than tall. A **z‑score** places one case in its crowd.
 ::: {.columns}
 ::: {.column width="58%"}
 ```{r height-rulers, opts.label = "half"}
-height_ruler_plot(howell)
+height_ruler_plot(adults)
 ```
 :::
 
@@ -520,7 +526,7 @@ belief_plot(plateau_density(center = 40, plateau = 20, taper = 15), ymax = 0.05)
 
 ## How sure can a few people make us? {notes="notes/week2_notes.md#sample-mean"}
 
-_Pretend these `r nrow(howell)` adults are everyone. We can only afford to measure a few._
+_Pretend these `r nrow(adults)` adults are everyone. We can only afford to measure a few._
 
 {{< include _includes/week2/sample-mean.md >}}
 
@@ -564,7 +570,7 @@ How **plausible** each value of an unknown is. One true value; we're unsure whic
 
 - The mayor's share of the vote (Week 1)
 - The age of the man in the photo
-- The average height of all !Kung adults
+- The average height of all Nepali adults
 :::
 :::
 
@@ -589,7 +595,7 @@ _A named distribution is the shape a particular process produces._
 
 ```{r named-shapes, opts.label = "shapes"}
 #| layout-ncol: 3
-walk(named_shape_plots(howell), print)
+walk(named_shape_plots(adults), print)
 ```
 
 ::: {.fragment}
@@ -642,8 +648,9 @@ walk(certainty_shape_plots(), print)
 # Two variables at once {notes="notes/week2_notes.md#correlation"}
 
 ```{r scatter-raw, fig.height = 5.8}
-ggplot(howell, aes(height, weight)) +
-  geom_point(color = ORANGE, alpha = 0.7, size = 2.5) +
+ggplot(adults, aes(height, weight)) +
+  geom_point(color = ORANGE, alpha = 0.3, size = 1.2) +
+  coord_cartesian(xlim = c(130, 186), ylim = c(25, 110)) +
   labs(x = "Height (cm)", y = "Weight (kg)")
 ```
 
@@ -666,7 +673,7 @@ That's [P( weight | height )]{.orange}: Week 1's bar, for a whole distribution.
 _Each adult votes: on the same side of average for both, or on opposite sides?_
 
 ```{r scatter-z, fig.height = 6}
-agreement_plot(howell)
+agreement_plot(adults)
 ```
 
 ## Correlation is average agreement {.mechanics notes="notes/week2_notes.md#average-agreement"}
@@ -685,7 +692,7 @@ $$
 
 ::: {.column width="45%"}
 ```{r cor-code, echo = TRUE}
-cor(howell$height, howell$weight)
+cor(adults$height, adults$weight)
 ```
 
 - *r* is always between **−1** and **+1**.
@@ -717,17 +724,20 @@ cor_misses_plot()
 ::: {.columns}
 ::: {.column width="55%"}
 ```{r candidate-lines, fig.width = 7, fig.height = 6.5}
-candidate_lines_plot(howell, r_hw)
+candidate_lines_plot(adults, r_hw)
 ```
 :::
 
 ::: {.column width="45%"}
-A line through the middle of the moving distribution. In z-scores, both variables have
-mean 0, so the line needs only **one number**: its slope, β.
+A line through the middle of the moving distribution, with both variables in
+**z-scores**. Both have mean 0, so the line passes through (0, 0) and needs only
+**one number**: its slope, β.
 
 $$
 z_{\text{weight}} = \beta \times z_{\text{height}}
 $$
+
+β is in **SDs of weight per SD of height**.
 
 ::: {.fragment}
 Which line describes the data best?
@@ -740,15 +750,17 @@ Which line describes the data best?
 ::: {.columns}
 ::: {.column width="55%"}
 ```{r residuals, fig.width = 7, fig.height = 6.5}
-residuals_plot(howell, r_hw)
+n_misses <- 200
+residuals_plot(adults, r_hw, n = n_misses)
 ```
 :::
 
 ::: {.column width="45%"}
-- The [red lines]{.red} are the **misses**: how far each person is from the line.
+- The [red lines]{.red} are the **misses**: how far each person is from the line
+  (for `r n_misses` adults, picked at random).
 - The best line makes the misses as small as possible overall.
-- [With standardized data and one predictor, the best β is exactly the correlation:
-  **β = r = `r fmt(r_hw, 2)`**.]{.fragment}
+- [With z-scores and one predictor, the best β is exactly the correlation:
+  **β = r = `r fmt(r_hw, 2)`**. One SD taller, `r fmt(r_hw, 2)` SD heavier.]{.fragment}
 :::
 :::
 
@@ -761,7 +773,8 @@ slope_kg_cm <- r_hw * w_sd / h_sd
 ::: {.columns}
 ::: {.column width="45%"}
 - In z-scores: **β = `r fmt(r_hw, 2)`**
-  - "An adult 1 SD taller than average is, on average, `r fmt(r_hw, 2)` SD heavier."
+  - "An adult 1 SD (`r fmt(h_sd)` cm) taller than average is, on average,
+    `r fmt(r_hw, 2)` SD heavier."
 - Back in real units: β × SD~weight~ / SD~height~
   - `r fmt(r_hw, 2)` × `r fmt(w_sd)` / `r fmt(h_sd)` = **`r fmt(slope_kg_cm, 2)` kg per cm**
   - "Each extra centimeter of height goes with about `r fmt(slope_kg_cm, 2)` kg more
@@ -769,15 +782,23 @@ slope_kg_cm <- r_hw * w_sd / h_sd
 :::
 
 ::: {.column width="55%"}
-```{r slope-plot, opts.label = "half"}
-ggplot(howell, aes(height, weight)) +
-  geom_point(color = GRAY, alpha = 0.6, size = 2) +
-  geom_smooth(method = "lm", se = FALSE, color = ORANGE, linewidth = 1.5) +
-  labs(x = "Height (cm)", y = "Weight (kg)")
+```{r lm-code, echo = TRUE}
+lm(z_weight ~ z_height, data = adults) |>
+  coef() |>
+  round(2)
 ```
 
-```{r lm-code, echo = TRUE}
-coef(lm(weight ~ height, data = howell))
+```{r slope-plot, opts.label = "half_short"}
+ggplot(adults, aes(height, weight)) +
+  geom_point(color = GRAY, alpha = 0.2, size = 1) +
+  geom_abline(
+    intercept = w_mean - slope_kg_cm * h_mean,
+    slope = slope_kg_cm,
+    color = ORANGE,
+    linewidth = 1.5
+  ) +
+  coord_cartesian(xlim = c(130, 186), ylim = c(25, 100)) +
+  labs(x = "Height (cm)", y = "Weight (kg)", title = "The same line, in cm and kg")
 ```
 :::
 :::
@@ -785,12 +806,16 @@ coef(lm(weight ~ height, data = howell))
 ## How sure are we about β? {notes="notes/week2_notes.md#beta-posterior"}
 
 ```{r beta-posterior, fig.height = 5.5}
-beta_posterior_plot(howell)
+beta_posterior_plot(adults)
+beta_ci <- confint(lm(z_weight ~ z_height, adults), "z_height", level = 0.95)
 ```
 
 - β is a number we don't know, so it gets a [certainty distribution]{.green}: prior ×
   likelihood → posterior, like the mayor's vote share last week.
-- [With 20 adults we're unsure about β. With `r nrow(howell)`, much less so.]{.fragment}
+- [With 20 adults we're unsure about β. With `r fmt(nrow(adults), 0)`, much less so:
+  between `r fmt(beta_ci[1], 2)` and `r fmt(beta_ci[2], 2)` SD per SD, or
+  `r fmt(beta_ci[1] * w_sd / h_sd, 2)` to `r fmt(beta_ci[2] * w_sd / h_sd, 2)` kg per
+  cm.]{.fragment}
 
 ## Why we always standardize {.mechanics .smaller notes="notes/week2_notes.md#why-standardize"}
 
@@ -825,7 +850,7 @@ _The same relationship, four rulers:_
 A prior for kg per cm would be wrong for lb per inch. In SDs, one prior fits all.
 
 ```{r z-code, echo = TRUE, eval = FALSE}
-howell |>
+adults |>
   mutate(
     z_height = (height - mean(height)) / sd(height),
     z_weight = (weight - mean(weight)) / sd(weight)
@@ -885,19 +910,20 @@ noise_dist_plot(r_small, n_vars)
 
 # Do men weigh more? {notes="notes/week2_notes.md#sex-weight"}
 
-_!Kung men average `r fmt(h_men)` cm, women `r fmt(h_women)` cm. Are the men heavier, too?_
+_Men average `r fmt(h_men)` cm, women `r fmt(h_women)` cm. Are the men heavier, too?_
 
 ::: {.columns}
 ::: {.column width="58%"}
 ```{r sex-weight, opts.label = "half_tall"}
-sex_weight_plot(howell)
+sex_weight_plot(adults)
 ```
 :::
 
 ::: {.column width="42%"}
 - Women average `r fmt(sex_fit$weight_women)` kg, men `r fmt(sex_fit$weight_men)` kg.
-- [Fit weight on sex alone, and the coefficient for sex is [**+`r fmt(sex_fit$total)`
-  kg**]{.orange}.]{.fragment}
+- [Fit weight, in z-scores, on sex (0 for women, 1 for men). The coefficient for sex
+  is [**+`r fmt(sex_fit$total, 2)` SD**]{.orange}: `r fmt(sex_fit$total, 2)` ×
+  `r fmt(w_sd)` = `r fmt(sex_fit$kg$total)` kg.]{.fragment}
 
 ::: {.fragment}
 Is that because they're men, or because they're taller?
@@ -911,27 +937,34 @@ _Pick a height. Compare only the women and men that tall._
 
 {{< include _includes/week2/conditional-sex.md >}}
 
-## Add height, and sex stops predicting weight {notes="notes/week2_notes.md#sex-height"}
+## Add height, and sex shrinks {notes="notes/week2_notes.md#sex-height"}
+
+_Weight and height in z-scores, sex 0 or 1. In brackets: back in kg and cm._
 
 ::: {.columns}
-::: {.column width="55%"}
+::: {.column width="58%"}
 |  | weight ~ sex | [weight ~ sex + height]{.fragment fragment-index=1} |
 |---|--:|--:|
-| **Sex** (men − women) | [+`r fmt(sex_fit$total)` kg]{.orange} | [[`r fmt(sex_fit$direct)` kg]{.orange}]{.fragment fragment-index=1} |
-| **Height** (per cm) |  | [+`r fmt(sex_fit$slope, 2)` kg]{.fragment fragment-index=1} |
+| **Sex** (men − women) | [+`r fmt(sex_fit$total, 2)` SD<br>(`r fmt(sex_fit$kg$total)` kg)]{.orange} | [[+`r fmt(sex_fit$direct, 2)` SD<br>(`r fmt(sex_fit$kg$direct)` kg)]{.orange}]{.fragment fragment-index=1} |
+| **Height** (per SD) |  | [+`r fmt(sex_fit$slope, 2)` SD<br>(`r fmt(sex_fit$kg$slope, 2)` kg per cm)]{.fragment fragment-index=1} |
 
 ::: {.fragment fragment-index=2}
-Men are `r fmt(sex_fit$height_gap)` cm taller. At `r fmt(sex_fit$slope, 2)` kg per cm:\
-`r fmt(sex_fit$height_gap)` × `r fmt(sex_fit$slope, 2)` = [**`r fmt(sex_fit$height_gap * sex_fit$slope)` kg**]{.orange}.
+Men are `r fmt(sex_fit$height_gap, 2)` SD (`r fmt(sex_fit$kg$height_gap)` cm) taller.
+At `r fmt(sex_fit$slope, 2)` SD per SD:\
+`r fmt(sex_fit$height_gap, 2)` × `r fmt(sex_fit$slope, 2)` ≈
+[**`r fmt(sex_fit$height_gap * sex_fit$slope, 2)` SD**]{.orange}
+(`r fmt(sex_fit$kg$through_height)` kg).
 :::
 
 ::: {.fragment fragment-index=3}
-The effect of sex on weight passes **through height**. The direct effect is about zero
-(somewhere between `r fmt(sex_fit$direct_lo)` and +`r fmt(sex_fit$direct_hi)` kg).
+Most of the effect of sex passes **through height**. A little is left: men weigh about
+`r fmt(sex_fit$direct, 2)` SD (`r fmt(sex_fit$kg$direct)` kg) more than women of the
+same height (somewhere between `r fmt(sex_fit$kg$direct_lo)` and
+`r fmt(sex_fit$kg$direct_hi)` kg).
 :::
 :::
 
-::: {.column width="45%"}
+::: {.column width="42%"}
 ::: {.fragment fragment-index=2}
 ```{r sex-dag, opts.label = "dag_half"}
 sex_path_dag()
@@ -950,8 +983,8 @@ _Both. They answer different questions._
 
 | Question | Model | Answer |
 |---|---|---|
-| Do men weigh more than women? | weight ~ sex | Yes: [`r fmt(sex_fit$total)` kg more]{.orange} |
-| Do men weigh more than women [of the same height]{.blue}? | weight ~ sex + height | No: [about the same]{.orange} |
+| Do men weigh more than women? | weight ~ sex | Yes: [`r fmt(sex_fit$total, 2)` SD (`r fmt(sex_fit$kg$total)` kg) more]{.orange} |
+| Do men weigh more than women [of the same height]{.blue}? | weight ~ sex + height | A little: [`r fmt(sex_fit$direct, 2)` SD (`r fmt(sex_fit$kg$direct)` kg) more]{.orange} |
 
 - [A coefficient's meaning depends on what else is in the model.]{.fragment}
 - [Add a variable, and it can change, vanish or even flip. You'll see a flip in the
@@ -1004,7 +1037,7 @@ Think in distributions, not single numbers.
 
 - Correlation and regression describe **how** things vary together. They don't say
   **why**.
-- Adding height made sex's coefficient vanish. Adding living area will flip bedrooms'.
+- Adding height shrank sex's coefficient. Adding living area will flip bedrooms'.
   Which models answer the questions we care about?
 - [The data can't decide. We have to say what we think causes what: **DAGs** and
   **causal models**, next week.]{.fragment}
@@ -1239,7 +1272,7 @@ $$
 
 - **The book:** Richard McElreath,
   [*Statistical Rethinking*](https://xcelab.net/rm/) (2nd edition, 2020).
-  Chapter 4 builds these ideas with the same !Kung data; chapter 5 adds a second
+  Chapter 4 builds these ideas with height and weight; chapter 5 adds a second
   variable, as we did with height and sex.
 - **The lectures:** McElreath's
   [Statistical Rethinking 2026](https://github.com/rmcelreath/stat_rethinking_2026)

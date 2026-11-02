@@ -1,5 +1,6 @@
-// Week 2, "How sure can a few people make us?": pretend the 352 !Kung adults are
-// everyone, and measure a random few. Two distributions share one height axis:
+// Week 2, "How sure can a few people make us?": pretend the adults Nepal's STEPS
+// survey measured are everyone, and measure a random few. Two distributions share one
+// height axis:
 //   top    — the adults we measured, a dot each (a population distribution), over a
 //            faint histogram of everyone, scaled to the same number of people
 //   bottom — how sure we are about the average height: Normal(sample mean, SD / √n),
@@ -7,7 +8,7 @@
 // Each new sample moves the certainty curve; the last few stay behind, faint, so the
 // class sees it jump around by about its own width. More people never narrows the
 // top; it narrows the bottom.
-// Data from the page (r/week2.R, kung_widget_data()). Markup in
+// Data from the page (r/week2.R, adults_widget_data()). Markup in
 // _includes/week2/sample-mean.md, styles in css/deck.scss (.w2-*).
 import { brand, withAlpha } from './palette.js';
 import {
@@ -15,11 +16,11 @@ import {
 } from './canvas-plot.js';
 import { animate } from './tween.js';
 
-const X_RANGE = [134, 182];
+const X_RANGE = [130, 186];
 const HISTORY = 10; // earlier certainty curves left on the plot
 
 const root = document.querySelector('.sample-mean');
-const data = pageData('kung-data');
+const data = pageData('adults-data');
 if (root && data) init(root, data.height);
 
 function init(root, heights) {
@@ -146,7 +147,7 @@ function init(root, heights) {
       });
     }
 
-    xAxis(ctx, x, botBand.y1, ticks(135, 180, 5), { title: 'Height (cm)' });
+    xAxis(ctx, x, botBand.y1, ticks(130, 185, 5), { title: 'Height (cm)' });
   }
 
   sizeIn.addEventListener('input', () => {

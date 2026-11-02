@@ -146,8 +146,11 @@ inline-glued models in `projects/`), named for what they fit: `weight_sex.stan`,
 
 ### Data (`datasets/*.csv`)
 `wb2022.csv` + `wb_country.csv` are the World Bank panel used by all projects (joined and
-pivoted long→wide in `_base.qmd`). `berkeley.csv` (admissions / Simpson's paradox),
-`kungsan.csv` (!Kung height/weight) back the week decks. Nepal is the recurring reference
+pivoted long→wide in `_base.qmd`). `berkeley.csv` (admissions / Simpson's paradox) and
+`nepal_steps.csv` back the week decks. `nepal_steps.csv` is the running example of
+weeks 2 and 3: Nepal's adults measured by the WHO STEPS survey in 2019 (height, weight,
+age, sex and the survey weight, one row per respondent; extracted from the survey's
+microdata, as described at `load_steps()`). Nepal is the recurring reference
 case highlighted in project plots. `nepal_ages.csv` (NLSS IV 2022/23, weighted, ages as
 reported, so with the survey's rounding to ages ending in 0 and 5) and `japan_ages.csv`
 (UN WPP 2024) are week 2's age distributions: small tabulations, not microdata. Their
@@ -167,7 +170,7 @@ rendering (`!notes/**` in `_quarto.yml`) — it is a content source, not pages.
 - **In decks:** drawn as ggplots with `dag_plot()` from `r/rlib.R`. Any three-node DAG
   (with or without a direct X → Y arrow, `direct = TRUE`) should use the `fork_dag()`,
   `pipe_dag()` or `collider_dag()` building blocks so they look the same everywhere.
-  A DAG with its own layout is a named function in `r/weekN.R` (`howell_dag()`,
+  A DAG with its own layout is a named function in `r/weekN.R` (`sex_weight_dag()`,
   `wealth_fork_dag()`); one used by several decks (`surgeon_dag()`, `bedrooms_dag()`)
   is in `rlib.R`. The dagitty.net editor slide is the
   shared include `_includes/dagitty-slide.md`.
@@ -253,7 +256,7 @@ The `weekN.qmd` files should read as slides. Things that aren't content live els
   fork/pipe/collider helpers, the DAGs shared between decks, and
   `replace_indexes()` (relabels Stan names like `alpha[2]` as `alpha[female]`).
   `workflow.qmd` includes it directly so students can read it.
-- **`r/data.R`** — `load_howell()`, `load_houses()`, `load_berkeley()`,
+- **`r/data.R`** — `load_steps()`, `load_houses()`, `load_berkeley()`,
   `load_wb(codes)` (World Bank 2022, one column per series code) and
   `load_wb_countries()`.
 
@@ -269,7 +272,7 @@ curve through its 21 points (`smooth.js`), on Step 1 and in the math alike; the 
 styling through `canvas-axes.js`, and their animated transitions through `tween.js`), and their styles in `deck.scss`. jspreadsheet comes from a pinned CDN version via
 `_build/jspreadsheet.html`.
 
-Week 2's widgets follow the same pattern (markup in `_includes/week2/`): `galton.js` (a Galton board), `sample-mean.js` (a random few of the !Kung adults: how they vary
+Week 2's widgets follow the same pattern (markup in `_includes/week2/`): `galton.js` (a Galton board), `sample-mean.js` (a random few of Nepal's adults: how they vary
 against how sure we are of their average), `conditional.js` (weight within a band of
 heights; with `data-split="sex"`, women against men), `model-builder.js` (house-price
 models with any set of features) and `reclass.js` (the opening Will Rogers paradox:
@@ -278,7 +281,7 @@ both groups' averages; its steps follow the slide's fragments, and its curve sha
 hypothetical) and `sex-humps.js` (the adults' heights by sex: stacked, then
 separated with each sex's Normal, then stacked again under their sum). They draw on canvases through `canvas-plot.js`, in
 the slide's own pixels. Their data comes from R, not from files in `js/`: a one-line
-chunk in the deck (`kung_widget_data()`, `house_models_data()`, `reclass_widget_data()`,
+chunk in the deck (`adults_widget_data()`, `house_models_data()`, `reclass_widget_data()`,
 `sex_humps_widget_data()` in `r/week2.R`) writes it
 into the page as a JSON block, which the scripts read by id. So the numbers they show
 are frozen with the deck, and freeze.R tracks the datasets behind them. (`ldc-shift.js`

@@ -219,10 +219,15 @@ _We make a probability more specific by adding a condition._
 
 ## Direction of conditions {notes="notes/week1_notes.md#direction"}
 
-_Your intuitions about probability are good. They slip in one place: which way the
-condition runs._ P(A|B) is not the same as P(B|A).
+_One place where our intuitions may fail:_ P(A|B) is not the same as P(B|A).
 
 {{< include _includes/week1/cond-table.md >}}
+
+::: {.fragment}
+Same days, same table, different question.
+:::
+
+[Kathmandu, 2021–2025: the days counted on the previous slide.]{.source}
 
 ## Conditional risk {notes="notes/week1_notes.md#conditional-risk"}
 
@@ -272,7 +277,7 @@ P( HIV+ )
 
 [99%]{.idea-number .blue}
 
-The share of people **with** HIV who test positive
+How accurate the test is for people **with** HIV
 
 ::: {.idea-notation}
 P( test+ | HIV+ )
@@ -284,7 +289,7 @@ P( test+ | HIV+ )
 
 [97%]{.idea-number .blue}
 
-The share of people **without** HIV who test negative
+How accurate the test is for people **without** HIV
 
 ::: {.idea-notation}
 P( test– | HIV– )
@@ -328,7 +333,7 @@ By most standards, that's a **good test.**[\*]{.caveat-mark .fragment fragment-i
 :::
 
 ::: {.fragment fragment-index=5 .compare}
-[The real question:]{.compare-label} [P( [HIV+]{.red} | test+ )]{.compare-expr} [is what we actually want to know]{.compare-label}
+[The real question:]{.compare-label} [P( [HIV+]{.red} | test+ )]{.compare-expr} [the chance that someone who tests positive actually has HIV]{.compare-label}
 :::
 
 ::: {.fragment fragment-index=6 .fade-up}
@@ -519,11 +524,19 @@ Let's look at that quote again:
 > A result is statistically significant if, [assuming the null hypothesis is true]{.fragment fragment-index=1 .highlight-red} and the model assumptions hold, [the probability of obtaining data at least as extreme as those observed]{.fragment fragment-index=2 .highlight-blue} (the p-value) is less than or equal to the chosen significance level α. This leads to rejection of the null hypothesis while controlling the long-run Type I error rate at α.
 :::
 
+::: {.fragment fragment-index=1}
+The [**null hypothesis**]{.red}: the assumption that nothing is going on (no effect).
+:::
+
+::: {.fragment fragment-index=2}
+The [**p-value**]{.blue}: how surprising our data would be if nothing were going on.
+:::
+
 {{< include _includes/week1/significance-direction.md >}}
 
 ::: {.fragment fragment-index=5}
 If statistics has ever made you feel dumb or intimidated, [it's not you]{.blue}.
-P-values work *backwards*. They're the right answer to the the wrong question.
+P-values work *backwards*. They're the right answer to the wrong question.
 :::
 
 ::: {.fragment fragment-index=6}

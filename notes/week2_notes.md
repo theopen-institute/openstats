@@ -56,7 +56,7 @@
 
 - Section break. The first card: how a quantity varies across real cases.
 - The theme of the part: different distributions tell different stories. Read the shape first. The named numbers (mean, SD, z-scores) are labels on the shape, not the point.
-- The order: a warm-up, reading the shapes of income in six imagined places; then the !Kung adults' heights, a bell with its labels; one man's place in it (z-scores); then a look inside the bell (women and men), and shapes that tell stories about generations: Nepal, Japan. It ends on the part's closing line.
+- The order: a warm-up, reading the shapes of income in six imagined places; then Nepali adults' heights, a bell with its labels; one man's place in it (z-scores); then a look inside the bell (women and men), and shapes that tell stories about generations: Nepal, Japan. It ends on the part's closing line.
 
 ## What does income look like? {#incomes}
 
@@ -69,36 +69,35 @@
 - A minimum wage: nobody paid below the floor, a crowd paid exactly it, and fewer the further above. The solid bar is a share of people at exactly one value. A rule, not a natural process, made this shape.
 - The takeaway: the same question, "what do people earn here?", has very different answers in different places, and the shape tells you which story you're in. Next, the vocabulary for describing a shape, on real data.
 
-## Our running example: the !Kung San {#kung}
+## Our running example: Nepal's adults {#adults}
 
-- Introduce the data: Nancy Howell's census of the !Kung San, late 1960s. 352 adults. It's the same dataset McElreath uses, so students who read *Statistical Rethinking* will recognize it.
-- We use it because it's small, clean and about people, and height and weight are easy to reason about.
-- Worth a sentence of context: this is ethnographic fieldwork producing numbers. The line between "qualitative" and "quantitative" research was never sharp.
+- Introduce the data: the WHO's STEPS survey of noncommunicable-disease risk factors, run in Nepal in 2019 by the Nepal Health Research Council. Surveyors visited households across all seven provinces, picked one adult aged 15–69 in each, interviewed them, and measured their height and weight. We use the 5,290 aged 18 and over.
+- We use it because it's about people, it's from here, and height and weight are easy to reason about. The same data carries us from one variable (Part 1) to two (Part 3), and into next week.
+- Only 36% of those measured are men. STEPS picks one person per household, and many young men were working abroad (Nepal's ages, at the end of this part, show who's missing). The survey's weights count each man for more, which brings men to 47%. We use the people as measured: weighting doesn't change any of the shapes or conclusions here.
+- Twelve impossible measurements are left out (a 261 cm man; heights typed into the weight column). Real survey data needs that kind of checking.
 
 ## Describing distributions: center, spread, shape {#describing}
 
 - Read the shape first: one hump, roughly symmetric. A bell, which the next slide names.
-- The bars are one inch wide. Howell measured heights in quarter inches, so each bar holds four of those steps. With 2 cm bars, some hold three steps and some four, and the four-step bars stand a third taller for no reason but the bin edges: lumps that aren't in the people.
-- Then the two labels on the plot. Center: the mean, about 155 cm (the red line). Spread: the standard deviation, about 7.7 cm (the shaded band). A typical adult is within about 8 cm of average.
+- The bars are 2 cm wide. STEPS measured heights to the whole centimeter, so each bar holds two whole centimeters: no bar gets more steps of the ruler than another.
+- Then the two labels on the plot. Center: the mean, about 155 cm (the red line). Spread: the standard deviation, about 8.2 cm (the shaded band). A typical adult is within about 8 cm of average.
 - These two numbers are annotations: they label a shape, they don't replace it. Hold on to "one hump": two slides on, we look inside it.
 
 ## The Normal distribution {#normal}
 
-- The blue curve is a Normal distribution with the same mean and SD as the data. It fits well: two numbers describe the whole shape. That's the Normal's main attraction.
+- The blue curve is a Normal distribution with the same mean and SD as the data. With 5,290 adults the bars are smooth, and they follow the curve closely: two numbers describe the whole shape. That's the Normal's main attraction.
 - The Normal is a shape that turns up everywhere, in math and in nature. Don't explain why yet: what makes it special comes later (Part 2's Galton board shows where it comes from). For now it's enough that the heights in a population often take this shape.
-- Click: the bands. Every Normal has the same landmarks, whatever its center and spread: about 68% of cases within 1 SD, 95% within 2 SD. The right column checks them against the !Kung adults: close. That's a good habit: check a rule of thumb against your actual data.
+- Click: the bands. Every Normal has the same landmarks, whatever its center and spread: about 68% of cases within 1 SD, 95% within 2 SD. The right column checks them against Nepal's adults: 67% and 96%, close. That's a good habit: check a rule of thumb against your actual data.
 - "Within 2 SD" comes back in Part 2: it's how we'll say how sure we are.
 - Real data are never perfectly Normal. The Normal is a description, not a law. The next slide looks closer at this one, and the rest of this part is shapes that aren't bells.
 
 ## One hump, or two? {#two-humps}
 
-- The same heights, in the same bars.
-- Ask: what do you see in the middle? The shaded band, around 155–160 cm, holds fewer adults than the bars on either side. Why would there be a dip? Let the room guess before clicking.
-- Click: women and men. The same bars, colored by sex, women at the bottom, so the outline doesn't change. Most of the shorter adults are women, most of the taller ones men, and the middle is where they overlap.
-- Click: the bars separate, women's half of each bar on the left and men's on the right, and each sex gets its own Normal (its own mean and SD). Each fits well on its own.
-- Click: they stack back up, and the dashed line is the two Normals added together. It has no dip: two bells this close, about two SDs apart, with more women than men, add up to one lopsided hump.
-- So where did the dip come from? Mostly from its neighbor. The dip's two bars hold 35 adults each, about what the two Normals together expect there (38 and 34). The bar just past them holds 43, 41 of them men, where the Normals expect about 31: a tall bar, about as far off as chance alone puts a bar or two in groups this small, and it makes the bars beside it look low. Women and men really are two crowds, and they're why the shape is wide and lopsided. They aren't a reason for a gap.
-- The lesson: don't over-read the lumps in a histogram. Before explaining a bump or a dip, ask whether it's bigger than chance, and whether it came from how the data were measured. Nepal's ages, at the end of this part, come back to that.
+- The same heights, in the same bars. Men are about 10 cm taller than women on average. Ask: shouldn't that make two humps, one for women and one for men? Let the room guess before clicking.
+- Click: women and men. The same bars, colored by sex, women at the bottom, so the outline doesn't change. Most of the shorter adults are women, most of the taller ones men, and the middle is where they overlap. Women are about two thirds of the bars, because fewer men were home to be measured.
+- Click: the bars separate, women's half of each bar on the left and men's on the right, and each sex gets its own Normal (its own mean and SD). Women around 151 cm, men around 161. Each fits well on its own.
+- Click: they stack back up, and the dashed line is the two Normals added together: one lopsided bell, following the bars. Two bells only make two humps if they're more than about 2 SDs apart. These are about 1.4: a 9.5 cm gap, with each crowd's SD about 7 cm (6.5 for women, 7.5 for men).
+- The lesson: two groups in a population don't show up as two humps unless they're far apart. Don't read groups off a histogram, in either direction: a single hump can hide two crowds, and a lump or dip in a small sample can be chance. Before explaining a bump or a dip, ask whether it's bigger than chance, and whether it came from how the data were measured. Nepal's ages, at the end of this part, come back to that.
 
 ## Taller or heavier? {#z-scores}
 
@@ -130,7 +129,7 @@
 - Click: Japan is old: half its people are 49 or older, and nearly 3 in 10 are over 65. Its bulges are generations. The baby boom after the war (born 1947–49, now in their mid-70s), and their children, the second baby boom (born 1971–74, now about 50). The bulge echoes a generation later.
 - The labels are worth a story each. 1966 was a "fire horse" year in the old calendar, said to be unlucky for girls born in it; births fell by about a quarter, and came back the next year. The dip just past the baby boom (about age 77) is the war's last years, when few children were born.
 - Click: no spikes in Japan. Its ages come from registered birth dates, so nobody needs to round. The two shapes differ in their history, and also in how they were measured.
-- Click: the takeaway of Part 1. An average is one point, the center of a distribution. It depends on who's in the crowd, as the opening puzzle showed and the !Kung weights showed again. The distribution describes everyone.
+- Click: the takeaway of Part 1. An average is one point, the center of a distribution. It depends on who's in the crowd, as the opening puzzle showed. The distribution describes everyone.
 
 ## Part 2: Certainty distributions {#part2}
 
@@ -147,7 +146,7 @@
 ## How sure can a few people make us? {#sample-mean}
 
 - The key slide of Part 2: the two kinds side by side, on one axis.
-- Set it up: pretend these 352 adults are everyone, and we can only afford to measure a few. What's the average height?
+- Set it up: pretend these 5,290 adults are everyone, and we can only afford to measure a few. What's the average height?
 - Start with 5. The top shows the five people we measured (blue dots), against everyone (gray). That's a population distribution: how the people we measured vary. The bottom shows how sure we are about the average height: a certainty distribution.
 - Click "Measure new people" a few times. Each sample gives a slightly different guess, and the green curve jumps around. The old curves stay behind, faint. The curve is honest: it's about as wide as the jumps.
 - Now 20, then 100. Ask them to watch both rows. The dots on top spread just as wide: people are as different as ever. The green curve gets narrow, fast.
@@ -157,8 +156,8 @@
 ## Two spreads {#two-spreads}
 
 - The widget's lesson in numbers. Same population, different sample sizes.
-- The blue column never changes: most adults are within about 15 cm of average, however many we measure. That's the population distribution.
-- The green column shrinks: with 5 people we're 95% sure the average is within about 7 cm; with 352, within less than 1 cm. That's the certainty distribution.
+- The blue column never changes: most adults are within about 16 cm of average, however many we measure. That's the population distribution.
+- The green column shrinks: with 5 people we're 95% sure the average is within about 7 cm; with 5,290, within about a quarter of a centimeter. That's the certainty distribution.
 - The width shrinks with the square root of the number of people: four times the data halves the uncertainty. Mention it, don't derive it.
 - Click: more data doesn't make people less different. It makes us more sure.
 - Click: the line to remember, and a callback to Week 1's "the uncertainty is in us." Variation is a fact about the world: people really differ. Uncertainty is a fact about us: what we know. Statistics needs both, and confusing them is one of the most common mistakes in reading research.
@@ -180,19 +179,19 @@
 - Now set 12 or 14 rows, empty the bins, and drop 1,000. A bell. Drop another 1,000: the same bell.
 - The line on the slide: one ball is anyone's guess, a thousand make the same shape every time. Random individuals, predictable crowds. That's why statistics works at all. We can't predict one admission, one patient, one voter. We can describe the crowd, sometimes very precisely.
 - Say it once: randomness isn't the opposite of pattern. Randomness has patterns.
-- The bridge to the next slide: this is where named shapes come from. A process, repeated many times, makes a predictable shape. The Galton board's process (coin flips, added up) makes a bell, the Normal, like the !Kung heights in Part 1. Other processes make other shapes, and the next slide names them.
+- The bridge to the next slide: this is where named shapes come from. A process, repeated many times, makes a predictable shape. The Galton board's process (coin flips, added up) makes a bell, the Normal, like the heights in Part 1. Other processes make other shapes, and the next slide names them.
 
 ## Every named distribution is a story {#named-shapes}
 
 - The goal is to demystify the names. Normal, Poisson, Beta sound like jargon. Each one is just the shape a particular process produces, and the process is something students already understand.
 - Walk the six, briefly, with the process first:
-  - Normal: many small pushes added up. The Galton board on the last slide, the !Kung heights.
+  - Normal: many small pushes added up. The Galton board on the last slide, the heights in Part 1.
   - Log-normal: many small pushes multiplied. A raise is a percentage of what you already earn, so earnings spread out at the top. The made-up curves in the opening puzzle were log-normal.
   - Exponential: waiting until something happens. Most waits are short; a few are long.
   - Binomial: counting yeses out of n tries. Week 1's poll: of 20 people asked, how many say "mayor"? The Galton board is one too: a count of rightward bounces out of n pegs.
   - Poisson: counting events with no maximum. Births in a day at a health post: usually 2 or 3, sometimes 8.
   - Beta: a share between 0 and 1. Literacy rates across districts.
-- These are population distributions, so they're blue. Only the !Kung heights are real; the other knobs are made up for the example.
+- These are population distributions, so they're blue. The heights use Nepal's real mean and SD; the other knobs are made up for the example.
 - Click: know the process, and you know the shape. The knobs (parameters) slide and stretch it. That's all a "parameter" is.
 
 ## Distributions Demo {#dist-demo}
@@ -229,7 +228,7 @@
 
 ## Two variables at once {#correlation}
 
-- Each variable has its own population distribution, which Part 1 described. A scatterplot shows both at once: one dot per adult.
+- Each variable has its own population distribution, which Part 1 described. A scatterplot shows both at once: one dot per adult, 5,290 of them (a handful are beyond the axes). The dots line up in columns because heights were measured to the whole centimeter.
 - Click: taller people tend to be heavier. But what does "tend to" mean, exactly? That's the next slide.
 
 ## A relationship is a distribution that moves {#conditional}
@@ -238,14 +237,14 @@
 - Start at a short height. Ask: how much do people this tall weigh? Look at the orange distribution: not one weight, a spread.
 - Drag the band slowly to the right (or use the slider). The whole orange distribution slides up. That's what a relationship is: not a line, a distribution that moves.
 - Each band leaves a dark mark at its average weight. Sweep across: the marks line up. Tick "Show the line": the regression line runs through the middles of the moving distributions. That's all a regression line is.
-- Point out what the line doesn't show: the spread around it. At any height, weights still vary by several kilograms.
+- Point out what the line doesn't show: the spread around it. At any height, weights still vary a lot: the typical miss from the line is almost 10 kg.
 - Click: in Week 1's notation, this is P( weight | height ). The bar means the same thing as P( rain | July ): narrow down which cases we count. Last week the answer was one probability; now it's a whole distribution.
 
 ## Standardize both variables {#standardize-both}
 
-- Same scatterplot, now in z-scores, split into four quadrants at the averages.
+- Same scatterplot, now in z-scores, split into four quadrants at the averages. Point out the axes: z-scores on the bottom and left, and the same scales in centimeters and kilograms, in gray, on the top and right. Standardizing doesn't move anyone; it relabels the rulers, as in Part 1.
 - Points in the top-right and bottom-left are on the same side of average for both variables. Points in the other two quadrants are on opposite sides.
-- Most points are in the "same side" quadrants. That's what a positive relationship looks like.
+- More points are in the "same side" quadrants, but plenty aren't. That's what a positive, far-from-perfect relationship looks like.
 
 ## Correlation is average agreement {#average-agreement}
 
@@ -256,7 +255,7 @@
 ## What does *r* look like? {#r-gallery}
 
 - Build intuition. Six scatterplots from r = −0.8 to 0.9.
-- Ask: where would our height and weight (r = 0.75) sit? Strong, but far from perfect.
+- Ask: where would our height and weight (r = 0.46) sit? A clear relationship, but far from perfect: between the 0.3 and 0.6 panels.
 - Click: r = 0.3 looks like almost nothing to the eye, yet it's a relationship many papers would report.
 
 ## What correlation misses {#cor-misses}
@@ -269,26 +268,29 @@
 
 ## Regression: our first coefficient {#regression}
 
-- Back to the moving distribution: we want a line through its middles. In z-space it needs one number: its slope, β.
+- Back to the moving distribution: we want a line through its middles.
+- Say it plainly: from here on, both variables are in z-scores. The axes say so, with cm and kg in gray. In z-scores both averages are 0, so every line worth considering goes through (0, 0), and it needs one number: its slope, β, in SDs of weight per SD of height.
 - Show the candidate lines. Click: which describes the data best? Students will pick the right one by eye. Then ask: what does "best" mean?
 
 ## The best line {#best-line}
 
-- The red segments are the misses: how far each person is from the line.
+- The red segments are the misses: how far each person is from the line, measured up and down. They're drawn for 200 adults picked at random; all 5,290 would be a wall of red.
 - The best line makes the misses as small as possible overall (technically, the sum of squared misses).
-- Click: the neat fact. With standardized data and one predictor, the best slope is exactly the correlation. β = r.
+- Click: the neat fact. With z-scores and one predictor, the best slope is exactly the correlation: β = r = 0.46. One SD taller, 0.46 SD heavier.
 
 ## Reading the coefficient {#reading-coef}
 
 - Mechanics slide. Two ways to read the same β.
-- In z-scores: one SD taller goes with r SDs heavier.
-- In real units: convert back by multiplying by SD of weight and dividing by SD of height. About 0.6 kg per cm.
+- In z-scores: one SD taller (8.2 cm) goes with 0.46 SDs heavier.
+- In real units: convert back by multiplying by the SD of weight (10.8 kg) and dividing by the SD of height (8.2 cm). About 0.61 kg per cm.
+- The R code fits the line in z-scores: the intercept is 0, as promised, and the slope is r. The plot below it is the same line drawn back in cm and kg.
 - Watch the wording: "goes with," not "causes." It matters in a few slides.
 
 ## How sure are we about β? {#beta-posterior}
 
-- β is an unknown, like the mayor's vote share. So it gets a certainty distribution: a prior and a posterior. This is the second card again, applied to a relationship.
-- Click: two posteriors, one from 20 adults (wide, light) and one from all 352 (narrow, dark). The same lesson as the sampling widget: more people, more sure.
+- β is an unknown, like the mayor's vote share. So it gets a certainty distribution: a prior and a posterior. This is the second card again, applied to a relationship. The bottom axis is in SDs per SD; the gray top axis is the same β in kg per cm.
+- Click: two posteriors, one from 20 adults (wide, light) and one from all 5,290 (narrow, dark). With 20, β could be anywhere from about −0.1 to 0.9 SD per SD. With everyone, 0.44 to 0.49: 0.58 to 0.64 kg per cm. The same lesson as the sampling widget: more people, more sure.
+- Each curve is drawn to the same height, so both are visible. At their true heights the narrow one would be a spike about twenty times taller, and the wide one a flat line along the bottom.
 - Small samples aren't invalid. They're honest about being unsure. Keep that in mind for the noise slides.
 
 ## Why we always standardize {#why-standardize}
@@ -316,32 +318,31 @@
 
 ## Do men weigh more? {#sex-weight}
 
-- The preview of next week begins. The subtitle: !Kung men are taller than the women, on average. Are they heavier, too?
-- The two weight distributions: men are heavier, with plenty of overlap.
-- Click: fit weight on sex alone, the same kind of line as before with sex as the predictor, and the coefficient for sex is about 6.8 kg. Men weigh 6.8 kg more, on average.
+- The preview of next week begins. The subtitle: men are about 9.5 cm taller than the women, on average. Are they heavier, too?
+- The two weight distributions: men are heavier, with plenty of overlap. Women average 53.2 kg, men 59.8.
+- Click: fit weight on sex alone, the same kind of regression as before, with weight in z-scores and sex as the predictor. Sex isn't standardized: it stays 0 for women and 1 for men, so its coefficient is simply the gap between them, in SDs of weight: 0.60 SD. Back in kg: 0.60 × 10.8 ≈ 6.5 kg. Men weigh 6.5 kg more, on average.
 - Click: the question. Is that because they're men, or because they're taller? Let students argue. Some will say both.
 
 ## Compare adults of the same height {#same-height}
 
-- Interactive, same widget as before, now with women in red and men in blue. The band picks out adults of about the same height (±3 cm), and compares the women's and men's weights inside it.
-- Start in the middle, around 155 cm, where there are plenty of both. The gap: essentially zero.
-- Slide around. At 150, 155, 160 cm the gap stays small, sometimes slightly positive, sometimes slightly negative. Overall, men were 6.8 kg heavier. At the same height, hardly at all.
-- At the extremes there are too few of one sex to compare: few men below about 148 cm, few women above about 165 cm. The widget says so. That's honest too.
-- Tick "Show the lines": one line for women, one for men, from the model with both sex and height. They lie almost on top of each other.
+- Interactive, same widget as before, now with women in red and men in blue, in cm and kg. The band picks out adults of about the same height (±3 cm), and compares the women's and men's weights inside it. Around 155 cm the band holds about 1,270 women and 550 men.
+- Slide around. The gap is small but mostly positive: around 0 at 148–152 cm, 1 to 2 kg at 154–162. Not the 6.5 kg overall, and not quite zero either.
+- At the ends of the slider the groups get small: only a handful of men around 140 cm, and of women around 176 cm.
+- Tick "Show the lines": one line for women, one for men, from the model with both sex and height. The men's line sits about 1 kg above the women's.
 
-## Add height, and sex stops predicting weight {#sex-height}
+## Add height, and sex shrinks {#sex-height}
 
-- The same thing in two models. Weight on sex alone: +6.8 kg.
-- Click: weight on sex and height. Sex: about −0.1 kg. Height: about 0.63 kg per cm. Adding one variable changed the coefficient for the other, from 6.8 to roughly nothing.
-- Click: where did the 6.8 kg go? Men are about 10.8 cm taller, and each cm goes with about 0.63 kg. 10.8 × 0.63 ≈ 6.9 kg. Almost exactly the gap. The DAG draws it: sex affects height, height affects weight. The direct arrow from sex to weight is gray: in these data it carries almost nothing.
-- Click: the effect of sex passes through height. The direct effect is about zero, and the interval (a certainty distribution again) runs from about −1 to +1 kg.
+- The same thing in two models, both in z-scores; the brackets convert back to kg and cm. Weight on sex alone: +0.60 SD (6.5 kg).
+- Click: weight on sex and height. Sex: +0.10 SD (1.1 kg). Height: +0.44 SD per SD (0.57 kg per cm). Adding one variable changed the coefficient for the other, from 0.60 to 0.10.
+- Click: where did the rest go? Men are 1.16 SD (9.5 cm) taller, and each SD of height goes with 0.44 SD of weight. 1.16 × 0.44 ≈ 0.50 SD, or 5.4 kg: most of the gap. Add the 0.10 that's left and you're back at 0.60. The DAG draws it: sex affects height, height affects weight, and a direct arrow from sex to weight carries a little.
+- Click: most of the effect of sex passes through height. The direct effect, comparing women and men of the same height, is about 1.1 kg, and its interval (a certainty distribution again) runs from about +0.5 to +1.6 kg: small, but not zero. It's largest in the under-45s; among the 45–69s it's about zero.
 - Click: the big statement. This is next week's central idea. The coefficient for sex didn't change because the data changed. It changed because the question changed.
-- Don't say "sex doesn't affect weight." It does, through height. Week 3 makes this precise: total effect versus direct effect.
+- Don't say "height explains why men weigh more." Most of it, in these data. Week 3 makes this precise: total effect versus direct effect.
 
 ## Which number is right? {#which-right}
 
 - Both numbers are calculated correctly from the same data. They answer different questions.
-- "Do men weigh more than women?" Yes, 6.8 kg. "Do men weigh more than women of the same height?" No.
+- "Do men weigh more than women?" Yes, 0.60 SD: 6.5 kg. "Do men weigh more than women of the same height?" A little: 0.10 SD, about 1.1 kg.
 - Click: a coefficient's meaning depends on what else is in the model. In the second model, "sex" means "sex, comparing people of the same height."
 - Click: it can change, vanish, or even flip sign. The house prices show a flip.
 - Click: which question should we ask? The data can't say. It depends on what we want to know and what we think causes what. That's next week.
@@ -356,7 +357,7 @@
 ## Next week {#next-week}
 
 - Correlation and regression describe how things vary together. They don't say why.
-- Adding height made sex's coefficient vanish. In the appendix, adding living area flips bedrooms'. Which model answers our question?
+- Adding height shrank sex's coefficient. In the appendix, adding living area flips bedrooms'. Which model answers our question?
 - Click: the data can't decide. We need to write down what we think causes what. That's a DAG, next week.
 - The table is Week 1's course map, with this week in bold.
 
@@ -416,7 +417,7 @@
 - The puzzle as two models. Bedrooms alone: +0.14. Click: add living area, and bedrooms flips to about −0.30.
 - Click: big houses have more bedrooms and sell for more, so bedrooms alone picks up some of the value of size.
 - Click: holding size fixed, an extra bedroom means smaller rooms, which buyers pay less for.
-- Click: the same move as height and sex. There, adding a variable made a coefficient vanish; here, it flips one. Week 3 explains the difference: height sat between sex and weight, while living area drives both bedrooms and price.
+- Click: the same move as height and sex. There, adding a variable shrank a coefficient; here, it flips one. Week 3 explains the difference: height sat between sex and weight, while living area drives both bedrooms and price.
 
 ## Step 7: Every coefficient moves {#model-builder}
 
@@ -443,5 +444,5 @@
 
 ## More resources {#more-resources}
 
-- McElreath's chapter 4 builds the Normal and the regression line from the same !Kung data, with priors and posteriors for every parameter. Chapter 5 is about adding variables, and why coefficients change when you do.
+- McElreath's chapter 4 builds the Normal and the regression line from height and weight data, with priors and posteriors for every parameter. Chapter 5 is about adding variables, and why coefficients change when you do.
 - The US wages example is the opening puzzle at national scale, with real data. Worth a mention for students who want proof it isn't just a classroom trick.

@@ -7,7 +7,7 @@ knitr::opts_template$set(belief = list(fig.width = 6, fig.height = 2.8))
 # ---- Data for the widgets ----------------------------------------------------------
 # The canvas widgets (js/sample-mean.js, conditional.js, model-builder.js) read their
 # data from a JSON block on the page, written here so the numbers come from the same
-# R as the plots. One line in the deck: a chunk calling kung_widget_data() or
+# R as the plots. One line in the deck: a chunk calling adults_widget_data() or
 # house_models_data().
 
 # `data` as a <script type="application/json" id="id"> block in the slide
@@ -20,22 +20,22 @@ json_script <- function(id, data) {
   ))
 }
 
-# The !Kung adults for the sampling and "moving distribution" widgets, with the
-# lines they draw: weight on height, and weight on sex and height
-kung_widget_data <- function(howell) {
-  line <- coef(lm(weight ~ height, howell))
-  both <- coef(lm(weight ~ male + height, howell))
-  json_script("kung-data", list(
-    height = round(howell$height, 1),
-    weight = round(howell$weight, 1),
-    male = howell$male,
+# The adults for the sampling and "moving distribution" widgets, with the lines they
+# draw: weight on height, and weight on sex and height (in kg and cm, the widgets' units)
+adults_widget_data <- function(adults) {
+  line <- coef(lm(weight ~ height, adults))
+  both <- coef(lm(weight ~ male + height, adults))
+  json_script("adults-data", list(
+    height = round(adults$height, 1),
+    weight = round(adults$weight, 1),
+    male = adults$male,
     line = list(intercept = line[["(Intercept)"]], slope = line[["height"]]),
     sex_line = list(
       intercept = both[["(Intercept)"]],
       male = both[["male"]],
       slope = both[["height"]]
     ),
-    sex_gap = coef(lm(weight ~ male, howell))[["male"]]
+    sex_gap = coef(lm(weight ~ male, adults))[["male"]]
   ))
 }
 
@@ -334,31 +334,29 @@ income_shape_plots <- function() {
   )
 }
 
-# Every histogram of the adults' heights has the same bars: one inch (2.54 cm) wide,
-# each from 1/8 inch below a whole inch. Howell measured in quarter inches, and recorded
-# more heights at whole inches than at the quarters between, so one-inch bars are the
-# narrowest that are fair: each holds one whole inch and its three quarters. (2 cm bars
-# hold three or four quarter-inch steps, and the four-step bars stand a third taller;
-# half- and three-quarter-inch bars alternate between holding a whole inch or not.)
-HEIGHT_BIN <- 2.54
-HEIGHT_EDGE <- -HEIGHT_BIN / 8 # one bar edge; the others are whole bars away
+# Every histogram of the adults' heights has the same bars: 2 cm wide, each from half a
+# centimeter below an even one. STEPS measured heights to the whole centimeter, so each
+# bar holds two whole centimeters (1 cm bars would show every lump of rounding).
+HEIGHT_BIN <- 2
+HEIGHT_EDGE <- -0.5 # one bar edge; the others are whole bars away
 height_bars <- function(...) {
   geom_histogram(binwidth = HEIGHT_BIN, boundary = HEIGHT_EDGE, color = "white", ...)
 }
 # The bar an adult falls in, numbered from HEIGHT_EDGE
 height_bar <- function(height) floor((height - HEIGHT_EDGE) / HEIGHT_BIN)
-# The heights the plots show, and the count axis "Describing distributions" shares with
-# "One hump, or two?" (r/week2.R's sex_humps_widget_data(), js/sex-humps.js)
-height_xlim <- function(howell) range(howell$height) + c(-2, 2)
-height_ylim <- function(howell) c(0, 1.25 * max(table(height_bar(howell$height))))
+# The heights the plots show (leaving out the 9 adults below 129.5 or above 187.5 cm),
+# and the count axis "Describing distributions" shares with "One hump, or two?"
+# (sex_humps_widget_data(), js/sex-humps.js)
+HEIGHT_XLIM <- c(129.5, 187.5)
+height_ylim <- function(adults) c(0, 1.25 * max(table(height_bar(adults$height))))
 
 # "Describing distributions: center, spread, shape": height, with the mean and a band
 # 1 SD either side
-height_hist_plot <- function(howell) {
-  h_mean <- mean(howell$height)
-  h_sd <- sd(howell$height)
+height_hist_plot <- function(adults) {
+  h_mean <- mean(adults$height)
+  h_sd <- sd(adults$height)
 
-  ggplot(howell, aes(height)) +
+  ggplot(adults, aes(height)) +
     annotate(
       "rect",
       xmin = h_mean - h_sd,
@@ -372,7 +370,7 @@ height_hist_plot <- function(howell) {
     value_marker(h_mean, paste0("mean = ", fmt(h_mean), " cm"), RED) +
     value_marker(h_mean + h_sd, paste0("± 1 SD = ", fmt(h_sd), " cm"), BLUE, vjust = 4, line = FALSE) +
     scale_y_continuous(expand = expansion(mult = c(0, 0))) +
-    coord_cartesian(xlim = height_xlim(howell), ylim = height_ylim(howell)) +
+    coord_cartesian(xlim = HEIGHT_XLIM, ylim = height_ylim(adults)) +
     labs(x = "Height (cm)", y = "Number of adults")
 }
 
@@ -380,9 +378,9 @@ height_hist_plot <- function(howell) {
 # and SD, and the mean marked. bands = TRUE shades the curve within 1 and 2 SD of the
 # mean, over the bars, with the Normal's 68% and 95% above them. Both versions share
 # their y range, so the bars don't move when the bands appear.
-normal_overlay_plot <- function(howell, bands = FALSE) {
-  m <- mean(howell$height)
-  s <- sd(howell$height)
+normal_overlay_plot <- function(adults, bands = FALSE) {
+  m <- mean(adults$height)
+  s <- sd(adults$height)
   peak <- dnorm(m, m, s)
   normal <- list(fun = dnorm, args = list(mean = m, sd = s))
   band <- function(k, alpha) {
@@ -415,48 +413,48 @@ normal_overlay_plot <- function(howell, bands = FALSE) {
     )
   }
 
-  ggplot(howell, aes(height)) +
+  ggplot(adults, aes(height)) +
     height_bars(aes(y = after_stat(density)), fill = GRAY) +
     shading +
     do.call(stat_function, c(normal, color = BLUE, linewidth = 1.5)) +
     value_marker(m, paste0("mean = ", fmt(m), " cm"), RED) +
     brackets +
     scale_y_continuous(expand = expansion(mult = c(0, 0))) +
-    coord_cartesian(xlim = height_xlim(howell), ylim = c(0, 1.75 * peak)) +
+    coord_cartesian(xlim = HEIGHT_XLIM, ylim = c(0, 1.75 * peak)) +
     labs(x = "Height (cm)", y = NULL) +
     theme(axis.text.y = element_blank())
 }
 
 # "One hump, or two?": the adults' heights for js/sex-humps.js, in the same bars as the
-# plots before it: each bar's left edge and its women and men, each sex's mean and SD
-# (for its Normal) and number, the axes' ranges, and the dip to shade (the 61- and
-# 62-inch bars)
-sex_humps_widget_data <- function(howell) {
-  bar <- height_bar(howell$height)
-  bars <- seq(min(bar), max(bar))
-  count <- function(m) as.vector(table(factor(bar[howell$male == m], levels = bars)))
+# plots before it: each bar's left edge and its women and men (the bars in view), each
+# sex's mean and SD (for its Normal) and number (all of them), and the axes' ranges
+sex_humps_widget_data <- function(adults) {
+  bar <- height_bar(adults$height)
+  bars <- seq(height_bar(HEIGHT_XLIM[1]), height_bar(HEIGHT_XLIM[2]) - 1)
+  count <- function(m) as.vector(table(factor(bar[adults$male == m], levels = bars)))
   normal <- function(m) {
-    h <- howell$height[howell$male == m]
+    h <- adults$height[adults$male == m]
     list(mean = mean(h), sd = sd(h), n = length(h))
   }
+  ylim <- height_ylim(adults)
   json_script("sex-humps-data", list(
     width = HEIGHT_BIN,
     left = HEIGHT_EDGE + bars * HEIGHT_BIN,
     women = count(0),
     men = count(1),
     normals = list(women = normal(0), men = normal(1)),
-    xlim = height_xlim(howell),
-    ylim = height_ylim(howell),
-    dip = HEIGHT_EDGE + (height_bar(156) + c(0, 2)) * HEIGHT_BIN
+    xlim = HEIGHT_XLIM,
+    ylim = ylim,
+    ystep = diff(pretty(ylim))[1] # the count axis's ticks
   ))
 }
 
 # "Taller or heavier?": the adults' heights and weights, each with its mean (dashed)
 # and the man's value marked. z = TRUE labels his value with its z-score, blue for
 # height and red for weight.
-unusual_man_plot <- function(howell, height, weight, z = FALSE) {
+unusual_man_plot <- function(adults, height, weight, z = FALSE) {
   vars <- c(height = "Height (cm)", weight = "Weight (kg)")
-  long <- howell |>
+  long <- adults |>
     select(height, weight) |>
     pivot_longer(everything(), names_to = "var") |>
     mutate(panel = factor(vars[var], levels = vars))
@@ -475,8 +473,13 @@ unusual_man_plot <- function(howell, height, weight, z = FALSE) {
       }
     )
 
-  ggplot(long, aes(value)) +
-    geom_histogram(bins = 30, fill = GRAY, color = "white") +
+  # Bars 2 cm or 2 kg wide, each holding two whole values (both were measured mostly to
+  # the whole unit), drawn for the adults within the usual ranges (the mean and SD above
+  # are everyone's)
+  shown <- long |>
+    filter(if_else(var == "height", between(value, 130, 186), between(value, 25, 100)))
+  ggplot(shown, aes(value)) +
+    geom_histogram(binwidth = 2, boundary = -0.5, fill = GRAY, color = "white") +
     geom_vline(data = him, aes(xintercept = mean), color = GRAY, linetype = "dashed", linewidth = 1) +
     geom_vline(data = him, aes(xintercept = value), color = him$color, linewidth = 1.5) +
     geom_label(
@@ -501,11 +504,11 @@ unusual_man_plot <- function(howell, height, weight, z = FALSE) {
 
 # "Same data, new ruler": the height histogram with two rulers, centimeters along the
 # bottom and z-scores (blue) along the top
-height_ruler_plot <- function(howell) {
-  h_mean <- mean(howell$height)
-  h_sd <- sd(howell$height)
+height_ruler_plot <- function(adults) {
+  h_mean <- mean(adults$height)
+  h_sd <- sd(adults$height)
 
-  ggplot(howell, aes(height)) +
+  ggplot(adults, aes(height)) +
     height_bars(fill = GRAY) +
     geom_vline(xintercept = h_mean, color = RED, linewidth = 1.2, linetype = "dashed") +
     scale_x_continuous(
@@ -637,8 +640,8 @@ plateau_density <- function(center = 40, plateau = 20, taper = 15) {
 # "Two spreads": for each number of adults measured, how far most adults are from the
 # average (2 SD), and how far off our estimate of the average could be (2 SD / √n,
 # the 95% width of the certainty distribution with a flat prior)
-two_spreads <- function(howell, sizes = c(5, 20, 100, nrow(howell))) {
-  s <- sd(howell$height)
+two_spreads <- function(adults, sizes = c(5, 20, 100, nrow(adults))) {
+  s <- sd(adults$height)
   tibble(
     n = sizes,
     population = 2 * s,
@@ -672,11 +675,12 @@ shape_panel <- function(x, y, title, subtitle, xlab, ..., color = BLUE, discrete
 }
 
 # "Every named distribution is a story": six families, each drawn for an everyday
-# example. Population distributions, so blue. The !Kung heights are real; the other
-# knobs are made up (the earnings use the opening's log-normal spread, RECLASS_SDLOG).
-named_shape_plots <- function(howell) {
-  h_mean <- mean(howell$height)
-  h_sd <- sd(howell$height)
+# example. Population distributions, so blue. The heights use the adults' mean and
+# SD; the other knobs are made up (the earnings use the opening's log-normal spread,
+# RECLASS_SDLOG).
+named_shape_plots <- function(adults) {
+  h_mean <- mean(adults$height)
+  h_sd <- sd(adults$height)
   heights <- seq(h_mean - 3.5 * h_sd, h_mean + 3.5 * h_sd, length.out = 301)
   earnings <- seq(0, 50, length.out = 301)
   minutes <- seq(0, 40, length.out = 301)
@@ -746,35 +750,64 @@ certainty_shape_plots <- function() {
 
 # "Standardize both variables": height and weight in z-scores, colored by whether
 # each person's two z-scores agree in sign
-agreement_plot <- function(howell) {
+# The z-score scatterplots' axes: z-scores on the bottom and left, labeled as such, and
+# the same scales back in centimeters (top) and kilograms (right), in gray
+z_axes <- function(adults) {
+  h <- c(mean(adults$height), sd(adults$height))
+  w <- c(mean(adults$weight), sd(adults$weight))
+  list(
+    scale_x_continuous(
+      "Height (z-score)",
+      breaks = -3:3,
+      sec.axis = sec_axis(~ h[1] + .x * h[2], name = "cm", breaks = seq(130, 190, 10))
+    ),
+    scale_y_continuous(
+      "Weight (z-score)",
+      breaks = -3:3,
+      sec.axis = sec_axis(~ w[1] + .x * w[2], name = "kg", breaks = seq(30, 90, 10))
+    ),
+    theme(
+      axis.title.x.top = element_text(color = GRAY),
+      axis.text.x.top = element_text(color = GRAY),
+      axis.title.y.right = element_text(color = GRAY),
+      axis.text.y.right = element_text(color = GRAY)
+    )
+  )
+}
+
+agreement_plot <- function(adults) {
   quad_labels <- tibble(
-    x = c(1.9, -1.9, -1.9, 1.9),
-    y = c(2.8, -2.8, 2.8, -2.8),
+    x = c(3.4, -3.4, -3.4, 3.4),
+    y = c(2.6, -2.6, 2.6, -2.6),
+    hjust = c(1, 0, 0, 1), # each label in its own quadrant's outer corner
     label = c(
-      "taller & heavier  (+)",
-      "shorter & lighter  (+)",
-      "shorter & heavier  (−)",
-      "taller & lighter  (−)"
+      "taller &\nheavier (+)",
+      "shorter &\nlighter (+)",
+      "shorter &\nheavier (−)",
+      "taller &\nlighter (−)"
     ),
     color = c(BLUE, BLUE, RED, RED)
   )
 
-  howell |>
+  adults |>
     mutate(agree = if_else(z_height * z_weight > 0, "agree", "disagree")) |>
     ggplot(aes(z_height, z_weight)) +
     geom_hline(yintercept = 0, color = GRAY) +
     geom_vline(xintercept = 0, color = GRAY) +
-    geom_point(aes(color = agree), alpha = 0.7, size = 2.5, show.legend = FALSE) +
-    geom_text(
+    geom_point(aes(color = agree), alpha = 0.3, size = 1.3, show.legend = FALSE) +
+    geom_label(
       data = quad_labels,
-      aes(x, y, label = label),
+      aes(x, y, label = label, hjust = hjust),
       color = quad_labels$color,
-      size = 7,
-      fontface = "bold"
+      size = 6,
+      fontface = "bold",
+      lineheight = 0.9,
+      fill = "white",
+      linewidth = 0
     ) +
     scale_color_manual(values = c(agree = BLUE, disagree = RED)) +
-    coord_equal(xlim = c(-3.5, 3.5), ylim = c(-3, 3)) +
-    labs(x = "Height (z)", y = "Weight (z)")
+    z_axes(adults) +
+    coord_equal(xlim = c(-3.5, 3.5), ylim = c(-3, 3))
 }
 
 # "What does r look like?": made-up clouds of points for a range of correlations
@@ -826,78 +859,100 @@ cor_misses_plot <- function() {
 }
 
 # "Regression: our first coefficient": lines through the z-scores with a few slopes,
-# one of them the correlation r
-candidate_lines_plot <- function(howell, r) {
+# one of them the correlation r (blue, as in the next slide)
+candidate_lines_plot <- function(adults, r) {
   candidates <- tibble(
-    beta = c(0, 0.4, round(r, 2), 1.5),
-    label = paste0("β = ", beta)
+    beta = c(0, round(r, 2), 1, 1.5),
+    label = paste0("β = ", beta),
+    color = c(ORANGE, BLUE, TEAL, RED)
   )
 
-  ggplot(howell, aes(z_height, z_weight)) +
-    geom_point(color = GRAY, alpha = 0.6, size = 2) +
+  ggplot(adults, aes(z_height, z_weight)) +
+    geom_point(color = GRAY, alpha = 0.25, size = 1.2) +
     geom_abline(
       data = candidates,
       aes(slope = beta, intercept = 0, color = label),
       linewidth = 1.4
     ) +
-    scale_color_manual(values = c(ORANGE, TEAL, BLUE, RED), name = NULL) +
+    scale_color_manual(values = set_names(candidates$color, candidates$label), name = NULL) +
+    z_axes(adults) +
     coord_equal(xlim = c(-3, 3), ylim = c(-3, 3)) +
-    labs(x = "Height (z)", y = "Weight (z)") +
     theme(legend.text = element_text(size = 20))
 }
 
-# "The best line": the line with slope r, and each person's error from it
-residuals_plot <- function(howell, r) {
-  howell |>
-    mutate(fitted = r * z_height) |>
-    ggplot(aes(z_height, z_weight)) +
-    geom_segment(aes(xend = z_height, yend = fitted), color = RED, alpha = 0.4) +
-    geom_point(color = GRAY, size = 2) +
+# "The best line": the line with slope r, and the misses from it of a random `n`
+# adults (all of them would be a wall of red), over everyone, faint
+residuals_plot <- function(adults, r, n = 200) {
+  set.seed(5)
+  some <- slice_sample(adults, n = n) |> mutate(fitted = r * z_height)
+  ggplot(adults, aes(z_height, z_weight)) +
+    geom_point(color = GRAY, alpha = 0.15, size = 1.2) +
+    geom_segment(data = some, aes(xend = z_height, yend = fitted), color = RED, alpha = 0.6) +
+    geom_point(data = some, color = INK, size = 1.8) +
     geom_abline(slope = r, intercept = 0, color = BLUE, linewidth = 1.5) +
-    coord_equal(xlim = c(-3, 3), ylim = c(-3, 3)) +
-    labs(x = "Height (z)", y = "Weight (z)")
+    z_axes(adults) +
+    coord_equal(xlim = c(-3, 3), ylim = c(-3, 3))
 }
 
 # Posterior of beta in z_weight ~ Normal(beta * z_height, sigma), by grid
 # approximation over (beta, sigma) with sigma then summed out. Priors:
-# beta ~ Normal(0, 1), sigma ~ Exponential(1).
+# beta ~ Normal(0, 1), sigma ~ Exponential(1). The likelihood needs only three sums
+# (the data's sufficient statistics), so the grid can be fine enough for thousands of
+# adults, whose posterior is narrow.
 beta_posterior <- function(d) {
-  grid <- expand_grid(
-    beta = seq(0, 1.5, length.out = 301),
-    sigma = seq(0.2, 1.5, length.out = 131)
+  n <- nrow(d)
+  sxx <- sum(d$z_height^2)
+  sxy <- sum(d$z_height * d$z_weight)
+  syy <- sum(d$z_weight^2)
+  expand_grid(
+    beta = seq(-0.5, 1.5, by = 0.001),
+    sigma = seq(0.2, 1.5, by = 0.001)
   ) |>
     mutate(
-      log_post = map2_dbl(beta, sigma, function(b, s) {
-        sum(dnorm(d$z_weight, b * d$z_height, s, log = TRUE))
-      }) +
+      misses = syy - 2 * beta * sxy + beta^2 * sxx, # sum of squared misses
+      log_post = -n * log(sigma) - misses / (2 * sigma^2) +
         dnorm(beta, 0, 1, log = TRUE) +
         dexp(sigma, 1, log = TRUE),
       post = exp(log_post - max(log_post))
-    )
-  grid |>
+    ) |>
     group_by(beta) |>
     summarise(post = sum(post)) |>
     mutate(post = post / sum(post) / (beta[2] - beta[1]))
 }
 
 # "How sure are we about β?": the posterior of β from 20 random adults, and from
-# everyone. Certainty distributions, so green: lighter for the smaller sample.
-beta_posterior_plot <- function(howell) {
+# everyone, in SDs (bottom) and back in kg per cm (top). Certainty distributions, so
+# green: lighter for the smaller sample. Each curve is scaled to the same peak: at
+# their true heights, everyone's would be a spike and the 20 adults' a flat line.
+beta_posterior_plot <- function(adults) {
   set.seed(7)
-  small <- slice_sample(howell, n = 20)
-  labels <- c("20 adults", paste(nrow(howell), "adults"))
+  small <- slice_sample(adults, n = 20)
+  labels <- c("20 adults", paste(fmt(nrow(adults), 0), "adults"))
+  per_cm <- sd(adults$weight) / sd(adults$height)
 
   bind_rows(
     beta_posterior(small) |> mutate(data = labels[1]),
-    beta_posterior(howell) |> mutate(data = labels[2])
+    beta_posterior(adults) |> mutate(data = labels[2])
   ) |>
+    group_by(data) |>
+    mutate(post = post / max(post)) |>
+    ungroup() |>
     mutate(data = factor(data, levels = labels)) |>
     ggplot(aes(beta, post, color = data, fill = data)) +
     geom_area(alpha = 0.15, position = "identity", linewidth = 1.5) +
     scale_color_manual(values = c(tint(GREEN, 0.45), GREEN), name = NULL) +
     scale_fill_manual(values = c(tint(GREEN, 0.45), GREEN), name = NULL) +
-    labs(x = "β (SD of weight per SD of height)", y = "Plausibility") +
-    theme(axis.text.y = element_blank())
+    scale_x_continuous(
+      "β (SDs of weight per SD of height)",
+      breaks = seq(-0.5, 1.5, 0.25),
+      sec.axis = sec_axis(~ .x * per_cm, name = "kg per cm", breaks = seq(-0.5, 2, 0.25))
+    ) +
+    labs(y = "Plausibility") +
+    theme(
+      axis.text.y = element_blank(),
+      axis.title.x.top = element_text(color = GRAY),
+      axis.text.x.top = element_text(color = GRAY)
+    )
 }
 
 # "How much r varies by chance": r for every pair of unrelated variables, with 20
@@ -931,47 +986,64 @@ noise_dist_plot <- function(r_small, n_vars) {
 
 # ---- Part 3, the preview: sex, height and weight -----------------------------------
 
-# The coefficients the "Do men weigh more?" slides quote, with 90% intervals: sex on
-# its own (total), sex once height is in the model (direct), height's slope in that
-# model, and how much taller the men are
-sex_weight_fits <- function(howell) {
-  alone <- lm(weight ~ male, howell)
-  both <- lm(weight ~ male + height, howell)
+# The coefficients the "Do men weigh more?" slides quote, fit in z-scores (weight and
+# height standardized, sex 0 for women and 1 for men), with 90% intervals: sex on its
+# own (total), sex once height is in the model (direct), height's slope in that model,
+# and how much taller the men are, all in SDs. `kg` has the same numbers back in kg and
+# cm. (total = height_gap × slope + direct, in either units.)
+sex_weight_fits <- function(adults) {
+  w_sd <- sd(adults$weight)
+  h_sd <- sd(adults$height)
+  z <- mutate(adults, z_weight = standardize(weight), z_height = standardize(height))
+  alone <- lm(z_weight ~ male, z)
+  both <- lm(z_weight ~ male + z_height, z)
   ci <- confint(both, level = 0.9)
-  list(
+  fits <- list(
     total = coef(alone)[["male"]],
     direct = coef(both)[["male"]],
     direct_lo = ci["male", 1],
     direct_hi = ci["male", 2],
-    slope = coef(both)[["height"]],
-    height_gap = coef(lm(height ~ male, howell))[["male"]],
-    weight_women = mean(howell$weight[howell$male == 0]),
-    weight_men = mean(howell$weight[howell$male == 1])
+    slope = coef(both)[["z_height"]],
+    height_gap = coef(lm(z_height ~ male, z))[["male"]]
   )
+  c(fits, list(
+    kg = list(
+      total = fits$total * w_sd,
+      direct = fits$direct * w_sd,
+      direct_lo = fits$direct_lo * w_sd,
+      direct_hi = fits$direct_hi * w_sd,
+      slope = fits$slope * w_sd / h_sd, # kg per cm
+      height_gap = fits$height_gap * h_sd, # cm
+      through_height = fits$height_gap * fits$slope * w_sd
+    ),
+    weight_women = mean(adults$weight[adults$male == 0]),
+    weight_men = mean(adults$weight[adults$male == 1])
+  ))
 }
 
 # "Do men weigh more?": the women's and men's weights, with each group's average
-sex_weight_plot <- function(howell) {
-  means <- howell |>
+sex_weight_plot <- function(adults) {
+  means <- adults |>
     group_by(sex) |>
     summarise(weight = mean(weight))
 
-  ggplot(howell, aes(weight, fill = sex)) +
+  ggplot(adults, aes(weight, fill = sex)) +
     geom_histogram(binwidth = 2, boundary = 0, position = "identity", alpha = 0.55, color = "white") +
     geom_vline(data = means, aes(xintercept = weight, color = sex), linewidth = 1.4) +
     scale_fill_manual(values = c(female = RED, male = BLUE), name = NULL) +
     scale_color_manual(values = c(female = RED, male = BLUE), guide = "none") +
+    coord_cartesian(xlim = c(25, 110)) +
     labs(x = "Weight (kg)", y = "Number of adults")
 }
 
-# "Add height, and sex stops predicting weight": sex works on weight through height. The
-# direct arrow stays, gray: in these data it carries almost nothing.
+# "Add height, and sex shrinks": sex works on weight mostly through height. The direct
+# arrow carries a little, too.
 sex_path_dag <- function() {
   pipe_dag(
     "S", "H", "W",
     labels = c(S = "Sex", H = "Height", W = "Weight"),
     direct = TRUE,
-    highlight = c("S -> H", "H -> W")
+    highlight = c("S -> H", "H -> W", "S -> W")
   )
 }
 

@@ -147,7 +147,7 @@ a. Do tuition classes help?
 b. Is remittance money good for children's education in Nepal?
 c. Does the new road help farmers in Jumla?
 
-**C3.** *The generative model.* Here is the DAG from lecture for the !Kung San adults:
+**C3.** *The generative model.* Here is the DAG from lecture for Nepal's adults:
 
 ```
 Sex -> Height
@@ -180,30 +180,34 @@ c. Men and women are the **same height** on average, each cm adds 0.6 kg, and me
 d. In world (c), would Model A (`weight ~ sex`) and Model B (`weight ~ sex + height`)
    give about the same answer, or different answers? Explain using the DAG.
 
-**C5.** *Two models, real data.* Fit to the 352 !Kung San adults, the two models from
-lecture gave these posteriors for the difference *men − women*:
+**C5.** *Two models, real data.* Fit to Nepal's 5,290 adults (the WHO STEPS survey,
+2019), the two models from lecture gave these posteriors for the difference
+*men − women*:
 
 | Model                       | Median | 89% interval   |
 |-----------------------------|--------|----------------|
-| A: `weight ~ sex`           | 6.8 kg | 5.8 to 7.7 kg  |
-| B: `weight ~ sex + height`  | 0.1 kg | −1.0 to 1.0 kg |
+| A: `weight ~ sex`           | 6.5 kg | 6.0 to 7.0 kg  |
+| B: `weight ~ sex + height`  | 1.1 kg | 0.6 to 1.6 kg  |
 
 a. Write one plain-language sentence explaining what each result means.
 b. Which model answers our estimand from C2 (the total effect)? Why?
-c. A classmate looks at Model B and says: *"See? Sex has no effect on weight."* What
-   is wrong with that claim?
-d. In these data, men are about 10.8 cm taller than women, and each extra cm goes with
-   about 0.63 kg more weight. Multiply these two numbers. Compare the result with
-   Model A and Model B. What does that tell you about *where* the effect of sex on
-   weight flows?
+c. A classmate looks at Model B and says: *"See? Being male only adds about 1 kg."*
+   What is wrong with that claim?
+d. In these data, men are about 9.5 cm taller than women, and each extra cm goes with
+   about 0.57 kg more weight. Multiply these two numbers, then add Model B's answer.
+   Compare the result with Model A. What does that tell you about *where* the effect
+   of sex on weight flows?
 e. Write an estimand (a question) for which Model B *would* be the right model.
 
 **C6.** *What about age?* Age is in the DAG, but we left it out of both models.
 
 a. Using the DAG in C3, explain why we can leave age out when we estimate the effect of
    sex on weight.
-b. In lecture, adding age to the model changed the sex difference by only about
-   0.25 kg. Does that check *prove* the DAG is right? What does it tell us?
+b. In lecture, adding age to Model A changed the total effect by only about 0.2 kg.
+   Does that check *prove* the DAG is right? What does it tell us?
+c. ★ In these data, the men are older than the women on average (43 against 40),
+   because many young men were working abroad when the survey came. Does that fit the
+   DAG's claim that nothing points from age into sex? Compare with E3 below.
 
 **C7.** *Same move, opposite advice.* Last week we saw that more bedrooms go with a
 higher house price, but among houses of the same size, more bedrooms go with a lower

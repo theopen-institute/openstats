@@ -1,14 +1,13 @@
-// Week 2, "One hump, or two?": the !Kung adults' heights, in the same bars as the
-// plots before it, with the dip in the middle shaded. The slide's fragments step it
-// along:
+// Week 2, "One hump, or two?": the adults' heights, in the same bars as the plots
+// before it. The slide's fragments step it along:
 //   start  everyone, in gray
 //   1      the same bars colored by sex, women at the bottom and men stacked on top, so
 //          the outline doesn't move
 //   2      the bars separate: each bar splits in two, women's half on the left and men's
 //          on the right, both from the baseline, and each sex's Normal (its own mean
 //          and SD) draws in over its bars
-//   3      they stack back up, and the two Normals added together (dashed) trace the
-//          outline: one lopsided bell, with no dip
+//   3      they stack back up, and the two Normals added together (dashed) follow the
+//          outline: one lopsided bell
 // Each change animates, and goes back with the fragment. Data from the page
 // (r/week2.R, sex_humps_widget_data()). Markup in _includes/week2/sex-humps.md, styles
 // in css/deck.scss (.w2-*).
@@ -29,7 +28,7 @@ const blend = (a, b, f) => a.map((v, i) => v + (b[i] - v) * f);
 const css = (c) => `rgb(${c.map(Math.round).join(', ')})`;
 
 function init(root, data) {
-  const { width, left, women, men, normals, xlim, ylim, dip } = data;
+  const { width, left, women, men, normals, xlim, ylim, ystep } = data;
   const sexes = [
     { key: 'women', counts: women, color: 'red' },
     { key: 'men', counts: men, color: 'blue' },
@@ -63,11 +62,7 @@ function init(root, data) {
       return [s.key, css(blend(c, [255, 255, 255], LIGHTEN * light))];
     }));
 
-    // The dip, behind everything
-    ctx.fillStyle = 'rgba(22, 49, 77, 0.07)';
-    ctx.fillRect(x(dip[0]), pad.top, x(dip[1]) - x(dip[0]), base - pad.top);
-
-    yAxis(ctx, y, pad.left, ticks(0, ylim[1], 10), { title: 'Number of adults', grid: w - pad.right });
+    yAxis(ctx, y, pad.left, ticks(0, ylim[1], ystep), { title: 'Number of adults', grid: w - pad.right });
     xAxis(ctx, x, base, ticks(Math.ceil(xlim[0] / 10) * 10, xlim[1], 10), { title: 'Height (cm)', grid: pad.top });
 
     // Each bar: women from the baseline, narrowing to the left half; men from the top

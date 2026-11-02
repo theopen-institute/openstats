@@ -1,7 +1,7 @@
 ```{=html}
-<!-- Week 2, "How sure can a few people make us?": measure a random few of the !Kung
+<!-- Week 2, "How sure can a few people make us?": measure a random few of Nepal's
      adults, and compare how much they vary with how sure we are about their average.
-     Data from the deck's kung-data block, behavior in js/sample-mean.js, styles in
+     Data from the deck's adults-data block, behavior in js/sample-mean.js, styles in
      css/deck.scss (.w2-*). -->
 <div class="widget-layout sample-mean">
   <div class="w2-graph"></div>

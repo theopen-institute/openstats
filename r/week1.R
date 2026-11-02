@@ -184,6 +184,12 @@ check_stated_numbers <- function() {
   expect(rain, 3 / (5 * 31), 0.02, 2)
   expect(rain, 126 / (5 * 31), 0.81, 2)
   expect(rain, 8 / (5 * 28), 0.06, 2)
+  # The same days as July against the other months: the starting counts of the
+  # table in _includes/week1/cond-table.md (July's rainy days, 126, as above)
+  direction <- "Direction of conditions"
+  expect(direction, 155 - 126, 29)
+  expect(direction, 565 - 126, 439)
+  expect(direction, 5 * 365 - 155 - (565 - 126), 1231)
 
   # HIV test: prevalence 0.1%, sensitivity 99%, specificity 97%, 100,000 people
   expect("Asking the right question", pct(ppv(0.001, 0.99, 0.03)), 3.2, 1)

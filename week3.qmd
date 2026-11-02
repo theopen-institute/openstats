@@ -10,8 +10,8 @@ source("r/deck-setup.R")
 source("r/stan.R")
 source("r/week3.R")
 
-# !Kung San adults (Howell), from Week 2
-howell <- load_howell() |>
+# Nepal's adults, measured by the WHO STEPS survey in 2019, from Week 2
+adults <- load_steps() |>
   mutate(
     sex = factor(if_else(male == 1, "male", "female"), levels = c("female", "male")),
     height_std = standardize(height)
@@ -163,11 +163,11 @@ This is the causal question.
 
 # Worked example: does sex affect weight?
 
-```{r howell-scatter, fig.height = 5.5}
-sex_scatter(howell)
+```{r adults-scatter, fig.height = 5.5}
+sex_scatter(adults, xlim = c(130, 186), ylim = c(25, 110))
 ```
 
-- The !Kung San adults from Week 2. Men are taller *and* heavier.
+- Nepal's `r fmt(nrow(adults), 0)` adults from Week 2. Men are taller *and* heavier.
 
 
 ## Step 1: The estimand
@@ -186,8 +186,8 @@ How much heavier, on average, would an adult be if they were male rather than fe
 
 ::: {.columns}
 ::: {.column width="50%"}
-```{r howell-dag, fig.width = 7, fig.height = 4.2}
-howell_dag()
+```{r sex-weight-dag, fig.width = 7, fig.height = 4.2}
+sex_weight_dag()
 ```
 :::
 
@@ -231,7 +231,7 @@ set.seed(4)
 sim <- simulate_people(1000) |>
   mutate(sex = factor(sex, levels = c("female", "male")), height_std = standardize(height))
 
-sex_scatter(sim, alpha = 0.5, size = 2)
+sex_scatter(sim, alpha = 0.5, size = 2, jitter = 0)
 ```
 :::
 :::
@@ -303,18 +303,19 @@ plot_posteriors(sim_draws, difference, "Men − women (kg)") +
 
 ## Steps 4 & 5: Real data, real estimates
 
-```{r howell-fits, results = "hide"}
-howell_draws <- weight_model_draws(howell)
-howell_difference <- posterior_medians(howell_draws, difference)
+```{r adults-fits, results = "hide"}
+adults_draws <- weight_model_draws(adults)
+adults_difference <- posterior_medians(adults_draws, difference)
+total_kg <- adults_difference[["A: weight ~ sex"]]
+direct_kg <- adults_difference[["B: weight ~ sex + height"]]
 ```
 
-```{r howell-posteriors, fig.height = 5}
-plot_posteriors(howell_draws, difference, "Men − women (kg)")
+```{r adults-posteriors, fig.height = 5}
+plot_posteriors(adults_draws, difference, "Men − women (kg)")
 ```
 
-- Model A: men are about **`r fmt(howell_difference[["A: weight ~ sex"]])` kg** heavier.
-- Model B: at the same height, men are about **`r fmt(howell_difference[["B: weight ~ sex + height"]])` kg**
-  heavier. In other words, no difference.
+- Model A: men are about **`r fmt(total_kg)` kg** heavier.
+- Model B: at the same height, men are only about **`r fmt(direct_kg)` kg** heavier.
 
 
 ## Effects flow through paths
@@ -322,7 +323,7 @@ plot_posteriors(howell_draws, difference, "Men − women (kg)")
 ::: {.columns}
 ::: {.column}
 ```{r flow-total, fig.width = 7, fig.height = 4}
-howell_dag(highlight = c("S -> W", "S -> H", "H -> W"))
+sex_weight_dag(highlight = c("S -> W", "S -> H", "H -> W"))
 ```
 
 **Model A** lets the effect flow through **both** paths: the **total effect**.
@@ -330,7 +331,7 @@ howell_dag(highlight = c("S -> W", "S -> H", "H -> W"))
 
 ::: {.column}
 ```{r flow-direct, fig.width = 7, fig.height = 4}
-howell_dag(highlight = "S -> W")
+sex_weight_dag(highlight = "S -> W")
 ```
 
 **Model B** holds height fixed, which **blocks** the path through height: only the
@@ -338,22 +339,23 @@ howell_dag(highlight = "S -> W")
 :::
 :::
 
-- Sex affects weight almost entirely *through height*.
+- Most of the effect of sex flows *through height*: about `r fmt(total_kg - direct_kg)`
+  of the `r fmt(total_kg)` kg. Only about `r fmt(direct_kg)` kg is direct.
 - Our estimand asked for the total effect, so **Model A** answers it. Adding height
-  would hide the very effect we're asking about.
+  would hide most of the effect we're asking about.
 
 
 ## What about age?
 
 ```{r age-check}
-direct_with_age <- coef(lm(weight ~ sex + height + age, data = howell))[["sexmale"]]
-direct_without_age <- coef(lm(weight ~ sex + height, data = howell))[["sexmale"]]
+total_with_age <- coef(lm(weight ~ sex + age, data = adults))[["sexmale"]]
+total_without_age <- coef(lm(weight ~ sex, data = adults))[["sexmale"]]
 ```
 
 ::: {.columns}
 ::: {.column width="50%"}
 ```{r age-dag, fig.width = 7, fig.height = 4.2}
-howell_dag(highlight = c("A -> H", "A -> W"))
+sex_weight_dag(highlight = c("A -> H", "A -> W"))
 ```
 :::
 
@@ -361,8 +363,8 @@ howell_dag(highlight = c("A -> H", "A -> W"))
 - Age is in the DAG, but nothing points from age **into sex**, so age opens no extra
   path from sex to weight.
 - So for this estimand we can leave age out.
-- Quick check: adding age to the model shifts the sex difference by only
-  `r fmt(abs(direct_with_age - direct_without_age), 2)` kg.
+- Quick check: adding age to Model A shifts the total effect by only
+  `r fmt(abs(total_with_age - total_without_age), 2)` kg.
 :::
 :::
 
