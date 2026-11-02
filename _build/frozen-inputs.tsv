@@ -9,7 +9,7 @@ wb-vars.qmd	datasets/wb_country.csv	776d17b7d1daac8d0487fce4cf34d586
 wb-vars.qmd	datasets/wb2022.csv	0453ba3f319b384b049dd1c844d1dd1e
 week1.qmd	_includes/bayesian-workflow.md	fdd1c71da06d34acf9b04e189340f829
 week1.qmd	_includes/week1/bayes-steps.md	0614ab119a8595eb8544110a9482e267
-week1.qmd	_includes/week1/cond-table.md	ce34f44e4fad6f9c6dd0dfc63ce2fac0
+week1.qmd	_includes/week1/cond-table.md	45d21f174158dde5cf62fec70faeb8da
 week1.qmd	_includes/week1/count-demo.md	be78d6fab0203b01d0d8572362cf411f
 week1.qmd	_includes/week1/poll-answer.md	75bc0a3467f4fe50ee3812af0db38862
 week1.qmd	_includes/week1/poll-likelihood.md	9182ff3fbfdfa5d5c1d9d7bcbab60eb5
@@ -33,9 +33,9 @@ week1.qmd	datasets/wb2022.csv	0453ba3f319b384b049dd1c844d1dd1e
 week1.qmd	r/data.R	68beb387b4adf98c49b0879995975ab8
 week1.qmd	r/deck-setup.R	238885271e646d424f24e4e750fb1d2a
 week1.qmd	r/rlib.R	5d48b7a934f59fde562c86a13a21ff29
-week1.qmd	r/week1.R	f62971a6aae7051a7409a76b7bf270d3
+week1.qmd	r/week1.R	a6a5f2f625a6093311e2a98110e5c3d9
 week1.qmd	shiny/baserate.R	3b5eaae6f736aabaebb440017be3171c
-week1.qmd	shiny/updating.R	c1c0860c9f115dd2fde42ede0552c923
+week1.qmd	shiny/updating.R	28bfb1a998bed6d11249af0d266e7591
 week2.qmd	_includes/week2/conditional-sex.md	17dd7119504c31d785379aebb32752b6
 week2.qmd	_includes/week2/conditional.md	78011b462458302c07a0a7eab33c0e47
 week2.qmd	_includes/week2/galton.md	89271619d316ee06c255a2acf7a2af34
