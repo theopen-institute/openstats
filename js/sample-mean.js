@@ -1,5 +1,6 @@
-// Week 2, "How sure can a few people make us?": pretend the 352 !Kung adults are
-// everyone, and measure a random few. Two distributions share one height axis:
+// Week 2, "How sure can a few people make us?": pretend the adults Nepal's STEPS
+// survey measured are everyone, and measure a random few. Two distributions share one
+// height axis:
 //   top    — the adults we measured, a dot each (a population distribution), over a
 //            faint histogram of everyone, scaled to the same number of people
 //   bottom — how sure we are about the average height: Normal(sample mean, SD / √n),
@@ -7,7 +8,7 @@
 // Each new sample moves the certainty curve; the last few stay behind, faint, so the
 // class sees it jump around by about its own width. More people never narrows the
 // top; it narrows the bottom.
-// Data from the page (r/week2.R, kung_widget_data()). Markup in
+// Data from the page (r/week2.R, adults_widget_data()). Markup in
 // _includes/week2/sample-mean.md, styles in css/deck.scss (.w2-*).
 import { brand, withAlpha } from './palette.js';
 import {
@@ -15,11 +16,11 @@ import {
 } from './canvas-plot.js';
 import { animate } from './tween.js';
 
-const X_RANGE = [134, 182];
+const X_RANGE = [130, 186];
 const HISTORY = 10; // earlier certainty curves left on the plot
 
 const root = document.querySelector('.sample-mean');
-const data = pageData('kung-data');
+const data = pageData('adults-data');
 if (root && data) init(root, data.height);
 
 function init(root, heights) {
@@ -70,7 +71,7 @@ function init(root, heights) {
     const blue = brand('blue');
     const green = brand('green');
     const ink = brand('ink');
-    const pad = { left: 20, right: 20, top: 8, bottom: 64 };
+    const pad = { left: 20, right: 20, top: 8, bottom: 76 };
     const x = scale(X_RANGE[0], X_RANGE[1], pad.left, w - pad.right);
     const plotH = h - pad.top - pad.bottom;
     const topBand = { y0: pad.top, y1: pad.top + plotH * 0.5 };
@@ -92,7 +93,7 @@ function init(root, heights) {
     const r = Math.min(binW * 0.45, (topBand.y1 - topBand.y0 - 34) / (2 * tallest));
     for (const [b, c] of everyone) {
       const bh = c * scaleToSample * 2 * r;
-      ctx.fillStyle = withAlpha(ink, 0.08);
+      ctx.fillStyle = withAlpha(ink, 0.16);
       ctx.fillRect(x(b) + 1, topBand.y1 - bh, binW - 2, bh);
     }
     for (const [b, c] of stacks) {
@@ -101,7 +102,7 @@ function init(root, heights) {
     text(ctx, `The ${sample.length} adults we measured`, pad.left, topBand.y0 + 20, {
       size: 19, weight: 600, color: blue,
     });
-    text(ctx, 'each dot is one person; gray: everyone', pad.left, topBand.y0 + 44, {
+    text(ctx, 'each dot is one person; gray: everyone', pad.left, topBand.y0 + 48, {
       size: 15, color: brand('gray'),
     });
     line(ctx, pad.left, topBand.y1, w - pad.right, topBand.y1, { color: withAlpha(ink, 0.3) });
@@ -146,7 +147,7 @@ function init(root, heights) {
       });
     }
 
-    xAxis(ctx, x, botBand.y1, ticks(135, 180, 5), { title: 'Height (cm)' });
+    xAxis(ctx, x, botBand.y1, ticks(130, 185, 5), { title: 'Height (cm)' });
   }
 
   sizeIn.addEventListener('input', () => {

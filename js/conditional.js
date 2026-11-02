@@ -1,4 +1,4 @@
-// Week 2, the "moving distribution": the !Kung adults' heights and weights, with a band
+// Week 2, the "moving distribution": the adults' heights and weights, with a band
 // of similar heights picked out (drag on the plot, or use the slider). Beside the plot,
 // sideways, the distribution of weight within the band: P( weight | height ). As the
 // band moves, the distribution moves with it. Two modes, one per slide:
@@ -7,20 +7,20 @@
 //                        mark, and the marks trace out the regression line.
 //   data-split="sex"   — "Compare adults of the same height": women and men colored,
 //                        and their weights compared inside the band. Overall the men
-//                        are much heavier; at the same height, hardly at all.
-// Data and lines from the page (r/week2.R, kung_widget_data()). Markup in
+//                        are much heavier; at the same height, only a little.
+// Data and lines from the page (r/week2.R, adults_widget_data()). Markup in
 // _includes/week2/conditional*.md, styles in css/deck.scss (.w2-*).
 import { brand, withAlpha } from './palette.js';
 import {
   Canvas, dot, line, mean, pageData, scale, text, ticks, xAxis, yAxis,
 } from './canvas-plot.js';
 
-const X_RANGE = [135, 181]; // height, cm
-const Y_RANGE = [30, 65]; // weight, kg
+const X_RANGE = [130, 186]; // height, cm
+const Y_RANGE = [25, 100]; // weight, kg (a few heavier adults are left out)
 const BIN = 2; // kg, for the sideways histograms
 const MIN_GROUP = 3; // fewer women or men than this in the band: no comparison
 
-const data = pageData('kung-data');
+const data = pageData('adults-data');
 if (data) {
   for (const root of document.querySelectorAll('.conditional')) init(root, data);
 }
@@ -84,7 +84,7 @@ function init(root, data) {
     const orange = brand('orange');
     const red = brand('red');
     const blue = brand('blue');
-    const plot = { left: 78, right: w * 0.7, top: 14, bottom: h - 66 };
+    const plot = { left: 90, right: w * 0.7, top: 14, bottom: h - 76 };
     const panel = { left: plot.right + 34, right: w - 12 };
     const x = scale(X_RANGE[0], X_RANGE[1], plot.left, plot.right);
     const y = scale(Y_RANGE[0], Y_RANGE[1], plot.bottom, plot.top);
@@ -94,16 +94,23 @@ function init(root, data) {
     ctx.fillStyle = withAlpha(orange, 0.13);
     ctx.fillRect(x(center - half), plot.top, x(center + half) - x(center - half), plot.bottom - plot.top);
 
-    yAxis(ctx, y, plot.left, ticks(30, 65, 5), { title: 'Weight (kg)', grid: plot.right });
-    xAxis(ctx, x, plot.bottom, ticks(135, 180, 5), { title: 'Height (cm)', grid: plot.top });
+    yAxis(ctx, y, plot.left, ticks(30, 100, 10), { title: 'Weight (kg)', grid: plot.right });
+    xAxis(ctx, x, plot.bottom, ticks(130, 180, 10), { title: 'Height (cm)', grid: plot.top });
 
-    // People: everyone faint, the band strong
+    // People: everyone faint, the band strong; the few beyond the ranges left out
     const color = (p) => (split ? (p.male ? blue : red) : orange);
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(plot.left, plot.top, plot.right - plot.left, plot.bottom - plot.top);
+    ctx.clip();
     for (const p of people) {
       if (inBand(p)) continue;
-      dot(ctx, x(p.h), y(p.w), 4, split ? withAlpha(color(p), 0.2) : withAlpha(gray, 0.45));
+      dot(ctx, x(p.h), y(p.w), 2.4, split ? withAlpha(color(p), 0.2) : withAlpha(gray, 0.45));
     }
-    for (const p of people) if (inBand(p)) dot(ctx, x(p.h), y(p.w), 5.5, withAlpha(color(p), 0.9));
+    for (const p of people) {
+      if (inBand(p)) dot(ctx, x(p.h), y(p.w), 3.3, withAlpha(color(p), 0.9));
+    }
+    ctx.restore();
 
     // The lines, from R: weight on height, or on sex and height
     if (lineIn.checked) {
@@ -162,10 +169,10 @@ function init(root, data) {
       });
     }
     line(ctx, panel.left, plot.top, panel.left, plot.bottom, { color: ink });
-    text(ctx, split ? 'Weights at this height' : 'Weights', panel.left, plot.bottom + 26, {
+    text(ctx, split ? 'Weights at this height' : 'Weights', panel.left, plot.bottom + 30, {
       size: 16, weight: 600, color: split ? ink : orange,
     });
-    text(ctx, split ? 'women and men' : 'at this height; gray: everyone', panel.left, plot.bottom + 48, {
+    text(ctx, split ? 'women and men' : 'at this height; gray: everyone', panel.left, plot.bottom + 56, {
       size: 15, color: gray,
     });
     if (!split) {

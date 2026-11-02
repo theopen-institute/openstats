@@ -105,7 +105,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-94961225a04d95b014d6325c8d85d401.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-a9518267ec09d304427739b96c653c5d.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -446,8 +446,8 @@
 <section id="worked-example-does-sex-affect-weight" class="title-slide slide level1 center">
 <h1>Worked example: does sex affect weight?</h1>
 
-<img data-src="week3_files/figure-revealjs/howell-scatter-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">The !Kung San adults from Week 2. Men are taller <em>and</em> heavier.</li>
+<img data-src="week3_files/figure-revealjs/adults-scatter-1.png" width="1800" class="r-stretch"><ul>
+<li class="fragment">Nepal’s 5,290 adults from Week 2. Men are taller <em>and</em> heavier.</li>
 </ul>
 </section>
 <section id="step-1-the-estimand" class="slide level2">
@@ -483,7 +483,7 @@
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="week3_files/figure-revealjs/howell-dag-1.png" width="1050"></p>
+<p><img data-src="week3_files/figure-revealjs/sex-weight-dag-1.png" width="1050"></p>
 </figure>
 </div>
 </div>
@@ -1364,9 +1364,9 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
 <section id="steps-4-5-real-data-real-estimates" class="slide level2">
 <h2>Steps 4 &amp; 5: Real data, real estimates</h2>
 
-<img data-src="week3_files/figure-revealjs/howell-posteriors-1.png" width="1800" class="r-stretch"><ul>
-<li class="fragment">Model A: men are about <strong>6.8 kg</strong> heavier.</li>
-<li class="fragment">Model B: at the same height, men are about <strong>0.1 kg</strong> heavier. In other words, no difference.</li>
+<img data-src="week3_files/figure-revealjs/adults-posteriors-1.png" width="1800" class="r-stretch"><ul>
+<li class="fragment">Model A: men are about <strong>6.5 kg</strong> heavier.</li>
+<li class="fragment">Model B: at the same height, men are only about <strong>1.1 kg</strong> heavier.</li>
 </ul>
 </section>
 <section id="effects-flow-through-paths" class="slide level2">
@@ -1396,8 +1396,8 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
 <p><strong>Model B</strong> holds height fixed, which <strong>blocks</strong> the path through height: only the <strong>direct effect</strong> is left.</p>
 </div></div>
 <ul>
-<li class="fragment">Sex affects weight almost entirely <em>through height</em>.</li>
-<li class="fragment">Our estimand asked for the total effect, so <strong>Model A</strong> answers it. Adding height would hide the very effect we’re asking about.</li>
+<li class="fragment">Most of the effect of sex flows <em>through height</em>: about 5.4 of the 6.5 kg. Only about 1.1 kg is direct.</li>
+<li class="fragment">Our estimand asked for the total effect, so <strong>Model A</strong> answers it. Adding height would hide most of the effect we’re asking about.</li>
 </ul>
 </section>
 <section id="what-about-age" class="slide level2">
@@ -1417,7 +1417,7 @@ W_i &amp;\sim \text{Normal}(\mu_i, \sigma) \\
 <ul>
 <li class="fragment">Age is in the DAG, but nothing points from age <strong>into sex</strong>, so age opens no extra path from sex to weight.</li>
 <li class="fragment">So for this estimand we can leave age out.</li>
-<li class="fragment">Quick check: adding age to the model shifts the sex difference by only 0.25 kg.</li>
+<li class="fragment">Quick check: adding age to Model A shifts the total effect by only 0.18 kg.</li>
 </ul>
 </div></div>
 <ul>

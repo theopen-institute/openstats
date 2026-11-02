@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-d76b89148f2051d413c67903796ad183.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-f9e134fc734154af1dcb07b86de50c3c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -195,7 +195,7 @@ window.Quarto = {
 <li><strong>Plot before you trust a number.</strong> Whenever you compute a mean or a correlation in R, make a picture of the data too.</li>
 <li>Problems marked ★ are harder. Give them a real try, but don’t get stuck on them.</li>
 </ul>
-<p>Numbers you will need for the !Kung San adults (352 adults, age 18 and over), rounded the same way as in lecture:</p>
+<p>Numbers you will need for Nepal’s adults from lecture (the WHO STEPS survey, 2019: 5,290 adults aged 18 to 69), rounded the same way as in lecture:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -207,24 +207,24 @@ window.Quarto = {
 <tbody>
 <tr class="odd">
 <td>Height</td>
-<td>154.6 cm</td>
-<td>7.7 cm</td>
+<td>154.7 cm</td>
+<td>8.2 cm</td>
 </tr>
 <tr class="even">
 <td>Weight</td>
-<td>45.0 kg</td>
-<td>6.5 kg</td>
+<td>55.6 kg</td>
+<td>10.8 kg</td>
 </tr>
 </tbody>
 </table>
-<p>The correlation between height and weight is <em>r</em> = 0.75.</p>
+<p>The correlation between height and weight is <em>r</em> = 0.46.</p>
 <section id="part-a-concepts" class="level1">
 <h1>Part A: Concepts</h1>
 <p><strong>A1.</strong> In lecture we said <em>“random individuals → predictable populations.”</em></p>
 <ol type="a">
 <li>Can you predict whether the next coin you flip will land heads? Can you predict roughly how many heads you’ll get in 1,000 flips? Explain the difference in one or two sentences.</li>
 <li>Give your own example of the same idea from life in Nepal. (For example: you can’t say whether one particular bus will be late, but …)</li>
-<li>For the !Kung data, name the <strong>population</strong>, and name two ways the cases <strong>vary</strong>.</li>
+<li>For the STEPS data on Nepal’s adults, name the <strong>population</strong>, and name two ways the cases <strong>vary</strong>.</li>
 </ol>
 <p><strong>A2.</strong> <em>Talking about numbers differently.</em> A friend asks you, “How much does a plate of buff momo cost in Kathmandu?” Write four answers, one for each kind of distribution from lecture:</p>
 <ol type="a">
@@ -260,7 +260,7 @@ window.Quarto = {
 <li>If you convert all heights from centimeters to inches, every z-score stays the same.</li>
 <li>After you turn a variable into z-scores, the shape of its histogram changes.</li>
 <li>A correlation of <em>r</em> = 0 means the two variables have nothing to do with each other.</li>
-<li>If height and weight have <em>r</em> = 0.75, then 75% of people who are tall are heavy.</li>
+<li>If height and weight have <em>r</em> = 0.46, then 46% of people who are tall are heavy.</li>
 <li><em>r</em> = −0.8 is a stronger relationship than <em>r</em> = 0.5.</li>
 <li>In z-scores with one predictor, the best regression slope β is equal to <em>r</em>.</li>
 </ol>
@@ -284,21 +284,21 @@ window.Quarto = {
 <ol type="a">
 <li>Why does this line need only <strong>one</strong> parameter? What happened to the intercept?</li>
 <li>What does it mean for one line to be “better” than another? Use the word <em>errors</em>.</li>
-<li>We found β = 0.75. Write one sentence that explains this number to someone who has never heard of a z-score.</li>
-<li>★ The lecture showed two curves for β: one using 20 adults and one using all 352. Why is the curve for 20 adults wider? What does a wider curve tell us about our knowledge of β?</li>
+<li>We found β = 0.46. Write one sentence that explains this number to someone who has never heard of a z-score.</li>
+<li>★ The lecture showed two curves for β: one using 20 adults and one using all 5,290. Why is the curve for 20 adults wider? What does a wider curve tell us about our knowledge of β?</li>
 </ol>
 </section>
 <section id="part-b-distributions-and-z-scores" class="level1">
 <h1>Part B: Distributions and z-scores</h1>
-<p>Use the !Kung numbers in the table at the top of this page.</p>
-<p><strong>B1.</strong> <em>The 68–95–99.7 rule.</em> Suppose !Kung adult height follows Normal(μ = 154.6, σ = 7.7).</p>
+<p>Use the numbers for Nepal’s adults in the table at the top of this page.</p>
+<p><strong>B1.</strong> <em>The 68–95–99.7 rule.</em> Suppose adult height in Nepal follows Normal(μ = 154.7, σ = 8.2).</p>
 <ol type="a">
 <li>Between which two heights should about 68% of adults fall?</li>
 <li>Between which two heights should about 95% fall?</li>
-<li>In the real data, 65% of adults are within 1 SD of the mean and 96% are within 2 SD. Is the Normal distribution a good description? What else would you check?</li>
-<li>About how tall is an adult who is exactly 2 SD above average? Would you call that person rare, unusual, or ordinary? (Use the table from the “Reading z-scores” slide.)</li>
+<li>In the real data, 67% of adults are within 1 SD of the mean and 96% are within 2 SD. Is the Normal distribution a good description? What else would you check?</li>
+<li>About how tall is an adult who is exactly 2 SD above average? Would you call that person rare, unusual, or ordinary? (Use the table from the “Same data, new ruler” slide.)</li>
 </ol>
-<p><strong>B2.</strong> A !Kung woman is <strong>140 cm</strong> tall and weighs <strong>38 kg</strong>.</p>
+<p><strong>B2.</strong> A woman in Nepal is <strong>140 cm</strong> tall and weighs <strong>45 kg</strong>.</p>
 <ol type="a">
 <li>Compute her z-score for height.</li>
 <li>Compute her z-score for weight.</li>
@@ -376,16 +376,16 @@ window.Quarto = {
 <li>Write one plain sentence that describes your answer to (b).</li>
 <li>With only five students, should we be confident about this number? What would make us more confident?</li>
 </ol>
-<p><strong>C3.</strong> <em>The !Kung regression.</em> Use β = <em>r</em> = 0.75 and the table at the top of the page.</p>
+<p><strong>C3.</strong> <em>Weight on height, for Nepal’s adults.</em> In z-scores, β = <em>r</em> = 0.46. Use it and the table at the top of the page.</p>
 <ol type="a">
-<li>Convert β to kilograms per centimeter.</li>
-<li>Two !Kung adults differ in height by 10 cm. About how much heavier would you expect the taller one to be?</li>
-<li>A !Kung man is 165 cm tall. What is his z-score for height? Using <span class="math inline">\(z_{\text{weight}} = 0.75 \times z_{\text{height}}\)</span>, what is his <em>predicted</em> z-score for weight? Turn that into kilograms.</li>
-<li>In lecture, this same 165 cm man actually weighs 58 kg. Is he above or below the line? By about how much?</li>
+<li>β is in SDs of weight per SD of height. Convert it to kilograms per centimeter. (Use β × SD<sub>weight</sub> / SD<sub>height</sub>.)</li>
+<li>Two adults differ in height by 10 cm. About how much heavier would you expect the taller one to be?</li>
+<li>A man is 165 cm tall. What is his z-score for height? Using <span class="math inline">\(z_{\text{weight}} = 0.46 \times z_{\text{height}}\)</span>, what is his <em>predicted</em> z-score for weight? Turn that into kilograms.</li>
+<li>In lecture, this same 165 cm man actually weighs 72 kg. Is he above or below the line? By about how much, in kilograms and in SDs?</li>
 </ol>
-<p><strong>C4.</strong> ★ <em>Turning it around.</em> In z-scores, the best line for weight on height is <span class="math inline">\(z_{\text{weight}} = 0.75 \times z_{\text{height}}\)</span>.</p>
+<p><strong>C4.</strong> ★ <em>Turning it around.</em> In z-scores, the best line for weight on height is <span class="math inline">\(z_{\text{weight}} = 0.46 \times z_{\text{height}}\)</span>.</p>
 <ol type="a">
-<li>A classmate says, “Then the line for height on weight must be <span class="math inline">\(z_{\text{height}} = \frac{1}{0.75} \times z_{\text{weight}} = 1.33 \times z_{\text{weight}}\)</span>.” Use the lecture’s rule (with standardized data and one predictor, β = <em>r</em>) to find the correct slope.</li>
+<li>A classmate says, “Then the line for height on weight must be <span class="math inline">\(z_{\text{height}} = \frac{1}{0.46} \times z_{\text{weight}} = 2.17 \times z_{\text{weight}}\)</span>.” Use the lecture’s rule (with standardized data and one predictor, β = <em>r</em>) to find the correct slope.</li>
 <li>Someone is 2 SD heavier than average. Is their predicted height more or less than 2 SD above average? Why does this make sense when <em>r</em> is less than 1?</li>
 </ol>
 </section>
@@ -404,7 +404,7 @@ window.Quarto = {
 </ol>
 <p><strong>D2.</strong> <em>How unusual is this house?</em></p>
 <ol type="a">
-<li>Add two new columns, <code>z_price</code> and <code>z_area</code>, using the code from the “Reading z-scores” slide. Check that each has a mean of 0 and an SD of 1.</li>
+<li>Add two new columns, <code>z_price</code> and <code>z_area</code>, using the code from the “Why we always standardize” slide. Check that each has a mean of 0 and an SD of 1.</li>
 <li>Find the cheapest house. What is its z-score for price? Now find the most expensive house. What is its z-score?</li>
 <li>The most expensive house is much further from average than the cheapest one. Why? (Hint: look at your histogram.)</li>
 <li>What share of houses have a price within 1 SD of the mean? Within 2 SD? Compare with the 68–95 rule. What share are more than 2 SD <em>above</em> the mean, and what share more than 2 SD <em>below</em>? What does that tell you about using the 68–95 rule here?</li>
@@ -439,20 +439,24 @@ window.Quarto = {
 </section>
 <section id="part-e-r-challenge-optional" class="level1">
 <h1>Part E: R challenge (optional)</h1>
-<p><strong>E1.</strong> <em>Check the formula.</em> For the !Kung adults (<code>datasets/kungsan.csv</code>, keep <code>age &gt;= 18</code>), compute <em>r</em> by hand in R: make the two z-score columns, multiply them, add them up, and divide by <code>n - 1</code>. Check that you get the same answer as <code>cor(height, weight)</code>. Then fit <code>lm(z_weight ~ z_height)</code> and check that the slope is the same number again.</p>
-<p><strong>E2.</strong> <em>Nepal among the world’s countries.</em> Use the World Bank data from the student projects. This code builds one row per country with life expectancy, fertility (births per woman), and GDP per person:</p>
+<p><strong>E1.</strong> <em>Check the formula.</em> Load Nepal’s adults from lecture:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"datasets/wb_country.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Region))            <span class="co"># drop groups like "South Asia" or "World"</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>wb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"datasets/wb2022.csv"</span>, <span class="at">na =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>, <span class="st">".."</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series Code</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"SP.DYN.LE00.IN"</span>, <span class="st">"SP.DYN.TFRT.IN"</span>, <span class="st">"NY.GDP.PCAP.CD"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">country =</span> <span class="st">`</span><span class="at">Country Name</span><span class="st">`</span>, <span class="at">code =</span> <span class="st">`</span><span class="at">Country Code</span><span class="st">`</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">series =</span> <span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>, <span class="at">value =</span> <span class="st">`</span><span class="at">2022 [YR2022]</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> series, <span class="at">values_from =</span> value) <span class="sc">|&gt;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">life_exp =</span> SP.DYN.LE00.IN, <span class="at">fertility =</span> SP.DYN.TFRT.IN,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">gdp_pc =</span> NY.GDP.PCAP.CD) <span class="sc">|&gt;</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(countries, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"code"</span> <span class="ot">=</span> <span class="st">"Code"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(life_exp, fertility, gdp_pc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adults <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"datasets/nepal_steps.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age <span class="sc">&gt;=</span> <span class="dv">18</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Compute <em>r</em> by hand in R: make the two z-score columns, multiply them, add them up, and divide by <code>n - 1</code>. Check that you get the same answer as <code>cor(height, weight)</code>. Then fit <code>lm(z_weight ~ z_height)</code> and check that the slope is the same number again. Finally, convert the slope to kilograms per centimeter and check it against the slope of <code>lm(weight ~ height)</code>.</p>
+<p><strong>E2.</strong> <em>Nepal among the world’s countries.</em> Use the World Bank data from the student projects. This code builds one row per country with life expectancy, fertility (births per woman), and GDP per person:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"datasets/wb_country.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Region))            <span class="co"># drop groups like "South Asia" or "World"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>wb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"datasets/wb2022.csv"</span>, <span class="at">na =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>, <span class="st">".."</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series Code</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"SP.DYN.LE00.IN"</span>, <span class="st">"SP.DYN.TFRT.IN"</span>, <span class="st">"NY.GDP.PCAP.CD"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">country =</span> <span class="st">`</span><span class="at">Country Name</span><span class="st">`</span>, <span class="at">code =</span> <span class="st">`</span><span class="at">Country Code</span><span class="st">`</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">series =</span> <span class="st">`</span><span class="at">Series Code</span><span class="st">`</span>, <span class="at">value =</span> <span class="st">`</span><span class="at">2022 [YR2022]</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> series, <span class="at">values_from =</span> value) <span class="sc">|&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">life_exp =</span> SP.DYN.LE00.IN, <span class="at">fertility =</span> SP.DYN.TFRT.IN,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">gdp_pc =</span> NY.GDP.PCAP.CD) <span class="sc">|&gt;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(countries, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"code"</span> <span class="ot">=</span> <span class="st">"Code"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(life_exp, fertility, gdp_pc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ol type="a">
 <li>Make a histogram of <code>life_exp</code>. One country has a value that cannot be right. Which country is it, and what is the value? (It is almost certainly a data error.)</li>
 <li>Compute Nepal’s z-score for life expectancy and for fertility, first with all countries, then without the bad value. Which z-score changes more, and why?</li>
@@ -460,7 +464,7 @@ window.Quarto = {
 <li>Make a scatterplot of <code>life_exp</code> against <code>fertility</code> and compute <em>r</em> (without the bad value). Describe the relationship in one sentence.</li>
 <li>★ Convert β to “years of life expectancy per extra birth per woman.” Then explain in 2–3 sentences why this number does <strong>not</strong> mean that having fewer children would make people in Nepal live longer.</li>
 </ol>
-<p><strong>E3.</strong> ★ <em>How much does r move with 20 people?</em> Draw 20 !Kung adults at random (<code>slice_sample(n = 20)</code>) and compute <em>r</em>. Repeat this 1,000 times and make a histogram of the 1,000 values. How wide is the spread? Do the same with samples of 100. Connect what you see to the two curves for β in lecture.</p>
+<p><strong>E3.</strong> ★ <em>How much does r move with 20 people?</em> Draw 20 of Nepal’s adults at random (<code>slice_sample(n = 20)</code>) and compute <em>r</em>. Repeat this 1,000 times and make a histogram of the 1,000 values. How wide is the spread? Do the same with samples of 100. Connect what you see to the two curves for β in lecture.</p>
 </section>
 <section id="part-f-reflection" class="level1">
 <h1>Part F: Reflection</h1>

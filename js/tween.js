@@ -8,16 +8,17 @@ export const DURATION = reduced ? 0 : 500; // ms
 // Fast at first, gentle at the end, so a dragged slider feels immediate
 export const ease = (t) => 1 - (1 - t) ** 3;
 
-// Run step(eased progress, 0 to 1) once a frame for one transition. Returns a function
-// that cancels it.
-export function animate(step) {
+// Run step(eased progress, 0 to 1) once a frame for one transition, lasting `ms`.
+// Returns a function that cancels it.
+export function animate(step, ms = DURATION) {
   if (!DURATION) {
     step(1);
     return () => {};
   }
   const start = performance.now();
   let frame = requestAnimationFrame(function tick(now) {
-    const t = Math.min(1, (now - start) / DURATION);
+    // clamped: a frame's timestamp can come from just before `start`
+    const t = Math.max(0, Math.min(1, (now - start) / ms));
     step(ease(t));
     frame = t < 1 ? requestAnimationFrame(tick) : null;
   });

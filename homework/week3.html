@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-d76b89148f2051d413c67903796ad183.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-f9e134fc734154af1dcb07b86de50c3c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -294,7 +294,7 @@ Family income -&gt; Irrigation</code></pre>
 <li>Is remittance money good for children’s education in Nepal?</li>
 <li>Does the new road help farmers in Jumla?</li>
 </ol>
-<p><strong>C3.</strong> <em>The generative model.</em> Here is the DAG from lecture for the !Kung San adults:</p>
+<p><strong>C3.</strong> <em>The generative model.</em> Here is the DAG from lecture for Nepal’s adults:</p>
 <pre><code>Sex -&gt; Height
 Sex -&gt; Weight
 Height -&gt; Weight
@@ -314,7 +314,7 @@ Age -&gt; Weight</code></pre>
 <li>Men and women are the <strong>same height</strong> on average, each cm adds 0.6 kg, and men are 2 kg heavier at the same height.</li>
 <li>In world (c), would Model A (<code>weight ~ sex</code>) and Model B (<code>weight ~ sex + height</code>) give about the same answer, or different answers? Explain using the DAG.</li>
 </ol>
-<p><strong>C5.</strong> <em>Two models, real data.</em> Fit to the 352 !Kung San adults, the two models from lecture gave these posteriors for the difference <em>men − women</em>:</p>
+<p><strong>C5.</strong> <em>Two models, real data.</em> Fit to Nepal’s 5,290 adults (the WHO STEPS survey, 2019), the two models from lecture gave these posteriors for the difference <em>men − women</em>:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -326,27 +326,28 @@ Age -&gt; Weight</code></pre>
 <tbody>
 <tr class="odd">
 <td>A: <code>weight ~ sex</code></td>
-<td>6.8 kg</td>
-<td>5.8 to 7.7 kg</td>
+<td>6.5 kg</td>
+<td>6.0 to 7.0 kg</td>
 </tr>
 <tr class="even">
 <td>B: <code>weight ~ sex + height</code></td>
-<td>0.1 kg</td>
-<td>−1.0 to 1.0 kg</td>
+<td>1.1 kg</td>
+<td>0.6 to 1.6 kg</td>
 </tr>
 </tbody>
 </table>
 <ol type="a">
 <li>Write one plain-language sentence explaining what each result means.</li>
 <li>Which model answers our estimand from C2 (the total effect)? Why?</li>
-<li>A classmate looks at Model B and says: <em>“See? Sex has no effect on weight.”</em> What is wrong with that claim?</li>
-<li>In these data, men are about 10.8 cm taller than women, and each extra cm goes with about 0.63 kg more weight. Multiply these two numbers. Compare the result with Model A and Model B. What does that tell you about <em>where</em> the effect of sex on weight flows?</li>
+<li>A classmate looks at Model B and says: <em>“See? Being male only adds about 1 kg.”</em> What is wrong with that claim?</li>
+<li>In these data, men are about 9.5 cm taller than women, and each extra cm goes with about 0.57 kg more weight. Multiply these two numbers, then add Model B’s answer. Compare the result with Model A. What does that tell you about <em>where</em> the effect of sex on weight flows?</li>
 <li>Write an estimand (a question) for which Model B <em>would</em> be the right model.</li>
 </ol>
 <p><strong>C6.</strong> <em>What about age?</em> Age is in the DAG, but we left it out of both models.</p>
 <ol type="a">
 <li>Using the DAG in C3, explain why we can leave age out when we estimate the effect of sex on weight.</li>
-<li>In lecture, adding age to the model changed the sex difference by only about 0.25 kg. Does that check <em>prove</em> the DAG is right? What does it tell us?</li>
+<li>In lecture, adding age to Model A changed the total effect by only about 0.2 kg. Does that check <em>prove</em> the DAG is right? What does it tell us?</li>
+<li>★ In these data, the men are older than the women on average (43 against 40), because many young men were working abroad when the survey came. Does that fit the DAG’s claim that nothing points from age into sex? Compare with E3 below.</li>
 </ol>
 <p><strong>C7.</strong> <em>Same move, opposite advice.</em> Last week we saw that more bedrooms go with a higher house price, but among houses of the same size, more bedrooms go with a lower price. This week, holding <strong>living area</strong> fixed was the right move for bedrooms, but holding <strong>height</strong> fixed was the wrong move for sex.</p>
 <ol type="a">

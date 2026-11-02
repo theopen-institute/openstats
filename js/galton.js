@@ -10,6 +10,7 @@ import { Canvas, dot, line, text } from './canvas-plot.js';
 import { DURATION } from './tween.js';
 
 const ROW_MS = 120; // how long a ball takes to fall one row
+const FALL_MS = 300; // and to fall from rest from the pegs to the bottom of an empty bin
 const MAX_IN_FLIGHT = 400;
 
 const root = document.querySelector('.galton');
@@ -72,9 +73,14 @@ function init(root) {
     while (queue.length && queue[0] <= now && balls.length < MAX_IN_FLIGHT) {
       balls.push({ path: randomPath(), start: queue.shift() });
     }
-    const end = (rows + 1) * ROW_MS;
+    // A ball counts once it lands on its bin's bar (on a hidden slide, once it's
+    // through the pegs)
+    const L = canvas.k ? layout(canvas.width, canvas.height) : null;
+    const hops = (rows + 1) * ROW_MS;
     balls = balls.filter((b) => {
-      if (now - b.start < end) return true;
+      const t = now - b.start;
+      if (t < hops) return true;
+      if (L && !fallAt(L, b, t - hops).landed) return true;
       counts[binOf(b.path)]++;
       landed++;
       return false;
@@ -89,18 +95,32 @@ function init(root) {
     const boardTop = 24;
     const boardH = h * 0.46;
     const binsTop = boardTop + boardH + 10;
-    const binsBottom = h - (rows <= 6 ? 74 : 50);
+    const binsBottom = h - (rows <= 6 ? 84 : 58);
     const dy = boardH / (rows + 0.5);
-    const dx = Math.min((w - 40) / (rows + 1), dy * 1.6, 120);
-    return { cx: w / 2, dx, dy, boardTop, binsTop, binsBottom };
+    const dx = Math.min((w - 40) / (rows + 1), dy * 2.4, 120);
+    const ballR = Math.max(3, Math.min(9, dx * 0.13));
+    return { cx: w / 2, dx, dy, boardTop, binsTop, binsBottom, ballR };
+  }
+
+  // The bars' scale: the tallest count (or path count, when shown) reaches 89% of the
+  // bins' height
+  function expectedCounts() {
+    return counts.map((_, k) => (landed * choose(rows, k)) / 2 ** rows);
+  }
+  function barScale(L) {
+    const top = Math.max(8, ...counts, ...(pathsIn.checked ? expectedCounts() : [])) * 1.12;
+    return (c) => (c / top) * (L.binsBottom - L.binsTop);
   }
 
   const peg = (L, i, j) => ({ x: L.cx + (j - i / 2) * L.dx, y: L.boardTop + (i + 0.5) * L.dy });
   const binX = (L, k) => L.cx + (k - rows / 2) * L.dx;
 
   // A ball's position `t` ms after it dropped: down onto the top peg, then a hop to
-  // the left or right at each row, and down into its bin
-  function ballAt(L, b, t, r) {
+  // the left or right at each row, off the last row, and a fall into its bin
+  function ballAt(L, b, t) {
+    const hops = (rows + 1) * ROW_MS;
+    if (t >= hops) return fallAt(L, b, t - hops);
+    const r = L.ballR;
     const s = t / ROW_MS;
     const seg = Math.min(rows, Math.floor(s));
     const f = Math.min(1, s - seg);
@@ -122,16 +142,26 @@ function init(root) {
     };
   }
 
+  // The fall into the bin, `t` ms after leaving the last row: straight down under
+  // gravity, starting at the speed it came down through the pegs (a row per ROW_MS),
+  // until it lands on top of its bin's bar ({ landed: true })
+  function fallAt(L, b, t) {
+    const k = binOf(b.path);
+    const speed = L.dy / ROW_MS; // px per ms
+    const g = (2 * (L.binsBottom - L.binsTop)) / FALL_MS ** 2;
+    const floor = L.binsBottom - barScale(L)(counts[k]) - L.ballR;
+    const y = L.binsTop + speed * t + 0.5 * g * t * t; // the last hop ends at binsTop
+    return { x: binX(L, k), y: Math.min(y, floor), landed: y >= floor };
+  }
+
   function draw(ctx, w, h) {
     const L = layout(w, h);
     const ink = brand('ink');
     const blue = brand('blue');
     const gray = brand('gray');
     const showPaths = pathsIn.checked;
-    const expected = counts.map((_, k) => (landed * choose(rows, k)) / 2 ** rows);
-    const top = Math.max(8, ...counts, ...(showPaths ? expected : [])) * 1.12;
-    const barH = (c) => (c / top) * (L.binsBottom - L.binsTop);
-    const ballR = Math.max(3, Math.min(9, L.dx * 0.13));
+    const expected = expectedCounts();
+    const barH = barScale(L);
 
     // Pegs
     for (let i = 0; i < rows; i++) {
@@ -141,6 +171,13 @@ function init(root) {
       }
     }
 
+    // Balls in flight
+    const now = performance.now();
+    for (const b of balls) {
+      const p = ballAt(L, b, now - b.start);
+      dot(ctx, p.x, p.y, L.ballR, brand('red'));
+    }
+
     // Bins: a bar per bin, with its count
     for (let k = 0; k <= rows; k++) {
       const x = binX(L, k);
@@ -148,9 +185,12 @@ function init(root) {
       const bh = barH(counts[k]);
       ctx.fillStyle = blue;
       ctx.fillRect(x - bw / 2, L.binsBottom - bh, bw, bh);
+      // Its count: inside the top of the bar, where landing balls don't cover it, or
+      // above a bar too short to hold it
       if (rows <= 10 && counts[k] > 0) {
-        text(ctx, counts[k].toLocaleString('en-US'), x, L.binsBottom - bh - 6, {
-          size: 15, align: 'center', color: ink,
+        const inside = bh > 26;
+        text(ctx, counts[k].toLocaleString('en-US'), x, L.binsBottom - bh + (inside ? 6 : -6), {
+          size: 15, align: 'center', color: inside ? 'white' : ink, baseline: inside ? 'top' : 'alphabetic',
         });
       }
       if (showPaths && landed > 0) {
@@ -175,12 +215,6 @@ function init(root) {
     line(ctx, binX(L, 0) - L.dx / 2, L.binsBottom, binX(L, rows) + L.dx / 2, L.binsBottom, { color: ink });
     text(ctx, 'Bounces to the right', w / 2, h - 4, { size: 16, align: 'center', color: gray });
 
-    // Balls in flight
-    const now = performance.now();
-    for (const b of balls) {
-      const p = ballAt(L, b, now - b.start, ballR);
-      dot(ctx, p.x, p.y, ballR, brand('red'));
-    }
   }
 
   rowsIn.addEventListener('input', reset);

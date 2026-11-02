@@ -1,8 +1,12 @@
 // Shared drawing for week 2's canvas widgets (galton.js, sample-mean.js, conditional.js,
-// model-builder.js). A Canvas fills its container and is drawn in the slide's own,
-// unscaled pixels, so text and lines size with the rest of the slide however reveal
-// scales the deck.
+// model-builder.js, reclass.js, sex-humps.js). A Canvas fills its container and is drawn in the
+// slide's own, unscaled pixels, so text and lines size with the rest of the slide
+// however reveal scales the deck.
 import { brand } from './palette.js';
+
+// Canvas text is set a quarter larger than the size asked for, to read from the back
+// of a room like the slides' own plots
+const TEXT_SCALE = 1.25;
 
 export const font = (px, weight = 400) =>
   `${weight} ${px}px Inter, system-ui, -apple-system, "Segoe UI", sans-serif`;
@@ -22,7 +26,9 @@ export class Canvas {
     window.addEventListener('resize', () => this.resize());
     window.Reveal?.on?.('resize', () => this.resize());
     window.Reveal?.on?.('slidechanged', () => this.resize());
-    this.resize();
+    // First draw once the widget creating this has finished setting up, since draw()
+    // may use things it defines after the Canvas
+    queueMicrotask(() => this.resize());
   }
 
   resize() {
@@ -70,13 +76,22 @@ export function ticks(lo, hi, step) {
   return out;
 }
 
+// halo: a white outline, so text over lines and fills stays readable
 export function text(ctx, str, x, y, {
-  size = 18, weight = 400, color = brand('ink'), align = 'left', baseline = 'alphabetic',
+  size = 18, weight = 400, color = brand('ink'), align = 'left', baseline = 'alphabetic', halo = false,
 } = {}) {
-  ctx.font = font(size, weight);
-  ctx.fillStyle = color;
+  ctx.font = font(size * TEXT_SCALE, weight);
   ctx.textAlign = align;
   ctx.textBaseline = baseline;
+  if (halo) {
+    ctx.save();
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 5;
+    ctx.lineJoin = 'round';
+    ctx.strokeText(str, x, y);
+    ctx.restore();
+  }
+  ctx.fillStyle = color;
   ctx.fillText(str, x, y);
 }
 
@@ -111,7 +126,7 @@ export function xAxis(ctx, x, y, values, { title, format = String, grid } = {}) 
     text(ctx, format(v), x(v), y + 10, { size: 16, align: 'center', baseline: 'top' });
   }
   line(ctx, Math.min(left, right), y, Math.max(left, right), y, { color: ink });
-  if (title) text(ctx, title, (left + right) / 2, y + 34, { size: 17, align: 'center', baseline: 'top' });
+  if (title) text(ctx, title, (left + right) / 2, y + 40, { size: 17, align: 'center', baseline: 'top' });
 }
 
 // A vertical axis at pixel column x, the same way. Its title runs up the axis.
@@ -126,7 +141,7 @@ export function yAxis(ctx, y, x, values, { title, format = String, grid } = {}) 
   line(ctx, x, Math.min(top, bottom), x, Math.max(top, bottom), { color: ink });
   if (title) {
     ctx.save();
-    ctx.translate(x - 52, (top + bottom) / 2);
+    ctx.translate(x - 58, (top + bottom) / 2);
     ctx.rotate(-Math.PI / 2);
     text(ctx, title, 0, 0, { size: 17, align: 'center', baseline: 'bottom' });
     ctx.restore();
