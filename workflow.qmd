@@ -457,7 +457,13 @@ fit_model <- function(data, model = berkeley, prior = priors, prior_only = 0) {
     select(dept, sex, admitted) |>
     compose_data() |>
     c(list(prior_only = prior_only), prior) |>
-    model$sample(seed = 2026, refresh = 0, show_messages = FALSE)
+    model$sample(
+      seed = 2026,
+      parallel_chains = 4, # run the four chains at once
+      adapt_delta = 0.95, # smaller steps, for the tricky geometry of Step 8's second model
+      refresh = 0,
+      show_messages = FALSE
+    )
 }
 
 # the estimand from Step 3, computed for every posterior draw: the female − male

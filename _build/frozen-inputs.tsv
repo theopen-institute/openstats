@@ -115,8 +115,9 @@ week5.qmd	r/data.R	68beb387b4adf98c49b0879995975ab8
 week5.qmd	r/deck-setup.R	238885271e646d424f24e4e750fb1d2a
 week5.qmd	r/rlib.R	5d48b7a934f59fde562c86a13a21ff29
 week5.qmd	r/week5.R	2e201faecb937f8efb48ac51ae3f264e
-workflow.qmd	_includes/bayesian-workflow.md	fdd1c71da06d34acf9b04e189340f829
+workflow.qmd	_includes/bayesian-workflow.md	a888912edeeef79faa47551a966937fa
 workflow.qmd	css/deck.scss	28391d6ab0279b90796c9cfb2c1e5f41
 workflow.qmd	datasets/berkeley.csv	38d4083ba32c2ea5727f6ff9ebfa458d
-workflow.qmd	models/berkeley.stan	3452867b478e9736c6cfedfe874cba01
+workflow.qmd	models/berkeley_varying.stan	5b451257252f0c3c7aca49e640865ed9
+workflow.qmd	models/berkeley.stan	6b0a1023d0bea91dfb2d290e6590351f
 workflow.qmd	r/rlib.R	5d48b7a934f59fde562c86a13a21ff29
