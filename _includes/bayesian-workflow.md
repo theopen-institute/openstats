@@ -1,5 +1,3 @@
-<!-- The ten-step workflow, shared by workflow.qmd and the week 1 deck. -->
-
 - **Scientific model:** what we believe about the world, before any statistics.
   1. **Ask the question.** Say in plain words what you want to know, and picture what the answer would look like.
   2. **Draw the causal model (DAG).** Write down what you assume causes what, based on what you know about the domain.
@@ -13,3 +11,6 @@
   8. **Fit and validate the model.** Run the sampler, check its diagnostics, and run posterior predictive checks. Can we trust the model?
   9. **Compute the estimate.** Use the fitted model to estimate the estimand from step 3.
   10. **Test its robustness.** How much does the estimate depend on our assumptions?
+
+<!-- The ten-step workflow, shared by workflow.qmd and the week 1 deck. It starts
+with the list, so workflow.qmd can put its Step 0 item right above it, in the same list. -->

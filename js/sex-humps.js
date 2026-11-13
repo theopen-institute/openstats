@@ -1,5 +1,5 @@
-// Week 2, "One hump, or two?": the adults' heights, in the same bars as the plots
-// before it. The slide's fragments step it along:
+// Week 2, "Describing distributions": the adults' heights, in the same bars as the
+// other height plots. The slide's fragments step it along:
 //   start  everyone, in gray
 //   1      the same bars colored by sex, women at the bottom and men stacked on top, so
 //          the outline doesn't move

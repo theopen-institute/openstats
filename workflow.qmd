@@ -6,6 +6,7 @@ format:
     include-in-header:
       - text: |
           <script src="js/dagitty.js"></script>
+          <script>document.addEventListener("DOMContentLoaded", () => DAGitty.setup())</script>
 ---
 
 This document walks through a complete Bayesian workflow, from the first question to a
@@ -14,19 +15,25 @@ result we can defend.
 Imagine you're in charge of admissions at a large university. You want to know if your
 admissions process is fair. You've got data from thousands of individual applicants. What now?
 
-The workflow has ten steps in three parts.
+The workflow starts with a preliminary step, and then has ten steps in three parts.
 
+- **Data exploration:** where the data came from, before we ask them anything.
+  0. **Get to know the data.** Find out how the data came to exist: who is in them, who isn't, and how each variable was recorded. Look at the variables, but not yet at how the outcome relates to the exposure.
 {{< include _includes/bayesian-workflow.md >}}
 
-None of steps 1–7 fit the model to the real data. In principle, you could do all of them
-before collecting any. (Here, the simulation borrows realistic numbers from the data,
-but it doesn't have to.)
+Nothing before Step 8 looks at how the outcome relates to the exposure: here, at how
+admission differs between men and women. Step 0 looks at the data, but not at that
+comparison. In principle, you could do steps 1–7 before collecting any data. Step 0 would
+then be planning how they'll be produced.
 
 The steps are numbered, but the workflow is a loop. If the model can't recover known
 parameters in step 7, or can't reproduce the data in step 8, go back and fix the
 statistical model. If the result in step 10 depends on an assumption you can't defend,
-go back further, to the scientific model: the DAG or the simulation. Each of those
-failures teaches us something.
+go back further, to the scientific model: the DAG or the simulation. Some failures send
+us all the way back to Step 0, for example when a result turns out to depend on how
+something was measured, or on who ended up in the data. Each of those failures teaches
+us something. This document goes around the loop once: Step 8 finds a flaw in the
+model, and we go back to Step 5 to fix it.
 
 ```{r setup, message=FALSE, results="hide"}
 # libraries
@@ -42,6 +49,13 @@ library(bayesplot)
 options(scipen = 999)
 set.seed(1)
 
+# plots: a plain theme, and the same color for each sex in every plot
+theme_set(theme_minimal() + theme(panel.grid.minor = element_blank()))
+sex_colors <- scale_color_manual(values = c(male = BLUE, female = RED), name = NULL)
+
+# a difference in admission rates, in signed percentage points: pp(0.035) is "+3.5"
+pp <- function(x) paste0(if_else(x < 0, "−", "+"), fmt(abs(100 * x), 1))
+
 # data import
 df <- read.csv("datasets/berkeley.csv") |>
   mutate(
@@ -49,6 +63,95 @@ df <- read.csv("datasets/berkeley.csv") |>
     dept = factor(dept)
   )
 ```
+
+# Data exploration
+
+## Step 0: Get to know the data
+
+Before we ask anything of the data, we find out how they came to exist. A dataset is not
+a window onto the world. Someone decided whom to include, what to record and how to
+record it, and each of those decisions shapes what we can learn.
+
+**Where the data came from.** In fall 1973, the Graduate Division of the University of
+California, Berkeley, made admission decisions for 12,763 applicants to its 101
+departments. Bickel, Hammel and O'Connell analysed them in the
+journal *Science* in 1975.[^berkeley] Our file holds only part of that: the applicants
+to the six largest departments, labeled A to F. This is the version that is widely
+shared, and it matches R's built-in `UCBAdmissions` table exactly. We don't have to take
+that on trust:
+
+[^berkeley]: P. J. Bickel, E. A. Hammel and J. W. O'Connell (1975), "Sex bias in
+    graduate admissions: data from Berkeley", *Science* 187(4175): 398–404,
+    [doi:10.1126/science.187.4175.398](https://doi.org/10.1126/science.187.4175.398). The
+    six-department version is documented in R: `?datasets::UCBAdmissions`.
+
+```{r data_source}
+# our file, counted the way UCBAdmissions is: one count per department, sex and outcome
+ours <- df |>
+  count(dept = as.character(dept), sex = as.character(sex), admitted)
+
+ucb <- as.data.frame(UCBAdmissions) |>
+  transmute(
+    dept = as.character(Dept),
+    sex = tolower(Gender),
+    admitted = as.integer(Admit == "Admitted"),
+    n = Freq
+  )
+
+# stops the document if any count differs
+comparison <- full_join(ours, ucb, by = c("dept", "sex", "admitted"))
+stopifnot(!anyNA(comparison), comparison$n.x == comparison$n.y)
+```
+
+**Who is in it, and who isn't.** Each row is one application to one department,
+`r fmt(nrow(df), 0)` in all. Just as important is what the data leave out.
+
+- **Only six departments.** The rest of the university isn't here, so our conclusions are
+  about these six.
+- **Only people who applied.** Anyone who was discouraged from applying, or couldn't
+  afford to, never appears. We'll come back to this in Step 10.
+- **We can't tell whether anyone appears twice.** There's no applicant ID, so someone who
+  applied to two departments could be two rows. We don't know, and that's worth knowing.
+
+**What was measured, and how.** Three columns: `dept`, the department applied to; `sex`,
+the sex recorded for the applicant (male or female); and `admitted`, 1 if they were
+admitted and 0 if not. Nothing is missing. Nothing about qualifications was recorded: no
+grades, test scores or letters. We'll see in Step 2 why that matters.
+
+**Who applied where.** How many men and women applied, how each sex's applications
+spread across the departments, and how selective each department is, counting all its
+applicants together:
+
+```{r data_overview}
+# missing values in each column
+colSums(is.na(df))
+
+# applicants by sex
+df |> count(sex) |> mutate(share = n / sum(n))
+
+# where men and women applied: each department's share of each sex's applications
+df |>
+  count(dept, sex) |>
+  group_by(sex) |>
+  mutate(share = n / sum(n)) |>
+  select(-n) |>
+  pivot_wider(names_from = sex, values_from = share)
+
+# each department's size and admission rate (all applicants, not by sex)
+df |>
+  group_by(dept) |>
+  summarise(applicants = n(), admit_rate = mean(admitted))
+```
+
+Men applied mostly to departments A and B, the two that admit most of their applicants.
+Women applied mostly to C–F, which admit far fewer.
+
+There is one rule for this step: **we don't look at how admission differs between men
+and women.** That comparison is the answer we're trying to estimate. If we saw it now, we
+could no longer choose a model for it honestly. Everything else is fair game. With these
+data the rule is partly make-believe: they're a textbook example, and you may already
+know how the story ends. With your own data you won't, and the rule is what keeps the
+analysis honest.
 
 # Scientific model
 
@@ -75,7 +178,7 @@ name for a simple idea.
 <div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 2/1;">
 dag {
 Admitted [outcome,pos=\"-0.619,0.077\"]
-Department [exposure,pos=\"-0.858,0.192\"]
+Department [adjusted,pos=\"-0.858,0.192\"]
 Sex [exposure,pos=\"-1.059,-0.272\"]
 Department -> Admitted
 Sex -> Admitted
@@ -84,16 +187,16 @@ Sex -> Department
 
 </div>
 
-<script>
-DAGitty.setup()
-</script>
+Sex is the exposure, the cause we're asking about, and admission is the outcome.
+Department is drawn as *adjusted*: as Step 3 explains, we'll compare men and women who
+applied to the same department.
 
 How do you pick these variables? You use what you already know about the subject. Here,
 we include sex because sex-based discrimination is a major social issue. We include
 department because some departments are much harder to get into than others.
 
 These are **theoretical choices, not empirical ones**. The data can't tell us which
-variables we should put in the graph or which way the arrows should point. We make these 
+variables we should put in the graph or which way the arrows should point. We make these
 decisions on the basis of our past experience, previous research, and the consensus of the field. Very different DAGs can fit
 the same data equally well. The DAG comes from our understanding of how admissions work,
 and we have to commit to it before the data can say anything.
@@ -105,18 +208,23 @@ left department out. The DAG would then say to compare overall admission rates f
 women, and that comparison gives a very different answer from the one we'll get here.
 Change the DAG and you will almost certainly change the result.
 
-The DAG also leaves things out. Many other factors affect admission. The most obvious is
+The DAG also leaves things out, starting with what Step 0 found the data don't record.
+Many other factors affect admission. The most obvious is
 an applicant's qualifications: their undergraduate grades, test scores, letters of
 recommendation and research experience. Others include how well their interests match a
 faculty member's, whether they need funding, and how they come across in an interview.
-Leaving a factor off the graph is safe only if two things are true: it isn't related to
-sex, and it doesn't affect both where people apply and whether they're admitted.
-Qualifications can easily fail the second test. Strong applicants may apply to more
-selective departments, and they're also more likely to get in. Because we compare men and
-women *within* departments, a factor like that can create a gap between them even when
-there's no discrimination. So we're assuming that, within each department, the men and
-women who apply are equally qualified. That's a strong assumption, and the data can't
-check it for us. In Step 10 we'll see how much the result moves if it's wrong.
+A factor that affects admission is safe to leave off the graph only if it's unrelated
+both to sex and to where people apply. Qualifications can fail on either count. They may
+differ between the men and women who apply: if women face barriers that only the most
+qualified overcome, the women who apply are more qualified than the men. And they may
+affect where people apply: strong applicants may aim for the more selective departments.
+Since sex affects where people apply too, the men and women who end up in the same
+department then got there for different reasons, and can differ in qualifications.
+Either way, because we compare men and women *within* departments, a factor like that
+can create a gap between them even when there's no discrimination. So we're assuming
+that, within each department, the men and women who apply are equally qualified. That's
+a strong assumption, and the data can't check it for us. In Step 10 we'll see how much
+the result moves if it's wrong.
 
 This DAG is not the final word, and no DAG ever will be. There is no "right" model waiting
 to be found at the end of the process. Every DAG is a simplification. Each one brings some
@@ -151,13 +259,22 @@ admissions office, we control the decisions departments make, so we'll focus on 
 direct path. This is the thought experiment from Step 1: change the applicant's sex and
 keep their department the same. Written as a number to estimate, it's the **estimand**:
 
-> **Estimand:** the average difference in admission probability between women and men
-> who apply to the *same* department, averaged across departments in proportion to how many
-> people apply to each.
+> **Estimand:** for each applicant, how much their chance of admission would change if
+> the department saw them as a woman rather than as a man, with everything else about
+> them, their department included, left as it is; averaged over all applicants.
 
 We'll measure it as a difference in admission rates. For example, a result of −0.05
-would mean women are admitted 5 percentage points less often than men who apply to the
-same department.
+would mean that being seen as a woman lowers an applicant's chance of admission by 5
+percentage points.
+
+"Averaged over all applicants" is a choice too. It counts each department in proportion
+to how many people apply to it. We could instead average over the women who applied.
+That asks what the process did to the women who actually came, rather than how it treats
+applicants in general, and it counts departments C–F, where most women applied, much
+more. If every department treats women the same way, the two versions give the same
+number. If departments differ, they can give very different numbers, so we choose now,
+before the data can tempt us. As the admissions office, we're responsible for how the
+process treats everyone who applies, so we average over all applicants.
 
 Comparing applicants to the same department means we have to **condition on department**,
 so department has to go into the model. Settling the estimand before we write any code
@@ -169,11 +286,17 @@ Before writing a statistical model, we write a *generative* one: a simulation th
 the DAG and produces fake applicants. This makes us state precisely how we think the data
 come about. Later, it gives us data where we know the right answer.
 
+The simulation's default numbers come from the tables in Step 0: where men and women
+applied, and each department's admission rate for all its applicants together. Neither
+shows how admission differs between men and women. (A stricter rule would rule out even
+the departments' admission rates, and we'd have to make them up. We've drawn the line at
+the comparison we're trying to estimate.)
+
 ```{r simulation}
 # Each assumption is an argument, with a default based on the real data. Change them to
-# simulate a different world. admit_rate, male_pref and female_pref give one value per
-# department, in the order of depts, or a single value for all of them: admit_rate = 0.4
-# means every department admits 40%.
+# simulate a different world. discrimination, admit_rate, male_pref and female_pref give
+# one value per department, in the order of depts, or a single value for all of them:
+# admit_rate = 0.4 means every department admits 40%.
 simulate_admissions <- function(
   n = 4500,
   discrimination = 0, # Sex -> Admitted: effect of being female, in log-odds
@@ -183,7 +306,13 @@ simulate_admissions <- function(
   female_pref = c(0.06, 0.02, 0.32, 0.20, 0.21, 0.19) # Sex -> Department
 ) {
   # one row per department (single values are recycled to every department)
-  departments <- tibble(dept = fct(depts), admit_rate, male_pref, female_pref)
+  departments <- tibble(
+    dept = fct(depts),
+    discrimination,
+    admit_rate,
+    male_pref,
+    female_pref
+  )
 
   # Sex: 60% men, as in the real data
   sex <- sample(fct(c("male", "female")), n, replace = TRUE, prob = c(0.6, 0.4))
@@ -196,11 +325,13 @@ simulate_admissions <- function(
   )
 
   # Department, Sex -> Admitted
-  dept_rate <- departments$admit_rate[match(dept, departments$dept)]
-  log_odds <- qlogis(dept_rate) + discrimination * (sex == "female")
+  d <- match(dept, departments$dept)
+  dept_rate <- departments$admit_rate[d]
+  dept_discrimination <- departments$discrimination[d]
+  log_odds <- qlogis(dept_rate) + dept_discrimination * (sex == "female")
   admitted <- rbinom(n, 1, plogis(log_odds))
 
-  tibble(dept, sex, dept_rate, admitted)
+  tibble(dept, sex, dept_rate, dept_discrimination, admitted)
 }
 ```
 
@@ -250,7 +381,8 @@ The overall gap disappears in both new worlds. It needs two things at once: men 
 applying to different departments, *and* departments that differ in how selective they
 are. Remove either one and the gap goes away. Try other values yourself. What happens if
 women prefer the *least* selective departments? What if one department admits almost
-everyone?
+everyone? What if only one department discriminates (`discrimination = c(-1, 0, 0, 0, 0,
+0)`)? We'll need that last one in Step 8.
 
 # Statistical model
 
@@ -301,7 +433,8 @@ Now we translate the formal model into a program the computer can run:
 
 A few details:
 
-- The priors are written directly in the `model` block, exactly as in the formal model.
+- The priors' scales (`alpha_sd`, `beta_sd`, `gamma_sd`) come in as data, so we can
+  change a prior without editing the model. We'll do that in Step 10.
 - Stan enforces the constraints with `sum_to_zero_vector`. Forcing
   effects to sum to zero shrinks their spread, so the code widens each prior's scale to
   compensate. That way, each effect's prior matches the formal model.
@@ -316,18 +449,22 @@ settings:
 ```{r compile, message=FALSE, results="hide"}
 berkeley <- cmdstan_model("models/berkeley.stan", dir = ".stancache")
 
-fit_model <- function(data, prior_only = 0, model = berkeley) {
+# the prior scales from the formal model
+priors <- list(alpha_sd = 1.5, beta_sd = 1, gamma_sd = 1)
+
+fit_model <- function(data, model = berkeley, prior = priors, prior_only = 0) {
   data |>
     select(dept, sex, admitted) |>
     compose_data() |>
-    c(list(prior_only = prior_only)) |>
+    c(list(prior_only = prior_only), prior) |>
     model$sample(seed = 2026, refresh = 0, show_messages = FALSE)
 }
 
-# the estimand from Step 3, computed for every posterior draw
-direct_effect <- function(fit, data = df) {
-  weights <- data |>
-    count(dept) |>
+# the estimand from Step 3, computed for every posterior draw: the female − male
+# difference in each department, averaged over the applicants in weight_by
+direct_effect <- function(fit, data = df, weight_by = data) {
+  weights <- weight_by |>
+    count(dept, .drop = FALSE) |>
     mutate(w = n / sum(n)) |>
     pull(w)
 
@@ -384,7 +521,8 @@ happens because three Normal priors add up on the log-odds scale, and a log-odds
 already 5% or 95%. These priors are looser than our actual knowledge: we don't believe
 departments admit nearly everyone or nearly no one. This is a judgment call. We could
 tighten $\alpha$ and $\gamma$ now. With thousands of applicants, we expect the data to
-outweigh the priors, so we'll keep them and check that expectation directly in Step 10.
+outweigh the priors, so we'll keep them and check that expectation directly in Step 10,
+by refitting with those priors half and twice as wide.
 
 ### Parameter recovery
 
@@ -394,18 +532,18 @@ log-odds scale, and one where they're penalized by 1. We fit the model to each a
 whether the posterior covers the true value of the estimand.
 
 ```{r recovery, message=FALSE, results="hide"}
-# the true value of the estimand: switch each applicant's sex, keep everything else the
-# same, and average the change in their chance of admission
-true_direct_effect <- function(sim, discrimination) {
+# the true value of the estimand: switch each simulated applicant's sex, keep everything
+# else the same, and average the change in their chance of admission
+true_direct_effect <- function(sim) {
   log_odds_male <- qlogis(sim$dept_rate)
-  log_odds_female <- log_odds_male + discrimination
+  log_odds_female <- log_odds_male + sim$dept_discrimination
   mean(plogis(log_odds_female) - plogis(log_odds_male))
 }
 
 recovery <- tibble(discrimination = c(0, -0.5, -1)) |>
   mutate(
     sim = map(discrimination, \(b) simulate_admissions(discrimination = b)),
-    truth = map2_dbl(sim, discrimination, true_direct_effect),
+    truth = map_dbl(sim, true_direct_effect),
     estimate = map(sim, \(s) direct_effect(fit_model(s), data = s))
   )
 ```
@@ -432,11 +570,12 @@ recovery |>
   )
 ```
 
-In each case, the true value falls inside the posterior. The model and the estimand code
-work, at least in a world that matches our assumptions. If they didn't, we'd have a bug
-or an identification problem, and we'd fix it here, where we know the right answer. Any
-single simulated dataset is noisy, so a more thorough version of this check repeats it
-many times with random true values. That's called *simulation-based calibration*.
+In each case, the true value falls within the posterior, though at −0.5 it sits in the
+tail. The model and the estimand code work, at least in a world that matches our assumptions. If they didn't,
+we'd have a bug or an identification problem, and we'd fix it here, where we know the
+right answer. Any single simulated dataset is noisy, so a more thorough version of this
+check repeats it many times with random true values. That's called *simulation-based
+calibration*.
 
 # Analysis
 
@@ -476,61 +615,260 @@ Can the fitted model reproduce the data it was fit to? For each posterior draw, 
 simulate a new set of admissions for every sex × department cell and compare the result
 to what we actually observed.
 
-```{r ppc}
+```{r ppc_setup}
+# simulated admissions for every sex × department cell, one set per posterior draw
+predict_cells <- function(fit, data = df) {
+  fit |>
+    spread_draws(p[sex, dept]) |>
+    mutate(
+      sex = factor(levels(data$sex)[sex], levels = levels(data$sex)),
+      dept = factor(levels(data$dept)[dept], levels = levels(data$dept))
+    ) |>
+    left_join(count(data, sex, dept, name = "applicants"), by = c("sex", "dept")) |>
+    mutate(admitted = rbinom(n(), applicants, p))
+}
+
+# what we observed, in each cell and overall
 cells <- df |>
   group_by(sex, dept) |>
   summarise(applicants = n(), observed = mean(admitted), .groups = "drop")
+overall <- df |>
+  group_by(sex) |>
+  summarise(observed = mean(admitted))
 
-fit |>
-  spread_draws(p[sex, dept]) |>
-  mutate(
-    sex = factor(levels(df$sex)[sex], levels = levels(df$sex)),
-    dept = factor(levels(df$dept)[dept], levels = levels(df$dept))
-  ) |>
-  left_join(cells, by = c("sex", "dept")) |>
-  mutate(predicted = rbinom(n(), applicants, p) / applicants) |>
-  ggplot(aes(x = dept, y = predicted, color = sex)) +
-  stat_pointinterval(
-    position = position_dodge(width = 0.5),
-    .width = c(0.5, 0.9)
-  ) +
-  geom_point(
-    data = cells,
-    aes(y = observed),
-    shape = 4,
-    size = 3,
-    stroke = 1.2,
-    position = position_dodge(width = 0.5)
-  ) +
+# predicted (intervals) and observed (×) admission rates in every cell
+ppc_plot <- function(fit, title) {
+  predict_cells(fit) |>
+    mutate(predicted = admitted / applicants) |>
+    ggplot(aes(x = dept, y = predicted, color = sex)) +
+    stat_pointinterval(
+      position = position_dodge(width = 0.5),
+      .width = c(0.5, 0.9)
+    ) +
+    geom_point(
+      data = cells,
+      aes(y = observed),
+      shape = 4,
+      size = 3,
+      stroke = 1.2,
+      position = position_dodge(width = 0.5)
+    ) +
+    sex_colors +
+    labs(
+      x = "Department",
+      y = "Admission rate",
+      title = title,
+      subtitle = "Intervals: model predictions. ×: observed rates."
+    )
+}
+```
+
+First, the pattern that started all this: the overall gap between men and women,
+ignoring department.
+
+```{r ppc_overall}
+predict_cells(fit) |>
+  group_by(.draw, sex) |>
+  summarise(predicted = sum(admitted) / sum(applicants), .groups = "drop") |>
+  ggplot(aes(x = predicted, y = sex, color = sex)) +
+  stat_pointinterval(.width = c(0.5, 0.9)) +
+  geom_point(data = overall, aes(x = observed), shape = 4, size = 4, stroke = 1.5) +
+  sex_colors +
   labs(
-    x = "Department",
-    y = "Admission rate",
-    title = "Posterior predictive check",
+    x = "Overall admission rate",
+    y = NULL,
+    title = "Posterior predictive check: the overall gap",
     subtitle = "Intervals: model predictions. ×: observed rates."
   )
 ```
 
+Overall, `r pct(overall$observed[overall$sex == "male"])` of men and
+`r pct(overall$observed[overall$sex == "female"])` of women were admitted. The model
+reproduces that gap, even though its sex effect is small: as in the Step 4 simulation,
+the gap comes from where men and women apply. Now the same check, department by
+department:
+
+```{r ppc}
+ppc_plot(fit, "Posterior predictive check: one sex effect for all departments")
+```
+
+```{r ppc_dept_a, include=FALSE}
+dept_a <- cells |> filter(dept == "A")
+dept_a_women <- dept_a |> filter(sex == "female")
+dept_a_men <- dept_a |> filter(sex == "male")
+```
+
 For most departments, the observed rates (×) fall inside the predicted intervals.
-Department A is the exception. Women there are admitted 82% of the time, well above
-anything the model predicts. The model can't capture this because in Step 5 we assumed the
-sex effect is the same in every department, and department A breaks that pattern.
+Department A is the exception. Women there are admitted
+`r pct(dept_a_women$observed)` of the time, against `r pct(dept_a_men$observed)` of men,
+well above anything the model predicts. The model can't capture this because in Step 5
+we assumed the sex effect is the same in every department, and department A breaks that
+pattern.
 
 This is the posterior predictive check doing its job. It tells us exactly where the model
-is too simple. In a full analysis, we'd go back to Step 5 and let the sex effect vary by
-department (an *interaction*). For this demonstration we'll keep the simpler model, but
-we'll keep the misfit in mind: our estimate is an average over departments that don't all
-behave alike.
+is too simple. And here the misfit matters for the answer, not just for the picture. The
+estimand averages each department's own female − male difference. A model that forces
+those differences to be equal doesn't average them: it compromises between them, leaning
+toward the departments where both sexes applied in numbers. Department A, with many men
+but only `r dept_a_women$applicants` women, gets less say in that compromise than the
+estimand gives it. So we go back around the loop.
+
+## Steps 5–8 again: a sex effect for each department
+
+### Step 5: Let the sex effect vary
+
+The new model gives each department its own sex effect:
+
+$$
+\begin{align}
+\text{admitted}_i &\sim \mathrm{Bernoulli}(p_i) \\
+\mathrm{logit}(p_i)
+&= \alpha
++ \beta_{\mathrm{sex}[i],\,\mathrm{dept}[i]}
++ \gamma_{\mathrm{dept}[i]} \\
+\beta_{\mathrm{sex},\,\mathrm{dept}} &\sim \mathrm{Normal}(\bar\beta_{\mathrm{sex}}, \tau) \\
+\bar\beta_{\mathrm{sex}} &\sim \mathrm{Normal}(0, 1) \\
+\tau &\sim \mathrm{Half\text{-}Normal}(0, 0.5) \\
+\alpha &\sim \mathrm{Normal}(0, 1.5) \\
+\gamma_{\mathrm{dept}} &\sim \mathrm{Normal}(0, 1) \\
+0 &= \textstyle\sum_{\mathrm{sex}} \bar\beta = \sum_{\mathrm{sex}} \beta_{\cdot,\,\mathrm{dept}} = \sum_{\mathrm{dept}} \gamma
+\end{align}
+$$
+
+The departments' sex effects aren't unrelated: they're drawn from one distribution,
+around an average effect $\bar\beta$ (the old $\beta$) with spread $\tau$. The model
+learns $\tau$ from the data. If departments treat women alike, $\tau$ is near zero and
+we're back to the first model. If they don't, each department's effect is estimated
+mostly from its own applicants. A department with few applicants of one sex, like B with
+its `r sum(df$dept == "B" & df$sex == "female")` women, is pulled toward the average.
+This is *partial pooling*: it lets departments differ without chasing the noise in small
+groups. The prior on $\tau$ says the departments' effects probably differ by a few tenths
+on the log-odds scale, and rarely by more than one.
+
+### Step 6: The Stan code
+
+```{.stan filename="models/berkeley_varying.stan" code-line-numbers="true"}
+{{< include models/berkeley_varying.stan >}}
+```
+
+- `beta` is now a matrix with a column for each department, built as `beta_bar + tau *
+  z`. The sampler explores `z`, which is standard Normal, rather than `beta` itself. This
+  is the same model written in a form that is easier to sample when $\tau$ is small (a
+  *non-centered* parameterization).
+- `cell`, in `transformed data`, is each applicant's position in `beta` once its columns
+  are stacked into one vector. It lets the linear predictor pick each applicant's sex
+  effect in one line, like `gamma[dept]`.
+- `p` is the same sex × department matrix as before, so `direct_effect()` works
+  unchanged.
+
+```{r compile_varying, message=FALSE, results="hide"}
+varying <- cmdstan_model("models/berkeley_varying.stan", dir = ".stancache")
+
+# the first model's priors, plus the prior on tau
+priors_varying <- c(priors, list(tau_sd = 0.5))
+```
+
+### Step 7: Test on simulated data
+
+A new model needs the same test as the old one. This time the simulated world has the
+problem the posterior predictive check found: one department treats women differently.
+In this world, department A discriminates against women (−1 on the log-odds scale) and
+every other department treats men and women alike. We fit both models and compare them
+with the true value of the estimand. (A full second pass would also repeat the prior
+predictive check. We skip it here: the only new prior is the one on $\tau$.)
+
+```{r recovery_varying, message=FALSE, results="hide"}
+sim_one_dept <- simulate_admissions(discrimination = c(-1, 0, 0, 0, 0, 0))
+truth_one_dept <- true_direct_effect(sim_one_dept)
+
+recovery_varying <- list(
+  "One sex effect" = fit_model(sim_one_dept),
+  "A sex effect for each department" = fit_model(sim_one_dept, varying, priors_varying)
+) |>
+  map(\(f) direct_effect(f, data = sim_one_dept)) |>
+  list_rbind(names_to = "model") |>
+  mutate(model = fct_inorder(model))
+```
+
+```{r recovery_varying_plot}
+recovery_varying |>
+  ggplot(aes(x = direct_effect, y = model)) +
+  stat_halfeye(fill = BLUE) +
+  geom_vline(xintercept = truth_one_dept, color = RED, linewidth = 1) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(
+    x = "Direct effect (female − male)",
+    y = NULL,
+    title = "Only department A discriminates",
+    subtitle = "Red line: the true value of the estimand"
+  )
+```
+
+```{r recovery_varying_numbers, include=FALSE}
+recovery_medians <- recovery_varying |>
+  group_by(model) |>
+  summarise(median = median(direct_effect)) |>
+  deframe()
+```
+
+The true direct effect in this world is `r pp(truth_one_dept)` points: department A
+admits women much less often, and about a fifth of all applicants apply there. The
+first model puts it at `r pp(recovery_medians[["One sex effect"]])`, missing a large
+part of it, because it lets department A count only as much as its few women allow. The
+new model puts it at `r pp(recovery_medians[["A sex effect for each department"]])`,
+close to the truth: it estimates department A's effect from department A's applicants,
+and the estimand then counts that department as much as it should. Its posterior is
+wider, too. Estimating a sex effect for each department costs precision, and that's the
+honest price of not assuming the effects are equal.
+
+### Step 8: Fit and check
+
+```{r fitting_varying, message=FALSE, results="hide"}
+fit_varying <- fit_model(df, varying, priors_varying)
+```
+
+```{r diagnostics_varying}
+fit_varying$diagnostic_summary()
+
+fit_varying$draws() |>
+  subset_draws(variable = c("beta_bar", "tau", "beta")) |>
+  summarise_draws() |>
+  replace_indexes(df, beta_bar[sex], beta[sex, dept]) |>
+  print(n = Inf, width = Inf)
+```
+
+No divergences, $\hat{R}$ at 1 and ESS above a thousand: the sampler worked. The spread
+$\tau$ is clearly above zero, so the departments do differ. Department A stands out: its
+sex effect is the only one whose interval sits well away from zero. In the other
+departments, the effects are small and close to the average.
+
+```{r ppc_varying}
+ppc_plot(fit_varying, "Posterior predictive check: a sex effect for each department")
+```
+
+Every observed rate now falls inside its predicted interval, department A included.
 
 ## Step 9: Compute the estimate
 
 Now we can answer the question from Step 1. We compute the direct effect for every
-posterior draw:
+posterior draw of the second model. To see what the second pass changed, we compute it
+from the first model too, and, for the choice we made in Step 3, averaged over the women
+who applied instead of over all applicants:
 
 ```{r estimand}
-de <- direct_effect(fit)
+de <- direct_effect(fit_varying)
 
-de |>
-  ggplot(aes(x = direct_effect)) +
+estimates <- list(
+  "First model: one sex effect" = direct_effect(fit),
+  "Second model: a sex effect for each department" = de,
+  "Second model, averaged over women applicants" =
+    direct_effect(fit_varying, weight_by = filter(df, sex == "female"))
+) |>
+  list_rbind(names_to = "estimate") |>
+  mutate(estimate = fct_rev(fct_inorder(estimate)))
+
+estimates |>
+  ggplot(aes(x = direct_effect, y = estimate)) +
   stat_halfeye(fill = BLUE) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(
@@ -539,22 +877,48 @@ de |>
     title = "Posterior for the estimand"
   )
 
-de |>
+estimate_summary <- estimates |>
+  group_by(estimate) |>
   summarise(
     median = median(direct_effect),
     lower_90 = quantile(direct_effect, 0.05),
     upper_90 = quantile(direct_effect, 0.95),
     prob_women_disadvantaged = mean(direct_effect < 0)
-  )
+  ) |>
+  arrange(desc(estimate))
+estimate_summary
+```
+
+```{r estimand_numbers, include=FALSE}
+est <- estimate_summary |> mutate(estimate = as.character(estimate))
+first <- est |> filter(str_starts(estimate, "First"))
+main <- est |> filter(estimate == "Second model: a sex effect for each department")
+women <- est |> filter(str_ends(estimate, "women applicants"))
+overall_gap <- diff(overall$observed) # female − male
 ```
 
 Among applicants to the same department, there's no sign that women are admitted less
-often than men. The best estimate is that they're admitted about 2 percentage points
-*more* often. The 90% interval runs from about −1 to +4 points, so the data are
-consistent with a small advantage for women or no difference at all. The large overall
-gap comes from *where* women
-apply, not from how departments treat them. That's the pattern our Step 4 simulation
-produced in a world with no discrimination.
+often than men. With a sex effect for each department, the estimate is
+`r pp(main$median)` percentage points: being seen as a woman *raises* an applicant's
+chance of admission, by between `r pp(main$lower_90)` and `r pp(main$upper_90)` points
+(90% interval). The probability that women are disadvantaged is
+`r pct(main$prob_women_disadvantaged)`. The first model said `r pp(first$median)`. It
+understated the advantage for the same reason it understated the discrimination in the
+Step 7 simulation: it gave department A too little weight.
+
+That advantage comes almost entirely from department A. Averaged over the women who
+applied, most of them to departments C–F, the effect is `r pp(women$median)` points
+(`r pp(women$lower_90)` to `r pp(women$upper_90)`): no difference either way. This is
+the choice from Step 3, and here it matters. We committed to averaging over all
+applicants, so our estimate stays `r pp(main$median)`. But a reader who cares about the
+women who actually applied should know that, for them, the answer is "no difference".
+The two versions agree on the question we started with: departments don't treat women
+worse than the men who apply alongside them.
+
+Compare that with the overall gap: women were admitted
+`r fmt(-100 * overall_gap, 0)` percentage points less often than men. That gap comes
+from *where* women apply, not from how departments treat them. That's the pattern our
+Step 4 simulation produced in a world with no discrimination.
 
 ## Step 10: Test its robustness
 
@@ -563,35 +927,29 @@ them.
 
 ### Sensitivity to priors
 
-We refit with a much tighter and a much looser prior on the sex effect. Each variant is
-the same model with one line changed: the scale in the prior on `beta`.
+We refit the second model with different priors: the baseline and department priors
+($\alpha$, $\gamma$), which Step 7 found too wide, at half and twice their width; the
+sex-effect priors ($\bar\beta$, $\tau$) at twice their width; and sex-effect priors so
+narrow that they all but rule out any difference between men and women. Because the prior
+scales are data, each variant is the same model with different numbers.
 
 ```{r sensitivity_priors, message=FALSE, results="hide"}
-# a copy of the model with the prior on beta set to Normal(0, beta_sd)
-with_beta_prior <- function(beta_sd) {
-  code <- readLines("models/berkeley.stan")
-  line <- grep("beta ~ normal(0, 1 *", code, fixed = TRUE)
-  stopifnot(length(line) == 1)
-  code[line] <- sub(
-    "normal(0, 1 *",
-    paste0("normal(0, ", beta_sd, " *"),
-    code[line],
-    fixed = TRUE
-  )
-  cmdstan_model(write_stan_file(code, dir = ".stancache"))
-}
-
 prior_scenarios <- list(
-  "Tight (beta ~ Normal(0, 0.1))" = with_beta_prior(0.1),
-  "Default (beta ~ Normal(0, 1))" = berkeley,
-  "Loose (beta ~ Normal(0, 2.5))" = with_beta_prior(2.5)
+  "Default priors" = list(),
+  "α, γ priors half as wide" = list(alpha_sd = 0.75, gamma_sd = 0.5),
+  "α, γ priors twice as wide" = list(alpha_sd = 3, gamma_sd = 2),
+  "Sex-effect priors twice as wide" = list(beta_sd = 2, tau_sd = 1),
+  "Sex-effect priors insisting on no effect" = list(beta_sd = 0.02, tau_sd = 0.02)
 )
 
 prior_sensitivity <- prior_scenarios |>
-  imap(\(model, name) {
-    direct_effect(fit_model(df, model = model)) |> mutate(scenario = name)
+  imap(\(change, name) {
+    fit_model(df, varying, modifyList(priors_varying, change)) |>
+      direct_effect() |>
+      mutate(scenario = name)
   }) |>
-  list_rbind()
+  list_rbind() |>
+  mutate(scenario = fct_rev(fct_inorder(scenario)))
 ```
 
 ```{r sensitivity_priors_plot}
@@ -606,22 +964,68 @@ prior_sensitivity |>
   )
 ```
 
-The three posteriors are almost identical. Even a prior that strongly insists sex
-doesn't matter barely moves the estimate. This confirms what we expected in Step 7: with
-thousands of applicants, the data outweigh the overly wide priors. With a small sample,
-this check would matter much more.
+```{r sensitivity_priors_numbers, include=FALSE}
+sensitivity_medians <- prior_sensitivity |>
+  group_by(scenario = as.character(scenario)) |>
+  summarise(median = median(direct_effect)) |>
+  deframe()
+other_medians <- sensitivity_medians[names(sensitivity_medians) !=
+  "Sex-effect priors insisting on no effect"]
+```
+
+Making the baseline and department priors narrower or wider barely moves the estimate,
+and neither does widening the sex-effect priors: across those four fits, the median runs
+from `r pp(min(other_medians))` to `r pp(max(other_medians))` points. This confirms what
+we expected in Step 7: with thousands of applicants, the data outweigh the overly wide
+priors.
+
+Only the last prior moves it, to
+`r pp(sensitivity_medians[["Sex-effect priors insisting on no effect"]])` points. That
+prior says, before seeing any data, that no department's sex effect can be more than a
+few hundredths on the log-odds scale. It overrides department A's data because that's
+what it was built to do. No one holds that belief, so it doesn't weaken the result. What
+it shows is that the advantage for women rests on department A's applicants, and that it
+takes a prior ruling such a difference out in advance to remove it.
 
 ### Sensitivity to the DAG: an unobserved confounder
 
-The strongest assumption we made is that the factors left out of the DAG aren't related
-to sex: men and women who apply are equally qualified. Suppose that's wrong. Suppose women face barriers
-*before* they apply, so only the most qualified women apply at all. Then, within any
-department, the women are more qualified than the men. Comparing within departments would
-make women look favored even if departments discriminate against them.
+The strongest assumption we made is that, within each department, the men and women who
+apply are equally qualified. Step 2 gave two ways it could fail. Here they are in the
+DAG, with qualifications as `U`, a variable we can't observe, and with `Applied`, which
+we condition on because the data hold only people who applied:
 
-We can test how much this matters by going back to the Step 4 simulation and adding the
-variable our DAG leaves out: qualifications, `u`. Everything else stays the same. The new
-lines are marked.
+<div class="dagitty" style="width: 100%; padding: 20px 0; aspect-ratio: 3/2;">
+dag {
+Admitted [outcome,pos=\"2,0\"]
+Applied [adjusted,pos=\"0.4,1.6\"]
+Department [adjusted,pos=\"1,0.7\"]
+Sex [exposure,pos=\"0,0\"]
+U [latent,pos=\"1.6,1.6\"]
+Department -> Admitted
+Sex -> Admitted
+Sex -> Applied
+Sex -> Department
+U -> Admitted
+U -> Applied
+U -> Department
+}
+
+</div>
+
+- **Selection into applying** ($\text{Sex} \to \text{Applied} \leftarrow U$). Suppose
+  women face barriers *before* they apply, so only the most qualified women apply at all.
+  Then, within any department, the women are more qualified than the men. Comparing within
+  departments would make women look favored even if departments discriminate against them.
+- **Qualifications drive where people apply** ($\text{Sex} \to \text{Department}
+  \leftarrow U$). If strong applicants aim for the selective departments, then a man in a
+  selective department is more likely to be a strong applicant than a woman there, since
+  women apply to those departments anyway. Comparing within departments would make women
+  look *disadvantaged*, even with no discrimination.
+
+In both cases, the path runs through a variable we hold fixed, and holding it fixed is
+what makes men and women differ in `U`. We can test how much this matters by going back
+to the Step 4 simulation and adding `U`. Everything else stays the same. The new lines
+are marked.
 
 ```{r simulation_u}
 simulate_admissions_u <- function(
@@ -632,10 +1036,17 @@ simulate_admissions_u <- function(
   male_pref = c(0.31, 0.21, 0.12, 0.15, 0.07, 0.14), # Sex -> Department
   female_pref = c(0.06, 0.02, 0.32, 0.20, 0.21, 0.19), # Sex -> Department
   u_on_admit = 0, # new: how much qualifications matter for admission
-  female_selection = 0 # new: how much more qualified female applicants are, in SDs
+  female_selection = 0, # new: how much more qualified female applicants are, in SDs
+  u_on_dept = 0 # new: how strongly qualified applicants aim for selective departments
 ) {
   # one row per department (single values are recycled to every department)
-  departments <- tibble(dept = fct(depts), admit_rate, male_pref, female_pref)
+  departments <- tibble(
+    dept = fct(depts),
+    discrimination,
+    admit_rate,
+    male_pref,
+    female_pref
+  )
 
   # Sex: 60% men, as in the real data
   sex <- sample(fct(c("male", "female")), n, replace = TRUE, prob = c(0.6, 0.4))
@@ -643,59 +1054,70 @@ simulate_admissions_u <- function(
   # new: qualifications, shifted up for women when female_selection > 0
   u <- rnorm(n, mean = female_selection * (sex == "female"))
 
-  # Sex -> Department
-  dept <- if_else(
-    sex == "female",
-    sample(departments$dept, n, replace = TRUE, prob = departments$female_pref),
-    sample(departments$dept, n, replace = TRUE, prob = departments$male_pref)
-  )
+  # Sex, Qualifications -> Department (new: the tilt toward selective departments)
+  selectivity <- -qlogis(departments$admit_rate)
+  selectivity <- selectivity - mean(selectivity)
+  dept <- map2_vec(sex, u, \(s, u_i) {
+    pref <- if (s == "female") departments$female_pref else departments$male_pref
+    sample(departments$dept, 1, prob = pref * exp(u_on_dept * u_i * selectivity))
+  })
 
   # Department, Sex, Qualifications -> Admitted
-  dept_rate <- departments$admit_rate[match(dept, departments$dept)]
+  d <- match(dept, departments$dept)
+  dept_rate <- departments$admit_rate[d]
+  dept_discrimination <- departments$discrimination[d]
   log_odds <- qlogis(dept_rate) +
-    discrimination * (sex == "female") +
+    dept_discrimination * (sex == "female") +
     u_on_admit * u # new
   admitted <- rbinom(n, 1, plogis(log_odds))
 
-  tibble(dept, sex, dept_rate, u, admitted)
+  tibble(dept, sex, dept_rate, dept_discrimination, u, admitted)
 }
 
 # the true direct effect now holds each applicant's qualifications fixed too
-true_direct_effect_u <- function(sim, discrimination, u_on_admit) {
+true_direct_effect_u <- function(sim, u_on_admit) {
   log_odds_male <- qlogis(sim$dept_rate) + u_on_admit * sim$u # new
-  log_odds_female <- log_odds_male + discrimination
+  log_odds_female <- log_odds_male + sim$dept_discrimination
   mean(plogis(log_odds_female) - plogis(log_odds_male))
 }
 ```
 
-Now we build in real discrimination (−0.5 log-odds), make qualifications matter for
-admission, and vary how much more qualified the female applicants are:
+Now we build in real discrimination (−0.5 log-odds) in every department, make
+qualifications matter for admission, and try each failure in turn:
 
 ```{r sensitivity_confounding, message=FALSE, results="hide"}
-confounding <- tibble(female_selection = c(0, 0.5, 1)) |>
+confounding <- tribble(
+  ~world, ~female_selection, ~u_on_dept,
+  "Equally qualified", 0, 0,
+  "Women 0.5 SD more qualified", 0.5, 0,
+  "Women 1 SD more qualified", 1, 0,
+  "Qualified aim for selective depts", 0, 1
+) |>
   mutate(
-    sim = map(female_selection, \(k) {
+    world = fct_rev(fct_inorder(world)),
+    sim = map2(female_selection, u_on_dept, \(k, t) {
       simulate_admissions_u(
         discrimination = -0.5,
         u_on_admit = 1,
-        female_selection = k
+        female_selection = k,
+        u_on_dept = t
       )
     }),
-    truth = map_dbl(sim, \(s) {
-      true_direct_effect_u(s, discrimination = -0.5, u_on_admit = 1)
-    }),
-    estimate = map(sim, \(s) direct_effect(fit_model(s), data = s))
+    truth = map_dbl(sim, \(s) true_direct_effect_u(s, u_on_admit = 1)),
+    estimate = map(sim, \(s) {
+      direct_effect(fit_model(s, varying, priors_varying), data = s)
+    })
   )
 ```
 
-```{r sensitivity_confounding_plot}
+```{r sensitivity_confounding_plot, fig.width = 8}
 confounding |>
-  select(female_selection, truth, estimate) |>
+  select(world, truth, estimate) |>
   unnest(estimate) |>
-  ggplot(aes(x = direct_effect, y = factor(female_selection))) +
+  ggplot(aes(x = direct_effect, y = world)) +
   stat_halfeye(fill = BLUE) +
   geom_point(
-    data = distinct(confounding, female_selection, truth),
+    data = distinct(confounding, world, truth),
     aes(x = truth),
     color = RED,
     shape = 4,
@@ -710,29 +1132,44 @@ confounding |>
   ) +
   labs(
     x = "Estimated direct effect (female − male)",
-    y = "How much more qualified female applicants are (SD)",
-    title = "Real discrimination, hidden by an unobserved confounder",
+    y = NULL,
+    title = "Real discrimination, distorted by an unobserved confounder",
     subtitle = "Red ×: true effect. Dotted line: our estimate from the real data."
   )
 ```
 
-In every one of these simulations, departments discriminate against women (red ×). When
-applicants are equally qualified, the model finds the discrimination. If women applicants
-are half a standard deviation more qualified, the model misses most of the
-discrimination: the estimate shrinks toward zero. At a full standard deviation, women look clearly *favored*, by even more than
-our real-data estimate (dotted line).
+In every one of these worlds, departments discriminate against women (red ×). When men
+and women are equally qualified, the model finds the discrimination. The two failures
+from Step 2 push the estimate in opposite directions. If women applicants are half a
+standard deviation more qualified, the discrimination vanishes from the estimate, and at
+a full standard deviation women look clearly *favored*, by more than our real-data
+estimate (dotted line). If qualified applicants aim for the selective departments, the
+model finds *more* discrimination than there is.
 
-So our real-data result, "no direct disadvantage for women", is credible only to the
-extent that we believe male and female applicants are similarly qualified. The model
-can't settle that question. It's an argument about the world, and settling it would take
-more data, such as measures of applicant qualifications.
+So our real-data result is credible only to the extent that we believe the men and women
+who apply to the same department are similarly qualified. If they aren't, the error
+could go either way, and how far depends on which story is true. The model can't settle
+that question. It's an argument about the world, and settling it would take more data,
+such as measures of applicant qualifications.
 
 # The result
 
-Within departments, we find no evidence that women are disadvantaged. If anything, they're
-admitted about 2 percentage points more often. The conclusion holds up across a wide range
-of priors. It comes with two caveats. First, the model averages over departments, and
-department A doesn't fit that average well. Second, it rests on an assumption we can't test with these data: that male and
-female applicants are similarly qualified. The
-overall gap is real. It runs through department choice, so the place to look is why
-women apply to more selective departments.
+```{r result_numbers, include=FALSE}
+# the claims below, checked against the estimates
+stopifnot(
+  main$lower_90 > 0, # the advantage for women is clear when averaging over all applicants
+  women$lower_90 < 0, women$upper_90 > 0 # and absent for the women who applied
+)
+```
+
+Within departments, we find no evidence that women are disadvantaged, at least in the six
+departments in our data. Averaged over all applicants, as we decided in Step 3, being
+seen as a woman raises the chance of admission by `r pp(main$median)` percentage points,
+almost all of it in department A. Averaged over the women who actually applied, there is
+no difference. The conclusion holds up across a range of priors, and only a prior that
+rules out any sex effect in advance removes the advantage. It rests on an assumption we
+can't test with these data: that men and women who apply to the same department are
+similarly qualified. If that's wrong, the error could go either way. The overall gap is
+real: women were admitted `r fmt(-100 * overall_gap, 0)` percentage points less often
+than men. It runs through department choice, so the place to look is why women apply to
+more selective departments.

@@ -1,0 +1,1620 @@
+---
+title: "Worked example: domestic violence, caste and drinking in Nepal"
+subtitle: "One pass through the Bayesian workflow on real survey data"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    code_folding: show
+    df_print: kable
+---
+
+```{r knitr-options, include = FALSE}
+# Knit this file on its own (rmarkdown::render("violence.Rmd")), not with Quarto. The
+# DHS data are licensed, so it isn't part of the public site: knit it here and share
+# the HTML. The slow chunks (every Stan fit) are cached in violence_cache.nosync/,
+# which stays out of git and out of iCloud.
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 9,
+  fig.height = 5,
+  dpi = 120,
+  cache.path = "violence_cache.nosync/"
+)
+```
+
+This is one way to work through the [Bayesian workflow](workflow.html) on a question
+that's much messier than Berkeley admissions. It isn't the only way, and it isn't a
+finished study. It's an example of how you might proceed with your own project: the
+order of the steps, the checks at each one, and how to write up an answer that depends
+on assumptions.
+
+**About the topic.** The data are women's answers about violence by their own husbands,
+and we compare caste and ethnic groups. A group's rate describes what women in that
+group *reported*, in one survey. It says nothing about any person, and as we'll see, it
+doesn't show that one community "is more violent" than another. So every group number
+here comes with the number of women it rests on and an interval. If you need support,
+Nepal's National Women Commission runs a free helpline: **1145**.
+
+**About the data.** The Nepal Demographic and Health Survey (DHS) files are licensed
+for this course and may not be shared. Nothing here shows a single woman's answers:
+every table and plot is of groups. To run this file yourself, register with the DHS
+Program for the Nepal 2022 survey and set `NEPAL_DHS_DIR` to the folder of Stata files.
+
+```{r libraries}
+library(tidyverse)
+library(survey)
+library(cmdstanr)
+library(tidybayes)
+library(posterior)
+
+# the course's shared helpers: the palette (BLUE, RED, ...), fmt() and pct() for
+# numbers in the text, standardize(), and dag_plot() with the fork/pipe helpers
+source("r/rlib.R")
+
+theme_set(
+  theme_minimal(base_size = 14) +
+    theme(panel.grid.minor = element_blank(), legend.position = "top")
+)
+pct_axis <- scales::label_percent(accuracy = 1)
+set.seed(1)
+```
+
+
+# Step 0: Get to know the data
+
+Before we ask anything of the data, we find out how they came to exist: who was asked,
+what they were asked, how, and by whom.
+
+## Where the data came from
+
+The Nepal Demographic and Health Survey 2022 interviewed women aged 15–49 in a sample of
+villages and urban wards across the country. One woman in each selected household was
+also asked the **domestic violence module**, alone, and that module has its own survey
+weight. We read the survey's own Stata files: the women's file, plus the household file
+for food insecurity.
+
+```{r load}
+# where the licensed files are (set in _environment.local, which isn't committed)
+if (!nzchar(Sys.getenv("NEPAL_DHS_DIR"))) {
+  readRenviron("_environment.local")
+}
+dhs_dir <- Sys.getenv("NEPAL_DHS_DIR")
+
+women <- haven::read_dta(
+  file.path(dhs_dir, "NPIR82DT", "NPIR82FL.DTA"),
+  col_select = c(
+    v001,
+    v002,
+    v012,
+    v021,
+    v022,
+    v024,
+    v025,
+    v028,
+    v044,
+    v131,
+    v133,
+    v190,
+    v191,
+    v501,
+    v512,
+    v715,
+    sdist,
+    secoreg,
+    d005,
+    d104,
+    d105a:d105f,
+    d105j,
+    d106,
+    d107,
+    d108,
+    d113,
+    d114,
+    d121
+  )
+) |>
+  haven::zap_labels()
+
+households <- haven::read_dta(
+  file.path(dhs_dir, "NPHR82DT", "NPHR82FL.DTA"),
+  col_select = c(hv001, hv002, hfs_mod)
+) |>
+  haven::zap_labels()
+```
+
+Each variable gets a plain name. The codes come from the survey's value labels.
+
+```{r analysis-table}
+GROUPS <- c(
+  "Hill Brahmin/Chhetri",
+  "Hill Janajati",
+  "Newar",
+  "Hill Dalit",
+  "Terai Janajati",
+  "Terai Brahmin/Chhetri",
+  "Other Terai caste",
+  "Terai Dalit",
+  "Muslim"
+)
+DRINKING <- c(
+  "Doesn't drink",
+  "Drinks, never drunk",
+  "Sometimes drunk",
+  "Often drunk"
+)
+
+module <- women |> filter(v044 == 1) # chosen for the violence module
+answered <- module |> filter(!is.na(d106)) # asked about a husband or partner
+married <- answered |> filter(v501 %in% c(1, 2)) # currently married
+
+dv_all <- married |>
+  left_join(households, by = c(v001 = "hv001", v002 = "hv002")) |>
+  transmute(
+    # the survey design
+    village = v021, # the cluster: a village or an urban ward
+    strata = v022,
+    province = v024,
+    district = sdist,
+    zone = factor(secoreg, 1:3, c("Mountain", "Hill", "Terai")),
+    weight = d005 / 1e6, # the violence module's own weight
+    # interviewers: renumbered, because the survey's codes aren't ours to publish
+    interviewer = as.integer(factor(v028)),
+    team = as.integer(factor(v028 %/% 100)),
+    # caste/ethnicity (v131), with Hill Brahmin and Chhetri together; code 96 (other)
+    # is left out
+    group = factor(
+      case_match(
+        v131,
+        c(1, 2) ~ "Hill Brahmin/Chhetri",
+        8 ~ "Hill Janajati",
+        7 ~ "Newar",
+        5 ~ "Hill Dalit",
+        9 ~ "Terai Janajati",
+        3 ~ "Terai Brahmin/Chhetri",
+        4 ~ "Other Terai caste",
+        6 ~ "Terai Dalit",
+        10 ~ "Muslim"
+      ),
+      levels = GROUPS
+    ),
+    origin = case_when(
+      group %in% GROUPS[1:4] ~ "Hill origin",
+      group %in% GROUPS[6:9] ~ "Plains origin",
+      group == "Terai Janajati" ~ "Terai Janajati"
+    ),
+    # the outcomes: physical violence by her husband, ever (less severe d106 or severe
+    # d107); and in the last 12 months (any item "often" or "sometimes")
+    physical = as.integer(d106 == 1 | d107 == 1),
+    last12 = as.integer(if_any(c(d105a:d105f, d105j), \(x) x %in% c(1, 2))),
+    emotional = d104,
+    sexual = d108,
+    # her husband's drinking: d113 drinks; d114 how often drunk (0 never, 1 often,
+    # 2 sometimes: note the order)
+    drinks = d113,
+    drinking = factor(
+      case_when(d113 == 0 ~ 1, d114 == 0 ~ 2, d114 == 2 ~ 3, d114 == 1 ~ 4),
+      1:4,
+      DRINKING
+    ),
+    # socioeconomic position
+    school = v133,
+    husband_school = if_else(v715 > 90, NA, v715), # 98: don't know
+    wealth = v191 / 1e5,
+    food = hfs_mod / 1e8, # probability of moderate or severe food insecurity
+    # her father beat her mother (8: don't know)
+    father = if_else(d121 == 8, NA, d121),
+    age = v012,
+    years_married = v512
+  )
+
+# one fixed sample for every model, so their answers can be compared
+dv <- dv_all |>
+  drop_na(
+    group,
+    drinking,
+    school,
+    husband_school,
+    wealth,
+    food,
+    father,
+    years_married
+  ) |>
+  mutate(
+    interviewer = as.integer(factor(interviewer)),
+    team = as.integer(factor(team))
+  )
+
+tibble(
+  step = c(
+    "Women interviewed",
+    "Chosen for the violence module (one per household)",
+    "Asked about a husband or partner",
+    "Currently married: asked about the husband she has now",
+    "Nothing missing that the models use"
+  ),
+  women = c(nrow(women), nrow(module), nrow(answered), nrow(married), nrow(dv))
+)
+```
+
+## Who is in it, and who isn't
+
+- **One woman per household, and only women aged 15–49.** Older women aren't here.
+- **Only currently married women.** Formerly married women answered about their last
+  husband. We leave them out so that "her husband" and his drinking mean the same thing
+  for everyone.
+- **Only women who could be interviewed alone.** The module was asked only in private.
+  Women who couldn't be, perhaps because of the person they were afraid of, aren't
+  here.
+- **A complete-case sample.** We drop
+  `r nrow(dv_all) - nrow(dv)` women missing something a model uses (most often
+  "don't know" about her father, or the household's food security). One sample for
+  every model means their answers can be compared.
+
+The survey didn't sample women at random. It picked villages first, within strata,
+then households, and it gives each woman a **weight** for how many women like her she
+stands for. Weighted numbers describe Nepal's currently married women aged 15–49;
+unweighted ones describe our sample.
+
+```{r design}
+options(survey.lonely.psu = "adjust")
+design <- svydesign(
+  ids = ~village,
+  strata = ~strata,
+  weights = ~weight,
+  data = dv,
+  nest = TRUE
+)
+
+# Weighted share with `outcome` (0/1) by the columns in `by`, a 90% interval from the
+# survey design, and the number of women behind each
+weighted_rates <- function(design, outcome, by) {
+  svyby(
+    reformulate(outcome),
+    reformulate(by),
+    design,
+    svyciprop,
+    vartype = "ci",
+    method = "logit",
+    level = 0.9
+  ) |>
+    as_tibble() |>
+    rename(rate = all_of(outcome), lower = ci_l, upper = ci_u) |>
+    left_join(
+      count(design$variables, across(all_of(by)), name = "women"),
+      by = by
+    )
+}
+```
+
+## What was measured, and how
+
+**Violence.** She was asked whether her husband had *ever* pushed, shaken or thrown
+something at her; slapped her; twisted her arm or pulled her hair; punched her; kicked
+or dragged her; tried to choke or burn her; or threatened or attacked her with a
+weapon. Yes to any is **physical violence**, ever. The same items asked about the last
+12 months give a second outcome.
+
+Both the violence and the drinking are **her answers**, to a stranger. So we never see
+violence itself. We see what was **recorded**.
+
+## Each variable on its own
+
+Who is in the sample, by group, and how much each group counts once weighted:
+
+```{r groups}
+count(dv, group, name = "women") |>
+  mutate(weighted_share = pct(coef(svymean(~group, design))))
+```
+
+Muslim women, Terai Brahmin/Chhetri women and Newar women are only a few dozen to a
+hundred or so each. Any number about them will be uncertain.
+
+Her husband's drinking, her schooling, and the outcome itself, each on its own:
+
+```{r one-variable}
+count(dv, drinking, name = "women") |>
+  mutate(weighted_share = pct(coef(svymean(~drinking, design))))
+
+dv |>
+  ggplot(aes(school)) +
+  geom_histogram(binwidth = 1, fill = BLUE, color = "white") +
+  labs(x = "Her years of schooling", y = "Women")
+
+svyciprop(~physical, design, level = 0.9)
+```
+
+Two exposures together, without the outcome: how many husbands drink, and how many are
+often drunk, in each group. This isn't an answer to either question, but it tells us
+what holding drinking fixed will do later.
+
+```{r drinking-by-group}
+drinking_by_group <- weighted_rates(design, "drinks", "group") |>
+  select(group, women, drinks = rate) |>
+  left_join(
+    weighted_rates(
+      update(design, often = as.integer(drinking == "Often drunk")),
+      "often",
+      "group"
+    ) |>
+      select(group, often_drunk = rate),
+    by = "group"
+  )
+drinking_by_group |> mutate(across(c(drinks, often_drunk), pct))
+```
+
+## Where the groups live
+
+Groups don't live mixed together. For each woman of hill or plains origin, we compute
+the plains-origin share of the women interviewed in her village:
+
+```{r village-mix, fig.height = 4}
+mixed <- dv |>
+  filter(origin != "Terai Janajati") |>
+  group_by(village) |>
+  mutate(
+    mix = mean(origin == "Plains origin"),
+    hill = sum(origin == "Hill origin"),
+    plains = sum(origin == "Plains origin")
+  ) |>
+  ungroup()
+
+mixed_villages <- distinct(mixed, village, hill, plains)
+q <- mean(mixed$origin == "Plains origin")
+segregation <- var(mixed$mix) / (q * (1 - q)) # 0: every village alike; 1: none mixed
+
+mixed |>
+  mutate(origin = factor(origin, c("Plains origin", "Hill origin"))) |>
+  ggplot(aes(mix, fill = origin)) +
+  geom_histogram(breaks = seq(0, 1, 0.1), color = "white", closed = "left") +
+  scale_fill_manual(
+    values = c("Hill origin" = BLUE, "Plains origin" = ORANGE),
+    name = NULL
+  ) +
+  scale_x_continuous(labels = pct_axis) +
+  labs(x = "Plains-origin share of her village", y = "Women")
+```
+
+- `r pct(mean(mixed$plains[mixed$origin == "Hill origin"] == 0))` of hill-origin women
+  live in villages with no plains-origin women among those interviewed.
+- Of `r nrow(mixed_villages)` villages, only
+  `r sum(mixed_villages$hill > 0 & mixed_villages$plains > 0)` have women of both
+  origins, and `r sum(mixed_villages$hill >= 2 & mixed_villages$plains >= 2)` have two
+  or more of each.
+- Segregation (the variance of that share, as a fraction of the most it could be):
+  **`r fmt(segregation, 2)`**, on a scale from 0 (every village alike) to 1.
+
+Anything we learn by comparing women *in the same village* will rest on those few mixed
+villages.
+
+## Who asked?
+
+Interviewers worked in teams, and each team covered a region. Within a village, which
+interviewer talked to which woman should be close to arbitrary. If it is, interviewers
+should differ only by chance in *whom* they talked to. We check that by shuffling
+interviewers among the women of each village, 500 times, and comparing the real
+differences with the shuffled ones.
+
+This looks at the outcome, but not against caste or drinking, so it doesn't show us the
+answers we're after. It's a check on how the data were produced.
+
+```{r placebo, cache = TRUE}
+# share of an item's within-village variation that lines up with the interviewer
+share_by_interviewer <- function(y, interviewer, village) {
+  within <- y - ave(y, village)
+  sum(ave(within, interviewer)^2) / sum(within^2)
+}
+
+items <- c(
+  "Her age" = "age",
+  "Her schooling" = "school",
+  "Husband's schooling" = "husband_school",
+  "Household wealth" = "wealth",
+  "Husband drinks" = "drinks",
+  "Her father beat her mother" = "father",
+  "Physical violence" = "physical",
+  "Emotional violence" = "emotional",
+  "Sexual violence" = "sexual"
+)
+shuffled <- replicate(
+  500,
+  ave(dv$interviewer, dv$village, FUN = \(x) x[sample.int(length(x))]),
+  simplify = FALSE
+)
+placebo <- imap(items, \(column, item) {
+  y <- as.numeric(dv[[column]])
+  real <- share_by_interviewer(y, dv$interviewer, dv$village)
+  chance <- map_dbl(shuffled, \(s) share_by_interviewer(y, s, dv$village))
+  tibble(
+    item,
+    kind = if_else(
+      column %in% c("age", "school", "husband_school", "wealth"),
+      "Facts about her household",
+      "Sensitive questions"
+    ),
+    ratio = real / median(chance),
+    lower = quantile(chance, 0.05) / median(chance),
+    upper = quantile(chance, 0.95) / median(chance),
+    p = mean(chance >= real)
+  )
+}) |>
+  list_rbind()
+```
+
+```{r placebo-plot, fig.height = 4.5}
+placebo |>
+  mutate(item = fct_rev(fct_inorder(item))) |>
+  ggplot(aes(ratio, item, color = kind)) +
+  geom_linerange(
+    aes(xmin = lower, xmax = upper),
+    color = "gray85",
+    linewidth = 6
+  ) +
+  geom_vline(xintercept = 1, color = GRAY, linetype = "dashed") +
+  geom_point(size = 4) +
+  scale_color_manual(values = c(BLUE, RED), name = NULL) +
+  labs(
+    x = "Differences between interviewers within villages (× chance; gray: 90% of shuffles)",
+    y = NULL
+  )
+```
+
+Her age and schooling differ between interviewers no more than chance. Household
+wealth and her husband's schooling differ a little more
+(`r fmt(placebo$ratio[placebo$item == "Household wealth"])`×). Every sensitive item
+differs
+`r fmt(min(placebo$ratio[placebo$kind == "Sensitive questions"]))`–`r fmt(max(placebo$ratio[placebo$kind == "Sensitive questions"]))`
+times more than chance. Could the small differences in wealth explain the big ones in
+violence? We take out what age, schooling, wealth and years married predict within each
+village, and check again:
+
+```{r placebo-adjusted, cache = TRUE}
+adjusted <- resid(lm(
+  physical ~ factor(village) +
+    age +
+    school +
+    husband_school +
+    wealth +
+    years_married,
+  data = dv
+))
+real <- share_by_interviewer(adjusted, dv$interviewer, dv$village)
+chance <- map_dbl(shuffled, \(s) share_by_interviewer(adjusted, s, dv$village))
+c(ratio = real / median(chance), p = mean(chance >= real))
+```
+
+No. Interviewers recorded very different amounts of violence from women who were alike
+in every way we can check. We can't tell which interviewers were closer to the truth:
+low rates may be **under-reports**. And since teams work regions, differences between
+regions are partly differences between interviewers. Our causal model will need an
+interviewer in it.
+
+## The rule for Step 0
+
+So far we haven't looked at how violence differs between caste groups, or between women
+whose husbands drink and women whose husbands don't. Those comparisons are the answers
+we're trying to estimate. If we saw them now, we couldn't honestly say we chose our
+models without them. They wait until Step 9.
+
+*An honest note:* this example was written after an exploration of the same data, which
+tried many codings and comparisons. Some patterns found that way appear by chance. The
+plan below was made to test them, and the write-up says so. In your own project, keep
+Step 0 outcome-blind from the start if you can.
+
+
+# Step 1: Ask the question
+
+Out loud: *which communities have more domestic violence, and why?*
+
+To picture the answer, the usual tool is a thought experiment: take one person, change
+**only** the thing we're asking about, and see what changes. Can we take one woman and
+change only her caste?
+
+Caste and ethnicity come as a **bundle**: ancestry and surname; land, occupation and
+schooling; where a family lives and who lives around it; how others have treated the
+family for generations. "The same woman, but Dalit instead of Brahmin" changes all of
+these at once. So "the effect of caste on violence" isn't a well-defined number. We need
+two different kinds of question:
+
+- **A descriptive disparity.** How different are the groups, comparing women who are
+  alike in ways *we state*? "Among women in the same village", "among women with the
+  same schooling". Not an effect of caste: a description, with its conditions spelled
+  out.
+- **A causal effect.** How much more violence happens *because* a husband is often
+  drunk? This one has a thought experiment: *the same household, but he is not often
+  drunk.* It's an effect that could, in principle, change.
+
+We keep these two apart all the way through.
+
+
+# Step 2: Draw the causal model
+
+What could make groups differ in recorded violence? Each answer is a **story**, and each
+story is a DAG. The letters: C caste/ethnicity, V violence, R what was recorded, S
+schooling and wealth, P place, D the husband's drunkenness, F her father beat her
+mother, I the interviewer, T years married, U things we don't measure.
+
+```{r dag-labels}
+LABELS <- c(
+  C = "Caste/ethnicity",
+  V = "Violence",
+  R = "Recorded",
+  S = "Schooling, wealth",
+  P = "Place",
+  D = "Husband drunk",
+  F = "Father beat mother",
+  I = "Interviewer",
+  T = "Years married",
+  U = "Unmeasured"
+)
+small_dag <- function(...) dag_plot(..., labels = LABELS, text_size = 5)
+```
+
+```{r dags, fig.width = 4.5, fig.height = 3.4, out.width = "32%", fig.show = "hold"}
+# 1. Culture
+small_dag(
+  "C -> V",
+  list(C = c(0, 0), V = c(2.4, 0)),
+  exposure = "C",
+  outcome = "V"
+)
+# 2. Exclusion
+pipe_dag("C", "S", "V", labels = LABELS, direct = TRUE, text_size = 5)
+# 3. Place
+fork_dag("C", "P", "V", labels = LABELS, direct = TRUE, text_size = 5)
+# 4. The husband
+small_dag(
+  c("C -> D", "D -> V", "C -> V", "U -> D", "U -> V"),
+  list(C = c(0, 0), D = c(1.2, 1.2), V = c(2.4, 0), U = c(3, 1.8)),
+  above = "D",
+  right = "U",
+  exposure = "C",
+  outcome = "V",
+  unobserved = "U"
+)
+# 5. Inheritance
+pipe_dag("C", "F", "V", labels = LABELS, direct = TRUE, text_size = 5)
+# 6. Measurement
+small_dag(
+  c("P -> C", "P -> V", "P -> I", "C -> V", "V -> R", "I -> R"),
+  list(
+    C = c(0, 0),
+    V = c(1.6, 0),
+    R = c(3.2, 0),
+    P = c(0.8, 1.4),
+    I = c(2.4, 1.4)
+  ),
+  above = c("P", "I"),
+  exposure = "C",
+  outcome = "R",
+  unobserved = "V"
+)
+```
+
+| | Story | What it adds | What it says to hold fixed |
+|---|---|---|---|
+| 1 | **Culture** | Something about the group itself | nothing |
+| 2 | **Exclusion** | Caste shapes schooling and wealth, which shape violence | S (a pipe: holding it fixed removes part of what caste does) |
+| 3 | **Place** | Some places have more violence whoever lives there | P: district, or village. A fork if place shapes who lives there; a pipe if groups make the place |
+| 4 | **The husband** | Caste shapes drinking; drunkenness drives violence | D. But D is also a collider: what we don't measure about him (U) drives both |
+| 5 | **Inheritance** | Violence she saw as a child | F (another pipe, and another reported item) |
+| 6 | **Measurement** | We see R, not V; interviewers affect R | I. But each interviewer works in one region, so this also removes real place differences |
+| 7 | **Time at risk** | "Ever" adds up over the years of a marriage | Nothing: change the outcome to the last 12 months |
+
+Every adjustment answers a different question, so there's no "everything" model that
+answers all of them. Holding everything fixed at once answers a question nobody asked.
+
+For the second kind of question, the effect of his drunkenness, the DAG is different:
+
+```{r dag-drunk, fig.width = 6, fig.height = 3.8}
+small_dag(
+  c(
+    "C -> D",
+    "C -> V",
+    "S -> D",
+    "S -> V",
+    "C -> S",
+    "U -> D",
+    "U -> V",
+    "D -> V"
+  ),
+  list(
+    D = c(0, 0),
+    V = c(3, 0),
+    C = c(0.4, 1.6),
+    S = c(2.6, 1.6),
+    U = c(1.5, -1.3)
+  ),
+  left = c("C", "D"),
+  right = c("S", "V"),
+  exposure = "D",
+  outcome = "V",
+  unobserved = "U"
+)
+```
+
+Caste (C) and schooling and wealth (S) are forks here: we hold them fixed. U is a fork
+we **can't** hold fixed: whatever makes a man both drink and hit. And both D and V are
+her answers, so a woman (or interviewer) who records one more readily may record the
+other too. This estimand carries assumptions the data can't check.
+
+
+# Step 3: Define the estimands
+
+Each DAG turns the question into a different number. All seven are **descriptive
+disparities**: the gap between each group and Hill Brahmin/Chhetri women...
+
+| DAG | ...among |
+|---|---|
+| 1. Culture | all women |
+| 2. Exclusion | women with the same schooling and wealth |
+| 3. Place | women in the same district, or the same village |
+| 4. The husband | women whose husbands drink alike |
+| 5. Inheritance | women with the same childhood experience |
+| 6. Measurement | women asked by the same interviewer |
+| 7. Time at risk | all women, counting violence in the last 12 months only |
+
+Plus two **restrictions**: compare only groups that live side by side. In the hills,
+Hill Dalit against Hill Brahmin/Chhetri; in the Terai, Terai Dalit and Muslim against
+Other Terai caste.
+
+And the **causal effect of drunkenness**: how much violence would fall if husbands who
+are often drunk were not, keeping her caste, schooling and wealth the same.
+
+Every one is the same calculation. Give every woman in the sample group $g$ (or drinking
+level $g$), keep everything else about her as it is, and average her predicted
+probability of violence, weighting each woman by her survey weight $w_i$:
+
+$$
+\Delta_g = \frac{\sum_i w_i \left[\, p_i(g) - p_i(\text{reference}) \,\right]}{\sum_i w_i}
+$$
+
+The answer is in **percentage points**, for the same women under every model. We don't
+compare model coefficients: a log-odds coefficient means something different in every
+model with a different set of terms. Percentage points mean the same thing in all of
+them.
+
+
+# Step 4: Simulate the population
+
+A simulation with an argument for every arrow: `caste_effect` (C → V), `place_effect` and
+`village_sd` (P → V), `segregation` (P → C), `drunk_rate` and `drunk_effect` (C → D →
+V), and `report_effect` (P → I → R). Two kinds of group: hill origin and plains origin.
+The defaults for the villages (how many, how many women in each, how segregated) and for
+how often husbands are often drunk come from Step 0. The effects are invented: that's
+the point of a simulation.
+
+```{r simulation, file = "r/violence-sim.R"}
+```
+
+We use it to build three worlds that produce the same kind of data for very different
+reasons:
+
+| World | What makes plains-origin women report more |
+|---|---|
+| **Caste** | Being from a plains-origin group, wherever she lives |
+| **Place** | Living in certain villages, whoever she is. Plains-origin women mostly live there. |
+| **Reporting** | A small real gap, plus interviewers in plains areas who record more |
+
+```{r worlds}
+WORLDS <- list(
+  "Caste" = list(caste_effect = 1.3),
+  "Place" = list(place_effect = 1.5),
+  "Reporting" = list(caste_effect = 0.6, report_effect = 1)
+)
+sims <- map(WORLDS, \(arguments) {
+  set.seed(1)
+  do.call(simulate_violence, arguments)
+})
+
+# what a researcher would see
+imap(sims, \(sim, world) {
+  sim |>
+    group_by(group) |>
+    summarise(violence = pct(mean(violence)), often_drunk = pct(mean(drunk))) |>
+    mutate(world = world, .before = 1)
+}) |>
+  list_rbind()
+
+# what's true
+truths <- imap(sims, \(sim, world) mutate(sim_truths(sim), world = world)) |>
+  list_rbind()
+truths
+```
+
+The worlds look almost the same. But in the Caste world the raw gap is close to the true
+gap among women in the same village; in the Place world, women in the same village face
+about the same risk; and in the Reporting world most of the gap is in the recording.
+Can a model tell them apart?
+
+
+# Step 5: Write the formal model
+
+One model family for every story:
+
+$$
+\begin{align}
+R_i &\sim \text{Bernoulli}(p_i) \\
+\text{logit}(p_i) &= \alpha + \beta_{C[i]} + \gamma \cdot X_i
+  + a_{\text{village}[i]} + b_{\text{interviewer}[i]} + c_{\text{district}[i]} \\
+\alpha &\sim \text{Normal}(-1.5, 1) \\
+\beta_c &\sim \text{Normal}(0, 1), \quad \textstyle\sum_c \beta_c = 0 \\
+\gamma &\sim \text{Normal}(0, 1) \\
+a_v &\sim \text{Normal}(0, \sigma_{\text{village}}) \;\text{ or }\; \text{Normal}(0, 5) \\
+b_j &\sim \text{Normal}(0, \sigma_{\text{interviewer}}), \quad
+  c_d \sim \text{Normal}(0, \sigma_{\text{district}}) \\
+\sigma_{\text{village}}, \sigma_{\text{interviewer}}, \sigma_{\text{district}} &\sim \text{Exponential}(2)
+\end{align}
+$$
+
+C is the exposure: her group, or (for the effect of drunkenness) his drinking. Each DAG
+switches parts on: predictors X (schooling, drinking, ...), villages, interviewers,
+districts. Predictors are standardized, so $\gamma \sim \text{Normal}(0, 1)$ means the
+same thing for each.
+
+There are three ways to handle villages, and they're **assumptions about the world**, not
+technical details:
+
+- **No pooling** ($a_v \sim \text{Normal}(0, 5)$): every village gets its own baseline,
+  learned from its own women only. It compares women in the same village. (Economists
+  call it *fixed effects*.)
+- **Partial pooling** ($a_v \sim \text{Normal}(0, \sigma_{\text{village}})$): villages'
+  baselines come from one shared distribution. This assumes a village's own effect is
+  unrelated to who lives there.
+- **Partial pooling plus the village's mix** (the plains-origin share as a predictor):
+  drops that assumption.
+
+**The survey design.** The likelihood treats women as independent given the model. We
+handle the design the simplest defensible way: villages enter the model whenever the DAG
+allows it, and the weights enter the estimand (the weighted average in Step 3).
+
+
+# Step 6: Write the Stan code
+
+```{embed, file = "models/violence.stan"}
+```
+
+A few details:
+
+- A part that is switched off gets a vector of length 1, so it adds no parameters.
+- `prior_only` skips the likelihood, for the prior predictive check.
+- `generated quantities` computes Step 3's estimand for every draw (`p_group`), and
+  replicates the data, counted by group and by interviewer, for posterior predictive
+  checks.
+
+The R side: turn a table into Stan's data, fit, and refuse any fit the sampler had
+trouble with.
+
+```{r model-helpers}
+violence_model <- cmdstan_model("models/violence.stan", dir = ".stancache")
+
+# Stan data from a table with `violence` (0/1) and `group` (a factor; its first level is
+# the reference). predictors: columns for X (numbers are standardized, factors become 0/1
+# columns). village: "none", "partial" or "separate" (no pooling).
+violence_stan_data <- function(
+  data,
+  predictors = character(),
+  village = "none",
+  interviewer = FALSE,
+  district = FALSE,
+  weight = NULL,
+  prior_only = FALSE
+) {
+  X <- if (length(predictors)) {
+    columns <- data[predictors] |>
+      mutate(across(
+        where(is.numeric) & !where(\(x) all(x %in% 0:1)),
+        standardize
+      ))
+    model.matrix(reformulate(predictors), columns)[, -1, drop = FALSE]
+  } else {
+    matrix(0, nrow(data), 0)
+  }
+  index <- \(column) {
+    if (is.null(data[[column]])) {
+      rep(1L, nrow(data))
+    } else {
+      as.integer(factor(data[[column]]))
+    }
+  }
+  list(
+    prior_only = as.integer(prior_only),
+    n = nrow(data),
+    y = data$violence,
+    n_group = nlevels(data$group),
+    group = as.integer(data$group),
+    k = ncol(X),
+    X = X,
+    village_model = match(village, c("none", "partial", "separate")) - 1L,
+    n_village = max(index("village")),
+    village = index("village"),
+    interviewer_model = as.integer(interviewer),
+    n_interviewer = max(index("interviewer")),
+    interviewer = index("interviewer"),
+    district_model = as.integer(district),
+    n_district = max(index("district")),
+    district = index("district"),
+    w = if (is.null(weight)) rep(1, nrow(data)) else data[[weight]]
+  )
+}
+
+# Fit, and stop if the sampler reports divergences or chains that disagree
+fit_violence <- function(data, ...) {
+  fit <- violence_model$sample(
+    data = violence_stan_data(data, ...),
+    seed = 1,
+    chains = 4,
+    parallel_chains = 4,
+    adapt_delta = 0.95,
+    refresh = 0,
+    show_messages = FALSE,
+    show_exceptions = FALSE
+  )
+  divergent <- sum(fit$diagnostic_summary(quiet = TRUE)$num_divergent)
+  rhat <- max(summarise_draws(fit$draws("p_group"), "rhat")$rhat)
+  if (divergent > 0 || rhat > 1.01) {
+    stop(sprintf(
+      "%d divergent transitions, largest R-hat %.3f",
+      divergent,
+      rhat
+    ))
+  }
+  # read every draw into memory: the CSV files behind them are temporary, and the slow
+  # chunks keep their fits in knitr's cache
+  fit$draws()
+  fit$sampler_diagnostics()
+  fit
+}
+
+# The estimand: for every draw, each level's average probability minus the reference's
+group_gaps <- function(fit, data) {
+  levels <- levels(data$group)
+  fit |>
+    spread_draws(p_group[g]) |>
+    group_by(.draw) |>
+    mutate(gap = p_group - p_group[g == 1]) |>
+    ungroup() |>
+    filter(g > 1) |>
+    transmute(.draw, group = factor(levels[g], levels), gap)
+}
+
+# A gap's draws as text: "+27 points (90%: +24 to +32)"
+gap_text <- function(draws) {
+  sprintf(
+    "%+.0f points (90%%: %+.0f to %+.0f)",
+    100 * median(draws),
+    100 * quantile(draws, 0.05),
+    100 * quantile(draws, 0.95)
+  )
+}
+```
+
+
+# Step 7: Test on simulated data
+
+## Prior predictive check
+
+The largest model in the family (every part switched on), on the real survey design,
+without the outcome:
+
+```{r prior, cache = TRUE, cache.extra = tools::md5sum("models/violence.stan")}
+prior_data <- mutate(dv, violence = physical)
+prior_fit <- fit_violence(
+  prior_data,
+  predictors = c(
+    "drinking",
+    "school",
+    "husband_school",
+    "wealth",
+    "food",
+    "father"
+  ),
+  village = "partial",
+  interviewer = TRUE,
+  district = TRUE,
+  weight = "weight",
+  prior_only = TRUE
+)
+prior_reference <- prior_fit |> spread_draws(p_group[g]) |> filter(g == 1)
+prior_gaps <- group_gaps(prior_fit, prior_data)
+```
+
+```{r prior-plot, fig.height = 3.5}
+patchwork::wrap_plots(
+  ggplot(prior_reference, aes(p_group)) +
+    geom_histogram(bins = 40, boundary = 0, fill = BLUE, color = "white") +
+    scale_x_continuous(labels = pct_axis, limits = c(0, 1)) +
+    labs(x = "Rate for the reference group", y = "Prior draws"),
+  ggplot(prior_gaps, aes(100 * gap)) +
+    geom_histogram(bins = 40, fill = BLUE, color = "white") +
+    xlim(-100, 100) +
+    labs(x = "Gap, any group − reference (points)", y = NULL)
+)
+```
+
+The reference group's rate: 90% of prior draws between
+`r pct(quantile(prior_reference$p_group, 0.05))` and
+`r pct(quantile(prior_reference$p_group, 0.95))`. Gaps: 90% within
+±`r fmt(100 * quantile(abs(prior_gaps$gap), 0.9), 0)` points. Wide, but not absurd.
+
+## Recovery: three worlds, five models
+
+```{r recovery, cache = TRUE, cache.extra = tools::md5sum(c("models/violence.stan", "r/violence-sim.R"))}
+VILLAGE_MODELS <- list(
+  "No villages" = list(),
+  "Villages, no pooling" = list(village = "separate"),
+  "Villages, partial pooling" = list(village = "partial"),
+  "Partial pooling + village mix" = list(
+    village = "partial",
+    predictors = "mix"
+  ),
+  "Partial pooling + interviewers" = list(
+    village = "partial",
+    interviewer = TRUE
+  )
+)
+recovery <- expand_grid(world = names(sims), model = names(VILLAGE_MODELS)) |>
+  mutate(
+    draws = map2(world, model, \(w, m) {
+      fit <- do.call(fit_violence, c(list(sims[[w]]), VILLAGE_MODELS[[m]]))
+      group_gaps(fit, sims[[w]]) |> select(gap)
+    })
+  ) |>
+  unnest(draws) |>
+  mutate(
+    world = fct_inorder(world),
+    model = factor(model, rev(names(VILLAGE_MODELS)))
+  )
+```
+
+```{r recovery-plot, fig.height = 4.5}
+ggplot(recovery, aes(100 * gap, model)) +
+  geom_vline(
+    data = truths,
+    aes(xintercept = 100 * raw),
+    color = GRAY,
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    data = truths,
+    aes(xintercept = 100 * same_village),
+    color = RED,
+    linewidth = 1
+  ) +
+  stat_pointinterval(.width = c(0.5, 0.9), color = BLUE) +
+  facet_wrap(~ factor(world, names(sims)), nrow = 1) +
+  labs(
+    x = "Estimated gap, plains − hill origin (points)",
+    y = NULL,
+    subtitle = "Red: the true gap among women in the same village. Dashed: the raw gap."
+  )
+```
+
+- **Caste world**: every model is close.
+- **Place world**: the village mix model finds the truth. Partial pooling finds the
+  whole raw gap, because it assumes villages' effects are unrelated to who lives there.
+  No pooling removes most of it, but rests on few mixed villages, so it's noisy.
+- **Reporting world**: the village models move toward the truth, because comparing
+  within a village also compares within a team. Pooling interviewers barely helps: it
+  assumes, again, that their effects are unrelated to whom they interview.
+- No pooling gives the same kind of answer in the Place and Reporting worlds. It can't
+  tell us whether what it removed was **place** or **recording**.
+
+## How much segregation matters
+
+The Place world (true gap about zero) at three levels of segregation:
+
+```{r segregation, cache = TRUE, cache.extra = tools::md5sum(c("models/violence.stan", "r/violence-sim.R"))}
+segregation_fits <- map(c(0.3, 0.6, 0.9), \(level) {
+  set.seed(1)
+  sim <- do.call(simulate_violence, c(WORLDS$Place, segregation = level))
+  measured <- var(sim$mix) / (mean(sim$plains) * (1 - mean(sim$plains)))
+  imap(VILLAGE_MODELS[2:3], \(arguments, model) {
+    fit <- do.call(fit_violence, c(list(sim), arguments))
+    group_gaps(fit, sim) |>
+      transmute(
+        gap,
+        model,
+        segregation = fmt(measured, 2),
+        truth = sim_truths(sim)$same_village
+      )
+  }) |>
+    list_rbind()
+}) |>
+  list_rbind()
+```
+
+```{r segregation-plot, fig.height = 3.5}
+ggplot(segregation_fits, aes(100 * gap, segregation, color = model)) +
+  geom_vline(xintercept = 0, color = GRAY, linetype = "dashed") +
+  stat_pointinterval(
+    .width = c(0.5, 0.9),
+    position = position_dodge(width = 0.5)
+  ) +
+  scale_color_manual(values = c(BLUE, ORANGE), name = NULL) +
+  labs(x = "Estimated gap, plains − hill origin (points)", y = "Segregation")
+```
+
+Partial pooling is wrong at every level, and most wrong where villages are separated.
+Nepal's villages are at `r fmt(segregation, 2)`: the far end. There, the choice of
+village model decides the answer.
+
+
+# Step 8: Fit and validate the model
+
+Now the real data. One fit for each DAG's estimand (and the restrictions and the effect
+of drunkenness, in Steps 9 and 10), all on the same women.
+
+```{r real-data}
+# the plains-origin share of the women interviewed in each village, for the village mix
+# model (it counts the woman herself)
+real <- dv |>
+  group_by(village) |>
+  mutate(mix = mean(origin == "Plains origin")) |>
+  ungroup() |>
+  mutate(violence = physical)
+
+SES <- c("school", "husband_school", "wealth", "food")
+
+specs <- tribble(
+  ~dag              , ~estimand                   , ~data                           , ~args                         ,
+  "1. Culture"      , "All women"                 , real                            , list()                        ,
+  "2. Exclusion"    , "Same schooling and wealth" , real                            , list(predictors = SES)        ,
+  "3. Place"        , "Same district"             , real                            , list(district = TRUE)         ,
+  "3. Place"        , "Same village (no pooling)" , real                            , list(village = "separate")    ,
+  "4. The husband"  , "Husbands drink alike"      , real                            , list(predictors = "drinking") ,
+  "5. Inheritance"  , "Same childhood"            , real                            , list(predictors = "father")   ,
+  "6. Measurement"  , "Same interviewer"          , real                            , list(interviewer = TRUE)      ,
+  "7. Time at risk" , "Last 12 months"            , mutate(real, violence = last12) , list()
+)
+```
+
+```{r fits, cache = TRUE, cache.extra = tools::md5sum("models/violence.stan")}
+fits <- specs |>
+  mutate(
+    fit = map2(data, args, \(d, a) {
+      do.call(fit_violence, c(list(d, weight = "weight"), a))
+    })
+  )
+```
+
+## Sampler diagnostics
+
+`fit_violence()` already refuses a fit with divergences or R-hat above 1.01. The rest of
+the picture:
+
+```{r diagnostics}
+fits |>
+  mutate(
+    divergent = map_int(fit, \(f) {
+      sum(f$diagnostic_summary(quiet = TRUE)$num_divergent)
+    }),
+    max_rhat = map_dbl(fit, \(f) {
+      max(summarise_draws(f$draws("p_group"), "rhat")$rhat)
+    }),
+    min_ess = map_dbl(fit, \(f) {
+      min(summarise_draws(f$draws("p_group"), "ess_bulk")$ess_bulk)
+    })
+  ) |>
+  select(dag, estimand, divergent, max_rhat, min_ess)
+```
+
+## Posterior predictive checks
+
+Can each model reproduce how often violence was recorded in each group, and by each
+interviewer? We compare what was observed with the model's replicated data.
+
+```{r ppc-group, fig.height = 4.5}
+observed_group <- real |>
+  count(group, wt = violence, name = "observed") |>
+  left_join(count(real, group, name = "women"), by = "group")
+
+fits |>
+  filter(dag %in% c("1. Culture", "6. Measurement")) |>
+  mutate(rep = map(fit, \(f) spread_draws(f, rep_group[g]))) |>
+  select(estimand, rep) |>
+  unnest(rep) |>
+  mutate(group = factor(levels(real$group)[g], levels(real$group))) |>
+  left_join(observed_group, by = "group") |>
+  ggplot(aes(rep_group / women, fct_rev(group))) +
+  stat_pointinterval(.width = 0.9, color = BLUE) +
+  geom_point(
+    aes(observed / women),
+    shape = 4,
+    size = 3,
+    stroke = 1.2,
+    color = RED
+  ) +
+  facet_wrap(~estimand) +
+  scale_x_continuous(labels = pct_axis) +
+  labs(
+    x = "Share reporting violence (unweighted). Blue: model, 90%. Red ×: observed",
+    y = NULL
+  )
+```
+
+```{r ppc-interviewer, fig.height = 4.5}
+observed_interviewer <- real |>
+  group_by(interviewer) |>
+  summarise(observed = mean(violence), women = n())
+
+ppc_interviewer <- fits |>
+  filter(dag %in% c("1. Culture", "6. Measurement")) |>
+  mutate(rep = map(fit, \(f) spread_draws(f, rep_interviewer[interviewer]))) |>
+  select(estimand, rep) |>
+  unnest(rep) |>
+  left_join(observed_interviewer, by = "interviewer") |>
+  group_by(estimand, interviewer, observed) |>
+  summarise(
+    lower = quantile(rep_interviewer / women, 0.05),
+    upper = quantile(rep_interviewer / women, 0.95),
+    .groups = "drop"
+  ) |>
+  mutate(outside = observed < lower | observed > upper)
+
+ppc_interviewer |>
+  ggplot(aes(y = fct_reorder(factor(interviewer), observed))) +
+  geom_linerange(aes(xmin = lower, xmax = upper), color = BLUE, linewidth = 1) +
+  geom_point(aes(x = observed, color = outside), size = 1.8) +
+  scale_color_manual(values = c(`FALSE` = INK, `TRUE` = RED), guide = "none") +
+  facet_wrap(~estimand) +
+  scale_x_continuous(labels = pct_axis) +
+  labs(
+    x = "Share reporting violence, by interviewer. Blue: model, 90%. Red: outside it",
+    y = "Interviewers"
+  ) +
+  theme(axis.text.y = element_blank())
+
+outside <- ppc_interviewer |>
+  group_by(estimand) |>
+  summarise(interviewers_outside = sum(outside), of = n())
+outside
+```
+
+Both models reproduce every group's rate: that's what the group terms are for. But
+without interviewers in the model,
+`r outside$interviewers_outside[outside$estimand == "All women"]` of
+`r outside$of[1]` interviewers recorded more or less violence than the model can
+explain (red). With them, `r outside$interviewers_outside[outside$estimand == "Same interviewer"]`.
+The interviewer in the measurement DAG isn't a technicality: a model without it can't
+reproduce the data.
+
+
+# Step 9: Compute the estimates
+
+## The first look, with the survey design
+
+Now, and only now, we look at violence by group. These are the weighted rates, with the
+survey design's 90% intervals and the number of women behind each:
+
+```{r group-rates, fig.height = 4.5}
+group_rates <- weighted_rates(design, "physical", "group") |>
+  left_join(distinct(dv, group, origin), by = "group")
+
+group_rates |>
+  ggplot(aes(
+    rate,
+    fct_rev(fct_inorder(paste0(group, " (", women, ")"))),
+    color = origin
+  )) +
+  geom_linerange(aes(xmin = lower, xmax = upper), linewidth = 2) +
+  geom_point(size = 4) +
+  scale_color_manual(
+    values = c(
+      "Hill origin" = BLUE,
+      "Terai Janajati" = TEAL,
+      "Plains origin" = ORANGE
+    ),
+    name = NULL
+  ) +
+  scale_x_continuous(labels = pct_axis, limits = c(0, NA)) +
+  labs(
+    x = "Ever physically hurt by her husband (weighted, 90% interval)",
+    y = NULL
+  )
+```
+
+## The gaps under every DAG
+
+```{r gaps}
+gaps <- fits |>
+  mutate(draws = map2(fit, data, group_gaps)) |>
+  select(dag, estimand, draws) |>
+  unnest(draws)
+
+gap_summary <- gaps |>
+  group_by(dag, estimand, group) |>
+  summarise(
+    median = 100 * median(gap),
+    lower = 100 * quantile(gap, 0.05),
+    upper = 100 * quantile(gap, 0.95),
+    .groups = "drop"
+  )
+
+# one DAG's gap for one group, as text
+gap_of <- function(estimand_name, group_name) {
+  gap_text(gaps$gap[gaps$estimand == estimand_name & gaps$group == group_name])
+}
+# the range of medians over the DAGs for "ever" violence (all but the last 12 months)
+range_of <- function(group_name) {
+  m <- gap_summary |>
+    filter(group == group_name, estimand != "Last 12 months") |>
+    pull(median)
+  sprintf("%+.0f to %+.0f points", min(m), max(m))
+}
+```
+
+```{r gaps-plot, fig.height = 8}
+gaps |>
+  mutate(model = fct_rev(fct_inorder(paste(dag, "·", estimand)))) |>
+  ggplot(aes(100 * gap, model)) +
+  geom_vline(xintercept = 0, color = GRAY, linetype = "dashed") +
+  stat_pointinterval(.width = c(0.5, 0.9), color = BLUE, point_size = 1.5) +
+  facet_wrap(~group, ncol = 2) +
+  labs(
+    x = "Gap against Hill Brahmin/Chhetri women (points; 50% and 90% intervals)",
+    y = NULL
+  )
+```
+
+```{r gaps-table}
+gap_summary |>
+  mutate(gap = sprintf("%+.0f (%+.0f to %+.0f)", median, lower, upper)) |>
+  select(dag, estimand, group, gap) |>
+  pivot_wider(names_from = group, values_from = gap)
+```
+
+What each DAG says:
+
+- **Hill Janajati and Newar** women's gaps are near zero under every DAG. **Terai
+  Brahmin/Chhetri** women are only `r sum(dv$group == "Terai Brahmin/Chhetri")`, so
+  their interval is too wide to say anything.
+- **Hill Dalit** women: `r gap_of("All women", "Hill Dalit")` overall. Holding schooling
+  and wealth fixed (DAG 2) roughly halves it, to
+  `r gap_of("Same schooling and wealth", "Hill Dalit")`.
+- **The plains-origin groups** have the largest gaps under every DAG: for "ever"
+  violence, `r range_of("Other Terai caste")` for Other Terai caste women,
+  `r range_of("Terai Dalit")` for Terai Dalit women and `r range_of("Muslim")` for Muslim
+  women. Which DAG we believe moves the number by ten to fifteen points.
+- **Holding his drinking fixed raises the Muslim gap**, from
+  `r gap_of("All women", "Muslim")` to `r gap_of("Husbands drink alike", "Muslim")`.
+  Few Muslim husbands drink (Step 0). Comparing women whose husbands drink alike sets
+  Muslim women beside women whose husbands mostly don't drink either, and those women
+  report less violence than women in general. Adjusting doesn't only shrink gaps.
+- **Counting only the last 12 months**, every gap is smaller in points (Muslim:
+  `r gap_of("Last 12 months", "Muslim")`), as Step 2 expected: fewer years in which
+  violence could have happened. It's a different question, not a correction.
+
+Here the exposure is his drinking, and caste, schooling and wealth are held fixed
+(Step 2's second DAG). Villages are partially pooled.
+
+```{r drunk-fit, cache = TRUE, cache.extra = tools::md5sum("models/violence.stan")}
+drunk_data <- real |> mutate(caste = group, group = drinking)
+drunk_fit <- fit_violence(
+  drunk_data,
+  predictors = c("caste", SES),
+  village = "partial",
+  weight = "weight"
+)
+drunk_gaps <- group_gaps(drunk_fit, drunk_data)
+```
+
+```{r drunk-plot, fig.height = 3}
+ggplot(drunk_gaps, aes(100 * gap, fct_rev(group))) +
+  geom_vline(xintercept = 0, color = GRAY, linetype = "dashed") +
+  stat_pointinterval(.width = c(0.5, 0.9), color = RED) +
+  labs(
+    x = "Change in violence against a husband who doesn't drink (points)",
+    y = NULL
+  )
+
+drunk_of <- \(draws, level) gap_text(draws$gap[draws$group == level])
+```
+
+Against a husband who doesn't drink, comparing women of the same group, schooling and
+wealth:
+
+- drinking without getting drunk: `r drunk_of(drunk_gaps, "Drinks, never drunk")`. No
+  more violence.
+- sometimes drunk: `r drunk_of(drunk_gaps, "Sometimes drunk")`.
+- often drunk: `r drunk_of(drunk_gaps, "Often drunk")`.
+
+And the raw pattern behind it, by origin: does the climb look the same everywhere?
+
+```{r gradient, fig.height = 4}
+weighted_rates(design, "physical", c("origin", "drinking")) |>
+  filter(women >= 10) |>
+  ggplot(aes(drinking, rate, color = origin, group = origin)) +
+  geom_line(position = position_dodge(width = 0.3)) +
+  geom_pointrange(
+    aes(ymin = lower, ymax = upper),
+    position = position_dodge(width = 0.3)
+  ) +
+  scale_color_manual(
+    values = c(
+      "Hill origin" = BLUE,
+      "Terai Janajati" = TEAL,
+      "Plains origin" = ORANGE
+    ),
+    name = NULL
+  ) +
+  scale_y_continuous(labels = pct_axis, limits = c(0, 1)) +
+  labs(x = "Her husband", y = "Ever physically hurt (weighted)")
+```
+
+The climb is much the same for every origin. What differs is where each line
+**starts**: plains-origin women report more violence even when their husbands don't
+drink at all. So drunkenness matters a great deal for an individual woman, but it
+doesn't explain the differences *between* groups.
+
+
+# Step 10: Test its robustness
+
+## Villages: four models, two answers
+
+Step 7 showed that in segregated villages the choice of village model decides the
+answer. Here are all four on the real data, for the groups with clear gaps:
+
+```{r village-fits, cache = TRUE, cache.extra = tools::md5sum("models/violence.stan")}
+village_fits <- list(
+  "Partial pooling" = list(village = "partial"),
+  "Partial pooling + village mix" = list(
+    village = "partial",
+    predictors = "mix"
+  )
+) |>
+  imap(\(a, name) {
+    group_gaps(
+      do.call(fit_violence, c(list(real, weight = "weight"), a)),
+      real
+    ) |>
+      mutate(model = name)
+  }) |>
+  list_rbind()
+```
+
+```{r village-plot, fig.height = 4}
+village_compare <- bind_rows(
+  gaps |> filter(estimand == "All women") |> mutate(model = "No villages"),
+  gaps |>
+    filter(estimand == "Same village (no pooling)") |>
+    mutate(model = "No pooling"),
+  village_fits
+) |>
+  filter(
+    group %in% c("Hill Dalit", "Other Terai caste", "Terai Dalit", "Muslim")
+  ) |>
+  mutate(
+    model = factor(
+      model,
+      rev(c(
+        "No villages",
+        "Partial pooling",
+        "Partial pooling + village mix",
+        "No pooling"
+      ))
+    )
+  )
+
+ggplot(village_compare, aes(100 * gap, model)) +
+  geom_vline(xintercept = 0, color = GRAY, linetype = "dashed") +
+  stat_pointinterval(.width = c(0.5, 0.9), color = BLUE) +
+  facet_wrap(~group, nrow = 1) +
+  labs(x = "Gap against Hill Brahmin/Chhetri (points)", y = NULL)
+
+village_of <- \(model_name, group_name) {
+  gap_text(village_compare$gap[
+    village_compare$model == model_name & village_compare$group == group_name
+  ])
+}
+```
+
+The four models give two answers. Leaving villages out and partial pooling agree.
+Adding the village mix and no pooling agree with each other, and give the plains-origin
+groups gaps about a third smaller (Muslim women:
+`r village_of("Partial pooling", "Muslim")` with partial pooling,
+`r village_of("No pooling", "Muslim")` with no pooling). This is the Place world of Step
+7 playing out on real data. Partial pooling assumes a village's effect is unrelated to
+who lives there; the other two drop that assumption, and rest on the
+`r sum(mixed_villages$hill > 0 & mixed_villages$plains > 0)` mixed villages, whose
+minority residents may not be typical of their groups. And as Step 7 showed, "the same
+village" also means "the same interviewer team": we can't tell whether what the village
+models remove is **place** or **recording**.
+
+## Restriction designs
+
+Compare only groups that live side by side, with and without schooling and wealth:
+
+```{r restriction-fits, cache = TRUE, cache.extra = tools::md5sum("models/violence.stan")}
+restricted <- list(
+  "Hills" = real |>
+    filter(
+      zone != "Terai",
+      group %in% c("Hill Brahmin/Chhetri", "Hill Dalit")
+    ) |>
+    mutate(group = droplevels(group)),
+  "Terai" = real |>
+    filter(
+      zone == "Terai",
+      group %in% c("Other Terai caste", "Terai Dalit", "Muslim")
+    ) |>
+    mutate(
+      group = factor(group, c("Other Terai caste", "Terai Dalit", "Muslim"))
+    )
+)
+restriction_gaps <- expand_grid(
+  region = names(restricted),
+  adjust = c("Nothing", "Schooling and wealth")
+) |>
+  mutate(
+    draws = map2(region, adjust, \(r, a) {
+      d <- restricted[[r]]
+      fit <- fit_violence(
+        d,
+        predictors = if (a == "Nothing") character() else SES,
+        weight = "weight"
+      )
+      group_gaps(fit, d) |>
+        left_join(count(d, group, name = "women"), by = "group") |>
+        mutate(reference_women = sum(d$group == levels(d$group)[1]))
+    })
+  ) |>
+  unnest(draws)
+```
+
+```{r restriction-table}
+restriction_gaps |>
+  group_by(region, group, women, reference_women, adjust) |>
+  summarise(
+    gap = sprintf(
+      "%+.0f (%+.0f to %+.0f)",
+      100 * median(gap),
+      100 * quantile(gap, 0.05),
+      100 * quantile(gap, 0.95)
+    ),
+    .groups = "drop"
+  ) |>
+  pivot_wider(names_from = adjust, values_from = gap)
+```
+
+Hill Dalit is compared with Hill Brahmin/Chhetri women living in the hills; Terai Dalit
+and Muslim women with Other Terai caste women living in the Terai.
+
+```{r restriction-text}
+restriction_of <- \(region_name, group_name, adjust_name) {
+  gap_text(restriction_gaps$gap[
+    restriction_gaps$region == region_name &
+      restriction_gaps$group == group_name &
+      restriction_gaps$adjust == adjust_name
+  ])
+}
+```
+
+Within one region, the Dalit gaps are much smaller. In the hills, Hill Dalit women
+report `r restriction_of("Hills", "Hill Dalit", "Nothing")` more than Hill
+Brahmin/Chhetri women, and `r restriction_of("Hills", "Hill Dalit", "Schooling and wealth")`
+with schooling and wealth held fixed. In the Terai, Terai Dalit women against Other Terai
+caste women: `r restriction_of("Terai", "Terai Dalit", "Nothing")`, and
+`r restriction_of("Terai", "Terai Dalit", "Schooling and wealth")` with schooling and
+wealth. For Dalit women within a single region, whether there's a gap at all depends on
+what we hold fixed.
+
+## Drunkenness, comparing within interviewers
+
+If the drunkenness effect were only a shared reporting habit, holding the interviewer
+fixed should shrink it:
+
+```{r drunk-interviewer, cache = TRUE, cache.extra = tools::md5sum("models/violence.stan")}
+drunk_gaps_interviewer <- fit_violence(
+  drunk_data,
+  predictors = c("caste", SES),
+  village = "partial",
+  interviewer = TRUE,
+  weight = "weight"
+) |>
+  group_gaps(drunk_data)
+
+bind_rows(
+  "Villages" = drunk_gaps,
+  "Villages and interviewers" = drunk_gaps_interviewer,
+  .id = "model"
+) |>
+  group_by(model, group) |>
+  summarise(
+    gap = sprintf(
+      "%+.0f (%+.0f to %+.0f)",
+      100 * median(gap),
+      100 * quantile(gap, 0.05),
+      100 * quantile(gap, 0.95)
+    ),
+    .groups = "drop"
+  ) |>
+  pivot_wider(names_from = model, values_from = gap)
+```
+
+It doesn't shrink. That rules out one version of the worry (some interviewers recording
+both more readily), but not all of it: a woman who tells about one may be more willing
+to tell about the other.
+
+## How we code drinking
+
+The exploration tried several codings. The answer depends a lot on which one you pick:
+
+```{r drink-codings}
+codings <- dv |>
+  mutate(
+    ever_drunk = as.integer(drinking %in% c("Sometimes drunk", "Often drunk")),
+    often_drunk = as.integer(drinking == "Often drunk")
+  )
+coding_design <- svydesign(
+  ids = ~village,
+  strata = ~strata,
+  weights = ~weight,
+  data = codings,
+  nest = TRUE
+)
+
+c(
+  "He drinks" = "drinks",
+  "He's ever drunk" = "ever_drunk",
+  "He's often drunk" = "often_drunk"
+) |>
+  imap(\(column, coding) {
+    rates <- weighted_rates(coding_design, "physical", column)
+    tibble(
+      coding,
+      yes = pct(rates$rate[rates[[column]] == 1]),
+      no = pct(rates$rate[rates[[column]] == 0]),
+      difference_points = round(
+        100 *
+          (rates$rate[rates[[column]] == 1] - rates$rate[rates[[column]] == 0])
+      )
+    )
+  }) |>
+  list_rbind()
+```
+
+A coding chosen after looking at results is a forking path. That's why the estimand in
+Step 3 names the comparison (often drunk against doesn't drink) before any model was fit.
+
+
+# The result
+
+We set out to ask *which communities have more domestic violence, and why?* Seven
+defensible causal models gave seven answers, and the data couldn't choose between
+them. But not everything was uncertain.
+
+**What held up under every model:**
+
+- **A husband who is often drunk goes with far more violence**:
+  `r drunk_of(drunk_gaps, "Often drunk")` against a husband who doesn't drink, the same
+  comparing within interviewers, and a similar climb in every group. Drinking without
+  getting drunk goes with none. That is still not proof of cause: whatever makes a man
+  both drink and hit (U), and her willingness to tell about both, remain.
+- **Plains-origin women report much more violence than Hill Brahmin/Chhetri women**,
+  under every DAG, every village model and both outcomes.
+- **What gets recorded depends on who asked.** Interviewers working the same villages,
+  with women alike in every way we can check, recorded very different rates.
+
+**What didn't hold:**
+
+- **The size of the caste gaps.** For Muslim women, `r range_of("Muslim")` depending on
+  the DAG. The choice of village model alone moves the plains-origin gaps by about a
+  third.
+- **For Dalit women within a single region, whether a gap exists at all.** It depends on
+  whether we hold schooling and wealth fixed.
+- **Whether village differences belong to the place or to the recording.** The models
+  that remove them can't tell.
+
+So the simple answer, that some communities are more violent than others, is the claim
+the data support least. Each DAG answered a slightly different question. An honest
+report gives the range of answers, says which assumption produces which, and separates
+what held up from what didn't.
+
+*Things we'd do next:* let the effect of drunkenness differ by group; add the village
+model with schooling and wealth; check how the results change if the woman herself is
+left out of her village's mix; and look for a design that separates place from
+recording, such as interviewers assigned at random within villages.

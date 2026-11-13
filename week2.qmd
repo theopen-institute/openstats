@@ -34,7 +34,6 @@ h_women <- mean(adults$height[adults$male == 0])
 h_men <- mean(adults$height[adults$male == 1])
 h_sd_women <- sd(adults$height[adults$male == 0])
 h_sd_men <- sd(adults$height[adults$male == 1])
-spreads <- two_spreads(adults)
 sex_fit <- sex_weight_fits(adults)
 
 houses <- load_houses() |>
@@ -237,76 +236,11 @@ incomes[[6]]
 :::
 :::
 
-## Our running example: Nepal's adults {notes="notes/week2_notes.md#adults"}
-
-::: {.columns}
-::: {.column width="45%"}
-- The WHO's **STEPS** survey of health risks, run in Nepal in 2019 by the Nepal Health
-  Research Council.
-- `r fmt(nrow(adults), 0)` adults (18–69), measured at home.
-- Height (cm), weight (kg), age, sex.
-- Only `r pct(mean(adults$male))` are men: many young men were working abroad.
-:::
-
-::: {.column width="55%"}
-```{r adults-table}
-adults |>
-  select(height, weight, age, sex) |>
-  head(6) |>
-  knitr::kable(digits = 1)
-```
-:::
-:::
+## Describing distributions: center, spread, shape {notes="notes/week2_notes.md#describing"}
 
 ```{r adults-data}
 adults_widget_data(adults) # for the widgets later in the deck
 ```
-
-## Describing distributions: center, spread, shape {notes="notes/week2_notes.md#describing"}
-
-```{r height-hist, fig.height = 5.4}
-height_hist_plot(adults)
-```
-
-Read the **shape** first: one hump, roughly symmetric. Then label it: its
-[**center**]{.red} (the mean) and its [**spread**]{.blue} (the standard deviation).
-
-## The Normal distribution {notes="notes/week2_notes.md#normal"}
-
-::: {.columns}
-::: {.column width="60%"}
-::: {.r-stack}
-::: {.fragment .fade-out fragment-index=1}
-```{r normal-overlay, opts.label = "half_tall"}
-normal_overlay_plot(adults)
-```
-:::
-
-::: {.fragment fragment-index=1}
-```{r normal-bands, opts.label = "half_tall"}
-normal_overlay_plot(adults, bands = TRUE)
-```
-:::
-:::
-:::
-
-::: {.column width="40%"}
-The blue curve is a **Normal distribution**, with the same center and spread as the
-data.
-
-It's a shape that turns up again and again, in math and in nature. What makes it
-special comes later. For now, it's enough that the heights in a population often take
-this shape.
-
-::: {.fragment fragment-index=1}
-Every Normal has the same landmarks: **68%** of cases within 1 SD of the mean, **95%**
-within 2 SD. Nepal's adults: `r fmt(100 * mean(abs(adults$z_height) < 1), 0)`% and
-`r fmt(100 * mean(abs(adults$z_height) < 2), 0)`%.
-:::
-:::
-:::
-
-## One hump, or two? {notes="notes/week2_notes.md#two-humps"}
 
 ```{r sex-humps-data}
 sex_humps_widget_data(adults)
@@ -316,26 +250,59 @@ sex_humps_widget_data(adults)
 {{< include _includes/week2/sex-humps.md >}}
 
 ::: {.w2-side}
-The same heights. Men are about `r fmt(h_men - h_women, 0)` cm taller than women, on
-average.
+The heights of `r fmt(nrow(adults), 0)` adults in Nepal.[^steps]
 
-_So why only one hump?_
+Read the **shape** first: one hump, roughly symmetric.
 
 ::: {.fragment fragment-index=1}
 **Women and men.** Two crowds, overlapping in the middle.
 :::
 
 ::: {.fragment fragment-index=2}
-Each has its own Normal: women around `r fmt(h_women)` cm, men around `r fmt(h_men)` cm,
-each with an SD of about `r fmt((h_sd_women + h_sd_men) / 2, 0)` cm.
+Each has its own **center** (the mean) and **spread** (the standard deviation):
+
+|               |                        Mean |                        SD |
+|---------------|----------------------------:|--------------------------:|
+| [Women]{.red} | `r fmt(h_women)` cm | `r fmt(h_sd_women)` cm |
+| [Men]{.blue}  | `r fmt(h_men)` cm   | `r fmt(h_sd_men)` cm   |
+
+Each curve is a **Normal** with that mean and SD.
 :::
 
 ::: {.fragment fragment-index=3}
-Added together (dashed), they make one lopsided bell. Two crowds only make two humps
-if they're more than about 2 SDs apart. These are
-`r fmt((h_men - h_women) / sqrt((h_sd_women^2 + h_sd_men^2) / 2))` SDs apart.
+Added together (dashed), they make one lopsided bell. Two equal crowds only make two
+humps if they're more than about 2 SDs apart. These are
+`r fmt((h_men - h_women) / sqrt((h_sd_women^2 + h_sd_men^2) / 2))`.
 :::
 :::
+:::
+
+[^steps]: The WHO's STEPS survey of health risks, run in Nepal in 2019 by the Nepal
+    Health Research Council: adults aged 18–69, measured at home. Only
+    `r pct(mean(adults$male))` are men: many young men were working abroad.
+
+## The Normal distribution {notes="notes/week2_notes.md#normal"}
+
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+```{r normal-overlay, fig.height = 4.6}
+normal_overlay_plot(adults)
+```
+:::
+
+::: {.fragment fragment-index=1}
+```{r normal-bands, fig.height = 4.6}
+normal_overlay_plot(adults, bands = TRUE)
+```
+:::
+:::
+
+A shape that turns up again and again, in math and in nature. Two numbers draw it: its mean and SD.
+
+::: {.fragment fragment-index=1}
+Every Normal: **68%** within 1 SD of the mean, **95%** within 2 SD. [Women]{.red}: `r pct(within_sd(adults, 0, 1))` and
+`r pct(within_sd(adults, 0, 2))`. [Men]{.blue}: `r pct(within_sd(adults, 1, 1))` and
+`r pct(within_sd(adults, 1, 2))`.
 :::
 
 ## Taller or heavier? {notes="notes/week2_notes.md#z-scores"}
@@ -346,69 +313,45 @@ ex_w <- 72
 ex_zh <- (ex_h - h_mean) / h_sd
 ex_zw <- (ex_w - w_mean) / w_sd
 stopifnot(ex_zw > ex_zh) # the slide says he's more unusually heavy than tall
+zscore_widget_data(ex_h, ex_w)
 ```
 
+::: {.widget-layout .z-compare}
+{{< include _includes/week2/z-compare.md >}}
+
+::: {.w2-side}
 _A man is **`r ex_h` cm** and **`r ex_w` kg**. Is he more unusually tall, or heavy?_
 
-::: {.columns}
-::: {.column width="55%"}
-::: {.r-stack}
-::: {.fragment .fade-out fragment-index=2}
-```{r man-plot, opts.label = "half"}
-unusual_man_plot(adults, ex_h, ex_w)
-```
-:::
-
-::: {.fragment fragment-index=2}
-```{r man-plot-z, opts.label = "half"}
-unusual_man_plot(adults, ex_h, ex_w, z = TRUE)
-```
-:::
-:::
-:::
-
-::: {.column width="45%"}
-- We can't compare centimeters to kilograms.
-- [But we can ask of each: **how many SDs from average?**]{.fragment fragment-index=1}
+Centimeters and kilograms can't be compared.
 
 ::: {.fragment fragment-index=1}
+**Change the ruler:** count the SDs from the average.
+
 $$
 z = \frac{x - \text{mean}}{\text{SD}}
 $$
+
+Height: (`r ex_h` − `r fmt(h_mean)`) / `r fmt(h_sd)` = [**`r sprintf("%+.2f", ex_zh)`**]{.blue}\
+Weight: (`r ex_w` − `r fmt(w_mean)`) / `r fmt(w_sd)` = [**`r sprintf("%+.2f", ex_zw)`**]{.red}
+
+One ruler, no units: he's more unusually **heavy** than tall.
 :::
 
 ::: {.fragment fragment-index=2}
-- Height: (`r ex_h` − `r fmt(h_mean)`) / `r fmt(h_sd)` = [**`r fmt(ex_zh, 2)`**]{.blue}
-- Weight: (`r ex_w` − `r fmt(w_mean)`) / `r fmt(w_sd)` = [**`r fmt(ex_zw, 2)`**]{.red}
+**Place him in the crowd:** taller than `r pct(mean(adults$height < ex_h))` of adults,
+heavier than `r pct(mean(adults$weight < ex_w))`.
 :::
 
-::: {.fragment fragment-index=3}
-More unusually heavy than tall. A **z‑score** places one case in its crowd.
-:::
+[Drag either line to try someone else.]{.w2-hint}
 :::
 :::
 
 ## Same data, new ruler {notes="notes/week2_notes.md#new-ruler"}
 
-::: {.columns}
-::: {.column width="58%"}
-```{r height-rulers, opts.label = "half"}
-height_ruler_plot(adults)
-```
-:::
+{{< include _includes/week2/z-ruler.md >}}
 
-::: {.column width="42%"}
-| z      | Meaning                 |
-|--------|-------------------------|
-| 0      | exactly average         |
-| ±1     | ordinary                |
-| ±2     | unusual (about 1 in 20) |
-| ±3     | rare (about 1 in 370)   |
-
-- The **shape** doesn't change: only the ruler.
-- The mean becomes **0**, the SD **1**, and the units disappear.
-:::
-:::
+A z-score has **no units**, and it always says where someone stands **in a crowd**:
+change the crowd, and the same man is typical or unusual.
 
 ## Nepal, age by age {notes="notes/week2_notes.md#nepal-population"}
 
@@ -524,59 +467,15 @@ belief_plot(plateau_density(center = 40, plateau = 20, taper = 15), ymax = 0.05)
 
 :::
 
-## How sure can a few people make us? {notes="notes/week2_notes.md#sample-mean"}
+## Ask the room {notes="notes/week2_notes.md#ask-the-room"}
 
-_Pretend these `r nrow(adults)` adults are everyone. We can only afford to measure a few._
+_Ask a room how old he is. Each guess is one person's belief, and they differ._
 
-{{< include _includes/week2/sample-mean.md >}}
-
-## Two spreads {notes="notes/week2_notes.md#two-spreads"}
-
-_If we measured n adults, from a much bigger population:_
-
-| Adults measured | [Most adults are within]{.blue} | [95% sure the average is within]{.green} |
-|--:|--:|--:|
-| `r spreads$n[1]` | ± `r fmt(spreads$population[1])` cm | ± `r fmt(spreads$certainty[1])` cm |
-| `r spreads$n[2]` | ± `r fmt(spreads$population[2])` cm | ± `r fmt(spreads$certainty[2])` cm |
-| `r spreads$n[3]` | ± `r fmt(spreads$population[3])` cm | ± `r fmt(spreads$certainty[3])` cm |
-| `r spreads$n[4]` | ± `r fmt(spreads$population[4])` cm | ± `r fmt(spreads$certainty[4])` cm |
+{{< include _includes/week2/guess-room.md >}}
 
 ::: {.fragment}
-More data doesn't make people any less different. [It makes us more sure.]{.green}
-:::
-
-::: {.fragment .big-statement}
-Variation is in the world.\
-Uncertainty is in us.
-:::
-
-## Population or certainty? {notes="notes/week2_notes.md#two-kinds"}
-
-::: {.kinds}
-::: {.kind .kind-population}
-[Population distributions]{.kind-title}
-
-How a quantity **varies across cases**. Many cases, each with its own value.
-
-- Heights of the adults in a village
-- Prices of houses sold last year
-- Ages of everyone in Nepal
-:::
-
-::: {.kind .kind-certainty}
-[Certainty distributions]{.kind-title}
-
-How **plausible** each value of an unknown is. One true value; we're unsure which.
-
-- The mayor's share of the vote (Week 1)
-- The age of the man in the photo
-- The average height of all Nepali adults
-:::
-:::
-
-::: {.fragment}
-Quick test: [many cases that really differ]{.blue}, or [one answer we're unsure
-about]{.green}? Same shapes, same vocabulary, different questions.
+One guess: anyone's guess. [The average of a room]{.green}: close, every time. How
+tightly the averages pile up is how sure the room can make us.
 :::
 
 ## Random individuals, predictable crowds {notes="notes/week2_notes.md#galton"}
@@ -798,7 +697,11 @@ ggplot(adults, aes(height, weight)) +
     linewidth = 1.5
   ) +
   coord_cartesian(xlim = c(130, 186), ylim = c(25, 100)) +
-  labs(x = "Height (cm)", y = "Weight (kg)", title = "The same line, in cm and kg")
+  labs(
+    x = "Height (cm)",
+    y = "Weight (kg)",
+    title = "The same line, in cm and kg"
+  )
 ```
 :::
 :::

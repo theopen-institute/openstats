@@ -15,6 +15,17 @@ The Open Institute For Social Science. It produces two kinds of output from the 
   a deck. (`homework/week*_key.md` are answer keys: gitignored, because the repo is
   public. They exist only in the maintainer's working copy.)
 
+One file is outside the site: `violence.Rmd`, a worked example for the hands-on part of
+the course (the whole workflow on the Nepal DHS 2022: domestic violence, caste and
+drinking). Its data are licensed and may not be redistributed, so it reads the Stata
+files from outside the repo (`NEPAL_DHS_DIR`, set in `_environment.local`), Quarto
+doesn't render it (the site renders only `.qmd`), and the maintainer knits it with
+`rmarkdown::render("violence.Rmd")` and shares the HTML. Outside RStudio, rmarkdown
+needs Quarto's pandoc: `RSTUDIO_PANDOC=/Applications/quarto/bin/tools/aarch64`. Its slow
+chunks are cached in `violence_cache.nosync/` (gitignored, and skipped by iCloud), which
+holds row-level data: never commit it. It uses `r/violence-sim.R` and
+`models/violence.stan`.
+
 Files starting with `_` are never rendered: `_removed.qmd` is a parking file for cut
 slides (keep the assets it references), `_includes/` holds shared slide snippets.
 
@@ -141,7 +152,10 @@ the R-side hyperparameters, written with `write_stan_file()`, and compiled with
 Plain `.stan` files used by the week decks and `workflow.qmd` (as opposed to the
 inline-glued models in `projects/`), named for what they fit: `weight_sex.stan`,
 `weight_sex_height.stan`, `fertility_college.stan`, `fertility_college_mortality.stan`,
-`linear.stan` (any number of standardized predictors), `berkeley.stan`. (`weight1`,
+`linear.stan` (any number of standardized predictors), `berkeley.stan` and
+`berkeley_varying.stan` (`workflow.qmd`'s first and second pass: one sex effect, then
+one per department; both take their prior scales as data, so the page's prior
+sensitivity check needs no recompiling). (`weight1`,
 `weight3` and `fertility1b` are only referenced from `_removed.qmd`.)
 
 ### Data (`datasets/*.csv`)
@@ -272,17 +286,23 @@ curve through its 21 points (`smooth.js`), on Step 1 and in the math alike; the 
 styling through `canvas-axes.js`, and their animated transitions through `tween.js`), and their styles in `deck.scss`. jspreadsheet comes from a pinned CDN version via
 `_build/jspreadsheet.html`.
 
-Week 2's widgets follow the same pattern (markup in `_includes/week2/`): `galton.js` (a Galton board), `sample-mean.js` (a random few of Nepal's adults: how they vary
-against how sure we are of their average), `conditional.js` (weight within a band of
+Week 2's widgets follow the same pattern (markup in `_includes/week2/`): `sex-humps.js`
+(the adults' heights by sex: stacked, then separated with each sex's Normal, then
+stacked again under their sum), `z-compare.js` (height and weight on their own rulers,
+then stretched onto one z-score ruler; its steps follow the slide's fragments),
+`z-ruler.js` (one height on a centimeter or inch ruler and a z ruler, measured against
+all adults, women or men), `guess-room.js` (simulated rooms guessing the man's age: the
+guesses scatter, the rooms' averages pile up in a narrow bell; the bridge to the Galton
+board), `galton.js` (a Galton board), `conditional.js` (weight within a band of
 heights; with `data-split="sex"`, women against men), `model-builder.js` (house-price
 models with any set of features) and `reclass.js` (the opening Will Rogers paradox:
 Nepal's 2008 grades 11–12 employees moving from post-secondary to secondary, raising
 both groups' averages; its steps follow the slide's fragments, and its curve shapes are
-hypothetical) and `sex-humps.js` (the adults' heights by sex: stacked, then
-separated with each sex's Normal, then stacked again under their sum). They draw on canvases through `canvas-plot.js`, in
+hypothetical). They draw on canvases through `canvas-plot.js`, in
 the slide's own pixels. Their data comes from R, not from files in `js/`: a one-line
 chunk in the deck (`adults_widget_data()`, `house_models_data()`, `reclass_widget_data()`,
-`sex_humps_widget_data()` in `r/week2.R`) writes it
+`sex_humps_widget_data()`, `zscore_widget_data()` in `r/week2.R`) writes it
 into the page as a JSON block, which the scripts read by id. So the numbers they show
-are frozen with the deck, and freeze.R tracks the datasets behind them. (`ldc-shift.js`
-belongs to a slide parked in `_removed.qmd`.)
+are frozen with the deck, and freeze.R tracks the datasets behind them. (`guess-room.js`
+simulates its guessers, so it has no data block. `ldc-shift.js` and `sample-mean.js`
+belong to slides parked in `_removed.qmd`.)

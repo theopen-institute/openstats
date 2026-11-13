@@ -345,88 +345,83 @@ height_bars <- function(...) {
 # The bar an adult falls in, numbered from HEIGHT_EDGE
 height_bar <- function(height) floor((height - HEIGHT_EDGE) / HEIGHT_BIN)
 # The heights the plots show (leaving out the 9 adults below 129.5 or above 187.5 cm),
-# and the count axis "Describing distributions" shares with "One hump, or two?"
-# (sex_humps_widget_data(), js/sex-humps.js)
+# and the count axis of "Describing distributions" (sex_humps_widget_data(),
+# js/sex-humps.js)
 HEIGHT_XLIM <- c(129.5, 187.5)
 height_ylim <- function(adults) c(0, 1.25 * max(table(height_bar(adults$height))))
 
-# "Describing distributions: center, spread, shape": height, with the mean and a band
-# 1 SD either side
-height_hist_plot <- function(adults) {
-  h_mean <- mean(adults$height)
-  h_sd <- sd(adults$height)
-
-  ggplot(adults, aes(height)) +
-    annotate(
-      "rect",
-      xmin = h_mean - h_sd,
-      xmax = h_mean + h_sd,
-      ymin = -Inf,
-      ymax = Inf,
-      fill = BLUE,
-      alpha = 0.12
-    ) +
-    height_bars(fill = GRAY) +
-    value_marker(h_mean, paste0("mean = ", fmt(h_mean), " cm"), RED) +
-    value_marker(h_mean + h_sd, paste0("± 1 SD = ", fmt(h_sd), " cm"), BLUE, vjust = 4, line = FALSE) +
-    scale_y_continuous(expand = expansion(mult = c(0, 0))) +
-    coord_cartesian(xlim = HEIGHT_XLIM, ylim = height_ylim(adults)) +
-    labs(x = "Height (cm)", y = "Number of adults")
-}
-
-# "The Normal distribution": the height histogram with a Normal curve of the same mean
-# and SD, and the mean marked. bands = TRUE shades the curve within 1 and 2 SD of the
-# mean, over the bars, with the Normal's 68% and 95% above them. Both versions share
-# their y range, so the bars don't move when the bands appear.
+# "The Normal distribution": each sex's heights in its own panel, women then men, each
+# with the Normal of its own mean and SD, its mean dashed, and both numbers in the
+# panel's title. bands = TRUE shades each curve within 1 and 2 SD of its mean, with the
+# Normal's 68% and 95% above. Both versions share their y range, so the bars don't move
+# when the bands appear.
 normal_overlay_plot <- function(adults, bands = FALSE) {
-  m <- mean(adults$height)
-  s <- sd(adults$height)
-  peak <- dnorm(m, m, s)
-  normal <- list(fun = dnorm, args = list(mean = m, sd = s))
+  colors <- c(female = RED, male = BLUE)
+  sexes <- adults |>
+    group_by(sex) |>
+    summarize(m = mean(height), s = sd(height)) |>
+    mutate(
+      peak = dnorm(m, m, s),
+      title = paste0(
+        if_else(sex == "female", "Women", "Men"),
+        ": mean ", fmt(m), " cm, SD ", fmt(s), " cm"
+      )
+    )
+  curves <- expand_grid(sexes, x = seq(HEIGHT_XLIM[1], HEIGHT_XLIM[2], by = 0.05)) |>
+    mutate(y = dnorm(x, m, s))
   band <- function(k, alpha) {
-    do.call(
-      stat_function,
-      c(normal, geom = "area", xlim = list(m + c(-k, k) * s), fill = BLUE, alpha = alpha)
+    geom_area(
+      data = filter(curves, abs(x - m) <= k * s),
+      aes(x, y, fill = sex),
+      alpha = alpha
     )
   }
-  bracket <- function(k, y, label) {
+  bracket <- function(k, height, label) {
+    at <- mutate(sexes, y = height * peak)
     list(
-      annotate(
-        "segment",
-        x = m - k * s, xend = m + k * s, y = y, yend = y,
-        color = BLUE, linewidth = 1,
-        arrow = arrow(ends = "both", length = unit(0.12, "inches"))
+      geom_segment(
+        data = at,
+        aes(x = m - k * s, xend = m + k * s, y = y, yend = y, color = sex),
+        linewidth = 1,
+        arrow = arrow(ends = "both", length = unit(0.1, "inches"))
       ),
-      annotate(
-        "label",
-        x = m, y = y, vjust = -0.35, label = label, color = BLUE, size = 7,
-        fill = "white", linewidth = 0
+      geom_label(
+        data = at,
+        aes(m, y, color = sex),
+        label = label, vjust = -0.35, size = 6.5, fill = "white", linewidth = 0
       )
     )
   }
 
   shading <- if (bands) list(band(2, 0.2), band(1, 0.3))
   brackets <- if (bands) {
-    list(
-      bracket(1, 1.12 * peak, paste0("68% within 1 SD (", fmt(s), " cm)")),
-      bracket(2, 1.32 * peak, "95% within 2 SD")
-    )
+    list(bracket(1, 1.12, "68% within 1 SD"), bracket(2, 1.38, "95% within 2 SD"))
   }
 
   ggplot(adults, aes(height)) +
-    height_bars(aes(y = after_stat(density)), fill = GRAY) +
+    height_bars(aes(y = after_stat(density)), fill = tint(GRAY, 0.45)) +
     shading +
-    do.call(stat_function, c(normal, color = BLUE, linewidth = 1.5)) +
-    value_marker(m, paste0("mean = ", fmt(m), " cm"), RED) +
+    geom_line(data = curves, aes(x, y, color = sex), linewidth = 1.5) +
+    geom_vline(data = sexes, aes(xintercept = m, color = sex), linewidth = 1.2, linetype = "dashed") +
     brackets +
+    facet_wrap(~sex, labeller = as_labeller(setNames(sexes$title, sexes$sex))) +
+    scale_color_manual(values = colors, guide = "none") +
+    scale_fill_manual(values = colors, guide = "none") +
+    scale_x_continuous(breaks = seq(140, 180, 10)) +
     scale_y_continuous(expand = expansion(mult = c(0, 0))) +
-    coord_cartesian(xlim = HEIGHT_XLIM, ylim = c(0, 1.75 * peak)) +
+    coord_cartesian(xlim = HEIGHT_XLIM, ylim = c(0, 1.6 * max(sexes$peak))) +
     labs(x = "Height (cm)", y = NULL) +
-    theme(axis.text.y = element_blank())
+    theme(axis.text.y = element_blank(), panel.spacing.x = unit(3, "lines"))
 }
 
-# "One hump, or two?": the adults' heights for js/sex-humps.js, in the same bars as the
-# plots before it: each bar's left edge and its women and men (the bars in view), each
+# The share of one sex's heights (male = 0 or 1) within k SDs of that sex's mean
+within_sd <- function(adults, male, k) {
+  h <- adults$height[adults$male == male]
+  mean(abs(h - mean(h)) < k * sd(h))
+}
+
+# "Describing distributions": the adults' heights for js/sex-humps.js, in the same bars
+# as the plots: each bar's left edge and its women and men (the bars in view), each
 # sex's mean and SD (for its Normal) and number (all of them), and the axes' ranges
 sex_humps_widget_data <- function(adults) {
   bar <- height_bar(adults$height)
@@ -449,81 +444,10 @@ sex_humps_widget_data <- function(adults) {
   ))
 }
 
-# "Taller or heavier?": the adults' heights and weights, each with its mean (dashed)
-# and the man's value marked. z = TRUE labels his value with its z-score, blue for
-# height and red for weight.
-unusual_man_plot <- function(adults, height, weight, z = FALSE) {
-  vars <- c(height = "Height (cm)", weight = "Weight (kg)")
-  long <- adults |>
-    select(height, weight) |>
-    pivot_longer(everything(), names_to = "var") |>
-    mutate(panel = factor(vars[var], levels = vars))
-  him <- long |>
-    group_by(var, panel) |>
-    summarise(mean = mean(value), sd = sd(value), .groups = "drop") |>
-    mutate(
-      value = c(height = height, weight = weight)[var],
-      unit = c(height = "cm", weight = "kg")[var],
-      z_score = (value - mean) / sd,
-      color = if (z) c(height = BLUE, weight = RED)[var] else INK,
-      label = if (z) {
-        paste0(value, " ", unit, "\nz = ", sprintf("%+.2f", z_score))
-      } else {
-        paste(value, unit)
-      }
-    )
-
-  # Bars 2 cm or 2 kg wide, each holding two whole values (both were measured mostly to
-  # the whole unit), drawn for the adults within the usual ranges (the mean and SD above
-  # are everyone's)
-  shown <- long |>
-    filter(if_else(var == "height", between(value, 130, 186), between(value, 25, 100)))
-  ggplot(shown, aes(value)) +
-    geom_histogram(binwidth = 2, boundary = -0.5, fill = GRAY, color = "white") +
-    geom_vline(data = him, aes(xintercept = mean), color = GRAY, linetype = "dashed", linewidth = 1) +
-    geom_vline(data = him, aes(xintercept = value), color = him$color, linewidth = 1.5) +
-    geom_label(
-      data = him,
-      aes(x = value, y = Inf, label = label),
-      color = him$color,
-      vjust = 1.2,
-      hjust = -0.08,
-      size = 6.5,
-      linewidth = 0,
-      fill = "white",
-      lineheight = 0.9
-    ) +
-    facet_wrap(~panel, ncol = 1, scales = "free", strip.position = "bottom") +
-    labs(x = NULL, y = NULL) +
-    theme(
-      strip.placement = "outside",
-      strip.text = element_text(size = 20, face = "plain"),
-      axis.text.y = element_blank()
-    )
-}
-
-# "Same data, new ruler": the height histogram with two rulers, centimeters along the
-# bottom and z-scores (blue) along the top
-height_ruler_plot <- function(adults) {
-  h_mean <- mean(adults$height)
-  h_sd <- sd(adults$height)
-
-  ggplot(adults, aes(height)) +
-    height_bars(fill = GRAY) +
-    geom_vline(xintercept = h_mean, color = RED, linewidth = 1.2, linetype = "dashed") +
-    scale_x_continuous(
-      sec.axis = sec_axis(
-        ~ (.x - h_mean) / h_sd,
-        name = "Height (z-score, in SDs)",
-        breaks = -3:3
-      )
-    ) +
-    coord_cartesian(xlim = h_mean + c(-3, 3.5) * h_sd) +
-    labs(x = "Height (cm)", y = NULL) +
-    theme(
-      axis.title.x.top = element_text(color = BLUE, margin = margin(b = 8)),
-      axis.text.x.top = element_text(color = BLUE, face = "bold")
-    )
+# "Taller or heavier?" and "Same data, new ruler": the man js/z-compare.js and
+# js/z-ruler.js mark (they read the adults themselves, from adults_widget_data())
+zscore_widget_data <- function(height, weight) {
+  json_script("zscore-data", list(person = list(height = height, weight = weight)))
 }
 
 # ---- Part 1, the end: shapes that tell stories -------------------------------------
@@ -635,18 +559,6 @@ plateau_density <- function(center = 40, plateau = 20, taper = 15) {
   }
   area <- integrate(shape, 0, 100)$value
   function(x) shape(x) / area
-}
-
-# "Two spreads": for each number of adults measured, how far most adults are from the
-# average (2 SD), and how far off our estimate of the average could be (2 SD / √n,
-# the 95% width of the certainty distribution with a flat prior)
-two_spreads <- function(adults, sizes = c(5, 20, 100, nrow(adults))) {
-  s <- sd(adults$height)
-  tibble(
-    n = sizes,
-    population = 2 * s,
-    certainty = 2 * s / sqrt(sizes)
-  )
 }
 
 # ---- Part 2, the named shapes ------------------------------------------------------

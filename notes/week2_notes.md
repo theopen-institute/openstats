@@ -69,49 +69,41 @@
 - A minimum wage: nobody paid below the floor, a crowd paid exactly it, and fewer the further above. The solid bar is a share of people at exactly one value. A rule, not a natural process, made this shape.
 - The takeaway: the same question, "what do people earn here?", has very different answers in different places, and the shape tells you which story you're in. Next, the vocabulary for describing a shape, on real data.
 
-## Our running example: Nepal's adults {#adults}
-
-- Introduce the data: the WHO's STEPS survey of noncommunicable-disease risk factors, run in Nepal in 2019 by the Nepal Health Research Council. Surveyors visited households across all seven provinces, picked one adult aged 15–69 in each, interviewed them, and measured their height and weight. We use the 5,290 aged 18 and over.
-- We use it because it's about people, it's from here, and height and weight are easy to reason about. The same data carries us from one variable (Part 1) to two (Part 3), and into next week.
-- Only 36% of those measured are men. STEPS picks one person per household, and many young men were working abroad (Nepal's ages, at the end of this part, show who's missing). The survey's weights count each man for more, which brings men to 47%. We use the people as measured: weighting doesn't change any of the shapes or conclusions here.
-- Twelve impossible measurements are left out (a 261 cm man; heights typed into the weight column). Real survey data needs that kind of checking.
-
 ## Describing distributions: center, spread, shape {#describing}
 
-- Read the shape first: one hump, roughly symmetric. A bell, which the next slide names.
-- The bars are 2 cm wide. STEPS measured heights to the whole centimeter, so each bar holds two whole centimeters: no bar gets more steps of the ruler than another.
-- Then the two labels on the plot. Center: the mean, about 155 cm (the red line). Spread: the standard deviation, about 8.2 cm (the shaded band). A typical adult is within about 8 cm of average.
-- These two numbers are annotations: they label a shape, they don't replace it. Hold on to "one hump": two slides on, we look inside it.
+- Our running example for the rest of the week (the footnote has the source): the WHO's STEPS survey of noncommunicable-disease risk factors, run in Nepal in 2019 by the Nepal Health Research Council. Surveyors visited households across all seven provinces, picked one adult aged 15–69 in each, and measured their height and weight. We use the 5,290 aged 18 and over. It's about people, it's from here, and height and weight are easy to reason about; the same data carries us from one variable (Part 1) to two (Part 3), and into next week.
+- Read the shape first: one hump, roughly symmetric. The bars are 2 cm wide: STEPS measured heights to the whole centimeter, so each bar holds two whole centimeters, and no bar gets more steps of the ruler than another.
+- Click: women and men. The same bars, colored by sex, women at the bottom, so the outline doesn't change. Most of the shorter adults are women, most of the taller ones men, and the middle is where they overlap. Women are about two thirds of the bars: STEPS picks one person per household, and many young men were working abroad (Nepal's ages, at the end of this part, show who's missing). The survey's weights count each man for more, bringing men to 47%; we use the people as measured, since weighting doesn't change any of the shapes or conclusions here.
+- Click: the bars separate, women's half of each bar on the left and men's on the right. Now label each crowd. Center: the mean, women about 151 cm, men about 161. Spread: the standard deviation, about 6.5 cm for women and 7.5 for men: a typical woman is within about 6.5 cm of the average woman. These two numbers label a shape, they don't replace it. The curves over the bars are Normals with each crowd's mean and SD; the next slide names them. Each fits its crowd well, better than one Normal fits everyone, because everyone together leans to the right.
+- Click: they stack back up, and the dashed line is the two Normals added together: one lopsided bell, following the bars. So why only one hump, when men are 10 cm taller? Two equal-sized bells only make two humps if they're more than about 2 SDs apart, and these are about 1.4. With women two thirds of the adults, it would take even more: men would have to be about 9 cm taller again before a dip appeared.
+- The lesson: two groups in a population don't show up as two humps unless they're far apart. Don't read groups off a histogram, in either direction: a single hump can hide two crowds, and a lump or dip in a small sample can be chance. Before explaining a bump or a dip, ask whether it's bigger than chance, and whether it came from how the data were measured. Nepal's ages, at the end of this part, come back to that.
+- Twelve impossible measurements are left out (a 261 cm man; heights typed into the weight column). Real survey data needs that kind of checking.
 
 ## The Normal distribution {#normal}
 
-- The blue curve is a Normal distribution with the same mean and SD as the data. With 5,290 adults the bars are smooth, and they follow the curve closely: two numbers describe the whole shape. That's the Normal's main attraction.
+- The same two crowds, side by side. Each curve is a Normal distribution with that crowd's mean and SD, and the bars follow it closely: two numbers describe the whole shape. That's the Normal's main attraction.
 - The Normal is a shape that turns up everywhere, in math and in nature. Don't explain why yet: what makes it special comes later (Part 2's Galton board shows where it comes from). For now it's enough that the heights in a population often take this shape.
-- Click: the bands. Every Normal has the same landmarks, whatever its center and spread: about 68% of cases within 1 SD, 95% within 2 SD. The right column checks them against Nepal's adults: 67% and 96%, close. That's a good habit: check a rule of thumb against your actual data.
+- Click: the bands. Every Normal has the same landmarks, whatever its center and spread: about 68% of cases within 1 SD, 95% within 2 SD. The text checks them against each crowd: 71% and 95% for women, 70% and 95% for men. Close. That's a good habit: check a rule of thumb against your actual data.
+- A caution if anyone asks: everyone together passes the same check (67% and 96%), even though it's the lopsided one. The landmarks can't tell a bell from a slightly lopsided bell; look at the shape too.
 - "Within 2 SD" comes back in Part 2: it's how we'll say how sure we are.
-- Real data are never perfectly Normal. The Normal is a description, not a law. The next slide looks closer at this one, and the rest of this part is shapes that aren't bells.
-
-## One hump, or two? {#two-humps}
-
-- The same heights, in the same bars. Men are about 10 cm taller than women on average. Ask: shouldn't that make two humps, one for women and one for men? Let the room guess before clicking.
-- Click: women and men. The same bars, colored by sex, women at the bottom, so the outline doesn't change. Most of the shorter adults are women, most of the taller ones men, and the middle is where they overlap. Women are about two thirds of the bars, because fewer men were home to be measured.
-- Click: the bars separate, women's half of each bar on the left and men's on the right, and each sex gets its own Normal (its own mean and SD). Women around 151 cm, men around 161. Each fits well on its own.
-- Click: they stack back up, and the dashed line is the two Normals added together: one lopsided bell, following the bars. Two bells only make two humps if they're more than about 2 SDs apart. These are about 1.4: a 9.5 cm gap, with each crowd's SD about 7 cm (6.5 for women, 7.5 for men).
-- The lesson: two groups in a population don't show up as two humps unless they're far apart. Don't read groups off a histogram, in either direction: a single hump can hide two crowds, and a lump or dip in a small sample can be chance. Before explaining a bump or a dip, ask whether it's bigger than chance, and whether it came from how the data were measured. Nepal's ages, at the end of this part, come back to that.
+- Real data are never perfectly Normal. The Normal is a description, not a law. The rest of this part is shapes that aren't bells.
 
 ## Taller or heavier? {#z-scores}
 
-- Pose the puzzle and let them try. The plots show where he sits in each crowd: far out on both. But which is further? Centimeters and kilograms can't be compared directly.
-- Click: the trick is to measure both in "standard deviations from average." Now they're on the same ruler.
-- Click: the arithmetic, and the plots label each line with its z-score. Click: he is more unusually heavy than tall.
-- A z-score is a population-distribution idea: it places one case in the crowd.
+- Pose the puzzle and let them try. The plots show where he sits in each crowd: to the right in both. But which is further? Each histogram has its own ruler, centimeters and kilograms, and there's no way to say whether 10 cm is more than 16 kg.
+- Click: change the ruler. Watch the two histograms stretch until their averages line up and their spreads match: the ruler now counts standard deviations from the average. That's a z-score: how far from the average, measured in the crowd's own spread. The side shows the arithmetic.
+- This is the first thing z-scores buy us: they take away the arbitrary units. Once both are in SDs, his two lines can be read off one ruler: +1.25 for height, +1.52 for weight. He's more unusually heavy than tall.
+- Click: the second thing they buy us. A z-score places one person in the crowd. The shading is everyone below him: taller than 88% of adults, heavier than 92%. Because these crowds are roughly Normal, the z-score alone tells you about where he falls: +1 is taller than about 84% (5 in 6), +2 taller than about 98%.
+- Invite someone to say their own height and weight (or make one up), and drag the lines there. Try a short, heavy person: their z-scores have opposite signs.
 
 ## Same data, new ruler {#new-ruler}
 
-- One histogram, two rulers: centimeters along the bottom, z-scores in blue along the top. Standardizing doesn't move a single person. It only relabels the axis.
-- The mean becomes 0 and the SD becomes 1. The units disappear: a z-score is measured in standard deviations.
-- The table is a quick reference. 0 is average, ±1 is ordinary, ±2 is unusual (about 1 in 20), ±3 is rare (about 1 in 370). It's the 68–95–99.7 rule read the other way.
-- z-scores will come back in every model from here on. Part 3 says why.
+- The same heights and the same man, with the z ruler along the top and centimeters along the bottom. The colors are the zones a z-score names: within 1 SD of the average is typical (about two thirds of people), 1 to 2 SDs is uncommon (about a quarter), 2 to 3 is unusual (1 in 20 are beyond 2), beyond 3 is rare (1 in 370). It's the 68–95 rule from the Normal slide, read as a ruler.
+- Click Inches: the bottom ruler changes, and nothing else. The bars, his place, his z-score all stay put. That's the first point again: z-scores don't care about units.
+- Click Men: the bars become the men only, and the z ruler slides right and stretches; the centimeters don't move, and neither does he. Among men, 165 cm is z = +0.56: typical, taller than 70% of them. Click Women: z = +2.12, unusual, taller than 98% of women. Same man, same 165 cm.
+- The lesson: a z-score is always "compared with whom?" It's a statement about a person in a particular crowd. Picking the crowd is a choice, and the next parts of the course make that choice on purpose.
+- Drag him around if there's time: ask the room for a height that's unusual among men but typical among women.
+- z-scores come back in every model from here on. Part 3 says why.
 
 ## Nepal, age by age {#nepal-population}
 
@@ -142,36 +134,22 @@
 - Walk through the four shapes, one click each. Uninformed: flat, every age equally plausible. Weakly informed: a wide hump around 40. Strongly informed: a narrow hump. Domain-specific: a plateau between 30 and 50, dropping off outside.
 - The point: a certainty distribution is a picture of "how plausible is each value?" People reason this way all the time. We're drawing it, exactly as students drew the mayor's prior last week.
 - Contrast with Part 1, and say it slowly: there's only one man and one true age. Nothing varies here except how sure we are. The curves are in green for that reason.
+- Bridge: you've all guessed. What if we pooled the guesses? Next slide.
 
-## How sure can a few people make us? {#sample-mean}
+## Ask the room {#ask-the-room}
 
-- The key slide of Part 2: the two kinds side by side, on one axis.
-- Set it up: pretend these 5,290 adults are everyone, and we can only afford to measure a few. What's the average height?
-- Start with 5. The top shows the five people we measured (blue dots), against everyone (gray). That's a population distribution: how the people we measured vary. The bottom shows how sure we are about the average height: a certainty distribution.
-- Click "Measure new people" a few times. Each sample gives a slightly different guess, and the green curve jumps around. The old curves stay behind, faint. The curve is honest: it's about as wide as the jumps.
-- Now 20, then 100. Ask them to watch both rows. The dots on top spread just as wide: people are as different as ever. The green curve gets narrow, fast.
-- Tick "Show everyone's average." With 100 people, the curve sits right on it.
-- If someone asks how the green curve is made: it's the posterior for the average with a flat prior, a Normal centered on the sample's average with spread SD / √n. They don't need the formula; the next slide has the numbers.
-
-## Two spreads {#two-spreads}
-
-- The widget's lesson in numbers. Same population, different sample sizes.
-- The blue column never changes: most adults are within about 16 cm of average, however many we measure. That's the population distribution.
-- The green column shrinks: with 5 people we're 95% sure the average is within about 7 cm; with 5,290, within about a quarter of a centimeter. That's the certainty distribution.
-- The width shrinks with the square root of the number of people: four times the data halves the uncertainty. Mention it, don't derive it.
-- Click: more data doesn't make people less different. It makes us more sure.
-- Click: the line to remember, and a callback to Week 1's "the uncertainty is in us." Variation is a fact about the world: people really differ. Uncertainty is a fact about us: what we know. Statistics needs both, and confusing them is one of the most common mistakes in reading research.
-
-## Population or certainty? {#two-kinds}
-
-- An important distinction that trips people up later. Population distributions describe how a quantity varies across real cases. Certainty distributions describe how plausible each value of an unknown is. There's one true value; we just don't know it.
-- Click: the quick test. Many cases that really differ, or one answer we're unsure about? Try it on the examples on the cards, then on a few of the students' own.
-- Same shapes, same vocabulary, same math. That's convenient, and also why they get confused.
-- Part 3 needs both: a pattern in the data, and how sure we are about it.
-- Before Part 3: the shapes themselves. Same shapes for both kinds, so this is the place to name them, starting with where a shape comes from: the Galton board.
+- The bridge from "How old is he?" to the Galton board. Last slide: one person, unsure of one man's age. This one: many people, each unsure, and what happens when we pool them.
+- The room is simulated: each made-up guesser is off by a random amount, too old or too young. (In the simulation he's 42; don't reveal that yet.)
+- Click "Ask a room" (20 people). The blue balls are their guesses, one each. Each guess is one person's belief, and they scatter widely: 30 here, 55 there. That's variation, among people.
+- The green line is the room's average, and it drops into the bottom row as a green ball. Ask another room, and another: each room's guesses scatter just as widely, but their averages land close together.
+- Click "Ask 50 rooms", a couple of times. The green balls pile into a narrow bell, far narrower than the single guesses. That pile is a certainty distribution: if all we had was one room's average, this is how far off it could be. Tick "Show his age": the pile sits on it.
+- Now 1 person per room, start over, ask 50 rooms twice: the pile is as wide as single guesses, because one guess is all the evidence. Then 5 per room: in between. More evidence, a narrower pile: we're more sure, though people are just as different as before.
+- The click: one guess is anyone's guess; the average of a room is close, every time. Variation is in the world (the guessers really differ); uncertainty is in us (how sure we can be about his age), and evidence shrinks it.
+- Why does the pile come out as a bell? Each average adds up many random errors, some too high and some too low, and most of them cancel. The next slide does the same thing with balls and pegs.
 
 ## Random individuals, predictable crowds {#galton}
 
+- The callback: the room's averages piled into a bell. Why a bell? Here is the same thing with balls: each ball adds up random bounces, the way each average adds up random errors.
 - This is a Galton board, after Francis Galton, who built one in the 1870s. At every peg, a ball bounces left or right with equal chance: a coin flip.
 - Start with 4 rows. Drop one ball. Ask: where will the next one land? Nobody knows. Drop a few more, one at a time.
 - Tick "Count the paths." The numbers under the bins, 1, 4, 6, 4, 1, are the garden of forking paths from Week 1: four coin flips, and the number of ways to get each number of heads. A ball that bounces right twice can do it 6 ways; all the way right, only 1. The middle bins have more paths, so more balls end up there.
@@ -351,7 +329,7 @@
 
 - The definition, then one card per part. Read them slowly.
 - Ask students to name the three kinds without looking, and give an example of each from their own work.
-- Each card ends with this week's line for that kind: the opening puzzle (change the crowd, and the average changes), the sampling widget (variation is in the world, uncertainty is in us), and sex and height (a coefficient depends on what else is in the model).
+- Each card ends with this week's line for that kind: the opening puzzle (change the crowd, and the average changes), the room of guessers (variation is in the world, uncertainty is in us), and sex and height (a coefficient depends on what else is in the model).
 - Click: the line to remember. Think in distributions, not single numbers.
 
 ## Next week {#next-week}

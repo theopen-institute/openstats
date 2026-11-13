@@ -1213,8 +1213,8 @@ $bp-orange: mix($brand-orange, white, 70%);
   opacity: 0.3;
 }
 
-/* Week 2's canvas widgets (js/galton.js, sample-mean.js, conditional.js,
-   model-builder.js, reclass.js, sex-humps.js): the canvas on the left, its controls on the right, in week 1's
+/* Week 2's canvas widgets (js/galton.js, guess-room.js, conditional.js,
+   model-builder.js, reclass.js, sex-humps.js, z-compare.js, z-ruler.js): the canvas on the left, its controls on the right, in week 1's
    .widget-layout row */
 .w2-graph {
   flex: 0 0 70%;
@@ -1290,6 +1290,46 @@ $bp-orange: mix($brand-orange, white, 70%);
     text-align: right;
     font-weight: 600;
     white-space: nowrap;
+  }
+}
+
+/* Widget buttons that pick one of a few choices (js/z-ruler.js, guess-room.js):
+   outlined, and filled for the current one */
+.reveal .slides .widget-btn.w2-choice {
+  background: white;
+  border: 2px solid $brand-blue;
+  border-radius: 6px;
+  color: $brand-blue;
+  font-weight: 600;
+
+  &.is-on {
+    background: $brand-blue;
+    color: white;
+  }
+}
+
+/* "Same data, new ruler" (js/z-ruler.js): the zones table, with a swatch in each
+   zone's color (set by the script) and the man's zone picked out */
+.reveal .slides table.z-zones {
+  th {
+    font-size: 13pt;
+    font-weight: 600;
+    color: $brand-gray;
+    padding: 2px 8px;
+  }
+
+  .z-swatch {
+    display: inline-block;
+    width: 0.8em;
+    height: 0.8em;
+    margin-right: 0.4em;
+    border-radius: 3px;
+    vertical-align: -0.05em;
+  }
+
+  tr.is-here td {
+    background: rgba($brand-blue, 0.12);
+    font-weight: 700;
   }
 }
 

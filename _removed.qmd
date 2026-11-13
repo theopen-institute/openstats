@@ -3226,3 +3226,108 @@ almost nobody.
 - The red line: everyone's average weight, about 36 kg, sits in the valley between the humps. Hardly anyone weighs that. An average of a two-humped shape describes almost nobody.
 - This is the opening puzzle again, from the other side: an average depends on who's in the crowd.
 :::
+
+# From Week 2 (cut 2026-11-13) {.center}
+
+The sampling slides between "How old is he?" and the Galton board: the sample-mean widget
+(js/sample-mean.js, _includes/week2/sample-mean.md; it needs the deck's adults-data
+block, `adults_widget_data(adults)`), the "Two spreads" table, and the "Population or
+certainty?" cards. Too much for this unit; "Ask the room" (js/guess-room.js) replaced
+them. The R below was in r/week2.R: to reuse "Two spreads", source it after r/week2.R
+and add `spreads <- two_spreads(adults)` to the setup chunk.
+
+```{r week2-parked-spreads, eval = FALSE}
+# "Two spreads": for each number of adults measured, how far most adults are from the
+# average (2 SD), and how far off our estimate of the average could be (2 SD / √n,
+# the 95% width of the certainty distribution with a flat prior)
+two_spreads <- function(adults, sizes = c(5, 20, 100, nrow(adults))) {
+  s <- sd(adults$height)
+  tibble(
+    n = sizes,
+    population = 2 * s,
+    certainty = 2 * s / sqrt(sizes)
+  )
+}
+```
+
+## How sure can a few people make us?
+
+_Pretend these `r nrow(adults)` adults are everyone. We can only afford to measure a few._
+
+{{< include _includes/week2/sample-mean.md >}}
+
+::: {.notes}
+- The key slide of Part 2: the two kinds side by side, on one axis.
+- Set it up: pretend these 5,290 adults are everyone, and we can only afford to measure a few. What's the average height?
+- Start with 5. The top shows the five people we measured (blue dots), against everyone (gray). That's a population distribution: how the people we measured vary. The bottom shows how sure we are about the average height: a certainty distribution.
+- Click "Measure new people" a few times. Each sample gives a slightly different guess, and the green curve jumps around. The old curves stay behind, faint. The curve is honest: it's about as wide as the jumps.
+- Now 20, then 100. Ask them to watch both rows. The dots on top spread just as wide: people are as different as ever. The green curve gets narrow, fast.
+- Tick "Show everyone's average." With 100 people, the curve sits right on it.
+- If someone asks how the green curve is made: it's the posterior for the average with a flat prior, a Normal centered on the sample's average with spread SD / √n. They don't need the formula; the next slide has the numbers.
+:::
+
+## Two spreads
+
+_If we measured n adults, from a much bigger population:_
+
+| Adults measured | [Most adults are within]{.blue} | [95% sure the average is within]{.green} |
+|--:|--:|--:|
+| `r spreads$n[1]` | ± `r fmt(spreads$population[1])` cm | ± `r fmt(spreads$certainty[1])` cm |
+| `r spreads$n[2]` | ± `r fmt(spreads$population[2])` cm | ± `r fmt(spreads$certainty[2])` cm |
+| `r spreads$n[3]` | ± `r fmt(spreads$population[3])` cm | ± `r fmt(spreads$certainty[3])` cm |
+| `r spreads$n[4]` | ± `r fmt(spreads$population[4])` cm | ± `r fmt(spreads$certainty[4])` cm |
+
+::: {.fragment}
+More data doesn't make people any less different. [It makes us more sure.]{.green}
+:::
+
+::: {.fragment .big-statement}
+Variation is in the world.\
+Uncertainty is in us.
+:::
+
+::: {.notes}
+- The widget's lesson in numbers. Same population, different sample sizes.
+- The blue column never changes: most adults are within about 16 cm of average, however many we measure. That's the population distribution.
+- The green column shrinks: with 5 people we're 95% sure the average is within about 7 cm; with 5,290, within about a quarter of a centimeter. That's the certainty distribution.
+- The width shrinks with the square root of the number of people: four times the data halves the uncertainty. Mention it, don't derive it.
+- Click: more data doesn't make people less different. It makes us more sure.
+- Click: the line to remember, and a callback to Week 1's "the uncertainty is in us." Variation is a fact about the world: people really differ. Uncertainty is a fact about us: what we know. Statistics needs both, and confusing them is one of the most common mistakes in reading research.
+:::
+
+## Population or certainty?
+
+::: {.kinds}
+::: {.kind .kind-population}
+[Population distributions]{.kind-title}
+
+How a quantity **varies across cases**. Many cases, each with its own value.
+
+- Heights of the adults in a village
+- Prices of houses sold last year
+- Ages of everyone in Nepal
+:::
+
+::: {.kind .kind-certainty}
+[Certainty distributions]{.kind-title}
+
+How **plausible** each value of an unknown is. One true value; we're unsure which.
+
+- The mayor's share of the vote (Week 1)
+- The age of the man in the photo
+- The average height of all Nepali adults
+:::
+:::
+
+::: {.fragment}
+Quick test: [many cases that really differ]{.blue}, or [one answer we're unsure
+about]{.green}? Same shapes, same vocabulary, different questions.
+:::
+
+::: {.notes}
+- An important distinction that trips people up later. Population distributions describe how a quantity varies across real cases. Certainty distributions describe how plausible each value of an unknown is. There's one true value; we just don't know it.
+- Click: the quick test. Many cases that really differ, or one answer we're unsure about? Try it on the examples on the cards, then on a few of the students' own.
+- Same shapes, same vocabulary, same math. That's convenient, and also why they get confused.
+- Part 3 needs both: a pattern in the data, and how sure we are about it.
+- Before Part 3: the shapes themselves. Same shapes for both kinds, so this is the place to name them, starting with where a shape comes from: the Galton board.
+:::
