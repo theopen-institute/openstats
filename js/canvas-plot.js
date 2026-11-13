@@ -1,5 +1,5 @@
-// Shared drawing for week 2's canvas widgets (galton.js, sample-mean.js, conditional.js,
-// model-builder.js, reclass.js, sex-humps.js). A Canvas fills its container and is drawn in the
+// Shared drawing for week 2's canvas widgets (galton.js, guess-room.js, conditional.js,
+// model-builder.js, reclass.js, sex-humps.js, z-compare.js, z-ruler.js). A Canvas fills its container and is drawn in the
 // slide's own, unscaled pixels, so text and lines size with the rest of the slide
 // however reveal scales the deck.
 import { brand } from './palette.js';
